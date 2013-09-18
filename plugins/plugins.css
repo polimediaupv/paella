@@ -1,0 +1,246 @@
+.editorPluginToolStatusHelp {
+	position: absolute;
+	height: 113px;
+	left: 10px;
+	right: 10px;
+	bottom: 10px;
+	overflow: auto;
+}
+
+.editorPluginToolStatus_trackItemList {
+	position: absolute;
+	overflow: auto;
+	bottom: 123px;
+	top: 65px;
+	left: 10px;
+	right: 10px;
+	box-shadow: inset 0px 0px 10px 2px rgba(0, 0, 0, 0.39);
+	border-radius: 7px;
+	padding-left: 13px;
+}
+
+.trackEditorFieldSelected {
+	background-color: red;
+}
+
+.buttonPlugin.frameControl {
+	background-size: 300%;
+	background-image:url(../resources/images/frame_button.png);
+}
+
+.buttonPlugin.frameControl:hover {
+	background-position: -40px 0;
+}
+
+.buttonPlugin.frameControl.selected {
+	background-position: 40px 0;
+}
+
+.frameControlContainer {
+	height: 87px;
+	width: 100%;
+	overflow: hidden;
+}
+
+.frameControlContent {
+	height: 100px;
+	overflow: hidden;
+	padding-top:6px;
+}
+
+.frameControlItem {
+	width: 100px;
+	cursor: pointer;
+	margin-left:3px;
+	margin-right: 3px;
+	float: left;
+	opacity: 0.8;
+}
+
+.frameControlItem:hover {
+	width:94px;
+	border: 3px dotted #23ff00;
+	opacity: 1;
+}
+
+.frameControlItem.current {
+	width: 94px;
+	border: 3px solid #23ff00;
+	opacity: 1;
+}
+
+
+
+.showFramesButton {
+	position:absolute;
+	display:block;
+	width:40px;
+	height:37px;
+	background-size: 300%;
+	background-image:url(../resources/images/frame_button.png);
+}
+
+.showFramesButton:hover {
+	background-position:-40px 0px;
+}
+
+.showFramesButton_active {
+	position:absolute;
+	display:block;
+	width:40px;
+	height:37px;
+	right:0px;
+	background-size: 300%;
+	background-image:url(../resources/images/frame_button.png);
+	background-position:-80px 0px;
+}
+
+.frameListContainer {
+	background-image:url(../resources/images/playback_bkg.png);
+}
+
+.frameThumbnail {
+	margin-left:3px;
+	margin-right:3px;
+	margin-bottom:8px;
+	margin-top:8px;
+	height:40px;
+}
+
+.frameThumbnail:hover {
+	margin: 0px;
+	border: 3px #e04e80 solid;
+	height: 50px;
+}
+
+.enabledFrameThumbnail {
+	border: 3px #80e04e solid;
+	height:50px;
+}
+
+.enabledFrameThumbnail:hover {
+	border: 3px #e04e80 solid;
+}
+
+
+
+.playButton {
+	background-size: 200%;
+	background-image:url(../resources/images/play_button.png);
+}
+
+.playButton:hover {
+	background-position:-40px 0px;
+}
+
+.pauseButton {
+	background-size: 200%;
+	background-image:url(../resources/images/pause_button.png);
+	
+}
+
+.pauseButton:hover {
+	background-position:-40px 0px;
+}
+
+.playButtonOnScreen {
+	position: absolute;
+	opacity: 0.7;
+	top: 30%;
+	left: 45%;
+	bottom: 30%;
+	right: 40%;
+	z-index: 500;
+}
+
+.playButtonOnScreenIcon {
+	display: block;
+	cursor: pointer;
+	height:100%;
+}
+
+.showViewModeButton {
+	background-image:url(../resources/images/view_icon.png);
+	background-repeat:no-repeat;
+}
+
+.buttonPluginPopUp.showViewModeButton {
+	background-image:none;
+}
+
+.showViewModeButton:hover {
+	background-position:-40px 0px;
+}
+
+.buttonPlugin.selected {
+	background-position: -80px;
+}
+
+.buttonPlugin.selected:hover {
+	background-position: -80px;
+}
+
+.showViewModeButton_active {
+	background-image:url(../resources/images/view_icon.png);
+	background-repeat:no-repeat;
+	background-position:-80px 0px;
+}
+
+.viewModeItemButton {
+	background-image: url(view_mode_icons.png);
+	background-size: 200% auto;
+	width: 78px;
+	height: 41px;
+	cursor: pointer;
+}
+
+.viewModeItemButton.selected {
+	background-position: 78px 0;
+}
+
+.viewModeItemButton.slide_professor {
+	background-position: 0 82px;
+}
+
+.viewModeItemButton.slide_professor.selected {
+	background-position: 78px 82px;
+}
+
+.viewModeItemButton.professor_slide {
+	background-position: 0 124px;
+}
+
+.viewModeItemButton.professor_slide.selected {
+	background-position: 78px 124px;
+}
+
+.viewModeItemButton.professor {
+	background-position: 0 207px;
+}
+
+.viewModeItemButton.professor.selected {
+	background-position: 78px 207px;
+}
+
+.viewModeItemButton.slide_over_professor {
+	
+}
+
+.viewModeItemButton.slide_over_professor_right {
+	background-position: 0 41px;
+}
+
+.viewModeItemButton.slide_over_professor_right.selected {
+	background-position: 72px 41px;
+}
+
+.viewModeItemButton.slide {
+	background-position: 0 168px;
+}
+
+.viewModeItemButton.slide.selected {
+	background-position: 78px 168px;
+}
+
+
+
