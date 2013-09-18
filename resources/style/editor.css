@@ -1,0 +1,241 @@
+/* TODO: Extract this CSS to editor plugins */
+.editorTrackItem.mainTrackTrim {
+	background-image: url(../images/main_track_bkg.png);
+	background-size: 56px 100%;
+}
+
+/* END EXTRACT */
+
+/* Begin new editor */
+
+a.btn {
+	color:#f3f3f3;
+}
+
+.listItem {
+	color:#f3f3f3;
+}
+
+.editorContainer {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	width: 100%;
+	height: 100%;
+}
+.paellaEditorRightBar {
+	position:fixed;
+	right:0px;
+	top:0px;
+	background-color: #4f4f4f;
+	box-shadow: 1px -4px 12px black;
+}
+
+.paellaEditorBottomBar {
+	position:fixed;
+	right:0px;
+	bottom:0px;
+	left:0px;
+	background-color: #4f4f4f;
+	box-shadow: 1px 1px 12px black;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.paellaMainContainerEditorMode {
+	
+}
+
+.paellaEditorRightBarContent {
+	padding-left: 10px;
+	padding-right: 10px;
+	font-size:11px;
+}
+
+.editorTimelineContainer {
+	margin-top: -21px;
+	position:relative;
+	overflow:auto;
+}
+
+.editorTimelineContent {
+	background-image:url(../images/light_background.png);
+	position:absolute;
+	top:0px;
+	box-shadow: inset 0px 0px 10px 0px rgba(0,0,0,0.7);
+	position:relative;
+}
+
+.editorTimeLineTimeMarks {
+	position:absolute;
+	top:0px;
+	height:20px;
+	left:0px;
+	right:0px;
+	z-index: 1;
+	padding-left:3px;
+	background-image: url(../images/timeline_tracks_bkg.png);
+}
+
+.editorTimeLineMark {
+	float:left;
+/*	background-color: rgb(61,62,62);*/
+	font-size: 9px;
+	height: 20px;
+	line-height: 18px;
+}
+
+.editorTimeLineMark.odd {
+/*	background-color: rgb(73,82,82);*/
+}
+
+.editorTrackListItem.master {
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	top: 38px;
+	height: 51px;
+}
+
+.editorTrackListItem.secondary {
+	height: 23px;
+	position: relative;
+}
+
+.editorTrackListItem.secondary.track0 {
+	margin-top: 90px;
+}
+
+
+.editorTrackItem {
+	position: absolute;
+	height: 97%;
+	border-radius: 5px;
+	border: 1px solid rgb(111, 111, 111);
+	overflow: hidden;
+}
+
+.editorTrackItemResizer {
+	width:2px;
+	top:20%;
+	bottom:23%;
+	position: absolute;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+.editorTrackItemResizer.left {
+	border-right: 8px double rgb(124, 124, 124);
+	left:0px;
+}
+
+.editorTrackItemResizer.right {
+	border-left: 8px double rgb(124, 124, 124);
+	right:0px;
+}
+
+.editorTrackItemMoveArea {
+	position:absolute;
+	left:18px;
+	right:18px;
+	top:0px;
+	bottom:0px;
+	cursor:pointer;
+}
+
+.editorTrackItemLabel {
+	margin-left: 20px;
+	height: 100%;
+	line-height: 48px;
+	cursor:pointer;
+}
+
+.editorTrackItemLock {
+	top:5%;
+	position: absolute;
+}
+
+.editorTrackItemLabel.secondary {
+	line-height: 23px;
+}
+
+.editorTimeLineMark.last {
+	overflow: hidden;
+}
+
+.editorTimeLineTracks {
+	position:absolute;
+	top:0px;
+	left:0px;
+	right:0px;
+	padding-bottom: 20px;
+	background-image: url(../images/timeline_tracks_bkg.png);
+}
+
+.editorBottomToolbarContainer {
+	background-color:#52595F;
+	height:27px;
+}
+
+.zoomDropup {
+	margin-top:2px;
+	float:right;
+	margin-right:10px;
+}
+
+.navbar.tiny {
+	font-size:11px;
+	
+}
+
+.navbar-inner.tiny {
+	min-height: 21px;
+}
+
+.navbar .nav>li {
+	line-height: 11px;
+}
+
+.navbar .nav>li>a.rightBarPlugin {
+	padding: 5px 5px 5px;
+}
+
+.editorToolbar_selectedToolUtils {
+	margin-left:10px;
+}
+
+.editorToolbarPlaybackControls {
+	position: absolute;
+	left: 45%;
+}
+
+.editorTimelineCursor {
+	position:absolute;
+	height:100%;
+	width:1px;
+	border-left: 1px dashed rgba(238, 0, 12, 0.92);;
+	left: 352px;
+	z-index: 0;
+	top: 0px;
+	line-height: 54px;
+	font-size: 11px;
+	padding-left: 3px;
+}
+
+.editorTimelineCursor.currentTime {
+	border-left: 1px solid white;
+}
+
+.editorRightBarTabIcon {
+/*	display: inline-block;  to add icon, set this property and the background image in the plugin css file, using .editorRightBarTabIcon.pluginName as class name */
+	width: 15px;
+	height: 14px;
+	margin-bottom: -3px;
+	margin-right: 2px;
+}

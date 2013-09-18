@@ -1,0 +1,26 @@
+  {
+	"proxyLoader":{
+		"enabled":false,
+		"url":"",
+		"usejsonp":false
+	},
+	"restServer":{
+		"url":"test/"
+	},
+	"player":{
+		"defaultProfile": "full",
+		"methods":[{"name":"streaming","enabled":true},
+				   {"name":"html","enabled":true},
+				   {"name":"flash","enabled":true}]
+	},
+	"editor":{
+			"enabled":true
+	},
+	"defaultProfile":"slide_professor",
+	"trimming":{
+		"enabled":false
+	},
+	"publish":{
+		"enabled":true
+	}
+}

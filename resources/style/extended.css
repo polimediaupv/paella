@@ -1,0 +1,276 @@
+#paellaExtendedHeader {
+	height: 40px;
+	background-color: rgba(241, 241, 241, 0.96);
+	box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.55);
+	padding: 7px 0 8px;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	z-index: 510;
+}
+
+#paellaExtendedHeaderLogoDiv {
+	margin-left: 45px !important;
+	display: inline-block;
+}
+
+#paellaExtendedContentGuide{
+	width: 60px;
+	vertical-align: top;
+	display: inline-block;
+}
+
+#paellaExtendedHeaderSearch {
+	display: inline-block;
+	padding: 0px;
+	margin: 4px 0px 0px 30px; 
+	height: 30px;
+	vertical-align: top;
+}
+
+#paellaExtendedHeaderSearchInputDiv {
+	display: inline-block;
+	vertical-align: top;
+	position: relative;
+	width: 450px;
+	height: 29px;
+	border: 1px solid #ccc;
+	background: white;
+	margin: 0px;
+	padding: 0px;
+	border-radius: 3px;
+}
+
+#paellaExtendedHeaderSearchInput {
+	outline: none;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	width: 438px;
+	height: 100%;
+	font-size: 18px;
+	background-color: transparent;
+	border: none;
+	font-family: arial,sans-serif;
+	padding-left: 6px;
+	padding-right: 6px;
+}
+
+#paellaExtendedHeaderSearchButtonDiv {
+	display: inline-block;
+	width: 60px;
+	height: 30px;
+	margin: 0px;
+	padding: 0px;
+}
+
+#paellaExtendedHeaderSearchButton {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	background-color: #2D8F8B;
+	border: 1px solid #174B49;
+	color: white;
+	border-radius: 3px;
+	cursor: pointer;
+	display: block;
+}
+
+
+#paellaExtendedHeaderLogin {
+	float: right;
+	display: inline-block;
+	padding: 0px;
+	margin-right: 45px; 
+	margin-top: 4px;
+	height: 30px;
+	vertical-align: top;
+}
+
+#paellaExtendedHeaderLoginButton {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px 20px 0px 20px;
+	background-color: rgb(194, 67, 50);
+	border: 1px solid #dd4b39;
+	color: white;
+	border-radius: 3px;
+	cursor: pointer;
+	display: block;
+}
+
+/* Default */
+#paellaExtendedContainer {
+	background-color:white;
+}
+
+.paellaExtendedContainer {
+	width: 1100px;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	margin-top:70px;
+}
+
+.rightContainer {
+	display: none;	
+}
+
+.bottomContainer {
+	display: none;
+	box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.48);
+	border-radius: 3px 3px 5px 5px;
+}
+
+.playerContainer {
+	margin-bottom: 20px;
+	background-color: white;
+	display: inline-block;
+	box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.48);
+}
+
+/* Small profile */
+.playerContainer.small {
+	position: relative;
+	overflow: hidden;
+	width: 60%;
+	height: 371px;
+	float:left;
+}
+
+.rightContainer.small {
+	display:block;
+	position:relative;
+	width:38%;
+	min-height:10px;
+	overflow: hidden;
+	float:left;
+	vertical-align: top;
+	margin-left: 1%;
+}
+
+.bottomContainer.small {
+	position: absolute;
+	width: 60%;
+	min-height: 100px;
+	top: 442px;
+	display: block;
+	margin-bottom:20px;
+}
+
+/* Big profile */
+.playerContainer.big {
+	position: relative;
+	overflow: hidden;
+	width: 100%;
+	height: 619px;
+}
+
+.rightContainer.big {
+	width:38%;
+	float:right;
+	overflow: hidden;
+	margin-left: 1%;
+	display: block;
+}
+
+.bottomContainer.big {
+	position: absolute;
+	width: 60%;
+	min-height: 100px;
+	top: 700px;
+	display: block;
+	margin-bottom:20px;
+}
+
+
+/* Full profile */
+.paellaExtendedContainer.full{
+	position:fixed;
+	top:0px;
+	left:0px;
+	bottom:0px;
+	right:0px;
+	width:100%;
+	margin-top: 0px;
+	z-index: 600;
+}
+
+.playerContainer.full {
+	float:left;
+	position: absolute;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+	top: 0;
+}
+
+.rightContainer.full {
+	display: none;
+}
+
+.bottomContainer.full {
+	display: none;	
+}
+
+
+
+
+.bottomContainerTabs {
+	margin-top: -29px;
+	color: black;
+	padding-left:12px;
+}
+
+.bottomContainerTabItem {
+	display:inline;
+	line-height: 28px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 7px;
+	padding-bottom: 7px;
+	cursor: pointer;
+	cursor: hand;
+	margin-left: -1px;
+	font-family: sans-serif;
+	box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.48);
+	border-radius: 6px 6px 0px 0px;
+	font-size: 12px;
+	margin-left:1px;
+}
+
+.bottomContainerTabItem.enabledTabItem {
+	background-color: #6c6c6c;
+	color:white;
+	cursor:default;
+	box-shadow: inset 0px 0px 12px rgba(0,0,0,0.9);
+}
+
+.bottomContainerTabItem.disabledTabItem {
+	background-color: #e6e6e6;
+}
+
+.bottomContainerContent {
+	font-size: 12px;
+	color: black;
+	line-height: 14px;
+	padding-left: 5px;
+	padding-top: 9px;
+	padding-right: 5px;
+}
+
+.bottomContainerContent button{
+	font-size: 12px;
+	color: black;
+	line-height: 14px;
+}
+
+.bottomContainerContent.enabledTabContent {
+}
+
+.bottomContainerContent.disabledTabContent {
+	display:none;
+}
