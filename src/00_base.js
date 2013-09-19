@@ -41,7 +41,8 @@ paella.debug = {
 paella.pluginList = [
 	'framecontrol.js',
 	'playbutton.js',
-	'viewmode.js'
+	'viewmode.js',
+	'basic_editor_plugins.js'
 ];
 
 paella.events = {

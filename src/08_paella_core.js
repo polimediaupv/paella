@@ -220,7 +220,9 @@ paella.PlayerBase = Class.create({
 	includePlugins:function(productionPluginFile,devPluginsDir,devPluginsArray,productionPluginCss) {
 		if (!productionPluginCss) productionPluginCss = 'plugins/plugins.css';
 
-		if (paella.utils.parameters.get('debug')!="") {
+		if (/debug/.test(window.location.href)) {
+			paella.debug.debug = true;
+		//if (paella.utils.parameters.get('debug')!="") {
 			for (var i=0; i<devPluginsArray.length; i++) {
 				var jsFile = devPluginsArray[i];
 				var cssFile = jsFile.substr(0, jsFile.lastIndexOf(".")) + ".css";
@@ -230,7 +232,7 @@ paella.PlayerBase = Class.create({
 			}
 		}
 		else {
-			paella.utils.require(productionPluginFile);
+			//paella.utils.require(productionPluginFile);
 			paella.utils.importStylesheet(productionPluginCss);
 		}
 	},

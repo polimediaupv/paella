@@ -347,3 +347,14 @@ paella.MouseManager = Class.create({
 });
 
 paella.utils.mouseManager = new paella.MouseManager();
+
+
+paella.ui = {}
+
+paella.ui.Container = function(params) {
+	var elem = document.createElement('div');
+	if (params.id) elem.id = params.id;
+	if (params.className) elem.className = params.className;
+	if (params.style) $(elem).css(params.style);
+	return elem;
+};

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8;">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Paella Engage Example</title>
+		<script type="text/javascript" src="javascript/base.js"></script>
+		<script type="text/javascript" src="javascript/jquery.js"></script>
+		
+		<script type="text/javascript" src="src/00_base.js"></script>
+		<script type="text/javascript" src="src/01_utils.js"></script>
+		<script type="text/javascript" src="src/02_nodes.js"></script>
+		<script type="text/javascript" src="src/03_video_nodes.js"></script>
+		<script type="text/javascript" src="src/04_video_container.js"></script>
+		<script type="text/javascript" src="src/05_plugin_base.js"></script>
+		<script type="text/javascript" src="src/06_ui_controls.js"></script>
+		<script type="text/javascript" src="src/07_ui_extras.js"></script>
+		<script type="text/javascript" src="src/08_paella_core.js"></script>
+		<script type="text/javascript" src="src/09_paella_player.js"></script>
+		<script type="text/javascript" src="src/10_paella_extended.js"></script>
+		<script type="text/javascript" src="src/11_editor_base.js"></script>
+		<script type="text/javascript" src="src/12_editor_bootstrap_utils.js"></script>
+		<script type="text/javascript" src="src/13_editor_plugin_base.js"></script>
+		<script type="text/javascript" src="src/14_editor_ui_controls.js"></script>
+		<script type="text/javascript" src="src/15_editor_track.js"></script>
+		<script type="text/javascript" src="src/16_embed_player.js"></script>
+		<script type="text/javascript" src="src/17_paella_editor.js"></script>
+	
+		<script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="resources/style/controls.css" type="text/css" media="screen" charset="utf-8">
+		<link rel="stylesheet" href="resources/style/editor.css" type="text/css" media="screen" charset="utf-8">
+		<link rel="stylesheet" href="resources/bootstrap/css/bootstrap.slate.min.css" type="text/css" media="screen" charset="utf-8">
+		<script type="text/javascript">
+			var MyAccessControl = Class.create(paella.AccessControl,{
+				checkAccess:function(onSuccess) {
+					this.permissions.canRead = true;
+					this.permissions.canWrite = true;
+					this.permissions.canContribute = true;
+					this.permissions.loadError = false;
+					this.permissions.isAnonymous = true;
+					onSuccess(this.permissions);
+				}
+			});
+			
+			var MyVideoLoader = Class.create(paella.VideoLoader, {
+				loadVideo:function(videoId,onSuccess) {
+					var url = paella.utils.parameters.get('id');
+					if (url) {
+						var stream = {
+							sources:{
+								mp4:{
+									src:url + '/presenter.mp4',
+									type:"video/mp4"
+									}
+								},
+							preview:url + '/PRESENTER.jpg'
+						};
+						this.streams.push(stream);
+						
+						stream = {
+							sources:{
+								mp4:{
+									src:url + '/presentation.mp4',
+									type:"video/mp4"
+								},
+								image:{
+									frames:{frame_0:'test/image/frame_0.jpg',frame_419:'test/image/frame_419.jpg',frame_658:'test/image/frame_658.jpg'},
+									duration:928
+								}
+							},
+							preview:url + '/image/frame_0.jpg'
+						};
+						this.streams.push(stream);
+					}
+				
+					// No thumbnails
+					//frameList[timeInstant] = { id:"frame_id", mimetype:"image/jpg", time:timeInstant, url:"image_url"}
+					this.frameList = {};
+					this.frameList[0] = {id:'frame_0', mimetype:'image/jpg', time:0, url:url + '/image/frame_0.jpg'};
+					this.frameList[419] = {id:'frame_419', mimetype:'image/jpg', time:419, url:url + '/image/frame_419.jpg'};
+					this.frameList[658] = {id:'frame_658', mimetype:'image/jpg', time:658, url:url + '/image/frame_658.jpg'};
+			
+					// Callback
+					this.loadStatus = true;
+					onSuccess();
+				}
+			});
+
+			function loadPaella() {
+				var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new MyVideoLoader()});
+				
+				initPaellaEngage('playerContainer',initDelegate);
+			}
+		</script>
+	</head>
+	<body id="body" onload="loadPaella();">
+		<div id="playerContainer" style="display:block;width:100%">
+		</div>
+	</body>
+</html>
