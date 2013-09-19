@@ -9,8 +9,10 @@ import json
 import argparse
 from subprocess import call
 
-sourceDir = 'plugins/'
-javascriptFile = 'javascript/paella_plugins.js'
+
+pluginDir = 'plugins/'
+paellaDir = 'src/'
+javascriptFile = 'javascript/paella_player.js'
 cssFile = 'plugins/plugins.css'
 
 arguments = argparse.ArgumentParser(description="Compile plugins, javascript and style sheet files.")
@@ -21,7 +23,7 @@ arguments.add_argument('--minimize',action='store_true',help='minimize output ja
 
 args = arguments.parse_args()
 if args.src:
-	sourceDir = args.src
+	pluginDir = args.src
 
 if args.js:
 	javascriptFile = args.js
@@ -29,15 +31,25 @@ if args.js:
 if args.css:
 	cssFile = args.css
 
-jsFiles = os.listdir(sourceDir);
-
-f = open(sourceDir + 'ignore.json')
-ignoreFiles = json.loads(f.read())
 jsOut = open(javascriptFile,'w')
 cssOut = open(cssFile,'w')
 
-for file in jsFiles:
-	jsPath = sourceDir + file
+paellaFiles = os.listdir(paellaDir)
+
+for file in paellaFiles:
+    jsPath = paellaDir + file
+    print jsPath
+    jsOut.write(open(jsPath).read())
+    jsOut.write('\n\n')
+
+pluginFiles = os.listdir(pluginDir);
+
+f = open(pluginDir + 'ignore.json')
+ignoreFiles = json.loads(f.read())
+
+
+for file in pluginFiles:
+	jsPath = pluginDir + file
 	fileName, fileExtension = os.path.splitext(jsPath);
 	cssPath = fileName + '.css'
 	if fileExtension=='.js' and not(file in ignoreFiles):
