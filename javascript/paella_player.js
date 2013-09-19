@@ -2619,12 +2619,12 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 	
 	onShowEditor:function() {
 		var editControl = this.editControl();
-		$(editControl.domElement).hide();
+		if (editControl) $(editControl.domElement).hide();
 	},
 	
 	onHideEditor:function() {
 		var editControl = this.editControl();
-		$(editControl.domElement).show();
+		if (editControl) $(editControl.domElement).show();
 	},
 
 	showEditorButton:function() {

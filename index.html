@@ -16,8 +16,8 @@
 			var MyAccessControl = Class.create(paella.AccessControl,{
 				checkAccess:function(onSuccess) {
 					this.permissions.canRead = true;
-					this.permissions.canWrite = false;
-					this.permissions.canContribute = false;
+					this.permissions.canWrite = true;
+					this.permissions.canContribute = true;
 					this.permissions.loadError = false;
 					this.permissions.isAnonymous = true;
 					onSuccess(this.permissions);
