@@ -3388,7 +3388,7 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 					thisClass.unloadAll(paella.dictionary.translate("You are not authorized to view this resource"));
 				}	
 			}
-			else if (permissions.isAnonimous) {
+			else if (permissions.isAnonymous) {
 				var errorMessage = paella.dictionary.translate("You are not logged in");
 				thisClass.unloadAll(errorMessage);
 				paella.events.trigger(paella.events.error,{error:errorMessage});
