@@ -45,6 +45,8 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 	},
 
 	onLoadConfig:function(configData) {
+		paella.data = new paella.Data(configData);
+
 		this.config = configData;
 		this.videoIdentifier = paella.initDelegate.getId();
 

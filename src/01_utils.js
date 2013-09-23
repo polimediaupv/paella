@@ -358,3 +358,85 @@ paella.ui.Container = function(params) {
 	if (params.style) $(elem).css(params.style);
 	return elem;
 };
+
+paella.DataDelegate = Class.create({
+	// onSuccess => function(response,readStatus)
+	read:function(context,params,onSuccess) {
+		// TODO: read key with context
+		if (typeof(onSuccess)=='function') {
+			onSuccess({},true);
+		}
+	},
+	
+	// onSuccess => function(response,readStatus)
+	write:function(context,params,value,onSuccess) {
+		// TODO: write key with context
+		if(typeof(onSuccess)=='function') {
+			onSuccess({},true);
+		}
+	}
+});
+
+paella.dataDelegates = {}
+
+paella.dataDelegates.CookieDataDelegate = Class.create(paella.DataDelegate,{
+	initialize:function() {
+	},
+	
+	read:function(context,params,onSuccess) {
+		if (typeof(params)=='object') params = JSON.stringify(params);
+		var value = paella.utils.cookies.get(params);
+		try {
+			value = JSON.parse(value);
+		}
+		catch (e) {}
+		if (typeof(onSuccess)=='function') {
+			onSuccess(value,true);
+		}
+	},
+	
+	write:function(context,params,value,onSuccess) {
+		if (typeof(params)=='object') params = JSON.stringify(params);
+		if (typeof(value)=='object') value = JSON.stringify(value);
+		paella.utils.cookies.set(params,value);
+		if(typeof(onSuccess)=='function') {
+			onSuccess({},true);
+		}
+	}
+});
+
+paella.dataDelegates.DefaultDataDelegate = paella.dataDelegates.CookieDataDelegate;
+
+
+paella.Data = Class.create({
+	enabled:false,
+	dataDelegates:{},
+
+	initialize:function(config) {
+		this.enabled = config.data.enabled;
+		for (var key in config.data.dataDelegates) {
+			this.dataDelegates[key] = new paella.dataDelegates[config.data.dataDelegates[key]]();
+		}
+		if (!this.dataDelegates.default) {
+			this.dataDelegates.default = new paella.dataDelegates.DefaultDataDelegate();
+		}
+	},
+	
+	read:function(context,key,onSuccess) {
+		var del = this.getDelegate(context);
+		del.read(context,key,onSuccess);
+	},
+	
+	write:function(context,key,params,onSuccess) {
+		var del = this.getDelegate(context);
+		del.write(context,key,params,onSuccess);
+	},
+	
+	getDelegate:function(context) {
+		if (this.dataDelegates[context]) return this.dataDelegates[context];
+		else return this.dataDelegates.default;
+	}
+});
+
+// Will be initialized inmediately after loading config.json, in PaellaPlayer.onLoadConfig()
+paella.data = null;
