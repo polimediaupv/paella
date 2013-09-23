@@ -22,5 +22,11 @@
 	},
 	"publish":{
 		"enabled":true
+	},
+	"data":{
+		"enabled":true,
+		"dataDelegates":{
+			"default":"CookieDataDelegate"
+		}
 	}
 }
