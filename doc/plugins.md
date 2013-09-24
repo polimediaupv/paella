@@ -4,9 +4,12 @@
 
 A plugin is a subclass of any child class of paella.Plugin. To create a plugin, we'll extend any of these classes, depending on the new feature we want to add to Paella Player. The functions that you'll need to implement, will depend on the specific plugin type and configuration, and will be discussed later.
 
+Paella Player assumes that your plugin files are located in the `plugins` directory. If you need to use style sheets, you must to create a file for your javascript code and another one for the CSS code. The javascript file and the stylesheet must have the same name:
 
-By convention, the new plugin classes will be placed into the "paella.plugins" namespace.
+	myplugin.js
+	myplugin.css
 
+You can use several files to implement your plugin. To do this, you only need to register all the files in the plugin array. To keep the code correctly organized, by convention, the new plugin classes will be placed into the "paella.plugins" namespace.
 
 
 	paella.plugins.MyNewPlugin = Class.create(paella.[Any paella.Plugin Subclass],{
@@ -19,7 +22,22 @@ Inmediately after the plugin implementation, we must to instantiate it. By conve
 
 	paella.plugins.myNewPlugin = new paella.plugins.MyNewPlugin()
 
+To test your plugin in development mode, you must to use the file debug.html instead of index.html, and register your plugin in the development plugin array. This array is defined in the file `src/00_base.js`:
 
+	paella.pluginList = [
+		'framecontrol.js',
+		'playbutton.js',
+		'viewmode.js',
+		'basic_editor_plugins.js'
+	];
+
+In production mode, this array is ignored because the build script compile all paella player files, including the plugins, into one unique file: `paella_player.js`. If you want to exclude some plugin file from the build script, you only must to include it in the file `plugins/ignore.json` as follows:
+
+	[
+		"debuglog.js",
+		"annotations.js",
+		"check_publish.js"
+	]
 
 ## Plugin life cycle
 
