@@ -316,6 +316,10 @@ paella.ButtonPlugin = Class.create(paella.Plugin,{
 	}
 });
 
+paella.ButtonPlugin.alignment = {
+	left:'left',
+	right:'right'
+}
 paella.ButtonPlugin.kClassName = 'buttonPlugin';
 paella.ButtonPlugin.kPopUpClassName = 'buttonPluginPopUp';
 paella.ButtonPlugin.kTimeLineClassName = 'buttonTimeLine';
