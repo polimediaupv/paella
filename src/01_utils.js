@@ -143,26 +143,24 @@ paella.Ajax = Class.create({
 	}
 });
 
-paella.Cookies = Class.create({
-	set:function(name,value) {
-		document.cookie = name + "=" + value;
-	},
+paella.utils = {
+	cookies:{
+		set:function(name,value) {
+			document.cookie = name + "=" + value;
+		},
 	
-	get:function(name) {
-		var i,x,y,ARRcookies=document.cookie.split(";");
-		for (i=0;i<ARRcookies.length;i++) {
-			x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
-			y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
-			x=x.replace(/^\s+|\s+$/g,"");
-			if (x==name) {
-				return unescape(y);
+		get:function(name) {
+			var i,x,y,ARRcookies=document.cookie.split(";");
+			for (i=0;i<ARRcookies.length;i++) {
+				x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+				y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+				x=x.replace(/^\s+|\s+$/g,"");
+				if (x==name) {
+					return unescape(y);
+				}
 			}
 		}
-	}
-});
-
-var Utils = Class.create({
-	cookies:new paella.Cookies(),
+	},
 
 	parameters:{
 		get:function(parameter) {
@@ -289,9 +287,7 @@ var Utils = Class.create({
 		var lang = navigator.language || window.navigator.userLanguage;
 		return lang.substr(0, 2).toLowerCase();
 	}
-});
-
-paella.utils = new Utils();
+}
 
 paella.MouseManager = Class.create({
 	targetObject:null,
@@ -417,8 +413,8 @@ paella.Data = Class.create({
 		for (var key in config.data.dataDelegates) {
 			this.dataDelegates[key] = new paella.dataDelegates[config.data.dataDelegates[key]]();
 		}
-		if (!this.dataDelegates.default) {
-			this.dataDelegates.default = new paella.dataDelegates.DefaultDataDelegate();
+		if (!this.dataDelegates["default"]) {
+			this.dataDelegates["default"] = new paella.dataDelegates.DefaultDataDelegate();
 		}
 	},
 	
@@ -434,7 +430,7 @@ paella.Data = Class.create({
 	
 	getDelegate:function(context) {
 		if (this.dataDelegates[context]) return this.dataDelegates[context];
-		else return this.dataDelegates.default;
+		else return this.dataDelegates["default"];
 	}
 });
 
