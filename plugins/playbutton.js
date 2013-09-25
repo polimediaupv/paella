@@ -5,7 +5,7 @@ paella.plugins.PlayPauseButtonPlugin = Class.create(paella.ButtonPlugin, {
 	
 	getAlignment:function() { return 'left'; },
 	getSubclass:function() { return this.playSubclass; },
-	getName:function() { return "PlayPauseButtonPlugin"; },
+	getName:function() { return "es.upv.paella.playPauseButtonPlugin"; },
 	
 	setup:function() {
 		var This = this;
@@ -143,7 +143,7 @@ paella.plugins.PlayButtonOnScreen = Class.create(paella.EventDrivenPlugin,{
 	},
 	
 	getName:function() {
-		return "PlayButtonOnScreen";
+		return "es.upv.paella.playButtonOnScreen";
 	}
 });
 

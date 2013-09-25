@@ -100,60 +100,6 @@ paella.Plugin = Class.create({
 	}
 });
 
-paella.PlaybackControlPlugin = Class.create(paella.Plugin,{
-	type:'playbackControl',
-	
-	initialize:function() {
-		paella.debug.log("Error: PlaybackPopUpPlugin is deprecated in Paella V.2. Use ButtonPlugin instead. Plugin name: " + this.getName());
-		this.parent();
-	},
-
-	setLeftPosition:function() {
-		paella.debug.log("Warning: obsolete plugin style. The " + this.getName() + " plugin does not implement dynamic positioning. Please, consider to implement setLeftPosition() function.");
-	},
-
-	getRootNode:function(id) {
-		return null;
-	},
-	
-	getName:function() {
-		return "PlaybackControlPlugin";
-	},
-	
-	getMinWindowSize:function() {
-		return 0;
-	}
-});
-
-paella.PlaybackPopUpPlugin = Class.create(paella.Plugin,{
-	type:'playbackPopUp',
-	
-	initialize:function() {
-		paella.debug.log("Error: PlaybackPopUpPlugin is deprecated in Paella V.2. Use ButtonPlugin instead. Plugin name: " + this.getName());
-		this.parent();
-	},
-
-	getRootNode:function(id) {
-		return null;
-	},
-	
-	setRightPosition:function() {
-		paella.debug.log("Warning: obsolete plugin style. The " + this.getName() + " plugin does not implement dynamic positioning. Please, consider to implement setRightPosition() function.");
-	},
-
-	getPopUpContent:function(id) {
-		return null;
-	},
-	
-	getName:function() {
-		return "PlaybackPopUpPlugin";
-	},
-	
-	getMinWindowSize:function() {
-		return 0;
-	}
-});
-
 paella.PopUpContainer = Class.create(paella.DomNode,{
 	containers:null,
 	currentContainerId:-1,
@@ -377,42 +323,5 @@ paella.EventDrivenPlugin = Class.create(paella.Plugin,{
 	
 	getName:function() {
 		return "EventDrivenPlugin";
-	}
-});
-
-// Paella Extended plugins:
-paella.RightBarPlugin = Class.create(paella.Plugin,{
-	type:'rightBarPlugin',
-
-	getRootNode:function(id) {
-		return null;
-	},
-	
-	getName:function() {
-		return "RightBarPlugin";
-	},
-	
-	getIndex:function() {
-		return 10000;
-	}
-});
-
-paella.TabBarPlugin = Class.create(paella.Plugin,{
-	type:'tabBarPlugin',
-
-	getTabName:function() {
-		return "New Tab";
-	},
-
-	getRootNode:function(id) {
-		return null;
-	},
-	
-	getName:function() {
-		return "TabBarPlugin";
-	},
-	
-	getIndex:function() {
-		return 100000;
 	}
 });

@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="Content-type" content="text/html; charset=utf-8;">
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>Paella Engage Example</title>
+		<title>Matterhorn Video Player</title>
 		<script type="text/javascript" src="javascript/base.js"></script>
 		<script type="text/javascript" src="javascript/jquery.js"></script>
-		
 		<script type="text/javascript" src="src/00_base.js"></script>
 		<script type="text/javascript" src="src/01_utils.js"></script>
 		<script type="text/javascript" src="src/02_nodes.js"></script>
@@ -28,13 +27,30 @@
 	
 		<script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="resources/style/controls.css" type="text/css" media="screen" charset="utf-8">
+		<link rel="stylesheet" href="resources/style/extended.css" type="text/css" media="screen" charset="utf-8">
 		<link rel="stylesheet" href="resources/style/editor.css" type="text/css" media="screen" charset="utf-8">
 		<link rel="stylesheet" href="resources/bootstrap/css/bootstrap.slate.min.css" type="text/css" media="screen" charset="utf-8">
 		
 		<script type="text/javascript" src="example.js"></script>
+		
+		<script type="text/javascript">
+		
+		paella.plugins.MyRightBarPlugin = Class.create(paella.RightBarPlugin,{
+			getSubclass:function() { return 'test'; },
+
+			buildContent:function(domElement) {
+				domElement.innerHTML = "<h2>Hola</h2>";
+			},
+	
+			getName:function() {
+				return "test.MyRightBarPlugin";
+			}
+		});
+		
+		paella.plugins.myRightBarPlugin = new paella.plugins.MyRightBarPlugin();
+		</script>
 	</head>
-	<body id="body" onload="loadPaella('playerContainer');">
-		<div id="playerContainer" style="display:block;width:100%">
-		</div>
+	<body id="body" onload="loadPaellaExtended('paellaExtendedContainer')">
+		<div id="paellaExtendedContainer"></div>
 	</body>
 </html>

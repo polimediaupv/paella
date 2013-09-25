@@ -3,7 +3,7 @@ paella.plugins.RepeatButtonPlugin = Class.create(paella.ButtonPlugin, {
 	
 	getAlignment:function() { return 'left'; },
 	getSubclass:function() { return this.repeatSubclass; },
-	getName:function() { return "es.upv.paella.RepeatButtonPlugin"; },
+	getName:function() { return "es.upv.paella.repeatButtonPlugin"; },
 	
 	action:function(button) {
 	  var newTime = paella.player.videoContainer.currentTime()-30;

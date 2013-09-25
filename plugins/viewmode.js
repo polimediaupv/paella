@@ -5,7 +5,7 @@ paella.plugins.ViewModePlugin = Class.create(paella.ButtonPlugin,{
 	getSubclass:function() { return "showViewModeButton"; },
 	getIndex:function() { return 101; },
 	getMinWindowSize:function() { return 300; },
-	getName:function() { return "ViewModePlugin"; },
+	getName:function() { return "es.upv.paella.viewModePlugin"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
 
 	checkEnabled:function(onSuccess) {

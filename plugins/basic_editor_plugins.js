@@ -28,7 +28,7 @@ paella.editor.ToolStatusPlugin = Class.create(paella.editor.RightBarPlugin,{
 	},
 	
 	getName:function() {
-		return "toolStatusPlugin";
+		return "es.upv.paella.editor.toolStatusPlugin";
 	},
 	
 	getTabName:function() {
@@ -165,7 +165,7 @@ paella.editor.ConsolidatePlugin = Class.create(paella.editor.RightBarPlugin,{
 	},
 	
 	getName:function() {
-		return "consolidatePlugin";
+		return "es.upv.paella.editor.consolidatePlugin";
 	},
 	
 	getTabName:function() {
@@ -254,7 +254,7 @@ paella.editor.CaptionsPlugin = Class.create(paella.editor.TrackPlugin,{
 	},
 	
 	getName:function() {
-		return "trackCaptions";
+		return "es.upv.paella.editor.trackCaptions";
 	},
 	
 	getTrackName:function() {

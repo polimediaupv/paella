@@ -15,6 +15,42 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+// Paella Extended plugins:
+paella.RightBarPlugin = Class.create(paella.Plugin,{
+	type:'rightBarPlugin',
+
+	buildContent:function(domElement) {
+		
+	},
+	
+	getName:function() {
+		return "es.upv.paella.extended.RightBarPlugin";
+	},
+	
+	getIndex:function() {
+		return 10000;
+	}
+});
+
+paella.TabBarPlugin = Class.create(paella.Plugin,{
+	type:'tabBarPlugin',
+
+	getTabName:function() {
+		return "New Tab";
+	},
+
+	buildContent:function(domElement) {
+		
+	},
+	
+	getName:function() {
+		return "es.upv.paella.extended.TabBarPlugin";
+	},
+	
+	getIndex:function() {
+		return 100000;
+	}
+});
 
 paella.Extended = Class.create({
 	container:null,
@@ -118,10 +154,13 @@ paella.Extended = Class.create({
 				plugin.setup();
 				if (plugin.type=='rightBarPlugin') {
 					thisClass.rightBarPlugins.push(plugin);
-					thisClass.addRightBarItem(plugin.getRootNode('paellaExtended_rightBar_'));
+					var container = thisClass.getRightBarContainer(plugin);
+					plugin.buildContent(container);
+					//thisClass.addRightBarItem(plugin.getRootNode('paellaExtended_rightBar_'));
 				}
 				if (plugin.type=='tabBarPlugin') {
 					thisClass.tabBarPlugins.push(plugin);
+					
 					thisClass.addTab(plugin.getTabName(),plugin.getRootNode('paellaExtended_tabBar_'));
 				}	
 			}
@@ -168,8 +207,11 @@ paella.Extended = Class.create({
 		++this.currentTabIndex;
 	},
 	
-	addRightBarItem:function(content) {
-		this.rightContainer.appendChild(content.domElement);
+	getRightBarContainer:function(plugin) {
+		var container = document.createElement('div');
+		container.className = "rightBarPluginContainer " + plugin.getSubclass();
+		this.rightContainer.appendChild(container);
+		return container;
 	},
 
 	setMainProfile:function() {
