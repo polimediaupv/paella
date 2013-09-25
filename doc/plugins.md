@@ -1,4 +1,4 @@
-# Plugins readme #
+# Paella Plugins #
 
 ## Create a new plugin
 

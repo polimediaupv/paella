@@ -143,6 +143,8 @@ paella.Ajax = Class.create({
 	}
 });
 
+paella.Timer = Timer;	// base.js Timer
+
 paella.utils = {
 	cookies:{
 		set:function(name,value) {
@@ -194,6 +196,7 @@ paella.utils = {
     	document.getElementsByTagName('head')[0].appendChild(link);
     },
 
+	// Deprecated. Use paella.Timer instead
 	Timer: Class.create({
 		timerId:0,
 		callback:null,
@@ -286,7 +289,9 @@ paella.utils = {
 	language:function() {
 		var lang = navigator.language || window.navigator.userLanguage;
 		return lang.substr(0, 2).toLowerCase();
-	}
+	},
+	
+	userAgent:new UserAgent()
 }
 
 paella.MouseManager = Class.create({
