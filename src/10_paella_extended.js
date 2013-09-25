@@ -15,16 +15,14 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-// Paella Extended plugins:
-paella.RightBarPlugin = Class.create(paella.Plugin,{
-	type:'rightBarPlugin',
 
-	buildContent:function(domElement) {
-		
-	},
+paella.ExtendedPlugin = Class.create(paella.Plugin, {
+	type:'extendedPlugin',
 	
-	getName:function() {
-		return "es.upv.paella.extended.RightBarPlugin";
+	getName:function() { return "es.upv.paella.extended.Plugin"; },
+	
+	checkEnabled:function(onSuccess) {
+		onSuccess(paella.extended!=null);
 	},
 	
 	getIndex:function() {
@@ -32,23 +30,25 @@ paella.RightBarPlugin = Class.create(paella.Plugin,{
 	}
 });
 
-paella.TabBarPlugin = Class.create(paella.Plugin,{
-	type:'tabBarPlugin',
+paella.RightBarPlugin = Class.create(paella.ExtendedPlugin,{
+	type:'rightBarPlugin',
+	getName:function() { return "es.upv.paella.extended.RightBarPlugin"; },
 
+	buildContent:function(domElement) {
+		
+	}
+});
+
+paella.TabBarPlugin = Class.create(paella.ExtendedPlugin,{
+	type:'tabBarPlugin',
+	getName:function() { return "es.upv.paella.extended.TabBarPlugin"; },
+	
 	getTabName:function() {
 		return "New Tab";
 	},
 
 	buildContent:function(domElement) {
 		
-	},
-	
-	getName:function() {
-		return "es.upv.paella.extended.TabBarPlugin";
-	},
-	
-	getIndex:function() {
-		return 100000;
 	}
 });
 
@@ -154,14 +154,11 @@ paella.Extended = Class.create({
 				plugin.setup();
 				if (plugin.type=='rightBarPlugin') {
 					thisClass.rightBarPlugins.push(plugin);
-					var container = thisClass.getRightBarContainer(plugin);
-					plugin.buildContent(container);
-					//thisClass.addRightBarItem(plugin.getRootNode('paellaExtended_rightBar_'));
+					thisClass.addRightBarPlugin(plugin);
 				}
 				if (plugin.type=='tabBarPlugin') {
 					thisClass.tabBarPlugins.push(plugin);
-					
-					thisClass.addTab(plugin.getTabName(),plugin.getRootNode('paellaExtended_tabBar_'));
+					thisClass.addTabPlugin(plugin);
 				}	
 			}
 		});
@@ -183,35 +180,36 @@ paella.Extended = Class.create({
 		}
 	},
 
-	addTab:function(name,content) {
+	addTabPlugin:function(plugin) {
 		var tabIndex = this.currentTabIndex;
 		
 		// Add tab
 		var tabItem = document.createElement('div');
 		tabItem.id = "tab_" + tabIndex;
 		tabItem.className = "bottomContainerTabItem disabledTabItem";
-		tabItem.innerHTML = name;
+		tabItem.innerHTML = plugin.getTabName();
+		tabItem.plugin = plugin;
 		var thisClass = this;
-		$(tabItem).click(function(event) { thisClass.showTab(tabIndex); });
+		$(tabItem).click(function(event) { if (/disabledTabItem/.test(this.className)) { thisClass.showTab(tabIndex); this.plugin.action(this); } });
 		this.bottomContainerTabs.appendChild(tabItem);
 		
 		// Add tab content
 		var tabContent = document.createElement('div');
 		tabContent.id = "tab_content_" + tabIndex;
-		tabContent.className = "bottomContainerContent disabledTabContent";
-		tabContent.appendChild(content.domElement);
+		tabContent.className = "bottomContainerContent disabledTabContent " + plugin.getSubclass();
 		this.bottomContainerContent.appendChild(tabContent);
+		plugin.buildContent(tabContent);
 		
 		// Show tab
 		this.showTab(tabIndex);
 		++this.currentTabIndex;
 	},
 	
-	getRightBarContainer:function(plugin) {
+	addRightBarPlugin:function(plugin) {
 		var container = document.createElement('div');
 		container.className = "rightBarPluginContainer " + plugin.getSubclass();
 		this.rightContainer.appendChild(container);
-		return container;
+		plugin.buildContent(container);
 	},
 
 	setMainProfile:function() {

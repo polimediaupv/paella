@@ -43,11 +43,67 @@
 			},
 	
 			getName:function() {
-				return "test.MyRightBarPlugin";
+				return "es.upv.paella.test.MyRightBarPlugin";
 			}
 		});
 		
 		paella.plugins.myRightBarPlugin = new paella.plugins.MyRightBarPlugin();
+		
+		paella.plugins.MyTabBarPlugin = Class.create(paella.TabBarPlugin,{
+			getSubclass:function() { return "test"; },
+			getTabName:function() { return "Test"; },
+			getName:function() { return "es.upv.paella.test.MyTabBarPlugin"; },
+			
+			domElement:null,
+			
+			buildContent:function(domElement) {
+				this.domElement = domElement;
+				this.loadContent();
+			},
+			
+			action:function(tab) {
+				this.loadContent();
+			},
+			
+			loadContent:function() {
+				var container = this.domElement;
+				container.innerHTML = "Loading...";
+				new paella.Timer(function(t) {
+					container.innerHTML = "Loading done";
+				},2000);
+			}
+		});
+		
+		paella.plugins.myTabBarPlugin = new paella.plugins.MyTabBarPlugin();
+		
+		
+		paella.plugins.MyTabBarPlugin2 = Class.create(paella.TabBarPlugin,{
+			getSubclass:function() { return "test"; },
+			getTabName:function() { return "Test 2"; },
+			getName:function() { return "es.upv.paella.test.MyTabBarPlugin2"; },
+			
+			domElement:null,
+			
+			buildContent:function(domElement) {
+				this.domElement = domElement;
+				this.loadContent();
+			},
+			
+			action:function(tab) {
+				this.loadContent();
+			},
+			
+			loadContent:function() {
+				var container = this.domElement;
+				container.innerHTML = "Loading...";
+				new paella.Timer(function(t) {
+					container.innerHTML = "Loading done";
+				},2000);
+			}
+		});
+		
+		paella.plugins.myTabBarPlugin2 = new paella.plugins.MyTabBarPlugin2();
+		
 		</script>
 	</head>
 	<body id="body" onload="loadPaellaExtended('paellaExtendedContainer')">

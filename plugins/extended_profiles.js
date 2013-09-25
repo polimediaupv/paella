@@ -1,3 +1,4 @@
+/*
 paella.plugins.ExtendedProfilesPlugin = Class.create(paella.PlaybackPopUpPlugin,{
 	profilesContainer:null,
 	container:null,
@@ -166,4 +167,4 @@ paella.plugins.ExtendedProfilesPlugin = Class.create(paella.PlaybackPopUpPlugin,
 });
 
 new paella.plugins.ExtendedProfilesPlugin();
-
+*/
