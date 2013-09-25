@@ -159,6 +159,17 @@
 	height:100%;
 }
 
+.repeatButton {
+	background-size: 200%;
+	background-image:url(../resources/images/repeat_button.png);
+}
+
+.repeatButton:hover {
+	background-position:-40px 0px;
+}
+
+
+
 .showViewModeButton {
 	background-image:url(../resources/images/view_icon.png);
 	background-repeat:no-repeat;
