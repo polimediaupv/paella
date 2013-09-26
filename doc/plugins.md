@@ -111,18 +111,42 @@ To switch between the play and pause icon, the playButton plugin listen to the p
 
 paella.EventDrivenPlugin (extends paella.Plugin)
 ------------------------
-
 Use this class to implement plugins that responds to events.
 
-- getEvents()
+- getEvents(): Plugin life cycle. Override: required. It returns an array with the events we want to listen. Note that event driven plugin can't listen to paella's early life cycle events, such as paella.events.loadPlugins or paella.events.loadComplete, because the plugins haven't been loaded when these events are triggered.
 
-- onEvent(eventType,params)
+		getEvents:function() {
+			return [paella.events.event1,paella.events.event2, ... ];
+		}
 
-TODO: paella extended plugins (paella.RightBarPlugin, paella.TabBarPlugin)
---------------------------------------------------------------------------
+- onEvent(eventType,params): Plugin life cycle. Override: required. This function will receive the events we have registered in getEvents() function.
+
+
+paella.ExtendedPlugin (extends paella.Plugin)
+---------------------
+This is the base class of a Paella Extended's plugin, and the only thing that do is to modify the default behaviour of the plugin to adjust it to the extended mode. This class can not be used directly to implement plugins.
+
+
+paella.RightBarPlugin (extens paella.ExtendedPlugin)
+---------------------
+It allows to create an area at the right side of the screen to display information.
+
+- buildContent(domElement): Plugin life cycle and visual configuration. Override: required. Use this function to fill in the contents of the right screen area, with the data you want to show. It work in the same way as the paella.ButtonPlugin.buildContent() function.
+
+
+paella.TabBarPlugin (extens paella.ExtendedPlugin)
+-------------------
+It works in a similar way as a RightBarPlugin, but each plugin adds a tab button below the Paella Player's view.
+
+- buildContent(domElement): Plugin life cycle and visual configuration. Override: required. Use this function to fill in the contents of the tab view.
+
+- getTabName(): Plugin visual configuration. Override: required. It returns the name of the tab button.
+
+- action(tab): Plugin behaviour. Override: optional. This function is invoked each time the user clicks in the corresponding plugin tab button. It works in the same way that the paella.ButtonPlugin.action() method
+
 
 ## Editor plugins
-paella.editor.EditorPlugin (common)
+paella.editor.EditorPlugin (extends paella.Plugin)
 -----------------------------------
 
 - onTrackSelected(newTrack)
