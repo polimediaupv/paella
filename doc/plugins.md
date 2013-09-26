@@ -142,7 +142,7 @@ It works in a similar way as a RightBarPlugin, but each plugin adds a tab button
 
 - getTabName(): Plugin visual configuration. Override: required. It returns the name of the tab button.
 
-- action(tab): Plugin behaviour. Override: optional. This function is invoked each time the user clicks in the corresponding plugin tab button. It works in the same way that the paella.ButtonPlugin.action() method
+- action(tab): Plugin behaviour. Override: optional. This function is invoked each time the user clicks in the corresponding plugin tab button. It works in the same way that the paella.ButtonPlugin.action() method.
 
 
 ## Editor plugins
