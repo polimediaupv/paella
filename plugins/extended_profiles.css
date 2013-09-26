@@ -1,0 +1,88 @@
+.showExtendedProfiles {
+	position:absolute;
+	display:block;
+	width:40px;
+	height:37px;
+	background-size:200%;
+	background-image:url(../resources/images/fullscreen_button.png);
+}
+
+.showExtendedProfiles:hover {
+	background-position:-40px 0px;
+}
+
+.showExtendedProfiles_active {
+	position:absolute;
+	display:block;
+	width:40px;
+	height:37px;
+	right:40px;
+	background-image:url(../resources/images/fullscreen_button.png);
+	background-size:200%;
+	background-position:-80px 0px;
+}
+
+#playerContainer_controls_playback_extended_profiles_container {
+	position:absolute;
+	bottom:37px;
+	width:160px;
+	height:37px;
+	background-image:url(../resources/images/playback_bkg.png);
+}
+
+.extendedProfilesFullscreen {
+	position:absolute;
+	display:block;
+	width:40px;
+	height:37px;
+	right:0px;
+	background-size:200%;
+	background-image:url(../resources/images/fullscreen_button.png);
+}
+
+.extendedProfilesFullscreen:hover {
+	background-position: -40px 0px;
+}
+
+.extendedProfilesFull {
+	position:absolute;
+	display:block;
+	width:40px;
+	height:37px;
+	right:40px;
+	background-size: 200%;
+	background-image:url(extended_player_profile_full.png);
+}
+
+.extendedProfilesFull:hover {
+	background-position: -40px 0px;
+}
+
+.extendedProfilesBig {
+	position:absolute;
+	display:block;
+	width:40px;
+	height:37px;
+	right:80px;
+	background-size: 200%;
+	background-image:url(extended_player_profile_big.png);
+}
+
+.extendedProfilesBig:hover {
+	background-position: -40px 0px;
+}
+
+.extendedProfilesSmall {
+	position:absolute;
+	display:block;
+	width:40px;
+	height:37px;
+	right:120px;
+	background-size: 200%;
+	background-image:url(extended_player_profile_small.png);
+}
+
+.extendedProfilesSmall:hover {
+	background-position: -40px 0px;
+}
+
