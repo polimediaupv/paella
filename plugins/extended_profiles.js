@@ -1,5 +1,6 @@
 paella.plugins.ExtendedProfilesPlugin = Class.create(paella.ButtonPlugin,{
 	buttonItems: null,
+	extendedModes: null,
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "showExtendedProfilesButton"; },
 	getIndex:function() { return 102; },
@@ -11,8 +12,7 @@ paella.plugins.ExtendedProfilesPlugin = Class.create(paella.ButtonPlugin,{
 	buildContent:function(domElement) {
 		var thisClass = this;
 		this.buttonItems = {};
-		
-		var extendedModes = ["Full","Big","Small"];
+		extendedModes = ['full','big','small'];
 		for (var mode in extendedModes){
 		  var modeData = extendedModes[mode];
 		  var buttonItem = thisClass.getProfileItemButton(mode,modeData);
@@ -31,31 +31,20 @@ paella.plugins.ExtendedProfilesPlugin = Class.create(paella.ButtonPlugin,{
 			plugin:this
 		}
 		$(elem).click(function(event) {
-			this.data.plugin.onItemClick(elem,this.data.profile);
+			this.data.plugin.onItemClick(elem,this.data.profile, this.data.profileData);
 		});
 		return elem;
 	},
 	
-	onItemClick:function(button,profile) {
-		if (profile == 0){
-			this.buttonItems[1].className = 'extendedProfilesItemButton Big';
-			this.buttonItems[2].className = 'extendedProfilesItemButton Small';
-			paella.extended.setProfile('full');
-			button.className += ' selected';
-			/*añadir un selected*/
-		}else if (profile == 1){
-			this.buttonItems[0].className = 'extendedProfilesItemButton Full';
-			this.buttonItems[2].className = 'extendedProfilesItemButton Small';
-			button.className += ' selected';
-			paella.extended.setProfile('big');
-		
-		}else {
-			this.buttonItems[0].className = 'extendedProfilesItemButton Full';
-			this.buttonItems[1].className = 'extendedProfilesItemButton Big';
-			button.className += ' selected';
-			paella.extended.setProfile('small');
-		}
-		paella.events.trigger(paella.events.hidePopUp,{identifier:this.getName()});
+	onItemClick:function(button,profile,profileData) {
+	  this.buttonItems[extendedModes.indexOf(paella.extended.getProfile())].className = this.getButtonItemClass(paella.extended.getProfile(),false)
+	  this.buttonItems[profile].className = this.getButtonItemClass(profileData,true);
+	  paella.extended.setProfile(button.data.profileData);
+	  paella.events.trigger(paella.events.hidePopUp,{identifier:this.getName()});
+	},
+	
+	getButtonItemClass:function(profileName,selected) {
+		return 'extendedProfilesItemButton ' + profileName  + ((selected) ? ' selected':'');
 	}
 	
 });

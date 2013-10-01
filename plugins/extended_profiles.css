@@ -1,6 +1,6 @@
 .showExtendedProfilesButton {
 	/*background-image:url(../resources/images/view_icon.png);*/
-	background-image: url(extended_player_profile_full.png);
+	background-image: url(extended_player_select.png);
 	background-size: 200%;
 	/*background-repeat:no-repeat;*/
 }
@@ -25,14 +25,14 @@
 	background-position:-40px 0px;
 }
 
-.extendedProfilesItemButton.Full{
+.extendedProfilesItemButton.full{
 	background-image: url(extended_player_profile_full.png);
 }
 
-.extendedProfilesItemButton.Big {
+.extendedProfilesItemButton.big {
 	background-image: url(extended_player_profile_big.png);
 }
 
-.extendedProfilesItemButton.Small {
+.extendedProfilesItemButton.small {
 	background-image: url(extended_player_profile_small.png);
 }
