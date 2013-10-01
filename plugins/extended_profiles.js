@@ -37,7 +37,7 @@ paella.plugins.ExtendedProfilesPlugin = Class.create(paella.ButtonPlugin,{
 	},
 	
 	onItemClick:function(button,profile,profileData) {
-	  this.buttonItems[extendedModes.indexOf(paella.extended.getProfile())].className = this.getButtonItemClass(paella.extended.getProfile(),false)
+	  this.buttonItems[extendedModes.indexOf(paella.extended.getProfile())].className = this.getButtonItemClass(paella.extended.getProfile(),false);
 	  this.buttonItems[profile].className = this.getButtonItemClass(profileData,true);
 	  paella.extended.setProfile(button.data.profileData);
 	  paella.events.trigger(paella.events.hidePopUp,{identifier:this.getName()});
