@@ -43,7 +43,8 @@ paella.pluginList = [
 	'playbutton.js',
 	'viewmode.js',
 	'basic_editor_plugins.js',
-	'repeatbutton.js'
+	'repeatbutton.js',
+	'extended_profiles.js'
 ];
 
 paella.events = {

@@ -63,6 +63,10 @@ paella.Extended = Class.create({
 		paellaContainerId:'playerContainer',
 		rightContainerId:'paella_right',
 		bottomContainerId:'paella_bottom',
+		containerClass:'paellaExtendedContainer',
+		playerContainerClass:'playerContainer',
+		rightContainerClass:'rightContainer',
+		bottomContainerClass:'bottomContainer',
 		aspectRatio:1.777777,
 		initDelegate:new paella.InitDelegate({accessControl:new paella.AccessControl(),videoLoader:new paella.VideoLoader})
 	},
@@ -96,25 +100,27 @@ paella.Extended = Class.create({
 			body.innerHTML = "";
 			this.container = document.createElement('div');
 			this.container.id = this.settings.containerId;
+			this.container.className = this.settings.containerClass;
 			body.appendChild(this.container);
 		}
 		else {
 			this.container.innerHTML = "";
+			this.container.className = this.settings.containerClass;
 		}
 		
 		this.paellaContainer = document.createElement('div');
 		this.paellaContainer.id = this.settings.paellaContainerId;
-		this.paellaContainer.className="playerContainer";
+		this.paellaContainer.className=this.settings.playerContainerClass;
 		this.container.appendChild(this.paellaContainer);
 		
 		this.rightContainer = document.createElement('div');
 		this.rightContainer.id = this.settings.rightContainerId;
-		this.rightContainer.className = "rightContainer";
+		this.rightContainer.className = this.settings.rightContainerClass;
 		this.container.appendChild(this.rightContainer);
 		
 		this.bottomContainer = document.createElement('div');
 		this.bottomContainer.id = this.settings.bottomContainerId;
-		this.bottomContainer.className="bottomContainer";
+		this.bottomContainer.className=this.settings.bottomContainerClass;
 		this.container.appendChild(this.bottomContainer);
 		
 		var tabs = document.createElement('div');
@@ -227,16 +233,25 @@ paella.Extended = Class.create({
 	setProfile:function(profileName) {
 		paella.utils.cookies.set("paella.extended.profile", profileName);
 		var thisClass = this;
-		this.container.className = "paellaExtendedContainer " + profileName;
-		this.paellaContainer.className = "playerContainer " + profileName;
-		this.rightContainer.className = "rightContainer " + profileName;
-		this.bottomContainer.className = "bottomContainer " + profileName;
+		this.container.className = this.settings.containerClass + " " + profileName;
+		this.paellaContainer.className = this.settings.playerContainerClass + " " + profileName;
+		this.rightContainer.className = this.settings.rightContainerClass + " " + profileName;
+		this.bottomContainer.className = this.settings.bottomContainerClass + " " + profileName;
 		this.onresize();
 		if (paella.player) {
 			paella.player.onresize();
 		}
 	},
 	
+	getProfile:function() {
+		var regExp = new RegExp(this.settings.containerClass + " ([a-zA-Z0-9]+)");
+		if (regExp.test(paella.extended.container.className)) {
+			return RegExp.$1;
+		}
+		return '';
+		//return /paellaExtendedContainer ([a-zA-Z0-9]+)/.test(paella.extended.container.className)
+	},
+
 	onresize:function() {
 	/*
 		var aspect = this.settings.aspectRatio;
