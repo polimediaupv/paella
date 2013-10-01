@@ -148,14 +148,15 @@ It works in a similar way as a RightBarPlugin, but each plugin adds a tab button
 ## Editor plugins
 paella.editor.EditorPlugin (extends paella.Plugin)
 -----------------------------------
+Base class of all Paella Editor plugins. It provides with the editor's basic interaction functions.
 
-- onTrackSelected(newTrack)
+- onTrackSelected(newTrack): Paella Editor calls this function when the user switches the current track. The parameter 'newTrack' contains the new selected track, or null if the user has deselected the track.
 
-- onSave(success)
+- onSave(success): This function is called when the user selects the 'Save and close' or 'Save' option in the editor. This function must to call the 'success' callback parameter when the operation is complete.
 
-- onDiscard(success)
+- onDiscard(success): This function is called when the user selects the 'Discard and close' option in the editor. This function must to call the 'success' callback parameter when the operation is completed.
 
-- contextHelpString()
+- contextHelpString(): It returns the plugin's context help string. The context help string is a brief text that explains the functionality of the plugin. It is shown in the editor right bar.
 
 
 

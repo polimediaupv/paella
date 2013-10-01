@@ -70,13 +70,15 @@ paella.events = {
 	loadPlugins:'paella:loadPlugins',
 	error:'paella:error',
 	setProfile:'paella:setprofile',
+	documentChanged:'paella:documentChanged',
 	didSaveChanges:'paella:didsavechanges',
 	controlBarWillHide:'paella:controlbarwillhide',
 	controlBarDidShow:'paella:controlbardidshow',
-	beforeUnload:'paella:beforeUnload',
+	///beforeUnload:'paella:beforeUnload',		This event has been removed because it not work properly in any browser
 	hidePopUp:'paella:hidePopUp',
 	showPopUp:'paella:showPopUp',
-	
+
 	trigger:function(event,params) { $(document).trigger(event,params); },
-	bind:function(event,callback) { $(document).bind(event,function(event,params) { callback(event,params);});}
+	bind:function(event,callback) { $(document).bind(event,function(event,params) { callback(event,params);}) ;}
 };
+

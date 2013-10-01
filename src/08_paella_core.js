@@ -216,7 +216,7 @@ paella.PlayerBase = Class.create({
 			paella.events.bind(paella.events.loadComplete,function(event,params) { thisClass.loadComplete(event,params); });
 		}
 	},
-	
+
 	includePlugins:function(productionPluginFile,devPluginsDir,devPluginsArray,productionPluginCss) {
 		if (!productionPluginCss) productionPluginCss = 'plugins/plugins.css';
 

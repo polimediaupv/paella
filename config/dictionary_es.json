@@ -46,5 +46,6 @@
 	"Results {0}-{1} of {2}": "Resultados {0}-{1} de {2}",
 	"Results {0}-{1} of {2} for \"{3}\"": "Resultados {0}-{1} de {2} para \"{3}\"",
 	"No recordings found": "No se han encontrado videos",
-	"No recordings found: \"{0}\"": "No se han encontrado videos para: \"{0}\""
+	"No recordings found: \"{0}\"": "No se han encontrado videos para: \"{0}\"",
+	"There are unsaved changes":"Hay cambios sin guardar"
 }

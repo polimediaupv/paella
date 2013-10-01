@@ -50,6 +50,12 @@ paella.editor.Editor = Class.create({
 		new Timer(function(timer) {
 			$(document).trigger(paella.events.pause);	
 		},100);
+		paella.events.bind(paella.events.documentChanged,function(event,params) {
+			window.onbeforeunload = function(event) { return paella.dictionary.translate('There are unsaved changes'); }
+		});
+		paella.events.bind(paella.events.didSaveChanges,function(event,params) {
+			window.onbeforeunload = null;
+		});
 	},
 	
 	onLoadFail:function() {
@@ -91,7 +97,7 @@ var EditControl = Class.create(paella.DomNode,{
 
 	toggleEditor:function() {
 		if ((paella.extended) || (window!=window.top)){
-			window.open("editor.html?id=" + paella.player.videoIdentifier);
+			window.open("index.html?id=" + paella.player.videoIdentifier);
 		}
 		else{
 			$(document).trigger(paella.events.showEditor);
