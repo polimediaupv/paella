@@ -368,8 +368,8 @@ paella.DataDelegate = Class.create({
 			onSuccess({},true);
 		}
 	},
-	
-	// onSuccess => function(response,readStatus)
+
+	// onSuccess => function(response,writeStatus)
 	write:function(context,params,value,onSuccess) {
 		// TODO: write key with context
 		if(typeof(onSuccess)=='function') {
@@ -383,7 +383,7 @@ paella.dataDelegates = {}
 paella.dataDelegates.CookieDataDelegate = Class.create(paella.DataDelegate,{
 	initialize:function() {
 	},
-	
+
 	read:function(context,params,onSuccess) {
 		if (typeof(params)=='object') params = JSON.stringify(params);
 		var value = paella.utils.cookies.get(params);
@@ -395,7 +395,7 @@ paella.dataDelegates.CookieDataDelegate = Class.create(paella.DataDelegate,{
 			onSuccess(value,true);
 		}
 	},
-	
+
 	write:function(context,params,value,onSuccess) {
 		if (typeof(params)=='object') params = JSON.stringify(params);
 		if (typeof(value)=='object') value = JSON.stringify(value);
