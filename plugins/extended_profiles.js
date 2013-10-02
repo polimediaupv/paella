@@ -6,6 +6,8 @@ paella.plugins.ExtendedProfilesPlugin = Class.create(paella.ButtonPlugin,{
 	getIndex:function() { return 102; },
 	getMinWindowSize:function() { return 300; },
 	getName:function() { return "es.upv.paella.extendedProfilesPlugin"; },
+	checkEnabled:function(onSuccess) { onSuccess(paella.player.extended); },
+	
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
 	
 	buildContent:function(domElement) {
@@ -22,7 +24,7 @@ paella.plugins.ExtendedProfilesPlugin = Class.create(paella.ButtonPlugin,{
 	
 	getProfileItemButton:function(profile,profileData) {
 		var elem = document.createElement('div');
-		elem.className = 'extendedProfilesItemButton ' + profileData;
+		elem.className = 'extendedProfilesItemButton ' + profileData
 		elem.id = profile + '_button';
 		elem.data = {
 			profile:profile,
@@ -45,6 +47,7 @@ paella.plugins.ExtendedProfilesPlugin = Class.create(paella.ButtonPlugin,{
 	getButtonItemClass:function(profileName,selected) {
 		return 'extendedProfilesItemButton ' + profileName  + ((selected) ? ' selected':'');
 	}
+	
 });
   
 
