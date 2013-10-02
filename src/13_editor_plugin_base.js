@@ -87,6 +87,7 @@ paella.editor.PluginManager = Class.create({
 			asyncLoader.addCallback(new paella.editor.PluginSaveCallback(this.toolbarPlugins[i]));
 		}
 		asyncLoader.load(function() {
+				paella.events.trigger(paella.events.didSaveChanges);
 				onDone(true);
 			},
 			function() {
@@ -185,11 +186,13 @@ paella.editor.TrackPlugin = Class.create(paella.editor.EditorPlugin,{
 	},
 	
 	onTrackChanged:function(id,start,end) {
-		paella.debug.log('Track changed: id=' + id + ", start: " + start + ", end:" + end);
+		//paella.debug.log('Track changed: id=' + id + ", start: " + start + ", end:" + end);
+		paella.events.trigger(paella.events.documentChanged);
 	},
 	
 	onTrackContentChanged:function(id,content) {
-		paella.debug.log('Track content changed: id=' + id + ', new content: ' + content);
+		//paella.debug.log('Track content changed: id=' + id + ', new content: ' + content);
+		paella.events.trigger(paella.events.documentChanged);
 	},
 	
 	onSelect:function(trackItemId) {
@@ -208,7 +211,8 @@ paella.editor.TrackPlugin = Class.create(paella.editor.EditorPlugin,{
 	},
 
 	onToolSelected:function(toolName) {
-		paella.debug.log('Tool selected: ' + toolName);
+		//paella.debug.log('Tool selected: ' + toolName);
+		paella.events.trigger(paella.events.documentChanged);
 	},
 	
 	getSettings:function() {

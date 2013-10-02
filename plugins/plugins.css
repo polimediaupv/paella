@@ -23,6 +23,44 @@
 	background-color: red;
 }
 
+.showExtendedProfilesButton {
+	/*background-image:url(../resources/images/view_icon.png);*/
+	background-image: url(extended_player_select.png);
+	background-size: 200%;
+	/*background-repeat:no-repeat;*/
+}
+
+.buttonPluginPopUp.showExtendedProfilesButton {
+	background-image:none;
+}
+
+.showExtendedProfilesButton:hover {
+	background-position:-40px 0px;
+}
+
+.extendedProfilesItemButton {  /*crea el popup*/
+	background-repeat:no-repeat;
+	background-size: 200% auto;
+	width: 40px;
+	height: 40px;
+	cursor: pointer;
+}
+
+.extendedProfilesItemButton.selected {
+	background-position:-40px 0px;
+}
+
+.extendedProfilesItemButton.full{
+	background-image: url(extended_player_profile_full.png);
+}
+
+.extendedProfilesItemButton.big {
+	background-image: url(extended_player_profile_big.png);
+}
+
+.extendedProfilesItemButton.small {
+	background-image: url(extended_player_profile_small.png);
+}
 
 
 .buttonPlugin.frameControl {

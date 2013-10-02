@@ -375,6 +375,13 @@ paella.DataDelegate = Class.create({
 		if(typeof(onSuccess)=='function') {
 			onSuccess({},true);
 		}
+	},
+	
+	remove:function(context,params,onSuccess) {
+		// TODO: write key with context
+		if(typeof(onSuccess)=='function') {
+			onSuccess({},true);
+		}
 	}
 });
 
@@ -403,6 +410,16 @@ paella.dataDelegates.CookieDataDelegate = Class.create(paella.DataDelegate,{
 		if(typeof(onSuccess)=='function') {
 			onSuccess({},true);
 		}
+	},
+	
+	remove:function(context,params,onSuccess) {
+		if (typeof(params)=='object') params = JSON.stringify(params);
+		if (typeof(value)=='object') value = JSON.stringify(value);
+		paella.utils.cookies.set(params,'');
+		if(typeof(onSuccess)=='function') {
+			onSuccess({},true);
+		}
+		
 	}
 });
 
@@ -431,6 +448,11 @@ paella.Data = Class.create({
 	write:function(context,key,params,onSuccess) {
 		var del = this.getDelegate(context);
 		del.write(context,key,params,onSuccess);
+	},
+	
+	remove:function(context,key,onSuccess) {
+		var del = this.getDelegate(context);
+		del.remove(context,key,onSuccess);
 	},
 	
 	getDelegate:function(context) {
