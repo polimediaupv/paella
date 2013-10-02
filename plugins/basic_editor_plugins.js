@@ -157,7 +157,7 @@ paella.editor.ToolStatusPlugin = Class.create(paella.editor.RightBarPlugin,{
 
 new paella.editor.ToolStatusPlugin();
 
-
+/*
 
 paella.editor.ConsolidatePlugin = Class.create(paella.editor.RightBarPlugin,{
 	getIndex:function() {
@@ -189,17 +189,18 @@ paella.editor.ConsolidatePlugin = Class.create(paella.editor.RightBarPlugin,{
 new paella.editor.ConsolidatePlugin();
 
 
-/*
+
 
 paella.editor.CaptionsPlugin = Class.create(paella.editor.TrackPlugin,{
 	tracks:[],
 	selectedTrackItem:null,
-
-	initialize:function() {
-		this.parent();
+	
+	setup:function() {
 		if (paella.utils.language()=="es") {
 			var esDict = {
-				'Captions':'Subtítulos'
+				'Captions':'Subtítulos',
+				'Create':'Crear',
+				'Delete':'Borrar'
 			};
 			paella.dictionary.addDictionary(esDict);
 		}
@@ -220,6 +221,7 @@ paella.editor.CaptionsPlugin = Class.create(paella.editor.TrackPlugin,{
 	},
 	
 	getTrackItemIndex:function(item) {
+//		return this.tracks.indexOf(item);
 		for(var i=0;i<this.tracks.length;++i) {
 			if (item.id==this.tracks[i].id) {
 				return i;
@@ -287,7 +289,7 @@ paella.editor.CaptionsPlugin = Class.create(paella.editor.TrackPlugin,{
 	},
 	
 	allowEditContent:function() {
-		return true;
+		return false;
 	},
 	
 	getTrackItem:function(id) {
@@ -307,8 +309,8 @@ paella.editor.CaptionsPlugin = Class.create(paella.editor.TrackPlugin,{
 });
 
 paella.editor.captionsPlugin = new paella.editor.CaptionsPlugin();
-*/
 
+*/
 
 
 
