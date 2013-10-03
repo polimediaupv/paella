@@ -157,7 +157,7 @@ paella.editor.ToolStatusPlugin = Class.create(paella.editor.RightBarPlugin,{
 
 new paella.editor.ToolStatusPlugin();
 
-/*
+
 
 paella.editor.ConsolidatePlugin = Class.create(paella.editor.RightBarPlugin,{
 	getIndex:function() {
@@ -188,7 +188,7 @@ paella.editor.ConsolidatePlugin = Class.create(paella.editor.RightBarPlugin,{
 
 new paella.editor.ConsolidatePlugin();
 
-
+/*
 
 
 paella.editor.CaptionsPlugin = Class.create(paella.editor.TrackPlugin,{

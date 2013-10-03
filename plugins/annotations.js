@@ -121,6 +121,7 @@ paella.plugins.AnnotationsEditorPlugin = Class.create(paella.editor.TrackPlugin,
 			annotations:this.tracks
 		}
 		paella.data.write('annotations',{id:paella.initDelegate.getId()},data,function(response,status) {
+			paella.plugins.annotationsPlayerlugin.annotations = data.annotations;
 			success(status);
 		});
 	}
@@ -174,12 +175,16 @@ paella.plugins.AnnotationsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 	},
 	
 	showAnnotation:function(annotation) {
+		var rect = {left:100,top:10,width:1080,height:20};
+		annotation.elem = paella.player.videoContainer.overlayContainer.addText(annotation.content,rect);
 		this.visibleAnnotations[annotation.s] = annotation;
-		console.log('show annotation: ');
-		console.log(annotation);
+		
+		//console.log('show annotation: ');
+		//console.log(annotation);
 	},
 	
 	removeAnnotation:function(annotation) {
+		paella.player.videoContainer.overlayContainer.removeElement(this.visibleAnnotations[annotation.s].elem);
 		this.visibleAnnotations[annotation.s] = null;
 		console.log('hide annotation: ');
 		console.log(annotation);
