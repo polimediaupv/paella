@@ -65,22 +65,6 @@ a:visited {
 	height:37px;
 }
 
-/*.playbackControlPluginContainer {
-	position: absolute;
-	bottom: 0px;
-	left: 0px;
-	height: 37px;
-	width:50%;
-}
-
-.playbackPopUpPluginContainer {
-	position: absolute;
-	bottom: 0px;
-	right: 0px;
-	height: 37px;
-	width:50%;
-}*/
-
 .playbackBar {
 	position:absolute;
 	left:0px;
@@ -89,6 +73,7 @@ a:visited {
 	background-color: rgba(125,125,125,0.5);
 	border-bottom: 1px solid rgba(90,90,90,0.6);
 	border-top: 1px solid rgba(90,90,90,0.6);
+	cursor: pointer;
 }
 
 .playbackBarFull {
@@ -166,6 +151,7 @@ a:visited {
 	z-index: 100;
 	line-height: 12px;
 	margin-top: -12px;
+	cursor:pointer;
 }
 
 .editButton {
