@@ -1,22 +1,29 @@
 paella.plugins.AnnotationsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
-	tracks:[],
+	tracks:null,
 	selectedTrackItem:null,
 	
+	checkEnabled:function(onSuccess) {
+		var This = this;
+		this.tracks = [];
+		paella.data.read('annotations',{id:paella.initDelegate.getId()},function(data,status) {
+			if (data && typeof(data)=='object' && data.annotations && data.annotations.length>0) {
+				This.tracks = data.annotations;
+			}
+			onSuccess(true);
+		});
+	},
+
 	setup:function() {
 		if (paella.utils.language()=="es") {
 			var esDict = {
-				'Captions':'Subtítulos',
-				'Create':'Crear',
-				'Delete':'Borrar'
+				'Annotation':'Anotación',
+				'Annotations':'Anotaciones'
 			};
 			paella.dictionary.addDictionary(esDict);
 		}
 	},
 
 	getTrackItems:function() {
-		for (var i=0;i<this.tracks.length;++i) {
-			this.tracks[i].name = this.tracks[i].content;
-		}
 		return this.tracks;
 	},
 	
@@ -27,26 +34,19 @@ paella.plugins.AnnotationsEditorPlugin = Class.create(paella.editor.TrackPlugin,
 		];
 	},
 	
-	getTrackItemIndex:function(item) {
-//		return this.tracks.indexOf(item);
-		for(var i=0;i<this.tracks.length;++i) {
-			if (item.id==this.tracks[i].id) {
-				return i;
-			}
-		}
-		return -1;
-	},
-
 	onToolSelected:function(toolName) {
 		if (this.selectedTrackItem && toolName=='delete' && this.selectedTrackItem) {
-			this.tracks.splice(this.getTrackItemIndex(this.selectedTrackItem),1);
+			paella.events.trigger(paella.events.documentChanged);
+			this.tracks.splice(this.tracks.indexOf(this.selectedTrackItem),1);
 			return true;
 		}
 		else if (toolName=='create') {
+			paella.events.trigger(paella.events.documentChanged);
 			var start = paella.player.videoContainer.currentTime();
-			var end = start + 60;
+			var end = start + 30;
 			var id = this.getTrackUniqueId();
-			this.tracks.push({id:id,s:start,e:end,content:paella.dictionary.translate('Caption')});
+			var content = paella.dictionary.translate('Annotation');
+			this.tracks.push({id:id,s:start,e:end,content:content,name:content});
 			return true;
 		}
 	},
@@ -63,11 +63,11 @@ paella.plugins.AnnotationsEditorPlugin = Class.create(paella.editor.TrackPlugin,
 	},
 	
 	getName:function() {
-		return "es.upv.paella.editor.trackCaptions";
+		return "es.upv.paella.editor.trackAnnotations";
 	},
 	
 	getTrackName:function() {
-		return paella.dictionary.translate("Captions");
+		return paella.dictionary.translate("Annotations");
 	},
 	
 	getColor:function() {
@@ -79,6 +79,7 @@ paella.plugins.AnnotationsEditorPlugin = Class.create(paella.editor.TrackPlugin,
 	},
 	
 	onTrackChanged:function(id,start,end) {
+		paella.events.trigger(paella.events.documentChanged);
 		var item = this.getTrackItem(id);
 		if (item) {
 			item.s = start;
@@ -88,6 +89,7 @@ paella.plugins.AnnotationsEditorPlugin = Class.create(paella.editor.TrackPlugin,
 	},
 	
 	onTrackContentChanged:function(id,content) {
+		paella.events.trigger(paella.events.documentChanged);
 		var item = this.getTrackItem(id);
 		if (item) {
 			item.content = content;
@@ -96,7 +98,7 @@ paella.plugins.AnnotationsEditorPlugin = Class.create(paella.editor.TrackPlugin,
 	},
 	
 	allowEditContent:function() {
-		return false;
+		return true;
 	},
 	
 	getTrackItem:function(id) {
@@ -107,15 +109,81 @@ paella.plugins.AnnotationsEditorPlugin = Class.create(paella.editor.TrackPlugin,
 	
 	contextHelpString:function() {
 		if (paella.utils.language()=="es") {
-			return "Utiliza esta herramienta para crear, borrar y editar subtítulos. Para crear un subtítulo, selecciona el instante de tiempo haciendo clic en el fondo de la línea de tiempo, y pulsa el botón 'Crear'. Utiliza esta pestaña para editar el texto de los subtítulos";
+			return "Utiliza esta herramienta para crear, borrar y editar anotaciones. Para crear una anotación, selecciona el instante de tiempo haciendo clic en el fondo de la línea de tiempo, y pulsa el botón 'Crear'. Utiliza esta pestaña para editar el texto de las anotaciones";
 		}
 		else {
-			return "Use this tool to create, delete and edit video captions. To create a caption, select the time instant clicking the timeline's background and press 'create' button. Use this tab to edit the caption text.";
+			return "Use this tool to create, delete and edit video annotations. To create an annotation, select the time instant clicking the timeline's background and press 'create' button. Use this tab to edit the annotation text.";
 		}
+	},
+	
+	onSave:function(success) {
+		var data = {
+			annotations:this.tracks
+		}
+		paella.data.write('annotations',{id:paella.initDelegate.getId()},data,function(response,status) {
+			success(status);
+		});
 	}
 });
 
 paella.plugins.annotationsEditorPlugin = new paella.plugins.AnnotationsEditorPlugin();
 
 
+paella.plugins.AnnotationsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
+	annotations:null,
+	lastEvent:0,
+	
+	visibleAnnotations:null,
 
+	getName:function() { return "es.upv.paella.AnnotationsPlayerPlugin"; },
+	checkEnabled:function(onSuccess) {
+		var This = this;
+		this.annotations = [];
+		this.visibleAnnotations = [];
+		paella.data.read('annotations',{id:paella.initDelegate.getId()},function(data,status) {
+			if (data && typeof(data)=='object' && data.annotations && data.annotations.length>0) {
+				This.annotations = data.annotations;
+			}
+			onSuccess(true);
+		});
+	},
+		
+	getEvents:function() { return [paella.events.timeUpdate]; },
+
+	onEvent:function(eventType,params) {
+		if ((params.currentTime - this.lastEvent)>1) {
+			this.checkAnnotations(params);
+			this.lastEvent = params.currentTime;
+		}
+	},
+	
+	checkAnnotations:function(params) {
+		for (var i=0; i<this.annotations.length; ++i) {
+			var a = this.annotations[i];
+			if (a.s<params.currentTime && a.e>params.currentTime) {
+				this.showAnnotation(a);
+			}
+		}
+		
+		for (var i=0;i<this.visibleAnnotations.length;++i) {
+			var a = this.visibleAnnotation[i];
+			if (a.s>=params.currentTime || a.e<=params.currentTime) {
+				this.removeAnnotation(a);
+			}
+		}
+	},
+	
+	showAnnotation:function(annotation) {
+		this.visibleAnnotations[annotation.s] = annotation;
+		console.log('show annotation: ');
+		console.log(annotation);
+	},
+	
+	removeAnnotation:function(annotation) {
+		this.visibleAnnotations[annotation.s] = null;
+		console.log('hide annotation: ');
+		console.log(annotation);
+	}
+});
+
+paella.plugins.annotationsPlayerlugin = new paella.plugins.AnnotationsPlayerPlugin();

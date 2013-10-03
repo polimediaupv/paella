@@ -34,7 +34,11 @@
 	background-image:none;
 }
 
-.showExtendedProfilesButton:hover {
+.buttonPlugin.showExtendedProfilesButton:hover {
+	background-color: rgb(171,178,178);
+}
+
+.buttonPlugin.showExtendedProfilesButton.selected {
 	background-position:-40px 0px;
 }
 
@@ -44,6 +48,11 @@
 	width: 40px;
 	height: 40px;
 	cursor: pointer;
+	background-color: rgba(128,128,128,0.8);
+}
+
+.extendedProfilesItemButton:hover {
+	background-color: rgba(90,90,90,0.8);
 }
 
 .extendedProfilesItemButton.selected {
@@ -210,32 +219,31 @@
 
 
 
-.showViewModeButton {
-	background-image:url(../resources/images/view_icon.png);
-	background-repeat:no-repeat;
-}
+
 
 .buttonPluginPopUp.showViewModeButton {
 	background-image:none;
 }
 
-.showViewModeButton:hover {
+.buttonPlugin.showViewModeButton {
+	background-image:url(viewmode.png);
+	background-repeat:no-repeat;
+	background-size:auto 100%;
+}
+
+.buttonPlugin.showViewModeButton:hover {
+	background-color: rgb(171,178,178);
+}
+
+.buttonPlugin.showViewModeButton.selected {
 	background-position:-40px 0px;
 }
 
-.buttonPlugin.selected {
-	background-position: -80px;
-}
-
-.buttonPlugin.selected:hover {
-	background-position: -80px;
-}
-
-.showViewModeButton_active {
+/*.showViewModeButton_active {
 	background-image:url(../resources/images/view_icon.png);
 	background-repeat:no-repeat;
 	background-position:-80px 0px;
-}
+}*/
 
 .viewModeItemButton {
 	background-image: url(view_mode_icons.png);

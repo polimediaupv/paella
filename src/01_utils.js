@@ -391,9 +391,14 @@ paella.dataDelegates.CookieDataDelegate = Class.create(paella.DataDelegate,{
 	initialize:function() {
 	},
 
-	read:function(context,params,onSuccess) {
+	serializeKey:function(context,params) {
 		if (typeof(params)=='object') params = JSON.stringify(params);
-		var value = paella.utils.cookies.get(params);
+		return context + '|' + params;
+	},
+
+	read:function(context,params,onSuccess) {
+		var key = this.serializeKey(context,params);
+		var value = paella.utils.cookies.get(key);
 		try {
 			value = JSON.parse(value);
 		}
@@ -404,18 +409,18 @@ paella.dataDelegates.CookieDataDelegate = Class.create(paella.DataDelegate,{
 	},
 
 	write:function(context,params,value,onSuccess) {
-		if (typeof(params)=='object') params = JSON.stringify(params);
+		var key = this.serializeKey(context,params);
 		if (typeof(value)=='object') value = JSON.stringify(value);
-		paella.utils.cookies.set(params,value);
+		paella.utils.cookies.set(key,value);
 		if(typeof(onSuccess)=='function') {
 			onSuccess({},true);
 		}
 	},
 	
 	remove:function(context,params,onSuccess) {
-		if (typeof(params)=='object') params = JSON.stringify(params);
+		var key = this.serializeKey(context,params);
 		if (typeof(value)=='object') value = JSON.stringify(value);
-		paella.utils.cookies.set(params,'');
+		paella.utils.cookies.set(key,'');
 		if(typeof(onSuccess)=='function') {
 			onSuccess({},true);
 		}

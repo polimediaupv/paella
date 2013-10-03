@@ -111,11 +111,11 @@ paella.PopUpContainer = Class.create(paella.DomNode,{
 		this.domElement.className = className;
 		
 		this.containers = {};
-		paella.events.bind(paella.events.hidePopUp,function(event,params) { This.hideContainer(params.identifier); });
-		paella.events.bind(paella.events.showPopUp,function(event,params) { This.showContainer(params.identifier); });
+		paella.events.bind(paella.events.hidePopUp,function(event,params) { This.hideContainer(params.identifier,params.button); });
+		paella.events.bind(paella.events.showPopUp,function(event,params) { This.showContainer(params.identifier,params.button); });
 	},
 	
-	hideContainer:function(identifier) {
+	hideContainer:function(identifier,button) {
 		var container = this.containers[identifier];
 		if (container && this.currentContainerId==identifier) {
 			$(container.element).hide();
@@ -125,8 +125,9 @@ paella.PopUpContainer = Class.create(paella.DomNode,{
 		}
 	},
 	
-	showContainer:function(identifier) {
+	showContainer:function(identifier,button) {
 		var container = this.containers[identifier];
+		var right = $(button.parentElement).width() - $(button).position().left - $(button).width();
 		if (container && this.currentContainerId!=identifier && this.currentContainerId!=-1) {
 			var prevContainer = this.containers[this.currentContainerId];
 			prevContainer.button.className = prevContainer.button.className.replace(' selected','');
@@ -134,7 +135,7 @@ paella.PopUpContainer = Class.create(paella.DomNode,{
 			$(prevContainer.element).hide();
 			$(container.element).show();
 			var width = $(container.element).width();
-			$(this.domElement).css({width:width + 'px'});
+			$(this.domElement).css({width:width + 'px',right:right + 'px'});
 			this.currentContainerId = identifier;
 		}
 		else if (container && this.currentContainerId==identifier) {
@@ -147,7 +148,7 @@ paella.PopUpContainer = Class.create(paella.DomNode,{
 			container.button.className = container.button.className + ' selected';
 			$(container.element).show();
 			var width = $(container.element).width();
-			$(this.domElement).css({width:width + 'px'});
+			$(this.domElement).css({width:width + 'px',right:right + 'px'});
 			this.currentContainerId = identifier;
 		}
 	},
@@ -162,13 +163,13 @@ paella.PopUpContainer = Class.create(paella.DomNode,{
 		$(domElement).hide();
 		button.popUpIdentifier = identifier;
 		$(button).click(function(event) {
-			paella.events.trigger(paella.events.showPopUp,{identifier:this.popUpIdentifier});
+			paella.events.trigger(paella.events.showPopUp,{identifier:this.popUpIdentifier,button:this});
 		});
 	}
 });
 
 paella.TimelineContainer = Class.create(paella.PopUpContainer,{
-	hideContainer:function(identifier) {
+	hideContainer:function(identifier,button) {
 		var container = this.containers[identifier];
 		if (container && this.currentContainerId==identifier) {
 			$(container.element).hide();
@@ -178,7 +179,7 @@ paella.TimelineContainer = Class.create(paella.PopUpContainer,{
 		}
 	},
 	
-	showContainer:function(identifier) {
+	showContainer:function(identifier,button) {
 		var container = this.containers[identifier];
 		if (container && this.currentContainerId!=identifier && this.currentContainerId!=-1) {
 			var prevContainer = this.containers[this.currentContainerId];
