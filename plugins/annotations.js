@@ -152,10 +152,7 @@ paella.plugins.AnnotationsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 	getEvents:function() { return [paella.events.timeUpdate]; },
 
 	onEvent:function(eventType,params) {
-		if ((params.currentTime - this.lastEvent)>1) {
-			this.checkAnnotations(params);
-			this.lastEvent = params.currentTime;
-		}
+		this.checkAnnotations(params);
 	},
 	
 	checkAnnotations:function(params) {
@@ -166,28 +163,31 @@ paella.plugins.AnnotationsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 			}
 		}
 		
-		for (var i=0;i<this.visibleAnnotations.length;++i) {
-			var a = this.visibleAnnotation[i];
-			if (a.s>=params.currentTime || a.e<=params.currentTime) {
-				this.removeAnnotation(a);
+		for (var key in this.visibleAnnotations) {
+			if (typeof(a)=='object') {
+				var a = this.visibleAnnotations[key];
+				if (a && (a.s>=params.currentTime || a.e<=params.currentTime)) {
+					this.removeAnnotation(a);
+				}
 			}
 		}
 	},
 	
 	showAnnotation:function(annotation) {
-		var rect = {left:100,top:10,width:1080,height:20};
-		annotation.elem = paella.player.videoContainer.overlayContainer.addText(annotation.content,rect);
-		this.visibleAnnotations[annotation.s] = annotation;
-		
-		//console.log('show annotation: ');
-		//console.log(annotation);
+		if (!this.visibleAnnotations[annotation.s]) {
+			var rect = {left:100,top:10,width:1080,height:20};
+			annotation.elem = paella.player.videoContainer.overlayContainer.addText(annotation.content,rect);
+			annotation.elem.className = 'textAnnotation';
+			this.visibleAnnotations[annotation.s] = annotation;
+		}
 	},
 	
 	removeAnnotation:function(annotation) {
-		paella.player.videoContainer.overlayContainer.removeElement(this.visibleAnnotations[annotation.s].elem);
-		this.visibleAnnotations[annotation.s] = null;
-		console.log('hide annotation: ');
-		console.log(annotation);
+		if (this.visibleAnnotations[annotation.s]) {
+			var elem = this.visibleAnnotations[annotation.s].elem;
+			paella.player.videoContainer.overlayContainer.removeElement(elem);
+			this.visibleAnnotations[annotation.s] = null;
+		}
 	}
 });
 
