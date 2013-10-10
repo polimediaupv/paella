@@ -1,4 +1,4 @@
-.editorPluginToolStatusHelp {
+.editorPluginToolStatusHelp, .editorPluginConsolidateHelp {
 	position: absolute;
 	height: 113px;
 	left: 10px;
@@ -7,7 +7,7 @@
 	overflow: auto;
 }
 
-.editorPluginToolStatus_trackItemList {
+.editorPluginToolStatus_trackItemList, .editorPluginConsolidate_trackItemList{
 	position: absolute;
 	overflow: auto;
 	bottom: 123px;

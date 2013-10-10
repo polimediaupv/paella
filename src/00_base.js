@@ -46,7 +46,8 @@ paella.pluginList = [
 	'repeatbutton.js',
 	'extended_profiles.js',
 	'trimming.js',
-	'annotations.js'
+	'annotations.js',
+	'consolidate.js'
 ];
 
 paella.events = {

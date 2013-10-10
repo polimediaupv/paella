@@ -158,36 +158,6 @@ paella.editor.ToolStatusPlugin = Class.create(paella.editor.RightBarPlugin,{
 new paella.editor.ToolStatusPlugin();
 
 
-
-paella.editor.ConsolidatePlugin = Class.create(paella.editor.RightBarPlugin,{
-	getIndex:function() {
-		return 10001;
-	},
-	
-	getName:function() {
-		return "es.upv.paella.editor.consolidatePlugin";
-	},
-	
-	getTabName:function() {
-		return "Consolidate";
-	},
-	
-	getContent:function() {
-		var elem = document.createElement('div');
-		elem.innerHTML = "Consolidate video";
-		
-		elem.innerHTML += '<div><label for="title">Title:</label><input type="text" value="title" id="title"></div>';
-		elem.innerHTML += '<div><label for="author">Author:</label><input type="text" value="author" id="title"></div>';
-		elem.innerHTML += '<div><label for="serie">Serie:</label><input type="text" value="serie" id="title"></div>';
-		
-		elem.innerHTML += '<div><input type="button" value="Consolidate"></div>';
-		
-		return elem;
-	}
-});
-
-new paella.editor.ConsolidatePlugin();
-
 /*
 
 
