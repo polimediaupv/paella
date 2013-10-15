@@ -154,7 +154,7 @@ paella.plugins.AnnotationsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 	onEvent:function(eventType,params) {
 		this.checkAnnotations(params);
 	},
-	
+
 	checkAnnotations:function(params) {
 		for (var i=0; i<this.annotations.length; ++i) {
 			var a = this.annotations[i];
@@ -172,7 +172,7 @@ paella.plugins.AnnotationsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 			}
 		}
 	},
-	
+
 	showAnnotation:function(annotation) {
 		if (!this.visibleAnnotations[annotation.s]) {
 			var rect = {left:100,top:10,width:1080,height:20};
@@ -181,7 +181,7 @@ paella.plugins.AnnotationsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 			this.visibleAnnotations[annotation.s] = annotation;
 		}
 	},
-	
+
 	removeAnnotation:function(annotation) {
 		if (this.visibleAnnotations[annotation.s]) {
 			var elem = this.visibleAnnotations[annotation.s].elem;

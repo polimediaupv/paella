@@ -154,11 +154,16 @@ a:visited {
 	cursor:pointer;
 }
 
+.editControlContainer {
+	z-index: 20;
+}
+
 .editButton {
 	width:40px;
 	height:37px;
 	background-image:url(../images/edit_button.png);
 	background-repeat:no-repeat;
+	cursor: pointer;
 }
 
 .editButton:hover {
