@@ -1,5 +1,8 @@
 paella.AsyncLoaderCallback = Class.create({
 	name:"",
+	prevCb:null,
+	nextCb:null,
+	loader:null,
 
 	initialize:function(name) {
 		this.name = name;	
@@ -13,34 +16,89 @@ paella.AsyncLoaderCallback = Class.create({
 });
 
 paella.AsyncLoader = Class.create({
+	firstCb:null,
+	lastCb:null,
 	callbackArray:null,
-	currentCallback:-1,
+	generatedId:0,
+	
+	currentCb:null,
 
 	initialize:function() {
-		this.callbackArray = [];
+		this.callbackArray = {};
+		this.generatedId = 0;
 	},
 	
-	addCallback:function(cb) {
-		this.currentCallback = -1;
-		this.callbackArray.push(cb);
+	addCallback:function(cb,name) {
+		if (!name) {
+			name = "callback_" + this.generatedId++;
+		}
+		this.callbackArray[name] = cb;
+		if (!this.firstCb) {
+			this.firstCb = cb;
+			this.currentCb = cb;
+		}
+		cb.prevCb = this.lastCb;
+		if (this.lastCb) this.lastCb.nextCb = cb;
+		this.lastCb = cb;
+		cb.loader = this;
 		return cb;
 	},
 	
+	getCallback:function(name) {
+		return this.callbackArray[name];
+	},
+	
 	load:function(onSuccess,onError) {
-		this.currentCallback++;
-		var thisClass = this;
-		var cb = this.callbackArray[this.currentCallback];
-		if (cb) {
-			cb.load(function() {
-				thisClass.load(onSuccess);
+		var This = this;
+		if (this.currentCb) {
+			this.currentCb.load(function() {
+				This.currentCb = This.currentCb.nextCb;
+				This.load(onSuccess);
 			},
 			function() {
-				if(onError) onError();
+				if (typeof(onFail)=='function') onFail();
 			});
 		}
-		else if (onSuccess) {
+		else if (typeof(onSuccess)=='function') {
 			onSuccess();
 		}
+	}
+});
+
+paella.JSONLoader = Class.create(paella.AsyncLoaderCallback,{
+	params:null,
+	type:'get',
+	
+	data:null,
+	mimeType:null,
+	statusCode:null,
+	
+	initialize:function(params,type) {
+		if (type) this.type = type;
+		if (typeof(params)=='string') this.params = {url:params}
+		else if (typeof(params)=='object') this.params = params;
+		else this.params = {}
+	},
+	
+	getParams:function() {
+		return this.params;
+	},
+	
+	load:function(onSuccess,onError) {
+		var This = this;
+		paella.ajax.send(this.type,this.getParams(),
+			function(data,type,code) {
+				This.data = data;
+				This.mimeType = type;
+				This.statusCode = code;
+				onSuccess();
+			},
+			function(data,type,returnCode) {
+				This.data = data;
+				This.mimeType = type;
+				This.statusCode = code;
+				onFail();
+			});
 	}
 });
 
