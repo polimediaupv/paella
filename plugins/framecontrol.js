@@ -2,6 +2,7 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 	frames:null,
 	highResFrames:null,
 	currentFrame:null,
+	navButtons:null,
 
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "frameControl"; },
@@ -19,12 +20,35 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 		this.frames = [];
 		var container = document.createElement('div');
 		container.className = 'frameControlContainer';
+		
 		var content = document.createElement('div');
 		content.className = 'frameControlContent';
+		
+		this.navButtons = {
+			left:document.createElement('div'),
+			right:document.createElement('div')
+		}
+		this.navButtons.left.className = 'frameControl navButton left';
+		this.navButtons.right.className = 'frameControl navButton right';
+		
+		
 		var frame = this.getFrame(null);
 		
+		domElement.appendChild(this.navButtons.left);
 		domElement.appendChild(container);
 		container.appendChild(content);
+		domElement.appendChild(this.navButtons.right);
+		
+		this.navButtons.left.scrollContainer = container;
+		$(this.navButtons.left).click(function(event) {
+			this.scrollContainer.scrollLeft -= 100;
+		});
+
+		this.navButtons.right.scrollContainer = container;
+		$(this.navButtons.right).click(function(event) {
+			this.scrollContainer.scrollLeft += 100;
+		});
+		
 		content.appendChild(frame);
 		
 		var itemWidth = $(frame).outerWidth(true);

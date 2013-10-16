@@ -95,6 +95,9 @@ paella.Dictionary = Class.create({
 
 paella.dictionary = new paella.Dictionary();
 
+paella.ajax = base.ajax;
+
+// Deprecated: use paella.ajax.get/post/delete/put...
 paella.Ajax = Class.create({
 	callback:null,
 
@@ -103,6 +106,7 @@ paella.Ajax = Class.create({
 	//	data:{param1:'param1',param2:'param2'...}
 	// 	onSuccess:function(response)
 	initialize:function(url,params,onSuccess,proxyUrl,useJsonp,method) {
+		paella.debug.log("WARNING: paella.Ajax() is deprecated, use base.ajax.get/paella.ajax.post/paella.ajax.delete/paella.ajax.put instead.");
 		var thisClass = this;
 		this.callback = onSuccess;
 		var thisClass = this;

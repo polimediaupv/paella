@@ -30,6 +30,15 @@ a:visited {
 	box-shadow: 2px 2px 6px #000;
 }
 
+div {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
 #playerContainer:-webkit-full-screen	{ width: 100%; }
 #playerContainer:-moz-full-screen		{ width: 100%; }
 #playerContainer:-ms-full-screen		{ width: 100%; }
@@ -117,6 +126,8 @@ a:visited {
 .buttonTimeLine {
 	position: absolute;
 	bottom: 0px;
+	left: 0px;
+	right: 0px;
 }
 
 /* old style time control */

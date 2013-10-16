@@ -1221,3 +1221,54 @@ var swfobject = function() {
 		}
 	};
 }();
+
+var base = {}
+
+// This class requires jquery
+base.ajax = {
+	// onSuccess/onFail(data,type,returnCode)
+	send:function(type,params,onSuccess,onFail) {
+		this.assertParams(params);
+
+		var ajaxObj = jQuery.ajax({
+			url:params.url,
+			data:params.params,
+			cache:false,
+			type:type
+		});
+		
+		if (typeof(onSuccess)=='function') {
+			ajaxObj.done(function(data,textStatus,jqXHR) {
+				var contentType = jqXHR.getResponseHeader('content-type')
+				onSuccess(data,contentType,jqXHR.status);
+			});
+		}
+		
+		if (typeof(onFail)=='function') {
+			ajaxObj.fail(function(jqXHR,textStatus,error) {
+				onFail(textStatus + ' : ' + error,'text/plain',jqXHR.status);
+			});
+		}
+	},
+	
+	assertParams:function(params) {
+		if (!params.url) throw new Error("paella.ajax.send: url parameter not found");
+		if (!params.params) params.params = {}
+	}
+}
+
+base.ajax["get"] = function(params,onSuccess,onFail) {
+	paella.ajax.send('get',params,onSuccess,onFail);
+}
+
+base.ajax["post"] = function(params,onSuccess,onFail) {
+	paella.ajax.send('post',params,onSuccess,onFail);
+}
+
+base.ajax["put"] = function(params,onSuccess,onFail) {
+	paella.ajax.send('put',params,onSuccess,onFail);
+}
+
+base.ajax["delete"] = function(params,onSuccess,onFail) {
+	paella.ajax.send('delete',params,onSuccess,onFail);
+}
