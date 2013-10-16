@@ -40,7 +40,10 @@ plugins = []
 sample = []
 
 # Paella Engage files
-paella.append("javascript")
+paella.append("javascript/base.js")
+paella.append("javascript/jquery.js")
+paella.append("javascript/jquery.sparkline.min.js")
+paella.append("javascript/paella_player.js")
 paella.append("resources")
 paella.append("player.swf")
 
@@ -66,6 +69,10 @@ debug.append("yuicompressor.jar")
 
 
 # it checks if the destination web folder exists, and creates it if not
+dstJs = os.path.join(args.destination,"javascript")
+if not os.path.exists(dstJs):
+    os.makedirs(dstJs)
+    
 dstPlugins = os.path.join(args.destination,"plugins")
 if not os.path.exists(dstPlugins):
     os.makedirs(dstPlugins)
