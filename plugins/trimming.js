@@ -25,6 +25,7 @@ paella.plugins.TrimmingLoaderPlugin = Class.create(paella.EventDrivenPlugin,{
 		var videoId = paella.initDelegate.getId();
 		paella.data.read('trimming',{id:videoId},function(data,status) {
 			if (data && status && data.end>0) {
+				paella.player.videoContainer.enableTrimming();
 				paella.player.videoContainer.setTrimming(data.start, data.end);
 			}
 		});
