@@ -145,10 +145,10 @@ paella.VideoContainerBase = Class.create(paella.DomNode,{
 	setTrimming:function(start,end) {
 		this.trimming.start = start;
 		this.trimming.end = end;
-		if (this.currentTime<this.trimming.start) {
+		if (this.currentTime()<this.trimming.start) {
 			this.setCurrentTime(this.trimming.start);
 		}
-		if (this.currentTime>this.trimming.end) {
+		if (this.currentTime()>this.trimming.end) {
 			this.setCurrentTime(this.trimming.end);
 		}
 		paella.events.trigger(paella.events.setTrim,{trimEnabled:this.trimming.enabled,trimStart:this.trimming.start,trimEnd:this.trimming.end});
