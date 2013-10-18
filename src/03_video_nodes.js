@@ -675,11 +675,6 @@ paella.SlideshowVideo = Class.create(paella.VideoElementBase,{
 			var frame = frames['frame_' + i];
 			if (frame) this._frames.push({time:i,image:frame});
 		}
-//		for (var key in frames) {
-//			var frame = frames[key];
-//			time = parseInt(key.replace('frame_',''));
-//			this._frames.push({time:time,image:frame});
-//		}
 	}
 });
 
