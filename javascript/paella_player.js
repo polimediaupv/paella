@@ -6110,8 +6110,7 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 	getButtonType:function() { return paella.ButtonPlugin.type.timeLineButton; },
 
 	checkEnabled:function(onSuccess) {
-		onSuccess(paella.initDelegate.initParams.videoLoader.frameList!=null &&
-				  paella.initDelegate.initParams.videoLoader.streams.length>=2);
+		onSuccess(paella.initDelegate.initParams.videoLoader.frameList!=null);
 	},
 
 	buildContent:function(domElement) {
@@ -6594,7 +6593,7 @@ paella.plugins.ViewModePlugin = Class.create(paella.ButtonPlugin,{
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
 
 	checkEnabled:function(onSuccess) {
-		onSuccess(!paella.player.videoContainer.isMonostream);
+		onSuccess(paella.initDelegate.initParams.videoLoader.streams.length>=2);
 	},
 
 	buildContent:function(domElement) {

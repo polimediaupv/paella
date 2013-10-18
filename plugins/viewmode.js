@@ -9,7 +9,7 @@ paella.plugins.ViewModePlugin = Class.create(paella.ButtonPlugin,{
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
 
 	checkEnabled:function(onSuccess) {
-		onSuccess(!paella.player.videoContainer.isMonostream);
+		onSuccess(paella.initDelegate.initParams.videoLoader.streams.length>=2);
 	},
 
 	buildContent:function(domElement) {
