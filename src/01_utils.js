@@ -47,7 +47,7 @@ paella.AsyncLoader = Class.create({
 	getCallback:function(name) {
 		return this.callbackArray[name];
 	},
-	
+
 	load:function(onSuccess,onError) {
 		var This = this;
 		if (this.currentCb) {

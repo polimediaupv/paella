@@ -58,11 +58,11 @@ configFolder = os.listdir('config')
 sample.append("index.html")
 sample.append("example.js")
 sample.append("extended.html")
+sample.append("debug.html")
+sample.append("extended_debug.html")
 
 # debug
 debug.append("src")
-debug.append("debug.html")
-debug.append("extended_debug.html")
 debug.append("build.py")
 debug.append("yuicompressor.jar")
 
