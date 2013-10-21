@@ -659,7 +659,7 @@ paella.SlideshowVideo = Class.create(paella.VideoElementBase,{
 	addSource:function(sourceData) {
 		this._duration = sourceData.duration;
 		this._currentTime = 0;
-		this.loadFrames(sourceData.frames);
+		this.loadFrames(sourceData.frames,sourceData.duration);
 		var frameZero = new Image();
 		var thisClass = this;
 		frameZero.onload = function(event) {
@@ -669,12 +669,11 @@ paella.SlideshowVideo = Class.create(paella.VideoElementBase,{
 		frameZero.src = this._frames[0].image;
 	},
 	
-	loadFrames:function(frames) {
+	loadFrames:function(frames,duration) {
 		this._frames = [];
-		for (var key in frames) {
-			var frame = frames[key];
-			time = parseInt(key.replace('frame_',''));
-			this._frames.push({time:time,image:frame});
+		for (var i=0;i<duration;++i) {
+			var frame = frames['frame_' + i];
+			if (frame) this._frames.push({time:i,image:frame});
 		}
 	}
 });
