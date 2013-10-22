@@ -35,6 +35,7 @@ jsOut = open(javascriptFile,'w')
 cssOut = open(cssFile,'w')
 
 paellaFiles = os.listdir(paellaDir)
+paellaFiles.sort()
 
 for file in paellaFiles:
     jsPath = paellaDir + file
