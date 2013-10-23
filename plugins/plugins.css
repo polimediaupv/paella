@@ -23,6 +23,58 @@
 	background-color: red;
 }
 
+.textBreak {
+	background-color: rgba(128,128,128,0.7);
+	text-align: center;
+	color: white;
+	line-height: 17px;
+	font-size: 18px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-radius: 12px;
+}
+
+.textCaption {
+	background-color: rgba(128,128,128,0.7);
+	text-align: center;
+	color: white;
+	line-height: 17px;
+	font-size: 18px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-radius: 12px;
+}
+
+.CommentPlugin_Loading {
+    background-image: url("pluginloading.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-top: 10px;
+    width: 100%;
+    height: 11px;
+    display:block;
+}
+
+.CommentPlugin_Comments {
+	/*position: absolute;
+	overflow: auto;
+	bottom: 123px;
+	top: 65px;
+	left: 10px;
+	right: 10px;*/
+	box-shadow: inset 0px 0px 10px 2px rgba(10, 10,10, 0.39);
+	border-radius: 7px;
+	padding-left: 13px;
+}
+
+/*.bottomContainer.big{
+width: 300px;
+overflow-x:auto;
+overflow-y:hidden;
+}*/
+
+
+
 .showExtendedProfilesButton {
 	/*background-image:url(../resources/images/view_icon.png);*/
 	background-image: url(extended_player_select.png);
@@ -69,6 +121,10 @@
 
 .extendedProfilesItemButton.small {
 	background-image: url(extended_player_profile_small.png);
+}
+
+.extendedProfilesItemButton.fullScr {
+	background-image: url(fullscreen_button.png);
 }
 
 
@@ -199,6 +255,19 @@
 
 
 
+.showFullScreenButton {
+	background-image: url(fullscreen_button.png);
+	background-size: 200%;	
+}
+
+.showFullScreenButton:hover {
+	background-color: rgb(171,178,178);
+}
+
+.showFullScreenButton.active {
+	background-position:-40px 0px;
+}
+
 .playButton {
 	background-size: 200%;
 	background-image:url(../resources/images/play_button.png);
@@ -241,6 +310,50 @@
 
 .repeatButton:hover {
 	background-position:-40px 0px;
+}
+
+
+
+.showSocialPluginButton {
+	background-image: url(social_button.png);
+	background-size: 300%;
+}
+
+.buttonPluginPopUp.showSocialPluginButton {
+	background-image:none;
+}
+
+.buttonPlugin.showSocialPluginButton:hover {
+	background-color: rgb(171,178,178);
+}
+
+.buttonPlugin.showSocialPluginButton.selected {
+	background-position:-80px 0px;
+}
+
+.socialItemButton {  /*crea el popup*/
+	background-repeat:no-repeat;
+	background-size: 200% auto;
+	width: 40px;
+	height: 40px;
+	cursor: pointer;
+	background-color: rgba(128,128,128,0.8);
+}
+
+.socialItemButton:hover {
+	background-color: rgba(90,90,90,0.8);
+}
+
+.socialItemButton.selected {
+	background-position:-40px 0px;
+}
+
+.socialItemButton.facebook{
+	background-image: url(facebook_button.png);
+}
+
+.socialItemButton.twitter {
+	background-image: url(twitter_button.png);
 }
 
 
