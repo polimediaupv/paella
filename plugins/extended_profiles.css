@@ -45,3 +45,7 @@
 .extendedProfilesItemButton.small {
 	background-image: url(extended_player_profile_small.png);
 }
+
+.extendedProfilesItemButton.fullScr {
+	background-image: url(fullscreen_button.png);
+}

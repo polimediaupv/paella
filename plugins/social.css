@@ -1,0 +1,42 @@
+.showSocialPluginButton {
+	background-image: url(social_button.png);
+	background-size: 200%;
+}
+
+.buttonPluginPopUp.showSocialPluginButton {
+	background-image:none;
+}
+
+.buttonPlugin.showSocialPluginButton:hover {
+	background-color: rgb(171,178,178);
+}
+
+.buttonPlugin.showSocialPluginButton.selected {
+	background-position:-40px 0px;
+}
+
+.socialItemButton {  /*crea el popup*/
+	background-repeat:no-repeat;
+	background-size: 200% auto;
+	width: 40px;
+	height: 40px;
+	cursor: pointer;
+	background-color: rgba(128,128,128,0.8);
+}
+
+.socialItemButton:hover {
+	background-color: rgba(90,90,90,0.8);
+}
+
+.socialItemButton.selected {
+	background-position:-40px 0px;
+}
+
+.socialItemButton.facebook{
+	background-image: url(facebook_button.png);
+}
+
+.socialItemButton.twitter {
+	background-image: url(twitter_button.png);
+}
+
