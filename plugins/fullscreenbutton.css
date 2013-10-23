@@ -1,0 +1,12 @@
+.showFullScreenButton {
+	background-image: url(fullscreen_button.png);
+	background-size: 200%;	
+}
+
+.showFullScreenButton:hover {
+	background-color: rgb(171,178,178);
+}
+
+.showFullScreenButton.active {
+	background-position:-40px 0px;
+}

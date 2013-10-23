@@ -1,0 +1,10 @@
+.textBreak {
+	background-color: rgba(128,128,128,0.7);
+	text-align: center;
+	color: white;
+	line-height: 17px;
+	font-size: 18px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-radius: 12px;
+}

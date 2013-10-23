@@ -1,0 +1,27 @@
+.CommentPlugin_Loading {
+    background-image: url("pluginloading.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-top: 10px;
+    width: 100%;
+    height: 11px;
+    display:block;
+}
+
+.CommentPlugin_Comments {
+	/*position: absolute;
+	overflow: auto;
+	bottom: 123px;
+	top: 65px;
+	left: 10px;
+	right: 10px;*/
+	box-shadow: inset 0px 0px 10px 2px rgba(10, 10,10, 0.39);
+	border-radius: 7px;
+	padding-left: 13px;
+}
+
+/*.bottomContainer.big{
+width: 300px;
+overflow-x:auto;
+overflow-y:hidden;
+}*/
