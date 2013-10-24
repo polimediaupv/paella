@@ -80,13 +80,21 @@ This class is used to add buttons to the playback bar. All the visual aspects, e
 
 - getSubclass(): Plugin visual configuration. Override: required. It returns the button's CSS subclass. Use this to specify the button style in the plugin's stylesheet file. The button's full class name will be like `buttonPlugin [left|right] [subclass]`
 
-- getButtonType(): Plugin operation/visual configuration. Override: optional. Default value: paella.ButtonPlugin.type.actionButton. It returns the button type: action button, popUp button or time line button. The pop up and time line button types will show a container above the playback bar. The time line container occupy the entire playback bar width, while the popup's width is defined in the plugin's style sheet.
+- getButtonType(): Plugin operation/visual configuration. Override: optional. Default value: paella.ButtonPlugin.type.actionButton. It returns the button type: action button (paella.ButtonPlugin.type.actionButton), popUp button (paella.ButtonPlugin.type.popUpButton) or time line button (paella.ButtonPlugin.type.timeLineButton). The pop up and time line button types will show a container above the playback bar. The time line container occupy the entire playback bar width, while the popup's width is defined in the plugin's style sheet.
 
 - action(button): Plugin operation. Override: required if the plugin is an actionButton plugin. This method will be called when the user push the plugin's button. the `button` parameter is the button dom element.
 
 - getMinWindowSize(): Plugin visual configuration. Override: required. Default value:0. It returns the minimum window width to show the player's button. If the window with is less than the required window size, the button will be hidden. The plugin handler will call this function every time the window is resized
 
 - buildContent(domElement): Plugin operation/visual configuration. Override: required if the plugin is not an actionButton plugin. If the plugin is an actionButton plugin, this method will never be called. Override this method to fill in the pop up or timeline container. The `domElement` parameter is the container to fill-in. It's a standard html dom node: you can use the innerHTML method to specify it's content, or you can use the appendChild() method to create the internal DOM structure.
+
+- willShowContent(): Plugin life cycle. Override: optional. Paella will call this function before the container of a button is shown. This is only applied to paella.ButtonPlugin.type.popUpButton and paella.ButtonPlugin.type.timeLineButton button plugin types.
+
+- didShowContent(): Plugin life cycle. Override: optional. Paella will call this function after the container of a button is shown. This is only applied to paella.ButtonPlugin.type.popUpButton and paella.ButtonPlugin.type.timeLineButton button plugin types.
+
+- willHideContent(): Plugin life cycle. Override: optional. Paella will call this function before the container of a button is hidden. This is only applied to paella.ButtonPlugin.type.popUpButton and paella.ButtonPlugin.type.timeLineButton button plugin types.
+
+- didHideContent(): Plugin life cycle. Override: optional. Paella will call this function after the container of a button is hidden. This is only applied to paella.ButtonPlugin.type.popUpButton and paella.ButtonPlugin.type.timeLineButton button plugin types.
 
 
 
