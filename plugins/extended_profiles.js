@@ -52,7 +52,7 @@ paella.plugins.ExtendedProfilesPlugin = Class.create(paella.ButtonPlugin,{
 				else if (document.cancelFullScreen) {
 					document.cancelFullScreen();
 				}
-				this.buttonItems[0].className  = this.getButtonItemClass(profileData,false);
+				this.buttonItems[0].className  = this.getButtonItemClass('fullScr',false);
 			}
 			
 			this.buttonItems[extendedModes.indexOf(paella.extended.getProfile())].className = this.getButtonItemClass(paella.extended.getProfile(),false);

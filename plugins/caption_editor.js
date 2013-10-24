@@ -135,8 +135,8 @@ paella.plugins.captionsEditorPlugin = new paella.plugins.CaptionsEditorPlugin();
 paella.plugins.CaptionsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 	captions:null,
 	lastEvent:0,
-	
 	visibleCaptions:null,
+	captionsEnabled:null,
 
 	getName:function() { return "es.upv.paella.CaptionsPlayerPlugin"; },
 	checkEnabled:function(onSuccess) {
@@ -160,15 +160,16 @@ paella.plugins.CaptionsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 	checkCaptions:function(params) {
 		for (var i=0; i<this.captions.length; ++i) {
 			var a = this.captions[i];
-			if (a.s<params.currentTime && a.e>params.currentTime) {
+			if (this.captionsEnabled && a.s<params.currentTime && a.e>params.currentTime) {
 				this.showCaption(a);
+				console.log('muestro');
 			}
 		}
 		
 		for (var key in this.visibleCaptions) {
 			if (typeof(a)=='object') {
 				var a = this.visibleCaptions[key];
-				if (a && (a.s>=params.currentTime || a.e<=params.currentTime)) {
+				if (a && (a.s>=params.currentTime || a.e<=params.currentTime || !this.captionsEnabled)) {
 					this.removeCaption(a);
 				}
 			}
@@ -177,7 +178,7 @@ paella.plugins.CaptionsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 	
 	showCaption:function(caption) {
 		if (!this.visibleCaptions[caption.s]) {
-			var rect = {left:100,top:650,width:1080,height:20};
+			var rect = {left:100,top:620,width:1080,height:20};
 			caption.elem = paella.player.videoContainer.overlayContainer.addText(caption.content,rect);
 			caption.elem.className = 'textCaption';
 			this.visibleCaptions[caption.s] = caption;
@@ -194,3 +195,31 @@ paella.plugins.CaptionsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 });
 
 paella.plugins.captionsPlayerlugin = new paella.plugins.CaptionsPlayerPlugin();
+
+paella.plugins.ActiveCaptionsPlugin = Class.create(paella.ButtonPlugin,{
+	getAlignment:function() { return 'right'; },
+	getSubclass:function() { return "showCaptionsPluginButton"; },
+	getIndex:function() { return 105; },
+	getMinWindowSize:function() { return 300; },
+	getName:function() { return "es.upv.paella.activeCaptionsPlugin"; },
+	checkEnabled:function(onSuccess) { onSuccess(true); },
+						  
+	action:function(button) {
+		if (this.activeCaptions) {
+			button.className = this.getButtonItemClass(false);
+			paella.plugins.captionsPlayerlugin.captionsEnabled = false;
+			this.activeCaptions = false;
+		} else { 
+			button.className = this.getButtonItemClass(true);
+			paella.plugins.captionsPlayerlugin.captionsEnabled = true;
+			this.activeCaptions = true;
+		}
+	},
+	
+	getButtonItemClass:function(selected) {
+		return 'buttonPlugin '+this.getAlignment() +' '+ this.getSubclass() + ((selected) ? ' selected':'');
+	}
+});
+  
+
+paella.plugins.activeCaptionsPlugin = new paella.plugins.ActiveCaptionsPlugin();
