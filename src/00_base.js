@@ -20,6 +20,7 @@ var GlobalParams = {
 	background:{zIndex:0}
 };
 
+
 var paella = {};
 paella.player = null;
 

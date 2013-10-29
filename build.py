@@ -37,11 +37,19 @@ cssOut = open(cssFile,'w')
 paellaFiles = os.listdir(paellaDir)
 paellaFiles.sort()
 
+intermediatePath = 'tmp'
+if (not os.path.exists(intermediatePath)):
+	os.makedirs(intermediatePath)
+
 for file in paellaFiles:
-    jsPath = paellaDir + file
-    print jsPath
-    jsOut.write(open(jsPath).read())
-    jsOut.write('\n\n')
+	outPath = os.path.join(intermediatePath,file)
+	outFile = open(outPath,'w')
+	jsPath = paellaDir + file
+	#jsOut.write(open(jsPath).read())
+	#jsOut.write('\n\n')
+	outFile.write(open(jsPath).read())
+	outFile.write('\n\n')
+	outFile.close()
 
 pluginFiles = os.listdir(pluginDir);
 
@@ -54,20 +62,40 @@ for file in pluginFiles:
 	fileName, fileExtension = os.path.splitext(jsPath);
 	cssPath = fileName + '.css'
 	if fileExtension=='.js' and not(file in ignoreFiles):
-		print fileName
-		jsOut.write(open(jsPath).read())
-		jsOut.write('\n\n')
+		outPath = os.path.join(intermediatePath,file)
+		outFile = open(outPath,'w')
+		#jsOut.write(open(jsPath).read())
+		#jsOut.write('\n\n')
+		outFile.write(open(jsPath).read())
+		outFile.write('\n\n')
+		outFile.close()
 		if os.path.exists(cssPath):
 			cssOut.write(open(cssPath).read())
 			cssOut.write('\n\n')
-jsOut.close()
+#
 cssOut.close()
 
 
-if args.minimize:
-	command = "java -jar yuicompressor.jar " + javascriptFile + " -o " + javascriptFile
-	f=os.popen(command)
-	for line in f.readlines():
-		print line
-	
+intermediateFiles = os.listdir(intermediatePath)
+for file in intermediateFiles:
+	filePath = os.path.join(intermediatePath,file)
+	if args.minimize:
+		command = "java -jar yuicompressor.jar " + filePath + " -o " + filePath
+		print command
+		subprocess.check_call(command,shell=True)
+	print "adding " + filePath + " to " + javascriptFile
+	jsOut.write(open(filePath).read())
+		#f=os.popen(command)
+		#for line in f.readLines():
+		#	print line
+	# juntar ficheros
+
+jsOut.close()
+shutil.rmtree(intermediatePath)
+#if args.minimize:
+#	command = "java -jar yuicompressor.jar " + javascriptFile + " -o " + javascriptFile
+#	f=os.popen(command)
+#	for line in f.readlines():
+#		print line
+
 
