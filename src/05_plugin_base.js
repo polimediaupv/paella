@@ -59,6 +59,13 @@ paella.PluginManager = Class.create({
 				}	
 			}
 		});
+	},
+	
+	getPlugin:function(name) {
+		for (var i=0;i<this.pluginList.length;++i) {
+			if (this.pluginList[i].getName()==name) return this.pluginList[i];
+		}
+		return null;
 	}
 });
 

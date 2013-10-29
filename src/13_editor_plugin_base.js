@@ -218,6 +218,10 @@ paella.editor.TrackPlugin = Class.create(paella.editor.EditorPlugin,{
 	isToolEnabled:function(toolName) {
 		return true;
 	},
+	
+	buildToolTabContent:function(tabContainer) {
+		
+	},
 
 	getSettings:function() {
 		return null;
