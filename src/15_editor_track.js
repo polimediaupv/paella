@@ -227,6 +227,7 @@ paella.editor.Track = Class.create({
 			plugin.onTrackChanged(trackData.id,start,end);
 			paella.editor.pluginManager.onTrackChanged(plugin);
 			paella.editor.instance.rightBar.updateCurrentTab();
+			paella.editor.instance.bottomBar.timeline.rebuildTrack(plugin.getName());
 			
 			this.resizeTrack.trackInfo.trackData;
 
