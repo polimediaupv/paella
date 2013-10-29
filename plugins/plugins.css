@@ -128,6 +128,35 @@ overflow-y:hidden;
 }
 
 
+.buttonPlugin.footPrints {
+	background-size: 300%;
+	background-image:url(../resources/images/statistics_icon.png);
+}
+
+.buttonPlugin.footPrints:hover {
+	background-position: -40px 0;
+}
+
+.buttonPlugin.footPrints.selected {
+	background-position: 40px 0;
+}
+
+.footPrintsContainer {
+	height: 20px;
+	width: 100%;
+	overflow: hidden;
+	display: block;
+}
+
+.footPrintsCanvas {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	display: inline-block;
+}
+
+
+
 .buttonPlugin.frameControl {
 	background-size: 300%;
 	background-image:url(../resources/images/frame_button.png);

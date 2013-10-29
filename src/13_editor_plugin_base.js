@@ -214,7 +214,11 @@ paella.editor.TrackPlugin = Class.create(paella.editor.EditorPlugin,{
 		//paella.debug.log('Tool selected: ' + toolName);
 		paella.events.trigger(paella.events.documentChanged);
 	},
-	
+
+	isToolEnabled:function(toolName) {
+		return true;
+	},
+
 	getSettings:function() {
 		return null;
 	}

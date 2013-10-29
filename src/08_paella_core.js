@@ -27,6 +27,8 @@ paella.VideoLoader = Class.create({
 	streams:[],		// {sources:{mp4:{src:"videourl.mp4",type:"video/mp4"},
 					//			 ogg:{src:"videourl.ogv",type:"video/ogg"},
 					//			 webm:{src:"videourl.webm",type:"video/webm"},
+					//			 flv:{src:"videourl.flv",type:"video/x-flv"},
+					//			 rtmp:{src:"rtmp://server.com/endpoint/url.loquesea",type="video/mp4 | video/x-flv"},
 					//			 image:{frames:{frame_1:'frame_1.jpg',...frame_n:'frame_n.jpg'},duration:183},
 					//	preview:'video_preview.jpg'}
 	frameList:[],	// frameList[timeInstant] = { id:"frame_id", mimetype:"image/jpg", time:timeInstant, url:"image_url"}

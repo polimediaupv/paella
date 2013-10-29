@@ -152,12 +152,12 @@ paella.PlaybackControl = Class.create(paella.DomNode,{
 				if (plugin.getButtonType()==paella.ButtonPlugin.type.popUpButton) {
 					var parent = thisClass.popUpPluginContainer.domElement;
 					var popUpContent = paella.ButtonPlugin.buildPluginPopUp(parent,plugin,id + '_container');
-					thisClass.popUpPluginContainer.registerContainer(plugin.getName(),popUpContent,button);
+					thisClass.popUpPluginContainer.registerContainer(plugin.getName(),popUpContent,button,plugin);
 				}
 				else if (plugin.getButtonType()==paella.ButtonPlugin.type.timeLineButton) {
 					var parent = thisClass.timeLinePluginContainer.domElement;
 					var timeLineContent = paella.ButtonPlugin.buildPluginPopUp(parent, plugin,id + '_timeline');
-					thisClass.timeLinePluginContainer.registerContainer(plugin.getName(),timeLineContent,button);
+					thisClass.timeLinePluginContainer.registerContainer(plugin.getName(),timeLineContent,button,plugin);
 				}
 			}
 		});
