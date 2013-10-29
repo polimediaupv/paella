@@ -162,7 +162,6 @@ paella.plugins.CaptionsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 			var a = this.captions[i];
 			if (this.captionsEnabled && a.s<params.currentTime && a.e>params.currentTime) {
 				this.showCaption(a);
-				console.log('muestro');
 			}
 		}
 		
