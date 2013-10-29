@@ -53,7 +53,8 @@ paella.pluginList = [
 	'caption_editor.js',
 	'break.js',
 	'comments.js',
-	'description.js'
+	'description.js',
+	'footprints.js'
 ];
 
 paella.events = {

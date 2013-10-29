@@ -1,28 +1,3 @@
-.editorPluginToolStatusHelp, .editorPluginConsolidateHelp {
-	position: absolute;
-	height: 113px;
-	left: 10px;
-	right: 10px;
-	bottom: 10px;
-	overflow: auto;
-}
-
-.editorPluginToolStatus_trackItemList, .editorPluginConsolidate_trackItemList{
-	position: absolute;
-	overflow: auto;
-	bottom: 123px;
-	top: 65px;
-	left: 10px;
-	right: 10px;
-	box-shadow: inset 0px 0px 10px 2px rgba(0, 0, 0, 0.39);
-	border-radius: 7px;
-	padding-left: 13px;
-}
-
-.trackEditorFieldSelected {
-	background-color: red;
-}
-
 .textBreak {
 	background-color: rgba(128,128,128,0.7);
 	text-align: center;
@@ -33,47 +8,6 @@
 	padding-bottom: 10px;
 	border-radius: 12px;
 }
-
-.textCaption {
-	background-color: rgba(128,128,128,0.7);
-	text-align: center;
-	color: white;
-	line-height: 17px;
-	font-size: 18px;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	border-radius: 12px;
-}
-
-.CommentPlugin_Loading {
-    background-image: url("pluginloading.gif");
-    background-repeat: no-repeat;
-    background-position: center;
-    margin-top: 10px;
-    width: 100%;
-    height: 11px;
-    display:block;
-}
-
-.CommentPlugin_Comments {
-	/*position: absolute;
-	overflow: auto;
-	bottom: 123px;
-	top: 65px;
-	left: 10px;
-	right: 10px;*/
-	box-shadow: inset 0px 0px 10px 2px rgba(10, 10,10, 0.39);
-	border-radius: 7px;
-	padding-left: 13px;
-}
-
-/*.bottomContainer.big{
-width: 300px;
-overflow-x:auto;
-overflow-y:hidden;
-}*/
-
-
 
 .showExtendedProfilesButton {
 	/*background-image:url(../resources/images/view_icon.png);*/
@@ -128,146 +62,6 @@ overflow-y:hidden;
 }
 
 
-.buttonPlugin.frameControl {
-	background-size: 300%;
-	background-image:url(../resources/images/frame_button.png);
-}
-
-.buttonPlugin.frameControl:hover {
-	background-position: -40px 0;
-}
-
-.buttonPlugin.frameControl.selected {
-	background-position: 40px 0;
-}
-
-.frameControlContainer {
-	height: 87px;
-	width: 90%;
-	overflow: hidden;
-	display: inline-block;
-}
-
-.frameControl.navButton {
-	width: 3%;
-	height: 37px;
-	display: inline-block;
-	cursor: pointer;
-	background-image: url(hscroll_arrows.png);
-	background-size: 200% 200%;
-	background-position: 0 100%;
-	margin-left: 1%;
-	margin-right: 1%;
-	margin-bottom: 21px;
-}
-
-.frameControl.navButton.right {
-	background-position:100% 100%;
-}
-
-.frameControl.navButton.left:hover {
-	background-position: 0 0%;
-}
-
-.frameControl.navButton.right:hover {
-	background-position:100% 0%;
-}
-
-.frameControlContent {
-	height: 100px;
-	overflow: hidden;
-	padding-top:6px;
-}
-
-.frameControlItem {
-	width: 100px;
-	cursor: pointer;
-	margin-left:3px;
-	margin-right: 3px;
-	float: left;
-	opacity: 0.8;
-}
-
-.frameControlItem:hover {
-	width:94px;
-	border: 3px dotted #23ff00;
-	opacity: 1;
-}
-
-.frameControlItem.current {
-	width: 94px;
-	border: 3px solid #23ff00;
-	opacity: 1;
-}
-
-
-
-.showFramesButton {
-	position:absolute;
-	display:block;
-	width:40px;
-	height:37px;
-	background-size: 300%;
-	background-image:url(../resources/images/frame_button.png);
-}
-
-.showFramesButton:hover {
-	background-position:-40px 0px;
-}
-
-.showFramesButton_active {
-	position:absolute;
-	display:block;
-	width:40px;
-	height:37px;
-	right:0px;
-	background-size: 300%;
-	background-image:url(../resources/images/frame_button.png);
-	background-position:-80px 0px;
-}
-
-.frameListContainer {
-	background-image:url(../resources/images/playback_bkg.png);
-}
-
-.frameThumbnail {
-	margin-left:3px;
-	margin-right:3px;
-	margin-bottom:8px;
-	margin-top:8px;
-	height:40px;
-}
-
-.frameThumbnail:hover {
-	margin: 0px;
-	border: 3px #e04e80 solid;
-	height: 50px;
-}
-
-.enabledFrameThumbnail {
-	border: 3px #80e04e solid;
-	height:50px;
-}
-
-.enabledFrameThumbnail:hover {
-	border: 3px #e04e80 solid;
-}
-
-
-
-.showFullScreenButton {
-	background-image: url(fullscreen_button.png);
-	background-size: 200%;	
-}
-
-.showFullScreenButton:hover {
-	background-color: rgb(171,178,178);
-}
-
-.showFullScreenButton.active {
-	background-position:-40px 0px;
-}
-
 .playButton {
 	background-size: 200%;
 	background-image:url(../resources/images/play_button.png);
@@ -303,13 +97,31 @@ overflow-y:hidden;
 	height:100%;
 }
 
-.repeatButton {
-	background-size: 200%;
-	background-image:url(../resources/images/repeat_button.png);
+.buttonPlugin.footPrints {
+	background-size: 300%;
+	background-image:url(../resources/images/statistics_icon.png);
 }
 
-.repeatButton:hover {
-	background-position:-40px 0px;
+.buttonPlugin.footPrints:hover {
+	background-position: -40px 0;
+}
+
+.buttonPlugin.footPrints.selected {
+	background-position: 40px 0;
+}
+
+.footPrintsContainer {
+	height: 20px;
+	width: 100%;
+	overflow: hidden;
+	display: block;
+}
+
+.footPrintsCanvas {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	display: inline-block;
 }
 
 
@@ -438,6 +250,223 @@ overflow-y:hidden;
 
 .viewModeItemButton.slide.selected {
 	background-position: 78px 168px;
+}
+
+
+
+.textCaption {
+	background-color: rgba(128,128,128,0.7);
+	text-align: center;
+	color: white;
+	line-height: 17px;
+	font-size: 18px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-radius: 12px;
+}
+
+
+
+.showFullScreenButton {
+	background-image: url(fullscreen_button.png);
+	background-size: 200%;	
+}
+
+.showFullScreenButton:hover {
+	background-color: rgb(171,178,178);
+}
+
+.showFullScreenButton.active {
+	background-position:-40px 0px;
+}
+
+.buttonPlugin.frameControl {
+	background-size: 300%;
+	background-image:url(../resources/images/frame_button.png);
+}
+
+.buttonPlugin.frameControl:hover {
+	background-position: -40px 0;
+}
+
+.buttonPlugin.frameControl.selected {
+	background-position: 40px 0;
+}
+
+.frameControlContainer {
+	height: 87px;
+	width: 90%;
+	overflow: hidden;
+	display: inline-block;
+}
+
+.frameControl.navButton {
+	width: 3%;
+	height: 37px;
+	display: inline-block;
+	cursor: pointer;
+	background-image: url(hscroll_arrows.png);
+	background-size: 200% 200%;
+	background-position: 0 100%;
+	margin-left: 1%;
+	margin-right: 1%;
+	margin-bottom: 21px;
+}
+
+.frameControl.navButton.right {
+	background-position:100% 100%;
+}
+
+.frameControl.navButton.left:hover {
+	background-position: 0 0%;
+}
+
+.frameControl.navButton.right:hover {
+	background-position:100% 0%;
+}
+
+.frameControlContent {
+	height: 100px;
+	overflow: hidden;
+	padding-top:6px;
+}
+
+.frameControlItem {
+	width: 100px;
+	cursor: pointer;
+	margin-left:3px;
+	margin-right: 3px;
+	float: left;
+	opacity: 0.8;
+}
+
+.frameControlItem:hover {
+	width:94px;
+	border: 3px dotted #23ff00;
+	opacity: 1;
+}
+
+.frameControlItem.current {
+	width: 94px;
+	border: 3px solid #23ff00;
+	opacity: 1;
+}
+
+
+
+.showFramesButton {
+	position:absolute;
+	display:block;
+	width:40px;
+	height:37px;
+	background-size: 300%;
+	background-image:url(../resources/images/frame_button.png);
+}
+
+.showFramesButton:hover {
+	background-position:-40px 0px;
+}
+
+.showFramesButton_active {
+	position:absolute;
+	display:block;
+	width:40px;
+	height:37px;
+	right:0px;
+	background-size: 300%;
+	background-image:url(../resources/images/frame_button.png);
+	background-position:-80px 0px;
+}
+
+.frameListContainer {
+	background-image:url(../resources/images/playback_bkg.png);
+}
+
+.frameThumbnail {
+	margin-left:3px;
+	margin-right:3px;
+	margin-bottom:8px;
+	margin-top:8px;
+	height:40px;
+}
+
+.frameThumbnail:hover {
+	margin: 0px;
+	border: 3px #e04e80 solid;
+	height: 50px;
+}
+
+.enabledFrameThumbnail {
+	border: 3px #80e04e solid;
+	height:50px;
+}
+
+.enabledFrameThumbnail:hover {
+	border: 3px #e04e80 solid;
+}
+
+
+
+.CommentPlugin_Loading {
+    background-image: url("pluginloading.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-top: 10px;
+    width: 100%;
+    height: 11px;
+    display:block;
+}
+
+.CommentPlugin_Comments {
+	/*position: absolute;
+	overflow: auto;
+	bottom: 123px;
+	top: 65px;
+	left: 10px;
+	right: 10px;*/
+	box-shadow: inset 0px 0px 10px 2px rgba(10, 10,10, 0.39);
+	border-radius: 7px;
+	padding-left: 13px;
+}
+
+/*.bottomContainer.big{
+width: 300px;
+overflow-x:auto;
+overflow-y:hidden;
+}*/
+
+.editorPluginToolStatusHelp, .editorPluginConsolidateHelp {
+	position: absolute;
+	height: 113px;
+	left: 10px;
+	right: 10px;
+	bottom: 10px;
+	overflow: auto;
+}
+
+.editorPluginToolStatus_trackItemList, .editorPluginConsolidate_trackItemList{
+	position: absolute;
+	overflow: auto;
+	bottom: 123px;
+	top: 65px;
+	left: 10px;
+	right: 10px;
+	box-shadow: inset 0px 0px 10px 2px rgba(0, 0, 0, 0.39);
+	border-radius: 7px;
+	padding-left: 13px;
+}
+
+.trackEditorFieldSelected {
+	background-color: red;
+}
+
+.repeatButton {
+	background-size: 200%;
+	background-image:url(../resources/images/repeat_button.png);
+}
+
+.repeatButton:hover {
+	background-position:-40px 0px;
 }
 
 
