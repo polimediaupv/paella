@@ -54,7 +54,7 @@ paella.plugins.FootPrintsPlugin = Class.create(paella.ButtonPlugin,{
     },
     
     trackFootPrint:function(inPosition, outPosition) {
-    	var data = {in: inPosition, out: outPosition};		
+    	var data = {"in": inPosition, "out": outPosition};		
 		paella.data.write('footprints',{id:paella.initDelegate.getId()}, data);		
     },
 	
