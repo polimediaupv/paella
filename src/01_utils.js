@@ -112,22 +112,26 @@ paella.DictionaryLoader = Class.create(paella.AsyncLoaderCallback,{
 	
 	load:function(onSuccess,onError) {
 		var lang = paella.utils.language();
-		var url = this.dictionaryUrl + '_' + lang + '.json';
 		var params = {}
-		new paella.Ajax(url,params,function(data) {
-			if (typeof(data)=="string") {
-				try {
-					data = JSON.parse(data);
+		params.url = this.dictionaryUrl + '_' + lang + '.json';
+		paella.ajax.get(params,
+			function(data,type,returnCode) {
+				if (typeof(data)=='string') {
+					try {
+						data = JSON.parse(data);
+					}
+					catch (e) {
+						//onError();
+						onSuccess();
+					}
 				}
-				catch (e) {
-					onSuccess();
-					return;
-				}
-			}
-
-			paella.dictionary.addDictionary(data);
-			onSuccess();
-		});
+				paella.dictionary.addDictionary(data);
+				onSuccess();
+			},
+			function(data,type,returnCode) {
+				//onError();
+				onSuccess();
+			});
 	}
 });
 

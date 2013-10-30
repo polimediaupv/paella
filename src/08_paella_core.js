@@ -45,6 +45,7 @@ paella.VideoLoader = Class.create({
 	},
 
 	isOggCapable:function() {
+		if (paella.utils.userAgent.browser.IsMobileVersion) return false;
 		var videoElement = document.createElement('video');
 		var ogg = videoElement.canPlayType('video/ogg; codecs="theora"');
 		ogg = (ogg=='probably') || (ogg=='maybe');
@@ -52,6 +53,7 @@ paella.VideoLoader = Class.create({
 	},
 
 	isWebmCapable:function() {
+		if (paella.utils.userAgent.browser.IsMobileVersion) return false;
 		var videoElement = document.createElement('video');
 		var webm = videoElement.canPlayType('video/webm; codecs="vp8, vorbis"');
 		webm = (webm=='probably') || (webm=='maybe');
@@ -147,10 +149,10 @@ paella.VideoLoader = Class.create({
 		var methods = paella.player.config.player.methods;
 		
 		// Mobile browsers can only play one stream
-		if (userAgent.browser.isMobileVersion && streamIndex>=1) {
+		if (userAgent.browser.IsMobileVersion && streamIndex>=1) {
 			for (var i=0;i<methods.length;++i) {
 				if (methods[i].name=='image' && methods[i].enabled && this.isStreamCompatible(streamIndex,methods[i])) {
-					preferredMethod = method;
+					preferredMethod = methods[i];
 				}
 			}
 		} 
@@ -279,12 +281,22 @@ paella.InitDelegate = Class.create({
 	loadConfig:function(onSuccess) {
 		var configUrl = this.initParams.configUrl;
 		var params = {};
-		new paella.Ajax(configUrl,params,function(data) {
-			if (typeof(data)=="string") {
-				data = JSON.parse(data);
-			}
-			onSuccess(data);
-		});
+		params.url = configUrl;
+		paella.ajax.get(params,function(data,type,returnCode) {
+				if (typeof(data)=='string') {
+					try {
+						data = JSON.parse(data);
+					}
+					catch (e) {
+						onSuccess({});
+					}
+				}
+				paella.dictionary.addDictionary(data);
+				onSuccess(data);
+			},
+			function(data,type,returnCode) {
+				onSuccess({});
+			});
 	},
 
 	loadEditorConfig:function(onSuccess) {

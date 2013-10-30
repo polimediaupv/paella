@@ -20,6 +20,7 @@ var GlobalParams = {
 	background:{zIndex:0}
 };
 
+
 var paella = {};
 paella.player = null;
 
@@ -29,7 +30,7 @@ paella.debug = {
 
 	log:function(msg) {
 		if (!this.init) {
-			this.debug = paella.utils.parameters.get('debug')=='true';
+			this.debug = /debug/.test(location.href);
 			this.init = true;
 		}
 		if (this.debug) {

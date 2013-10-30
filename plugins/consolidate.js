@@ -137,6 +137,9 @@ paella.plugins.ConsolidateEditorPlugin = Class.create(paella.editor.TrackPlugin,
 		}
 	},
 	
+	buildToolTabContent:function(tabContainer) {
+	},
+	
 	onSave:function(success) {
 		var data = {
 			consolidate:this.tracks

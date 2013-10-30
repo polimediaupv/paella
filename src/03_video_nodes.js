@@ -1,26 +1,30 @@
 paella.Profiles = {
 	loadProfile:function(profileName,onSuccessFunction) {
-		var url = "config/profiles/profiles.json";
-		var params = {};
-
-		new paella.Ajax(url,params,function(data) {
-			if (typeof(data)=="string") {
-				data = JSON.parse(data);
-			}
-			onSuccessFunction(data[profileName]);
-		});
+		var params = { url:"config/profiles/profiles.json" };
+		
+		paella.ajax.get(params,function(data,mimetype,code) {
+				if (typeof(data)=="string") {
+					data = JSON.parse(data);
+				}
+				onSuccessFunction(data[profileName]);
+			},
+			function(data,mimetype,code) {
+				paella.debug.log("Error loading video profiles. Check your Paella Player configuration");
+			});
 	},
 	
 	loadProfileList:function(onSuccessFunction) {
-		var url = "config/profiles/profiles.json";
-		var params = {};
-
-		new paella.Ajax(url,params,function(data) {
-			if (typeof(data)=="string") {
-				data = JSON.parse(data);
-			}
-			onSuccessFunction(data);
-		});
+		var params = { url:"config/profiles/profiles.json" };
+		
+		paella.ajax.get(params,function(data,mimetype,code) {
+				if (typeof(data)=="string") {
+					data = JSON.parse(data);
+				}
+				onSuccessFunction(data);
+			},
+			function(data,mimetype,code) {
+				paella.debug.log("Error loading video profiles. Check your Paella Player configuration");
+			});
 	}
 };
 

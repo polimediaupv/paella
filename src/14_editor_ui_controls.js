@@ -198,7 +198,7 @@ paella.editor.Timeline = Class.create({
 	content:null,
 	timeMarks:null,
 	tracks:null,
-	zoom:1000,
+	zoom:100,
 	trackItemList:null,
 	trackItemIndex:{
 		back:5,
