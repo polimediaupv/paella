@@ -39,13 +39,17 @@ paella.editor.ToolStatusPlugin = Class.create(paella.editor.RightBarPlugin,{
 		this.currentTextField = null;
 		var elem = document.createElement('div');
 		if (this.currentTrack) {
+			var plugin = paella.pluginManager.getPlugin(this.currentTrack.getName());
 			elem.innerHTML = "<h6>" + paella.dictionary.translate("Tool") + ": " + paella.dictionary.translate(this.currentTrack.getTrackName()) + "</h6>";
 			var trackList = this.currentTrack.getTrackItems();
 			var trackContainer = document.createElement('div');
 			trackContainer.className = "editorPluginToolStatus_trackItemList";
 			this.trackItemContainer = trackContainer;
-			for (var i=0;i<trackList.length;++i) {
-				this.addTrackData(trackContainer,trackList[i]);
+			plugin.buildToolTabContent(trackContainer);
+			if (trackContainer.childNodes.length==0) {
+				for (var i=0;i<trackList.length;++i) {
+					this.addTrackData(trackContainer,trackList[i]);
+				}
 			}
 			elem.appendChild(trackContainer);
 		}
@@ -95,7 +99,12 @@ paella.editor.ToolStatusPlugin = Class.create(paella.editor.RightBarPlugin,{
 				thisClass.onFocusChanged(this,this.plugin,this.trackData);
 			});
 			
-			var selectedTrackItemId = paella.editor.instance.bottomBar.timeline.currentTrackList.currentTrack.trackInfo.trackData.id;
+			var selectedTrackItemId = -1;
+			try {
+				selectedTrackItemId = this.currentTrack.trackInfo.trackData.id;
+			}
+			catch (e) { }
+//paella.editor.instance.bottomBar.timeline.currentTrackList.currentTrack.trackInfo.trackData.id;
 			if (selectedTrackItemId==id) {
 				this.currentTextField = contentElem;
 				this.currentTextField.style.backgroundColor = this.selectedColor;
