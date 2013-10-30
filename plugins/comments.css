@@ -20,8 +20,34 @@
 	padding-left: 13px;
 }
 
-/*.bottomContainer.big{
-width: 300px;
-overflow-x:auto;
-overflow-y:hidden;
-}*/
+.comments_entry {
+	margin-top: 5px;	
+	margin-bottom: 5px;	
+}
+
+.comments_entry_silhouette {
+	margin-top:10px;
+	float:left;
+	width:7%;
+}
+
+.comments_entry_container{
+	vertical-align: top;
+	margin-left: 55px;
+	width: 90%;
+}
+
+.comments_entry_container textarea {
+	width: 95%;
+	height: 45px;
+	margin-top:10px;
+	margin-bottom: 5px;
+	color: #52575c;
+}
+
+.publish {
+	margin-bottom: 10px;
+}
+
+
+
