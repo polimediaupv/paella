@@ -279,12 +279,22 @@ paella.InitDelegate = Class.create({
 	loadConfig:function(onSuccess) {
 		var configUrl = this.initParams.configUrl;
 		var params = {};
-		new paella.Ajax(configUrl,params,function(data) {
-			if (typeof(data)=="string") {
-				data = JSON.parse(data);
-			}
-			onSuccess(data);
-		});
+		params.url = configUrl;
+		paella.ajax.get(params,function(data,type,returnCode) {
+				if (typeof(data)=='string') {
+					try {
+						data = JSON.parse(data);
+					}
+					catch (e) {
+						onSuccess({});
+					}
+				}
+				paella.dictionary.addDictionary(data);
+				onSuccess(data);
+			},
+			function(data,type,returnCode) {
+				onSuccess({});
+			});
 	},
 
 	loadEditorConfig:function(onSuccess) {
