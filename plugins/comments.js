@@ -1,11 +1,11 @@
 paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
-	id:null,
 	divRoot:null,
 	divPublishComment:null,
 	divComments:null,
 	divLoading:null,
 	publishCommentTextArea:null,
 	publishCommentButtons:null,
+	commentsTree: [],
   
 	getSubclass:function() { return "showCommentsTabBar"; },
 	getName:function() { return "es.upv.paella.commentsPlugin"; },
@@ -40,6 +40,10 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		//container.appendChild(this.divPublishComment);
 		//container.appendChild(this.divLoading);
 		this.divRoot.appendChild(this.divComments);
+		
+		if(paella.initDelegate.initParams.accessControl.permissions.canWrite){
+		  this.createPublishComment();
+		}
 	  
 		/*var container = this.domElement;
 		container.innerHTML = "Loading...";
@@ -47,13 +51,11 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 			container.innerHTML = "Loading done";
 		},2000);*/
 		
-		this.createPublishComment();
+		//this.createPublishComment();
 		
 	},
 	
 	createPublishComment:function() {
-		
-		
 		var thisClass = this;
 		var rootID = this.divPublishComment.identifier+"_entry";
 		
@@ -110,17 +112,60 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
                 var textArea = document.getElementById(domNodeId);
 
 		var txtValue = textArea.value;
-		txtValue = txtValue.replace(/<>/g, "< >");  //TODO: Hacer este replace bien!
-		
-		var commentValue = paella.matterhorn.me.username + "<>" + txtValue + "<>reply<>"+annotationID;
-	
 		textArea.value = "";
 		
-		var restEndpoint = paella.player.config.restServer.url + "annotation"; 		
-		new paella.Ajax(restEndpoint,{episode:paella.matterhorn.episode.id, type:"comment", in:0, out:0, value:commentValue}, function(response) {
 			thisClass.reloadComments();
-		}, thisClass.proxyUrl, thisClass.useJsonp, 'PUT'); 
+	},
+	
+	reloadComments:function() {                          
+		
+	},
+	
+	setLoadingComments:function(b) {
+	},
+	
+	createACommentEntry:function(comment) {
+		var thisClass = this;
+		var rootID = this.divPublishComment.identifier+"_entry";
+		
+		this.divEntry = document.createElement('div');
+		this.divEntry.className = 'comments_entry';
+		
+		this.divComments.appendChild(this.divEntry);
+		
+		var divSil;
+		this.divSil = document.createElement('img');
+		this.divSil.className = 'comments_entry_silhouette';
+		this.divSil.src = "plugins/silhouette32.png";
+		this.divEntry.appendChild(this.divSil);
+		
+		var divTextAreaContainer;
+		this.divTextAreaContainer = document.createElement('div');
+		this.divTextAreaContainer.className = "comments_entry_container";
+		this.divEntry.appendChild(this.divTextAreaContainer);
+		//this.divTextAreaContainer.onclick = function(){thisClass.onClickTextAreaContainer(divTextAreaContainer)};
+		
+		this.publishCommentTextArea = document.createElement('textarea');
+		this.divTextAreaContainer.appendChild(this.publishCommentTextArea);
+		
+		this.publishCommentButtons = document.createElement('div');
+		this.divTextAreaContainer.className = "comments_entry_container"; 
+		this.divTextAreaContainer.appendChild(this.publishCommentButtons);
+		
+		var btnAddComment;
+		this.btnAddComment = document.createElement('button');
+		this.btnAddComment.className = "publish";
+		this.btnAddComment.onclick = function(){thisClass.addComment();};
+		this.btnAddComment.innerHTML = "Publicar";
+		
+		this.publishCommentButtons.appendChild(this.btnAddComment);
+		
+		this.divTextAreaContainer.commentsTextArea = this.publishCommentTextArea;
+		this.divTextAreaContainer.commentsBtnAddComment = this.btnAddComment;
+		this.divTextAreaContainer.commentsBtnAddCommentToInstant = this.btnAddCommentToInstant;
+	
 	}
+	
 
 });
   
