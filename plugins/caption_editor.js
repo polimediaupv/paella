@@ -120,7 +120,18 @@ paella.plugins.CaptionsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
 	
 	onSave:function(success) {
 		var data = {
-			captions:this.tracks
+			captions:[]
+		}
+		for (var i = 0; i<this.tracks.length; ++i) {
+			var track = this.tracks[i];
+			var trackParams = {}
+			for (var key in track) {
+				// Avoid write the DOM element
+				if (key!='elem') {
+					trackParams[key] = track[key];
+				}
+			}
+			data.captions.push(trackParams);
 		}
 		paella.data.write('captions',{id:paella.initDelegate.getId()},data,function(response,status) {
 			paella.plugins.captionsPlayerlugin.captions = data.captions;
