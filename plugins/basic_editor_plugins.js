@@ -99,7 +99,12 @@ paella.editor.ToolStatusPlugin = Class.create(paella.editor.RightBarPlugin,{
 				thisClass.onFocusChanged(this,this.plugin,this.trackData);
 			});
 			
-			var selectedTrackItemId = paella.editor.instance.bottomBar.timeline.currentTrackList.currentTrack.trackInfo.trackData.id;
+			var selectedTrackItemId = -1;
+			try {
+				selectedTrackItemId = this.currentTrack.trackInfo.trackData.id;
+			}
+			catch (e) { }
+//paella.editor.instance.bottomBar.timeline.currentTrackList.currentTrack.trackInfo.trackData.id;
 			if (selectedTrackItemId==id) {
 				this.currentTextField = contentElem;
 				this.currentTextField.style.backgroundColor = this.selectedColor;
