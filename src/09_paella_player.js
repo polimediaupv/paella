@@ -109,7 +109,7 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 
 	setupEditor:function() {
 		//if (paella.extended) return;
-		if (paella.editor && paella.player.config.editor && paella.player.config.editor.enabled) {
+		if (paella.editor && paella.player.config.editor && paella.player.config.editor.enabled && !paella.utils.userAgent.browser.IsMobileVersion) {
 			this.controls.showEditorButton();
 		}
 		else {

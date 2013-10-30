@@ -121,14 +121,16 @@ paella.DictionaryLoader = Class.create(paella.AsyncLoaderCallback,{
 						data = JSON.parse(data);
 					}
 					catch (e) {
-						onError();
+						//onError();
+						onSuccess();
 					}
 				}
 				paella.dictionary.addDictionary(data);
 				onSuccess();
 			},
 			function(data,type,returnCode) {
-				onError();
+				//onError();
+				onSuccess();
 			});
 	}
 });
