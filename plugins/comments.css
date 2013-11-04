@@ -1,25 +1,11 @@
-.CommentPlugin_Loading {
-    background-image: url("pluginloading.gif");
-    background-repeat: no-repeat;
-    background-position: center;
-    margin-top: 10px;
-    width: 100%;
-    height: 11px;
-    display:block;
-}
 
 #CommentPlugin_Publish_entry_buttons_area {
 	margin-top: 5px;
 }
 
-/*.comments_entry {
-	margin-top: 5px;	
-	margin-bottom: 5px;	
-}*/
-
 .comments_entry {
 	margin: 5px;
-	margin-bottom: 15px;
+	margin-bottom: 20px;
 	width: 90%;
 }
 
@@ -51,14 +37,15 @@
 
 .comments_entry_container{
 	vertical-align: top;
-	margin-left: 55px;
+	margin: 10px;
+	margin-left: 50px;
 	width: 100%;
 }
 
 .comments_entry_container textarea {
-	width: 95%;
+	width: 98%;
 	height: 45px;
-	margin-top:10px;
+	/*margin-top:10px;*/
 	margin-bottom: 5px;
 	color: #52575c;
 }
@@ -66,11 +53,8 @@
 .CommentPlugin_Publish {
 	box-shadow: inset 0px 0px 10px 2px rgba(10, 10,10, 0.39);
 	border-radius: 7px;
-	padding-left: 13px;
-}
-
-.publish {
-	margin-bottom: 10px;
+	padding: 10px;
+	padding-bottom: 1px;
 }
 
 
