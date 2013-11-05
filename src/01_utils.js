@@ -22,6 +22,7 @@ paella.AjaxCallback = Class.create(paella.AsyncLoaderCallback,{
 	data:null,
 	mimeType:null,
 	statusCode:null,
+	rawData:null,
 	
 	getParams:function() {
 		return this.params;
@@ -51,20 +52,22 @@ paella.AjaxCallback = Class.create(paella.AsyncLoaderCallback,{
 		var This = this;
 		if (typeof(this.willLoad)=='function') this.willLoad(this);
 		paella.ajax.send(this.type,this.getParams(),
-			function(data,type,code) {
+			function(data,type,code,rawData) {
 				var status = true;
 				This.data = data;
 				This.mimeType = type;
 				This.statusCode = code;
+				This.rawData = rawData;
 				if (typeof(This.didLoadSuccess)=='function') status = This.didLoadSuccess(This);
 				if (status) onSuccess();
 				else onFail();
 			},
-			function(data,type,code) {
+			function(data,type,code,rawData) {
 				var status = false;
 				This.data = data;
 				This.mimeType = type;
 				This.statusCode = code;
+				This.rawData = rawData;
 				if (typeof(This.didLoadFail)=='function') status = This.didLoadFail(This);
 				if (status) onSuccess();
 				else onFail();
@@ -171,6 +174,8 @@ paella.Dictionary = Class.create({
 		var value = this.dictionary[key];
 		if (value) return value;
 		else return key;
+		
+		
 	}
 });
 
