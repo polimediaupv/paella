@@ -239,6 +239,7 @@ paella.VideoContainer = Class.create(paella.VideoContainerBase,{
 
 	initialize:function(id) {
 		this.parent(id);
+		var thisClass = this;
 		this.containerId = id + '_container';
 		this.video1Id = id + '_1';
 		this.video2Id = id + '_2';
@@ -247,13 +248,18 @@ paella.VideoContainer = Class.create(paella.VideoContainerBase,{
 				
 		this.container = new paella.DomNode('div',this.containerId,{position:'relative',display:'block',marginLeft:'auto',marginRight:'auto',width:'1024px',height:'567px'});
 		this.addNode(this.container);
-		
+	
 		this.overlayContainer = new paella.VideoOverlay(this.domElement);
 		this.container.addNode(this.overlayContainer);
+	
+		var overlayLoader = document.createElement("div");
+		overlayLoader.className = "videoLoaderOverlay";
+		this.overlayContainer.addElement(overlayLoader,{left:0,top:0,width:1280,height:720});
+		//this.overlayContainer.addText("Loading",{left:0,top:0,width:1280,height:720},true);
+		paella.events.bind(paella.events.loadComplete,function() { thisClass.overlayContainer.clear(); });
 		
 		this.container.addNode(new paella.BackgroundContainer(this.backgroundId,'config/profiles/resources/default_background_paella.jpg'));
-		var thisClass = this;
-
+	
 		this.initEvents();
 		paella.events.bind(paella.events.timeupdate,function(event) { thisClass.checkVideoTrimming(); } );
 		

@@ -128,6 +128,7 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 		if (this.videoIdentifier) {
 			var thisClass = this;
 			var loader = paella.initDelegate.initParams.videoLoader;
+			this.onresize();
 			loader.loadVideo(this.videoIdentifier,function() {
 				var master = loader.streams[0];
 				var slave = loader.streams[1];
