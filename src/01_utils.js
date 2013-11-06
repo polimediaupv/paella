@@ -255,18 +255,30 @@ paella.utils = {
 	},
 
 	parameters:{
-		get:function(parameter) {
-			var url = location.href;
-			var index = url.indexOf("?");
-			index = url.indexOf(parameter,index) + parameter.length;
-			if (url.charAt(index)=="=") {
-				var result = url.indexOf("&",index);
-				if (result==-1) {
-					result = url.length;
+		list:null,
+
+		parse:function() {
+			if (!this.list) {
+				var url = window.location.href;
+				if (/http:\/\/([a-z0-9.\-_\/\~]*\?)([a-z0-9.\-_\%\=\&]*)\#*/i.test(url)) {
+					var params = RegExp.$2;
+					var paramArray = params.split('&');
+					this.list = {}
+					for (var i=0; i<paramArray.length;++i) {
+						var keyValue = paramArray[i].split('=');
+						var key = keyValue[0]
+						var value = keyValue.length==2 ? keyValue[1]:'';
+						this.list[key] = value;
+					}
 				}
-				return url.substring(index + 1, result);
+				else {
+					this.list = []
+				}
 			}
-			return "";
+		},
+
+		get:function(parameter) {
+			return this.list[parameter];
 		}
 	},
 
@@ -383,6 +395,8 @@ paella.utils = {
 	
 	userAgent:new UserAgent()
 }
+
+paella.utils.parameters.parse();
 
 paella.MouseManager = Class.create({
 	targetObject:null,
