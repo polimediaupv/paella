@@ -235,7 +235,7 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 		// TODO: No sé muy bien por qué pero si no se reproduce el vídeo al menos un segundo no funciona el setSeek
 		paella.events.trigger(paella.events.play);
 		new paella.utils.Timer(function(timer) {
-			var autoplay = paella.utils.parameters.get('autoplay');
+			var autoplay = paella.utils.parameters.list['autoplay'] ? paella.utils.parameters.list['autoplay']:'';
 			autoplay = autoplay.toLowerCase();
 			if (autoplay!='true' && autoplay!='yes') paella.events.trigger(paella.events.pause);
 			if (time) {

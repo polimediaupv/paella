@@ -46,6 +46,10 @@ paella.TabBarPlugin = Class.create(paella.ExtendedPlugin,{
 	getTabName:function() {
 		return "New Tab";
 	},
+	
+	action:function(tab) {
+		
+	},
 
 	buildContent:function(domElement) {
 		

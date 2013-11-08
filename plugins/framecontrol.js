@@ -77,6 +77,7 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 	},
 	
 	checkHighResFrames:function() {
+		
 		var slidesStream = paella.initDelegate.initParams.videoLoader.streams.length>=2 ? paella.initDelegate.initParams.videoLoader.streams[1]:null;
 		if (slidesStream && slidesStream.sources.image) {
 			this.highResFrames = {};

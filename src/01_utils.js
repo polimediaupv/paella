@@ -260,7 +260,7 @@ paella.utils = {
 		parse:function() {
 			if (!this.list) {
 				var url = window.location.href;
-				if (/http:\/\/([a-z0-9.\-_\/\~]*\?)([a-z0-9.\-_\%\=\&]*)\#*/i.test(url)) {
+				if (/https?:\/\/([a-z0-9.\-_\/\~:]*\?)([a-z0-9.\-_\%\=\&]*)\#*/i.test(url)) {
 					var params = RegExp.$2;
 					var paramArray = params.split('&');
 					this.list = {}
