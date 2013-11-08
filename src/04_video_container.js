@@ -77,6 +77,8 @@ paella.VideoContainerBase = Class.create(paella.DomNode,{
 	timeupdateInterval:250,
 	masterVideoData:null,
 	slaveVideoData:null,
+	currentMasterVideoData:null,
+	currentSlaveVideoData:null,
 
 	initialize:function(id) {
 		var style = {position:'absolute',left:'0px',right:'0px',top:'0px',bottom:'0px',overflow:'hidden'}
@@ -607,6 +609,8 @@ paella.VideoContainer = Class.create(paella.VideoContainerBase,{
 			}
 			
 			selectedSource = this.getVideoQuality(selectedSource,stream);
+			if (stream=='master') this.currentMasterVideoData = selectedSource;
+			else if (stream=='slave') this.currentSlaveVideoData = selectedSource;
 			videoNode.addSource(selectedSource);
 		}
 	},
