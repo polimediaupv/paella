@@ -75,6 +75,8 @@ paella.VideoContainerBase = Class.create(paella.DomNode,{
 	trimming:{enabled:false,start:0,end:0},
 	timeupdateEventTimer:null,
 	timeupdateInterval:250,
+	masterVideoData:null,
+	slaveVideoData:null,
 
 	initialize:function(id) {
 		var style = {position:'absolute',left:'0px',right:'0px',top:'0px',bottom:'0px',overflow:'hidden'}
@@ -488,6 +490,7 @@ paella.VideoContainer = Class.create(paella.VideoContainerBase,{
 		var thisClass = this;
 		this.sourceData.push(masterVideoData);
 		this.setupVideo(masterVideo,masterVideoData,type,'master');
+		this.masterVideoData = masterVideoData;
 		new Timer(function(timer) {
 			if (masterVideo.isReady()) {
 				thisClass.isMasterReady = true;
@@ -528,6 +531,7 @@ paella.VideoContainer = Class.create(paella.VideoContainerBase,{
 		var thisClass = this;
 		this.sourceData.push(slaveVideoData);
 		this.setupVideo(slaveVideo,slaveVideoData,type,'slave');
+		this.slaveVideoData = slaveVideoData;
 		new Timer(function(timer) {
 			if (slaveVideo.isReady()) {
 				thisClass.isSlaveReady = true;
@@ -547,7 +551,7 @@ paella.VideoContainer = Class.create(paella.VideoContainerBase,{
 		this.isMonoStream = true;
 		this.isSlaveReady = true;
 	},
-	
+
 	getVideoQuality:function(source,stream) {
 		if (source.length>0) {
 			var query = paella.utils.parameters.list['res' + stream];
