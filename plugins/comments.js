@@ -8,8 +8,6 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 	comments: [],
 	commentsTree: [],
 	domElement:null,
-	proxyUrl:'',
-	useJsonp: false,
   
 	getSubclass:function() { return "showCommentsTabBar"; },
 	getName:function() { return "es.upv.paella.commentsPlugin"; },
@@ -40,7 +38,6 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 
 		this.divRoot.appendChild(this.divComments);
 		
-		//this.canPublishAComment = false;
 		if(this.canPublishAComment){
 			this.divRoot.appendChild(this.divPublishComment);
 			this.createPublishComment();
@@ -73,6 +70,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		this.publishCommentTextArea = document.createElement('textarea');
 		this.publishCommentTextArea.id = rootID+"_textarea";
 		this.publishCommentTextArea.onclick = function(){paella.keyManager.enabled = false;};
+		this.publishCommentTextArea.onblur = function(){paella.keyManager.enabled = true;};
 		divTextAreaContainer.appendChild(this.publishCommentTextArea);
 		
 		this.publishCommentButtons = document.createElement('div');
@@ -83,7 +81,13 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		btnAddComment = document.createElement('button');
 		btnAddComment.id = rootID+"_btnAddComment";
 		btnAddComment.className = "publish";
-		btnAddComment.onclick = function(){thisClass.addComment();};
+		btnAddComment.onclick = function(){
+			var txtValue = thisClass.publishCommentTextArea.value;
+			console.log(txtValue);
+			if (txtValue.replace(/\s/g,'') != "") {
+				thisClass.addComment();
+			}
+		};
 		btnAddComment.innerHTML = paella.dictionary.translate("Publish");
 		
 		this.publishCommentButtons.appendChild(btnAddComment);
@@ -97,23 +101,11 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		
 	addComment:function(){
 		var thisClass = this;
-		paella.keyManager.enabled = true;
 		var txtValue = thisClass.publishCommentTextArea.value;
-		txtValue = txtValue.replace(/<>/g, "< >");  
-		
-		//var commentValue = "UserName" + "<>" + txtValue + "<>normal";
 		var now = new Date();
 		
-		var day = now.getDate();
-		var month = now.getMonth();
-		var year = now.getFullYear();
-		var hour = now.getHours();
-		var min = now.getMinutes();
-		var sec = now.getSeconds();
-		var milli = now.getMilliseconds();
-		
 		this.comments.push({
-			id: milli,
+			id: now,
 			userName:"UserName",
 			mode: "normal",
 			value: txtValue,
@@ -125,8 +117,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		}
 		
 		paella.data.write('comments',{id:paella.initDelegate.getId()},data,function(response,status){
-			if (status) {thisClass.loadContent();
-			console.log('He escrito: '+data);}
+			if (status) {thisClass.loadContent();}
 		});
 	},
 	
@@ -134,15 +125,12 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		var thisClass = this;
 		paella.keyManager.enabled = true;
 		var textArea = document.getElementById(domNodeId);
-
 		var txtValue = textArea.value;
 		textArea.value = "";
-		
 		var now = new Date();
-		var milli = now.getMilliseconds();
 
 		this.comments.push({
-			id: milli,
+			id: now,
 			userName:"UserName",
 			mode: "reply",
 			parent: annotationID,
@@ -174,7 +162,6 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 				// obtain normal comments  
 				for (var i =0; i < data.allComments.length; ++i ){
 					var valueText = data.allComments[i].value;
-					valueText = valueText.replace(/\n/g,"<br/>");
                                                 
 					if (data.allComments[i].mode !== "reply") { 
 						var comment = {};
@@ -193,7 +180,6 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 				// obtain reply comments
 				for (var i =0; i < data.allComments.length; ++i ){
 					var valueText = data.allComments[i].value;
-					valueText = valueText.replace(/\n/g,"<br/>");
 
 					if (data.allComments[i].mode === "reply") { 
 						var comment = {};
@@ -219,7 +205,6 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
             var e = thisClass.createACommentEntry(comment);
             thisClass.divComments.appendChild(e);
           } 
-
         },
 	
 	createACommentEntry:function(comment) {
@@ -368,13 +353,19 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		btnAddComment = document.createElement('button');
 		btnAddComment.id = rootID+"_btnAddComment";
 		btnAddComment.className = "publish";
-		btnAddComment.onclick = function(){thisClass.addReply(annotationID,textArea.id);};
+		btnAddComment.onclick = function(){
+			var txtValue = textArea.value;
+			if (txtValue.replace(/\s/g,'') != "") {
+				thisClass.addReply(annotationID,textArea.id);
+			}
+		};
 		btnAddComment.innerHTML = paella.dictionary.translate("Reply");
 		
 		this.publishCommentButtons.appendChild(btnAddComment);
 		
 		return divEntry;
 	}
+	
 });
   
 
