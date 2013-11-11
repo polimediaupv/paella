@@ -6,6 +6,12 @@ paella.AccessControl = Class.create({
 		loadError:true,
 		isAnonymous:false
 	},
+	
+	userData:{
+		login:'',
+		name:'',
+		avatar:'',
+	},
 
 	checkAccess:function(onSuccess) {
 		onSuccess(this.permissions);
@@ -19,6 +25,9 @@ paella.DefaultAccessControl = Class.create(paella.AccessControl,{
 		this.permissions.canWrite = false;
 		this.permissions.loadError = false;
 		this.permissions.isAnonymous = true;
+		this.userData.login = 'anonymous';
+		this.userData.name = 'Anonymous';
+		this.userData.avatar = 'resources/images/default_avatar.png';
 		onSuccess(this.permissions);
 	}
 });

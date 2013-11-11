@@ -72,21 +72,6 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 		});
 		
 		paella.events.bind(paella.events.timeupdate,function(event,params) { This.onTimeUpdate(params.currentTime) });
-		
-		//this.checkHighResFrames();
-	},
-	
-	checkHighResFrames:function() {
-	/*	var slides = paella.initDelegate.initParams.videoLoader;
-		console.log(slides);
-		var slidesStream = paella.initDelegate.initParams.videoLoader.streams.length>=2 ? paella.initDelegate.initParams.videoLoader.streams[1]:null;
-		if (slidesStream && slidesStream.sources.image) {
-			this.highResFrames = {};
-			for (var key in slidesStream.sources.image.frames) {
-				var src = slidesStream.sources.image.frames[key];
-				this.highResFrames[key] = src;
-			}
-		}*/
 	},
 	
 	showHiResFrame:function(url) {

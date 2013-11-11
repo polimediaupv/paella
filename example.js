@@ -81,6 +81,9 @@ var MyAccessControl = Class.create(paella.AccessControl,{
 		this.permissions.canContribute = true;
 		this.permissions.loadError = false;
 		this.permissions.isAnonymous = true;
+		this.userData.login = 'anonymous';
+		this.userData.name = 'Anonymous';
+		this.userData.avatar = 'resources/images/default_avatar.png';
 		onSuccess(this.permissions);
 	}
 });

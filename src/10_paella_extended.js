@@ -211,7 +211,10 @@ paella.Extended = Class.create({
 		plugin.buildContent(tabContent);
 		
 		// Show tab
-		this.showTab(tabIndex);
+		if (this.firstTabShown===undefined) {
+			this.showTab(tabIndex);
+			this.firstTabShown = true;
+		}
 		++this.currentTabIndex;
 	},
 	
