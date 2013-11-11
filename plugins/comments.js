@@ -83,7 +83,6 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		btnAddComment.className = "publish";
 		btnAddComment.onclick = function(){
 			var txtValue = thisClass.publishCommentTextArea.value;
-			console.log(txtValue);
 			if (txtValue.replace(/\s/g,'') != "") {
 				thisClass.addComment();
 			}
@@ -105,8 +104,8 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		var now = new Date();
 		
 		this.comments.push({
-			id: now,
-			userName:"UserName",
+			id: paella.utils.uuid(),
+			userName:paella.initDelegate.initParams.accessControl.userData.name,
 			mode: "normal",
 			value: txtValue,
 			created: now
@@ -123,15 +122,15 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 	
 	addReply:function(annotationID, domNodeId){
 		var thisClass = this;
-		paella.keyManager.enabled = true;
 		var textArea = document.getElementById(domNodeId);
 		var txtValue = textArea.value;
-		textArea.value = "";
 		var now = new Date();
+		
+		paella.keyManager.enabled = true;
 
 		this.comments.push({
-			id: now,
-			userName:"UserName",
+			id: paella.utils.uuid(),
+			userName:paella.initDelegate.initParams.accessControl.userData.name,
 			mode: "reply",
 			parent: annotationID,
 			value: txtValue,
@@ -220,7 +219,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		divSil = document.createElement('img');
 		divSil.className = "comments_entry_silhouette";
 		divSil.id = rootID+"_silhouette";
-		divSil.src = "plugins/silhouette32.png";
+		divSil.src = paella.initDelegate.initParams.accessControl.userData.avatar;
 		divEntry.appendChild(divSil);
 		
 		var divCommentContainer;
@@ -285,7 +284,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		divSil = document.createElement('img');
 		divSil.className = "comments_entry_silhouette";
 		divSil.id = rootID+"_silhouette";
-		divSil.src = "plugins/silhouette32.png";
+		divSil.src = paella.initDelegate.initParams.accessControl.userData.avatar;
 		divEntry.appendChild(divSil);
 			
 		var divCommentContainer;
