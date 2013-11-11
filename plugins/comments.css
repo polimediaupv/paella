@@ -29,8 +29,6 @@
 }
 
 .comments_entry_silhouette {
-	content: url("silhouette32.png");
-	/*margin-top:10px;*/
 	float:left;
 	width:6%;
 }
