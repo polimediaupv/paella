@@ -105,6 +105,7 @@ var MyVideoLoader = Class.create(paella.VideoLoader, {
 			this.frameList = exampleFrameList;
 			for (var key in this.frameList) {
 				this.frameList[key].url = url + this.frameList[key].url;
+				this.frameList[key].thumb = url + this.frameList[key].thumb;
 			}
 		}
 	
