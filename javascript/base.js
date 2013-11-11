@@ -1226,7 +1226,7 @@ var base = {}
 
 // This class requires jquery
 base.ajax = {
-	// onSuccess/onFail(data,type,returnCode)
+	// onSuccess/onFail(data,type,returnCode,rawData)
 	send:function(type,params,onSuccess,onFail) {
 		this.assertParams(params);
 
@@ -1240,13 +1240,13 @@ base.ajax = {
 		if (typeof(onSuccess)=='function') {
 			ajaxObj.done(function(data,textStatus,jqXHR) {
 				var contentType = jqXHR.getResponseHeader('content-type')
-				onSuccess(data,contentType,jqXHR.status);
+				onSuccess(data,contentType,jqXHR.status,jqXHR.responseText);
 			});
 		}
 		
 		if (typeof(onFail)=='function') {
 			ajaxObj.fail(function(jqXHR,textStatus,error) {
-				onFail(textStatus + ' : ' + error,'text/plain',jqXHR.status);
+				onFail(textStatus + ' : ' + error,'text/plain',jqXHR.status,textStatus + ' : ' + error);
 			});
 		}
 	},

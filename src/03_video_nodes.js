@@ -1,3 +1,4 @@
+
 paella.Profiles = {
 	loadProfile:function(profileName,onSuccessFunction) {
 		var params = { url:"config/profiles/profiles.json" };
