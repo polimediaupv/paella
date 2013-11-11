@@ -68,7 +68,7 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 			if (!permissions.loadError) {
 				paella.debug.log("read:" + permissions.canRead + ", contribute:" + permissions.canContribute + ", write:" + permissions.canWrite);
 				if (permissions.canWrite) {
-					thisClass.setupEditor();
+					//thisClass.setupEditor();
 					paella.events.bind(paella.events.showEditor,function(event) { thisClass.showEditor(); });
 					paella.events.bind(paella.events.hideEditor,function(event) { thisClass.hideEditor(); });
 				}
@@ -107,15 +107,15 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 		paella.messageBox.showError(message);
 	},
 
-	setupEditor:function() {
+	//setupEditor:function() {
 		//if (paella.extended) return;
-		if (paella.editor && paella.player.config.editor && paella.player.config.editor.enabled && !paella.utils.userAgent.browser.IsMobileVersion) {
-			this.controls.showEditorButton();
-		}
-		else {
-			setTimeout('paella.player.setupEditor()',500);
-		}
-	},
+	//	if (paella.editor && paella.player.config.editor && paella.player.config.editor.enabled && !paella.utils.userAgent.browser.IsMobileVersion) {
+			//this.controls.showEditorButton();
+	//	}
+	//	else {
+	//		setTimeout('paella.player.setupEditor()',500);
+	//	}
+	//},
 	
 	showEditor:function() {
 		new paella.editor.Editor();

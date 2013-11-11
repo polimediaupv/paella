@@ -285,7 +285,16 @@ paella.ButtonPlugin = Class.create(paella.Plugin,{
 	getButtonType:function() {
 		//return paella.ButtonPlugin.type.popUpButton;
 		//return paella.ButtonPlugin.type.timeLineButton;
+		//return paella.ButtonPlugin.type.videoContainerButton;
 		return paella.ButtonPlugin.type.actionButton;
+	},
+	
+	hideButton:function() {
+		$(this.button).hide();
+	},
+	
+	showButton:function() {
+		$(this.button).show();
 	},
 	
 	// Utility functions: do not override
@@ -327,6 +336,7 @@ paella.ButtonPlugin.buildPluginButton = function(plugin,id) {
 	elem.className = plugin.getClassName();
 	elem.id = id;
 	elem.plugin = plugin;
+	plugin.button = elem;
 	plugin.container = elem;
 	$(elem).click(function(event) {
 		this.plugin.action(this);
@@ -344,6 +354,23 @@ paella.ButtonPlugin.buildPluginPopUp = function(parent,plugin,id) {
 	plugin.buildContent(elem);
 	return elem;
 }
+
+paella.VideoOverlayButtonPlugin = Class.create(paella.ButtonPlugin,{
+	type:'videoOverlayButton',
+	
+	// Returns the button subclass.
+	getSubclass:function() {
+		return "myVideoOverlayButtonPlugin";
+	},
+
+	action:function(button) {
+		// Implement this if you want to do something when the user push the plugin button
+	},
+
+	getName:function() {
+		return "VideoOverlayButtonPlugin";
+	}
+});
 
 
 paella.EventDrivenPlugin = Class.create(paella.Plugin,{

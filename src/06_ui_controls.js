@@ -140,6 +140,7 @@ paella.PlaybackControl = Class.create(paella.DomNode,{
 		var thisClass = this;
 
 		var id = 'buttonPlugin' + this.buttonPlugins.length;
+		this.buttonPlugins.push(plugin);
 		var button = paella.ButtonPlugin.buildPluginButton(plugin,id);
 		plugin.button = button;
 		this.pluginsContainer.domElement.appendChild(button);
@@ -217,6 +218,26 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 	hideControlsTimeMillis:3000,
 
 	playbackControlInstance:null,
+	
+	videoOverlayButtons:null,
+	
+	buttonPlugins:[],
+	
+	addPlugin:function(plugin) {
+		var thisClass = this;
+		var id = 'videoOverlayButtonPlugin' + this.buttonPlugins.length;
+		this.buttonPlugins.push(plugin);
+		var button = paella.ButtonPlugin.buildPluginButton(plugin,id);
+		this.videoOverlayButtons.domElement.appendChild(button);
+		plugin.button = button;
+		$(button).hide();
+		plugin.checkEnabled(function(isEnabled) {
+			if (isEnabled) {
+				$(plugin.button).show();
+				plugin.setup();
+			}
+		});
+	},
 
 	initialize:function(id) {
 		this.parent('div',id);
@@ -232,6 +253,12 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 		paella.events.bind(paella.events.pause,function(event) { thisClass.onPauseEvent(); });
 		paella.events.bind('mousemove',function(event) { thisClass.onMouseMoveEvent(); });
 		paella.events.bind(paella.events.endVideo,function(event) { thisClass.onEndVideoEvent(); });
+		
+		this.videoOverlayButtons = new paella.DomNode('div',id + '_videoOverlayButtonPlugins');
+		this.videoOverlayButtons.domElement.className = 'videoOverlayButtonPlugins';
+		this.addNode(this.videoOverlayButtons);
+		
+		paella.pluginManager.setTarget('videoOverlayButton',this);
 	},
 	
 	onShowEditor:function() {
@@ -244,9 +271,9 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 		if (editControl) $(editControl.domElement).show();
 	},
 
-	showEditorButton:function() {
-		this.addNode(new EditControl(this.editControlId));
-	},
+//	showEditorButton:function() {
+//		this.addNode(new EditControl(this.editControlId));
+//	},
 	
 	enterEditMode:function() {
 		var playbackControl = this.playbackControl();
