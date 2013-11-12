@@ -6,7 +6,9 @@ paella.plugins.ExtendedProfilesPlugin = Class.create(paella.ButtonPlugin,{
 	getIndex:function() { return 102; },
 	getMinWindowSize:function() { return 300; },
 	getName:function() { return "es.upv.paella.extendedProfilesPlugin"; },
-	checkEnabled:function(onSuccess) { onSuccess(paella.extended); },
+	checkEnabled:function(onSuccess) {
+		onSuccess(paella.extended);
+	},
 	
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
 	

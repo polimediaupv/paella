@@ -161,6 +161,9 @@ paella.PlaybackControl = Class.create(paella.DomNode,{
 					thisClass.timeLinePluginContainer.registerContainer(plugin.getName(),timeLineContent,button,plugin);
 				}
 			}
+			else {
+				thisClass.pluginsContainer.domElement.removeChild(plugin.button);
+			}
 		});
 	},
 
