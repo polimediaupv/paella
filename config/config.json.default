@@ -11,22 +11,26 @@
 		"defaultProfile": "full",
 		"methods":[{"name":"streaming","enabled":true},
 				   {"name":"html","enabled":true},
+				   {"name":"image","enabled":true},
 				   {"name":"flash","enabled":true}]
 	},
 	"editor":{
 			"enabled":true
 	},
 	"defaultProfile":"slide_professor",
-	"trimming":{
-		"enabled":false
-	},
-	"publish":{
-		"enabled":true
-	},
 	"data":{
 		"enabled":true,
 		"dataDelegates":{
-			"default":"CookieDataDelegate"
+			"default":"CookieDataDelegate",
+			"trimming":"CookieDataDelegate"
+		}
+	},
+	"plugins":{
+		"defaultConfig":{"enabled":true},
+		"list":{
+			"es.upv.paella.ShowEditorPlugin":{"enabled":true,"alwaysVisible":true},
+			"es.upv.paella.TrimmingPlayerPlugin":{"enabled":true},
+			"es.upv.paella.editor.TrimmingTrackPlugin":{"enabled":true}
 		}
 	}
 }
