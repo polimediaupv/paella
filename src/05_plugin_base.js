@@ -37,10 +37,19 @@ paella.PluginManager = Class.create({
 	},
 
 	loadPlugins:function() {
+		var pluginConfig = paella.player.config.plugins;
+		if (!pluginConfig) {
+			pluginConfig = {defaultConfig:{enabled:true},list:{}}
+		}
 		for (var i=0; i<this.pluginList.length; ++i) {
 			var plugin = this.pluginList[i];
-			paella.debug.log("loading plugin " + plugin.getName());
-			plugin.load(this);
+			var name = plugin.getName();
+			var config = pluginConfig.list[name];
+			if ((config && config.enabled) || !config) {
+				paella.debug.log("loading plugin " + name);
+				plugin.config = config;
+				plugin.load(this);
+			}
 		}
 	},
 	

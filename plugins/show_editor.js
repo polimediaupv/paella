@@ -36,7 +36,7 @@ paella.ShowEditorPlugin = Class.create(paella.VideoOverlayButtonPlugin,{
 	},
 
 	getName:function() {
-		return "es.upv.ShowEditorPlugin";
+		return "es.upv.paella.ShowEditorPlugin";
 	}
 });
 
