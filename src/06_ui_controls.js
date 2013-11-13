@@ -172,13 +172,12 @@ paella.PlaybackControl = Class.create(paella.DomNode,{
 		this.parent('div',id,style);
 		this.domElement.className = 'playbackControls';
 		this.playbackBarId = id + '_playbackBar';
-		
 
 		var thisClass = this;
 		this.pluginsContainer = new paella.DomNode('div',id + '_playbackBarPlugins');
 		this.pluginsContainer.domElement.className = 'playbackBarPlugins';
 		this.addNode(this.pluginsContainer);
-		
+
 		this.popUpPluginContainer = new paella.PopUpContainer(id + '_popUpPluginContainer','popUpPluginContainer');
 		this.addNode(this.popUpPluginContainer);
 		this.timeLinePluginContainer = new paella.TimelineContainer(id + '_timelinePluginContainer','timelinePluginContainer');

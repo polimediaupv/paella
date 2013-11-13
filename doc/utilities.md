@@ -4,10 +4,13 @@ The paella utilities framework provides with a series of tools to make the most 
 
 The Paella Utility Framework are divided in two sections: Paella Utility Classes (PUC) and Paella Utility Objects (PUO). The main difference between PUC and PUO is that in the first case we'll use these utilities through instantiation, while in the second case we'll use the predefined objects without the need to instantiate them. All objects in PUO are accessible through the `paella.utils` namespace, while the PUC classes are defined directly inside the `paella` namespace
 
-## Paella Utility Classes (PUC) ##
+## Paella Utility Classes ##
 
 paella.Ajax
 -----------
+
+### paella.Ajax is deprecated, use paella.utils.ajax instead
+
 Provides with an standarized way to make Ajax requests. Example:
 
 	var url = "resource_url";
@@ -143,7 +146,28 @@ Register cookie data delegate in config.json
 	}
 
 
-## Paella Utility Objects (PUO) ##
+## Paella Utility Objects ##
+
+paella.utils.ajax: send AJAX request. You can also use the shorter form "paella.ajax"
+--------------------
+
+	paella.utils.ajax.get(params,onSuccess,onFail): Send a 'GET' request
+	paella.utils.ajax.post(params,onSuccess,onFail): Send a 'POST' request
+	paella.utils.ajax.put(params,onSuccess,onFail): Send a 'PUT' request
+	paella.utils.ajax.delete(params,onSuccess,onFail): Send a 'DELETE' request
+
+- params: Object containing the following data:
+
+	- url: server URL.
+	- params: object containing the key/value form request parameters. This parameter is optional
+
+- onSuccess, onFail: AJAX return callbacks. Both have the following parameters:
+	- data: Result data. This data will be parsed if Paella know how to do it, for example, if the result data mimetype is application/json, this parameter will be a JavaScript object.
+	- mimetype: Mimetype string.
+	- responseCode: Server result code
+	- rawData: Unparsed result data.
+	
+	
 
 paella.utils.cookies: set and get cookies
 --------------------

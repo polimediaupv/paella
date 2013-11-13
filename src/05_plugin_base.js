@@ -45,6 +45,14 @@ paella.PluginManager = Class.create({
 			var plugin = this.pluginList[i];
 			var name = plugin.getName();
 			var config = pluginConfig.list[name];
+			if (!config) {
+				config = pluginConfig.defaultConfig;
+			}
+			else {
+				for (var key in pluginConfig.defaultConfig) {
+					if (config[key]===undefined) config[key] = pluginConfig.defaultConfig[key];
+				}
+			}
 			if ((config && config.enabled) || !config) {
 				paella.debug.log("loading plugin " + name);
 				plugin.config = config;
@@ -294,7 +302,6 @@ paella.ButtonPlugin = Class.create(paella.Plugin,{
 	getButtonType:function() {
 		//return paella.ButtonPlugin.type.popUpButton;
 		//return paella.ButtonPlugin.type.timeLineButton;
-		//return paella.ButtonPlugin.type.videoContainerButton;
 		return paella.ButtonPlugin.type.actionButton;
 	},
 	

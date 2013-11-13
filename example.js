@@ -37,6 +37,7 @@ var exampleSlidesSources = {
 				frame_613:'/image/frame_613.jpg',
 				frame_658:'/image/frame_658.jpg'
 			},
+			type:"image/jpeg",
 			duration:928,
 			res:{w:1024,h:768}
 		} ]

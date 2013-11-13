@@ -30,7 +30,9 @@
 		"list":{
 			"es.upv.paella.ShowEditorPlugin":{"enabled":true,"alwaysVisible":true},
 			"es.upv.paella.TrimmingPlayerPlugin":{"enabled":true},
-			"es.upv.paella.editor.TrimmingTrackPlugin":{"enabled":true}
+			"es.upv.paella.editor.TrimmingTrackPlugin":{"enabled":true},
+			"es.upv.paella.playPauseButtonPlugin":{"enabled":true},
+			"es.upv.paella.repeatButtonPlugin":{"enabled":true}
 		}
 	}
 }
