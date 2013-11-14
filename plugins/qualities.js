@@ -1,18 +1,40 @@
 paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 	currentUrl:null,
-	availableMasters:null,
-	availableSlaves:null,
-	variousQualities: true,
+	currentMaster:null,
+	currentSlave:null,
+	availableMasters:[],
+	availableSlaves:[],
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "showMultipleQualitiesPlugin"; },
 	getIndex:function() { return 105; },
 	getMinWindowSize:function() { return 300; },
 	getName:function() { return "es.upv.paella.multipleQualitiesPlugin"; },
-	checkEnabled:function(onSuccess) {
-		this.availableMasters = paella.player.videoContainer.masterVideoData.sources.mp4;
-		this.availableSlaves = paella.player.videoContainer.slaveVideoData.sources.mp4;
-		//onSuccess((this.availableMasters.length > 1) || (this.availableSlaves.length > 1)); 
-		onSuccess(true);
+	checkEnabled:function(onSuccess) { onSuccess(this.checkStreams()); },
+						      
+	checkStreams:function(){
+		this.currentMaster = paella.player.videoContainer.currentMasterVideoData;
+		this.currentSlave = paella.player.videoContainer.currentSlaveVideoData;
+		
+		var allMasterSources = paella.player.videoContainer.masterVideoData.sources;
+		var allSlaveSources = paella.player.videoContainer.slaveVideoData.sources;
+		
+		for (key in allMasterSources){
+			for (var j =0; j < allMasterSources[key].length; ++j ){ 
+				if ((allMasterSources[key][j].type == this.currentMaster.type)){
+					this.availableMasters.push(allMasterSources[key][j]);
+				}
+			}
+		}
+		
+		for (key in allSlaveSources){
+			for (var j =0; j < allSlaveSources[key].length; ++j ){
+				if ((allSlaveSources[key][j].type == this.currentSlave.type)){
+					this.availableSlaves.push(allSlaveSources[key][j]);
+				}
+			}
+		}
+		
+		return (this.availableMasters.length > 1 || this.availableSlaves.length > 1)
 	},
 	
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
@@ -20,90 +42,62 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 	buildContent:function(domElement) {
 		var thisClass = this;
 		this.currentUrl = window.location;
-		
-		var currentMaster = paella.player.videoContainer.currentMasterVideoData;
-		var currentSlave = paella.player.videoContainer.currentSlaveVideoData;
 			
 		var selectQuality = document.createElement('div');
 		selectQuality.className = 'selectQuality';
 		
-		if (this.availableMasters.length +1 > 1){
-			var comboM = document.createElement('select');
-			comboM.id = 'master';
-			$(comboM).change(function() {
-				var quality = $(comboM).val();
-				thisClass.changeVideoStream(quality,comboM.id);
-			});
+		var labelM = document.createElement('label');
+		labelM.innerHTML = paella.dictionary.translate("Presenter");
+				
+		var comboM = document.createElement('select');
+		comboM.id = 'master';
+		$(comboM).change(function() {
+			var param1Q = $(comboM).val();
+			thisClass.changeVideoStream(param1Q,comboM.id);
+		});
 			
-			var labelM = document.createElement('label');
-			labelM.innerHTML = paella.dictionary.translate("Presenter");
-			
-			for (var i =0; i < this.availableMasters.length; ++i ){
-				if ((this.availableMasters[i].type == currentMaster.type)){
-					var w = this.availableMasters[i].res.w;
-					var h = this.availableMasters[i].res.h
-					var option = document.createElement('option');
-					option.value = w+"x"+h;
-					option.innerHTML = w+" x "+h;
-					if ((this.availableMasters[i].res.w == currentMaster.res.w) 
-					&& (this.availableMasters[i].res.h == currentMaster.res.h)){
-						option.setAttribute('selected',true);
-					}
-					comboM.appendChild(option);
+		if (this.availableMasters.length > 1){
+			for (var j =0; j < this.availableMasters.length; ++j ){
+				var w = this.availableMasters[j].res.w;
+				var h = this.availableMasters[j].res.h
+				var option = document.createElement('option');
+				option.value = w+"x"+h;
+				option.innerHTML = w+" x "+h;
+				if ((w == this.currentMaster.res.w) && (h == this.currentMaster.res.h)){
+					option.setAttribute('selected',true);
 				}
+				comboM.appendChild(option);	
 			}
-			option = document.createElement('option');
-			option.value = '1x1';
-			option.innerHTML = '1';
-			comboM.appendChild(option);
-			
-			option = document.createElement('option');
-			option.value = '2x2';
-			option.innerHTML = '2';
-			comboM.appendChild(option);
-			
 			selectQuality.appendChild(labelM);
 			selectQuality.appendChild(comboM);
 		}
 		
-		if (this.availableSlaves.length +1 > 1){
-			var comboS = document.createElement('select');
-			comboS.id = 'slave';
-			$(comboS).change(function() {
-				var quality = $(comboS).val();
-				thisClass.changeVideoStream(quality,comboS.id);
-			});
+		var labelS = document.createElement('label');
+		labelS.innerHTML = paella.dictionary.translate("Slide");
 		
-			var labelS = document.createElement('label');
-			labelS.innerHTML = paella.dictionary.translate("Slide");
-			for (var i =0; i < this.availableSlaves.length; ++i ){
-				if ((this.availableMasters[i].type == currentMaster.type)){
-					var w = this.availableSlaves[i].res.w;
-					var h = this.availableSlaves[i].res.h
-					var option = document.createElement('option');
-					option.value = w+"x"+h;
-					option.innerHTML = w+" x "+h;
-					if ((this.availableMasters[i].res.w == currentMaster.res.w) 
-					&& (this.availableMasters[i].res.h == currentMaster.res.h)){
-						option.setAttribute('selected',true);
-					}
-					comboS.appendChild(option);
+		var comboS = document.createElement('select');
+		comboS.id = 'slave';
+		$(comboS).change(function() {
+			var param1Q = $(comboS).val();
+			thisClass.changeVideoStream(param1Q,comboS.id);
+		});
+			
+		if (this.availableSlaves.length > 1){
+			for (var j =0; j < this.availableSlaves.length; ++j ){
+				var w = this.availableSlaves[j].res.w;
+				var h = this.availableSlaves[j].res.h
+				var option = document.createElement('option');
+				option.value = w+"x"+h;
+				option.innerHTML = w+" x "+h;
+				if ((w == this.currentSlave.res.w) && (h == this.currentSlave.res.h)){
+					option.setAttribute('selected',true);
 				}
+				comboS.appendChild(option);	
 			}
-			
-			option = document.createElement('option');
-			option.value = '3x3';
-			option.innerHTML = '3';
-			comboS.appendChild(option);
-			
-			option = document.createElement('option');
-			option.value = '4x4';
-			option.innerHTML = '4';
-			comboS.appendChild(option);
-			
 			selectQuality.appendChild(labelS);
 			selectQuality.appendChild(comboS);
 		}
+		
 		domElement.appendChild(selectQuality);
 	},
 	
@@ -127,9 +121,9 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 		window.open (newUrl,'_self',false)
 	},
 	
-	constructNewUrl:function(jefe,quality,otro,otroRes) {
+	constructNewUrl:function(param1,param1Q,param2,param2Q) {
 		var iniUrl = this.currentUrl.href.split("&");
-		return iniUrl[0]+"&"+jefe+"="+quality+((otroRes) ? "&"+otro+"="+otroRes:'');
+		return iniUrl[0]+"&"+param1+"="+param1Q+((param2Q) ? "&"+param2+"="+param2Q:'');
 	}
 });
   
