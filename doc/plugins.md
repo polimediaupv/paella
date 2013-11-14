@@ -97,7 +97,6 @@ This class is used to add buttons to the playback bar. All the visual aspects, e
 - didHideContent(): Plugin life cycle. Override: optional. Paella will call this function after the container of a button is hidden. This is only applied to paella.ButtonPlugin.type.popUpButton and paella.ButtonPlugin.type.timeLineButton button plugin types.
 
 
-
 utility functions:
 
 - changeSubclass(newSubclass): Use this function to change the button's subclass. This code is extracted from the standard Paella Player play button plugin:
@@ -113,6 +112,15 @@ utility functions:
 	}
 
 To switch between the play and pause icon, the playButton plugin listen to the play and pause events. If the play event is triggered, the button subclass is changed to pauseSubclass, and if the pause event is triggered the button subclass is changed to playSubclass.
+
+- hideButton() and showButton(): Hides and shows the button.
+
+paella.VideoOverlayButtonPlugin (extends paella.ButtonPlugin)
+----------------------
+
+This class is used to add buttons over the video container, aligned with its the top border. An example of this plugin is the ShowEditorPlugin, used to launch Paella Editor.
+
+This class works exactly in the same way as the paella.ButtonPlugin buttons, but it only can create buttons of type paella.ButtonPlugin.type.actionButton.
 
 
 paella.EventDrivenPlugin (extends paella.Plugin)

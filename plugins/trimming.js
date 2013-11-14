@@ -1,7 +1,7 @@
 paella.plugins.TrimmingLoaderPlugin = Class.create(paella.EventDrivenPlugin,{
 	
 	getName:function() { return "es.upv.paella.TrimmingPlayerPlugin"; },
-	checkEnabled:function(onSuccess) { onSuccess(paella.player.config.trimming && paella.player.config.trimming.enabled); },
+	//checkEnabled:function(onSuccess) { onSuccess(paella.player.config.trimming && paella.player.config.trimming.enabled); },
 		
 	getEvents:function() { return [paella.events.loadComplete,paella.events.showEditor,paella.events.hideEditor]; },
 
@@ -61,9 +61,10 @@ paella.plugins.TrimmingTrackPlugin = Class.create(paella.editor.MainTrackPlugin,
 		return 'rgb(0, 51, 107)';
 	},
 	
-	checkEnabled:function(isEnabled) {
-		isEnabled(paella.player.config.trimming && paella.player.config.trimming.enabled);
-	},
+	//checkEnabled:function(isEnabled) {
+	//	isEnabled(paella.plugins.trimmingLoaderPlugin.config.enabled);
+		//isEnabled(paella.player.config.trimming && paella.player.config.trimming.enabled);
+		//},
 	
 	onSave:function(onDone) {
 		paella.player.videoContainer.enableTrimming();

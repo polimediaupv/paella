@@ -1,0 +1,8 @@
+.showEditorButton {
+	float:right;
+	background-image:url(edit_button.png);
+}
+
+.showEditorButton:hover {
+	background-position:-40px 0px;
+}

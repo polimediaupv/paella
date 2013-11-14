@@ -37,10 +37,27 @@ paella.PluginManager = Class.create({
 	},
 
 	loadPlugins:function() {
+		var pluginConfig = paella.player.config.plugins;
+		if (!pluginConfig) {
+			pluginConfig = {defaultConfig:{enabled:true},list:{}}
+		}
 		for (var i=0; i<this.pluginList.length; ++i) {
 			var plugin = this.pluginList[i];
-			paella.debug.log("loading plugin " + plugin.getName());
-			plugin.load(this);
+			var name = plugin.getName();
+			var config = pluginConfig.list[name];
+			if (!config) {
+				config = pluginConfig.defaultConfig;
+			}
+			else {
+				for (var key in pluginConfig.defaultConfig) {
+					if (config[key]===undefined) config[key] = pluginConfig.defaultConfig[key];
+				}
+			}
+			if ((config && config.enabled) || !config) {
+				paella.debug.log("loading plugin " + name);
+				plugin.config = config;
+				plugin.load(this);
+			}
 		}
 	},
 	
@@ -288,6 +305,14 @@ paella.ButtonPlugin = Class.create(paella.Plugin,{
 		return paella.ButtonPlugin.type.actionButton;
 	},
 	
+	hideButton:function() {
+		$(this.button).hide();
+	},
+	
+	showButton:function() {
+		$(this.button).show();
+	},
+	
 	// Utility functions: do not override
 	changeSubclass:function(newSubclass) {
 		this.subclass = newSubclass;
@@ -327,6 +352,7 @@ paella.ButtonPlugin.buildPluginButton = function(plugin,id) {
 	elem.className = plugin.getClassName();
 	elem.id = id;
 	elem.plugin = plugin;
+	plugin.button = elem;
 	plugin.container = elem;
 	$(elem).click(function(event) {
 		this.plugin.action(this);
@@ -344,6 +370,23 @@ paella.ButtonPlugin.buildPluginPopUp = function(parent,plugin,id) {
 	plugin.buildContent(elem);
 	return elem;
 }
+
+paella.VideoOverlayButtonPlugin = Class.create(paella.ButtonPlugin,{
+	type:'videoOverlayButton',
+	
+	// Returns the button subclass.
+	getSubclass:function() {
+		return "myVideoOverlayButtonPlugin";
+	},
+
+	action:function(button) {
+		// Implement this if you want to do something when the user push the plugin button
+	},
+
+	getName:function() {
+		return "VideoOverlayButtonPlugin";
+	}
+});
 
 
 paella.EventDrivenPlugin = Class.create(paella.Plugin,{

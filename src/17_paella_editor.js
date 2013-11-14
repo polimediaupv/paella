@@ -81,6 +81,7 @@ paella.editor.Editor = Class.create({
 	}
 });
 
+/*
 var EditControl = Class.create(paella.DomNode,{
 	buttonId:'',
 
@@ -108,4 +109,5 @@ var EditControl = Class.create(paella.DomNode,{
 		return this.getNode(this.buttonId);
 	}
 });
+*/
 

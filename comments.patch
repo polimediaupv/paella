@@ -1,0 +1,1396 @@
+From 7467757b7a80e20252c0c6e617534a38ce6d3a5a Mon Sep 17 00:00:00 2001
+From: Sergio Peiro <serpeilop@gmail.com>
+Date: Mon, 4 Nov 2013 11:05:40 +0100
+Subject: [PATCH 1/9] Reply comments
+
+---
+ plugins/comments.css |   50 +++++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 37 insertions(+), 13 deletions(-)
+
+diff --git a/plugins/comments.css b/plugins/comments.css
+index 420c0e0..48e855a 100644
+--- a/plugins/comments.css
++++ b/plugins/comments.css
+@@ -8,33 +8,51 @@
+     display:block;
+ }
+ 
+-.CommentPlugin_Comments {
+-	/*position: absolute;
+-	overflow: auto;
+-	bottom: 123px;
+-	top: 65px;
+-	left: 10px;
+-	right: 10px;*/
+-	box-shadow: inset 0px 0px 10px 2px rgba(10, 10,10, 0.39);
+-	border-radius: 7px;
+-	padding-left: 13px;
++#CommentPlugin_Publish_entry_buttons_area {
++	margin-top: 5px;
+ }
+ 
++/*.comments_entry {
++	margin-top: 5px;	
++	margin-bottom: 5px;	
++}*/
++
+ .comments_entry {
++	margin: 5px;
++	margin-bottom: 15px;
++	width: 90%;
++}
++
++.comments_entry_username{
++	color: #438bc5;
++	font-size: 14px;
++	font-family: arial,sans-serif;
++	font-weight: bold;	
++}
++
++.comments_entry_datepublish{
++	color: #999;
++	font-size: 11px;
++	font-family: arial,sans-serif;
++	margin-left: 20px;
++}
++
++.comments_entry_comment{
+ 	margin-top: 5px;	
+ 	margin-bottom: 5px;	
+ }
+ 
+ .comments_entry_silhouette {
+-	margin-top:10px;
++	content: url("silhouette32.png");
++	/*margin-top:10px;*/
+ 	float:left;
+-	width:7%;
++	width:6%;
+ }
+ 
+ .comments_entry_container{
+ 	vertical-align: top;
+ 	margin-left: 55px;
+-	width: 90%;
++	width: 100%;
+ }
+ 
+ .comments_entry_container textarea {
+@@ -45,6 +63,12 @@
+ 	color: #52575c;
+ }
+ 
++.CommentPlugin_Publish {
++	box-shadow: inset 0px 0px 10px 2px rgba(10, 10,10, 0.39);
++	border-radius: 7px;
++	padding-left: 13px;
++}
++
+ .publish {
+ 	margin-bottom: 10px;
+ }
+-- 
+1.7.9.5
+
+
+From d6932fc4d3af23f3110b24ef903fa818f5498648 Mon Sep 17 00:00:00 2001
+From: Sergio Peiro <serpeilop@gmail.com>
+Date: Mon, 4 Nov 2013 11:06:06 +0100
+Subject: [PATCH 2/9] Reply comments
+
+---
+ plugins/comments.js |  217 +++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 158 insertions(+), 59 deletions(-)
+
+diff --git a/plugins/comments.js b/plugins/comments.js
+index 80eff5f..1faf3b0 100644
+--- a/plugins/comments.js
++++ b/plugins/comments.js
+@@ -5,6 +5,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 	divLoading:null,
+ 	publishCommentTextArea:null,
+ 	publishCommentButtons:null,
++	canPublishAComment: false,
+ 	commentsTree: [],
+   
+ 	getSubclass:function() { return "showCommentsTabBar"; },
+@@ -37,12 +38,15 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		this.divComments.className = 'CommentPlugin_Comments';
+ 		this.divComments.id = 'CommentPlugin_Comments';
+ 
+-		//container.appendChild(this.divPublishComment);
+-		//container.appendChild(this.divLoading);
++		this.divRoot.appendChild(this.divPublishComment);
++		//this.divRoot.appendChild(this.divLoading);
+ 		this.divRoot.appendChild(this.divComments);
+ 		
+-		if(paella.initDelegate.initParams.accessControl.permissions.canWrite){
+-		  this.createPublishComment();
++		
++		this.canPublishAComment = paella.initDelegate.initParams.accessControl.permissions.canWrite;
++		if(this.canPublishAComment){
++			this.createPublishComment();
++			this.reloadComments();
+ 		}
+ 	  
+ 		/*var container = this.domElement;
+@@ -57,43 +61,48 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 	
+ 	createPublishComment:function() {
+ 		var thisClass = this;
+-		var rootID = this.divPublishComment.identifier+"_entry";
+-		
+-		this.divEntry = document.createElement('div');
+-		this.divEntry.className = 'comments_entry';
++		var rootID = this.divPublishComment.id+"_entry";
+ 		
+-		this.divComments.appendChild(this.divEntry);
++		var divEntry;
++		divEntry = document.createElement('div');
++		divEntry.id = rootID;
++		divEntry.className = 'comments_entry';
+ 		
+ 		var divSil;
+-		this.divSil = document.createElement('img');
+-		this.divSil.className = 'comments_entry_silhouette';
+-		this.divSil.src = "plugins/silhouette32.png";
+-		this.divEntry.appendChild(this.divSil);
++		divSil = document.createElement('img');
++		divSil.className = "comments_entry_silhouette";
++		divSil.id = rootID+"_silhouette";
++		divEntry.appendChild(divSil);
+ 		
+ 		var divTextAreaContainer;
+-		this.divTextAreaContainer = document.createElement('div');
+-		this.divTextAreaContainer.className = "comments_entry_container";
+-		this.divEntry.appendChild(this.divTextAreaContainer);
++		divTextAreaContainer = document.createElement('div');
++		divTextAreaContainer.className = "comments_entry_container";
++		divTextAreaContainer.id = rootID+"_textarea_container";
+ 		//this.divTextAreaContainer.onclick = function(){thisClass.onClickTextAreaContainer(divTextAreaContainer)};
++		divEntry.appendChild(divTextAreaContainer);
+ 		
+ 		this.publishCommentTextArea = document.createElement('textarea');
+-		this.divTextAreaContainer.appendChild(this.publishCommentTextArea);
++		this.publishCommentTextArea.id = rootID+"_textarea";
++		divTextAreaContainer.appendChild(this.publishCommentTextArea);
+ 		
+ 		this.publishCommentButtons = document.createElement('div');
+-		this.divTextAreaContainer.className = "comments_entry_container"; 
+-		this.divTextAreaContainer.appendChild(this.publishCommentButtons);
++		this.publishCommentButtons.id = rootID+"_buttons_area";
++		divTextAreaContainer.appendChild(this.publishCommentButtons);
+ 		
+ 		var btnAddComment;
+-		this.btnAddComment = document.createElement('button');
+-		this.btnAddComment.className = "publish";
+-		this.btnAddComment.onclick = function(){thisClass.addComment();};
+-		this.btnAddComment.innerHTML = "Publicar";
++		btnAddComment = document.createElement('button');
++		btnAddComment.id = rootID+"_btnAddComment";
++		btnAddComment.className = "publish";
++		btnAddComment.onclick = function(){thisClass.addComment();};
++		btnAddComment.innerHTML = paella.dictionary.translate("Publish");
++		
++		this.publishCommentButtons.appendChild(btnAddComment);
+ 		
+-		this.publishCommentButtons.appendChild(this.btnAddComment);
++		divTextAreaContainer.commentsTextArea = this.publishCommentTextArea;
++		divTextAreaContainer.commentsBtnAddComment = btnAddComment;
++		divTextAreaContainer.commentsBtnAddCommentToInstant = this.btnAddCommentToInstant;
+ 		
+-		this.divTextAreaContainer.commentsTextArea = this.publishCommentTextArea;
+-		this.divTextAreaContainer.commentsBtnAddComment = this.btnAddComment;
+-		this.divTextAreaContainer.commentsBtnAddCommentToInstant = this.btnAddCommentToInstant;
++		this.divPublishComment.appendChild(divEntry);
+ 	},
+ 		
+ 	addComment:function(){
+@@ -104,6 +113,9 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		console.log('Texto: '+txtValue)
+ 		
+ 		//TODO: Guardar comentario
++		
++		
++		//thisClass.reloadComments();
+ 	},
+ 	
+ 	addReply:function(annotationID, domNodeId){
+@@ -117,56 +129,143 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 			thisClass.reloadComments();
+ 	},
+ 	
+-	reloadComments:function() {                          
++	reloadComments:function() {     
++		var thisClass = this;
++		
++		var comment = {};
++		
++		comment["id"] = "33"
++		comment["user"] = "User"
++		comment["type"] = "valueType";
++		comment["text"] = "valueText \n valueText \n valueText \n valueText\nvalueText\nvalueText\nvalueText\nvalueText\n";
++		comment["userId"] = "userId";
++		comment["inpoint"] = "inpoint";
++		comment["replies"] = [];
++		thisClass.commentsTree.push(comment);
++		
++		
++		var comment = {};
++		
++		comment["id"] = "56"
++		comment["user"] = "User"
++		comment["type"] = "valueType";
++		comment["text"] = "valueTextvalueTextvalueTextvalueText";
++		comment["userId"] = "userId";
++		comment["inpoint"] = "inpoint";
++		comment["replies"] = [];
++		thisClass.commentsTree.push(comment);
++		
++		var comment = {};
++		
++		comment["id"] = "57"
++		comment["user"] = "User"
++		comment["type"] = "valueType";
++		comment["text"] = "valueTextvalueTextvalueTextvalueText";
++		comment["userId"] = "userId";
++		comment["inpoint"] = "inpoint";
++		comment["replies"] = [];
++		thisClass.commentsTree.push(comment);
++		
++		var comment = {};
++		
++		comment["id"] = "5"
++		comment["user"] = "User"
++		comment["type"] = "valueType";
++		comment["text"] = "valueTextvalueTextvalueTextvalueText";
++		comment["userId"] = "userId";
++		comment["inpoint"] = "inpoint";
++		comment["replies"] = [];
++		thisClass.commentsTree.push(comment);
++		
++		 thisClass.displayComments();
+ 		
+ 	},
+ 	
+ 	setLoadingComments:function(b) {
+ 	},
+ 	
++	displayComments:function() {
++          var thisClass = this;
++          for (var i =0; i < thisClass.commentsTree.length; ++i ){
++            var comment = thisClass.commentsTree[i];
++            var e = thisClass.createACommentEntry(comment);
++            thisClass.divComments.appendChild(e);
++          } 
++
++        },
++	
+ 	createACommentEntry:function(comment) {
+ 		var thisClass = this;
+-		var rootID = this.divPublishComment.identifier+"_entry";
+-		
+-		this.divEntry = document.createElement('div');
+-		this.divEntry.className = 'comments_entry';
++		var rootID = this.divPublishComment.id+"_entry"+comment["id"];
+ 		
+-		this.divComments.appendChild(this.divEntry);
++		var divEntry;
++		divEntry = document.createElement('div');
++		divEntry.id = rootID;
++		divEntry.className = "comments_entry";
+ 		
+ 		var divSil;
+-		this.divSil = document.createElement('img');
+-		this.divSil.className = 'comments_entry_silhouette';
+-		this.divSil.src = "plugins/silhouette32.png";
+-		this.divEntry.appendChild(this.divSil);
++		divSil = document.createElement('img');
++		divSil.className = "comments_entry_silhouette";
++		divSil.id = rootID+"_silhouette";
++		divSil.src = "plugins/silhouette32.png";
++		divEntry.appendChild(divSil);
+ 		
+-		var divTextAreaContainer;
+-		this.divTextAreaContainer = document.createElement('div');
+-		this.divTextAreaContainer.className = "comments_entry_container";
+-		this.divEntry.appendChild(this.divTextAreaContainer);
+-		//this.divTextAreaContainer.onclick = function(){thisClass.onClickTextAreaContainer(divTextAreaContainer)};
++		var divCommentContainer;
++		divCommentContainer = document.createElement('div');
++		divCommentContainer.className = "comments_entry_container";
++		divCommentContainer.id = rootID+"_comment_container";
++		divEntry.appendChild(divCommentContainer);
+ 		
+-		this.publishCommentTextArea = document.createElement('textarea');
+-		this.divTextAreaContainer.appendChild(this.publishCommentTextArea);
++		/*var divCommentMetadata;
++		divCommentMetadata = document.create('div');
++		divCommentMetadata.id = rootID+"_comment_metadata"; 
++		divCommentContainer.appendChild(divCommentMetadata);
++		//TODO:Fecha de publicación
++		datePublish = "Datepublish";
+ 		
+-		this.publishCommentButtons = document.createElement('div');
+-		this.divTextAreaContainer.className = "comments_entry_container"; 
+-		this.divTextAreaContainer.appendChild(this.publishCommentButtons);
++		var headLine = "<span class='comments_entry_username'>" + comment["userId"] + "</span>";
++		if (comment["type"] === "scrubber"){
++                        var publishTime = comment["inpoint"];
++                        if (paella.player.videoContainer.trimEnabled()){
++                            publishTime = comment.inpoint - paella.player.videoContainer.trimStart();
++                        }
++			headLine += "<span class='comments_entry_timed'> " + paella.utils.timeParse.secondsToTime(publishTime) + "</span>";
++		}
++		headLine += "<span class='comments_entry_datepublish'>" + datePublish + "</span>";
+ 		
+-		var btnAddComment;
+-		this.btnAddComment = document.createElement('button');
+-		this.btnAddComment.className = "publish";
+-		this.btnAddComment.onclick = function(){thisClass.addComment();};
+-		this.btnAddComment.innerHTML = "Publicar";
++		divCommentMetadata.innerHTML = headLine;*/
+ 		
+-		this.publishCommentButtons.appendChild(this.btnAddComment);
++		var divCommentValue;
++		divCommentValue = document.createElement('div');
++		divCommentValue.id = rootID+"_comment_value";
++		divCommentValue.className = "comments_entry_comment";
++		divCommentContainer.appendChild(divCommentValue);		
+ 		
+-		this.divTextAreaContainer.commentsTextArea = this.publishCommentTextArea;
+-		this.divTextAreaContainer.commentsBtnAddComment = this.btnAddComment;
+-		this.divTextAreaContainer.commentsBtnAddCommentToInstant = this.btnAddCommentToInstant;
+-	
++		divCommentValue.innerHTML = comment["text"];
++		
++		var divCommentReply = document.createElement('div');
++		divCommentReply.id = rootID+"_comment_reply";
++		divCommentContainer.appendChild(divCommentReply);
++		
++		if (this.canPublishAComment == true) {
++			var btnRplyComment = document.createElement('button');
++			btnRplyComment.id = rootID+"_comment_reply_button";
++			btnRplyComment.onclick = function(){
++				var e = thisClass.createAReplyEntry(comment["id"]);
++				this.style.display="none";
++				this.parentElement.parentElement.appendChild(e.domElement);
++			};
++			btnRplyComment.innerHTML = paella.dictionary.translate("Reply");
++			divCommentReply.appendChild(btnRplyComment);
++		}
++		
++		for (var i =0; i < comment["replies"].length; ++i ){
++			//var e = thisClass.createACommentReplyEntry(comment["id"], comment["replies"][i]);
++			//divCommentContainer.appendChild(e);
++		}
++				
++		return divEntry;
+ 	}
+-	
+-
+ });
+   
+ 
+-- 
+1.7.9.5
+
+
+From 52847108b15fe215b5208471d129235fa682c775 Mon Sep 17 00:00:00 2001
+From: Sergio Peiro <serpeilop@gmail.com>
+Date: Mon, 4 Nov 2013 14:51:20 +0100
+Subject: [PATCH 3/9] Comment replies added
+
+---
+ plugins/comments.css |   30 +++++++-----------------------
+ 1 file changed, 7 insertions(+), 23 deletions(-)
+
+diff --git a/plugins/comments.css b/plugins/comments.css
+index 48e855a..3d66b86 100644
+--- a/plugins/comments.css
++++ b/plugins/comments.css
+@@ -1,25 +1,11 @@
+-.CommentPlugin_Loading {
+-    background-image: url("pluginloading.gif");
+-    background-repeat: no-repeat;
+-    background-position: center;
+-    margin-top: 10px;
+-    width: 100%;
+-    height: 11px;
+-    display:block;
+-}
+ 
+ #CommentPlugin_Publish_entry_buttons_area {
+ 	margin-top: 5px;
+ }
+ 
+-/*.comments_entry {
+-	margin-top: 5px;	
+-	margin-bottom: 5px;	
+-}*/
+-
+ .comments_entry {
+ 	margin: 5px;
+-	margin-bottom: 15px;
++	margin-bottom: 20px;
+ 	width: 90%;
+ }
+ 
+@@ -51,14 +37,15 @@
+ 
+ .comments_entry_container{
+ 	vertical-align: top;
+-	margin-left: 55px;
++	margin: 10px;
++	margin-left: 50px;
+ 	width: 100%;
+ }
+ 
+ .comments_entry_container textarea {
+-	width: 95%;
++	width: 98%;
+ 	height: 45px;
+-	margin-top:10px;
++	/*margin-top:10px;*/
+ 	margin-bottom: 5px;
+ 	color: #52575c;
+ }
+@@ -66,11 +53,8 @@
+ .CommentPlugin_Publish {
+ 	box-shadow: inset 0px 0px 10px 2px rgba(10, 10,10, 0.39);
+ 	border-radius: 7px;
+-	padding-left: 13px;
+-}
+-
+-.publish {
+-	margin-bottom: 10px;
++	padding: 10px;
++	padding-bottom: 1px;
+ }
+ 
+ 
+-- 
+1.7.9.5
+
+
+From 07a07dddcd2aaa3e18d9100d03675533fe7145d7 Mon Sep 17 00:00:00 2001
+From: Sergio Peiro <serpeilop@gmail.com>
+Date: Mon, 4 Nov 2013 14:52:20 +0100
+Subject: [PATCH 4/9] Comment replies added
+
+---
+ plugins/comments.js |  224 ++++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 148 insertions(+), 76 deletions(-)
+
+diff --git a/plugins/comments.js b/plugins/comments.js
+index 1faf3b0..592b79f 100644
+--- a/plugins/comments.js
++++ b/plugins/comments.js
+@@ -2,61 +2,47 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 	divRoot:null,
+ 	divPublishComment:null,
+ 	divComments:null,
+-	divLoading:null,
+ 	publishCommentTextArea:null,
+ 	publishCommentButtons:null,
+ 	canPublishAComment: false,
+ 	commentsTree: [],
++	domElement:null,
+   
+ 	getSubclass:function() { return "showCommentsTabBar"; },
+ 	getName:function() { return "es.upv.paella.commentsPlugin"; },
+-	getTabName:function() { return "Comentarios"; },
+-			
+-	domElement:null,
+-			
+-	buildContent:function(domElement) {
+-		this.domElement = domElement;
++	getTabName:function() { return paella.dictionary.translate("Comments"); },
++	checkEnabled:function(onSuccess) { onSuccess(paella.extended); },
++					     
++	action:function(tab) {
+ 		this.loadContent();
+ 	},
+ 			
+-	action:function(tab) {
++	buildContent:function(domElement) {
++		this.domElement = domElement;
++		this.canPublishAComment = paella.initDelegate.initParams.accessControl.permissions.canWrite;
+ 		this.loadContent();
+ 	},
+-			
++				
+ 	loadContent:function() {
+ 		this.divRoot = this.domElement;
++		this.divRoot.innerHTML ="";
+ 		
+ 		this.divPublishComment = document.createElement('div');
+ 		this.divPublishComment.className = 'CommentPlugin_Publish';
+ 		this.divPublishComment.id = 'CommentPlugin_Publish';
+-		
+-		this.divLoading = document.createElement('div');
+-		this.divLoading.className = 'CommentPlugin_Loading';
+-		this.divLoading.id = 'CommentPlugin_Loading';	
+-		
++
+ 		this.divComments = document.createElement('div'); 
+ 		this.divComments.className = 'CommentPlugin_Comments';
+ 		this.divComments.id = 'CommentPlugin_Comments';
+ 
+-		this.divRoot.appendChild(this.divPublishComment);
+-		//this.divRoot.appendChild(this.divLoading);
+ 		this.divRoot.appendChild(this.divComments);
+ 		
+-		
+-		this.canPublishAComment = paella.initDelegate.initParams.accessControl.permissions.canWrite;
++		//this.canPublishAComment = false;
+ 		if(this.canPublishAComment){
++			this.divRoot.appendChild(this.divPublishComment);
+ 			this.createPublishComment();
+-			this.reloadComments();
+ 		}
+-	  
+-		/*var container = this.domElement;
+-		container.innerHTML = "Loading...";
+-		new paella.Timer(function(t) {
+-			container.innerHTML = "Loading done";
+-		},2000);*/
+-		
+-		//this.createPublishComment();
+-		
++		this.reloadComments();
+ 	},
+ 	
+ 	createPublishComment:function() {
+@@ -107,15 +93,13 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		
+ 	addComment:function(){
+ 		var thisClass = this;
+-		var txtValue = this.publishCommentTextArea.value;
++		var txtValue = thisClass.publishCommentTextArea.value;
+ 		txtValue = txtValue.replace(/<>/g, "< >");  //TODO: Hacer este replace bien!
+-	
+-		console.log('Texto: '+txtValue)
+-		
++
+ 		//TODO: Guardar comentario
+ 		
+-		
+ 		//thisClass.reloadComments();
++		thisClass.loadContent();
+ 	},
+ 	
+ 	addReply:function(annotationID, domNodeId){
+@@ -126,62 +110,58 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		var txtValue = textArea.value;
+ 		textArea.value = "";
+ 		
+-			thisClass.reloadComments();
++		thisClass.reloadComments();
+ 	},
+ 	
+ 	reloadComments:function() {     
+ 		var thisClass = this;
++		thisClass.commentsTree = [];
++		this.divComments.innerHTML ="";
+ 		
+ 		var comment = {};
+-		
+-		comment["id"] = "33"
+-		comment["user"] = "User"
+-		comment["type"] = "valueType";
+-		comment["text"] = "valueText \n valueText \n valueText \n valueText\nvalueText\nvalueText\nvalueText\nvalueText\n";
+-		comment["userId"] = "userId";
+-		comment["inpoint"] = "inpoint";
+-		comment["replies"] = [];
+-		thisClass.commentsTree.push(comment);
+-		
+-		
+-		var comment = {};
+-		
+-		comment["id"] = "56"
+-		comment["user"] = "User"
++		comment["id"] = "01"
++		comment["user"] = "User 1"
+ 		comment["type"] = "valueType";
+-		comment["text"] = "valueTextvalueTextvalueTextvalueText";
++		comment["text"] = "valueTex valueText";
+ 		comment["userId"] = "userId";
+-		comment["inpoint"] = "inpoint";
++		comment["created"] = "03/03/2013";
+ 		comment["replies"] = [];
+ 		thisClass.commentsTree.push(comment);
+ 		
+ 		var comment = {};
+-		
+-		comment["id"] = "57"
+-		comment["user"] = "User"
++		comment["id"] = "02"
++		comment["user"] = "User 2"
+ 		comment["type"] = "valueType";
+ 		comment["text"] = "valueTextvalueTextvalueTextvalueText";
+ 		comment["userId"] = "userId";
+-		comment["inpoint"] = "inpoint";
++		comment["created"] = "10/10/2013";
+ 		comment["replies"] = [];
+ 		thisClass.commentsTree.push(comment);
+ 		
+ 		var comment = {};
+-		
+-		comment["id"] = "5"
+-		comment["user"] = "User"
++		var replies = [];
++		var commentReply = {};
++
++		commentReply["id"] = "04"
++		commentReply["user"] = "User 2"
++		commentReply["type"] = "valueType";
++		commentReply["text"] = "valueTextvalueTextvalueTextvalueText";
++		commentReply["userId"] = "userId";
++		commentReply["created"] = "13/10/2013";
++		commentReply["replies"] = [];
++		replies.push(commentReply);
++		
++		comment["id"] = "03"
++		comment["user"] = "User 3"
+ 		comment["type"] = "valueType";
+ 		comment["text"] = "valueTextvalueTextvalueTextvalueText";
+ 		comment["userId"] = "userId";
+-		comment["inpoint"] = "inpoint";
+-		comment["replies"] = [];
++		comment["created"] = "12/10/2013";
++		comment["replies"] = replies;
+ 		thisClass.commentsTree.push(comment);
+ 		
+-		 thisClass.displayComments();
+ 		
+-	},
+-	
+-	setLoadingComments:function(b) {
++		thisClass.displayComments();
+ 	},
+ 	
+ 	displayComments:function() {
+@@ -216,24 +196,24 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		divCommentContainer.id = rootID+"_comment_container";
+ 		divEntry.appendChild(divCommentContainer);
+ 		
+-		/*var divCommentMetadata;
+-		divCommentMetadata = document.create('div');
++		var divCommentMetadata;
++		divCommentMetadata = document.createElement('div');
+ 		divCommentMetadata.id = rootID+"_comment_metadata"; 
+ 		divCommentContainer.appendChild(divCommentMetadata);
+-		//TODO:Fecha de publicación
+-		datePublish = "Datepublish";
+ 		
+-		var headLine = "<span class='comments_entry_username'>" + comment["userId"] + "</span>";
+-		if (comment["type"] === "scrubber"){
++		var datePublish = comment["created"];
++		
++		var headLine = "<span class='comments_entry_username'>" + comment["user"] + "</span>";
++		/*if (comment["type"] === "scrubber"){
+                         var publishTime = comment["inpoint"];
+                         if (paella.player.videoContainer.trimEnabled()){
+                             publishTime = comment.inpoint - paella.player.videoContainer.trimStart();
+                         }
+ 			headLine += "<span class='comments_entry_timed'> " + paella.utils.timeParse.secondsToTime(publishTime) + "</span>";
+-		}
++		}*/
+ 		headLine += "<span class='comments_entry_datepublish'>" + datePublish + "</span>";
+ 		
+-		divCommentMetadata.innerHTML = headLine;*/
++		divCommentMetadata.innerHTML = headLine;
+ 		
+ 		var divCommentValue;
+ 		divCommentValue = document.createElement('div');
+@@ -253,17 +233,109 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 			btnRplyComment.onclick = function(){
+ 				var e = thisClass.createAReplyEntry(comment["id"]);
+ 				this.style.display="none";
+-				this.parentElement.parentElement.appendChild(e.domElement);
++				this.parentElement.parentElement.appendChild(e);
+ 			};
+ 			btnRplyComment.innerHTML = paella.dictionary.translate("Reply");
+ 			divCommentReply.appendChild(btnRplyComment);
+ 		}
+ 		
+ 		for (var i =0; i < comment["replies"].length; ++i ){
+-			//var e = thisClass.createACommentReplyEntry(comment["id"], comment["replies"][i]);
+-			//divCommentContainer.appendChild(e);
++			var e = thisClass.createACommentReplyEntry(comment["id"], comment["replies"][i]);
++			divCommentContainer.appendChild(e);
+ 		}
+-				
++		return divEntry;
++	},
++	
++	createACommentReplyEntry:function(parentID, comment) {
++		var thisClass = this;
++		var rootID = this.divPublishComment.id+"_entry_" + parentID + "_reply_" + comment["id"];
++
++		var divEntry;
++		divEntry = document.createElement('div');
++		divEntry.id = rootID;
++		divEntry.className = "comments_entry";
++		
++		var divSil;
++		divSil = document.createElement('img');
++		divSil.className = "comments_entry_silhouette";
++		divSil.id = rootID+"_silhouette";
++		divSil.src = "plugins/silhouette32.png";
++		divEntry.appendChild(divSil);
++			
++		var divCommentContainer;
++		divCommentContainer = document.createElement('div');
++		divCommentContainer.className = "comments_entry_container";
++		divCommentContainer.id = rootID+"_comment_container";
++		divEntry.appendChild(divCommentContainer);
++			
++		var divCommentMetadata;
++		divCommentMetadata = document.createElement('div');
++		divCommentMetadata.id = rootID+"_comment_metadata"; 
++		divCommentContainer.appendChild(divCommentMetadata);
++		var datePublish = comment["created"];
++		
++		/*if (comment["created"]) {
++			var dateToday=new Date()
++			var dateComment = paella.utils.timeParse.matterhornTextDateToDate(comment["created"]);			
++			datePublish = paella.utils.timeParse.secondsToText((dateToday.getTime()-dateComment.getTime())/1000);
++		}	*/	
++		
++		var headLine = "<span class='comments_entry_username'>" + comment["user"] + "</span>";
++		headLine += "<span class='comments_entry_datepublish'>" + datePublish + "</span>";
++ 
++		divCommentMetadata.innerHTML = headLine;
++		
++		var divCommentValue;
++		divCommentValue = document.createElement('div');
++		divCommentValue.id = rootID+"_comment_value";
++		divCommentValue.className = "comments_entry_comment";
++		divCommentContainer.appendChild(divCommentValue);		
++		
++		divCommentValue.innerHTML = comment["text"];
++			
++		return divEntry;
++	},
++	
++	createAReplyEntry:function(annotationID) {
++		var thisClass = this;
++		var rootID = this.divPublishComment.id+"_entry_" + annotationID + "_reply";
++
++		var divEntry;
++		divEntry = document.createElement('div');
++		divEntry.id = rootID+"_entry";
++		divEntry.className = "comments_entry";
++		
++		var divSil;
++		divSil = document.createElement('img');
++		divSil.className = "comments_entry_silhouette";
++		divSil.id = rootID+"_silhouette";
++		divSil.src = "plugins/silhouette32.png";
++		divEntry.appendChild(divSil);
++		
++		var divCommentContainer;
++		divCommentContainer = document.createElement('div');
++		divCommentContainer.className = "comments_entry_container comments_reply_container";
++		divCommentContainer.id = rootID+"_reply_container";
++		divEntry.appendChild(divCommentContainer);
++	
++		var textArea;
++		textArea = document.createElement('textArea');
++		textArea.id = rootID+"_textarea";
++		divCommentContainer.appendChild(textArea);
++		
++		this.publishCommentButtons = document.createElement('div');
++		this.publishCommentButtons.id = rootID+"_buttons_area";
++		divCommentContainer.appendChild(this.publishCommentButtons);
++		
++		var btnAddComment;
++		btnAddComment = document.createElement('button');
++		btnAddComment.id = rootID+"_btnAddComment";
++		btnAddComment.className = "publish";
++		btnAddComment.onclick = function(){thisClass.addReply(annotationID,textArea.id);};
++		btnAddComment.innerHTML = paella.dictionary.translate("Reply");
++		
++		this.publishCommentButtons.appendChild(btnAddComment);
++		
+ 		return divEntry;
+ 	}
+ });
+-- 
+1.7.9.5
+
+
+From 885b606bd826663c2fb69c19ba966f35d4d0516f Mon Sep 17 00:00:00 2001
+From: Sergio Peiro <serpeilop@gmail.com>
+Date: Mon, 11 Nov 2013 11:40:49 +0100
+Subject: [PATCH 5/9] Comments plugin implemented
+
+---
+ plugins/comments.js |  176 +++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 106 insertions(+), 70 deletions(-)
+
+diff --git a/plugins/comments.js b/plugins/comments.js
+index 592b79f..0404f1a 100644
+--- a/plugins/comments.js
++++ b/plugins/comments.js
+@@ -5,8 +5,11 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 	publishCommentTextArea:null,
+ 	publishCommentButtons:null,
+ 	canPublishAComment: false,
++	comments: [],
+ 	commentsTree: [],
+ 	domElement:null,
++	proxyUrl:'',
++	useJsonp: false,
+   
+ 	getSubclass:function() { return "showCommentsTabBar"; },
+ 	getName:function() { return "es.upv.paella.commentsPlugin"; },
+@@ -57,6 +60,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		var divSil;
+ 		divSil = document.createElement('img');
+ 		divSil.className = "comments_entry_silhouette";
++		divSil.src = "plugins/silhouette32.png";
+ 		divSil.id = rootID+"_silhouette";
+ 		divEntry.appendChild(divSil);
+ 		
+@@ -64,11 +68,11 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		divTextAreaContainer = document.createElement('div');
+ 		divTextAreaContainer.className = "comments_entry_container";
+ 		divTextAreaContainer.id = rootID+"_textarea_container";
+-		//this.divTextAreaContainer.onclick = function(){thisClass.onClickTextAreaContainer(divTextAreaContainer)};
+ 		divEntry.appendChild(divTextAreaContainer);
+ 		
+ 		this.publishCommentTextArea = document.createElement('textarea');
+ 		this.publishCommentTextArea.id = rootID+"_textarea";
++		this.publishCommentTextArea.onclick = function(){paella.keyManager.enabled = false;};
+ 		divTextAreaContainer.appendChild(this.publishCommentTextArea);
+ 		
+ 		this.publishCommentButtons = document.createElement('div');
+@@ -93,75 +97,119 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		
+ 	addComment:function(){
+ 		var thisClass = this;
++		paella.keyManager.enabled = true;
+ 		var txtValue = thisClass.publishCommentTextArea.value;
+-		txtValue = txtValue.replace(/<>/g, "< >");  //TODO: Hacer este replace bien!
++		txtValue = txtValue.replace(/<>/g, "< >");  
++		
++		//var commentValue = "UserName" + "<>" + txtValue + "<>normal";
++		var now = new Date();
++		
++		var day = now.getDate();
++		var month = now.getMonth();
++		var year = now.getFullYear();
++		var hour = now.getHours();
++		var min = now.getMinutes();
++		var sec = now.getSeconds();
++		var milli = now.getMilliseconds();
++		
++		this.comments.push({
++			id: milli,
++			userName:"UserName",
++			mode: "normal",
++			value: txtValue,
++			created: now
++		});
+ 
+-		//TODO: Guardar comentario
++		var data = {
++			allComments: this.comments
++		}
+ 		
+-		//thisClass.reloadComments();
+-		thisClass.loadContent();
++		paella.data.write('comments',{id:paella.initDelegate.getId()},data,function(response,status){
++			if (status) {thisClass.loadContent();
++			console.log('He escrito: '+data);}
++		});
+ 	},
+ 	
+ 	addReply:function(annotationID, domNodeId){
+ 		var thisClass = this;
+-                
+-                var textArea = document.getElementById(domNodeId);
++		paella.keyManager.enabled = true;
++		var textArea = document.getElementById(domNodeId);
+ 
+ 		var txtValue = textArea.value;
+ 		textArea.value = "";
+ 		
+-		thisClass.reloadComments();
++		var now = new Date();
++		var milli = now.getMilliseconds();
++
++		this.comments.push({
++			id: milli,
++			userName:"UserName",
++			mode: "reply",
++			parent: annotationID,
++			value: txtValue,
++			created: now
++		});
++
++		var data = {
++			allComments: this.comments
++		}
++		
++		paella.data.write('comments',{id:paella.initDelegate.getId()},data,function(response,status){
++			if (status) thisClass.reloadComments();
++		});
+ 	},
+ 	
+ 	reloadComments:function() {     
+ 		var thisClass = this;
+ 		thisClass.commentsTree = [];
++		thisClass.comments = [];
+ 		this.divComments.innerHTML ="";
+ 		
+-		var comment = {};
+-		comment["id"] = "01"
+-		comment["user"] = "User 1"
+-		comment["type"] = "valueType";
+-		comment["text"] = "valueTex valueText";
+-		comment["userId"] = "userId";
+-		comment["created"] = "03/03/2013";
+-		comment["replies"] = [];
+-		thisClass.commentsTree.push(comment);
+-		
+-		var comment = {};
+-		comment["id"] = "02"
+-		comment["user"] = "User 2"
+-		comment["type"] = "valueType";
+-		comment["text"] = "valueTextvalueTextvalueTextvalueText";
+-		comment["userId"] = "userId";
+-		comment["created"] = "10/10/2013";
+-		comment["replies"] = [];
+-		thisClass.commentsTree.push(comment);
+-		
+-		var comment = {};
+-		var replies = [];
+-		var commentReply = {};
++		paella.data.read('comments',{id:paella.initDelegate.getId()},function(data,status) {
++			
++			if (data && typeof(data)=='object' && data.allComments.length>0) {
++				thisClass.comments = data.allComments;
++				var tempDict = {};
+ 
+-		commentReply["id"] = "04"
+-		commentReply["user"] = "User 2"
+-		commentReply["type"] = "valueType";
+-		commentReply["text"] = "valueTextvalueTextvalueTextvalueText";
+-		commentReply["userId"] = "userId";
+-		commentReply["created"] = "13/10/2013";
+-		commentReply["replies"] = [];
+-		replies.push(commentReply);
+-		
+-		comment["id"] = "03"
+-		comment["user"] = "User 3"
+-		comment["type"] = "valueType";
+-		comment["text"] = "valueTextvalueTextvalueTextvalueText";
+-		comment["userId"] = "userId";
+-		comment["created"] = "12/10/2013";
+-		comment["replies"] = replies;
+-		thisClass.commentsTree.push(comment);
+-		
+-		
+-		thisClass.displayComments();
++				// obtain normal comments  
++				for (var i =0; i < data.allComments.length; ++i ){
++					var valueText = data.allComments[i].value;
++					valueText = valueText.replace(/\n/g,"<br/>");
++                                                
++					if (data.allComments[i].mode !== "reply") { 
++						var comment = {};
++						comment["id"] = data.allComments[i].id;
++						comment["userName"] = data.allComments[i].userName;
++						comment["mode"] = data.allComments[i].mode;
++						comment["value"] = valueText;
++						comment["created"] = data.allComments[i].created;
++						comment["replies"] = [];    
++
++						thisClass.commentsTree.push(comment); 
++						tempDict[comment["id"]] = thisClass.commentsTree.length - 1;
++					}
++				}
++			
++				// obtain reply comments
++				for (var i =0; i < data.allComments.length; ++i ){
++					var valueText = data.allComments[i].value;
++					valueText = valueText.replace(/\n/g,"<br/>");
++
++					if (data.allComments[i].mode === "reply") { 
++						var comment = {};
++						comment["id"] = data.allComments[i].id;
++						comment["userName"] = data.allComments[i].userName;
++						comment["mode"] = data.allComments[i].mode;
++						comment["value"] = valueText;
++						comment["created"] = data.allComments[i].created;
++
++						var index = tempDict[data.allComments[i].parent];
++						thisClass.commentsTree[index]["replies"].push(comment);
++					}
++				}
++				thisClass.displayComments();
++			} 
++		});
+ 	},
+ 	
+ 	displayComments:function() {
+@@ -203,14 +251,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		
+ 		var datePublish = comment["created"];
+ 		
+-		var headLine = "<span class='comments_entry_username'>" + comment["user"] + "</span>";
+-		/*if (comment["type"] === "scrubber"){
+-                        var publishTime = comment["inpoint"];
+-                        if (paella.player.videoContainer.trimEnabled()){
+-                            publishTime = comment.inpoint - paella.player.videoContainer.trimStart();
+-                        }
+-			headLine += "<span class='comments_entry_timed'> " + paella.utils.timeParse.secondsToTime(publishTime) + "</span>";
+-		}*/
++		var headLine = "<span class='comments_entry_username'>" + comment["userName"] + "</span>";
+ 		headLine += "<span class='comments_entry_datepublish'>" + datePublish + "</span>";
+ 		
+ 		divCommentMetadata.innerHTML = headLine;
+@@ -221,7 +262,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		divCommentValue.className = "comments_entry_comment";
+ 		divCommentContainer.appendChild(divCommentValue);		
+ 		
+-		divCommentValue.innerHTML = comment["text"];
++		divCommentValue.innerHTML = comment["value"];
+ 		
+ 		var divCommentReply = document.createElement('div');
+ 		divCommentReply.id = rootID+"_comment_reply";
+@@ -239,7 +280,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 			divCommentReply.appendChild(btnRplyComment);
+ 		}
+ 		
+-		for (var i =0; i < comment["replies"].length; ++i ){
++		for (var i =0; i < comment.replies.length; ++i ){
+ 			var e = thisClass.createACommentReplyEntry(comment["id"], comment["replies"][i]);
+ 			divCommentContainer.appendChild(e);
+ 		}
+@@ -274,13 +315,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		divCommentContainer.appendChild(divCommentMetadata);
+ 		var datePublish = comment["created"];
+ 		
+-		/*if (comment["created"]) {
+-			var dateToday=new Date()
+-			var dateComment = paella.utils.timeParse.matterhornTextDateToDate(comment["created"]);			
+-			datePublish = paella.utils.timeParse.secondsToText((dateToday.getTime()-dateComment.getTime())/1000);
+-		}	*/	
+-		
+-		var headLine = "<span class='comments_entry_username'>" + comment["user"] + "</span>";
++		var headLine = "<span class='comments_entry_username'>" + comment["userName"] + "</span>";
+ 		headLine += "<span class='comments_entry_datepublish'>" + datePublish + "</span>";
+  
+ 		divCommentMetadata.innerHTML = headLine;
+@@ -291,7 +326,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		divCommentValue.className = "comments_entry_comment";
+ 		divCommentContainer.appendChild(divCommentValue);		
+ 		
+-		divCommentValue.innerHTML = comment["text"];
++		divCommentValue.innerHTML = comment["value"];
+ 			
+ 		return divEntry;
+ 	},
+@@ -320,6 +355,8 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 	
+ 		var textArea;
+ 		textArea = document.createElement('textArea');
++		textArea.onclick = function(){paella.keyManager.enabled = false;};
++		textArea.draggable = false;
+ 		textArea.id = rootID+"_textarea";
+ 		divCommentContainer.appendChild(textArea);
+ 		
+@@ -342,4 +379,3 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+   
+ 
+ paella.plugins.commentsPlugin = new paella.plugins.CommentsPlugin();
+-
+-- 
+1.7.9.5
+
+
+From 80e8163dc3c650bd9d9e5a305c8bd11c08b7ca79 Mon Sep 17 00:00:00 2001
+From: Sergio Peiro <serpeilop@gmail.com>
+Date: Mon, 11 Nov 2013 11:41:26 +0100
+Subject: [PATCH 6/9] Comments plugin implemented
+
+---
+ plugins/comments.css |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/plugins/comments.css b/plugins/comments.css
+index 3d66b86..66d33c2 100644
+--- a/plugins/comments.css
++++ b/plugins/comments.css
+@@ -57,5 +57,9 @@
+ 	padding-bottom: 1px;
+ }
+ 
++textarea {
++    resize: vertical;
++}
++
+ 
+ 
+-- 
+1.7.9.5
+
+
+From ed237782f7a37f29400229cfde5c53edef0fd99b Mon Sep 17 00:00:00 2001
+From: Sergio Peiro <serpeilop@gmail.com>
+Date: Mon, 11 Nov 2013 13:13:59 +0100
+Subject: [PATCH 7/9] Comments plugin implemented
+
+---
+ plugins/comments.js |   45 ++++++++++++++++++---------------------------
+ 1 file changed, 18 insertions(+), 27 deletions(-)
+
+diff --git a/plugins/comments.js b/plugins/comments.js
+index 0404f1a..17a6454 100644
+--- a/plugins/comments.js
++++ b/plugins/comments.js
+@@ -8,8 +8,6 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 	comments: [],
+ 	commentsTree: [],
+ 	domElement:null,
+-	proxyUrl:'',
+-	useJsonp: false,
+   
+ 	getSubclass:function() { return "showCommentsTabBar"; },
+ 	getName:function() { return "es.upv.paella.commentsPlugin"; },
+@@ -40,7 +38,6 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 
+ 		this.divRoot.appendChild(this.divComments);
+ 		
+-		//this.canPublishAComment = false;
+ 		if(this.canPublishAComment){
+ 			this.divRoot.appendChild(this.divPublishComment);
+ 			this.createPublishComment();
+@@ -73,6 +70,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		this.publishCommentTextArea = document.createElement('textarea');
+ 		this.publishCommentTextArea.id = rootID+"_textarea";
+ 		this.publishCommentTextArea.onclick = function(){paella.keyManager.enabled = false;};
++		this.publishCommentTextArea.onblur = function(){paella.keyManager.enabled = true;};
+ 		divTextAreaContainer.appendChild(this.publishCommentTextArea);
+ 		
+ 		this.publishCommentButtons = document.createElement('div');
+@@ -83,7 +81,13 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		btnAddComment = document.createElement('button');
+ 		btnAddComment.id = rootID+"_btnAddComment";
+ 		btnAddComment.className = "publish";
+-		btnAddComment.onclick = function(){thisClass.addComment();};
++		btnAddComment.onclick = function(){
++			var txtValue = thisClass.publishCommentTextArea.value;
++			console.log(txtValue);
++			if (txtValue.replace(/\s/g,'') != "") {
++				thisClass.addComment();
++			}
++		};
+ 		btnAddComment.innerHTML = paella.dictionary.translate("Publish");
+ 		
+ 		this.publishCommentButtons.appendChild(btnAddComment);
+@@ -97,23 +101,11 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		
+ 	addComment:function(){
+ 		var thisClass = this;
+-		paella.keyManager.enabled = true;
+ 		var txtValue = thisClass.publishCommentTextArea.value;
+-		txtValue = txtValue.replace(/<>/g, "< >");  
+-		
+-		//var commentValue = "UserName" + "<>" + txtValue + "<>normal";
+ 		var now = new Date();
+ 		
+-		var day = now.getDate();
+-		var month = now.getMonth();
+-		var year = now.getFullYear();
+-		var hour = now.getHours();
+-		var min = now.getMinutes();
+-		var sec = now.getSeconds();
+-		var milli = now.getMilliseconds();
+-		
+ 		this.comments.push({
+-			id: milli,
++			id: now,
+ 			userName:"UserName",
+ 			mode: "normal",
+ 			value: txtValue,
+@@ -125,8 +117,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		}
+ 		
+ 		paella.data.write('comments',{id:paella.initDelegate.getId()},data,function(response,status){
+-			if (status) {thisClass.loadContent();
+-			console.log('He escrito: '+data);}
++			if (status) {thisClass.loadContent();}
+ 		});
+ 	},
+ 	
+@@ -134,15 +125,12 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		var thisClass = this;
+ 		paella.keyManager.enabled = true;
+ 		var textArea = document.getElementById(domNodeId);
+-
+ 		var txtValue = textArea.value;
+ 		textArea.value = "";
+-		
+ 		var now = new Date();
+-		var milli = now.getMilliseconds();
+ 
+ 		this.comments.push({
+-			id: milli,
++			id: now,
+ 			userName:"UserName",
+ 			mode: "reply",
+ 			parent: annotationID,
+@@ -174,7 +162,6 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 				// obtain normal comments  
+ 				for (var i =0; i < data.allComments.length; ++i ){
+ 					var valueText = data.allComments[i].value;
+-					valueText = valueText.replace(/\n/g,"<br/>");
+                                                 
+ 					if (data.allComments[i].mode !== "reply") { 
+ 						var comment = {};
+@@ -193,7 +180,6 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 				// obtain reply comments
+ 				for (var i =0; i < data.allComments.length; ++i ){
+ 					var valueText = data.allComments[i].value;
+-					valueText = valueText.replace(/\n/g,"<br/>");
+ 
+ 					if (data.allComments[i].mode === "reply") { 
+ 						var comment = {};
+@@ -219,7 +205,6 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+             var e = thisClass.createACommentEntry(comment);
+             thisClass.divComments.appendChild(e);
+           } 
+-
+         },
+ 	
+ 	createACommentEntry:function(comment) {
+@@ -368,13 +353,19 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		btnAddComment = document.createElement('button');
+ 		btnAddComment.id = rootID+"_btnAddComment";
+ 		btnAddComment.className = "publish";
+-		btnAddComment.onclick = function(){thisClass.addReply(annotationID,textArea.id);};
++		btnAddComment.onclick = function(){
++			var txtValue = textArea.value;
++			if (txtValue.replace(/\s/g,'') != "") {
++				thisClass.addReply(annotationID,textArea.id);
++			}
++		};
+ 		btnAddComment.innerHTML = paella.dictionary.translate("Reply");
+ 		
+ 		this.publishCommentButtons.appendChild(btnAddComment);
+ 		
+ 		return divEntry;
+ 	}
++	
+ });
+   
+ 
+-- 
+1.7.9.5
+
+
+From fe1242ed8e8a2a4475f38d4cb053475f860032bd Mon Sep 17 00:00:00 2001
+From: Sergio Peiro <serpeilop@gmail.com>
+Date: Mon, 11 Nov 2013 13:28:53 +0100
+Subject: [PATCH 8/9] Comments plugin finished
+
+---
+ plugins/comments.js |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
+
+diff --git a/plugins/comments.js b/plugins/comments.js
+index 17a6454..7de091b 100644
+--- a/plugins/comments.js
++++ b/plugins/comments.js
+@@ -83,7 +83,6 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		btnAddComment.className = "publish";
+ 		btnAddComment.onclick = function(){
+ 			var txtValue = thisClass.publishCommentTextArea.value;
+-			console.log(txtValue);
+ 			if (txtValue.replace(/\s/g,'') != "") {
+ 				thisClass.addComment();
+ 			}
+@@ -105,8 +104,8 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		var now = new Date();
+ 		
+ 		this.comments.push({
+-			id: now,
+-			userName:"UserName",
++			id: paella.utils.uuid(),
++			userName:paella.initDelegate.initParams.accessControl.userData.name,
+ 			mode: "normal",
+ 			value: txtValue,
+ 			created: now
+@@ -123,15 +122,15 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 	
+ 	addReply:function(annotationID, domNodeId){
+ 		var thisClass = this;
+-		paella.keyManager.enabled = true;
+ 		var textArea = document.getElementById(domNodeId);
+ 		var txtValue = textArea.value;
+-		textArea.value = "";
+ 		var now = new Date();
++		
++		paella.keyManager.enabled = true;
+ 
+ 		this.comments.push({
+-			id: now,
+-			userName:"UserName",
++			id: paella.utils.uuid(),
++			userName:paella.initDelegate.initParams.accessControl.userData.name,
+ 			mode: "reply",
+ 			parent: annotationID,
+ 			value: txtValue,
+@@ -220,7 +219,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		divSil = document.createElement('img');
+ 		divSil.className = "comments_entry_silhouette";
+ 		divSil.id = rootID+"_silhouette";
+-		divSil.src = "plugins/silhouette32.png";
++		divSil.src = paella.initDelegate.initParams.accessControl.userData.avatar;
+ 		divEntry.appendChild(divSil);
+ 		
+ 		var divCommentContainer;
+@@ -285,7 +284,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
+ 		divSil = document.createElement('img');
+ 		divSil.className = "comments_entry_silhouette";
+ 		divSil.id = rootID+"_silhouette";
+-		divSil.src = "plugins/silhouette32.png";
++		divSil.src = paella.initDelegate.initParams.accessControl.userData.avatar;
+ 		divEntry.appendChild(divSil);
+ 			
+ 		var divCommentContainer;
+-- 
+1.7.9.5
+
+
+From bc832b2b9bd3ecf689dfd96f4e9bd679a8f14705 Mon Sep 17 00:00:00 2001
+From: Sergio Peiro <serpeilop@gmail.com>
+Date: Mon, 11 Nov 2013 13:29:11 +0100
+Subject: [PATCH 9/9] Comments plugin finished
+
+---
+ plugins/comments.css |    2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/plugins/comments.css b/plugins/comments.css
+index 66d33c2..04ef98f 100644
+--- a/plugins/comments.css
++++ b/plugins/comments.css
+@@ -29,8 +29,6 @@
+ }
+ 
+ .comments_entry_silhouette {
+-	content: url("silhouette32.png");
+-	/*margin-top:10px;*/
+ 	float:left;
+ 	width:6%;
+ }
+-- 
+1.7.9.5
+

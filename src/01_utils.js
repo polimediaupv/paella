@@ -236,6 +236,8 @@ paella.Ajax = Class.create({
 paella.Timer = Timer;	// base.js Timer
 
 paella.utils = {
+	ajax:paella.ajax,
+
 	cookies:{
 		set:function(name,value) {
 			document.cookie = name + "=" + value;

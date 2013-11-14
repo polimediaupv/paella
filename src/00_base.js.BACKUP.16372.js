@@ -56,8 +56,11 @@ paella.pluginList = [
 	'comments.js',
 	'description.js',
 	'footprints.js',
-	'qualities.js',
+<<<<<<< HEAD
+	'qualities.js'
+=======
 	'show_editor.js'
+>>>>>>> 0174f0a79e89bcc27f907f9d05dcd8c330d13f10
 ];
 
 paella.events = {
