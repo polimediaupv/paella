@@ -166,8 +166,7 @@ paella.utils.ajax: send AJAX request. You can also use the shorter form "paella.
 	- mimetype: Mimetype string.
 	- responseCode: Server result code
 	- rawData: Unparsed result data.
-	
-	
+
 
 paella.utils.cookies: set and get cookies
 --------------------
