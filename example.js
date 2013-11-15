@@ -91,7 +91,7 @@ var MyAccessControl = Class.create(paella.AccessControl,{
 
 var MyVideoLoader = Class.create(paella.VideoLoader, {
 	loadVideo:function(videoId,onSuccess) {
-		var url = paella.utils.parameters.get('id');
+		var url = videoId;
 		if (url) {
 			var stream = examplePresenterSources;
 			stream.sources.mp4[0].src = url + stream.sources.mp4[0].src;
