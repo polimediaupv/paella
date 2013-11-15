@@ -145,6 +145,22 @@ Register cookie data delegate in config.json
 		}
 	}
 
+paella.MessageBox
+--------------------
+
+It shows a modal view over the player window.
+
+	paella.messageBox.showFrame(url,params): shows an url in the modal view, using an iframe.
+	paella.messageBox.showElement(domElement,params): shows a dom element in the modal view
+	paella.messageBox.showMessage(message,params): shows a text message in the modal view 
+	paella.messageBox.showError(message,params): shows an error message in the modal view. It works in the same way as showMessage, but using another style.
+
+Parameters:
+
+1. params.closeButton - if closeButton==true, the window will include a close button in the top right corner.
+2. params.width - width of the modal view, in CSS units (px, pt, %)
+3. params.height - height of the modal view, in CSS units (px, pt, %)
+4. params.onClose - onClose callback function. PaellaEngage will call this function when the window be closed
 
 ## Paella Utility Objects ##
 
@@ -240,4 +256,6 @@ You can test it in your browser javascript console. Example using Google Chrome 
 		iPad: false
 		iPhone: false
 		iPodTouch: false
+
+
 
