@@ -177,15 +177,13 @@ Base class of all Paella Editor plugins. It provides with the editor's basic int
 paella.editor.TrackPlugin
 -------------------------
 
-- getTrackName()
+- getTrackName(): Plugin visual configuration. Override: required. It returns the name of the track. It's recommendable to translate this name into the user language, using paella.dictionary.translate().
 
-- getColor()
+- getColor(): Plugin visual configuration. Override: optional. It returns the CSS color of the track. although the override of this function is optional, it is highly recommendable to do it and return a different color than the other installed tracks.
 
-- getTextColor()
+- getTextColor(): Plugin visual configuration. Override: optional. It returns the CSS color of the track's name text. Override it only if the color returned by getColor() makes difficult to read the track name.
 
-- getTrackType()
-
-- getTrackItems()
+- getTrackItems(): 
 
 - allowResize()
 
