@@ -10,6 +10,15 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 	getMinWindowSize:function() { return 300; },
 	getName:function() { return "es.upv.paella.multipleQualitiesPlugin"; },
 	checkEnabled:function(onSuccess) { onSuccess(this.checkStreams()); },
+	setup:function() {
+		if (paella.utils.language()=="es") {
+			var esDict = {
+				'Presenter':'Presentador',
+				'Slide':'Diapositiva'
+			};
+			paella.dictionary.addDictionary(esDict);
+		}
+	},
 						      
 	checkStreams:function(){
 		this.currentMaster = paella.player.videoContainer.currentMasterVideoData;
