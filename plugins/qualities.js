@@ -91,7 +91,7 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 			thisClass.changeVideoStream(param1Q,comboS.id);
 		});
 			
-		if (this.availableSlaves.length > 1){
+		if (this.availableSlaves.length+1 > 1){
 			for (var j =0; j < this.availableSlaves.length; ++j ){
 				var w = this.availableSlaves[j].res.w;
 				var h = this.availableSlaves[j].res.h
