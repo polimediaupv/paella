@@ -154,7 +154,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		
 		paella.data.read('comments',{id:paella.initDelegate.getId()},function(data,status) {
 			
-			if (data && typeof(data)=='object' && data.allComments.length>0) {
+			if (data && typeof(data)=='object' && data.allComments && data.allComments.length>0) {
 				thisClass.comments = data.allComments;
 				var tempDict = {};
 
