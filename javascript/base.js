@@ -1246,7 +1246,7 @@ base.ajax = {
 		
 		if (typeof(onFail)=='function') {
 			ajaxObj.fail(function(jqXHR,textStatus,error) {
-				onFail(textStatus + ' : ' + error,'text/plain',jqXHR.status,textStatus + ' : ' + error);
+				onFail(textStatus + ' : ' + error,'text/plain',jqXHR.status,jqXHR.responseText);
 			});
 		}
 	},

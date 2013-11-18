@@ -60,7 +60,7 @@ paella.AjaxCallback = Class.create(paella.AsyncLoaderCallback,{
 				This.rawData = rawData;
 				if (typeof(This.didLoadSuccess)=='function') status = This.didLoadSuccess(This);
 				if (status) onSuccess();
-				else onFail();
+				else onError();
 			},
 			function(data,type,code,rawData) {
 				var status = false;
@@ -70,7 +70,7 @@ paella.AjaxCallback = Class.create(paella.AsyncLoaderCallback,{
 				This.rawData = rawData;
 				if (typeof(This.didLoadFail)=='function') status = This.didLoadFail(This);
 				if (status) onSuccess();
-				else onFail();
+				else onError();
 			});
 	}
 });
@@ -148,7 +148,7 @@ paella.AsyncLoader = Class.create({
 				This.load(onSuccess);
 			},
 			function() {
-				if (typeof(onFail)=='function') onFail();
+				if (typeof(onError)=='function') onError();
 			});
 		}
 		else if (typeof(onSuccess)=='function') {
