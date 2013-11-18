@@ -1,13 +1,15 @@
 var examplePresenterSources = {
 	sources:{
-		mp4:[ { src:'/presenter.mp4', type:"video/mp4", res:{w:1280,h:720} } ]
+		mp4:[ { src:'/presenter.mp4', type:"video/mp4", res:{w:1280,h:720} },
+		{ src:'/presenter.mp4', type:"video/mp4", res:{w:1024,h:768} } ]
 	},
 	preview:'/PRESENTER.jpg'
 }
 
 var exampleSlidesSources = {
 	sources:{
-		mp4:[ { src:'/presentation.mp4', type:"video/mp4", res:{w:1024,h:768} } ],
+		mp4:[ { src:'/presentation.mp4', type:"video/mp4", res:{w:1024,h:768} },
+		{ src:'/presentation.mp4', type:"video/mp4", res:{w:640,h:480} } ],
 		image:[ {
 			frames:{
 				frame_0:'/image/frame_0.jpg',
