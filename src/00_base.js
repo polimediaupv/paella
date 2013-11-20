@@ -56,6 +56,7 @@ paella.pluginList = [
 	'comments.js',
 	'description.js',
 	'footprints.js',
+	'videoload_test.js',
 	'qualities.js',
 	'show_editor.js'
 ];
