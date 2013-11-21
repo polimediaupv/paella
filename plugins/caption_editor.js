@@ -2,6 +2,7 @@ paella.plugins.CaptionsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
 	tracks:null,
 	selectedTrackItem:null,
 	
+	getIndex:function() { return 103; },
 	checkEnabled:function(onSuccess) {
 		var This = this;
 		this.tracks = [];
@@ -137,6 +138,9 @@ paella.plugins.CaptionsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
 			paella.plugins.captionsPlayerlugin.captions = data.captions;
 			success(status);
 		});
+
+		if (data.captions.length >= 1) paella.plugins.activeCaptionsPlugin.setButtonEnabled(true);
+		else paella.plugins.activeCaptionsPlugin.setButtonEnabled(false);
 	}
 });
 
@@ -149,6 +153,7 @@ paella.plugins.CaptionsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 	visibleCaptions:null,
 	captionsEnabled:null,
 
+	getIndex:function() { return 104; },
 	getName:function() { return "es.upv.paella.CaptionsPlayerPlugin"; },
 	checkEnabled:function(onSuccess) {
 		var This = this;
@@ -202,36 +207,53 @@ paella.plugins.CaptionsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 			this.visibleCaptions[caption.s] = null;
 		}
 	}
+
 });
 
 paella.plugins.captionsPlayerlugin = new paella.plugins.CaptionsPlayerPlugin();
 
 paella.plugins.ActiveCaptionsPlugin = Class.create(paella.ButtonPlugin,{
+	button: null,
+	activeCaptions: null,
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "showCaptionsPluginButton"; },
 	getIndex:function() { return 580; },
 	getMinWindowSize:function() { return 300; },
 	getName:function() { return "es.upv.paella.activeCaptionsPlugin"; },
-	checkEnabled:function(onSuccess) { onSuccess(true); },
+	checkEnabled:function(onSuccess) { 
+		var thisClass = this;
+		paella.data.read('captions',{id:paella.initDelegate.getId()},function(data,status) {
+			if (!(data && typeof(data)=='object' && data.captions && data.captions.length>0)) {
+				thisClass.button.className = thisClass.getButtonItemClass(false,false);
+			}
+			onSuccess(true); 
+		});
+	 },
 	getDefaultToolTip:function() { return paella.dictionary.translate("Show captions"); },	
-	
-						  
+	  
 	action:function(button) {
+		this.button = button;
 		if (this.activeCaptions) {
-			button.className = this.getButtonItemClass(false);
+			button.className = this.getButtonItemClass(false,true);
 			paella.plugins.captionsPlayerlugin.captionsEnabled = false;
 			this.activeCaptions = false;
 		} else { 
-			button.className = this.getButtonItemClass(true);
+			button.className = this.getButtonItemClass(true,true);
 			paella.plugins.captionsPlayerlugin.captionsEnabled = true;
 			this.activeCaptions = true;
 		}
 	},
+
+	setButtonEnabled:function(enabled){
+		var sel = this.button.className.split(" ");
+		this.activeCaptions = ((enabled)&&(sel[3] == 'selected'));
+		this.button.className = this.getButtonItemClass(sel[3] == 'selected',enabled);
+		paella.plugins.captionsPlayerlugin.captionsEnabled = ((enabled)&&(sel[3] == 'selected'));
+	},
 	
-	getButtonItemClass:function(selected) {
-		return 'buttonPlugin '+this.getAlignment() +' '+ this.getSubclass() + ((selected) ? ' selected':'');
+	getButtonItemClass:function(selected,enabled) {
+		return 'buttonPlugin '+this.getAlignment() +' '+ this.getSubclass() + ((selected) ? ' selected':'') + ((!enabled) ? ' disabled':'') ;
 	}
 });
   
-
 paella.plugins.activeCaptionsPlugin = new paella.plugins.ActiveCaptionsPlugin();
