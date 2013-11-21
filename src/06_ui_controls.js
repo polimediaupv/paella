@@ -44,7 +44,11 @@ paella.PlaybackBar = Class.create(paella.DomNode,{
 		this.domElement.className = "playbackBar";
 		this.domElement.setAttribute("alt", "");
 		this.domElement.setAttribute("title", "Timeline Slider");
-		this.domElement.setAttribute("aria-label", "Timeline Slider");		
+		this.domElement.setAttribute("aria-label", "Timeline Slider");
+		this.domElement.setAttribute("role", "slider");
+		this.domElement.setAttribute("aria-valuemin", "0");
+		this.domElement.setAttribute("aria-valuemax", "100");
+		this.domElement.setAttribute("aria-valuenow", "0");			
 		this.domElement.setAttribute("tabindex", "1100");
 		$(this.domElement).keyup(function(event){
 			switch(event.keyCode) {
@@ -196,6 +200,7 @@ paella.PlaybackControl = Class.create(paella.DomNode,{
 		var thisClass = this;
 		this.pluginsContainer = new paella.DomNode('div',id + '_playbackBarPlugins');
 		this.pluginsContainer.domElement.className = 'playbackBarPlugins';
+		this.pluginsContainer.domElement.setAttribute("role", "toolbar");		
 		this.addNode(this.pluginsContainer);
 
 		this.popUpPluginContainer = new paella.PopUpContainer(id + '_popUpPluginContainer','popUpPluginContainer');
@@ -250,7 +255,7 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 		var id = 'videoOverlayButtonPlugin' + this.buttonPlugins.length;
 		this.buttonPlugins.push(plugin);
 		var button = paella.ButtonPlugin.buildPluginButton(plugin,id);
-		this.videoOverlayButtons.domElement.appendChild(button);
+		this.videoOverlayButtons.domElement.appendChild(button);		
 		plugin.button = button;
 		$(button).hide();
 		plugin.checkEnabled(function(isEnabled) {
@@ -278,6 +283,7 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 		
 		this.videoOverlayButtons = new paella.DomNode('div',id + '_videoOverlayButtonPlugins');
 		this.videoOverlayButtons.domElement.className = 'videoOverlayButtonPlugins';
+		this.videoOverlayButtons.domElement.setAttribute("role", "toolbar");
 		this.addNode(this.videoOverlayButtons);
 		
 		paella.pluginManager.setTarget('videoOverlayButton',this);

@@ -18,6 +18,7 @@ paella.VideoOverlay = Class.create(paella.DomNode,{
 	initialize:function() {
 		var style = {position:'absolute',left:'0px',right:'0px',top:'0px',bottom:'0px',overflow:'hidden',zIndex:10};
 		this.parent('div','overlayContainer',style);
+		this.domElement.setAttribute("role", "main");
 	},
 	
 	enableBackgroundMode:function() {
@@ -82,7 +83,7 @@ paella.VideoContainerBase = Class.create(paella.DomNode,{
 
 	initialize:function(id) {
 		var style = {position:'absolute',left:'0px',right:'0px',top:'0px',bottom:'0px',overflow:'hidden'}
-		this.parent('div',id,style);
+		this.parent('div',id,style);		
 	},
 	
 	initEvents:function() {
@@ -251,6 +252,7 @@ paella.VideoContainer = Class.create(paella.VideoContainerBase,{
 		this.logos = [];
 				
 		this.container = new paella.DomNode('div',this.containerId,{position:'relative',display:'block',marginLeft:'auto',marginRight:'auto',width:'1024px',height:'567px'});
+		this.container.domElement.setAttribute('role','main');
 		this.addNode(this.container);
 	
 		this.overlayContainer = new paella.VideoOverlay(this.domElement);

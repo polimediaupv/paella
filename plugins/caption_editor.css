@@ -25,8 +25,3 @@
 .showCaptionsPluginButton.selected {
 	background-position:-80px 0px;
 }
-
-.showCaptionsPluginButton.disabled {
-	width: 0px;
-	height: 0px;
-}

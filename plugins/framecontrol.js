@@ -143,7 +143,8 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 			frame.frameData = frameData;
 			frame.frameControl = this;
 			image = frameData.thumb ? frameData.thumb:frameData.url;
-			frame.innerHTML = '<img src="' + image + '" alt="" class="frameControlImage"></img>';
+			var labelTime = paella.utils.timeParse.secondsToTime(frameData.time);
+			frame.innerHTML = '<img src="' + image + '" alt="" class="frameControlImage" title="'+labelTime+'" aria-label="'+labelTime+'"></img>';
 			$(frame).mouseover(function(event) {
 				this.frameControl.onMouseOver(event,this.frameData);
 			});

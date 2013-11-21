@@ -39,13 +39,12 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		this.divComments.className = 'CommentPlugin_Comments';
 		this.divComments.id = 'CommentPlugin_Comments';
 
+		this.divRoot.appendChild(this.divComments);
+		
 		if(this.canPublishAComment){
 			this.divRoot.appendChild(this.divPublishComment);
 			this.createPublishComment();
 		}
-
-		this.divRoot.appendChild(this.divComments);
-		
 		this.reloadComments();
 	},
 	
@@ -257,11 +256,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		divCommentContainer.appendChild(divCommentReply);
 		
 		if (this.canPublishAComment == true) {
-
-			var btnRplyComment = document.createElement('div');
-			btnRplyComment.className = "reply_button";
-			btnRplyComment.innerHTML = paella.dictionary.translate("Reply");;
-
+			var btnRplyComment = document.createElement('button');
 			btnRplyComment.id = rootID+"_comment_reply_button";
 			btnRplyComment.onclick = function(){
 				var e = thisClass.createAReplyEntry(comment["id"]);
