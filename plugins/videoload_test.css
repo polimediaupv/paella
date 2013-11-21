@@ -3,8 +3,10 @@
 	color: #174B49;
 	text-align: center;
 	font-size: 22px;
-	-webkit-border-radius: 22px 20px 20px 23px;
-	-moz-border-radius: 22px 20px 20px 23px;
-	border-radius: 22px 20px 20px 23px;
-	padding: 5px 0px 5px 0px;
+	padding: 5px 0px 5px 10px;
 }
+
+.btn{
+	margin-left: 20px;
+}
+
