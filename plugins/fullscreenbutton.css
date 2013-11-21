@@ -7,6 +7,10 @@
 	background-color: rgb(171,178,178);
 }
 
+.showFullScreenButton:focus {
+	background-color: rgb(171,178,178);
+}
+
 .showFullScreenButton.active {
 	background-position:-40px 0px;
 }
