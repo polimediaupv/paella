@@ -6,7 +6,7 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "frameControl"; },
-	getIndex:function() { return 2010; },
+	getIndex:function() { return 510; },
 	getMinWindowSize:function() { return 200; },
 	getName:function() { return "es.upv.paella.FrameControlPlugin"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.timeLineButton; },

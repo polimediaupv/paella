@@ -26,6 +26,7 @@ paella.TimeControl = Class.create(paella.DomNode,{
 		var minutes = Math.floor((sec_numb - (hours * 3600)) / 60);
 		var seconds = sec_numb - (hours * 3600) - (minutes * 60);
 		
+		if (hours < 10) {hours = "0"+hours;}
 		if (minutes < 10) {minutes = "0"+minutes;}
 		if (seconds < 10) {seconds = "0"+seconds;}
 		return hours + ':' + minutes + ':' + seconds;
@@ -41,6 +42,25 @@ paella.PlaybackBar = Class.create(paella.DomNode,{
 		var style = {};
 		this.parent('div',id,style);
 		this.domElement.className = "playbackBar";
+		this.domElement.setAttribute("alt", "");
+		this.domElement.setAttribute("title", "Timeline Slider");
+		this.domElement.setAttribute("aria-label", "Timeline Slider");		
+		this.domElement.setAttribute("tabindex", "1100");
+		$(this.domElement).keyup(function(event){
+			switch(event.keyCode) {
+				case 37: //Left
+					var curr = 100*paella.player.videoContainer.currentTime()/paella.player.videoContainer.duration();
+					var selectedPosition = curr - 5;
+					paella.events.trigger(paella.events.seekTo,{ newPositionPercent:selectedPosition });
+					break;
+				case 39: //Right
+					var curr = 100*paella.player.videoContainer.currentTime()/paella.player.videoContainer.duration();
+					var selectedPosition = curr + 5;
+					paella.events.trigger(paella.events.seekTo,{ newPositionPercent:selectedPosition });
+					break;
+			}
+		});
+		
 		this.playbackFullId = id + "_full";
 		this.timeControlId = id + "_timeControl";
 		var playbackFull = new paella.DomNode('div',this.playbackFullId,{width:'0%'});

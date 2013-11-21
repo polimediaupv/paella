@@ -3,7 +3,7 @@ paella.plugins.SocialPlugin = Class.create(paella.ButtonPlugin,{
 	socialMedia: null,
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "showSocialPluginButton"; },
-	getIndex:function() { return 2060; },
+	getIndex:function() { return 560; },
 	getMinWindowSize:function() { return 300; },
 	getName:function() { return "es.upv.paella.socialPlugin"; },
 	checkEnabled:function(onSuccess) { onSuccess(true); },

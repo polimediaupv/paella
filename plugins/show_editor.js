@@ -2,7 +2,7 @@ paella.ShowEditorPlugin = Class.create(paella.VideoOverlayButtonPlugin,{
 	isEditorVisible:function() {
 		return paella.editor.instance!=null;
 	},
-	getIndex:function() {return 800;},
+	getIndex:function() {return 10;},
 	
 	getSubclass:function() {
 		return "showEditorButton";

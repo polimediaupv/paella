@@ -84,8 +84,6 @@ This class is used to add buttons to the playback bar. All the visual aspects, e
 
 - getDefaultToolTip(): Plugin accesibility configuration. Override: optional. It returns the default tooltip to be shown.
 
-- setToolTip(message): Plugin accesibility function. Override: None. This function sets the booton tooltip.
-
 - action(button): Plugin operation. Override: required if the plugin is an actionButton plugin. This method will be called when the user push the plugin's button. the `button` parameter is the button dom element.
 
 - getMinWindowSize(): Plugin visual configuration. Override: required. Default value:0. It returns the minimum window width to show the player's button. If the window with is less than the required window size, the button will be hidden. The plugin handler will call this function every time the window is resized
@@ -118,6 +116,10 @@ utility functions:
 To switch between the play and pause icon, the playButton plugin listen to the play and pause events. If the play event is triggered, the button subclass is changed to pauseSubclass, and if the pause event is triggered the button subclass is changed to playSubclass.
 
 - hideButton() and showButton(): Hides and shows the button.
+
+- setToolTip(message): Plugin accesibility function. This function sets the booton tooltip.
+
+- isPopUpOpen(): Returns if the Popup content is open. Returns true if open, false if close.
 
 paella.VideoOverlayButtonPlugin (extends paella.ButtonPlugin)
 ----------------------

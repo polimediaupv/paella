@@ -3,7 +3,7 @@ paella.plugins.ExtendedProfilesPlugin = Class.create(paella.ButtonPlugin,{
 	extendedModes: null,
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "showExtendedProfilesButton"; },
-	getIndex:function() { return 2050; },
+	getIndex:function() { return 550; },
 	getMinWindowSize:function() { return 300; },
 	getName:function() { return "es.upv.paella.extendedProfilesPlugin"; },
 	getDefaultToolTip:function() { return paella.dictionary.translate("Change page layout"); },	

@@ -7,7 +7,7 @@ paella.plugins.PlayPauseButtonPlugin = Class.create(paella.ButtonPlugin, {
 	getSubclass:function() { return this.playSubclass; },
 	getName:function() { return "es.upv.paella.playPauseButtonPlugin"; },
 	getDefaultToolTip:function() { return paella.dictionary.translate("Play"); },
-	getIndex:function() {return 1000;},
+	getIndex:function() {return 110;},
 	
 	setup:function() {
 		var This = this;

@@ -202,8 +202,11 @@ paella.PopUpContainer = Class.create(paella.DomNode,{
 			paella.events.trigger(paella.events.showPopUp,{identifier:this.popUpIdentifier,button:this});
 		});
 		$(button).keyup(function(event) {
-			if (event.keyCode == 13) {
+			if ( (event.keyCode == 13) && (!this.plugin.isPopUpOpen()) ){			
 				paella.events.trigger(paella.events.showPopUp,{identifier:this.popUpIdentifier,button:this});
+			}
+			else if ( (event.keyCode == 27)){			
+				paella.events.trigger(paella.events.hidePopUp,{identifier:this.popUpIdentifier,button:this});
 			}
 		});
 	}
@@ -344,6 +347,10 @@ paella.ButtonPlugin = Class.create(paella.Plugin,{
 	
 	getDefaultToolTip: function() {
 		return "";
+	},
+	
+	isPopUpOpen:function() {
+		return false;
 	}
 });
 
@@ -366,7 +373,7 @@ paella.ButtonPlugin.buildPluginButton = function(plugin,id) {
 	var elem = document.createElement('div');
 	elem.className = plugin.getClassName();
 	elem.id = id;
-	elem.setAttribute("tabindex", plugin.getIndex());
+	elem.setAttribute("tabindex", 1000+plugin.getIndex());
 	elem.setAttribute("alt", "");
 	elem.plugin = plugin;
 	plugin.button = elem;
