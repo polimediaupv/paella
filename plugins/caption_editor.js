@@ -139,8 +139,9 @@ paella.plugins.CaptionsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
 			success(status);
 		});
 
-		if (data.captions.length == 0) paella.plugins.activeCaptionsPlugin.setButtonEnabled(false);
-		else if (data.captions.length >= 1) paella.plugins.activeCaptionsPlugin.setButtonEnabled(true);
+		/*if (data.captions.length == 0) paella.plugins.activeCaptionsPlugin.setButtonEnabled(false);
+		else */if (data.captions.length >= 1) paella.plugins.activeCaptionsPlugin.setButtonEnabled(true);
+		else paella.plugins.activeCaptionsPlugin.setButtonEnabled(false);
 	}
 });
 
@@ -220,10 +221,17 @@ paella.plugins.ActiveCaptionsPlugin = Class.create(paella.ButtonPlugin,{
 	getIndex:function() { return 2080; },
 	getMinWindowSize:function() { return 300; },
 	getName:function() { return "es.upv.paella.activeCaptionsPlugin"; },
-	checkEnabled:function(onSuccess) { onSuccess(true); },
+	checkEnabled:function(onSuccess) { 
+		var thisClass = this;
+		paella.data.read('captions',{id:paella.initDelegate.getId()},function(data,status) {
+			if (!(data && typeof(data)=='object' && data.captions && data.captions.length>0)) {
+				thisClass.button.className = thisClass.getButtonItemClass(false,false);
+			}
+			onSuccess(true); 
+		});
+	 },
 	getDefaultToolTip:function() { return paella.dictionary.translate("Show captions"); },	
-	
-						  
+	  
 	action:function(button) {
 		this.button = button;
 		if (this.activeCaptions) {
@@ -231,7 +239,6 @@ paella.plugins.ActiveCaptionsPlugin = Class.create(paella.ButtonPlugin,{
 			paella.plugins.captionsPlayerlugin.captionsEnabled = false;
 			this.activeCaptions = false;
 		} else { 
-			console.log('Caps enabled');
 			button.className = this.getButtonItemClass(true,true);
 			paella.plugins.captionsPlayerlugin.captionsEnabled = true;
 			this.activeCaptions = true;
@@ -239,14 +246,10 @@ paella.plugins.ActiveCaptionsPlugin = Class.create(paella.ButtonPlugin,{
 	},
 
 	setButtonEnabled:function(enabled){
-	// No hace bien los cambios. revisar el captionsPlayerPlugin.captionsEnabled porque siempre activa 
-	// los captions nada mas añadir el primero. Incluso si el boton estaba desactivado antes de haber 
-	// borrado el último subt.
-
 		var sel = this.button.className.split(" ");
-		this.activeCaptions = enabled;
+		this.activeCaptions = ((enabled)&&(sel[3] == 'selected'));
 		this.button.className = this.getButtonItemClass(sel[3] == 'selected',enabled);
-		paella.plugins.captionsPlayerlugin.captionsEnabled = enabled;
+		paella.plugins.captionsPlayerlugin.captionsEnabled = ((enabled)&&(sel[3] == 'selected'));
 	},
 	
 	getButtonItemClass:function(selected,enabled) {
