@@ -82,6 +82,10 @@ This class is used to add buttons to the playback bar. All the visual aspects, e
 
 - getButtonType(): Plugin operation/visual configuration. Override: optional. Default value: paella.ButtonPlugin.type.actionButton. It returns the button type: action button (paella.ButtonPlugin.type.actionButton), popUp button (paella.ButtonPlugin.type.popUpButton) or time line button (paella.ButtonPlugin.type.timeLineButton). The pop up and time line button types will show a container above the playback bar. The time line container occupy the entire playback bar width, while the popup's width is defined in the plugin's style sheet.
 
+- getDefaultToolTip(): Plugin accesibility configuration. Override: optional. It returns the default tooltip to be shown.
+
+- setToolTip(message): Plugin accesibility function. Override: None. This function sets the booton tooltip.
+
 - action(button): Plugin operation. Override: required if the plugin is an actionButton plugin. This method will be called when the user push the plugin's button. the `button` parameter is the button dom element.
 
 - getMinWindowSize(): Plugin visual configuration. Override: required. Default value:0. It returns the minimum window width to show the player's button. If the window with is less than the required window size, the button will be hidden. The plugin handler will call this function every time the window is resized
@@ -157,6 +161,10 @@ It works in a similar way as a RightBarPlugin, but each plugin adds a tab button
 - getTabName(): Plugin visual configuration. Override: required. It returns the name of the tab button.
 
 - action(tab): Plugin behaviour. Override: optional. This function is invoked each time the user clicks in the corresponding plugin tab button. It works in the same way that the paella.ButtonPlugin.action() method.
+
+- getDefaultToolTip(): Plugin accesibility configuration. Override: optional. It returns the default tooltip to be shown.
+
+- setToolTip(message): Plugin accesibility function. Override: None. This function sets the tabbar tooltip.
 
 
 ## Editor plugins
