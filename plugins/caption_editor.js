@@ -139,8 +139,7 @@ paella.plugins.CaptionsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
 			success(status);
 		});
 
-		/*if (data.captions.length == 0) paella.plugins.activeCaptionsPlugin.setButtonEnabled(false);
-		else */if (data.captions.length >= 1) paella.plugins.activeCaptionsPlugin.setButtonEnabled(true);
+		if (data.captions.length >= 1) paella.plugins.activeCaptionsPlugin.setButtonEnabled(true);
 		else paella.plugins.activeCaptionsPlugin.setButtonEnabled(false);
 	}
 });
