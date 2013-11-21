@@ -39,12 +39,13 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		this.divComments.className = 'CommentPlugin_Comments';
 		this.divComments.id = 'CommentPlugin_Comments';
 
-		this.divRoot.appendChild(this.divComments);
-		
 		if(this.canPublishAComment){
 			this.divRoot.appendChild(this.divPublishComment);
 			this.createPublishComment();
 		}
+
+		this.divRoot.appendChild(this.divComments);
+		
 		this.reloadComments();
 	},
 	
