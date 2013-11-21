@@ -375,6 +375,7 @@ paella.ButtonPlugin.buildPluginButton = function(plugin,id) {
 	elem.id = id;
 	elem.setAttribute("tabindex", 1000+plugin.getIndex());
 	elem.setAttribute("alt", "");
+	elem.setAttribute("role", "button");
 	elem.plugin = plugin;
 	plugin.button = elem;
 	plugin.container = elem;
