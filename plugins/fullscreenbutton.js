@@ -1,9 +1,11 @@
 paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
-	getIndex:function() { return 104; },
+	getIndex:function() { return 2051; },
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "showFullScreenButton"; },
 	getName:function() { return "es.upv.paella.fullScreenButtonPlugin"; },
 	checkEnabled:function(onSuccess) { onSuccess(!paella.extended); },
+	getDefaultToolTip:function() { return paella.dictionary.translate("Go FullScreen"); },		
+	
 
 					       
 	action:function(button) {

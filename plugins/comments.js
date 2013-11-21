@@ -13,6 +13,9 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 	getName:function() { return "es.upv.paella.commentsPlugin"; },
 	getTabName:function() { return paella.dictionary.translate("Comments"); },
 	checkEnabled:function(onSuccess) { onSuccess(paella.extended); },
+	getIndex:function() { return 40; },
+	getDefaultToolTip:function() { return paella.dictionary.translate("Comments"); },	
+	
 					     
 	action:function(tab) {
 		this.loadContent();

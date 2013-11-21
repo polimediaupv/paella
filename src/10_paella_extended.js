@@ -53,7 +53,16 @@ paella.TabBarPlugin = Class.create(paella.ExtendedPlugin,{
 
 	buildContent:function(domElement) {
 		
-	}
+	},
+	
+	setToolTip:function(message) {
+		this.button.setAttribute("title", message);
+		this.button.setAttribute("aria-label", message);
+	},
+	
+	getDefaultToolTip: function() {
+		return "";
+	}	
 });
 
 paella.Extended = Class.create({
@@ -201,6 +210,11 @@ paella.Extended = Class.create({
 		tabItem.plugin = plugin;
 		var thisClass = this;
 		$(tabItem).click(function(event) { if (/disabledTabItem/.test(this.className)) { thisClass.showTab(tabIndex); this.plugin.action(this); } });
+		$(tabItem).keyup(function(event) {
+			if (event.keyCode == 13) {
+				if (/disabledTabItem/.test(this.className)) { thisClass.showTab(tabIndex); this.plugin.action(this); } 
+			}
+		});		
 		this.bottomContainerTabs.appendChild(tabItem);
 		
 		// Add tab content
@@ -210,6 +224,14 @@ paella.Extended = Class.create({
 		this.bottomContainerContent.appendChild(tabContent);
 		plugin.buildContent(tabContent);
 		
+		plugin.button = tabItem;
+		plugin.container = tabContent;
+
+		plugin.button.setAttribute("tabindex", 3000+plugin.getIndex());
+		plugin.button.setAttribute("alt", "");
+		plugin.setToolTip(plugin.getDefaultToolTip());
+		
+
 		// Show tab
 		if (this.firstTabShown===undefined) {
 			this.showTab(tabIndex);

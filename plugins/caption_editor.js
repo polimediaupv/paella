@@ -217,10 +217,12 @@ paella.plugins.ActiveCaptionsPlugin = Class.create(paella.ButtonPlugin,{
 	activeCaptions: null,
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "showCaptionsPluginButton"; },
-	getIndex:function() { return 105; },
+	getIndex:function() { return 2080; },
 	getMinWindowSize:function() { return 300; },
 	getName:function() { return "es.upv.paella.activeCaptionsPlugin"; },
 	checkEnabled:function(onSuccess) { onSuccess(true); },
+	getDefaultToolTip:function() { return paella.dictionary.translate("Show captions"); },	
+	
 						  
 	action:function(button) {
 		this.button = button;

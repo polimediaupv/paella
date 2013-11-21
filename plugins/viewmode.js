@@ -3,10 +3,11 @@ paella.plugins.ViewModePlugin = Class.create(paella.ButtonPlugin,{
 
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "showViewModeButton"; },
-	getIndex:function() { return 101; },
+	getIndex:function() { return 2040; },
 	getMinWindowSize:function() { return 300; },
 	getName:function() { return "es.upv.paella.viewModePlugin"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
+	getDefaultToolTip:function() { return paella.dictionary.translate("Change video layout"); },		
 
 	checkEnabled:function(onSuccess) {
 		onSuccess(paella.initDelegate.initParams.videoLoader.streams.length>=2);
