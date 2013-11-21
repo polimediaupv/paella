@@ -209,7 +209,7 @@ paella.plugins.captionsPlayerlugin = new paella.plugins.CaptionsPlayerPlugin();
 paella.plugins.ActiveCaptionsPlugin = Class.create(paella.ButtonPlugin,{
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "showCaptionsPluginButton"; },
-	getIndex:function() { return 2080; },
+	getIndex:function() { return 580; },
 	getMinWindowSize:function() { return 300; },
 	getName:function() { return "es.upv.paella.activeCaptionsPlugin"; },
 	checkEnabled:function(onSuccess) { onSuccess(true); },

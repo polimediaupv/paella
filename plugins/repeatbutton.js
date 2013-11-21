@@ -4,7 +4,7 @@ paella.plugins.RepeatButtonPlugin = Class.create(paella.ButtonPlugin, {
 	getAlignment:function() { return 'left'; },
 	getSubclass:function() { return this.repeatSubclass; },
 	getName:function() { return "es.upv.paella.repeatButtonPlugin"; },
-	getIndex:function() {return 1005;},
+	getIndex:function() {return 120;},
 	getDefaultToolTip:function() { return paella.dictionary.translate("Rewind 30 seconds"); },
 	
 	action:function(button) {
