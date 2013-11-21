@@ -2,7 +2,8 @@ paella.ShowEditorPlugin = Class.create(paella.VideoOverlayButtonPlugin,{
 	isEditorVisible:function() {
 		return paella.editor.instance!=null;
 	},
-
+	getIndex:function() {return 800;},
+	
 	getSubclass:function() {
 		return "showEditorButton";
 	},
@@ -10,6 +11,7 @@ paella.ShowEditorPlugin = Class.create(paella.VideoOverlayButtonPlugin,{
 	getAlignment:function() {
 		return 'right';
 	},
+	getDefaultToolTip:function() { return paella.dictionary.translate("Enter editor mode"); },	
 	
 	checkEnabled:function(onSuccess) {
 		onSuccess(paella.editor && paella.player.config.editor && paella.player.config.editor.enabled && !paella.utils.userAgent.browser.IsMobileVersion &&

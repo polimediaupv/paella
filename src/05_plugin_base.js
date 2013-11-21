@@ -201,6 +201,11 @@ paella.PopUpContainer = Class.create(paella.DomNode,{
 		$(button).click(function(event) {
 			paella.events.trigger(paella.events.showPopUp,{identifier:this.popUpIdentifier,button:this});
 		});
+		$(button).keyup(function(event) {
+			if (event.keyCode == 13) {
+				paella.events.trigger(paella.events.showPopUp,{identifier:this.popUpIdentifier,button:this});
+			}
+		});
 	}
 });
 
@@ -330,6 +335,15 @@ paella.ButtonPlugin = Class.create(paella.Plugin,{
 		else if (this.getButtonType()==paella.ButtonPlugin.type.popUpButton) {
 			return paella.ButtonPlugin.kPopUpClassName + ' ' + this.getSubclass();
 		}
+	},
+	
+	setToolTip:function(message) {
+		this.button.setAttribute("title", message);
+		this.button.setAttribute("aria-label", message);
+	},
+	
+	getDefaultToolTip: function() {
+		return "";
 	}
 });
 
@@ -346,16 +360,25 @@ paella.ButtonPlugin.type = {
 	timeLineButton:3
 }
 
+
 paella.ButtonPlugin.buildPluginButton = function(plugin,id) {
 	plugin.subclass = plugin.getSubclass();
 	var elem = document.createElement('div');
 	elem.className = plugin.getClassName();
 	elem.id = id;
+	elem.setAttribute("tabindex", plugin.getIndex());
+	elem.setAttribute("alt", "");
 	elem.plugin = plugin;
 	plugin.button = elem;
 	plugin.container = elem;
+	plugin.setToolTip(plugin.getDefaultToolTip());
 	$(elem).click(function(event) {
 		this.plugin.action(this);
+	});
+	$(elem).keyup(function(event) {
+		if (event.keyCode == 13) {
+			this.plugin.action(this);
+		}
 	});
 	return elem;
 }

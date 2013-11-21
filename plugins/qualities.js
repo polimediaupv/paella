@@ -6,9 +6,10 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 	availableSlaves:[],
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "showMultipleQualitiesPlugin"; },
-	getIndex:function() { return 105; },
+	getIndex:function() { return 2030; },
 	getMinWindowSize:function() { return 300; },
 	getName:function() { return "es.upv.paella.multipleQualitiesPlugin"; },
+	getDefaultToolTip:function() { return paella.dictionary.translate("Change video quality"); },	
 	checkEnabled:function(onSuccess) { onSuccess(this.checkStreams()); },
 	setup:function() {
 		if (paella.utils.language()=="es") {

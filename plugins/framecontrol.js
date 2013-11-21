@@ -6,10 +6,11 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "frameControl"; },
-	getIndex:function() { return 100; },
-	getMinWindowSize:function() { return 400; },
+	getIndex:function() { return 2010; },
+	getMinWindowSize:function() { return 200; },
 	getName:function() { return "es.upv.paella.FrameControlPlugin"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.timeLineButton; },
+	getDefaultToolTip:function() { return paella.dictionary.translate("Navigate by slides"); },	
 
 	checkEnabled:function(onSuccess) {
 		onSuccess(paella.initDelegate.initParams.videoLoader.frameList!=null);
