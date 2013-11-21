@@ -54,6 +54,10 @@
 	background-color: rgb(171,178,178);
 }
 
+.showCaptionsPluginButton:focus {
+	background-color: rgb(171,178,178);
+}
+
 .showCaptionsPluginButton.selected {
 	background-position:-80px 0px;
 }
@@ -140,6 +144,10 @@ textarea {
 	background-color: rgb(171,178,178);
 }
 
+.buttonPlugin.showExtendedProfilesButton:focus {
+	background-color: rgb(171,178,178);
+}
+
 .buttonPlugin.showExtendedProfilesButton.selected {
 	background-position:-40px 0px;
 }
@@ -154,6 +162,10 @@ textarea {
 }
 
 .extendedProfilesItemButton:hover {
+	background-color: rgba(90,90,90,0.8);
+}
+
+.extendedProfilesItemButton:focus {
 	background-color: rgba(90,90,90,0.8);
 }
 
@@ -184,6 +196,10 @@ textarea {
 }
 
 .buttonPlugin.footPrints:hover {
+	background-position: -40px 0;
+}
+
+.buttonPlugin.footPrints:focus {
 	background-position: -40px 0;
 }
 
@@ -343,243 +359,13 @@ textarea {
 	background-color: rgb(171,178,178);
 }
 
+.showFullScreenButton:focus {
+	background-color: rgb(171,178,178);
+}
+
 .showFullScreenButton.active {
 	background-position:-40px 0px;
 }
-
-
-.showMHDescriptionTabBarLeft {
-	display: inline-block;
-	width: 50%;
-	margin: 0px;
-	padding: 0px;
-	vertical-align: top
-}
-
-
-.showMHDescriptionTabBarRight {
-	display: inline-block;
-	width: 50%;
-	margin: 0px;
-	padding: 0px;
-	vertical-align: top
-}
-
-.showMHDescriptionTabBarElement {
-	color: black;
-	margin-bottom: 2px;
-}
-
-.showMHDescriptionTabBarValue {
-	margin-left: 3px;
-	color: grey;
-}
-
-.showMHDescriptionTabBarValue a {
-	color: gray;
-}
-
-.downloadsTabBarContainer{
-	margin-bottom: 9px;	
-}
-
-
-.downloadsLinkItem {
-	color: black;
-}
-
-
-.downloadsLinkItem:hover {
-	color: black;
-}
-
-.downloadLinkText {
-}
-
-.downloadLinkText.TypeFile {
-}
-.downloadLinkText.TypeFile.Video {
-}
-.downloadLinkText.TypeFile.Audio {
-}
-
-.downloadLinkText.Track {
-	font-weight: bold;
-}
-
-.downloadLinkText.Resolution {
-	color: green;
-}
-
-.downloadLinkText.MIMEType {
-	color: gray;
-}
-
-.#episodesFromSerie  {
-	width:600px;
-/*	min-width: 600px; */
-}
-
-
-.episodesFromSerieTitle{
-	font-family: sans-serif;
-	font-size: 1.5em;
-	color: #2D8F8B;
-	margin-bottom: 5px;
-}
-
-.episodesFromSerieTitle_Bold{
-	font-weight: bold;
-}
-
-
-.episodesFromSerieListing .recordings_header {
-	display: none;
-}
-
-.episodesFromSerieListing .recordings_entry_preview_container{
-	width: 120px;
-	display: inline-block;
-}
-.episodesFromSerieListing .recordings_entry_text_container {
-	font-size: 12px;
-	display: inline-block;
-}
-
-.episodesFromSerieListing .recordings_entry {
-	min-height: 95px;
-}
-
-
-.episodesFromSerieListing .recordings_entry.even_entry {
-	background-color: rgb(239, 247, 249);
-}
-
-.episodesFromSerieListing .recordings_entry.odd_entry {
-	background-color: rgb(247, 251, 252);
-}
-
-.episodesFromSerieListing .recordings_entry.pendent.even_entry,
-.episodesFromSerieListing .recordings_entry.pendent.odd_entry {
-	background-color: rgb(255,204,102);
-}
-
-.episodesFromSerieListing .recordings_entry.unpublished.even_entry,
-.episodesFromSerieListing .recordings_entry.unpublished.odd_entry {
-	background-color: gb(255,165,161);
-}
-
-
-
-.publishVideoNotPublished {
-	background-color: rgb(255,204,102);
-	color: #174B49;
-	text-align: center;
-	font-size: 22px;
-	-webkit-border-radius: 22px 20px 20px 23px;
-	-moz-border-radius: 22px 20px 20px 23px;
-	border-radius: 22px 20px 20px 23px;
-	padding: 5px 0px 5px 0px;
-}
-
-.searchTabBarSearchBar {
-	display: block;
-	height: 42px;
-}
-.searchTabBarSearchBar .searchBar {
-	float: left;
-}
-.searchTabBarSearchBar .relevanceInfo {
-	float: right;
-	margin: 5px 10px;
-	text-align: center; 
-	margin-left: 1px; 
-	margin-right: 1px; 
-	border: 0px solid black;
-	display: none;
-}
-
-.searchTabBarSearchBar .relevanceInfo .text {
-	display: inline;
-}
-
-.searchTabBarSearchBar .relevanceInfo .lt30 {
-	display: inline;
-	background-color: #C0C0C0;
-}
-
-.searchTabBarSearchBar .relevanceInfo .lt70 {
-	display: inline;
-	background-color: #ADD8E6;
-}
-
-.searchTabBarSearchBar .relevanceInfo .gt70 {
-	display: inline;
-	background-color: #90EE90;
-}
-
-
-.searchTabBarLoading {
-    background-image: url("pluginloading.gif");
-    background-repeat: no-repeat;
-    background-position: center;
-    margin-top: 10px;
-    width: 100%;
-    height: 11px;
-    display:block;
-}
-
-.searchTabBarResultEntry {
-    padding: 2px 5px 2px 5px;
-}
-.searchTabBarResultEntry:hover {
-    background-color: rgb(243, 222, 168);
-    cursor: pointer;
-}
-
-.searchTabBarResultEntryPreview {
-	display: inline-block;
-	width: 15%;
-}
-
-.searchTabBarResultEntryPreview img {
-	width: 100%;
-}
-
-.searchTabBarResultEntryText {
-	display: inline-block;
-	width: 80%;
-	vertical-align: top;
-	padding: 10px 0px 0px 5px;
-}
-
-.searchTabBarResultEntryText .time {
-    color: rgb(9, 172, 194);
-}
-
-.searchTabBarResultEntryText a {
-    color: black;
-}
-
-
-
-
-.none_relevance {
-    display: none;
-}
-
-.low_relevance {
-    background-color: rgb(192, 192, 192);
-}
-.medium_relevance {
-    background-color: rgb(173, 216, 230);
-}
-.high_relevance {
-    background-color: rgb(144, 238, 144);
-}
-
-
-
 
 .playButton {
 	background-size: 200%;
@@ -587,6 +373,9 @@ textarea {
 }
 
 .playButton:hover {
+	background-position:-40px 0px;
+}
+.playButton:focus {
 	background-position:-40px 0px;
 }
 
@@ -597,6 +386,9 @@ textarea {
 }
 
 .pauseButton:hover {
+	background-position:-40px 0px;
+}
+.pauseButton:focus {
 	background-position:-40px 0px;
 }
 
@@ -629,6 +421,10 @@ textarea {
 	background-color: rgb(171,178,178);
 }
 
+.buttonPlugin.showMultipleQualitiesPlugin:focus {
+	background-color: rgb(171,178,178);
+}
+
 .buttonPlugin.showMultipleQualitiesPlugin.selected {
 	background-position:-80px 0px;
 }
@@ -647,6 +443,10 @@ textarea {
 	background-position:-40px 0px;
 }
 
+.repeatButton:focus {
+	background-position:-40px 0px;
+}
+
 
 
 .showEditorButton {
@@ -655,6 +455,10 @@ textarea {
 }
 
 .showEditorButton:hover {
+	background-position:-40px 0px;
+}
+
+.showEditorButton:focus {
 	background-position:-40px 0px;
 }
 
@@ -668,6 +472,10 @@ textarea {
 }
 
 .buttonPlugin.showSocialPluginButton:hover {
+	background-color: rgb(171,178,178);
+}
+
+.buttonPlugin.showSocialPluginButton:focus {
 	background-color: rgb(171,178,178);
 }
 
@@ -685,6 +493,10 @@ textarea {
 }
 
 .socialItemButton:hover {
+	background-color: rgba(90,90,90,0.8);
+}
+
+.socialItemButton:focus {
 	background-color: rgba(90,90,90,0.8);
 }
 
