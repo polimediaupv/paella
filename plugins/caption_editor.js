@@ -229,6 +229,7 @@ paella.plugins.ActiveCaptionsPlugin = Class.create(paella.ButtonPlugin,{
 			paella.plugins.captionsPlayerlugin.captionsEnabled = false;
 			this.activeCaptions = false;
 		} else { 
+			console.log('Caps enabled');
 			button.className = this.getButtonItemClass(true,true);
 			paella.plugins.captionsPlayerlugin.captionsEnabled = true;
 			this.activeCaptions = true;
@@ -236,6 +237,10 @@ paella.plugins.ActiveCaptionsPlugin = Class.create(paella.ButtonPlugin,{
 	},
 
 	setButtonEnabled:function(enabled){
+	// No hace bien los cambios. revisar el captionsPlayerPlugin.captionsEnabled porque siempre activa 
+	// los captions nada mas añadir el primero. Incluso si el boton estaba desactivado antes de haber 
+	// borrado el último subt.
+
 		var sel = this.button.className.split(" ");
 		this.activeCaptions = enabled;
 		this.button.className = this.getButtonItemClass(sel[3] == 'selected',enabled);
