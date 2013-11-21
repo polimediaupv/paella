@@ -6,6 +6,9 @@
 .playButton:hover {
 	background-position:-40px 0px;
 }
+.playButton:focus {
+	background-position:-40px 0px;
+}
 
 .pauseButton {
 	background-size: 200%;
@@ -14,6 +17,9 @@
 }
 
 .pauseButton:hover {
+	background-position:-40px 0px;
+}
+.pauseButton:focus {
 	background-position:-40px 0px;
 }
 
