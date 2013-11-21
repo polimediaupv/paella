@@ -11,6 +11,10 @@
 	background-color: rgb(171,178,178);
 }
 
+.buttonPlugin.showMultipleQualitiesPlugin:focus {
+	background-color: rgb(171,178,178);
+}
+
 .buttonPlugin.showMultipleQualitiesPlugin.selected {
 	background-position:-80px 0px;
 }

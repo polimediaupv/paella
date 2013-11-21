@@ -7,6 +7,10 @@
 	background-position: -40px 0;
 }
 
+.buttonPlugin.footPrints:focus {
+	background-position: -40px 0;
+}
+
 .buttonPlugin.footPrints.selected {
 	background-position: 40px 0;
 }
