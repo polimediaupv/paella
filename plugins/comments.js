@@ -257,7 +257,11 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		divCommentContainer.appendChild(divCommentReply);
 		
 		if (this.canPublishAComment == true) {
-			var btnRplyComment = document.createElement('button');
+
+			var btnRplyComment = document.createElement('div');
+			btnRplyComment.className = "reply_button";
+			btnRplyComment.innerHTML = paella.dictionary.translate("Reply");;
+
 			btnRplyComment.id = rootID+"_comment_reply_button";
 			btnRplyComment.onclick = function(){
 				var e = thisClass.createAReplyEntry(comment["id"]);
