@@ -6,3 +6,7 @@
 .showEditorButton:hover {
 	background-position:-40px 0px;
 }
+
+.showEditorButton:focus {
+	background-position:-40px 0px;
+}
