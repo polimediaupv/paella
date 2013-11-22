@@ -25,7 +25,7 @@
 
 .comments_entry_comment{
 	margin-top: 5px;	
-	margin-bottom: 5px;	
+	margin-bottom: 10px;	
 }
 
 .comments_entry_silhouette {
@@ -49,7 +49,7 @@
 }
 
 .CommentPlugin_Publish {
-	box-shadow: inset 0px 0px 10px 2px rgba(10, 10,10, 0.39);
+	/*box-shadow: inset 0px 0px 10px 2px rgba(10, 10,10, 0.39); */
 	border-radius: 7px;
 	padding: 10px;
 	padding-bottom: 1px;
@@ -60,4 +60,15 @@ textarea {
 }
 
 
-
+reply_button{
+	color: #999;
+	font-size: 12px;
+	font-family: arial,sans-serif;
+	margin-bottom: 15px;
+	font-weight: bold;
+}
+  
+.reply_button:hover{
+	color: #438bc5;
+	text-decoration: underline;
+}
