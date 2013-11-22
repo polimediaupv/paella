@@ -89,7 +89,7 @@
 
 .comments_entry_comment{
 	margin-top: 5px;	
-	margin-bottom: 5px;	
+	margin-bottom: 10px;	
 }
 
 .comments_entry_silhouette {
@@ -113,7 +113,7 @@
 }
 
 .CommentPlugin_Publish {
-	box-shadow: inset 0px 0px 10px 2px rgba(10, 10,10, 0.39);
+	/*box-shadow: inset 0px 0px 10px 2px rgba(10, 10,10, 0.39); */
 	border-radius: 7px;
 	padding: 10px;
 	padding-bottom: 1px;
@@ -124,7 +124,18 @@ textarea {
 }
 
 
-
+reply_button{
+	color: #999;
+	font-size: 12px;
+	font-family: arial,sans-serif;
+	margin-bottom: 15px;
+	font-weight: bold;
+}
+  
+.reply_button:hover{
+	color: #438bc5;
+	text-decoration: underline;
+}
 
 
 
@@ -519,11 +530,14 @@ textarea {
 	color: #174B49;
 	text-align: center;
 	font-size: 22px;
-	-webkit-border-radius: 22px 20px 20px 23px;
-	-moz-border-radius: 22px 20px 20px 23px;
-	border-radius: 22px 20px 20px 23px;
-	padding: 5px 0px 5px 0px;
+	padding: 5px 0px 5px 10px;
 }
+
+.btn{
+	margin-left: 20px;
+}
+
+
 
 
 
