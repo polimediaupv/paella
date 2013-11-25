@@ -35,7 +35,9 @@
 }
 
 .extendedProfilesItemButton:focus {
-	background-color: rgba(90,90,90,0.8);
+	width: 94px;
+	border: 3px solid #23ff00;
+	opacity: 1;
 }
 
 .extendedProfilesItemButton.selected {
