@@ -280,6 +280,7 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 		paella.events.bind(paella.events.pause,function(event) { thisClass.onPauseEvent(); });
 		paella.events.bind('mousemove',function(event) { thisClass.onMouseMoveEvent(); });
 		paella.events.bind(paella.events.endVideo,function(event) { thisClass.onEndVideoEvent(); });
+		paella.events.bind('keydown',function(event) { thisClass.onKeyEvent() });
 		
 		this.videoOverlayButtons = new paella.DomNode('div',id + '_videoOverlayButtonPlugins');
 		this.videoOverlayButtons.domElement.className = 'videoOverlayButtonPlugins';
@@ -391,6 +392,13 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 		this.clearAutohideTimer();
 	},
 
+	onKeyEvent:function() {
+		this.showControls();
+		if (paella.player.videoContainer.isReady() && !paella.player.videoContainer.paused()) {
+			this.restartAutohideTimer();			
+		}
+	},
+	
 	onMouseMoveEvent:function() {
 		this.showControls();
 		if (paella.player.videoContainer.isReady() && !paella.player.videoContainer.paused()) {
