@@ -216,6 +216,8 @@ paella.plugins.ActiveCaptionsPlugin = Class.create(paella.ButtonPlugin,{
 	getIndex:function() { return 580; },
 	getMinWindowSize:function() { return 300; },
 	getName:function() { return "es.upv.paella.activeCaptionsPlugin"; },
+	hideButton:function() { $(this.button).hide(); },
+	showButton:function() { $(this.button).show(); },
 	checkEnabled:function(onSuccess) { 
 		var thisClass = this;
 		paella.data.read('captions',{id:paella.initDelegate.getId()},function(data,status) {
@@ -244,6 +246,8 @@ paella.plugins.ActiveCaptionsPlugin = Class.create(paella.ButtonPlugin,{
 		var sel = this.button.className.split(" ");
 		this.activeCaptions = ((enabled)&&(sel[3] == 'selected'));
 		this.button.className = this.getButtonItemClass(sel[3] == 'selected',enabled);
+		if (enabled) this.showButton();
+		else this.hideButton();
 		paella.plugins.captionsPlayerlugin.captionsEnabled = ((enabled)&&(sel[3] == 'selected'));
 	},
 	
