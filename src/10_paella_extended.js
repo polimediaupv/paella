@@ -67,16 +67,19 @@ paella.TabBarPlugin = Class.create(paella.ExtendedPlugin,{
 
 paella.Extended = Class.create({
 	container:null,
+	paellaHeader:null,
 	paellaContainer:null,
 	rightContainer:null,
 	bottomContainer:null,
 
 	settings:{
 		containerId:'paellaExtendedContainer',
+		paellaHeaderId:'playerHeader',
 		paellaContainerId:'playerContainer',
 		rightContainerId:'paella_right',
 		bottomContainerId:'paella_bottom',
 		containerClass:'paellaExtendedContainer',
+		playerHeaderClass:'playerHeader',
 		playerContainerClass:'playerContainer',
 		rightContainerClass:'rightContainer',
 		bottomContainerClass:'bottomContainer',
@@ -120,6 +123,11 @@ paella.Extended = Class.create({
 			this.container.innerHTML = "";
 			this.container.className = this.settings.containerClass;
 		}
+
+		this.paellaHeader = document.createElement('div');
+		this.paellaHeader.id = this.settings.paellaHeaderId;
+		this.paellaHeader.className=this.settings.playerHeaderClass;
+		this.container.appendChild(this.paellaHeader);
 		
 		this.paellaContainer = document.createElement('div');
 		this.paellaContainer.id = this.settings.paellaContainerId;
@@ -263,6 +271,7 @@ paella.Extended = Class.create({
 		paella.utils.cookies.set("paella.extended.profile", profileName);
 		var thisClass = this;
 		this.container.className = this.settings.containerClass + " " + profileName;
+		this.paellaHeader.className = this.settings.playerHeaderClass + " " + profileName;
 		this.paellaContainer.className = this.settings.playerContainerClass + " " + profileName;
 		this.rightContainer.className = this.settings.rightContainerClass + " " + profileName;
 		this.bottomContainer.className = this.settings.bottomContainerClass + " " + profileName;

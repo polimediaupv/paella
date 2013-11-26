@@ -342,9 +342,13 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 	},
 
 	hide:function() {
+		var This = this;
 		var userAgent = new UserAgent();
 		if (!userAgent.browser.IsMobileVersion) {
-			$(this.domElement).animate({opacity:0.0},300);
+			$(this.domElement).animate({opacity:0.0},{duration:300, complete:function(){
+				This.domElement.setAttribute('aria-hidden', 'true');
+				//$(This.domElement).hide();				
+			}});
 			paella.events.trigger(paella.events.controlBarWillHide);
 		}
 		else {
@@ -356,6 +360,8 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 		if (this.isEnabled) {
 			if (this.domElement.style.opacity!=1.0) {
 				this.domElement.style.opacity = 1.0;
+				this.domElement.setAttribute('aria-hidden', 'false');
+				//$(this.domElement).show();
 				paella.events.trigger(paella.events.controlBarDidShow);
 			}	
 		}
