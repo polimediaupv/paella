@@ -62,6 +62,11 @@
 	background-position:-80px 0px;
 }
 
+.showCaptionsPluginButton.disabled {
+	width: 0px;
+	height: 0px;
+}
+
 
 #CommentPlugin_Publish_entry_buttons_area {
 	margin-top: 5px;
