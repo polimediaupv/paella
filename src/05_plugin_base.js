@@ -314,10 +314,12 @@ paella.ButtonPlugin = Class.create(paella.Plugin,{
 	},
 	
 	hideButton:function() {
+		$(this.button).setAttribute('aria-hidden', 'false');
 		$(this.button).hide();
 	},
 	
 	showButton:function() {
+		$(this.button).setAttribute('aria-hidden', 'true');
 		$(this.button).show();
 	},
 	
