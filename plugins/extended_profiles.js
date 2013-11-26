@@ -7,12 +7,43 @@ paella.plugins.ExtendedProfilesPlugin = Class.create(paella.ButtonPlugin,{
 	getMinWindowSize:function() { return 300; },
 	getName:function() { return "es.upv.paella.extendedProfilesPlugin"; },
 	getDefaultToolTip:function() { return paella.dictionary.translate("Change page layout"); },	
-	checkEnabled:function(onSuccess) {
-		onSuccess(paella.extended);
-	},
-	
+	checkEnabled:function(onSuccess) {onSuccess(paella.extended);},
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
-	
+
+	buttons: [],
+	selected_button: null,
+
+	setup:function() {
+		var thisClass = this;
+
+    	Keys = {Tab:9,Return:13,Esc:27,End:35,Home:36,Left:37,Up:38,Right:39,Down:40};
+
+        $(this.button).keyup(function(event) {
+
+	    	if (event.keyCode == Keys.Up) {
+	           if(thisClass.selected_button>0){
+		            if(thisClass.selected_button<thisClass.buttons.length)
+			            thisClass.buttons[thisClass.selected_button].className = 'extendedProfilesItemButton '+thisClass.buttons[thisClass.selected_button].data.profileData;
+			    
+				    thisClass.selected_button--;
+				    thisClass.buttons[thisClass.selected_button].className = thisClass.buttons[thisClass.selected_button].className+' selected'; 
+	           	}
+            }
+            else if (event.keyCode == Keys.Down) {
+            	if(thisClass.selected_button<thisClass.buttons.length-1){
+            		if(thisClass.selected_button>=0)
+            			thisClass.buttons[thisClass.selected_button].className = 'extendedProfilesItemButton '+thisClass.buttons[thisClass.selected_button].data.profileData;
+            		
+            		thisClass.selected_button++;
+               		thisClass.buttons[thisClass.selected_button].className = thisClass.buttons[thisClass.selected_button].className+' selected';
+            	}
+            }
+            else if (event.keyCode == Keys.Return) {
+                thisClass.onItemClick(thisClass.buttons[thisClass.selected_button],thisClass.buttons[thisClass.selected_button].data.profile,thisClass.buttons[thisClass.selected_button].data.profileData);
+            }
+        });
+    },
+
 	buildContent:function(domElement) {
 		var thisClass = this;
 		this.buttonItems = {};
@@ -22,7 +53,9 @@ paella.plugins.ExtendedProfilesPlugin = Class.create(paella.ButtonPlugin,{
 		  var buttonItem = thisClass.getProfileItemButton(mode,modeData);
 		  thisClass.buttonItems[mode] = buttonItem;
 		  domElement.appendChild(buttonItem);
+		  this.buttons.push(buttonItem);
 		}
+		this.selected_button = thisClass.buttons.length;
 	},
 	
 	getProfileItemButton:function(profile,profileData) {
