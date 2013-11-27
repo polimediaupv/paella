@@ -209,6 +209,7 @@ paella.PopUpContainer = Class.create(paella.DomNode,{
 				paella.events.trigger(paella.events.hidePopUp,{identifier:this.popUpIdentifier,button:this});
 			}
 		});
+		plugin.containerManager = this;
 	}
 });
 
@@ -265,6 +266,7 @@ paella.ButtonPlugin = Class.create(paella.Plugin,{
 	type:'button',
 	subclass:'',
 	container:null,
+	containerManager:null,
 	
 	getAlignment:function() {
 		return 'left';	// or right
@@ -352,7 +354,7 @@ paella.ButtonPlugin = Class.create(paella.Plugin,{
 	},
 	
 	isPopUpOpen:function() {
-		return false;
+		return (this.button.popUpIdentifier == this.containerManager.currentContainerId);
 	}
 });
 
