@@ -28,18 +28,12 @@
 	height: 40px;
 	cursor: pointer;
 	background-color: rgba(128,128,128,0.8);
-}
-
-.extendedProfilesItemButton:hover {
-	background-color: rgba(90,90,90,0.8);
-}
-
-.extendedProfilesItemButton:focus {
-	background-color: rgba(90,90,90,0.8);
+	border: 3px solid rgba(128,128,128,0.8);
 }
 
 .extendedProfilesItemButton.selected {
-	background-position:-40px 0px;
+	background-color: rgba(90,90,90,0.8);
+	border: 3px solid #23ff00;
 }
 
 .extendedProfilesItemButton.full{
