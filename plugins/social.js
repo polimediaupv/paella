@@ -39,7 +39,8 @@ paella.plugins.SocialPlugin = Class.create(paella.ButtonPlugin,{
             	}
             }
             else if (event.keyCode == Keys.Return) {
-                thisClass.onItemClick(thisClass.buttons[thisClass.selected_button].data.mediaData);
+            	if(thisClass.isPopUpOpen())
+                	thisClass.onItemClick(thisClass.buttons[thisClass.selected_button].data.mediaData);
             }
         });
     },

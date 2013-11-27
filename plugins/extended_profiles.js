@@ -39,7 +39,8 @@ paella.plugins.ExtendedProfilesPlugin = Class.create(paella.ButtonPlugin,{
             	}
             }
             else if (event.keyCode == Keys.Return) {
-                thisClass.onItemClick(thisClass.buttons[thisClass.selected_button],thisClass.buttons[thisClass.selected_button].data.profile,thisClass.buttons[thisClass.selected_button].data.profileData);
+            	if(thisClass.isPopUpOpen()) 
+                	thisClass.onItemClick(thisClass.buttons[thisClass.selected_button],thisClass.buttons[thisClass.selected_button].data.profile,thisClass.buttons[thisClass.selected_button].data.profileData);
             }
         });
     },
