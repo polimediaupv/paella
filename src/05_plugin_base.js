@@ -110,11 +110,11 @@ paella.Plugin = Class.create({
 	checkEnabled:function(onSuccess) {
 		onSuccess(true);
 	},
-	
+
 	setup:function() {
 		
 	},
-	
+
 	getIndex:function() {
 		return 0;
 	},

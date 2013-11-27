@@ -75,48 +75,48 @@ paella.VideoElementBase = Class.create(paella.DomNode,{
 	},
 	
 	play:function() {
-		console.log("TODO: implement play() function in your VideoElementBase subclass");
+		paella.debug.log("TODO: implement play() function in your VideoElementBase subclass");
 	},
 	
 	pause:function() {
-		console.log("TODO: implement pause() function in your VideoElementBase subclass");
+		paella.debug.log("TODO: implement pause() function in your VideoElementBase subclass");
 	},
 	
 	isPaused:function() {
-		console.log("TODO: implement isPaused() function in your VideoElementBase subclass");
+		paella.debug.log("TODO: implement isPaused() function in your VideoElementBase subclass");
 		return false;
 	},
 	
 	duration:function() {
-		console.log("TODO: implement duration() function in your VideoElementBase subclass");
+		paella.debug.log("TODO: implement duration() function in your VideoElementBase subclass");
 		return -1;
 	},
 
 	setCurrentTime:function(time) {
-		console.log("TODO: implement setCurrentTime() function in your VideoElementBase subclass");
+		paella.debug.log("TODO: implement setCurrentTime() function in your VideoElementBase subclass");
 	},
 
 	currentTime:function() {
-		console.log("TODO: implement currentTime() function in your VideoElementBase subclass");
+		paella.debug.log("TODO: implement currentTime() function in your VideoElementBase subclass");
 		return 0;
 	},
 	
 	setVolume:function(volume) {
-		console.log("TODO: implement setVolume() function in your VideoElementBase subclass");
+		paella.debug.log("TODO: implement setVolume() function in your VideoElementBase subclass");
 		return false;
 	},
 	
 	volume:function() {
-		console.log("TODO: implement volume() function in your VideoElementBase subclass");
+		paella.debug.log("TODO: implement volume() function in your VideoElementBase subclass");
 		return -1;
 	},
 	
 	setPlaybackRate:function(rate) {
-		console.log("TODO: implement setPlaybackRate() function in your VideoElementBase subclass");
+		paella.debug.log("TODO: implement setPlaybackRate() function in your VideoElementBase subclass");
 	},
 	
 	addSource:function(sourceData) {
-		console.log("TODO: implement addSource() function in your VideoElementBase subclass");
+		paella.debug.log("TODO: implement addSource() function in your VideoElementBase subclass");
 	},
 	
 	setClassName:function(className) {
