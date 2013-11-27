@@ -24,6 +24,10 @@
 }
 
 /* Small profile */
+.playerHeader.small {
+	display: block;
+}
+
 .playerContainer.small {
 	position: relative;
 	overflow: hidden;
@@ -53,6 +57,10 @@
 }
 
 /* Big profile */
+.playerHeader.big {
+	display: block;
+}
+
 .playerContainer.big {
 	position: relative;
 	overflow: hidden;
@@ -88,6 +96,10 @@
 	width:100%;
 	margin-top: 0px;
 	z-index: 600;
+}
+
+.playerHeader.full {
+	display: none;
 }
 
 .playerContainer.full {
