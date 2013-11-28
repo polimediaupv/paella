@@ -3,7 +3,8 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 	highResFrames:null,
 	currentFrame:null,
 	navButtons:null,
-
+	buttons: [],
+	selected_button: -1,
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "frameControl"; },
 	getIndex:function() { return 510; },
@@ -11,10 +12,52 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 	getName:function() { return "es.upv.paella.FrameControlPlugin"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.timeLineButton; },
 	getDefaultToolTip:function() { return paella.dictionary.translate("Navigate by slides"); },	
-
 	checkEnabled:function(onSuccess) {
 		onSuccess(paella.initDelegate.initParams.videoLoader.frameList!=null);
 	},
+
+	setup:function() {
+		var thisClass = this;
+		var oldClassName;
+    	Keys = {Tab:9,Return:13,Esc:27,End:35,Home:36,Left:37,Up:38,Right:39,Down:40};
+
+        $(this.button).keyup(function(event) {
+        	if (thisClass.isPopUpOpen()){
+		    	if (event.keyCode == Keys.Left) {
+		           if(thisClass.selected_button>0){
+			            if(thisClass.selected_button<thisClass.buttons.length){
+			            	thisClass.buttons[thisClass.selected_button].frameControl.onMouseOut(null,thisClass.buttons[thisClass.selected_button].frameData);
+				            thisClass.buttons[thisClass.selected_button].className = oldClassName;
+			            	thisClass.navButtons.left.scrollContainer.scrollLeft -= 90;
+			            }
+					    thisClass.selected_button--;
+
+					    thisClass.buttons[thisClass.selected_button].frameControl.onMouseOver(null,thisClass.buttons[thisClass.selected_button].frameData);
+					    oldClassName = thisClass.buttons[thisClass.selected_button].className;
+					    thisClass.buttons[thisClass.selected_button].className = 'frameControlItem selected'; 
+		           	}
+	            }
+	            else if (event.keyCode == Keys.Right) {
+	            	if(thisClass.selected_button<thisClass.buttons.length-1){
+	            		if(thisClass.selected_button>=0){
+	            			thisClass.buttons[thisClass.selected_button].frameControl.onMouseOut(null,thisClass.buttons[thisClass.selected_button].frameData);
+	            			thisClass.buttons[thisClass.selected_button].className = oldClassName;
+	            			thisClass.navButtons.left.scrollContainer.scrollLeft += 90;
+	            		}
+	            		thisClass.selected_button++;
+	            		
+	            		thisClass.buttons[thisClass.selected_button].frameControl.onMouseOver(null,thisClass.buttons[thisClass.selected_button].frameData);
+	               		oldClassName = thisClass.buttons[thisClass.selected_button].className;
+	               		thisClass.buttons[thisClass.selected_button].className = 'frameControlItem selected';
+	            	}
+	            }
+	            else if (event.keyCode == Keys.Return) {
+	            	thisClass.buttons[thisClass.selected_button].frameControl.onClick(null,thisClass.buttons[thisClass.selected_button].frameData);
+	            	oldClassName = 'frameControlItem current';
+	            }
+            }	
+        });
+    },
 
 	buildContent:function(domElement) {
 		this.frames = [];
@@ -30,7 +73,6 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 		}
 		this.navButtons.left.className = 'frameControl navButton left';
 		this.navButtons.right.className = 'frameControl navButton right';
-		
 		
 		var frame = this.getFrame(null);
 		
@@ -140,6 +182,9 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 		frame.className = 'frameControlItem';
 		if (id) frame.id = id;
 		if (frameData) {
+
+			this.buttons.push(frame);
+
 			frame.frameData = frameData;
 			frame.frameControl = this;
 			image = frameData.thumb ? frameData.thumb:frameData.url;
@@ -186,13 +231,14 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 			}
 		}
 		if (this.currentFrame!=frame) {
+
+			//this.navButtons.left.scrollContainer.scrollLeft += 100;
+
 			if (this.currentFrame) this.currentFrame.className = 'frameControlItem';
 			this.currentFrame = frame;
 			this.currentFrame.className = 'frameControlItem current';
 		}
 	}
 });
-
-
 
 paella.plugins.frameControlPlugin = new paella.plugins.FrameControlPlugin();

@@ -58,7 +58,13 @@
 	opacity: 0.8;
 }
 
-.frameControlItem:hover {
+/*.frameControlItem:hover {
+	width:94px;
+	border: 3px dotted #23ff00;
+	opacity: 1;
+}*/
+
+.frameControlItem.selected {
 	width:94px;
 	border: 3px dotted #23ff00;
 	opacity: 1;
