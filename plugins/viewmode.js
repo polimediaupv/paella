@@ -20,28 +20,29 @@ paella.plugins.ViewModePlugin = Class.create(paella.ButtonPlugin,{
     	Keys = {Tab:9,Return:13,Esc:27,End:35,Home:36,Left:37,Up:38,Right:39,Down:40};
 
         $(this.button).keyup(function(event) {
-	    	if (event.keyCode == Keys.Up) {
-	           if(thisClass.selected_button>0){
-		            if(thisClass.selected_button<thisClass.buttons.length)
-			            thisClass.buttons[thisClass.selected_button].className = 'viewModeItemButton '+thisClass.buttons[thisClass.selected_button].data.profile;
-			    
-				    thisClass.selected_button--;
-				    thisClass.buttons[thisClass.selected_button].className = thisClass.buttons[thisClass.selected_button].className+' selected'; 
-	           	}
-            }
-            else if (event.keyCode == Keys.Down) {
-            	if( thisClass.selected_button < thisClass.buttons.length-1){
-            		if(thisClass.selected_button>=0)
-            			thisClass.buttons[thisClass.selected_button].className = 'viewModeItemButton '+thisClass.buttons[thisClass.selected_button].data.profile;
-            		
-            		thisClass.selected_button++;
-               		thisClass.buttons[thisClass.selected_button].className = thisClass.buttons[thisClass.selected_button].className+' selected';
-            	}
-            }
-            else if (event.keyCode == Keys.Return) {
-                thisClass.onItemClick(thisClass.buttons[thisClass.selected_button],thisClass.buttons[thisClass.selected_button].data.profile,thisClass.buttons[thisClass.selected_button].data.profile);
-            }
-
+        	if (thisClass.isPopUpOpen()){
+		    	if (event.keyCode == Keys.Up) {
+		           if(thisClass.selected_button>0){
+			            if(thisClass.selected_button<thisClass.buttons.length)
+				            thisClass.buttons[thisClass.selected_button].className = 'viewModeItemButton '+thisClass.buttons[thisClass.selected_button].data.profile;
+				    
+					    thisClass.selected_button--;
+					    thisClass.buttons[thisClass.selected_button].className = thisClass.buttons[thisClass.selected_button].className+' selected'; 
+		           	}
+	            }
+	            else if (event.keyCode == Keys.Down) {
+	            	if( thisClass.selected_button < thisClass.buttons.length-1){
+	            		if(thisClass.selected_button>=0)
+	            			thisClass.buttons[thisClass.selected_button].className = 'viewModeItemButton '+thisClass.buttons[thisClass.selected_button].data.profile;
+	            		
+	            		thisClass.selected_button++;
+	               		thisClass.buttons[thisClass.selected_button].className = thisClass.buttons[thisClass.selected_button].className+' selected';
+	            	}
+	            }
+	            else if (event.keyCode == Keys.Return) {
+	                thisClass.onItemClick(thisClass.buttons[thisClass.selected_button],thisClass.buttons[thisClass.selected_button].data.profile,thisClass.buttons[thisClass.selected_button].data.profile);
+	            }
+        	}
         });
     },
 
