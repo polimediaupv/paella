@@ -564,8 +564,10 @@ paella.VideoContainer = Class.create(paella.VideoContainerBase,{
 				var res = source[i].res;
 				if (res) {
 					res = res.w + "x" + res.h;
-					if (res==query) selected = source[i];
-					break;
+					if (res==query) {
+						 selected = source[i];
+						break;
+					}
 				}
 			}
 			return selected;
