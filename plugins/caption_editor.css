@@ -31,3 +31,9 @@
 	width: 0px;
 	height: 0px;
 }
+
+.textCaption.disabled {
+	display: none;
+	width: 0px;
+	height: 0px;
+}

@@ -149,8 +149,11 @@ paella.plugins.captionsEditorPlugin = new paella.plugins.CaptionsEditorPlugin();
 paella.plugins.CaptionsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 	captions:null,
 	lastEvent:0,
-	visibleCaptions:null,
+	visibleCaptions:[],
 	captionsEnabled:null,
+	root: null,
+	element:null,
+	counter: 0,
 
 	getName:function() { return "es.upv.paella.CaptionsPlayerPlugin"; },
 	checkEnabled:function(onSuccess) {
@@ -163,6 +166,23 @@ paella.plugins.CaptionsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 			}
 			onSuccess(true);
 		});
+	},
+
+	setup:function() {
+
+		var overlayContainer = paella.player.videoContainer.overlayContainer;
+		var rect = {left:100,top:620,width:1080,height:20};
+
+		this.root = document.createElement("div");
+		this.root.className = 'videoLoadTestOverlay';
+			
+		this.element = document.createElement("div");
+		this.element.className = 'textCaption';
+
+		this.root.appendChild(this.element);
+
+		//overlayContainer.addElement(this.root, rect);
+
 	},
 		
 	getEvents:function() { return [paella.events.timeUpdate]; },
@@ -187,22 +207,40 @@ paella.plugins.CaptionsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 				}
 			}
 		}
+
+		if (this.counter <= 0) {
+			this.element.innerHTML = '';
+			this.element.className = 'textCaption disabled';
+		}
 	},
 	
 	showCaption:function(caption) {
+		this.element.className = 'textCaption';
+		this.element.innerHTML = caption.content;
+			
 		if (!this.visibleCaptions[caption.s]) {
+
+			var overlayContainer = paella.player.videoContainer.overlayContainer;
 			var rect = {left:100,top:620,width:1080,height:20};
+			overlayContainer.addElement(this.root, rect);
+			this.counter++;
+			this.visibleCaptions[caption.s] = caption;
+			
+			/*var rect = {left:100,top:620,width:1080,height:20};
 			caption.elem = paella.player.videoContainer.overlayContainer.addText(caption.content,rect);
 			caption.elem.className = 'textCaption';
-			this.visibleCaptions[caption.s] = caption;
+			this.visibleCaptions[caption.s] = caption;*/
 		}
 	},
 	
 	removeCaption:function(caption) {
 		if (this.visibleCaptions[caption.s]) {
-			var elem = this.visibleCaptions[caption.s].elem;
-			paella.player.videoContainer.overlayContainer.removeElement(elem);
+			this.counter--;
 			this.visibleCaptions[caption.s] = null;
+
+			/*var elem = this.visibleCaptions[caption.s].elem;
+			paella.player.videoContainer.overlayContainer.removeElement(elem);
+			this.visibleCaptions[caption.s] = null;*/
 		}
 	}
 });
@@ -211,23 +249,28 @@ paella.plugins.captionsPlayerlugin = new paella.plugins.CaptionsPlayerPlugin();
 
 paella.plugins.ActiveCaptionsPlugin = Class.create(paella.ButtonPlugin,{
 	button: null,
+	buttonEnabled: true,
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "showCaptionsPluginButton"; },
 	getIndex:function() { return 580; },
 	getMinWindowSize:function() { return 300; },
 	getName:function() { return "es.upv.paella.activeCaptionsPlugin"; },
-	hideButton:function() { $(this.button).hide(); },
-	showButton:function() { $(this.button).show(); },
 	checkEnabled:function(onSuccess) { 
 		var thisClass = this;
 		paella.data.read('captions',{id:paella.initDelegate.getId()},function(data,status) {
 		 	if (!(data && typeof(data)=='object' && data.captions && data.captions.length>0)) {
 				thisClass.button.className = thisClass.getButtonItemClass(false,false);
+				thisClass.buttonEnabled = false;
 		 	}
 		 	onSuccess(true); 
 		});
 	},
-	getDefaultToolTip:function() { return paella.dictionary.translate("Show captions"); },	
+	getDefaultToolTip:function() { return paella.dictionary.translate("Show captions"); },
+
+	setup:function(){
+		if(this.buttonEnabled) this.showButton();
+		else this.hideButton();
+	},	
 						  
 	action:function(button) {
 		this.button = button;
