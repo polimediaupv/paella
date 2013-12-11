@@ -4,7 +4,7 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 	currentFrame:null,
 	navButtons:null,
 	buttons: [],
-	selected_button: -1,
+	contx:null,
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "frameControl"; },
 	getIndex:function() { return 510; },
@@ -19,50 +19,80 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 	setup:function() {
 		var thisClass = this;
 		var oldClassName;
+		var blockCounter = 1;
+		var correctJump = 0;
+		var selectedItem = -1;
+		var jumpAtItem;
     	Keys = {Tab:9,Return:13,Esc:27,End:35,Home:36,Left:37,Up:38,Right:39,Down:40};
 
         $(this.button).keyup(function(event) {
+        	var visibleItems = Math.floor(thisClass.contx.offsetWidth/100);
+        	var rest = thisClass.buttons.length%visibleItems;
+        	var blocks = Math.floor(thisClass.buttons.length/visibleItems);
+
+        	console.log("Total "+thisClass.buttons.length+" elem | "+blocks+" grupos de "+visibleItems+" | resto: "+rest);
+
         	if (thisClass.isPopUpOpen()){
 		    	if (event.keyCode == Keys.Left) {
-		           if(thisClass.selected_button>0){
-			            if(thisClass.selected_button<thisClass.buttons.length){
-			            	thisClass.buttons[thisClass.selected_button].frameControl.onMouseOut(null,thisClass.buttons[thisClass.selected_button].frameData);
-				            thisClass.buttons[thisClass.selected_button].className = oldClassName;
-			            	thisClass.navButtons.left.scrollContainer.scrollLeft -= 90;
-			            }
-					    thisClass.selected_button--;
+		           if(selectedItem > 0){		            
+				        thisClass.buttons[selectedItem].className = oldClassName;
 
-					    thisClass.buttons[thisClass.selected_button].frameControl.onMouseOver(null,thisClass.buttons[thisClass.selected_button].frameData);
-					    oldClassName = thisClass.buttons[thisClass.selected_button].className;
-					    thisClass.buttons[thisClass.selected_button].className = 'frameControlItem selected'; 
+					    selectedItem--;
+
+					    if(blockCounter > blocks) correctJump = visibleItems - rest;
+	            		jumpAtItem = ((visibleItems)*(blockCounter-1))-1-correctJump; 
+	            	
+	            		if(selectedItem == jumpAtItem && selectedItem != 0){
+				            thisClass.navButtons.left.scrollContainer.scrollLeft -= visibleItems*105;
+							--blockCounter;
+	            		}
+
+	            		if(this.hiResFrame)thisClass.removeHiResFrame();
+					    thisClass.buttons[selectedItem].frameControl.onMouseOver(null,thisClass.buttons[selectedItem].frameData);
+					    oldClassName = thisClass.buttons[selectedItem].className;
+					    thisClass.buttons[selectedItem].className = 'frameControlItem selected'; 
 		           	}
 	            }
 	            else if (event.keyCode == Keys.Right) {
-	            	if(thisClass.selected_button<thisClass.buttons.length-1){
-	            		if(thisClass.selected_button>=0){
-	            			thisClass.buttons[thisClass.selected_button].frameControl.onMouseOut(null,thisClass.buttons[thisClass.selected_button].frameData);
-	            			thisClass.buttons[thisClass.selected_button].className = oldClassName;
-	            			thisClass.navButtons.left.scrollContainer.scrollLeft += 90;
+	            	if(selectedItem<thisClass.buttons.length-1){
+	            		if(selectedItem >= 0){
+	            			thisClass.buttons[selectedItem].className = oldClassName;
 	            		}
-	            		thisClass.selected_button++;
+
+	            		selectedItem++;
 	            		
-	            		thisClass.buttons[thisClass.selected_button].frameControl.onMouseOver(null,thisClass.buttons[thisClass.selected_button].frameData);
-	               		oldClassName = thisClass.buttons[thisClass.selected_button].className;
-	               		thisClass.buttons[thisClass.selected_button].className = 'frameControlItem selected';
+	            		if (blockCounter == 1) correctJump = 0;
+	            		jumpAtItem = (visibleItems)*blockCounter-correctJump;
+
+	            		if(selectedItem == jumpAtItem){
+				        	thisClass.navButtons.left.scrollContainer.scrollLeft += visibleItems*105;
+		            		++blockCounter;
+	            		}
+
+	            		if(this.hiResFrame)thisClass.removeHiResFrame();
+	            		thisClass.buttons[selectedItem].frameControl.onMouseOver(null,thisClass.buttons[selectedItem].frameData);
+	               		oldClassName = thisClass.buttons[selectedItem].className;
+	               		thisClass.buttons[selectedItem].className = 'frameControlItem selected';
 	            	}
 	            }
 	            else if (event.keyCode == Keys.Return) {
-	            	thisClass.buttons[thisClass.selected_button].frameControl.onClick(null,thisClass.buttons[thisClass.selected_button].frameData);
+	            	thisClass.buttons[selectedItem].frameControl.onClick(null,thisClass.buttons[selectedItem].frameData);
 	            	oldClassName = 'frameControlItem current';
+	            }
+	            else if (event.keyCode == Keys.Esc){
+	            	thisClass.removeHiResFrame();
 	            }
             }	
         });
     },
 
 	buildContent:function(domElement) {
+		var thisClass = this;
 		this.frames = [];
 		var container = document.createElement('div');
 		container.className = 'frameControlContainer';
+
+		thisClass.contx = container;
 		
 		var content = document.createElement('div');
 		content.className = 'frameControlContent';
@@ -231,7 +261,6 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 			}
 		}
 		if (this.currentFrame!=frame) {
-
 			//this.navButtons.left.scrollContainer.scrollLeft += 100;
 
 			if (this.currentFrame) this.currentFrame.className = 'frameControlItem';
