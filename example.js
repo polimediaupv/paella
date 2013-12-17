@@ -96,12 +96,18 @@ var MyVideoLoader = Class.create(paella.VideoLoader, {
 		var url = videoId;
 		if (url) {
 			var stream = examplePresenterSources;
-			stream.sources.mp4[0].src = url + stream.sources.mp4[0].src;
+			for(var i = 0; i<stream.sources.mp4.length; i++){
+				stream.sources.mp4[i].src = url + stream.sources.mp4[i].src;
+			}
+			
 			stream.preview = url + stream.preview;
 			this.streams.push(stream);
 			
 			stream = exampleSlidesSources;
-			stream.sources.mp4[0].src = url + stream.sources.mp4[0].src;
+			for(var i = 0; i<stream.sources.mp4.length; i++){
+				stream.sources.mp4[i].src = url + stream.sources.mp4[i].src;
+			}
+
 			stream.preview = url + stream.preview;
 			for (var key in stream.sources.image.frames) {
 				stream.sources.image.frames[key] = url + stream.sources.image.frames[key];
