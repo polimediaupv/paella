@@ -30,8 +30,6 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
         	var rest = thisClass.buttons.length%visibleItems;
         	var blocks = Math.floor(thisClass.buttons.length/visibleItems);
 
-        	console.log("Total "+thisClass.buttons.length+" elem | "+blocks+" grupos de "+visibleItems+" | resto: "+rest);
-
         	if (thisClass.isPopUpOpen()){
 		    	if (event.keyCode == Keys.Left) {
 		           if(selectedItem > 0){		            
