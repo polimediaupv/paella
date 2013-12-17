@@ -560,13 +560,32 @@ paella.VideoContainer = Class.create(paella.VideoContainerBase,{
 		if (source.length>0) {
 			var query = paella.utils.parameters.list['res' + stream];
 			var selected = source[0];
+			var win_w = $(window).width();
+			var win_h = $(window).height();
+			var win_res = (win_w * win_h)/4;
+			var selected_res = parseInt(selected.res.w) * parseInt(selected.res.h);
+			var selected_diff = Math.abs(win_res - selected_res);
+			
 			for (var i=0; i<source.length; ++i) {
 				var res = source[i].res;
 				if (res) {
-					res = res.w + "x" + res.h;
-					if (res==query) {
-						 selected = source[i];
-						break;
+					if (query != undefined) {
+						res = res.w + "x" + res.h;
+						if (res==query) {
+							 selected = source[i];
+							break;
+						}
+					}
+					else{
+						var m_res = parseInt(source[i].res.w) * parseInt(source[i].res.h);
+						var m_diff = Math.abs(win_res - m_res);
+				
+						if (m_diff < selected_diff){
+							selected_diff = m_diff;
+							selected = source[i];
+						}
+				
+				
 					}
 				}
 			}
