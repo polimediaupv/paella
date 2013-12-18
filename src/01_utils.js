@@ -829,3 +829,23 @@ paella.MessageBox = Class.create({
 });
 
 paella.messageBox = new paella.MessageBox();
+
+paella.AntiXSS = {
+	htmlEscape: function (str) {
+		return String(str)
+    		.replace(/&/g, '&amp;')
+    		.replace(/"/g, '&quot;')
+    		.replace(/'/g, '&#39;')
+    		.replace(/</g, '&lt;')
+    		.replace(/>/g, '&gt;');
+    	},
+
+    htmlUnescape: function (value){
+		return String(value)
+			.replace(/&quot;/g, '"')
+			.replace(/&#39;/g, "'")
+			.replace(/&lt;/g, '<')
+			.replace(/&gt;/g, '>')
+			.replace(/&amp;/g, '&');
+	}
+};
