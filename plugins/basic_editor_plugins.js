@@ -73,7 +73,8 @@ paella.editor.ToolStatusPlugin = Class.create(paella.editor.RightBarPlugin,{
 							  duration + ' sec';
 		trackData.appendChild(trackTime); 
 		if (track.content) {
-			this.addTrackContent(trackData,track.id,track.content,track.s,track.e);
+			var content = paella.AntiXSS.htmlUnescape(track.content);
+			this.addTrackContent(trackData,track.id,content,track.s,track.e);
 		}
 		parent.appendChild(trackData);
 	},
