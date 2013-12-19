@@ -104,6 +104,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 	addComment:function(){
 		var thisClass = this;
 		var txtValue = paella.AntiXSS.htmlEscape(thisClass.publishCommentTextArea.value);
+		//var txtValue = thisClass.publishCommentTextArea.value;
 		var now = new Date();
 		
 		this.comments.push({
@@ -283,7 +284,6 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 				this.style.display="none";
 				this.parentElement.parentElement.appendChild(e);
 			};
-			btnRplyComment.innerHTML = paella.dictionary.translate("Reply");
 			divCommentReply.appendChild(btnRplyComment);
 		}
 		
