@@ -15,8 +15,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 	checkEnabled:function(onSuccess) { onSuccess(paella.extended); },
 	getIndex:function() { return 40; },
 	getDefaultToolTip:function() { return paella.dictionary.translate("Comments"); },	
-	
-					     
+				     
 	action:function(tab) {
 		this.loadContent();
 	},
@@ -48,6 +47,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		this.reloadComments();
 	},
 	
+	//Allows the user to write a new comment
 	createPublishComment:function() {
 		var thisClass = this;
 		var rootID = this.divPublishComment.id+"_entry";
@@ -103,7 +103,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		
 	addComment:function(){
 		var thisClass = this;
-		var txtValue = thisClass.publishCommentTextArea.value;
+		var txtValue = paella.AntiXSS.htmlEscape(thisClass.publishCommentTextArea.value);
 		var now = new Date();
 		
 		this.comments.push({
@@ -126,7 +126,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 	addReply:function(annotationID, domNodeId){
 		var thisClass = this;
 		var textArea = document.getElementById(domNodeId);
-		var txtValue = textArea.value;
+		var txtValue = paella.AntiXSS.htmlEscape(textArea.value);
 		var now = new Date();
 		
 		paella.keyManager.enabled = true;
@@ -212,6 +212,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 	createACommentEntry:function(comment) {
 		var thisClass = this;
 		var rootID = this.divPublishComment.id+"_entry"+comment["id"];
+		var users;
 		
 		var divEntry;
 		divEntry = document.createElement('div');
@@ -222,7 +223,22 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		divSil = document.createElement('img');
 		divSil.className = "comments_entry_silhouette";
 		divSil.id = rootID+"_silhouette";
-		divSil.src = paella.initDelegate.initParams.accessControl.userData.avatar;
+		paella.data.read('userInfo',function(data,status) {
+			if (data && typeof(data)=='object' && data.users && data.users.length>0) {
+				var found = false;
+				var defUrl;
+				for (var i =0; i < data.users.length; ++i ){               
+					if (data.users[i].userName == comment["userName"]) { 
+						divSil.src = data.users[i].avatar;
+						found = true;
+					}
+					if (data.users[i].userName == 'default'){
+						defUrl = data.users[i].avatar;
+					}
+				}
+				if(!found) divSil.src = defUrl
+			}
+		});
 		divEntry.appendChild(divSil);
 		
 		var divCommentContainer;
@@ -291,7 +307,22 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		divSil = document.createElement('img');
 		divSil.className = "comments_entry_silhouette";
 		divSil.id = rootID+"_silhouette";
-		divSil.src = paella.initDelegate.initParams.accessControl.userData.avatar;
+		paella.data.read('userInfo',function(data,status) {
+			if (data && typeof(data)=='object' && data.users && data.users.length>0) {
+				var found = false;
+				var defUrl;
+				for (var i =0; i < data.users.length; ++i ){               
+					if (data.users[i].userName == comment["userName"]) { 
+						divSil.src = data.users[i].avatar;
+						found = true;
+					}
+					if (data.users[i].userName == 'default'){
+						defUrl = data.users[i].avatar;
+					}
+				}
+				if(!found) divSil.src = defUrl
+			}
+		});
 		divEntry.appendChild(divSil);
 			
 		var divCommentContainer;
@@ -322,6 +353,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		return divEntry;
 	},
 	
+	//Allows the user to write a new reply
 	createAReplyEntry:function(annotationID) {
 		var thisClass = this;
 		var rootID = this.divPublishComment.id+"_entry_" + annotationID + "_reply";
@@ -372,9 +404,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		return divEntry;
 	}
 	
-
 });
   
-
 paella.plugins.commentsPlugin = new paella.plugins.CommentsPlugin();
 

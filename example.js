@@ -146,3 +146,17 @@ function loadPaellaExtended(containerId) {
 	
 	initPaellaExtended({containerId:containerId,initDelegate:initDelegate});
 }
+
+paella.dataDelegates.UserDataDelegate = Class.create(paella.DataDelegate,{
+    initialize:function() {
+    },
+
+    read:function(context,onSuccess) {
+    	var value = {"users":[{userName:"default",avatar:"plugins/silhouette32.png"}]};
+    	//var value = {"users":[{userName:"Anonymous",avatar:"plugins/silhouette32.png"},{userName:"ASD",avatar:"plugins/silhouette32.png"}], defUSer:{userName:"default",avatar:"plugins/silhouette32.png"}}
+        if (typeof(onSuccess)=='function') {
+            onSuccess(value,true);
+        }
+    }
+
+});
