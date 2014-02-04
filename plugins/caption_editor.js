@@ -94,8 +94,8 @@ paella.plugins.CaptionsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
 		paella.events.trigger(paella.events.documentChanged);
 		var item = this.getTrackItem(id);
 		if (item) {
-			item.content = content;
-			item.name = content;
+			item.content = paella.AntiXSS.htmlEscape(content);
+			item.name = paella.AntiXSS.htmlEscape(content);
 		}
 	},
 	

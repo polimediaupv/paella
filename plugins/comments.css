@@ -59,13 +59,13 @@ textarea {
     resize: vertical;
 }
 
-
 .reply_button{
 	color: #999;
 	font-size: 12px;
 	font-family: arial,sans-serif;
 	margin-bottom: 15px;
 	font-weight: bold;
+	cursor: pointer;
 }
   
 .reply_button:hover{
