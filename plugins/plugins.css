@@ -68,6 +68,12 @@
 	height: 0px;
 }
 
+.textCaption.disabled {
+	display: none;
+	width: 0px;
+	height: 0px;
+}
+
 
 #CommentPlugin_Publish_entry_buttons_area {
 	margin-top: 5px;
@@ -129,13 +135,13 @@ textarea {
     resize: vertical;
 }
 
-
-reply_button{
+.reply_button{
 	color: #999;
 	font-size: 12px;
 	font-family: arial,sans-serif;
 	margin-bottom: 15px;
 	font-weight: bold;
+	cursor: pointer;
 }
   
 .reply_button:hover{
