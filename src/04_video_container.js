@@ -562,7 +562,7 @@ paella.VideoContainer = Class.create(paella.VideoContainerBase,{
 			var selected = source[0];
 			var win_w = $(window).width();
 			var win_h = $(window).height();
-			var win_res = (win_w * win_h)/4;
+			var win_res = (win_w * win_h);
 			var selected_res = parseInt(selected.res.w) * parseInt(selected.res.h);
 			var selected_diff = Math.abs(win_res - selected_res);
 			
