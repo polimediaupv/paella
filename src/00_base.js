@@ -58,7 +58,8 @@ paella.pluginList = [
 	'footprints.js',
 	'videoload_test.js',
 	'qualities.js',
-	'show_editor.js'
+	'show_editor.js',
+	'snapshots_editor.js'
 ];
 
 paella.events = {

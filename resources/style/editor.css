@@ -151,6 +151,7 @@ a.btn {
 
 .editorTrackItemLabel {
 	margin-left: 20px;
+	margin-right: 20px;
 	height: 100%;
 	line-height: 48px;
 	cursor:pointer;
