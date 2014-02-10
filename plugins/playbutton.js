@@ -33,7 +33,7 @@ paella.plugins.PlayButtonOnScreen = Class.create(paella.EventDrivenPlugin,{
 	enabled:true,
 	isPlaying:false,
 
-	initPlugin:function() {
+	setup:function() {
 		this.container = document.createElement('div');
 		this.container.className = "playButtonOnScreen";
 		this.container.id = this.containerId;
@@ -72,14 +72,11 @@ paella.plugins.PlayButtonOnScreen = Class.create(paella.EventDrivenPlugin,{
 	},
 	
 	getEvents:function() {
-		return [paella.events.endVideo,paella.events.play,paella.events.pause,paella.events.showEditor,paella.events.hideEditor,paella.events.loadComplete];
+		return [paella.events.endVideo,paella.events.play,paella.events.pause,paella.events.showEditor,paella.events.hideEditor];
 	},
 	
 	onEvent:function(eventType,params) {
 		switch (eventType) {
-			case paella.events.loadComplete:
-				this.initPlugin();
-				break;
 			case paella.events.endVideo:
 				this.endVideo();
 				break;
