@@ -1,4 +1,4 @@
-paella.plugins.BreaksEditorPlugin = Class.create(paella.editor.TrackPlugin,{
+paella.plugins.BreaksEditorPlugin = Class.create(paella.editor.MainTrackPlugin,{
 	tracks:null,
 	selectedTrackItem:null,
 	
@@ -73,7 +73,7 @@ paella.plugins.BreaksEditorPlugin = Class.create(paella.editor.TrackPlugin,{
 	},
 	
 	getColor:function() {
-		return 'rgb(226, 228, 204)';
+		return 'rgb(219, 81, 81)';
 	},
 	
 	getTextColor:function() {
