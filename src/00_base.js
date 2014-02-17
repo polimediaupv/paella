@@ -48,7 +48,6 @@ paella.pluginList = [
 	'extended_profiles.js',
 	'trimming.js',
 	'annotations.js',
-	'consolidate.js',
 	'social.js',
 	'fullscreenbutton.js',
 	'caption_editor.js',
