@@ -379,7 +379,7 @@ paella.editor.Timeline = Class.create({
 	
 	onresize:function() {
 		this.buildTimeMarks();
-		var height = $(this.tracks).outerHeight();
+		var height = $(this.tracks).outerHeight() + $(this.timeMarks).outerHeight() - 2;
 		$(this.container).css('height',height + 'px');
 	},
 	
