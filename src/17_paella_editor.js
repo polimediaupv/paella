@@ -69,7 +69,8 @@ paella.editor.Editor = Class.create({
 		$('body')[0].style.backgroundImage = "";
 		this.editorContainer = null;
 		this.isLoaded = false;
-		$(document).trigger(paella.events.hideEditor);
+		$(document).trigger(paella.events.pause);		
+		$(document).trigger(paella.events.hideEditor);			
 	},
 
 	onresize:function() {
