@@ -66,6 +66,7 @@
 	overflow: hidden;
 	width: 100%;
 	height: 619px;
+	float: left;
 }
 
 .rightContainer.big {
