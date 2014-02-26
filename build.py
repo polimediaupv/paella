@@ -21,6 +21,7 @@ arguments.add_argument('--js',help='Javascript output file, with path')
 arguments.add_argument('--css',help='Stylesheet output file, with path')
 arguments.add_argument('--debug',action='store_true',help='do not minimize output javascript code')
 arguments.add_argument('--install',action='store_true',help='generate production output files')
+arguments.add_argument('--noplugins',action='store_true',help='add plugins')
 
 intermediatePath = 'tmp'
 if (not os.path.exists(intermediatePath)):
@@ -60,21 +61,21 @@ pluginFiles.sort()
 f = open(pluginDir + 'ignore.json')
 ignoreFiles = json.loads(f.read())
 
-
-for file in pluginFiles:
-	jsPath = pluginDir + file
-	fileName, fileExtension = os.path.splitext(jsPath);
-	cssPath = fileName + '.css'
-	if fileExtension=='.js' and not(file in ignoreFiles):
-		outPath = os.path.join(intermediatePath,file)
-		outFile = open(outPath,'w')
-		outFile.write(open(jsPath).read())
-		outFile.write('\n\n')
-		outFile.close()
-		if os.path.exists(cssPath):
-			cssOut.write(open(cssPath).read())
-			cssOut.write('\n\n')
-cssOut.close()
+if not args.noplugins:
+	for file in pluginFiles:
+		jsPath = pluginDir + file
+		fileName, fileExtension = os.path.splitext(jsPath);
+		cssPath = fileName + '.css'
+		if fileExtension=='.js' and not(file in ignoreFiles):
+			outPath = os.path.join(intermediatePath,file)
+			outFile = open(outPath,'w')
+			outFile.write(open(jsPath).read())
+			outFile.write('\n\n')
+			outFile.close()
+			if os.path.exists(cssPath):
+				cssOut.write(open(cssPath).read())
+				cssOut.write('\n\n')
+	cssOut.close()
 
 
 intermediateFiles = os.listdir(intermediatePath)
