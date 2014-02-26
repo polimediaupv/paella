@@ -368,7 +368,7 @@ paella.utils = {
 				return paella.dictionary.translate("1 month ago");
 			}
 			if (monthsAgo < 12) {
-				return hourAgo + paella.dictionary.translate("{0} months ago").replace(/\{0\}/g, monthsAgo);
+				return paella.dictionary.translate("{0} months ago").replace(/\{0\}/g, monthsAgo);
 			}
 			//Years
 			var yearsAgo = Math.round(secAgo/(60*60*24*365));
