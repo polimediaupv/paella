@@ -22,7 +22,8 @@
 		"enabled":true,
 		"dataDelegates":{
 			"default":"CookieDataDelegate",
-			"trimming":"CookieDataDelegate"
+			"trimming":"CookieDataDelegate",
+			"userInfo": "UserDataDelegate"
 		}
 	},
 	"plugins":{

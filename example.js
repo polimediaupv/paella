@@ -151,12 +151,15 @@ paella.dataDelegates.UserDataDelegate = Class.create(paella.DataDelegate,{
     initialize:function() {
     },
 
-    read:function(context,onSuccess) {
-    	var value = {"users":[{userName:"default",avatar:"plugins/silhouette32.png"}]};
-    	//var value = {"users":[{userName:"Anonymous",avatar:"plugins/silhouette32.png"},{userName:"ASD",avatar:"plugins/silhouette32.png"}], defUSer:{userName:"default",avatar:"plugins/silhouette32.png"}}
-        if (typeof(onSuccess)=='function') {
-            onSuccess(value,true);
-        }
+    read:function(context, params, onSuccess) {
+    	var value = {
+			userName:"userName",
+			name: "Name",
+			lastname: "Lastname",
+			avatar:"plugins/silhouette32.png"
+		};
+		
+        if (typeof(onSuccess)=='function') { onSuccess(value,true); }
     }
 
 });

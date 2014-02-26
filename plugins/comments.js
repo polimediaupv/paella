@@ -60,6 +60,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		var divSil;
 		divSil = document.createElement('img');
 		divSil.className = "comments_entry_silhouette";
+		divSil.style.width = "48px";
 		divSil.src = paella.initDelegate.initParams.accessControl.userData.avatar;
 		divSil.id = rootID+"_silhouette";
 		divEntry.appendChild(divSil);
@@ -224,22 +225,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		divSil = document.createElement('img');
 		divSil.className = "comments_entry_silhouette";
 		divSil.id = rootID+"_silhouette";
-		paella.data.read('userInfo',function(data,status) {
-			if (data && typeof(data)=='object' && data.users && data.users.length>0) {
-				var found = false;
-				var defUrl;
-				for (var i =0; i < data.users.length; ++i ){               
-					if (data.users[i].userName == comment["userName"]) { 
-						divSil.src = data.users[i].avatar;
-						found = true;
-					}
-					if (data.users[i].userName == 'default'){
-						defUrl = data.users[i].avatar;
-					}
-				}
-				if(!found) divSil.src = defUrl
-			}
-		});
+
 		divEntry.appendChild(divSil);
 		
 		var divCommentContainer;
@@ -253,12 +239,20 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		divCommentMetadata.id = rootID+"_comment_metadata"; 
 		divCommentContainer.appendChild(divCommentMetadata);
 		
-		var datePublish = comment["created"];
 		
+		
+//		var datePublish = comment["created"];
+		var datePublish = "";
+		if (comment["created"]) {
+			var dateToday=new Date()
+			var dateComment = paella.utils.timeParse.matterhornTextDateToDate(comment["created"]);			
+			datePublish = paella.utils.timeParse.secondsToText((dateToday.getTime()-dateComment.getTime())/1000);
+		}
+		/*
 		var headLine = "<span class='comments_entry_username'>" + comment["userName"] + "</span>";
 		headLine += "<span class='comments_entry_datepublish'>" + datePublish + "</span>";
-		
 		divCommentMetadata.innerHTML = headLine;
+		*/
 		
 		var divCommentValue;
 		divCommentValue = document.createElement('div');
@@ -272,6 +266,16 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		divCommentReply.id = rootID+"_comment_reply";
 		divCommentContainer.appendChild(divCommentReply);
 		
+		paella.data.read('userInfo',{username:comment["userName"]}, function(data,status) {
+			if (data) {
+				divSil.src = data.avatar;
+				
+				var headLine = "<span class='comments_entry_username'>" + data.name + " " + data.lastname + "</span>";
+				headLine += "<span class='comments_entry_datepublish'>" + datePublish + "</span>";				
+				divCommentMetadata.innerHTML = headLine;
+			}
+		});
+
 		if (this.canPublishAComment == true) {
 			//var btnRplyComment = document.createElement('button');
 			var btnRplyComment = document.createElement('div');
@@ -307,22 +311,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		divSil = document.createElement('img');
 		divSil.className = "comments_entry_silhouette";
 		divSil.id = rootID+"_silhouette";
-		paella.data.read('userInfo',function(data,status) {
-			if (data && typeof(data)=='object' && data.users && data.users.length>0) {
-				var found = false;
-				var defUrl;
-				for (var i =0; i < data.users.length; ++i ){               
-					if (data.users[i].userName == comment["userName"]) { 
-						divSil.src = data.users[i].avatar;
-						found = true;
-					}
-					if (data.users[i].userName == 'default'){
-						defUrl = data.users[i].avatar;
-					}
-				}
-				if(!found) divSil.src = defUrl
-			}
-		});
+
 		divEntry.appendChild(divSil);
 			
 		var divCommentContainer;
@@ -335,12 +324,19 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		divCommentMetadata = document.createElement('div');
 		divCommentMetadata.id = rootID+"_comment_metadata"; 
 		divCommentContainer.appendChild(divCommentMetadata);
-		var datePublish = comment["created"];
+//		var datePublish = comment["created"];
+		var datePublish = "";
+		if (comment["created"]) {
+			var dateToday=new Date()
+			var dateComment = paella.utils.timeParse.matterhornTextDateToDate(comment["created"]);			
+			datePublish = paella.utils.timeParse.secondsToText((dateToday.getTime()-dateComment.getTime())/1000);
+		}
 		
+		/*
 		var headLine = "<span class='comments_entry_username'>" + comment["userName"] + "</span>";
 		headLine += "<span class='comments_entry_datepublish'>" + datePublish + "</span>";
- 
 		divCommentMetadata.innerHTML = headLine;
+		*/
 		
 		var divCommentValue;
 		divCommentValue = document.createElement('div');
@@ -349,6 +345,16 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		divCommentContainer.appendChild(divCommentValue);		
 		
 		divCommentValue.innerHTML = comment["value"];
+		
+		paella.data.read('userInfo',{username:comment["userName"]}, function(data,status) {
+			if (data) {
+				divSil.src = data.avatar;
+				
+				var headLine = "<span class='comments_entry_username'>" + data.name + " " + data.lastname + "</span>";
+				headLine += "<span class='comments_entry_datepublish'>" + datePublish + "</span>";				
+				divCommentMetadata.innerHTML = headLine;
+			}
+		});	
 			
 		return divEntry;
 	},
@@ -366,6 +372,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		var divSil;
 		divSil = document.createElement('img');
 		divSil.className = "comments_entry_silhouette";
+		divSil.style.width = "48px";		
 		divSil.id = rootID+"_silhouette";
 		divSil.src = paella.initDelegate.initParams.accessControl.userData.avatar;
 		divEntry.appendChild(divSil);
