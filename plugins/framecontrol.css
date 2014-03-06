@@ -1,14 +1,12 @@
 .buttonPlugin.frameControl {
-	background-size: 300%;
-	background-image:url(../resources/images/frame_button.png);
+	background-size: 100%;
+	background-image:url(slides_icon.png);
 }
 
 .buttonPlugin.frameControl:hover {
-	background-position: -40px 0;
 }
 
 .buttonPlugin.frameControl.selected {
-	background-position: 40px 0;
 }
 
 .frameControlContainer {
@@ -23,7 +21,7 @@
 	height: 37px;
 	display: inline-block;
 	cursor: pointer;
-	background-image: url(hscroll_arrows.png);
+	background-image: url(hscroll_arrows_orange.png);
 	background-size: 200% 200%;
 	background-position: 0 100%;
 	margin-left: 1%;
@@ -66,13 +64,13 @@
 
 .frameControlItem.selected {
 	width:94px;
-	border: 3px dotted #23ff00;
+	border: 3px dotted #fa8533;
 	opacity: 1;
 }
 
 .frameControlItem.current {
 	width: 94px;
-	border: 3px solid #23ff00;
+	border: 3px solid #fa8533;
 	opacity: 1;
 }
 
@@ -88,7 +86,6 @@
 }
 
 .showFramesButton:hover {
-	background-position:-40px 0px;
 }
 
 .showFramesButton_active {
@@ -99,7 +96,6 @@
 	right:0px;
 	background-size: 300%;
 	background-image:url(../resources/images/frame_button.png);
-	background-position:-80px 0px;
 }
 
 .frameListContainer {
@@ -116,16 +112,16 @@
 
 .frameThumbnail:hover {
 	margin: 0px;
-	border: 3px #e04e80 solid;
+	border: 3px #fa8533 solid;
 	height: 50px;
 }
 
 .enabledFrameThumbnail {
-	border: 3px #80e04e solid;
+	border: 3px #fa8533 solid;
 	height:50px;
 }
 
 .enabledFrameThumbnail:hover {
-	border: 3px #e04e80 solid;
+	border: 3px #fa8533 solid;
 }
 

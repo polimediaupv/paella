@@ -10,16 +10,8 @@
 }
 
 .showCaptionsPluginButton{
-	background-image: url(caption_icon.png);
-	background-size: 300%;
-}
-
-.showCaptionsPluginButton:hover {
-	background-color: rgb(171,178,178);
-}
-
-.showCaptionsPluginButton:focus {
-	background-color: rgb(171,178,178);
+	background-size: 100%;
+	background-image: url(captions_icon.png);
 }
 
 .showCaptionsPluginButton.selected {

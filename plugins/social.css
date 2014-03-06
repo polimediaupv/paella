@@ -7,18 +7,6 @@
 	background-image:none;
 }
 
-.buttonPlugin.showSocialPluginButton:hover {
-	background-color: rgb(171,178,178);
-}
-
-.buttonPlugin.showSocialPluginButton:focus {
-	background-color: rgb(171,178,178);
-}
-
-.buttonPlugin.showSocialPluginButton.selected {
-	background-position:-80px 0px;
-}
-
 .socialItemButton {  /*crea el popup*/
 	background-repeat:no-repeat;
 	background-size: 200% auto;

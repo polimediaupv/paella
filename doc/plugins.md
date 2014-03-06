@@ -1,4 +1,4 @@
-# Paella Plugins #
+#Paella Plugins
 ## Create a new plugin
 A plugin is a subclass of any child class of paella.Plugin. To create a plugin, we'll extend any of these classes, depending on the new feature we want to add to Paella Player. The functions that you'll need to implement, will depend on the specific plugin type and configuration, and will be discussed later.
 
