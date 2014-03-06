@@ -2,26 +2,11 @@
 	background-size: 200%;
 	background-image:url(../resources/images/play_button.png);
 }
-
-/*.playButton:hover {
-	background-position:-40px 0px;
-}
-.playButton:focus {
-	background-position:-40px 0px;
-}*/
-
 .pauseButton {
 	background-size: 200%;
 	background-image:url(../resources/images/pause_button.png);
 	
 }
-/*
-.pauseButton:hover {
-	background-position:-40px 0px;
-}
-.pauseButton:focus {
-	background-position:-40px 0px;
-}*/
 
 .playButtonOnScreen {
 	position: absolute;

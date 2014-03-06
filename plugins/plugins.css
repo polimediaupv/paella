@@ -46,16 +46,8 @@
 }
 
 .showCaptionsPluginButton{
-	background-image: url(caption_icon.png);
-	background-size: 300%;
-}
-
-.showCaptionsPluginButton:hover {
-	background-color: rgb(171,178,178);
-}
-
-.showCaptionsPluginButton:focus {
-	background-color: rgb(171,178,178);
+	background-size: 100%;
+	background-image: url(captions_icon.png);
 }
 
 .showCaptionsPluginButton.selected {
@@ -241,16 +233,14 @@ textarea {
 
 
 .buttonPlugin.frameControl {
-	background-size: 300%;
-	background-image:url(../resources/images/frame_button.png);
+	background-size: 100%;
+	background-image:url(slides_icon.png);
 }
 
 .buttonPlugin.frameControl:hover {
-	background-position: -40px 0;
 }
 
 .buttonPlugin.frameControl.selected {
-	background-position: 40px 0;
 }
 
 .frameControlContainer {
@@ -265,7 +255,7 @@ textarea {
 	height: 37px;
 	display: inline-block;
 	cursor: pointer;
-	background-image: url(hscroll_arrows.png);
+	background-image: url(hscroll_arrows_orange.png);
 	background-size: 200% 200%;
 	background-position: 0 100%;
 	margin-left: 1%;
@@ -308,13 +298,13 @@ textarea {
 
 .frameControlItem.selected {
 	width:94px;
-	border: 3px dotted #23ff00;
+	border: 3px dotted #fa8533;
 	opacity: 1;
 }
 
 .frameControlItem.current {
 	width: 94px;
-	border: 3px solid #23ff00;
+	border: 3px solid #fa8533;
 	opacity: 1;
 }
 
@@ -330,7 +320,6 @@ textarea {
 }
 
 .showFramesButton:hover {
-	background-position:-40px 0px;
 }
 
 .showFramesButton_active {
@@ -341,7 +330,6 @@ textarea {
 	right:0px;
 	background-size: 300%;
 	background-image:url(../resources/images/frame_button.png);
-	background-position:-80px 0px;
 }
 
 .frameListContainer {
@@ -358,61 +346,35 @@ textarea {
 
 .frameThumbnail:hover {
 	margin: 0px;
-	border: 3px #e04e80 solid;
+	border: 3px #fa8533 solid;
 	height: 50px;
 }
 
 .enabledFrameThumbnail {
-	border: 3px #80e04e solid;
+	border: 3px #fa8533 solid;
 	height:50px;
 }
 
 .enabledFrameThumbnail:hover {
-	border: 3px #e04e80 solid;
+	border: 3px #fa8533 solid;
 }
 
 
 
 .showFullScreenButton {
 	background-image: url(fullscreen_button.png);
-	background-size: 200%;	
+	background-size: 200%;
 }
 
-.showFullScreenButton:hover {
-	background-color: rgb(171,178,178);
-}
-
-.showFullScreenButton:focus {
-	background-color: rgb(171,178,178);
-}
-
-.showFullScreenButton.active {
-	background-position:-40px 0px;
-}
 
 .playButton {
 	background-size: 200%;
 	background-image:url(../resources/images/play_button.png);
 }
-
-.playButton:hover {
-	background-position:-40px 0px;
-}
-.playButton:focus {
-	background-position:-40px 0px;
-}
-
 .pauseButton {
 	background-size: 200%;
 	background-image:url(../resources/images/pause_button.png);
 	
-}
-
-.pauseButton:hover {
-	background-position:-40px 0px;
-}
-.pauseButton:focus {
-	background-position:-40px 0px;
 }
 
 .playButtonOnScreen {
@@ -440,18 +402,6 @@ textarea {
 	background-image:none;
 }
 
-.buttonPlugin.showMultipleQualitiesPlugin:hover {
-	background-color: rgb(171,178,178);
-}
-
-.buttonPlugin.showMultipleQualitiesPlugin:focus {
-	background-color: rgb(171,178,178);
-}
-
-.buttonPlugin.showMultipleQualitiesPlugin.selected {
-	background-position:-80px 0px;
-}
-
 .selectQuality {
 	background-color: rgba(128,128,128,0.8);
 	padding: 10px;
@@ -462,27 +412,10 @@ textarea {
 	background-image:url(../resources/images/repeat_button.png);
 }
 
-.repeatButton:hover {
-	background-position:-40px 0px;
-}
-
-.repeatButton:focus {
-	background-position:-40px 0px;
-}
-
-
 
 .showEditorButton {
 	float:right;
 	background-image:url(edit_button.png);
-}
-
-.showEditorButton:hover {
-	background-position:-40px 0px;
-}
-
-.showEditorButton:focus {
-	background-position:-40px 0px;
 }
 
 .snapShotsEditorPluginBox {
@@ -520,18 +453,6 @@ textarea {
 
 .buttonPluginPopUp.showSocialPluginButton {
 	background-image:none;
-}
-
-.buttonPlugin.showSocialPluginButton:hover {
-	background-color: rgb(171,178,178);
-}
-
-.buttonPlugin.showSocialPluginButton:focus {
-	background-color: rgb(171,178,178);
-}
-
-.buttonPlugin.showSocialPluginButton.selected {
-	background-position:-80px 0px;
 }
 
 .socialItemButton {  /*crea el popup*/
@@ -585,14 +506,6 @@ textarea {
 	background-size:auto 100%;
 }
 
-.buttonPlugin.showViewModeButton:hover {
-	background-color: rgb(171,178,178);
-}
-
-.buttonPlugin.showViewModeButton.selected {
-	background-position:-40px 0px;
-}
-
 /*.showViewModeButton_active {
 	background-image:url(../resources/images/view_icon.png);
 	background-repeat:no-repeat;
@@ -610,32 +523,20 @@ textarea {
 .viewModeItemButton.selected {
 	/*background-position: 78px 0;*/
 	background-color: rgba(90,90,90,0.8);
-	border: 3px solid #23ff00;
+	border: 3px solid #fa8533;
 }
 
 .viewModeItemButton.slide_professor {
 	background-position: 0 82px;
 }
 
-/*.viewModeItemButton.slide_professor.selected {
-	background-position: 78px 82px;
-}*/
-
 .viewModeItemButton.professor_slide {
 	background-position: 0 124px;
 }
 
-/*.viewModeItemButton.professor_slide.selected {
-	background-position: 78px 124px;
-}*/
-
 .viewModeItemButton.professor {
 	background-position: 0 207px;
 }
-
-/*.viewModeItemButton.professor.selected {
-	background-position: 78px 207px;
-}*/
 
 .viewModeItemButton.slide_over_professor {
 	
@@ -645,17 +546,10 @@ textarea {
 	background-position: 0 41px;
 }
 
-/*.viewModeItemButton.slide_over_professor_right.selected {
-	background-position: 72px 41px;
-}*/
-
 .viewModeItemButton.slide {
 	background-position: 0 168px;
 }
 
-/*.viewModeItemButton.slide.selected {
-	background-position: 78px 168px;
-}*/
 
 
 
