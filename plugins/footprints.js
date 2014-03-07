@@ -19,10 +19,33 @@ paella.plugins.FootPrintsPlugin = Class.create(paella.ButtonPlugin,{
 	setup:function(){
 		var thisClass = this;
 		paella.events.bind(paella.events.timeUpdate, function(event) { thisClass.onTimeUpdate(); });
+		
+		switch(this.config.skin) {
+		case 'custom':
+			this.fillStyle = this.config.fillStyle;
+			this.strokeStyle = this.config.strokeStyle;
+			break;
+		
+		case 'dark':
+			this.fillStyle = '#727272';
+			this.strokeStyle = '#424242';
+			break;
+		
+		case 'light':
+			this.fillStyle = '#d8d8d8';
+			this.strokeStyle = '#ffffff';
+			break;
+		
+		default:
+			this.fillStyle = '#d8d8d8';
+			this.strokeStyle = '#ffffff';
+			break;
+		}
+		
 	},
 
 	checkEnabled:function(onSuccess) {
-		onSuccess(true);
+		onSuccess(true);		
 	},
 
 	buildContent:function(domElement) {
@@ -115,8 +138,8 @@ paella.plugins.FootPrintsPlugin = Class.create(paella.ButtonPlugin,{
 			this.canvas.setAttribute("width", duration);
 			this.canvas.setAttribute("height", h);
 			ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-			ctx.fillStyle = '#9ED4EE';
-			ctx.strokeStyle = "#0000FF";
+			ctx.fillStyle = this.fillStyle; //'#faa166'; //'#9ED4EE';
+			ctx.strokeStyle = this.strokeStyle; //'#fa8533'; //"#0000FF";
 			ctx.lineWidth = 2;
 			
 			ctx.webkitImageSmoothingEnabled = false;
