@@ -1,3 +1,4 @@
 ["debuglog.js",
  "annotations.js",
- "check_publish.js"]
+ "check_publish.js",
+ "videoload_test.js"]

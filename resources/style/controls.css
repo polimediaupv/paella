@@ -56,7 +56,7 @@ div {
 }
 
 .playbackControls {
-	background-image: url(../images/playback_bkg.png);
+	background-color: rgba(42, 42, 42, 0.780);
 	position: absolute;
 	bottom: 0px;
 	left: 0px;
@@ -84,6 +84,11 @@ div {
 	cursor: pointer;
 }
 
+.playbackBar:focus {
+	box-shadow: inset 0px 0px 5px 0px #faa166;
+	outline: none;
+}
+
 .playbackBarFull {
 	height: 12px;
 	background-color: #fa8533;
@@ -108,7 +113,8 @@ div {
 }
 
 .buttonPlugin:focus {
-	background-color:#faa166
+	box-shadow: inset 0px 0px 5px 0px #faa166;
+	outline: none;
 }
 
 
@@ -123,6 +129,7 @@ div {
 }
 
 .buttonPluginPopUp {
+	background-color: rgba(42, 42, 42, 0.780);
 	position: absolute;
 	bottom: 0px;
 }
@@ -131,7 +138,7 @@ div {
 	position: absolute;
 	left:0px;
 	width: 100%;
-	background-image: url(../images/playback_bkg.png);
+	background-color: rgba(42, 42, 42, 0.780);
 	bottom: 51px;
 }
 
@@ -179,26 +186,6 @@ div {
 
 .editControlContainer {
 	z-index: 20;
-}
-
-.editButton {
-	width:40px;
-	height:37px;
-	background-image:url(../images/edit_button.png);
-	background-repeat:no-repeat;
-	cursor: pointer;
-}
-
-.editButton:hover {
-	background-position:-40px 0px;
-}
-
-.editButton_active {
-	width:40px;
-	height:37px;
-	background-image:url(../images/edit_button.png);
-	background-repeat:no-repeat;
-	background-position:-80px 0px;
 }
 
 .paellaLoadErrorContainer {
