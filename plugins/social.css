@@ -9,7 +9,7 @@
 
 .socialItemButton {  /*crea el popup*/
 	background-repeat:no-repeat;
-	background-size: 200% auto;
+	background-size: 100% auto;
 	width: 40px;
 	height: 40px;
 	cursor: pointer;
