@@ -22,6 +22,11 @@
 	border: 3px solid #23ff00;
 }
 
+
+.socialItemButton:hover {
+	box-shadow: inset 0px 0px 4px 0px #fa8533;
+}
+
 .socialItemButton.facebook{
 	background-image: url(facebook_button.png);
 }
