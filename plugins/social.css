@@ -8,13 +8,11 @@
 }
 
 .socialItemButton {  /*crea el popup*/
-	background-repeat:no-repeat;
+	background-repeat: no-repeat;
 	background-size: 100% auto;
 	width: 40px;
 	height: 40px;
 	cursor: pointer;
-	background-color: rgba(128,128,128,0.8);
-	border: 3px solid rgba(128,128,128,0.8);
 }
 
 .socialItemButton.selected {
