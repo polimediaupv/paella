@@ -4,13 +4,21 @@ paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
 	getSubclass:function() { return "showFullScreenButton"; },
 	getName:function() { return "es.upv.paella.fullScreenButtonPlugin"; },
 	checkEnabled:function(onSuccess) { 
-		onSuccess((!paella.extended) && (window==window.top)); 
+		onSuccess(!paella.extended); 
 	},
 	getDefaultToolTip:function() { return paella.dictionary.translate("Go FullScreen"); },		
-	
 
 					       
 	action:function(button) {
+		if (window==window.top) {
+			this.doFullScreen(button);
+		}
+		else {
+			window.top.location = window.location;
+		}
+	},
+	
+	doFullScreen:function(button) {
 		var fs = document.getElementById(paella.player.mainContainer.id);
 		fs.style.width = '100%';
 		fs.style.height = '100%';
