@@ -104,6 +104,10 @@ paella.DictionaryCallback = Class.create(paella.AjaxCallback,{
 	didLoadSuccess:function(callback) {
 		paella.dictionary.addDictionary(callback.data);
 		return true;
+	},
+	
+	didLoadFail:function(callback) {
+		return true;
 	}
 })
 
