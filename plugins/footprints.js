@@ -11,7 +11,6 @@ paella.plugins.FootPrintsPlugin = Class.create(paella.ButtonPlugin,{
 	getSubclass:function() { return "footPrints"; },
 	getIndex:function() { return 590; },
 	getDefaultToolTip:function() { return paella.dictionary.translate("Show statistics"); },	
-	getMinWindowSize:function() { return 700; },
 	getName:function() { return "es.upv.paella.FootPrintsPlugin"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.timeLineButton; },
 
