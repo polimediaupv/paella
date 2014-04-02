@@ -138,17 +138,19 @@ paella.VideoLoader = Class.create({
 	
 	isStreamCompatible:function(streamIndex,method) {
 		var status = false;
-		if (method.name=='html' && this.isHtmlVideoCompatible(streamIndex)) {
-			status = true;
-		}
-		else if (method.name=='flash' && this.isFlashCompatible(streamIndex)) {
-			status = true;
-		}
-		else if (method.name=='streaming' && this.isStreamingCompatible(streamIndex)) {
-			status = true;
-		}
-		else if (method.name=='image' && this.isImageCompatible(streamIndex)) {
-			status = true;
+		if (method.enabled) {
+			if (method.name=='html' && this.isHtmlVideoCompatible(streamIndex)) {
+				status = true;
+			}
+			else if (method.name=='flash' && this.isFlashCompatible(streamIndex)) {
+				status = true;
+			}
+			else if (method.name=='streaming' && this.isStreamingCompatible(streamIndex)) {
+				status = true;
+			}
+			else if (method.name=='image' && this.isImageCompatible(streamIndex)) {
+				status = true;
+			}
 		}
 		return status;
 	},
