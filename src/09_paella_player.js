@@ -237,6 +237,21 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 		new paella.utils.Timer(function(timer) {
 			var autoplay = paella.utils.parameters.list['autoplay'] ? paella.utils.parameters.list['autoplay']:'';
 			autoplay = autoplay.toLowerCase();
+			
+			var playerConfig = paella.player.config.player;
+			if (playerConfig.stream0Audio===false && paella.player.videoContainer.numberOfStreams()>=1) {
+				paella.player.videoContainer.masterVideo().setVolume(0);
+			}
+			else if (paella.player.videoContainer.numberOfStreams()>=1) {
+				paella.player.videoContainer.masterVideo().setVolume(1);
+			}
+			if (playerConfig.stream1Audio!==true && paella.player.videoContainer.numberOfStreams()>=2) {
+				paella.player.videoContainer.slaveVideo().setVolume(1);
+			}
+			else if (paella.player.videoContainer.numberOfStreams()>=2) {
+				paella.player.videoContainer.slaveVideo().setVolume(0);
+			}
+
 			if (autoplay!='true' && autoplay!='yes') paella.events.trigger(paella.events.pause);
 			if (time) {
 				var duration = master.duration();

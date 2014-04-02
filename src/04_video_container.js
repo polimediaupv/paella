@@ -291,7 +291,6 @@ paella.VideoContainer = Class.create(paella.VideoContainerBase,{
 		
 		var slaveVideo = new paella.FlashVideo(this.video2Id,10,40,800,600);
 		slaveVideo.setClassName(this.video2ClassName);
-		slaveVideo.setVolume(0);
 		this.container.addNode(slaveVideo);
 	},
 
@@ -539,7 +538,6 @@ paella.VideoContainer = Class.create(paella.VideoContainerBase,{
 		new Timer(function(timer) {
 			if (slaveVideo.isReady()) {
 				thisClass.isSlaveReady = true;
-				slaveVideo.setVolume(0);
 				timer.repeat = false;
 			}
 			else {
