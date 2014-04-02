@@ -690,6 +690,7 @@ paella.VideoContainer = Class.create(paella.VideoContainerBase,{
 	},
 
 	showLogos:function(logos) {
+		if (logos == undefined) return;	
 		var relativeSize = new paella.RelativeVideoSize();
 		for (var i=0; i<logos.length;++i) {
 			var logo = logos[i];
