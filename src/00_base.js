@@ -40,6 +40,8 @@ paella.debug = {
 }
 
 paella.pluginList = [
+	'usertracking_collector.js',
+	'usertracking_googleanalytics_saver.js',
 	'framecontrol.js',
 	'playbutton.js',
 	'viewmode.js',
@@ -92,6 +94,7 @@ paella.events = {
 	///beforeUnload:'paella:beforeUnload',		This event has been removed because it not work properly in any browser
 	hidePopUp:'paella:hidePopUp',
 	showPopUp:'paella:showPopUp',
+	userTracking:'paella:userTracking',
 
 	trigger:function(event,params) { $(document).trigger(event,params); },
 	bind:function(event,callback) { $(document).bind(event,function(event,params) { callback(event,params);}) ;}
