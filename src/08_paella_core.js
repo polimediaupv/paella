@@ -307,7 +307,8 @@ paella.InitDelegate = Class.create({
 				onSuccess(data);
 			},
 			function(data,type,returnCode) {
-				onSuccess({});
+				paella.messageBox.showError(paella.dictionary.translate("Error! Config file not found. Please configure paella!"));
+				//onSuccess({});
 			});
 	},
 
