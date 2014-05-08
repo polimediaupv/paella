@@ -40,6 +40,14 @@ var StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 			var mpUrl = repo + videoId + '/episode.json';
 			base.ajax.get({url:mpUrl, params:{}},
 				function(data,contentType,code) {
+					if (typeof(data)=='string') {
+						try {
+							data = JSON.parse(data);
+						}
+						catch (e) {
+							paella.player.unloadAll(paella.dictionary.translate("Error parsing episode.json."));
+						}
+					}				
 					paella.standalone.episode = data;
 					This.parseEpisode(onSuccess);
 				},
