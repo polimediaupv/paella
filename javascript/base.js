@@ -149,7 +149,7 @@ var UserAgent = Class.create({
 		this.system.iPhone = /iPhone/.test(userAgentString);
 		this.system.iPodTouch = /iPod/.test(userAgentString);
 		this.system.iPad = /iPad/.test(userAgentString);
-		this.system.iOS = this.system.iPhone || this.system.iPad || this.system.iPodTouch;
+		this.system.iOS = this.system.iPhone || this.system.iPad || this.system.iPodTouch;
 		this.system.Android = /Android/.test(userAgentString);
 		this.system.Linux = (this.system.Android) ? false:/Linux/.test(userAgentString);
 
