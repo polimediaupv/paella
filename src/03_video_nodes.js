@@ -2,7 +2,7 @@
 paella.Profiles = {
 	loadProfile:function(profileName,onSuccessFunction) {
 		var params = { url:"config/profiles/profiles.json" };
-		
+
 		paella.ajax.get(params,function(data,mimetype,code) {
 				if (typeof(data)=="string") {
 					data = JSON.parse(data);
@@ -13,10 +13,10 @@ paella.Profiles = {
 				paella.debug.log("Error loading video profiles. Check your Paella Player configuration");
 			});
 	},
-	
+
 	loadProfileList:function(onSuccessFunction) {
 		var params = { url:"config/profiles/profiles.json" };
-		
+
 		paella.ajax.get(params,function(data,mimetype,code) {
 				if (typeof(data)=="string") {
 					data = JSON.parse(data);
@@ -31,23 +31,23 @@ paella.Profiles = {
 
 paella.RelativeVideoSize = Class.create({
 	w:1280,h:720,
-	
+
 	proportionalHeight:function(newWidth) {
 		return Math.floor(this.h * newWidth / this.w);
 	},
-	
+
 	proportionalWidth:function(newHeight) {
 		return Math.floor(this.w * newHeight / this.h);
 	},
-	
+
 	percentVSize:function(pxSize) {
 		return pxSize * 100 / this.h;
 	},
-	
+
 	percentWSize:function(pxSize) {
 		return pxSize * 100 / this.w;
 	},
-	
+
 	aspectRatio:function() {
 		return this.w/this.h;
 	}
@@ -69,24 +69,24 @@ paella.VideoElementBase = Class.create(paella.DomNode,{
 			thisClass.ready = true;
 		});
 	},
-	
+
 	isReady:function() {
 		return this.ready;
 	},
-	
+
 	play:function() {
 		paella.debug.log("TODO: implement play() function in your VideoElementBase subclass");
 	},
-	
+
 	pause:function() {
 		paella.debug.log("TODO: implement pause() function in your VideoElementBase subclass");
 	},
-	
+
 	isPaused:function() {
 		paella.debug.log("TODO: implement isPaused() function in your VideoElementBase subclass");
 		return false;
 	},
-	
+
 	duration:function() {
 		paella.debug.log("TODO: implement duration() function in your VideoElementBase subclass");
 		return -1;
@@ -100,29 +100,29 @@ paella.VideoElementBase = Class.create(paella.DomNode,{
 		paella.debug.log("TODO: implement currentTime() function in your VideoElementBase subclass");
 		return 0;
 	},
-	
+
 	setVolume:function(volume) {
 		paella.debug.log("TODO: implement setVolume() function in your VideoElementBase subclass");
 		return false;
 	},
-	
+
 	volume:function() {
 		paella.debug.log("TODO: implement volume() function in your VideoElementBase subclass");
 		return -1;
 	},
-	
+
 	setPlaybackRate:function(rate) {
 		paella.debug.log("TODO: implement setPlaybackRate() function in your VideoElementBase subclass");
 	},
-	
+
 	addSource:function(sourceData) {
 		paella.debug.log("TODO: implement addSource() function in your VideoElementBase subclass");
 	},
-	
+
 	setClassName:function(className) {
 		this.domElement.className = className;
 	},
-	
+
 	getDimensions:function() {
 		return { width: this.domElement.videoWidth, height: this.domElement.videoHeight };
 	},
@@ -149,11 +149,11 @@ paella.VideoElementBase = Class.create(paella.DomNode,{
 		this.classNameBackup = this.domElement.className;
 		this.domElement.className = "";
 	},
-	
+
 	enableClassName:function() {
 		this.domElement.className = this.classNameBackup;
 	},
-	
+
 	enableClassNameAfter:function(millis) {
 		setTimeout("$('#" + this.domElement.id + "')[0].className = '" + this.classNameBackup + "'",millis);
 	},
@@ -176,11 +176,18 @@ paella.VideoElementBase = Class.create(paella.DomNode,{
 			$(this.domElement).hide();
 		}
 	},
-	
+
 	setLayer:function(layer) {
 		this.domElement.style.zIndex = layer;
 	}
 });
+
+function paella_flash_video_ready(streamId) {
+	var videoPlayer = paella_flash_VideoContainers[streamId];
+	videoPlayer._isReady = true;
+}
+
+var paella_flash_VideoContainers = {};
 
 paella.FlashVideo = Class.create(paella.VideoElementBase,{
 	classNameBackup:'',
@@ -188,14 +195,16 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 	paused:true,
 	streamingMode:true,
 	flashId:'',
+	_isReady:false,
 
 	initialize:function(id,left,top,width,height) {
 		this.parent(id,'div',left,top,width,height);
 		this.flashId = id + 'Movie';
+		paella_flash_VideoContainers[this.flashId] = this;
 	},
-	
+
 	isReady:function() {
-		return true;
+		return this._isReady;
 	},
 
 	// Adobe Flash utils
@@ -213,6 +222,7 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 		ieobject.setAttribute('codebase', '"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0"');
 		ieobject.setAttribute("width","100%");
 		ieobject.setAttribute("height","100%");
+		ieobject.setAttribute("playerId",this.flashId);
 		this.addParameter(ieobject,"movie",url);
 		this.addParameter(ieobject,"quality","high");
 		this.addParameter(ieobject,"bgcolor","#efefef");
@@ -224,13 +234,14 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 		this.addParameter(ieobject,"devicefont","false");
 		this.addParameter(ieobject,"salign","");
 		this.addParameter(ieobject,"allowScriptAccess","sameDomain");
-	
+
 		var object = document.createElement('object');
 		object.setAttribute('id',this.flashId);
 		object.setAttribute("type","application/x-shockwave-flash");
 		object.setAttribute("data",url);
 		object.setAttribute("width","100%");
 		object.setAttribute("height","100%");
+		object.setAttribute("playerId",this.flashId);
 		this.addParameter(object,"movie",url);
 		this.addParameter(object,"quality","high");
 		this.addParameter(object,"bgcolor","#efefef");
@@ -243,16 +254,15 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 		this.addParameter(object,"salign","");
 		this.addParameter(object,"allowScriptAccess","sameDomain");
 		ieobject.appendChild(object);
-		
-		var flashVars = "";
-		var separator = "";
+
+		var flashVars = "playerId=" +  this.playerId;
+		var separator = "&";
 		for (var key in params) {
 			flashVars += separator + key + "=" + encodeURIComponent(params[key]);
-			separator = "&";
 		}
 		this.addParameter(ieobject,"flashvars",flashVars);
 		this.addParameter(object,"flashvars",flashVars);
-		
+
 		var link = document.createElement('a');
 		link.setAttribute("href", "http://www.adobe.com/go/getflash");
 		link.innerHTML = '<img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Obtener Adobe Flash Player" />';
@@ -260,7 +270,7 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 
 		return ieobject;
 	},
-	
+
 	play:function() {
 		if (this.flashVideo) {
 			try {
@@ -273,7 +283,7 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 		}
 		return false;
 	},
-	
+
 	pause:function() {
 		if (this.flashVideo) {
 			try {
@@ -286,11 +296,11 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 		}
 		return false;
 	},
-	
+
 	isPaused:function() {
 		return this.paused;
 	},
-	
+
 	duration:function() {
 		if (this.flashVideo) {
 			try {
@@ -323,7 +333,7 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 		}
 		return -1;
 	},
-	
+
 	setVolume:function(volume) {
 		if (this.flashVideo) {
 			var thisClass = this;
@@ -346,23 +356,23 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 		}
 		return false;
 	},
-	
+
 	volume:function() {
 		return this.flashVideo.getVolume();
 	},
-	
+
 	setPlaybackRate:function(rate) {
 	},
-	
+
 	createSwfObject:function(swfFile,flashVars) {
 		var id = this.identifier;
 		var parameters = { wmode:'transparent' };
-		
+
 		var domElement = document.createElement('div');
 		this.domElement.appendChild(domElement);
 		domElement.id = id + "Movie";
 		swfobject.embedSWF(swfFile,domElement.id,"100%","100%","9.0.0","",flashVars,parameters);
-		
+
 		var flashObj = $('#' + domElement.id)[0];
 		return flashObj;
 	},
@@ -370,42 +380,45 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 	addSourceProgresiveDownload:function(sourceData){
 		if (sourceData.type=='video/mp4') {
 			var parameters = {};
-			
+
 			if (!/rtmp:\/\//.test(sourceData.src)) {
 				parameters.url = sourceData.src;
-				
+				parameters.playerId = this.flashId;
+
 				this.flashVideo = this.createSwfObject("player.swf",parameters);
 			}
 		}
 		else if (sourceData.type=='video/x-flv') {
 			var parameters = {};
 			parameters.url = sourceData.src;
+			parameters.playerId = this.flashId;
 			this.flashVideo = this.createSwfObject("player.swf",parameters);
 		}
 	},
-	
+
 	addSourceStreaming:function(sourceData) {
 		if (sourceData.type=='video/mp4') {
 			var parameters = {};
 			if (/(rtmp:\/\/[\w\d\.\-_]+[:+\d]*\/[\w\d\-_]+\/)(mp4:)([\w\d\.\/\-_]+)/i.test(sourceData.src)) {
 				sourceData.src = RegExp.$1 + RegExp.$3;
 			}
-			
+
 			if (/(rtmp:\/\/)([\w\d\.\-_]+[:+\d]*)\/([\w\d\-_]+\/)([\w\d\.\/\-_]+)/.test(sourceData.src)) {
 				parameters.connect = RegExp.$1 + RegExp.$2 + '/' + RegExp.$3;
 				parameters.url = "mp4:" + RegExp.$4;
 			}
-			
+			parameters.playerId = this.flashId;
 			this.flashVideo = this.createSwfObject("player.swf",parameters);
 		}
 		else if (sourceData.type=='video/x-flv') {
 			var parameters = {};
-			
+
 			if (/(rtmp:\/\/)([\w\d\.\-_]+[:+\d]*)\/([\w\d\-_]+\/)([\w\d\.\/\-_]+)(\.flv)?/.test(sourceData.src)) {
 				parameters.connect = RegExp.$1 + RegExp.$2 + '/' + RegExp.$3;
 				parameters.url = RegExp.$4;
 			}
-			
+			parameters.playerId = this.flashId;
+
 			this.flashVideo = this.createSwfObject("player.swf",parameters);
 		}
 	},
@@ -418,7 +431,7 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 			this.addSourceProgresiveDownload(sourceData);
 		}
 	},
-	
+
 	getDimensions:function() {
 		var dim = {width:640, height:480};
 		try {
@@ -443,27 +456,27 @@ paella.Html5Video = Class.create(paella.VideoElementBase,{
 			thisClass.ready = true;
 		});
 	},
-	
+
 	isReady:function() {
 		return this.ready;
 	},
-	
+
 	play:function() {
 		if (this.domElement && this.domElement.play) {
 			this.domElement.play();
 		}
 	},
-	
+
 	pause:function() {
 		if (this.domElement && this.domElement.pause) {
 			this.domElement.pause();
 		}
 	},
-	
+
 	isPaused:function() {
 		return this.domElement.paused;
 	},
-	
+
 	duration:function() {
 		if (this.domElement && this.domElement.duration) {
 			return this.domElement.duration;
@@ -482,20 +495,20 @@ paella.Html5Video = Class.create(paella.VideoElementBase,{
 		}
 		return 0;
 	},
-	
+
 	setVolume:function(volume) {
 		this.domElement.volume = volume;
 		return true;
 	},
-	
+
 	volume:function() {
 		return this.domElement.volume;
 	},
-	
+
 	setPlaybackRate:function(rate) {
 		this.domElement.playbackRate = rate;
 	},
-	
+
 	addSource:function(sourceData) {
 		var source = document.createElement('source');
 		source.src = sourceData.src;
@@ -506,7 +519,7 @@ paella.Html5Video = Class.create(paella.VideoElementBase,{
 			this.ready = true;
 		}
 	},
-	
+
 	getDimensions:function() {
 		return { width: this.domElement.videoWidth, height: this.domElement.videoHeight };
 	},
@@ -528,20 +541,20 @@ paella.Html5Video = Class.create(paella.VideoElementBase,{
 			$(this.domElement).css(style);
 		}
 	},
-	
+
 	disableClassName:function() {
 		this.classNameBackup = this.domElement.className;
 		this.domElement.className = "";
 	},
-	
+
 	enableClassName:function() {
 		this.domElement.className = this.classNameBackup;
 	},
-	
+
 	enableClassNameAfter:function(millis) {
 		setTimeout("$('#" + this.domElement.id + "')[0].className = '" + this.classNameBackup + "'",millis);
 	},
-	
+
 	setVisible:function(visible,animate) {
 		if (visible=="true" && animate) {
 			$(this.domElement).animate({opacity:1.0},300);
@@ -556,7 +569,7 @@ paella.Html5Video = Class.create(paella.VideoElementBase,{
 			$(this.domElement).hide();
 		}
 	},
-	
+
 	setLayer:function(layer) {
 		this.domElement.style.zIndex = layer;
 	}
@@ -579,7 +592,7 @@ paella.SlideshowVideo = Class.create(paella.VideoElementBase,{
 		this.img.style.width = '100%';
 		this.img.style.height = '100%';
 		this.domElement.appendChild(this.img);
-		
+
 		var thisClass = this;
 		thisClass.ready = false;
 	},
@@ -587,12 +600,12 @@ paella.SlideshowVideo = Class.create(paella.VideoElementBase,{
 	isReady:function() {
 		return this.ready;
 	},
-	
+
 	checkFrame:function() {
 		var src = null;
 		var alt = "";
 		var lastFrame = -1;
-	
+
 		for (var i=0;i<this._frames.length;++i) {
 			var frameData = this._frames[i];
 			if (this._currentTime<frameData.time) break;
@@ -600,7 +613,7 @@ paella.SlideshowVideo = Class.create(paella.VideoElementBase,{
 			alt = "frame_" + frameData.time;
 			lastFrame = frameData.time;
 		}
-	
+
 		if (this._lastFrame!=lastFrame) {
 			this.img.src = src;
 			this.img.alt = alt;
@@ -673,7 +686,7 @@ paella.SlideshowVideo = Class.create(paella.VideoElementBase,{
 		}
 		frameZero.src = this._frames[0].image;
 	},
-	
+
 	loadFrames:function(frames,duration) {
 		this._frames = [];
 		for (var i=0;i<duration;++i) {
@@ -682,5 +695,3 @@ paella.SlideshowVideo = Class.create(paella.VideoElementBase,{
 		}
 	}
 });
-
-
