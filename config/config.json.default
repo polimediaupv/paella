@@ -25,7 +25,8 @@
 		"dataDelegates":{
 			"default":"CookieDataDelegate",
 			"trimming":"CookieDataDelegate",
-			"userInfo": "UserDataDelegate"
+			"userInfo": "UserDataDelegate",
+			"images":"ImageZoomDataDelegate"
 		}
 	},
 	"plugins":{
