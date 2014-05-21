@@ -26,7 +26,7 @@ arguments.add_argument('--noplugins',action='store_true',help='add plugins')
 intermediatePath = 'tmp'
 if (not os.path.exists(intermediatePath)):
 	os.makedirs(intermediatePath)
-	
+
 args = arguments.parse_args()
 if args.src:
 	pluginDir = args.src
@@ -49,11 +49,14 @@ paellaFiles.sort()
 
 for file in paellaFiles:
 	outPath = os.path.join(intermediatePath,file)
-	outFile = open(outPath,'w')
-	jsPath = paellaDir + file
-	outFile.write(open(jsPath).read())
-	outFile.write('\n\n')
-	outFile.close()
+	filePath = os.path.join(paellaDir,file)
+	fileName, fileExtension = os.path.splitext(filePath)
+	if fileExtension =='.js':
+		outFile = open(outPath,'w')
+		jsPath = paellaDir + file
+		outFile.write(open(jsPath).read())
+		outFile.write('\n\n')
+		outFile.close()
 
 pluginFiles = os.listdir(pluginDir)
 pluginFiles.sort()
@@ -88,9 +91,9 @@ for file in intermediateFiles:
 		command = "java -jar yuicompressor.jar " + filePath + " -o " + filePath
 		print command
 		subprocess.check_call(command,shell=True)
-	print "adding " + filePath + " to " + javascriptFile
-	jsOut.write(open(filePath).read())
+	if fileExtension=='.js':
+		print "adding " + filePath + " to " + javascriptFile
+		jsOut.write(open(filePath).read())
 
 jsOut.close()
 shutil.rmtree(intermediatePath)
-
