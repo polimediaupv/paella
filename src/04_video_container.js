@@ -606,13 +606,11 @@ paella.VideoContainer = Class.create(paella.VideoContainerBase,{
 			var selectedSource = null;
 			
 			if (type=="html") {
-				if (mp4Source) {
+				if (mp4Source && videoNode.domElement.canPlayType("video/mp4") !== "" ) {
 					selectedSource = mp4Source;
-				}
-				if (oggSource) {
+				} else if (oggSource && videoNode.domElement.canPlayType("video/ogg") !== "") {
 					selectedSource = oggSource;
-				}
-				if (webmSource) {
+				} else if (webmSource && videoNode.domElement.canPlayType("video/webm") !== "") {
 					selectedSource = webmSource;
 				}
 			}
