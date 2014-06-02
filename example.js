@@ -75,6 +75,11 @@ var StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 				res: {w:res[0], h:res[1]}
 			};
 
+
+			if (! /^[a-zA-Z]+:\/\//.test(source.src)) {
+				source.src = paella.player.config.standalone.reposiroty + "/" + paella.initDelegate.getId() + "/" + source.src;
+			}
+
 		return source;
 	},
 		
@@ -123,6 +128,11 @@ var StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 			}
 
 			currentStream.preview = currentTrack.preview;
+			if (! /^[a-zA-Z]+:\/\//.test(currentStream.preview)) {
+				currentStream.preview = paella.player.config.standalone.reposiroty + "/" + paella.initDelegate.getId() + "/" + currentStream.preview;
+			}
+			
+			
 			
 			streams[currentTrack.type] = currentStream;
 		}		
@@ -142,12 +152,22 @@ var StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 				if (/(\d+):(\d+):(\d+)/.test(currentSlide.time)) {
 					time = parseInt(RegExp.$1)*60*60 + parseInt(RegExp.$2)*60 + parseInt(RegExp.$3);
 
-					imageSource.frames["frame_"+time] = currentSlide.slide.url;
+					slideUrl = currentSlide.slide.url;
+					thumbUrl = currentSlide.thumb.url;
+					
+					if (! /^[a-zA-Z]+:\/\//.test(slideUrl)) {
+						slideUrl = paella.player.config.standalone.reposiroty + "/" + paella.initDelegate.getId() + "/" + slideUrl;
+					}
+					if (! /^[a-zA-Z]+:\/\//.test(thumbUrl)) {
+						thumbUrl = paella.player.config.standalone.reposiroty + "/" + paella.initDelegate.getId() + "/" + thumbUrl;
+					}
+
+					imageSource.frames["frame_"+time] = slideUrl;
 					imageSource.count = imageSource.count +1;
-					thumbSource.frames["frame_"+time] = currentSlide.thumb.url;
+					thumbSource.frames["frame_"+time] = thumbUrl;
 					thumbSource.count = thumbSource.count +1;
                 	
-                	this.frameList[time] = {id:'frame_'+time, mimetype:currentSlide.mimetype, time:time, url:currentSlide.slide.url, thumb:currentSlide.thumb.url};
+                	this.frameList[time] = {id:'frame_'+time, mimetype:currentSlide.mimetype, time:time, url:slideUrl, thumb:thumbUrl};
 				}			
 			}
 			
