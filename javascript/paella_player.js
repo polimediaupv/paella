@@ -7843,27 +7843,28 @@ paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "showFullScreenButton"; },
 	getName:function() { return "es.upv.paella.fullScreenButtonPlugin"; },
-	checkEnabled:function(onSuccess) { 
-		onSuccess(!paella.extended); 
+	checkEnabled:function(onSuccess) {
+		onSuccess(!paella.extended);
 	},
-	getDefaultToolTip:function() { return paella.dictionary.translate("Go FullScreen"); },		
+	getDefaultToolTip:function() { return paella.dictionary.translate("Go FullScreen"); },
 
-					       
+
 	action:function(button) {
-		if (window==window.top) {
-			this.doFullScreen(button);
-		}
-		else {
-			window.top.location = window.location;
-		}
+		//if (window==window.top) {
+		//	this.doFullScreen(button);
+		//}
+		//else {
+		//	window.top.location = window.location;
+		//}
+		this.doFullScreen(button);
 	},
-	
+
 	doFullScreen:function(button) {
 		var fs = document.getElementById(paella.player.mainContainer.id);
 		fs.style.width = '100%';
 		fs.style.height = '100%';
 		if (this.isFullscreen()) {
-		 
+
 			if (document.webkitCancelFullScreen) {
 				document.webkitCancelFullScreen();
 				button.className = this.getButtonItemClass(false);
@@ -7876,8 +7877,8 @@ paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
 				document.cancelFullScreen();
 				button.className = this.getButtonItemClass(false);
 			}
-			
-			
+
+
 		}
 		else {
 			if (fs.webkitRequestFullScreen) {
@@ -7897,7 +7898,7 @@ paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
 			}
 		}
 	},
-	
+
 	isFullscreen:function() {
 		if (document.webkitIsFullScreen!=undefined) {
 			return document.webkitIsFullScreen;
@@ -7907,7 +7908,7 @@ paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
 		}
 		return false;
 	},
-	
+
 	getButtonItemClass:function(selected) {
 		return 'buttonPlugin '+this.getAlignment() +' '+ this.getSubclass() + ((selected) ? ' active':'');
 	}
