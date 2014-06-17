@@ -1,7 +1,7 @@
 var examplePresenterSources = {
 	sources:{
 		mp4:[ { src:'/presenter.mp4', type:"video/mp4", res:{w:1280,h:720} },
-		{ src:'/presenter.mp4', type:"video/mp4", res:{w:1024,h:768} } ]
+			  { src:'/presenter.mp4', type:"video/mp4", res:{w:1024,h:768} } ]
 	},
 	preview:'/PRESENTER.jpg'
 }
@@ -91,7 +91,8 @@ var MyAccessControl = Class.create(paella.AccessControl,{
 	}
 });
 
-var MyVideoLoader = Class.create(paella.VideoLoader, {
+// Dual MP4 progressive download
+var DualMP4VideoLoader = Class.create(paella.VideoLoader, {
 	loadVideo:function(videoId,onSuccess) {
 		var url = videoId;
 		if (url) {
@@ -99,10 +100,10 @@ var MyVideoLoader = Class.create(paella.VideoLoader, {
 			for(var i = 0; i<stream.sources.mp4.length; i++){
 				stream.sources.mp4[i].src = url + stream.sources.mp4[i].src;
 			}
-			
+
 			stream.preview = url + stream.preview;
 			this.streams.push(stream);
-			
+
 			stream = exampleSlidesSources;
 			for(var i = 0; i<stream.sources.mp4.length; i++){
 				stream.sources.mp4[i].src = url + stream.sources.mp4[i].src;
@@ -113,21 +114,13 @@ var MyVideoLoader = Class.create(paella.VideoLoader, {
 				stream.sources.image.frames[key] = url + stream.sources.image.frames[key];
 			}
 			this.streams.push(stream);
-			
+
 			this.frameList = exampleFrameList;
 			for (var key in this.frameList) {
 				this.frameList[key].url = url + this.frameList[key].url;
 				this.frameList[key].thumb = url + this.frameList[key].thumb;
 			}
 		}
-	
-		// No thumbnails
-		//frameList[timeInstant] = { id:"frame_id", mimetype:"image/jpg", time:timeInstant, url:"image_url"}
-		
-
-		//this.frameList[0] = {id:'frame_0', mimetype:'image/jpg', time:0, url:url + '/image/frame_0.jpg'};
-		//this.frameList[419] = {id:'frame_419', mimetype:'image/jpg', time:419, url:url + '/image/frame_419.jpg'};
-		//this.frameList[658] = {id:'frame_658', mimetype:'image/jpg', time:658, url:url + '/image/frame_658.jpg'};
 
 		// Callback
 		this.loadStatus = true;
@@ -135,15 +128,94 @@ var MyVideoLoader = Class.create(paella.VideoLoader, {
 	}
 });
 
+
+// Live RTMP Stream
+var LiveRTMPStreamVideoLoader = Class.create(paella.VideoLoader, {
+	loadVideo:function(videoId,onSuccess) {
+		var stream = {
+			sources:{
+				rtmp:[ { src:'rtmp://melpomene.upv.es/live/PRUEBAS', type:'video/x-flv', res:{w:1280,h:720}, isLiveStream:true} ]
+			}
+		}
+		this.streams.push(stream);
+
+		// Callback
+		this.loadStatus = true;
+		onSuccess();
+	}
+});
+
+// RTMP/mp4 stream
+var Mp4RTMPStreamVideoLoader = Class.create(paella.VideoLoader, {
+	loadVideo:function(videoId,onSuccess) {
+		var stream = {
+			sources:{
+				rtmp:[ { src:'rtmp://polimedia.upv.es/vod/mp4:link/cursos/Profesores_POLIMEDIA_I/M98/B14/polimedia_muxed.mp4', type:'video/mp4', res:{w:1280,h:720}, isLiveStream:false}]
+			}
+		}
+		this.streams.push(stream);
+
+		// Callback
+		this.loadStatus = true;
+		onSuccess();
+	}
+});
+
+// RTMP/flv stream
+var FlvRTMPStreamVideoLoader = Class.create(paella.VideoLoader, {
+	loadVideo:function(videoId,onSuccess) {
+		var stream = {
+			sources:{
+				rtmp:[ { src:'rtmp://mhopencast.ethz.ch/matterhorn-engage/engage-player/1e6fdeaf-a28b-453e-ba7c-44eb62040eb8/ab72ddbe-10f3-4cb0-8261-e5567b8c242c/CAMERA', type:'video/x-flv', res:{w:1280,h:720}, isLiveStream:false} ]
+			}
+		}
+		this.streams.push(stream);
+
+		// Callback
+		this.loadStatus = true;
+		onSuccess();
+	}
+});
+
+
+// Dual rtmp streams
+var DualRTMPVideoLoader = Class.create(paella.VideoLoader, {
+	loadVideo:function(videoId,onSuccess) {
+		var stream = {
+			sources:{
+				rtmp:[ { src:'rtmp://mhopencast.ethz.ch/matterhorn-engage/engage-player/1e6fdeaf-a28b-453e-ba7c-44eb62040eb8/ab72ddbe-10f3-4cb0-8261-e5567b8c242c/CAMERA', type:'video/x-flv', res:{w:1280,h:720}, isLiveStream:false} ]
+			}
+		}
+		this.streams.push(stream);
+
+		stream = {
+			sources:{
+				rtmp:[ { src:'rtmp://polimedia.upv.es/vod/mp4:link/cursos/Profesores_POLIMEDIA_I/M98/B14/polimedia_muxed.mp4', type:'video/mp4', res:{w:1280,h:720}, isLiveStream:false}]
+			}
+		}
+		this.streams.push(stream);
+
+		// Callback
+		this.loadStatus = true;
+		onSuccess();
+	}
+});
+
+
 function loadPaella(containerId) {
-	var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new MyVideoLoader()});
-	
+	var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new DualMP4VideoLoader()});
+
+//	var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new LiveRTMPStreamVideoLoader()});
+//	var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new Mp4RTMPStreamVideoLoader()});
+//	var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new FlvRTMPStreamVideoLoader()});
+//	var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new DualRTMPVideoLoader()});
+
 	initPaellaEngage(containerId,initDelegate);
 }
 
 function loadPaellaExtended(containerId) {
 	var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new MyVideoLoader()});
-	
+
 	initPaellaExtended({containerId:containerId,initDelegate:initDelegate});
 }
 
@@ -158,7 +230,7 @@ paella.dataDelegates.UserDataDelegate = Class.create(paella.DataDelegate,{
 			lastname: "Lastname",
 			avatar:"plugins/silhouette32.png"
 		};
-		
+
         if (typeof(onSuccess)=='function') { onSuccess(value,true); }
     }
 
