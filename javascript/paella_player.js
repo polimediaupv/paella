@@ -1478,6 +1478,7 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 				parameters.url = "mp4:" + RegExp.$4;
 			}
 			parameters.playerId = this.flashId;
+			parameters.isLiveStream = sourceData.isLiveStream;
 			this.flashVideo = this.createSwfObject("player.swf",parameters);
 		}
 		else if (sourceData.type=='video/x-flv') {
@@ -1488,7 +1489,7 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 				parameters.url = RegExp.$4;
 			}
 			parameters.playerId = this.flashId;
-
+			parameters.isLiveStream = sourceData.isLiveStream;
 			this.flashVideo = this.createSwfObject("player.swf",parameters);
 		}
 	},
@@ -7851,27 +7852,28 @@ paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "showFullScreenButton"; },
 	getName:function() { return "es.upv.paella.fullScreenButtonPlugin"; },
-	checkEnabled:function(onSuccess) { 
-		onSuccess(!paella.extended); 
+	checkEnabled:function(onSuccess) {
+		onSuccess(!paella.extended);
 	},
-	getDefaultToolTip:function() { return paella.dictionary.translate("Go FullScreen"); },		
+	getDefaultToolTip:function() { return paella.dictionary.translate("Go FullScreen"); },
 
-					       
+
 	action:function(button) {
-		if (window==window.top) {
-			this.doFullScreen(button);
-		}
-		else {
-			window.top.location = window.location;
-		}
+		//if (window==window.top) {
+		//	this.doFullScreen(button);
+		//}
+		//else {
+		//	window.top.location = window.location;
+		//}
+		this.doFullScreen(button);
 	},
-	
+
 	doFullScreen:function(button) {
 		var fs = document.getElementById(paella.player.mainContainer.id);
 		fs.style.width = '100%';
 		fs.style.height = '100%';
 		if (this.isFullscreen()) {
-		 
+
 			if (document.webkitCancelFullScreen) {
 				document.webkitCancelFullScreen();
 				button.className = this.getButtonItemClass(false);
@@ -7884,8 +7886,8 @@ paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
 				document.cancelFullScreen();
 				button.className = this.getButtonItemClass(false);
 			}
-			
-			
+
+
 		}
 		else {
 			if (fs.webkitRequestFullScreen) {
@@ -7905,7 +7907,7 @@ paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
 			}
 		}
 	},
-	
+
 	isFullscreen:function() {
 		if (document.webkitIsFullScreen!=undefined) {
 			return document.webkitIsFullScreen;
@@ -7915,7 +7917,7 @@ paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
 		}
 		return false;
 	},
-	
+
 	getButtonItemClass:function(selected) {
 		return 'buttonPlugin '+this.getAlignment() +' '+ this.getSubclass() + ((selected) ? ' active':'');
 	}
@@ -8738,7 +8740,7 @@ paella.plugins.SocialPlugin = Class.create(paella.ButtonPlugin,{
                         height = (width/(16/9)).toFixed();
                         h_e.value = height;
                     }
-                    $("#social_embed-textarea")[0].value = '<iframe src="'+url+'" style="border:0px #FFFFFF none;" name="Paella Player" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px" width="'+width+'" height="'+height+'"></iframe>';
+                    $("#social_embed-textarea")[0].value = '<iframe allowfullscreen src="'+url+'" style="border:0px #FFFFFF none;" name="Paella Player" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px" width="'+width+'" height="'+height+'"></iframe>';
                 }
             }
         };
@@ -8752,7 +8754,7 @@ paella.plugins.SocialPlugin = Class.create(paella.ButtonPlugin,{
 
                     w_e.value = size[0];
                     h_e.value = size[1];
-                    $("#social_embed-textarea")[0].value = '<iframe src="'+url+'" style="border:0px #FFFFFF none;" name="Paella Player" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px" width="'+size[0]+'" height="'+size[1]+'"></iframe>';
+                    $("#social_embed-textarea")[0].value = '<iframe allowfullscreen src="'+url+'" style="border:0px #FFFFFF none;" name="Paella Player" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px" width="'+size[0]+'" height="'+size[1]+'"></iframe>';
                 }
             };
         }
