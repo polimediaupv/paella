@@ -129,6 +129,29 @@ var DualMP4VideoLoader = Class.create(paella.VideoLoader, {
 });
 
 
+// Dual Live RTMP Stream
+var DualLiveRTMPStreamVideoLoader = Class.create(paella.VideoLoader, {
+	loadVideo:function(videoId,onSuccess) {
+		var stream = {
+			sources:{
+				rtmp:[ { src:'rtmp://melpomene.upv.es/live/PRUEBAS', type:'video/x-flv', res:{w:1280,h:720}, isLiveStream:true} ]
+			}
+		}
+		this.streams.push(stream);
+
+		stream = {
+			sources:{
+				rtmp:[ { src:'rtmp://melpomene.upv.es/live/PRUEBAS', type:'video/x-flv', res:{w:1280,h:720}, isLiveStream:true} ]
+			}
+		}
+		this.streams.push(stream);
+
+		// Callback
+		this.loadStatus = true;
+		onSuccess();
+	}
+});
+
 // Live RTMP Stream
 var LiveRTMPStreamVideoLoader = Class.create(paella.VideoLoader, {
 	loadVideo:function(videoId,onSuccess) {
@@ -203,8 +226,9 @@ var DualRTMPVideoLoader = Class.create(paella.VideoLoader, {
 
 
 function loadPaella(containerId) {
-	var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new DualMP4VideoLoader()});
+//	var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new DualMP4VideoLoader()});
 
+	var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new DualLiveRTMPStreamVideoLoader()});
 //	var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new LiveRTMPStreamVideoLoader()});
 //	var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new Mp4RTMPStreamVideoLoader()});
 //	var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new FlvRTMPStreamVideoLoader()});

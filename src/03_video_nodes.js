@@ -408,6 +408,7 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 				parameters.url = "mp4:" + RegExp.$4;
 			}
 			parameters.playerId = this.flashId;
+			parameters.isLiveStream = sourceData.isLiveStream;
 			this.flashVideo = this.createSwfObject("player.swf",parameters);
 		}
 		else if (sourceData.type=='video/x-flv') {
@@ -418,7 +419,7 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 				parameters.url = RegExp.$4;
 			}
 			parameters.playerId = this.flashId;
-
+			parameters.isLiveStream = sourceData.isLiveStream;
 			this.flashVideo = this.createSwfObject("player.swf",parameters);
 		}
 	},
