@@ -1,4 +1,6 @@
 paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
+	_isFullscreen:false,
+
 	getIndex:function() { return 551; },
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "showFullScreenButton"; },
@@ -28,14 +30,22 @@ paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
 			if (document.webkitCancelFullScreen) {
 				document.webkitCancelFullScreen();
 				button.className = this.getButtonItemClass(false);
+				this._isFullscreen = false;
 			}
 			else if (document.mozCancelFullScreen) {
 				document.mozCancelFullScreen();
 				button.className = this.getButtonItemClass(false);
+				this._isFullscreen = false;
+			}
+			else if (document.msExitFullscreen()) {
+				document.msExitFullscreen();
+				button.class = this.getButtonItemClass(false);
+				this._isFullscreen = false;
 			}
 			else if (document.cancelFullScreen) {
 				document.cancelFullScreen();
 				button.className = this.getButtonItemClass(false);
+				this._isFullscreen = false;
 			}
 
 
@@ -44,14 +54,22 @@ paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
 			if (fs.webkitRequestFullScreen) {
 				fs.webkitRequestFullScreen();
 				button.className = this.getButtonItemClass(true);
+				this._isFullscreen = true;
 			}
 			else if (fs.mozRequestFullScreen){
 				fs.mozRequestFullScreen();
 				button.className = this.getButtonItemClass(true);
+				this._isFullscreen = true;
 			}
-			else if (fs.requestFullScreen()) {
+			else if (fs.msRequestFullscreen) {
+				fs.msRequestFullscreen();
+				button.className = this.getButtonItemClass(true);
+				this._isFullscreen = true;
+			}
+			else if (fs.requestFullScreen) {
 				fs.requestFullScreen();
 				button.className = this.getButtonItemClass(true);
+				this._isFullscreen = true;
 			}
 			else {
 				alert('Your browser does not support fullscreen mode');
@@ -60,13 +78,7 @@ paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
 	},
 
 	isFullscreen:function() {
-		if (document.webkitIsFullScreen!=undefined) {
-			return document.webkitIsFullScreen;
-		}
-		else if (document.mozFullScreen!=undefined) {
-			return document.mozFullScreen;
-		}
-		return false;
+		return this._isFullscreen;
 	},
 
 	getButtonItemClass:function(selected) {

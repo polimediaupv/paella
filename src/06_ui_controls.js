@@ -7,7 +7,7 @@ paella.TimeControl = Class.create(paella.DomNode,{
 		var thisClass = this;
 		paella.events.bind(paella.events.timeupdate,function(event,params) { thisClass.onTimeUpdate(params); });
 	},
-	
+
 	onTimeUpdate:function(memo) {
 		var videoContainer = memo.videoContainer;
 		var real = { start:0, end:videoContainer.duration };
@@ -20,12 +20,12 @@ paella.TimeControl = Class.create(paella.DomNode,{
 		}
 		this.domElement.innerHTML = this.secondsToHours(parseInt(currentTime));
 	},
-	
+
 	secondsToHours:function(sec_numb) {
 		var hours   = Math.floor(sec_numb / 3600);
 		var minutes = Math.floor((sec_numb - (hours * 3600)) / 60);
 		var seconds = sec_numb - (hours * 3600) - (minutes * 60);
-		
+
 		if (hours < 10) {hours = "0"+hours;}
 		if (minutes < 10) {minutes = "0"+minutes;}
 		if (seconds < 10) {seconds = "0"+seconds;}
@@ -48,7 +48,7 @@ paella.PlaybackBar = Class.create(paella.DomNode,{
 		this.domElement.setAttribute("role", "slider");
 		this.domElement.setAttribute("aria-valuemin", "0");
 		this.domElement.setAttribute("aria-valuemax", "100");
-		this.domElement.setAttribute("aria-valuenow", "0");			
+		this.domElement.setAttribute("aria-valuenow", "0");
 		this.domElement.setAttribute("tabindex", "1100");
 		$(this.domElement).keyup(function(event){
 			switch(event.keyCode) {
@@ -64,7 +64,7 @@ paella.PlaybackBar = Class.create(paella.DomNode,{
 					break;
 			}
 		});
-		
+
 		this.playbackFullId = id + "_full";
 		this.timeControlId = id + "_timeControl";
 		var playbackFull = new paella.DomNode('div',this.playbackFullId,{width:'0%'});
@@ -80,7 +80,7 @@ paella.PlaybackBar = Class.create(paella.DomNode,{
 		$(this.domElement).bind('mouseup',function(event) { paella.utils.mouseManager.up(event); });
 		$(playbackFull.domElement).bind('mouseup',function(event) { paella.utils.mouseManager.up(event); });
 	},
-	
+
 	playbackFull:function() {
 		return this.getNode(this.playbackFullId);
 	},
@@ -88,15 +88,15 @@ paella.PlaybackBar = Class.create(paella.DomNode,{
 	timeControl:function() {
 		return this.getNode(this.timeControlId);
 	},
-	
+
 	setPlaybackPosition:function(percent) {
 		this.playbackFull().domElement.style.width = percent + '%';
 	},
-	
+
 	isSeeking:function() {
 		return !this.updatePlayBar;
 	},
-	
+
 	onTimeUpdate:function(memo) {
 		if (this.updatePlayBar) {
 			var videoContainer = memo.videoContainer;
@@ -113,7 +113,7 @@ paella.PlaybackBar = Class.create(paella.DomNode,{
 		this.move(event,x,y);
 	},
 
-	move:function(event,x,y) {		
+	move:function(event,x,y) {
 		var width = $(this.domElement).width();
 		var selectedPosition = x - $(this.domElement).offset().left; // pixels
 		if (selectedPosition<0) {
@@ -127,7 +127,7 @@ paella.PlaybackBar = Class.create(paella.DomNode,{
 		}
 		this.setPlaybackPosition(selectedPosition);
 	},
-	
+
 	up:function(event,x,y) {
 		var width = $(this.domElement).width();
 		var selectedPosition = x - $(this.domElement).offset().left; // pixels
@@ -150,14 +150,14 @@ paella.PlaybackControl = Class.create(paella.DomNode,{
 	pluginsContainer:null,
 	popUpPluginContainer:null,
 	timeLinePluginContainer:null,
-	
+
 	playbackPluginsWidth:0,
 	popupPluginsWidth:0,
-	
+
 	minPlaybackBarSize:120,
 
 	playbackBarInstance:null,
-	
+
 	buttonPlugins:[],
 
 	addPlugin:function(plugin) {
@@ -200,7 +200,7 @@ paella.PlaybackControl = Class.create(paella.DomNode,{
 		var thisClass = this;
 		this.pluginsContainer = new paella.DomNode('div',id + '_playbackBarPlugins');
 		this.pluginsContainer.domElement.className = 'playbackBarPlugins';
-		this.pluginsContainer.domElement.setAttribute("role", "toolbar");		
+		this.pluginsContainer.domElement.setAttribute("role", "toolbar");
 		this.addNode(this.pluginsContainer);
 
 		this.popUpPluginContainer = new paella.PopUpContainer(id + '_popUpPluginContainer','popUpPluginContainer');
@@ -218,7 +218,7 @@ paella.PlaybackControl = Class.create(paella.DomNode,{
 		}
 		return this.playbackBarInstance;
 	},
-	
+
 	onresize:function() {
 		paella.debug.log("resize playback bar");
 		var windowSize = $(this.domElement).width();
@@ -240,22 +240,22 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 	playbackControlId:'',
 	editControlId:'',
 	isEnabled:true,
-	
+
 	autohideTimer:null,
 	hideControlsTimeMillis:3000,
 
 	playbackControlInstance:null,
-	
+
 	videoOverlayButtons:null,
-	
+
 	buttonPlugins:[],
-	
+
 	addPlugin:function(plugin) {
 		var thisClass = this;
 		var id = 'videoOverlayButtonPlugin' + this.buttonPlugins.length;
 		this.buttonPlugins.push(plugin);
 		var button = paella.ButtonPlugin.buildPluginButton(plugin,id);
-		this.videoOverlayButtons.domElement.appendChild(button);		
+		this.videoOverlayButtons.domElement.appendChild(button);
 		plugin.button = button;
 		$(button).hide();
 		plugin.checkEnabled(function(isEnabled) {
@@ -275,26 +275,26 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 		var thisClass = this;
 		paella.events.bind(paella.events.showEditor,function(event) { thisClass.onShowEditor(); });
 		paella.events.bind(paella.events.hideEditor,function(event) { thisClass.onHideEditor(); });
-		
+
 		paella.events.bind(paella.events.play,function(event) { thisClass.onPlayEvent(); });
 		paella.events.bind(paella.events.pause,function(event) { thisClass.onPauseEvent(); });
 		paella.events.bind('mousemove',function(event) { thisClass.onMouseMoveEvent(); });
 		paella.events.bind(paella.events.endVideo,function(event) { thisClass.onEndVideoEvent(); });
 		paella.events.bind('keydown',function(event) { thisClass.onKeyEvent() });
-		
+
 		this.videoOverlayButtons = new paella.DomNode('div',id + '_videoOverlayButtonPlugins');
 		this.videoOverlayButtons.domElement.className = 'videoOverlayButtonPlugins';
 		this.videoOverlayButtons.domElement.setAttribute("role", "toolbar");
 		this.addNode(this.videoOverlayButtons);
-		
+
 		paella.pluginManager.setTarget('videoOverlayButton',this);
 	},
-	
+
 	onShowEditor:function() {
 		var editControl = this.editControl();
 		if (editControl) $(editControl.domElement).hide();
 	},
-	
+
 	onHideEditor:function() {
 		var editControl = this.editControl();
 		if (editControl) $(editControl.domElement).show();
@@ -303,7 +303,7 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 //	showEditorButton:function() {
 //		this.addNode(new EditControl(this.editControlId));
 //	},
-	
+
 	enterEditMode:function() {
 		var playbackControl = this.playbackControl();
 		var editControl = this.editControl();
@@ -311,7 +311,7 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 			$(playbackControl.domElement).hide();
 		}
 	},
-	
+
 	exitEditMode:function() {
 		var playbackControl = this.playbackControl();
 		var editControl = this.editControl();
@@ -326,7 +326,7 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 		}
 		return this.playbackControlInstance;
 	},
-	
+
 	editControl:function() {
 		return this.getNode(this.editControlId);
 	},
@@ -335,7 +335,7 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 		this.isEnabled = false;
 		this.hide();
 	},
-	
+
 	enable:function() {
 		this.isEnabled = true;
 		this.show();
@@ -347,7 +347,7 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 		if (!userAgent.browser.IsMobileVersion) {
 			$(this.domElement).animate({opacity:0.0},{duration:300, complete:function(){
 				This.domElement.setAttribute('aria-hidden', 'true');
-				//$(This.domElement).hide();				
+				//$(This.domElement).hide();
 			}});
 			paella.events.trigger(paella.events.controlBarWillHide);
 		}
@@ -363,17 +363,17 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 				this.domElement.setAttribute('aria-hidden', 'false');
 				//$(this.domElement).show();
 				paella.events.trigger(paella.events.controlBarDidShow);
-			}	
+			}
 		}
 	},
-	
+
 	autohideTimeout:function() {
 		var playbackBar = this.playbackControl().playbackBar();
 		if (playbackBar.isSeeking()) {
 			this.restartAutohideTimer();
 		}
 		else {
-			this.hideControls();			
+			this.hideControls();
 		}
 	},
 
@@ -392,7 +392,7 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 	onPauseEvent:function() {
 		this.clearAutohideTimer();
 	},
-	
+
 	onEndVideoEvent:function() {
 		this.show();
 		this.clearAutohideTimer();
@@ -401,17 +401,17 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 	onKeyEvent:function() {
 		this.showControls();
 		if (paella.player.videoContainer.isReady() && !paella.player.videoContainer.paused()) {
-			this.restartAutohideTimer();			
+			this.restartAutohideTimer();
 		}
 	},
-	
+
 	onMouseMoveEvent:function() {
 		this.showControls();
 		if (paella.player.videoContainer.isReady() && !paella.player.videoContainer.paused()) {
-			this.restartAutohideTimer();			
+			this.restartAutohideTimer();
 		}
 	},
-	
+
 	clearAutohideTimer:function() {
 		if (this.autohideTimer!=null) {
 			this.autohideTimer.cancel();
@@ -426,7 +426,7 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 			thisClass.autohideTimeout();
 		},this.hideControlsTimeMillis);
 	},
-	
+
 	onresize:function() {
 		this.playbackControl().onresize();
 	}

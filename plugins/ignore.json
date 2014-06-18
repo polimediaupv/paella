@@ -1,4 +1,5 @@
 ["debuglog.js",
  "annotations.js",
  "check_publish.js",
- "videoload_test.js"]
+ "videoload_test.js",
+ "imagezoom.js"]

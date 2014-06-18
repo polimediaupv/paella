@@ -11,9 +11,9 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 	getMinWindowSize:function() { return 200; },
 	getName:function() { return "es.upv.paella.FrameControlPlugin"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.timeLineButton; },
-	getDefaultToolTip:function() { return paella.dictionary.translate("Navigate by slides"); },	
+	getDefaultToolTip:function() { return paella.dictionary.translate("Navigate by slides"); },
 	checkEnabled:function(onSuccess) {
-		onSuccess(paella.initDelegate.initParams.videoLoader.frameList!=null);
+		onSuccess(paella.initDelegate.initParams.videoLoader.frameList!=null && paella.initDelegate.initParams.videoLoader.frameList.length>0);
 	},
 
 	setup:function() {
@@ -32,14 +32,14 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 
         	if (thisClass.isPopUpOpen()){
 		    	if (event.keyCode == Keys.Left) {
-		           if(selectedItem > 0){		            
+		           if(selectedItem > 0){
 				        thisClass.buttons[selectedItem].className = oldClassName;
 
 					    selectedItem--;
 
 					    if(blockCounter > blocks) correctJump = visibleItems - rest;
-	            		jumpAtItem = ((visibleItems)*(blockCounter-1))-1-correctJump; 
-	            	
+	            		jumpAtItem = ((visibleItems)*(blockCounter-1))-1-correctJump;
+
 	            		if(selectedItem == jumpAtItem && selectedItem != 0){
 				            thisClass.navButtons.left.scrollContainer.scrollLeft -= visibleItems*105;
 							--blockCounter;
@@ -48,7 +48,7 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 	            		if(this.hiResFrame)thisClass.removeHiResFrame();
 					    thisClass.buttons[selectedItem].frameControl.onMouseOver(null,thisClass.buttons[selectedItem].frameData);
 					    oldClassName = thisClass.buttons[selectedItem].className;
-					    thisClass.buttons[selectedItem].className = 'frameControlItem selected'; 
+					    thisClass.buttons[selectedItem].className = 'frameControlItem selected';
 		           	}
 	            }
 	            else if (event.keyCode == Keys.Right) {
@@ -58,7 +58,7 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 	            		}
 
 	            		selectedItem++;
-	            		
+
 	            		if (blockCounter == 1) correctJump = 0;
 	            		jumpAtItem = (visibleItems)*blockCounter-correctJump;
 
@@ -80,7 +80,7 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 	            else if (event.keyCode == Keys.Esc){
 	            	thisClass.removeHiResFrame();
 	            }
-            }	
+            }
         });
     },
 
@@ -91,24 +91,24 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 		container.className = 'frameControlContainer';
 
 		thisClass.contx = container;
-		
+
 		var content = document.createElement('div');
 		content.className = 'frameControlContent';
-		
+
 		this.navButtons = {
 			left:document.createElement('div'),
 			right:document.createElement('div')
 		}
 		this.navButtons.left.className = 'frameControl navButton left';
 		this.navButtons.right.className = 'frameControl navButton right';
-		
+
 		var frame = this.getFrame(null);
-		
+
 		domElement.appendChild(this.navButtons.left);
 		domElement.appendChild(container);
 		container.appendChild(content);
 		domElement.appendChild(this.navButtons.right);
-		
+
 		this.navButtons.left.scrollContainer = container;
 		$(this.navButtons.left).click(function(event) {
 			this.scrollContainer.scrollLeft -= 100;
@@ -118,12 +118,12 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 		$(this.navButtons.right).click(function(event) {
 			this.scrollContainer.scrollLeft += 100;
 		});
-		
+
 		content.appendChild(frame);
-		
+
 		var itemWidth = $(frame).outerWidth(true);
 		content.innerHTML = '';
-		
+
 		var frames = paella.initDelegate.initParams.videoLoader.frameList;
 		if (frames) {
 			var numFrames = 0;
@@ -134,21 +134,21 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 				++numFrames;
 			}
 		}
-		
+
 		$(content).css({width:(numFrames * itemWidth) + 'px'});
-		
+
 		var This = this;
 		paella.events.bind(paella.events.setTrim,function(event,params) {
 			This.checkVisibility(params.trimEnabled,params.trimStart,params.trimEnd);
 		});
-		
+
 		paella.events.bind(paella.events.timeupdate,function(event,params) { This.onTimeUpdate(params.currentTime) });
 	},
-	
+
 	showHiResFrame:function(url) {
-		var frameRoot = document.createElement("div"); 
-		var frame = document.createElement("div"); 
-		var hiResImage = document.createElement('img'); 
+		var frameRoot = document.createElement("div");
+		var frame = document.createElement("div");
+		var hiResImage = document.createElement('img');
         hiResImage.className = 'frameHiRes';
         hiResImage.setAttribute('src',url);
         hiResImage.setAttribute('style', 'width: 100%;');
@@ -159,7 +159,7 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
         frameRoot.setAttribute('style', 'display: table;');
         frame.setAttribute('style', 'display: table-cell; vertical-align:middle;');
 		overlayContainer = paella.player.videoContainer.overlayContainer;
-		
+
 		var streams = paella.initDelegate.initParams.videoLoader.streams;
 		if (streams.length == 1){
 			overlayContainer.addElement(frameRoot, overlayContainer.getMasterRect());
@@ -176,7 +176,7 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 		overlayContainer.removeElement(this.hiResFrame);
 		overlayContainer.disableBackgroundMode();
 	},
-	
+
 	checkVisibility:function(trimEnabled,trimStart,trimEnd) {
 		if (!trimEnabled) {
 			for (var i = 0; i<this.frames.length;++i) {
@@ -201,10 +201,10 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 				else {
 					$(frameElem).show();
 				}
-			}	
+			}
 		}
 	},
-	
+
 	getFrame:function(frameData,id) {
 		var frame = document.createElement('div');
 		frame.className = 'frameControlItem';
@@ -230,7 +230,7 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 		}
 		return frame;
 	},
-	
+
 	onMouseOver:function(event,frameData) {
 		var frames = paella.initDelegate.initParams.videoLoader.frameList;
 		var frame = frames[frameData.time];
@@ -239,15 +239,15 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 			this.showHiResFrame(image);
 		}
 	},
-	
+
 	onMouseOut:function(event,frameData) {
 		this.removeHiResFrame();
 	},
-	
+
 	onClick:function(event,frameData) {
 		paella.events.trigger(paella.events.seekToTime,{time:frameData.time + 1});
 	},
-	
+
 	onTimeUpdate:function(currentTime) {
 		var frame = null;
 		for (var i = 0; i<this.frames.length; ++i) {

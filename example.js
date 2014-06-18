@@ -228,9 +228,9 @@ var DualRTMPVideoLoader = Class.create(paella.VideoLoader, {
 function loadPaella(containerId) {
 //	var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new DualMP4VideoLoader()});
 
-//	var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new DualLiveRTMPStreamVideoLoader()});
+	var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new DualLiveRTMPStreamVideoLoader()});
 //	var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new LiveRTMPStreamVideoLoader()});
-	var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new Mp4RTMPStreamVideoLoader()});
+//	var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new Mp4RTMPStreamVideoLoader()});
 //	var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new FlvRTMPStreamVideoLoader()});
 //	var initDelegate = new paella.InitDelegate({accessControl:new MyAccessControl(),videoLoader:new DualRTMPVideoLoader()});
 
