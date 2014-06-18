@@ -141,10 +141,6 @@ paella.plugins.PlayButtonOnScreen = Class.create(paella.EventDrivenPlugin,{
 		}
 	},
 
-	checkEnabled:function(onSuccess) {
-		onSuccess(true);
-	},
-
 	getIndex:function() {
 		return 1010;
 	},

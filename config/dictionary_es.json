@@ -47,5 +47,6 @@
 	"Results {0}-{1} of {2} for \"{3}\"": "Resultados {0}-{1} de {2} para \"{3}\"",
 	"No recordings found": "No se han encontrado videos",
 	"No recordings found: \"{0}\"": "No se han encontrado videos para: \"{0}\"",
-	"There are unsaved changes":"Hay cambios sin guardar"
+	"There are unsaved changes":"Hay cambios sin guardar",
+	"Live streaming mode: This is a live video, so, some capabilities of the player are disabled":"<h2>Vídeo en directo</h2><br/>Esto es un vídeo en directo, así que algunas de las funciones del reproductor están deshabilitadas"
 }

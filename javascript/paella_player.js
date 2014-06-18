@@ -7979,6 +7979,41 @@ paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
 paella.plugins.fullScreenPlugin = new paella.plugins.FullScreenPlugin();
 
 
+paella.LiveStreamIndicator = Class.create(paella.VideoOverlayButtonPlugin,{
+    isEditorVisible:function() {
+        return paella.editor.instance!=null;
+    },
+    getIndex:function() {return 10;},
+
+    getSubclass:function() {
+        return "liveIndicator";
+    },
+
+    getAlignment:function() {
+        return 'right';
+    },
+    getDefaultToolTip:function() { return paella.dictionary.translate("This video is a live stream"); },
+
+    checkEnabled:function(onSuccess) {
+        onSuccess(paella.player.isLiveStream());
+    },
+
+    setup:function() {
+        var thisClass = this;
+    },
+
+    action:function(button) {
+        paella.messageBox.showMessage(paella.dictionary.translate("Live streaming mode: This is a live video, so, some capabilities of the player are disabled"));
+    },
+
+    getName:function() {
+        return "es.upv.paella.LiveStramingIndicator";
+    }
+});
+
+paella.plugins.liveStreamIndicator = new paella.LiveStreamIndicator();
+
+
 
 paella.plugins.PlayPauseButtonPlugin = Class.create(paella.ButtonPlugin, {
 	playSubclass:'playButton',
@@ -8120,10 +8155,6 @@ paella.plugins.PlayButtonOnScreen = Class.create(paella.EventDrivenPlugin,{
 		else {
 			$(this.container).show();
 		}
-	},
-
-	checkEnabled:function(onSuccess) {
-		onSuccess(true);
 	},
 
 	getIndex:function() {
