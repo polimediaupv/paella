@@ -119,7 +119,8 @@ var StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 		var source = {
 				src:  track.url,
 				type: track.mimetype,
-				res: {w:res[0], h:res[1]}
+				res: {w:res[0], h:res[1]},
+				isLiveStream: true
 			};
 
 
@@ -145,7 +146,7 @@ var StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 			if (currentStream == undefined) { currentStream = { sources:{}, preview:'' }; }
 
 
-			if (this.isStreaming(currentTrack)) {
+			if (this.isStreaming(currentTrack.url)) {
 				if ( !(currentStream.sources['rtmp']) || !(currentStream.sources['rtmp'] instanceof Array)){
 					currentStream.sources['rtmp'] = [];
 				}

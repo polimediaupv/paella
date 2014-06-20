@@ -39,7 +39,7 @@ paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
 			}
 			else if (document.msExitFullscreen()) {
 				document.msExitFullscreen();
-				button.class = this.getButtonItemClass(false);
+				button.className = this.getButtonItemClass(false);
 				this._isFullscreen = false;
 			}
 			else if (document.cancelFullScreen) {
