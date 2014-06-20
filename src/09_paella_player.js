@@ -1,6 +1,6 @@
 var PaellaPlayer = Class.create(paella.PlayerBase,{
 	player:null,
-	
+
 	selectedProfile:'',
 	videoIdentifier:'',
 	editor:null,
@@ -18,16 +18,16 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 
 	initialize:function(playerId) {
 		this.parent(playerId);
-		
+
 		// if initialization ok
 		if (this.playerId==playerId) {
 			this.loadPaellaPlayer();
 			this.includePlugins('javascript/paella_plugins.js','plugins/',paella.pluginList);
 
-			var thisClass = this; 
+			var thisClass = this;
 			paella.events.bind(paella.events.setProfile,function(event,params) {
 				thisClass.setProfile(params.profileName);
-			});	
+			});
 		}
 	},
 
@@ -41,7 +41,7 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 			paella.initDelegate.loadConfig(function(config) {
 				thisClass.onLoadConfig(config);
 			});
-		});		
+		});
 	},
 
 	onLoadConfig:function(configData) {
@@ -58,10 +58,10 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 				this.mainContainer.appendChild(this.controls.domElement);
 			}
 			$(window).resize(function(event) { paella.player.onresize(); });
-			this.onload();	
+			this.onload();
 		}
 	},
-	
+
 	onload:function() {
 		var thisClass = this;
 		this.accessControl.checkAccess(function(permissions) {
@@ -78,7 +78,7 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 				}
 				else {
 					thisClass.unloadAll(paella.dictionary.translate("You are not authorized to view this resource"));
-				}	
+				}
 			}
 			else if (permissions.isAnonymous) {
 				var errorMessage = paella.dictionary.translate("You are not logged in");
@@ -116,7 +116,7 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 	//		setTimeout('paella.player.setupEditor()',500);
 	//	}
 	//},
-	
+
 	showEditor:function() {
 		new paella.editor.Editor();
 	},
@@ -133,21 +133,26 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 				var master = loader.streams[0];
 				var slave = loader.streams[1];
 				var frames = loader.frameList;
-			
+
 				if (loader.loadStatus) {
 					var preferredMethodMaster = loader.getPreferredMethod(0);
 					var preferredMethodSlave  = loader.getPreferredMethod(1);
 					var status = true;
-					
+
 					if (preferredMethodMaster) {
 						status = paella.player.videoContainer.setMasterSource(master,preferredMethodMaster.name);
 					}
-					
+
 					if (preferredMethodSlave) {
 						status = paella.player.videoContainer.setSlaveSource(slave,preferredMethodSlave.name);
 					}
 					else {
 						paella.player.videoContainer.setMonoStreamMode();
+					}
+
+
+					if (paella.player.isLiveStream()) {
+						$(paella.player.controls.playbackControl().playbackBar().domElement).hide();
 					}
 
 					if (status) {
@@ -179,11 +184,33 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 			});
 		}
 	},
-	
+
+	isLiveStream:function() {
+		if (this._isLiveStream===undefined) {
+			var loader = paella.initDelegate.initParams.videoLoader;
+			var checkSource = function(sources,index) {
+				if (sources.length>index) {
+					var source = sources[index];
+					for (var key in source.sources) {
+						if (typeof(source.sources[key])=="object") {
+							for (var i=0; i<source.sources[key].length; ++i) {
+								var stream = source.sources[key][i];
+								if (stream.isLiveStream) return true;
+							}
+						}
+					}
+				}
+				return false;
+			}
+			this._isLiveStream = checkSource(loader.streams,0) || checkSource(loader.streams,1);
+		}
+		return this._isLiveStream;
+	},
+
 	loadPreviews:function() {
 		var streams = paella.initDelegate.initParams.videoLoader.streams;
 		var slavePreviewImg = null;
-		
+
 		var masterPreviewImg = streams[0].preview;
 		if (streams.length >=2) {
 			slavePreviewImg = streams[1].preview;
@@ -204,7 +231,7 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 			paella.player.unloadPreviews();
 		});
 	},
-	
+
 	unloadPreviews:function() {
 		if (this.masterPreviewElem) {
 			paella.player.videoContainer.overlayContainer.removeElement(this.masterPreviewElem);
@@ -215,7 +242,7 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 			this.slavePreviewElem = null;
 		}
 	},
-	
+
 	loadComplete:function(event,params) {
 		var thisClass = this;
 		var time = paella.utils.parameters.get('time');
@@ -237,7 +264,7 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 		new paella.utils.Timer(function(timer) {
 			var autoplay = paella.utils.parameters.list['autoplay'] ? paella.utils.parameters.list['autoplay']:'';
 			autoplay = autoplay.toLowerCase();
-			
+
 			var playerConfig = paella.player.config.player;
 			if (playerConfig.stream0Audio===false && paella.player.videoContainer.numberOfStreams()>=1) {
 				paella.player.videoContainer.masterVideo().setVolume(0);

@@ -2,15 +2,15 @@
 paella.plugins.FootPrintsPlugin = Class.create(paella.ButtonPlugin,{
 	INTERVAL_LENGTH:5,
 	inPosition:0,
-	outPosition:0,	
+	outPosition:0,
 	canvas: null,
 	footPrintsTimer: null,
 	footPrintsData: {},
-	
+
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "footPrints"; },
 	getIndex:function() { return 590; },
-	getDefaultToolTip:function() { return paella.dictionary.translate("Show statistics"); },	
+	getDefaultToolTip:function() { return paella.dictionary.translate("Show statistics"); },
 	getName:function() { return "es.upv.paella.FootPrintsPlugin"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.timeLineButton; },
 
@@ -18,33 +18,33 @@ paella.plugins.FootPrintsPlugin = Class.create(paella.ButtonPlugin,{
 	setup:function(){
 		var thisClass = this;
 		paella.events.bind(paella.events.timeUpdate, function(event) { thisClass.onTimeUpdate(); });
-		
+
 		switch(this.config.skin) {
 		case 'custom':
 			this.fillStyle = this.config.fillStyle;
 			this.strokeStyle = this.config.strokeStyle;
 			break;
-		
+
 		case 'dark':
 			this.fillStyle = '#727272';
 			this.strokeStyle = '#424242';
 			break;
-		
+
 		case 'light':
 			this.fillStyle = '#d8d8d8';
 			this.strokeStyle = '#ffffff';
 			break;
-		
+
 		default:
 			this.fillStyle = '#d8d8d8';
 			this.strokeStyle = '#ffffff';
 			break;
 		}
-		
+
 	},
 
 	checkEnabled:function(onSuccess) {
-		onSuccess(true);		
+		onSuccess(!paella.player.isLiveStream());
 	},
 
 	buildContent:function(domElement) {
@@ -55,11 +55,11 @@ paella.plugins.FootPrintsPlugin = Class.create(paella.ButtonPlugin,{
 		this.canvas.id = 'footPrintsCanvas';
 		this.canvas.className = 'footPrintsCanvas';
 		container.appendChild(this.canvas);
-	
-	
-		domElement.appendChild(container);		
+
+
+		domElement.appendChild(container);
 	},
-	
+
     onTimeUpdate:function() {
 		var videoCurrentTime = Math.round(paella.player.videoContainer.currentTime() + paella.player.videoContainer.trimStart());
 		if (this.inPosition <= videoCurrentTime && videoCurrentTime <= this.inPosition + this.INTERVAL_LENGTH) {
@@ -75,12 +75,12 @@ paella.plugins.FootPrintsPlugin = Class.create(paella.ButtonPlugin,{
 			this.outPosition = videoCurrentTime;
 		}
     },
-    
+
     trackFootPrint:function(inPosition, outPosition) {
-    	var data = {"in": inPosition, "out": outPosition};		
-		paella.data.write('footprints',{id:paella.initDelegate.getId()}, data);		
+    	var data = {"in": inPosition, "out": outPosition};
+		paella.data.write('footprints',{id:paella.initDelegate.getId()}, data);
     },
-	
+
 	willShowContent:function() {
 		var thisClass = this;
 		this.loadFootprints();
@@ -95,22 +95,22 @@ paella.plugins.FootPrintsPlugin = Class.create(paella.ButtonPlugin,{
 			this.footPrintsTimer.cancel();
 			this.footPrintsTimer = null;
 		}
-	},	
-		
+	},
+
     loadFootprints:function () {
 	    var thisClass = this;
 		paella.data.read('footprints',{id:paella.initDelegate.getId()},function(data,status) {
 			var footPrintsData = {};
 			var duration = Math.floor(paella.player.videoContainer.duration());
 			var trimStart = Math.floor(paella.player.videoContainer.trimStart());
-			
+
             var lastPosition = -1;
             var lastViews = 0;
 			for (var i = 0; i < data.length; i++) {
 				position = data[i].position - trimStart;
 				if (position < duration){
 					views = data[i].views;
-					
+
 					if (position - 1 != lastPosition){
 						for (var j = lastPosition + 1; j < position; j++) {
 							footPrintsData[j] = lastViews;
@@ -120,18 +120,18 @@ paella.plugins.FootPrintsPlugin = Class.create(paella.ButtonPlugin,{
 					lastPosition = position;
 					lastViews = views;
 				}
-			}		
-			thisClass.drawFootPrints(footPrintsData);			
+			}
+			thisClass.drawFootPrints(footPrintsData);
 		});
     },
-	
+
 	drawFootPrints:function(footPrintsData) {
 		if (this.canvas) {
-			var duration = Object.keys(footPrintsData).length; 
+			var duration = Object.keys(footPrintsData).length;
 			var ctx = this.canvas.getContext("2d");
 			var h = 0;
 			for (var i = 0; i<duration; ++i) {
-				if (footPrintsData[i] > h) { h = footPrintsData[i]; } 
+				if (footPrintsData[i] > h) { h = footPrintsData[i]; }
 			}
 
 			this.canvas.setAttribute("width", duration);
@@ -140,11 +140,11 @@ paella.plugins.FootPrintsPlugin = Class.create(paella.ButtonPlugin,{
 			ctx.fillStyle = this.fillStyle; //'#faa166'; //'#9ED4EE';
 			ctx.strokeStyle = this.strokeStyle; //'#fa8533'; //"#0000FF";
 			ctx.lineWidth = 2;
-			
+
 			ctx.webkitImageSmoothingEnabled = false;
 			ctx.mozImageSmoothingEnabled = false;
-						
-			for (var i = 0; i<duration-1; ++i) {			
+
+			for (var i = 0; i<duration-1; ++i) {
 				ctx.beginPath();
 				ctx.moveTo(i, h);
 				ctx.lineTo(i, h-footPrintsData[i]);
@@ -152,7 +152,7 @@ paella.plugins.FootPrintsPlugin = Class.create(paella.ButtonPlugin,{
 				ctx.lineTo(i+1, h);
 				ctx.closePath();
 				ctx.fill();
-				
+
 				ctx.beginPath();
 				ctx.moveTo(i, h-footPrintsData[i]);
 				ctx.lineTo(i+1, h-footPrintsData[i+1]);
