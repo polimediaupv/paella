@@ -120,7 +120,7 @@ var StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 				src:  track.url,
 				type: track.mimetype,
 				res: {w:res[0], h:res[1]},
-				isLiveStream: true
+				isLiveStream: track.live
 			};
 
 
