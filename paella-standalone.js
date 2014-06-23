@@ -7,7 +7,7 @@ paella.standalone = {}
 // Standalone Access Control
 //
 // By default read/write access
-var StandaloneAccessControl = Class.create(paella.AccessControl,{
+paella.standalone.StandaloneAccessControl = Class.create(paella.AccessControl,{
 	checkAccess:function(onSuccess) {
 		this.permissions.canRead = true;
 		this.permissions.canWrite = true;
@@ -24,7 +24,7 @@ var StandaloneAccessControl = Class.create(paella.AccessControl,{
 
 // Standalone Video Loader
 //
-var StandAloneVideoLoader = Class.create(paella.VideoLoader, {
+paella.standalone.StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 	initialize:function(arg1,arg2) {
 		/*
 			([video1],[video2])
@@ -243,7 +243,7 @@ var StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 
 
 
-var StandaloneInitDelegate = Class.create(paella.InitDelegate, {
+paella.standalone.StandaloneInitDelegate = Class.create(paella.InitDelegate, {
 	initialize:function(config, params) {
 		if (!params) {
 			params = config;
@@ -266,7 +266,7 @@ var StandaloneInitDelegate = Class.create(paella.InitDelegate, {
 
 // Functions to load Paella
 //
-function loadPaella(containerId, config, arg1, arg2) {
+function loadStandalonePaella(containerId, config, arg1, arg2) {
 	/*
 		loadPaella("#paellacontainer", config?, [video1]);
 		loadPaella("#paellacontainer", config?, [video1], [video2]);
@@ -281,18 +281,18 @@ function loadPaella(containerId, config, arg1, arg2) {
 		config = null;
 	}
 
-	initDelegate = new StandaloneInitDelegate(
+	initDelegate = new paella.standalone.StandaloneInitDelegate(
 		config,
 		{
-			accessControl: new StandaloneAccessControl(),
-			videoLoader: new StandAloneVideoLoader(arg1, arg2)
+			accessControl: new paella.standalone.StandaloneAccessControl(),
+			videoLoader: new paella.standalone.StandAloneVideoLoader(arg1, arg2)
 		}
 	);
 
-	initPaellaEngage(containerId,initDelegate);
+	initPaellaEngage(containerId, initDelegate);
 }
 
-function loadPaellaExtended(containerId) {
+function loadStandalonePaellaExtended(containerId, config, arg1, arg2) {
 	var initDelegate = null;
 	if ( config instanceof Array || typeof config == 'string' || config instanceof String) {
 		arg2 = arg1;
@@ -300,11 +300,11 @@ function loadPaellaExtended(containerId) {
 		config = null;
 	}
 
-	initDelegate = new StandaloneInitDelegate(
+	initDelegate = new paella.standalone.StandaloneInitDelegate(
 		config,
 		{
-			accessControl: new StandaloneAccessControl(),
-			videoLoader: new StandAloneVideoLoader(arg1, arg2)
+			accessControl: new paella.standalone.StandaloneAccessControl(),
+			videoLoader: new paella.standalone.StandAloneVideoLoader(arg1, arg2)
 		}
 	);
 
