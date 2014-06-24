@@ -4,7 +4,7 @@ paella.editor.TrackUtils = {
 	},
 };
 
-paella.editor.Track = Class.create({
+Class ("paella.editor.Track", {
 	container:null,
 	plugin:null,
 	trackIndex:{
@@ -16,7 +16,7 @@ paella.editor.Track = Class.create({
 		front:1
 	},
 	trackElemList:null,
-	
+
 	buildTrackItemId:function(trackName,trackItemId) {
 		return paella.editor.TrackUtils.buildTrackItemId(trackName,trackItemId);
 	},
@@ -36,11 +36,11 @@ paella.editor.Track = Class.create({
 			newTrackGroup.className = "editorTrackListItem secondary " + subclass;
 		}
 	},
-	
+
 	getName:function() {
 		return this.plugin.getName();
 	},
-	
+
 	rebuild:function() {
 		this.container.innerHTML = '';
 		this.buildTracks(this.container);
@@ -55,7 +55,7 @@ paella.editor.Track = Class.create({
 			this.container.appendChild(trackItem);
 		}
 	},
-	
+
 	getTrack:function(trackData) {
 		var thisClass = this;
 		var plugin = this.plugin;
@@ -76,7 +76,7 @@ paella.editor.Track = Class.create({
 			trackData:trackData,
 			plugin:plugin
 		};
-		
+
 		var label = document.createElement('div');
 		if (trackData.name && trackData.name!='') {
 			label.innerHTML = trackData.name;
@@ -84,11 +84,11 @@ paella.editor.Track = Class.create({
 		else {
 			label.innerHTML = plugin.getTrackName();
 		}
-		
+
 		label.className = 'editorTrackItemLabel ' + this.plugin.getTrackType();
 		label.style.color = plugin.getTextColor();
 		track.appendChild(label);
-		
+
 		if (!trackData.lock) {
 			if (plugin.allowResize()) {
 				var resizerL = document.createElement('div');
@@ -99,7 +99,7 @@ paella.editor.Track = Class.create({
 				resizerR.className = 'editorTrackItemResizer right';
 				resizerR.track = track;
 				track.appendChild(resizerR);
-			
+
 				$(resizerL).mousedown(function(event) {
 					paella.editor.utils.mouse.mouseDownTarget = 'track';
 					thisClass.onResizerDown(this.track,'L',event);
@@ -118,7 +118,7 @@ paella.editor.Track = Class.create({
 				$(moveArea).mousedown(function(event) {
 					paella.editor.utils.mouse.mouseDownTarget = 'track';
 					thisClass.onResizerDown(this.track,'M',event);
-				});				
+				});
 			}
 		}
 		else {
@@ -126,12 +126,12 @@ paella.editor.Track = Class.create({
 			lockIcon.className = 'editorTrackItemLock icon-lock icon-white';
 			track.appendChild(lockIcon);
 		}
-		
+
 		$(track).mousedown(function(event) {
 			paella.editor.utils.mouse.mouseDownTarget = 'track';
 			thisClass.onTrackDown(this,event);
 		});
-		
+
 		$(document).mousemove(function(event) {
 			thisClass.onResizerMove(event);
 		});
@@ -144,13 +144,13 @@ paella.editor.Track = Class.create({
 		});
 		return track;
 	},
-	
-	
+
+
 	currentTrack:null,
 	resizeTrack:null,
 	currentResizer:null,
 	lastPos:{x:0,y:0},
-	
+
 	selectTrack:function(requestedTrack,noEvents) {
 		var i, trackElem;
 		if (typeof(requestedTrack)=="number") {
@@ -183,24 +183,24 @@ paella.editor.Track = Class.create({
 			}
 		}
 	},
-	
+
 	onSelect:function(trackInfo) {
 		this.plugin.onSelect(trackInfo.trackData);
 	},
-	
+
 	onDblClick:function(track,event) {
 		this.plugin.onDblClick(track.trackData);
 	},
-	
+
 	onUnselect:function() {
 		this.plugin.onUnselect();
 	},
-	
+
 	onTrackDown:function(track,event) {
 	// This will work only in secondary track items and in the first main track plugin:
 		this.selectTrack(track);
 		paella.editor.instance.bottomBar.toolbar.onToolChanged(this.plugin.getName(),this.plugin.getTrackName());
-		
+
 	},
 
 	onResizerDown:function(track,resizer,event) {
@@ -222,14 +222,14 @@ paella.editor.Track = Class.create({
 			width = width * 100 / totalWidth;
 			var start = left * duration / 100;
 			var end = (left + width) * duration / 100;
-			
+
 			var plugin = this.resizeTrack.trackInfo.plugin;
 			var trackData = this.resizeTrack.trackInfo.trackData;
 			plugin.onTrackChanged(trackData.id,start,end);
 			paella.editor.pluginManager.onTrackChanged(plugin);
 			paella.editor.instance.rightBar.updateCurrentTab();
 			paella.editor.instance.bottomBar.timeline.rebuildTrack(plugin.getName());
-			
+
 			$(this.resizeTrack).css({
 				'left':left + '%',
 				'width':width + '%'
@@ -247,7 +247,7 @@ paella.editor.Track = Class.create({
 			var duration = paella.player.videoContainer.duration(true);
 			var left = $(this.resizeTrack).position().left;
 			var width = $(this.resizeTrack).width();
-			
+
 			//if (left<0) return;
 			//else if ((left + width)>duration) return;
 			if (this.currentResizer=='L') {
