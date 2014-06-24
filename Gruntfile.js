@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 		},
 		concat: {
 			options: {
-				separator: ';\n',
+				separator: '\n',
 				process: function(src, filepath) {
 					return '/*** File: ' + filepath + ' ***/\n' + src;
 				}
