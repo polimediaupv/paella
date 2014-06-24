@@ -76,7 +76,8 @@ module.exports = function(grunt) {
 			server: {
 				options: {
 					port: 8000,
-					hostname: '*'        
+					hostname: '*',
+					base: 'dist'
 				}
 			}
 		}
@@ -94,6 +95,6 @@ module.exports = function(grunt) {
 	grunt.registerTask('checksyntax', ['jshint']);
 	
 	grunt.registerTask('dist', ['copy:dist', 'concat:dist.js', 'concat:dist.css', 'uglify:dist']);	
-	grunt.registerTask('server', ['connect', 'watch']);
+	grunt.registerTask('server', ['connect', 'watch:dist']);
 		
 };
