@@ -6,8 +6,9 @@ module.exports = function(grunt) {
 		copy: {
 			dist: {
 				files: [
-					{expand: true, src: ['config/**', 'javascript/**', 'resources/**', 'index.html', 'extended.html', 'paella-standalone.js', 'player.swf'], dest: 'dist/'},			
-					{expand: true, src: 'plugins/*/resources/*', dest: 'dist/resources/plugins/', flatten:true }
+					{expand: true, src: ['config/**', 'javascript/**', 'resources/**', 'index.html', 'extended.html', 'paella-standalone.js', 'player.swf'], dest: 'dist/player/'},			
+					{expand: true, cwd: 'repository_test/', src: '**', dest: 'dist/'},			
+					{expand: true, src: 'plugins/*/resources/*', dest: 'dist/player/resources/plugins/', flatten:true }
 				]
 			}
 		},
@@ -23,13 +24,13 @@ module.exports = function(grunt) {
 					'src/*.js',
 					'plugins/*/*.js'
 				],
-				dest: 'dist/javascript/paella_player.js'
+				dest: 'dist/player/javascript/paella_player.js'
 			},
 			'dist.css': {
 				src: [
 					'plugins/**/*.css'
 				],
-				dest: 'dist/resources/plugins/plugins.css'
+				dest: 'dist/player/resources/plugins/plugins.css'
 			}
 		},
 		uglify: {
@@ -44,7 +45,7 @@ module.exports = function(grunt) {
 			},
 			dist: {
 				files: {
-					'dist/javascript/paella_player.min.js': ['dist/javascript/paella_player.js']
+					'dist/player/javascript/paella_player.min.js': ['dist/player/javascript/paella_player.js']
 				}
 			}
 		},

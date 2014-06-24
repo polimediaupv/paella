@@ -1,0 +1,73 @@
+{
+    "mediapackage": {
+        "metadata": {
+	        "duration": "525955",
+	        "start": "2013-06-17T12:01:00Z",
+	        "title": "Captions Test - Polimedia Excel course",
+	        "creators": [ "Jaime Busquetx" ],
+	        "license": "Creative Commons 3.0: Attribution-NonCommercial-NoDerivs"        
+        },    
+        "media": {
+            "tracks": [
+                {
+                	"id": "track-1",
+                    "type": "presentation/delivery",
+                    "mimetype": "video/mp4",
+                    "tags": ["engage"],
+                    "url": "http://matterhorn.cc.upv.es:8080/static/engage-player/6b237477-5a2e-4cfb-b30a-3685ea4dd2eb/88d7ab26-ca08-4953-81fb-2872d57650f7/polimedia_muxed.mp4",
+                    "preview": "http://matterhorn.cc.upv.es:8080/static/engage-player/6b237477-5a2e-4cfb-b30a-3685ea4dd2eb/attachment-2/polimedia_muxed.jpg",
+                    "mediainfo": {
+	                    "audio": {
+	                        "id": "audio-1",
+	                        "device": "",
+	                        "encoder": {
+	                            "type": "AAC"
+	                        },
+	                        "channels": 2,
+	                        "bitrate": 96000
+	                    },
+	                    "video": {
+	                        "id": "video-1",
+	                        "device": "",
+	                        "encoder": {
+	                            "type": "AVC"
+	                        },
+	                        "bitrate": 200000,
+	                        "framerate": 25,
+	                        "resolution": "1280x720",
+	                        "scantype": {
+	                            "type": "Progressive"
+	                        }
+	                    }
+	                }
+                }
+            ]
+        },
+        "slides": [
+            {
+                "mimetype": "image/jpeg",
+                "time": "00:00:00",
+                "slide": {
+            		"resolution": "1280x720",
+            		"url": "http://matterhorn.cc.upv.es:8080/static/engage-player/6b237477-5a2e-4cfb-b30a-3685ea4dd2eb/7d1ea5cf-0c43-4b8e-90ba-65d30cd9bf67/polimedia_muxed.jpg"
+            	},
+            	"thumb": {
+            		"resolution": "320x180",
+            		"url": "http://matterhorn.cc.upv.es:8080/static/engage-player/6b237477-5a2e-4cfb-b30a-3685ea4dd2eb/d8f41c6c-7af4-4f04-86d0-38368ea27842/polimedia_muxed.jpg"
+            	}
+            },
+            {
+                "mimetype": "image/jpeg",
+                "time": "00:08:10",
+                "slide": {
+            		"resolution": "1280x720",
+            		"url": "http://matterhorn.cc.upv.es:8080/static/engage-player/6b237477-5a2e-4cfb-b30a-3685ea4dd2eb/4d76a39b-7f1f-4efc-a08a-391dd58158ac/polimedia_muxed.jpg"
+            	},
+            	"thumb": {
+            		"resolution": "320x180",
+            		"url": "http://matterhorn.cc.upv.es:8080/static/engage-player/6b237477-5a2e-4cfb-b30a-3685ea4dd2eb/2b9251dc-3844-4490-bc88-4c92cb55d4c0/polimedia_muxed.jpg"
+            	}
+            }
+        ]
+    }
+}
