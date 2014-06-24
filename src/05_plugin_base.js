@@ -1,8 +1,8 @@
-paella.PluginManager = Class.create({
+Class ("paella.PluginManager", {
 	targets:null,
 	pluginList: [],
 	eventDrivenPlugins: [],
-	
+
 	initialize:function() {
 		this.targets = {};
 		var thisClass = this;
@@ -27,7 +27,7 @@ paella.PluginManager = Class.create({
 			return target;
 		}
 	},
-	
+
 	registerPlugin:function(plugin) {
 		// Registra los plugins en una lista y los ordena
 		this.pluginList.push(plugin);
@@ -60,7 +60,7 @@ paella.PluginManager = Class.create({
 			}
 		}
 	},
-	
+
 	addPlugin:function(plugin) {
 		var thisClass = this;
 		plugin.checkEnabled(function(isEnabled) {
@@ -79,7 +79,7 @@ paella.PluginManager = Class.create({
 			}
 		});
 	},
-	
+
 	getPlugin:function(name) {
 		for (var i=0;i<this.pluginList.length;++i) {
 			if (this.pluginList[i].getName()==name) return this.pluginList[i];
@@ -90,9 +90,9 @@ paella.PluginManager = Class.create({
 
 paella.pluginManager = new paella.PluginManager();
 
-paella.Plugin = Class.create({
+Class ("paella.Plugin", {
 	type:'',
-	
+
 	initialize:function() {
 		var thisClass = this;
 		paella.pluginManager.registerPlugin(this);
@@ -108,25 +108,25 @@ paella.Plugin = Class.create({
 	getRootNode:function(id) {
 		return null;
 	},
-	
+
 	checkEnabled:function(onSuccess) {
 		onSuccess(true);
 	},
 
 	setup:function() {
-		
+
 	},
 
 	getIndex:function() {
 		return 0;
 	},
-	
+
 	getName:function() {
 		return "";
 	}
 });
 
-paella.PopUpContainer = Class.create(paella.DomNode,{
+Class ("paella.PopUpContainer", paella.DomNode,{
 	containers:null,
 	currentContainerId:-1,
 
@@ -135,12 +135,12 @@ paella.PopUpContainer = Class.create(paella.DomNode,{
 		var style = {};
 		this.parent('div',id,style);
 		this.domElement.className = className;
-		
+
 		this.containers = {};
 		paella.events.bind(paella.events.hidePopUp,function(event,params) { This.hideContainer(params.identifier,params.button); });
 		paella.events.bind(paella.events.showPopUp,function(event,params) { This.showContainer(params.identifier,params.button); });
 	},
-	
+
 	hideContainer:function(identifier,button) {
 		var container = this.containers[identifier];
 		if (container && this.currentContainerId==identifier) {
@@ -152,7 +152,7 @@ paella.PopUpContainer = Class.create(paella.DomNode,{
 			container.plugin.didHideContent();
 		}
 	},
-	
+
 	showContainer:function(identifier,button) {
 		var width = 0;
 		var container = this.containers[identifier];
@@ -174,7 +174,7 @@ paella.PopUpContainer = Class.create(paella.DomNode,{
 		else if (container && this.currentContainerId==identifier) {
 			container.plugin.willHideContent();
 			$(container.element).hide();
-			$(this.domElement).css({width:'0px'});			
+			$(this.domElement).css({width:'0px'});
 			container.button.className = container.button.className.replace(' selected','');
 			this.currentContainerId = -1;
 			container.plugin.didHideContent();
@@ -189,7 +189,7 @@ paella.PopUpContainer = Class.create(paella.DomNode,{
 			container.plugin.didShowContent();
 		}
 	},
-	
+
 	registerContainer:function(identifier,domElement,button,plugin) {
 		var containerInfo = {
 			button:button,
@@ -205,10 +205,10 @@ paella.PopUpContainer = Class.create(paella.DomNode,{
 			paella.events.trigger(paella.events.showPopUp,{identifier:this.popUpIdentifier,button:this});
 		});
 		$(button).keyup(function(event) {
-			if ( (event.keyCode == 13) && (!this.plugin.isPopUpOpen()) ){			
+			if ( (event.keyCode == 13) && (!this.plugin.isPopUpOpen()) ){
 				paella.events.trigger(paella.events.showPopUp,{identifier:this.popUpIdentifier,button:this});
 			}
-			else if ( (event.keyCode == 27)){			
+			else if ( (event.keyCode == 27)){
 				paella.events.trigger(paella.events.hidePopUp,{identifier:this.popUpIdentifier,button:this});
 			}
 		});
@@ -216,7 +216,7 @@ paella.PopUpContainer = Class.create(paella.DomNode,{
 	}
 });
 
-paella.TimelineContainer = Class.create(paella.PopUpContainer,{
+Class ("paella.TimelineContainer", paella.PopUpContainer,{
 	hideContainer:function(identifier,button) {
 		var container = this.containers[identifier];
 		if (container && this.currentContainerId==identifier) {
@@ -228,7 +228,7 @@ paella.TimelineContainer = Class.create(paella.PopUpContainer,{
 			container.plugin.didHideContent();
 		}
 	},
-	
+
 	showContainer:function(identifier,button) {
 		var height =0;
 		var container = this.containers[identifier];
@@ -248,7 +248,7 @@ paella.TimelineContainer = Class.create(paella.PopUpContainer,{
 		}
 		else if (container && this.currentContainerId==identifier) {
 			container.plugin.willHideContent();
-			$(container.element).hide();		
+			$(container.element).hide();
 			container.button.className = container.button.className.replace(' selected','');
 			$(this.domElement).css({height:'0px'});
 			this.currentContainerId = -1;
@@ -266,16 +266,16 @@ paella.TimelineContainer = Class.create(paella.PopUpContainer,{
 	}
 });
 
-paella.ButtonPlugin = Class.create(paella.Plugin,{
+Class ("paella.ButtonPlugin", paella.Plugin,{
 	type:'button',
 	subclass:'',
 	container:null,
 	containerManager:null,
-	
+
 	getAlignment:function() {
 		return 'left';	// or right
 	},
-	
+
 	// Returns the button subclass.
 	getSubclass:function() {
 		return "myButtonPlugin";
@@ -284,19 +284,19 @@ paella.ButtonPlugin = Class.create(paella.Plugin,{
 	action:function(button) {
 		// Implement this if you want to do something when the user push the plugin button
 	},
-	
+
 	getName:function() {
 		return "ButtonPlugin";
 	},
-	
+
 	getMinWindowSize:function() {
 		return 0;
 	},
-	
+
 	buildContent:function(domElement) {
-		// Override if your plugin 
+		// Override if your plugin
 	},
-	
+
 	willShowContent:function() {
 		paella.debug.log(this.getName() + " willDisplayContent");
 	},
@@ -318,27 +318,27 @@ paella.ButtonPlugin = Class.create(paella.Plugin,{
 		//return paella.ButtonPlugin.type.timeLineButton;
 		return paella.ButtonPlugin.type.actionButton;
 	},
-	
+
 	hideButton:function() {
 		this.button.setAttribute('aria-hidden', 'false');
 		$(this.button).hide();
 	},
-	
+
 	showButton:function() {
 		this.button.setAttribute('aria-hidden', 'true');
 		$(this.button).show();
 	},
-	
+
 	// Utility functions: do not override
 	changeSubclass:function(newSubclass) {
 		this.subclass = newSubclass;
 		this.container.className = this.getClassName();
 	},
-	
+
 	getClassName:function() {
 		return paella.ButtonPlugin.kClassName + ' ' + this.getAlignment() + ' ' + this.subclass;
 	},
-	
+
 	getContainerClassName:function() {
 		if (this.getButtonType()==paella.ButtonPlugin.type.timeLineButton) {
 			return paella.ButtonPlugin.kTimeLineClassName + ' ' + this.getSubclass();
@@ -347,16 +347,16 @@ paella.ButtonPlugin = Class.create(paella.Plugin,{
 			return paella.ButtonPlugin.kPopUpClassName + ' ' + this.getSubclass();
 		}
 	},
-	
+
 	setToolTip:function(message) {
 		this.button.setAttribute("title", message);
 		this.button.setAttribute("aria-label", message);
 	},
-	
+
 	getDefaultToolTip: function() {
 		return "";
 	},
-	
+
 	isPopUpOpen:function() {
 		return (this.button.popUpIdentifier == this.containerManager.currentContainerId);
 	}
@@ -410,9 +410,9 @@ paella.ButtonPlugin.buildPluginPopUp = function(parent,plugin,id) {
 	return elem;
 };
 
-paella.VideoOverlayButtonPlugin = Class.create(paella.ButtonPlugin,{
+Class ("paella.VideoOverlayButtonPlugin", paella.ButtonPlugin,{
 	type:'videoOverlayButton',
-	
+
 	// Returns the button subclass.
 	getSubclass:function() {
 		return "myVideoOverlayButtonPlugin";
@@ -428,9 +428,9 @@ paella.VideoOverlayButtonPlugin = Class.create(paella.ButtonPlugin,{
 });
 
 
-paella.EventDrivenPlugin = Class.create(paella.Plugin,{
+Class ("paella.EventDrivenPlugin", paella.Plugin,{
 	type:'eventDriven',
-	
+
 	initialize:function() {
 		this.parent();
 		var events = this.getEvents();
@@ -448,7 +448,7 @@ paella.EventDrivenPlugin = Class.create(paella.Plugin,{
 
 	onEvent:function(eventType,params) {
 	},
-	
+
 	getName:function() {
 		return "EventDrivenPlugin";
 	}
