@@ -1,4 +1,4 @@
-paella.AsyncLoaderCallback = Class.create({
+Class ("paella.AsyncLoaderCallback", {
 	name:"",
 	prevCb:null,
 	nextCb:null,
@@ -15,7 +15,7 @@ paella.AsyncLoaderCallback = Class.create({
 	}
 });
 
-paella.AjaxCallback = Class.create(paella.AsyncLoaderCallback,{
+Class ("paella.AjaxCallback", paella.AsyncLoaderCallback,{
 	params:null,
 	type:'get',
 
@@ -75,7 +75,7 @@ paella.AjaxCallback = Class.create(paella.AsyncLoaderCallback,{
 	}
 });
 
-paella.JSONCallback = Class.create(paella.AjaxCallback,{
+Class ("paella.JSONCallback", paella.AjaxCallback, {
 	initialize:function(params,type) { this.parent(params,type); },
 
 	didLoadSuccess:function(callback) {
@@ -92,7 +92,7 @@ paella.JSONCallback = Class.create(paella.AjaxCallback,{
 	}
 });
 
-paella.DictionaryCallback = Class.create(paella.AjaxCallback,{
+Class ("paella.DictionaryCallback", paella.AjaxCallback, {
 	initialize:function(dictionaryUrl) { this.parent({url:dictionaryUrl}); },
 
 	getParams:function() {
@@ -111,7 +111,7 @@ paella.DictionaryCallback = Class.create(paella.AjaxCallback,{
 	}
 });
 
-paella.AsyncLoader = Class.create({
+Class ("paella.AsyncLoader", {
 	firstCb:null,
 	lastCb:null,
 	callbackArray:null,
@@ -161,7 +161,7 @@ paella.AsyncLoader = Class.create({
 	}
 });
 
-paella.Dictionary = Class.create({
+Class ("paella.Dictionary", {
 	dictionary:{},
 
 	initialize:function() {
@@ -188,7 +188,7 @@ paella.dictionary = new paella.Dictionary();
 paella.ajax = base.ajax;
 
 // Deprecated: use paella.ajax.get/post/delete/put...
-paella.Ajax = Class.create({
+Class ("paella.Ajax", {
 	callback:null,
 
 	// Params:
@@ -407,7 +407,7 @@ paella.utils = {
 
 paella.utils.parameters.parse();
 
-paella.MouseManager = Class.create({
+Class ("paella.MouseManager", {
 	targetObject:null,
 
 	initialize:function() {
@@ -473,7 +473,7 @@ paella.ui.Container = function(params) {
 	return elem;
 };
 
-paella.DataDelegate = Class.create({
+Class ("paella.DataDelegate", {
 	// onSuccess => function(response,readStatus)
 	read:function(context,params,onSuccess) {
 		// TODO: read key with context
@@ -500,7 +500,7 @@ paella.DataDelegate = Class.create({
 
 paella.dataDelegates = {};
 
-paella.dataDelegates.CookieDataDelegate = Class.create(paella.DataDelegate,{
+Class ("paella.dataDelegates.CookieDataDelegate", paella.DataDelegate, {
 	initialize:function() {
 	},
 
@@ -546,7 +546,7 @@ paella.dataDelegates.CookieDataDelegate = Class.create(paella.DataDelegate,{
 paella.dataDelegates.DefaultDataDelegate = paella.dataDelegates.CookieDataDelegate;
 
 
-paella.Data = Class.create({
+Class ("paella.Data", {
 	enabled:false,
 	dataDelegates:{},
 
@@ -592,7 +592,7 @@ paella.Data = Class.create({
 // Will be initialized inmediately after loading config.json, in PaellaPlayer.onLoadConfig()
 paella.data = null;
 
-paella.MessageBox = Class.create({
+Class ("paella.MessageBox", {
 	modalContainerClassName:'modalMessageContainer',
 	frameClassName:'frameContainer',
 	messageClassName:'messageContainer',
@@ -822,7 +822,7 @@ paella.MessageBox = Class.create({
 			this.messageContainer.style.marginTop = top + 'px';
 		}
 	},
-
+	
 	close:function() {
 		if (this.currentMessageBox && this.currentMessageBox.parentNode) {
 			var msgBox = this.currentMessageBox;
