@@ -29,7 +29,7 @@ paella.Profiles = {
 	}
 };
 
-paella.RelativeVideoSize = Class.create({
+Class ("paella.RelativeVideoSize", {
 	w:1280,h:720,
 
 	proportionalHeight:function(newWidth) {
@@ -53,7 +53,7 @@ paella.RelativeVideoSize = Class.create({
 	}
 });
 
-paella.VideoElementBase = Class.create(paella.DomNode,{
+Class ("paella.VideoElementBase", paella.DomNode,{
 	ready:false,
 
 	initialize:function(id,containerType,left,top,width,height) {
@@ -185,7 +185,7 @@ function paella_flash_video_ready(streamId) {
 
 var paella_flash_VideoContainers = {};
 
-paella.FlashVideo = Class.create(paella.VideoElementBase,{
+Class ("paella.FlashVideo", paella.VideoElementBase,{
 	classNameBackup:'',
 	flashVideo:null,
 	paused:true,
@@ -374,7 +374,7 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 	},
 
 	addSourceProgresiveDownload:function(sourceData){
-		var parameters = {};	
+		var parameters = {};
 		if (sourceData.type=='video/mp4') {
 			if (!/rtmp:\/\//.test(sourceData.src)) {
 				parameters.url = sourceData.src;
@@ -391,7 +391,7 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 	},
 
 	addSourceStreaming:function(sourceData) {
-		var parameters = {};	
+		var parameters = {};
 		if (sourceData.type=='video/mp4') {
 			if (/(rtmp:\/\/[\w\d\.\-_]+[:+\d]*\/[\w\d\-_]+\/)(mp4:)([\w\d\.\/\-_]+)/i.test(sourceData.src)) {
 				sourceData.src = RegExp.$1 + RegExp.$3;
@@ -438,7 +438,7 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 	}
 });
 
-paella.Html5Video = Class.create(paella.VideoElementBase,{
+Class ("paella.Html5Video", paella.VideoElementBase,{
 	classNameBackup:'',
 	ready:false,
 
@@ -568,7 +568,7 @@ paella.Html5Video = Class.create(paella.VideoElementBase,{
 	}
 });
 
-paella.SlideshowVideo = Class.create(paella.VideoElementBase,{
+Class ("paella.SlideshowVideo", paella.VideoElementBase,{
 	ready:false,
 	img:null,
 	_frames:null,

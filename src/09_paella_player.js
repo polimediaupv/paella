@@ -1,4 +1,4 @@
-var PaellaPlayer = Class.create(paella.PlayerBase,{
+Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	player:null,
 
 	selectedProfile:'',
@@ -135,7 +135,7 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 				var slave = loader.streams[1];
 				var frames = loader.frameList;
 				var errorMessage;
-				
+
 				if (loader.loadStatus) {
 					var preferredMethodMaster = loader.getPreferredMethod(0);
 					var preferredMethodSlave  = loader.getPreferredMethod(1);
@@ -314,6 +314,8 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 		},1000);
 	}
 });
+
+var PaellaPlayer = paella.PaellaPlayer;
 
 /* Initializer function */
 function initPaellaEngage(playerId,initDelegate) {

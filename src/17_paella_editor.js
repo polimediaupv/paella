@@ -1,4 +1,4 @@
-paella.editor.Editor = Class.create({
+Class ("paella.editor.Editor", {
 	config:null,
 	editorContainer:null,
 	isLoaded:false,
@@ -14,10 +14,10 @@ paella.editor.Editor = Class.create({
 			paella.initDelegate.loadEditorConfig(function(config) {
 				thisClass.config = config;
 				thisClass.loadEditor();
-			});	
+			});
 		}
 	},
-	
+
 	loadEditor:function() {
 		paella.keyManager.enabled = false;
 		var thisClass = this;
@@ -27,7 +27,7 @@ paella.editor.Editor = Class.create({
 		this.editorContainer.id = "editorContainer";
 		this.editorContainer.appendChild(paella.player.mainContainer);
 		$('body')[0].style.backgroundImage = "url(resources/images/editor_video_bkg.png)";
-		
+
 		this.loader = new paella.AsyncLoader();
 		this.bottomBar = this.loader.addCallback(new paella.editor.BottomBar());
 		this.rightBar = this.loader.addCallback(new paella.editor.RightBar());
@@ -38,7 +38,7 @@ paella.editor.Editor = Class.create({
 			thisClass.onLoadFail();
 		});
 	},
-	
+
 	onLoadSuccess:function() {
 		this.isLoaded = true;
 		var thisClass = this;
@@ -48,7 +48,7 @@ paella.editor.Editor = Class.create({
 		});
 		$(document).trigger(paella.events.play);
 		new Timer(function(timer) {
-			$(document).trigger(paella.events.pause);	
+			$(document).trigger(paella.events.pause);
 		},100);
 		paella.events.bind(paella.events.documentChanged,function(event,params) {
 			window.onbeforeunload = function(event) { return paella.dictionary.translate('There are unsaved changes'); };
@@ -57,11 +57,11 @@ paella.editor.Editor = Class.create({
 			window.onbeforeunload = null;
 		});
 	},
-	
+
 	onLoadFail:function() {
-		
+
 	},
-	
+
 	unloadEditor:function() {
 		paella.keyManager.enabled = true;
 		this.embedPlayer.restorePlayer();
@@ -69,8 +69,8 @@ paella.editor.Editor = Class.create({
 		$('body')[0].style.backgroundImage = "";
 		this.editorContainer = null;
 		this.isLoaded = false;
-		$(document).trigger(paella.events.pause);		
-		$(document).trigger(paella.events.hideEditor);			
+		$(document).trigger(paella.events.pause);
+		$(document).trigger(paella.events.hideEditor);
 	},
 
 	onresize:function() {
@@ -111,4 +111,3 @@ var EditControl = Class.create(paella.DomNode,{
 	}
 });
 */
-

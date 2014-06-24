@@ -1,10 +1,10 @@
-paella.editor.EmbedPlayer = Class.create(paella.AsyncLoaderCallback,{
+Class ("paella.editor.EmbedPlayer", paella.AsyncLoaderCallback,{
 	editar:null,
-	
+
 	initialize:function() {
 		this.editor = paella.editor.instance;
 	},
-	
+
 	load:function(onSuccess,onError) {
 		var barHeight = this.editor.bottomBar.getHeight() + 20;
 		var rightBarWidth = this.editor.rightBar.getWidth() + 20;
@@ -25,7 +25,7 @@ paella.editor.EmbedPlayer = Class.create(paella.AsyncLoaderCallback,{
 			}
 		},500);
 	},
-	
+
 	restorePlayer:function() {
 		$('body')[0].appendChild(paella.player.mainContainer);
 		paella.player.controls.enable();
@@ -40,7 +40,7 @@ paella.editor.EmbedPlayer = Class.create(paella.AsyncLoaderCallback,{
 		});
 		paella.player.onresize();
 	},
-	
+
 	onresize:function() {
 		var barHeight = this.editor.bottomBar.getHeight() + 20;
 		var rightBarWidth = this.editor.rightBar.getWidth() + 20;

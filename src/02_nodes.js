@@ -1,37 +1,37 @@
 
-paella.Node = Class.create({
+Class ("paella.Node", {
 	identifier:'',
 	nodeList:null,
-	
+
 	initialize:function(id) {
 		this.nodeList = {};
 		this.identifier = id;
 	},
-	
+
 	addTo:function(parentNode) {
 		parentNode.addNode(this);
 	},
-	
+
 	addNode:function(childNode) {
 		this.nodeList[childNode.identifier] = childNode;
 		return childNode;
 	},
-	
+
 	getNode:function(id) {
 		return this.nodeList[id];
 	}
 });
 
-paella.DomNode = Class.create(paella.Node,{
+Class ("paella.DomNode", paella.Node,{
 	domElement:null,
-	
+
 	initialize:function(elementType,id,style) {
 		this.parent(id);
 		this.domElement = document.createElement(elementType);
 		this.domElement.id = id;
 		if (style) $(this.domElement).css(style);
 	},
-	
+
 	addNode:function(childNode) {
 		var returnValue = this.parent(childNode);
 		this.domElement.appendChild(childNode.domElement);
@@ -42,7 +42,7 @@ paella.DomNode = Class.create(paella.Node,{
 	}
 });
 
-paella.Button = Class.create(paella.DomNode,{
+Class ("paella.Button", paella.DomNode,{
 	isToggle:false,
 
 	initialize:function(id,className,action,isToggle) {
@@ -58,7 +58,7 @@ paella.Button = Class.create(paella.DomNode,{
 		}
 		$(this.domElement).click('click',action);
 	},
-	
+
 	isToggled:function() {
 		if (this.isToggle) {
 			var element = $('#' + this.identifier)[0];
@@ -81,17 +81,17 @@ paella.Button = Class.create(paella.DomNode,{
 		else {
 			element.className = element.className + '_active';
 		}
-		
+
 	},
-	
+
 	show:function() {
 		$(this.domElement).show();
 	},
-	
+
 	hide:function() {
 		$(this.domElement).hide();
 	},
-	
+
 	visible:function() {
 		return this.domElement.visible();
 	}
