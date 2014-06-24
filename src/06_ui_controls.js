@@ -1,4 +1,4 @@
-paella.TimeControl = Class.create(paella.DomNode,{
+Class ("paella.TimeControl", paella.DomNode,{
 	initialize:function(id) {
 		this.parent('div',id,{left:"0%"});
 		this.domElement.className = 'timeControlOld';
@@ -33,7 +33,7 @@ paella.TimeControl = Class.create(paella.DomNode,{
 	}
 });
 
-paella.PlaybackBar = Class.create(paella.DomNode,{
+Class ("paella.PlaybackBar", paella.DomNode,{
 	playbackFullId:'',
 	updatePlayBar:true,
 	timeControlId:'',
@@ -146,7 +146,7 @@ paella.PlaybackBar = Class.create(paella.DomNode,{
 	}
 });
 
-paella.PlaybackControl = Class.create(paella.DomNode,{
+Class ("paella.PlaybackControl",paella.DomNode,{
 	playbackBarId:'',
 	pluginsContainer:null,
 	popUpPluginContainer:null,
@@ -238,7 +238,7 @@ paella.PlaybackControl = Class.create(paella.DomNode,{
 	}
 });
 
-paella.ControlsContainer = Class.create(paella.DomNode,{
+Class ("paella.ControlsContainer", paella.DomNode,{
 	playbackControlId:'',
 	editControlId:'',
 	isEnabled:true,

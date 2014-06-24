@@ -1,4 +1,4 @@
-paella.LoaderContainer = Class.create(paella.DomNode,{
+Class ("paella.LoaderContainer", paella.DomNode,{
 	timer:null,
 	loader:null,
 	loaderPosition:0,
@@ -15,17 +15,17 @@ paella.LoaderContainer = Class.create(paella.DomNode,{
 		},1000);
 		this.timer.repeat = true;
 	},
-	
+
 	loadComplete:function(params) {
 		$(this.domElement).hide();
 		this.timer.repeat = false;
 	}
 });
 
-paella.KeyManager = Class.create({
+Class ("paella.KeyManager", {
 	isPlaying:false,
 	Keys:{Space:32,Left:37,Up:38,Right:39,Down:40,A:65,B:66,C:67,D:68,E:69,F:70,G:71,H:72,I:73,J:74,K:75,L:76,M:77,N:78,O:79,P:80,Q:81,R:82,S:83,T:84,U:85,V:86,W:87,X:88,Y:89,Z:90},
-	
+
 	enabled:true,
 
 	initialize:function() {
@@ -34,7 +34,7 @@ paella.KeyManager = Class.create({
 		paella.events.bind(paella.events.play,function(event) { thisClass.onPlay(); });
 		paella.events.bind(paella.events.pause,function(event) { thisClass.onPause(); });
 	},
-	
+
 	loadComplete:function(event,params) {
 		var thisClass = this;
 		paella.events.bind("keyup",function(event) { thisClass.keyUp(event); });
@@ -50,7 +50,7 @@ paella.KeyManager = Class.create({
 
 	keyUp:function(event) {
 		if (!this.enabled) return;
-		
+
 		// Matterhorn standard keys
 		if (event.altKey && event.ctrlKey) {
 			if (event.which==this.Keys.P) {
@@ -84,7 +84,7 @@ paella.KeyManager = Class.create({
 			}
 		}
 	},
-	
+
 	togglePlayPause:function() {
 		if (this.isPlaying) {
 			paella.events.trigger(paella.events.pause);
@@ -93,18 +93,18 @@ paella.KeyManager = Class.create({
 			paella.events.trigger(paella.events.play);
 		}
 	},
-	
+
 	pause:function() {
 		paella.events.trigger(paella.events.pause);
 	},
-	
+
 	mute:function() {
 		var videoContainer = paella.player.videoContainer;
 		var newVolume = 0;
 		if (videoContainer.volume()==0) newVolume = 1.0;
 		paella.events.trigger(paella.events.setVolume,{master:newVolume,slave:0});
 	},
-	
+
 	volumeUp:function() {
 		var videoContainer = paella.player.videoContainer;
 		var volume = videoContainer.volume();
@@ -112,7 +112,7 @@ paella.KeyManager = Class.create({
 		volume = (volume>1) ? 1.0:volume;
 		paella.events.trigger(paella.events.setVolume,{master:volume,slave:0});
 	},
-	
+
 	volumeDown:function() {
 		var videoContainer = paella.player.videoContainer;
 		var volume = videoContainer.volume();
