@@ -1,10 +1,10 @@
 .playButton {
 	background-size: 200%;
-	background-image:url(../resources/images/play_button.png);
+	background-image:url(../../resources/images/play_button.png);
 }
 .pauseButton {
 	background-size: 200%;
-	background-image:url(../resources/images/pause_button.png);
+	background-image:url(../../resources/images/pause_button.png);
 	
 }
 

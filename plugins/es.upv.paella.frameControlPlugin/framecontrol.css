@@ -82,7 +82,7 @@
 	width:40px;
 	height:37px;
 	background-size: 300%;
-	background-image:url(../resources/images/frame_button.png);
+	background-image:url(../../resources/images/frame_button.png);
 }
 
 .showFramesButton:hover {
@@ -95,11 +95,11 @@
 	height:37px;
 	right:0px;
 	background-size: 300%;
-	background-image:url(../resources/images/frame_button.png);
+	background-image:url(../../resources/images/frame_button.png);
 }
 
 .frameListContainer {
-	background-image:url(../resources/images/playback_bkg.png);
+	background-image:url(../../resources/images/playback_bkg.png);
 }
 
 .frameThumbnail {
