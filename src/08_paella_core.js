@@ -1,4 +1,4 @@
-paella.AccessControl = Class.create({
+Class ("paella.AccessControl", {
 	permissions:{
 		canRead:false,
 		canContribute:false,
@@ -6,7 +6,7 @@ paella.AccessControl = Class.create({
 		loadError:true,
 		isAnonymous:false
 	},
-	
+
 	userData:{
 		username:'',
 		name:'',
@@ -19,7 +19,7 @@ paella.AccessControl = Class.create({
 	}
 });
 
-paella.DefaultAccessControl = Class.create(paella.AccessControl,{
+Class ("paella.DefaultAccessControl", paella.AccessControl,{
 	checkAccess:function(onSuccess) {
 		this.permissions.canRead = false;
 		this.permissions.canContribute = false;
@@ -33,7 +33,7 @@ paella.DefaultAccessControl = Class.create(paella.AccessControl,{
 	}
 });
 
-paella.VideoLoader = Class.create({
+Class ("paella.VideoLoader", {
 	streams:[],		// {sources:{mp4:{src:"videourl.mp4",type:"video/mp4"},
 					//			 ogg:{src:"videourl.ogv",type:"video/ogg"},
 					//			 webm:{src:"videourl.webm",type:"video/webm"},
@@ -69,11 +69,11 @@ paella.VideoLoader = Class.create({
 		webm = (webm=='probably') || (webm=='maybe');
 		return webm;
 	},
-	
+
 	isImageCapable:function() {
 		return true;
 	},
-	
+
 	isHtmlVideoCompatible:function(streamIndex) {
 		var status = false;
 		if (this.streams.length>streamIndex) {
@@ -81,9 +81,9 @@ paella.VideoLoader = Class.create({
 			var h264 = this.isH264Capable();
 			var ogg = this.isOggCapable();
 			var webm = this.isWebmCapable();
-			
+
 			paella.debug.log("Browser video capabilities: mp4=" + ((h264) ? 'yes':'no') + ', ogg=' + ((ogg) ? 'yes':'no') + ', webm=' + ((webm) ? 'yes':'no'));
-			
+
 			if (stream.sources.mp4 && h264 && !/rtmp:\/\//.test(stream.sources.mp4.src)) {
 				status = true;
 			}
@@ -96,7 +96,7 @@ paella.VideoLoader = Class.create({
 		}
 		return status;
 	},
-	
+
 	isImageCompatible:function(streamIndex) {
 		var status = false;
 		if (this.streams.length>streamIndex) {
@@ -107,14 +107,14 @@ paella.VideoLoader = Class.create({
 		}
 		return status;
 	},
-	
+
 	isFlashCompatible:function(streamIndex) {
 		var ua = new UserAgent();
 		var status = false;
-		
+
 		if (this.streams.length>streamIndex) {
 			var stream = this.streams[streamIndex];
-				
+
 			if (stream.sources.mp4) status = true;
 			else if (stream.sources.flv) status = true;
 		}
@@ -128,14 +128,14 @@ paella.VideoLoader = Class.create({
 
 		if (this.streams.length>streamIndex) {
 			var stream = this.streams[streamIndex];
-				
+
 			if (stream.sources.rtmp) status = true;
 			else status = false;
 		}
 
 		return status && !ua.browser.IsMobileVersion;
 	},
-	
+
 	isStreamCompatible:function(streamIndex,method) {
 		var status = false;
 		if (method.enabled) {
@@ -160,7 +160,7 @@ paella.VideoLoader = Class.create({
 		var preferredMethod = null;
 		var methods = paella.player.config.player.methods;
 		var i;
-		
+
 		// Mobile browsers can only play one stream
 		if (userAgent.browser.IsMobileVersion && streamIndex>=1) {
 			for (i=0;i<methods.length;++i) {
@@ -168,7 +168,7 @@ paella.VideoLoader = Class.create({
 					preferredMethod = methods[i];
 				}
 			}
-		} 
+		}
 		else {
 			for (i=0;i<methods.length;++i) {
 				if (this.isStreamCompatible(streamIndex,methods[i])) {
@@ -177,7 +177,7 @@ paella.VideoLoader = Class.create({
 				}
 			}
 		}
-		
+
 		return preferredMethod;
 	},
 
@@ -192,14 +192,14 @@ paella.VideoLoader = Class.create({
 	}
 });
 
-paella.PlayerBase = Class.create({
+Class ("paella.PlayerBase", {
 	config:null,
 	playerId:'',
 	mainContainer:null,
 	videoContainer:null,
 	controls:null,
 	accessControl:null,
-	
+
 	checkCompatibility:function() {
 		if (paella.utils.parameters.get('ignoreBrowserCheck')) {
 			return true;
@@ -253,11 +253,11 @@ paella.PlayerBase = Class.create({
 	},
 
 	loadComplete:function(event,params) {
-		
+
 	}
 });
 
-paella.InitDelegate = Class.create({
+Class ("paella.InitDelegate", {
 	initParams:{
 		configUrl:'config/config.json',
 		dictionaryUrl:'config/dictionary',
@@ -277,7 +277,7 @@ paella.InitDelegate = Class.create({
 	getId:function() {
 		return paella.utils.parameters.get('id');
 	},
-	
+
 	loadDictionary:function(onSuccess) {
 		var asyncLoader = new paella.AsyncLoader();
 		asyncLoader.addCallback(new paella.DictionaryCallback(this.initParams.dictionaryUrl));
