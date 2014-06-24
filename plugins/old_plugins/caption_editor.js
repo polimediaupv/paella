@@ -121,10 +121,10 @@ paella.plugins.CaptionsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
 	onSave:function(success) {
 		var data = {
 			captions:[]
-		}
+		};
 		for (var i = 0; i<this.tracks.length; ++i) {
 			var track = this.tracks[i];
-			var trackParams = {}
+			var trackParams = {};
 			for (var key in track) {
 				// Avoid write the DOM element
 				if (key!='elem') {
@@ -192,8 +192,9 @@ paella.plugins.CaptionsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 	},
 	
 	checkCaptions:function(params) {
+		var a;
 		for (var i=0; i<this.captions.length; ++i) {
-			var a = this.captions[i];
+			a = this.captions[i];
 			if (this.captionsEnabled && a.s<params.currentTime && a.e>params.currentTime) {
 				this.showCaption(a);
 			}
@@ -201,7 +202,7 @@ paella.plugins.CaptionsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 		
 		for (var key in this.visibleCaptions) {
 			if (typeof(a)=='object') {
-				var a = this.visibleCaptions[key];
+				a = this.visibleCaptions[key];
 				if (a && (a.s>=params.currentTime || a.e<=params.currentTime || !this.captionsEnabled)) {
 					this.removeCaption(a);
 				}

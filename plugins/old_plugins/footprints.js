@@ -130,7 +130,8 @@ paella.plugins.FootPrintsPlugin = Class.create(paella.ButtonPlugin,{
 			var duration = Object.keys(footPrintsData).length;
 			var ctx = this.canvas.getContext("2d");
 			var h = 0;
-			for (var i = 0; i<duration; ++i) {
+			var i;
+			for (i = 0; i<duration; ++i) {
 				if (footPrintsData[i] > h) { h = footPrintsData[i]; }
 			}
 
@@ -144,7 +145,7 @@ paella.plugins.FootPrintsPlugin = Class.create(paella.ButtonPlugin,{
 			ctx.webkitImageSmoothingEnabled = false;
 			ctx.mozImageSmoothingEnabled = false;
 
-			for (var i = 0; i<duration-1; ++i) {
+			for (i = 0; i<duration-1; ++i) {
 				ctx.beginPath();
 				ctx.moveTo(i, h);
 				ctx.lineTo(i, h-footPrintsData[i]);

@@ -121,7 +121,7 @@ paella.plugins.BreaksEditorPlugin = Class.create(paella.editor.MainTrackPlugin,{
 	onSave:function(success) {
 		var data = {
 			breaks:this.tracks
-		}
+		};
 		paella.data.write('breaks',{id:paella.initDelegate.getId()},data,function(response,status) {
 			paella.plugins.breaksPlayerPlugin.breaks = data.breaks;
 			success(status);
@@ -158,8 +158,9 @@ paella.plugins.BreaksPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 	},
 	
 	checkBreaks:function(params) {
+		var a;
 		for (var i=0; i<this.breaks.length; ++i) {
-			var a = this.breaks[i];
+			a = this.breaks[i];
 			
 			if (a.s<params.currentTime && a.e>params.currentTime) {
 				this.showBreaks(a);
@@ -170,7 +171,7 @@ paella.plugins.BreaksPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 		
 		for (var key in this.visibleBreaks) {
 			if (typeof(a)=='object') {
-				var a = this.visibleBreaks[key];
+				a = this.visibleBreaks[key];
 				if (a && (a.s>=params.currentTime || a.e<=params.currentTime)) {
 					this.removeBreak(a);
 				}

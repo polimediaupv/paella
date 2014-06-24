@@ -65,6 +65,7 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 	onload:function() {
 		var thisClass = this;
 		this.accessControl.checkAccess(function(permissions) {
+			var errorMessage;
 			if (!permissions.loadError) {
 				paella.debug.log("read:" + permissions.canRead + ", contribute:" + permissions.canContribute + ", write:" + permissions.canWrite);
 				if (permissions.canWrite) {
@@ -81,12 +82,12 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 				}
 			}
 			else if (permissions.isAnonymous) {
-				var errorMessage = paella.dictionary.translate("You are not logged in");
+				errorMessage = paella.dictionary.translate("You are not logged in");
 				thisClass.unloadAll(errorMessage);
 				paella.events.trigger(paella.events.error,{error:errorMessage});
 			}
 			else {
-				var errorMessage = paella.dictionary.translate("You are not authorized to view this resource");
+				errorMessage = paella.dictionary.translate("You are not authorized to view this resource");
 				thisClass.unloadAll(errorMessage);
 				paella.events.trigger(paella.events.error,{error:errorMessage});
 			}
@@ -133,7 +134,8 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 				var master = loader.streams[0];
 				var slave = loader.streams[1];
 				var frames = loader.frameList;
-
+				var errorMessage;
+				
 				if (loader.loadStatus) {
 					var preferredMethodMaster = loader.getPreferredMethod(0);
 					var preferredMethodSlave  = loader.getPreferredMethod(1);
@@ -171,13 +173,13 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 						},500);
 					}
 					else {
-						var errorMessage = paella.dictionary.translate("Your browser is not compatible with the required video codec");
+						errorMessage = paella.dictionary.translate("Your browser is not compatible with the required video codec");
 						paella.messageBox.showError(errorMessage);
 						paella.events.trigger(paella.events.error,{error:errorMessage});
 					}
 				}
 				else {
-					var errorMessage = paella.dictionary.translate("Error loading video data");
+					errorMessage = paella.dictionary.translate("Error loading video data");
 					paella.messageBox.showError(errorMessage);
 					paella.events.trigger(paella.events.error,{error:errorMessage});
 				}
@@ -201,7 +203,7 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 					}
 				}
 				return false;
-			}
+			};
 			this._isLiveStream = checkSource(loader.streams,0) || checkSource(loader.streams,1);
 		}
 		return this._isLiveStream;
@@ -262,7 +264,7 @@ var PaellaPlayer = Class.create(paella.PlayerBase,{
 		// TODO: No sé muy bien por qué pero si no se reproduce el vídeo al menos un segundo no funciona el setSeek
 		paella.events.trigger(paella.events.play);
 		new paella.utils.Timer(function(timer) {
-			var autoplay = paella.utils.parameters.list['autoplay'] ? paella.utils.parameters.list['autoplay']:'';
+			var autoplay = paella.utils.parameters.list.autoplay ? paella.utils.parameters.list.autoplay:'';
 			autoplay = autoplay.toLowerCase();
 
 			var playerConfig = paella.player.config.player;

@@ -159,17 +159,18 @@ paella.VideoLoader = Class.create({
 		var userAgent = new UserAgent();
 		var preferredMethod = null;
 		var methods = paella.player.config.player.methods;
+		var i;
 		
 		// Mobile browsers can only play one stream
 		if (userAgent.browser.IsMobileVersion && streamIndex>=1) {
-			for (var i=0;i<methods.length;++i) {
+			for (i=0;i<methods.length;++i) {
 				if (methods[i].name=='image' && methods[i].enabled && this.isStreamCompatible(streamIndex,methods[i])) {
 					preferredMethod = methods[i];
 				}
 			}
 		} 
 		else {
-			for (var i=0;i<methods.length;++i) {
+			for (i=0;i<methods.length;++i) {
 				if (this.isStreamCompatible(streamIndex,methods[i])) {
 					preferredMethod = methods[i];
 					break;
@@ -234,7 +235,7 @@ paella.PlayerBase = Class.create({
 	},
 
 	includePlugins:function(productionPluginFile,devPluginsDir,devPluginsArray,productionPluginCss) {
-		if (!productionPluginCss) productionPluginCss = 'plugins/plugins.css';
+		if (!productionPluginCss) productionPluginCss = 'resources/plugins/plugins.css';
 
 		if (/debug/.test(window.location.href)) {
 			paella.debug.debug = true;

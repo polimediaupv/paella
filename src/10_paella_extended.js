@@ -84,7 +84,7 @@ paella.Extended = Class.create({
 		rightContainerClass:'rightContainer',
 		bottomContainerClass:'bottomContainer',
 		aspectRatio:1.777777,
-		initDelegate:new paella.InitDelegate({accessControl:new paella.AccessControl(),videoLoader:new paella.VideoLoader})
+		initDelegate:new paella.InitDelegate({accessControl:new paella.AccessControl(),videoLoader:new paella.VideoLoader()})
 	},
 	
 	rightBarPlugins:[],
@@ -98,7 +98,7 @@ paella.Extended = Class.create({
 		this.saveSettings(settings);
 		this.loadPaellaExtended();
 		var thisClass = this;
-		$(window).resize(function(event) { thisClass.onresize() });
+		$(window).resize(function(event) { thisClass.onresize(); });
 	},
 	
 	saveSettings:function(settings) {

@@ -54,7 +54,7 @@ paella.RelativeVideoSize = Class.create({
 });
 
 paella.VideoElementBase = Class.create(paella.DomNode,{
-	isReady:false,
+	ready:false,
 
 	initialize:function(id,containerType,left,top,width,height) {
 		var thisClass = this;
@@ -137,7 +137,7 @@ paella.VideoElementBase = Class.create(paella.DomNode,{
 		if (animate) {
 			this.disableClassName();
 			var thisClass = this;
-			$(this.domElement).animate(style,400,function(){ thisClass.enableClassName(); })
+			$(this.domElement).animate(style,400,function(){ thisClass.enableClassName(); });
 			this.enableClassNameAfter(400);
 		}
 		else {
@@ -156,10 +156,6 @@ paella.VideoElementBase = Class.create(paella.DomNode,{
 
 	enableClassNameAfter:function(millis) {
 		setTimeout("$('#" + this.domElement.id + "')[0].className = '" + this.classNameBackup + "'",millis);
-	},
-
-	setClassName:function(className) {
-		this.domElement.className = className;
 	},
 
 	setVisible:function(visible,animate) {
@@ -378,9 +374,8 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 	},
 
 	addSourceProgresiveDownload:function(sourceData){
+		var parameters = {};	
 		if (sourceData.type=='video/mp4') {
-			var parameters = {};
-
 			if (!/rtmp:\/\//.test(sourceData.src)) {
 				parameters.url = sourceData.src;
 				parameters.playerId = this.flashId;
@@ -389,7 +384,6 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 			}
 		}
 		else if (sourceData.type=='video/x-flv') {
-			var parameters = {};
 			parameters.url = sourceData.src;
 			parameters.playerId = this.flashId;
 			this.flashVideo = this.createSwfObject("player.swf",parameters);
@@ -397,8 +391,8 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 	},
 
 	addSourceStreaming:function(sourceData) {
+		var parameters = {};	
 		if (sourceData.type=='video/mp4') {
-			var parameters = {};
 			if (/(rtmp:\/\/[\w\d\.\-_]+[:+\d]*\/[\w\d\-_]+\/)(mp4:)([\w\d\.\/\-_]+)/i.test(sourceData.src)) {
 				sourceData.src = RegExp.$1 + RegExp.$3;
 			}
@@ -412,8 +406,6 @@ paella.FlashVideo = Class.create(paella.VideoElementBase,{
 			this.flashVideo = this.createSwfObject("player.swf",parameters);
 		}
 		else if (sourceData.type=='video/x-flv') {
-			var parameters = {};
-
 			if (/(rtmp:\/\/)([\w\d\.\-_]+[:+\d]*)\/([\w\d\-_]+\/)([\w\d\.\/\-_]+)(\.flv)?/.test(sourceData.src)) {
 				parameters.connect = RegExp.$1 + RegExp.$2 + '/' + RegExp.$3;
 				parameters.url = RegExp.$4;
@@ -535,7 +527,7 @@ paella.Html5Video = Class.create(paella.VideoElementBase,{
 		if (animate) {
 			this.disableClassName();
 			var thisClass = this;
-			$(this.domElement).animate(style,400,function(){ thisClass.enableClassName(); })
+			$(this.domElement).animate(style,400,function(){ thisClass.enableClassName(); });
 			this.enableClassNameAfter(400);
 		}
 		else {
@@ -577,7 +569,7 @@ paella.Html5Video = Class.create(paella.VideoElementBase,{
 });
 
 paella.SlideshowVideo = Class.create(paella.VideoElementBase,{
-	isReady:false,
+	ready:false,
 	img:null,
 	_frames:null,
 	_duration:0,
@@ -684,7 +676,7 @@ paella.SlideshowVideo = Class.create(paella.VideoElementBase,{
 		frameZero.onload = function(event) {
 			thisClass.ready = true;
 			thisClass.checkFrame();
-		}
+		};
 		frameZero.src = this._frames[0].image;
 	},
 

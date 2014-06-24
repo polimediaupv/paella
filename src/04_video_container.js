@@ -38,7 +38,7 @@ paella.VideoOverlay = Class.create(paella.DomNode,{
 	},
 	
 	getSlaveRect:function() {
-		return paella.player.videoContainer.getSlaveVideoRect()
+		return paella.player.videoContainer.getSlaveVideoRect();
 	},
 	
 	addText:function(text,rect,isDebug) {
@@ -82,7 +82,7 @@ paella.VideoContainerBase = Class.create(paella.DomNode,{
 	currentSlaveVideoData:null,
 
 	initialize:function(id) {
-		var style = {position:'absolute',left:'0px',right:'0px',top:'0px',bottom:'0px',overflow:'hidden'}
+		var style = {position:'absolute',left:'0px',right:'0px',top:'0px',bottom:'0px',overflow:'hidden'};
 		this.parent('div',id,style);		
 	},
 	
@@ -96,7 +96,7 @@ paella.VideoContainerBase = Class.create(paella.DomNode,{
 		paella.events.bind(paella.events.seekToTime,function(event,params) { thisClass.setCurrentTime(params.time); thisClass.triggerTimeupdate(); });
 		paella.events.bind(paella.events.setPlaybackRate,function(event,params) { thisClass.setPlaybackRate(params); });
 		paella.events.bind(paella.events.setVolume,function(event,params) { thisClass.setVolume(params); });
-		paella.events.bind(paella.events.setTrim,function(event,params) { thisClass.setTrim});
+		paella.events.bind(paella.events.setTrim,function(event,params) { thisClass.setTrimming(params.trimStart, params.trimEnd); });
 	},
 	
 	triggerTimeupdate:function() {
@@ -187,7 +187,7 @@ paella.VideoContainerBase = Class.create(paella.DomNode,{
 	
 	duration:function() {
 		paella.debug.log("VideoContainerBase.duration()");
-		return 0
+		return 0;
 	},
 	
 	paused:function() {
@@ -269,7 +269,6 @@ paella.VideoContainer = Class.create(paella.VideoContainerBase,{
 		this.initEvents();
 		paella.events.bind(paella.events.timeupdate,function(event) { thisClass.checkVideoTrimming(); } );
 		
-		var thisClass = this;
 		var timer = new paella.utils.Timer(function(timer) {
 			thisClass.syncVideos();
 		},thisClass.videoSyncTimeMillis);
@@ -352,7 +351,7 @@ paella.VideoContainer = Class.create(paella.VideoContainerBase,{
 	},
 	
 	next:function() {
-		if (this.trimming.end!=0) {
+		if (this.trimming.end!==0) {
 			this.setCurrentTime(this.trimming.end);			
 		}
 		else {
@@ -473,19 +472,20 @@ paella.VideoContainer = Class.create(paella.VideoContainerBase,{
 	},
 	
 	setMasterSource:function(masterVideoData,type) {
+		var masterVideo;
 		if (type=='html') {
-			var masterVideo = new paella.Html5Video(this.video1Id,850,140,360,550);
+			masterVideo = new paella.Html5Video(this.video1Id,850,140,360,550);
 		}
 		else if (type=='flash') {
-			var masterVideo = new paella.FlashVideo(this.video1Id,850,140,360,550);
+			masterVideo = new paella.FlashVideo(this.video1Id,850,140,360,550);
 			masterVideo.streamingMode = false;
 		}
 		else if (type=='streaming') {
-			var masterVideo = new paella.FlashVideo(this.video1Id,850,140,360,550);
+			masterVideo = new paella.FlashVideo(this.video1Id,850,140,360,550);
 			masterVideo.streamingMode = true;
 		}
 		else if (type=='image') {
-			var masterVideo = new paella.SlideshowVideo(this.video1Id,850,140,360,550);
+			masterVideo = new paella.SlideshowVideo(this.video1Id,850,140,360,550);
 		}
 		masterVideo.setClassName(this.video1ClassName);
 		this.container.addNode(masterVideo);
@@ -509,19 +509,20 @@ paella.VideoContainer = Class.create(paella.VideoContainerBase,{
 	},
 	
 	setSlaveSource:function(slaveVideoData,type) {
+		var slaveVideo;
 		if (type=='html' || !slaveVideoData) {
-			var slaveVideo = new paella.Html5Video(this.video2Id,10,40,800,600);
+			slaveVideo = new paella.Html5Video(this.video2Id,10,40,800,600);
 		}
 		else if (type=='flash') {
-			var slaveVideo = new paella.FlashVideo(this.video2Id,10,40,800,600);
+			slaveVideo = new paella.FlashVideo(this.video2Id,10,40,800,600);
 			slaveVideo.streamingMode = false;
 		}
 		else if (type=='streaming') {
-			var slaveVideo = new paella.FlashVideo(this.video2Id,10,40,800,600);
+			slaveVideo = new paella.FlashVideo(this.video2Id,10,40,800,600);
 			slaveVideo.streamingMode = true;
 		}
 		else if (type=='image') {
-			var slaveVideo = new paella.SlideshowVideo(this.video2Id,850,140,360,550);
+			slaveVideo = new paella.SlideshowVideo(this.video2Id,850,140,360,550);
 		}
 		slaveVideo.setClassName(this.video2ClassName);
 		this.container.addNode(slaveVideo);
@@ -649,7 +650,7 @@ paella.VideoContainer = Class.create(paella.VideoContainerBase,{
 				{aspectRatio:"16/9",left:0,top:0,width:1280,height:720},
 				{aspectRatio:"4/3",left:160,top:0,width:960,height:720},
 			]
-		}
+		};
 	},
 	
 	getMonostreamSlaveProfile:function() {
@@ -661,7 +662,7 @@ paella.VideoContainer = Class.create(paella.VideoContainerBase,{
 				{aspectRatio:"16/9",left:0,top:0,width:0,height:0},
 				{aspectRatio:"4/3",left:0,top:0,width:0,height:0},
 			]
-		}
+		};
 	},
 
 	setProfile:function(profileName,onSuccess) {
@@ -746,7 +747,7 @@ paella.VideoContainer = Class.create(paella.VideoContainerBase,{
 		}
 		
 		var minSlaveDiff = 10;
-		for (var i = 0; i<profileData.slaveVideo.rect.length;++i) {
+		for (i = 0; i<profileData.slaveVideo.rect.length;++i) {
 			var profileSlave = profileData.slaveVideo.rect[i];
 			if (/([0-9]+)\/([0-9]+)/.test(profileSlave.aspectRatio)) {
 				profileSlaveAspectRatio = Number(RegExp.$1) / Number(RegExp.$2);

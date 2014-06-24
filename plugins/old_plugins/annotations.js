@@ -122,7 +122,7 @@ paella.plugins.AnnotationsEditorPlugin = Class.create(paella.editor.TrackPlugin,
 	onSave:function(success) {
 		var data = {
 			annotations:this.tracks
-		}
+		};
 		paella.data.write('annotations',{id:paella.initDelegate.getId()},data,function(response,status) {
 			paella.plugins.annotationsPlayerlugin.annotations = data.annotations;
 			success(status);
@@ -159,8 +159,9 @@ paella.plugins.AnnotationsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 	},
 
 	checkAnnotations:function(params) {
+		var a;
 		for (var i=0; i<this.annotations.length; ++i) {
-			var a = this.annotations[i];
+			a = this.annotations[i];
 			if (a.s<params.currentTime && a.e>params.currentTime) {
 				this.showAnnotation(a);
 			}
@@ -168,7 +169,7 @@ paella.plugins.AnnotationsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 		
 		for (var key in this.visibleAnnotations) {
 			if (typeof(a)=='object') {
-				var a = this.visibleAnnotations[key];
+				a = this.visibleAnnotations[key];
 				if (a && (a.s>=params.currentTime || a.e<=params.currentTime)) {
 					this.removeAnnotation(a);
 				}

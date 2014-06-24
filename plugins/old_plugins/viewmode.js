@@ -69,7 +69,7 @@ paella.plugins.ViewModePlugin = Class.create(paella.ButtonPlugin,{
 			profile:profile,
 			profileData:profileData,
 			plugin:this
-		}
+		};
 		$(elem).click(function(event) {
 			this.data.plugin.onItemClick(this,this.data.profile,this.data.profileData);
 		});

@@ -51,15 +51,16 @@ paella.PlaybackBar = Class.create(paella.DomNode,{
 		this.domElement.setAttribute("aria-valuenow", "0");
 		this.domElement.setAttribute("tabindex", "1100");
 		$(this.domElement).keyup(function(event){
+			var curr, selectedPosition;
 			switch(event.keyCode) {
 				case 37: //Left
-					var curr = 100*paella.player.videoContainer.currentTime()/paella.player.videoContainer.duration();
-					var selectedPosition = curr - 5;
+					curr = 100*paella.player.videoContainer.currentTime()/paella.player.videoContainer.duration();
+					selectedPosition = curr - 5;
 					paella.events.trigger(paella.events.seekTo,{ newPositionPercent:selectedPosition });
 					break;
 				case 39: //Right
-					var curr = 100*paella.player.videoContainer.currentTime()/paella.player.videoContainer.duration();
-					var selectedPosition = curr + 5;
+					curr = 100*paella.player.videoContainer.currentTime()/paella.player.videoContainer.duration();
+					selectedPosition = curr + 5;
 					paella.events.trigger(paella.events.seekTo,{ newPositionPercent:selectedPosition });
 					break;
 			}
@@ -170,17 +171,18 @@ paella.PlaybackControl = Class.create(paella.DomNode,{
 		this.pluginsContainer.domElement.appendChild(button);
 		$(button).hide();
 		plugin.checkEnabled(function(isEnabled) {
+			var parent;
 			if (isEnabled) {
 				$(plugin.button).show();
 				plugin.setup();
 				var id = 'buttonPlugin' + thisClass.buttonPlugins.length;
 				if (plugin.getButtonType()==paella.ButtonPlugin.type.popUpButton) {
-					var parent = thisClass.popUpPluginContainer.domElement;
+					parent = thisClass.popUpPluginContainer.domElement;
 					var popUpContent = paella.ButtonPlugin.buildPluginPopUp(parent,plugin,id + '_container');
 					thisClass.popUpPluginContainer.registerContainer(plugin.getName(),popUpContent,button,plugin);
 				}
 				else if (plugin.getButtonType()==paella.ButtonPlugin.type.timeLineButton) {
-					var parent = thisClass.timeLinePluginContainer.domElement;
+					parent = thisClass.timeLinePluginContainer.domElement;
 					var timeLineContent = paella.ButtonPlugin.buildPluginPopUp(parent, plugin,id + '_timeline');
 					thisClass.timeLinePluginContainer.registerContainer(plugin.getName(),timeLineContent,button,plugin);
 				}
@@ -280,7 +282,7 @@ paella.ControlsContainer = Class.create(paella.DomNode,{
 		paella.events.bind(paella.events.pause,function(event) { thisClass.onPauseEvent(); });
 		paella.events.bind('mousemove',function(event) { thisClass.onMouseMoveEvent(); });
 		paella.events.bind(paella.events.endVideo,function(event) { thisClass.onEndVideoEvent(); });
-		paella.events.bind('keydown',function(event) { thisClass.onKeyEvent() });
+		paella.events.bind('keydown',function(event) { thisClass.onKeyEvent(); });
 
 		this.videoOverlayButtons = new paella.DomNode('div',id + '_videoOverlayButtonPlugins');
 		this.videoOverlayButtons.domElement.className = 'videoOverlayButtonPlugins';

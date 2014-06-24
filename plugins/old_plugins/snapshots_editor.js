@@ -55,8 +55,8 @@ paella.plugins.SnapShotsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
 
 
 	createTrackContent: function(frameItem, numSlide) {		
-		onMouseOverScript = "paella.plugins.snapShotsEditorPlugin.showHiResFrame('" + frameItem.url + "');"
-		onMouseOutScript = "paella.plugins.snapShotsEditorPlugin.removeHiResFrame();"
+		onMouseOverScript = "paella.plugins.snapShotsEditorPlugin.showHiResFrame('" + frameItem.url + "');";
+		onMouseOutScript = "paella.plugins.snapShotsEditorPlugin.removeHiResFrame();";
 		
 		return 	'<div class="snapShotsEditorPluginBox" onmouseover="'+ onMouseOverScript + '" onmouseout="' + onMouseOutScript + '">' +
 				'	<img class="snapShotsEditorPluginImage" src="' + frameItem.thumb + '"/>' +
@@ -69,21 +69,22 @@ paella.plugins.SnapShotsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
 			this.tracks = [];
 			var frames = paella.initDelegate.initParams.videoLoader.frameList;
 			if (frames) {
+				var frameItem,s,e,d;
 				var numFrame = 0;
 				var keys = Object.keys(paella.initDelegate.initParams.videoLoader.frameList);
 				
 				for (;numFrame< keys.length-1; numFrame++) {
-					var frameItem = frames[keys[numFrame]];
-					var s = parseInt(keys[numFrame]);
-					var e = parseInt(keys[numFrame+1]);
-					var d = e-s;
+					frameItem = frames[keys[numFrame]];
+					s = parseInt(keys[numFrame]);
+					e = parseInt(keys[numFrame+1]);
+					d = e-s;
 					this.tracks.push({s:s, e:e, d:d, name: this.createTrackContent(frameItem, numFrame+1)});
 				}
 				if (keys.length > 0){
-					var frameItem = frames[keys[numFrame]];
-					var s = parseInt(keys[numFrame]);
-					var e = paella.player.videoContainer.duration();
-					var d = e-s;				
+					frameItem = frames[keys[numFrame]];
+					s = parseInt(keys[numFrame]);
+					e = paella.player.videoContainer.duration();
+					d = e-s;				
 					this.tracks.push({s:s, e:e, d:d, name: this.createTrackContent(frameItem, numFrame+1)});
 				}			
 			}		

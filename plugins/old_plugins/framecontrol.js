@@ -98,7 +98,7 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 		this.navButtons = {
 			left:document.createElement('div'),
 			right:document.createElement('div')
-		}
+		};
 		this.navButtons.left.className = 'frameControl navButton left';
 		this.navButtons.right.className = 'frameControl navButton right';
 
@@ -125,8 +125,9 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 		content.innerHTML = '';
 
 		var frames = paella.initDelegate.initParams.videoLoader.frameList;
+		var numFrames;
 		if (frames) {
-			var numFrames = 0;
+			numFrames = 0;
 			for (var key in frames) {
 				var frameItem = this.getFrame(frames[key]);
 				content.appendChild(frameItem,'frameContrlItem_' + numFrames);
@@ -142,7 +143,7 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 			This.checkVisibility(params.trimEnabled,params.trimStart,params.trimEnd);
 		});
 
-		paella.events.bind(paella.events.timeupdate,function(event,params) { This.onTimeUpdate(params.currentTime) });
+		paella.events.bind(paella.events.timeupdate,function(event,params) { This.onTimeUpdate(params.currentTime); });
 	},
 
 	showHiResFrame:function(url) {
@@ -178,13 +179,14 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 	},
 
 	checkVisibility:function(trimEnabled,trimStart,trimEnd) {
+		var i;
 		if (!trimEnabled) {
-			for (var i = 0; i<this.frames.length;++i) {
+			for (i = 0; i<this.frames.length;++i) {
 				$(this.frames[i]).show();
 			}
 		}
 		else {
-			for (var i = 0; i<this.frames.length; ++i) {
+			for (i = 0; i<this.frames.length; ++i) {
 				var frameElem = this.frames[i];
 				var frameData = frameElem.frameData;
 				if (frameData.time<trimStart) {

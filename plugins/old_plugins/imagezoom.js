@@ -47,7 +47,7 @@ paella.plugins.ImageControlPlugin = Class.create(paella.ButtonPlugin,{
 			}
 		}
 				
-		paella.events.bind(paella.events.timeupdate,function(event,params) { This.onTimeUpdate(params.currentTime) });
+		paella.events.bind(paella.events.timeupdate,function(event,params) { This.onTimeUpdate(params.currentTime); });
 	},
 	
 	showHiResFrame:function(url) {

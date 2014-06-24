@@ -15,8 +15,7 @@ paella.ShowEditorPlugin = Class.create(paella.VideoOverlayButtonPlugin,{
 
 	checkEnabled:function(onSuccess) {
 		onSuccess(paella.editor && paella.player.config.editor && paella.player.config.editor.enabled && !paella.utils.userAgent.browser.IsMobileVersion &&
-			(paella.initDelegate.initParams.accessControl.permissions.canWrite || this.config.alwaysVisible)
-			&& !paella.player.isLiveStream());
+			(paella.initDelegate.initParams.accessControl.permissions.canWrite || this.config.alwaysVisible) && !paella.player.isLiveStream());
 	},
 
 	setup:function() {

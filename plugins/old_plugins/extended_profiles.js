@@ -63,13 +63,13 @@ paella.plugins.ExtendedProfilesPlugin = Class.create(paella.ButtonPlugin,{
 
 	getProfileItemButton:function(profile,profileData) {
 		var elem = document.createElement('div');
-		elem.className = 'extendedProfilesItemButton ' + profileData
+		elem.className = 'extendedProfilesItemButton ' + profileData;
 		elem.id = profile + '_button';
 		elem.data = {
 			profile:profile,
 			profileData:profileData,
 			plugin:this
-		}
+		};
 		$(elem).click(function(event) {
 			this.data.plugin.onItemClick(elem,this.data.profile, this.data.profileData);
 		});
@@ -167,16 +167,16 @@ paella.plugins.ExtendedProfilesPlugin = Class.create(paella.ButtonPlugin,{
 			var onFullScreenEvent = function(){
 				var fs = thisClass.isFullscreen();
 				if (fs) {
-					var fs = document.getElementById(paella.player.mainContainer.id);
+					fs = document.getElementById(paella.player.mainContainer.id);
 					fs.style.width = '100%';
 					fs.style.height = '100%';
 				}
 				else {
-					var fs = document.getElementById(paella.player.mainContainer.id);
+					fs = document.getElementById(paella.player.mainContainer.id);
 					fs.style.width = '';
 					fs.style.height = '';
 				}
-			}
+			};
 			document.addEventListener("fullscreenchange", onFullScreenEvent, false);
 			document.addEventListener("webkitfullscreenchange", onFullScreenEvent, false);
 			document.addEventListener("mozfullscreenchange", onFullScreenEvent, false);

@@ -1,0 +1,8 @@
+{
+	"eqnull": true,
+	"-W041": false,
+	"scripturl": true,
+	"loopfunc": true,
+	"-W069": true, 
+	"sub": true	
+}

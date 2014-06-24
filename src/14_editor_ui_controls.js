@@ -94,7 +94,7 @@ paella.editor.Toolbar = Class.create({
 			var pluginName = plugin.getName();
 			var name = plugin.getButtonName();
 			var options = plugin.getOptions();
-			var optionsObject = {}
+			var optionsObject = {};
 			var icon = plugin.getIcon();
 			if (icon) { icon = icon + ' icon-white'; }
 			for (var j=0;j<options.length;++j) {
@@ -136,7 +136,8 @@ paella.editor.Toolbar = Class.create({
 	setupTrackTool:function(toolName) {
 		this.selectedToolUtils.innerHTML = "";
 		var plugin = null;
-		for (var i=0;i<paella.editor.pluginManager.trackPlugins.length;++i) {
+		var i;
+		for (i=0;i<paella.editor.pluginManager.trackPlugins.length;++i) {
 			plugin = paella.editor.pluginManager.trackPlugins[i];
 			if (toolName==plugin.getName()) {
 				break;
@@ -147,8 +148,8 @@ paella.editor.Toolbar = Class.create({
 		}
 		if (plugin) {
 			var buttonData = [];
-			var tools = plugin.getTools()
-			for (var i=0;i<tools.length;++i) {
+			var tools = plugin.getTools();
+			for (i=0;i<tools.length;++i) {
 				buttonData.push({
 					label:tools[i].label,
 					plugin:plugin,
@@ -253,7 +254,7 @@ paella.editor.Timeline = Class.create({
 		$(this.container).mousemove(function(event) {
 			var duration = paella.player.videoContainer.duration(true);
 			var contentWidth = $(content).width();
-			var position = $(content).position().left
+			var position = $(content).position().left;
 			var left = event.pageX - position;
 			$(cursor).css({'left':left + 'px'});
 			
@@ -292,7 +293,7 @@ paella.editor.Timeline = Class.create({
 			if (paella.editor.utils.mouse.mouseDownTarget!='track') {
 				var duration = paella.player.videoContainer.duration(true);
 				var contentWidth = $(content).width();
-				var position = $(content).position().left
+				var position = $(content).position().left;
 				var left = event.pageX - position;
 				var time = left * 100 / contentWidth;
 				$(document).trigger(paella.events.seekTo,{newPositionPercent:time});	
@@ -529,7 +530,7 @@ paella.editor.RightBar = Class.create(paella.AsyncLoaderCallback,{
 		var plugins = paella.editor.pluginManager.rightBarPlugins;
 		if (plugins.length>0) {
 			var i=0;
-			for (var i in plugins) {
+			for (i in plugins) {
 				var plugin = plugins[i];
 				ul.appendChild(this.getTab(plugin,i));
 				++i;
@@ -545,7 +546,7 @@ paella.editor.RightBar = Class.create(paella.AsyncLoaderCallback,{
 	
 	getTab:function(plugin,index) {
 		var thisClass = this;
-		var active = ""
+		var active = "";
 		if (index==this.selectedTab) active = "active";
 		var li = document.createElement('li');
 		li.className = active;

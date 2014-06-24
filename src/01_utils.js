@@ -43,9 +43,9 @@ paella.AjaxCallback = Class.create(paella.AsyncLoaderCallback,{
 	initialize:function(params,type) {
 		this.name = "ajaxCallback";
 		if (type) this.type = type;
-		if (typeof(params)=='string') this.params = {url:params}
+		if (typeof(params)=='string') this.params = {url:params};
 		else if (typeof(params)=='object') this.params = params;
-		else this.params = {}
+		else this.params = {};
 	},
 
 	load:function(onSuccess,onError) {
@@ -86,7 +86,7 @@ paella.JSONCallback = Class.create(paella.AjaxCallback,{
 			return true;
 		}
 		catch (e) {
-			callback.data = {error:"Unexpected data format",data:callback.data}
+			callback.data = {error:"Unexpected data format",data:callback.data};
 			return false;
 		}
 	}
@@ -109,7 +109,7 @@ paella.DictionaryCallback = Class.create(paella.AjaxCallback,{
 	didLoadFail:function(callback) {
 		return true;
 	}
-})
+});
 
 paella.AsyncLoader = Class.create({
 	firstCb:null,
@@ -199,7 +199,6 @@ paella.Ajax = Class.create({
 		paella.debug.log("WARNING: paella.Ajax() is deprecated, use base.ajax.get/paella.ajax.post/paella.ajax.delete/paella.ajax.put instead.");
 		var thisClass = this;
 		this.callback = onSuccess;
-		var thisClass = this;
 		if (!method) method = 'get';
 		if (useJsonp) {
             jQuery.ajax({url:url,type:method,dataType:'jsonp', jsonp:'jsonp', jsonpCallback:'callback', data:params,cache:false}).always(function(data) {
@@ -207,7 +206,7 @@ paella.Ajax = Class.create({
 				thisClass.callCallback(data);
 			});
 		}
-		else if (proxyUrl && proxyUrl!="") {
+		else if (proxyUrl && proxyUrl!=="") {
 			params.url = url;
 			jQuery.ajax({url:proxyUrl,type:method,data:params,cache:false}).always(function(data) {
 				//paella.debug.log('using AJAX');
@@ -269,16 +268,16 @@ paella.utils = {
 				if (/https?:\/\/([a-z0-9.\-_\/\~:]*\?)([a-z0-9.\/\-_\%\=\&]*)\#*/i.test(url)) {
 					var params = RegExp.$2;
 					var paramArray = params.split('&');
-					this.list = {}
+					this.list = {};
 					for (var i=0; i<paramArray.length;++i) {
 						var keyValue = paramArray[i].split('=');
-						var key = keyValue[0]
+						var key = keyValue[0];
 						var value = keyValue.length==2 ? keyValue[1]:'';
 						this.list[key] = value;
 					}
 				}
 				else {
-					this.list = []
+					this.list = [];
 				}
 			}
 		},
@@ -337,7 +336,7 @@ paella.utils = {
 		secondsToText:function(secAgo) {
 			// Seconds
 			if (secAgo <= 1) {
-				return paella.dictionary.translate("1 second ago")
+				return paella.dictionary.translate("1 second ago");
 			}
 			if (secAgo < 60) {
 				return paella.dictionary.translate("{0} seconds ago").replace(/\{0\}/g, secAgo);
@@ -404,7 +403,7 @@ paella.utils = {
 	},
 
 	userAgent:new UserAgent()
-}
+};
 
 paella.utils.parameters.parse();
 
@@ -464,7 +463,7 @@ paella.MouseManager = Class.create({
 paella.utils.mouseManager = new paella.MouseManager();
 
 
-paella.ui = {}
+paella.ui = {};
 
 paella.ui.Container = function(params) {
 	var elem = document.createElement('div');
@@ -499,7 +498,7 @@ paella.DataDelegate = Class.create({
 	}
 });
 
-paella.dataDelegates = {}
+paella.dataDelegates = {};
 
 paella.dataDelegates.CookieDataDelegate = Class.create(paella.DataDelegate,{
 	initialize:function() {

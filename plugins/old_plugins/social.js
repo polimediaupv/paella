@@ -75,12 +75,12 @@ paella.plugins.SocialPlugin = Class.create(paella.ButtonPlugin,{
 
 	getSocialMediaItemButton:function(mediaData) {
 		var elem = document.createElement('div');
-		elem.className = 'socialItemButton ' + mediaData
+		elem.className = 'socialItemButton ' + mediaData;
 		elem.id = mediaData + '_button';
 		elem.data = {
 			mediaData:mediaData,
 			plugin:this
-		}
+		};
 		$(elem).click(function(event) {
 			this.data.plugin.onItemClick(this.data.mediaData);
 		});

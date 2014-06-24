@@ -118,7 +118,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 
 		var data = {
 			allComments: this.comments
-		}
+		};
 		
 		paella.data.write('comments',{id:paella.initDelegate.getId()},data,function(response,status){
 			if (status) {thisClass.loadContent();}
@@ -144,7 +144,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 
 		var data = {
 			allComments: this.comments
-		}
+		};
 		
 		paella.data.write('comments',{id:paella.initDelegate.getId()},data,function(response,status){
 			if (status) thisClass.reloadComments();
@@ -158,17 +158,19 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		this.divComments.innerHTML ="";
 		
 		paella.data.read('comments',{id:paella.initDelegate.getId()},function(data,status) {
-			
+			var i;
+			var valueText;
+			var comment;
 			if (data && typeof(data)=='object' && data.allComments && data.allComments.length>0) {
 				thisClass.comments = data.allComments;
 				var tempDict = {};
 
 				// obtain normal comments  
-				for (var i =0; i < data.allComments.length; ++i ){
-					var valueText = data.allComments[i].value;
+				for (i =0; i < data.allComments.length; ++i ) {
+					valueText = data.allComments[i].value;
                                                 
 					if (data.allComments[i].mode !== "reply") { 
-						var comment = {};
+						comment = {};
 						comment["id"] = data.allComments[i].id;
 						comment["userName"] = data.allComments[i].userName;
 						comment["mode"] = data.allComments[i].mode;
@@ -182,11 +184,11 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 				}
 			
 				// obtain reply comments
-				for (var i =0; i < data.allComments.length; ++i ){
-					var valueText = data.allComments[i].value;
+				for (i =0; i < data.allComments.length; ++i ){
+					valueText = data.allComments[i].value;
 
 					if (data.allComments[i].mode === "reply") { 
-						var comment = {};
+						comment = {};
 						comment["id"] = data.allComments[i].id;
 						comment["userName"] = data.allComments[i].userName;
 						comment["mode"] = data.allComments[i].mode;
@@ -244,7 +246,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 //		var datePublish = comment["created"];
 		var datePublish = "";
 		if (comment["created"]) {
-			var dateToday=new Date()
+			var dateToday=new Date();
 			var dateComment = paella.utils.timeParse.matterhornTextDateToDate(comment["created"]);			
 			datePublish = paella.utils.timeParse.secondsToText((dateToday.getTime()-dateComment.getTime())/1000);
 		}
@@ -327,7 +329,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 //		var datePublish = comment["created"];
 		var datePublish = "";
 		if (comment["created"]) {
-			var dateToday=new Date()
+			var dateToday=new Date();
 			var dateComment = paella.utils.timeParse.matterhornTextDateToDate(comment["created"]);			
 			datePublish = paella.utils.timeParse.secondsToText((dateToday.getTime()-dateComment.getTime())/1000);
 		}

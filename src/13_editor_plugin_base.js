@@ -63,27 +63,29 @@ paella.editor.PluginManager = Class.create({
 	
 	onTrackChanged:function(newTrack) {
 		// Notify tab plugins
-		for (var i=0;i<this.rightBarPlugins.length;++i) {
-			var plugin = this.rightBarPlugins[i];
+		var i, plugin;
+		for (i=0;i<this.rightBarPlugins.length;++i) {
+			plugin = this.rightBarPlugins[i];
 			plugin.onTrackSelected(newTrack);
 		}
 		
 		// Notify toolbar plugins
-		for (var i=0;i<this.toolbarPlugins.length;++i) {
-			var plugin = this.toolbarPlugins[i];
+		for (i=0;i<this.toolbarPlugins.length;++i) {
+			plugin = this.toolbarPlugins[i];
 			plugin.onTrackSelected(newTrack);
 		}
 	},
 	
 	onSave:function(onDone) {
 		var asyncLoader = new paella.AsyncLoader();
-		for (var i=0;i<this.trackPlugins.length;++i) {
+		var i;
+		for (i=0;i<this.trackPlugins.length;++i) {
 			asyncLoader.addCallback(new paella.editor.PluginSaveCallback(this.trackPlugins[i]));
 		}
-		for (var i=0;i<this.rightBarPlugins.length;++i) {
+		for (i=0;i<this.rightBarPlugins.length;++i) {
 			asyncLoader.addCallback(new paella.editor.PluginSaveCallback(this.rightBarPlugins[i]));
 		}
-		for (var i=0;i<this.toolbarPlugins.length;++i) {
+		for (i=0;i<this.toolbarPlugins.length;++i) {
 			asyncLoader.addCallback(new paella.editor.PluginSaveCallback(this.toolbarPlugins[i]));
 		}
 		asyncLoader.load(function() {
@@ -97,13 +99,14 @@ paella.editor.PluginManager = Class.create({
 	
 	onDiscard:function(onDone) {
 		var asyncLoader = new paella.AsyncLoader();
-		for (var i=0;i<this.trackPlugins.length;++i) {
+		var i;
+		for (i=0;i<this.trackPlugins.length;++i) {
 			asyncLoader.addCallback(new paella.editor.PluginDiscardCallback(this.trackPlugins[i]));
 		}
-		for (var i=0;i<this.rightBarPlugins.length;++i) {
+		for (i=0;i<this.rightBarPlugins.length;++i) {
 			asyncLoader.addCallback(new paella.editor.PluginDiscardCallback(this.rightBarPlugins[i]));
 		}
-		for (var i=0;i<this.toolbarPlugins.length;++i) {
+		for (i=0;i<this.toolbarPlugins.length;++i) {
 			asyncLoader.addCallback(new paella.editor.PluginDiscardCallback(this.toolbarPlugins[i]));
 		}
 		asyncLoader.load(function() {
@@ -290,7 +293,7 @@ paella.editor.EditorToolbarPlugin = Class.create(paella.editor.EditorPlugin,{
 	},
 
 	getOptions:function() {
-		return []
+		return [];
 	},
 	
 	onOptionSelected:function(optionIndex) {

@@ -47,7 +47,7 @@ paella.plugins.PlayButtonOnScreen = Class.create(paella.EventDrivenPlugin,{
 		this.container.id = this.containerId;
 		paella.player.videoContainer.domElement.appendChild(this.container);
 		var thisClass = this;
-		$(this.container).click(function(event){thisClass.onPlayButtonClick()});
+		$(this.container).click(function(event){thisClass.onPlayButtonClick();});
 
 		var icon = document.createElement('canvas');
 		icon.className = "playButtonOnScreenIcon";

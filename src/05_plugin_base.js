@@ -1,7 +1,7 @@
 paella.PluginManager = Class.create({
 	targets:null,
-	pluginList:new Array(),
-	eventDrivenPlugins:new Array(),
+	pluginList: [],
+	eventDrivenPlugins: [],
 	
 	initialize:function() {
 		this.targets = {};
@@ -39,7 +39,7 @@ paella.PluginManager = Class.create({
 	loadPlugins:function() {
 		var pluginConfig = paella.player.config.plugins;
 		if (!pluginConfig) {
-			pluginConfig = {defaultConfig:{enabled:true},list:{}}
+			pluginConfig = {defaultConfig:{enabled:true},list:{}};
 		}
 		for (var i=0; i<this.pluginList.length; ++i) {
 			var plugin = this.pluginList[i];
@@ -68,12 +68,14 @@ paella.PluginManager = Class.create({
 				plugin.setup();
 				thisClass.eventDrivenPlugins.push(plugin);
 				var events = plugin.getEvents();
+				var eventBind = function(event,params) {
+					plugin.onEvent(event.type,params);
+				};
+
 				for (var i=0; i<events.length;++i) {
 					var eventName = events[i];
-					paella.events.bind(eventName,function(event,params) {
-						plugin.onEvent(event.type,params);
-					});
-				}	
+					paella.events.bind(eventName, eventBind);
+				}
 			}
 		});
 	},
@@ -152,6 +154,7 @@ paella.PopUpContainer = Class.create(paella.DomNode,{
 	},
 	
 	showContainer:function(identifier,button) {
+		var width = 0;
 		var container = this.containers[identifier];
 		var right = $(button.parentElement).width() - $(button).position().left - $(button).width();
 		if (container && this.currentContainerId!=identifier && this.currentContainerId!=-1) {
@@ -163,7 +166,7 @@ paella.PopUpContainer = Class.create(paella.DomNode,{
 			prevContainer.plugin.didHideContent();
 			container.plugin.willShowContent();
 			$(container.element).show();
-			var width = $(container.element).width();
+			width = $(container.element).width();
 			$(this.domElement).css({width:width + 'px',right:right + 'px'});
 			this.currentContainerId = identifier;
 			container.plugin.didShowContent();
@@ -180,7 +183,7 @@ paella.PopUpContainer = Class.create(paella.DomNode,{
 			container.button.className = container.button.className + ' selected';
 			container.plugin.willShowContent();
 			$(container.element).show();
-			var width = $(container.element).width();
+			width = $(container.element).width();
 			$(this.domElement).css({width:width + 'px',right:right + 'px'});
 			this.currentContainerId = identifier;
 			container.plugin.didShowContent();
@@ -227,6 +230,7 @@ paella.TimelineContainer = Class.create(paella.PopUpContainer,{
 	},
 	
 	showContainer:function(identifier,button) {
+		var height =0;
 		var container = this.containers[identifier];
 		if (container && this.currentContainerId!=identifier && this.currentContainerId!=-1) {
 			var prevContainer = this.containers[this.currentContainerId];
@@ -238,7 +242,7 @@ paella.TimelineContainer = Class.create(paella.PopUpContainer,{
 			container.plugin.willShowContent();
 			$(container.element).show();
 			this.currentContainerId = identifier;
-			var height = $(container.element).height();
+			height = $(container.element).height();
 			$(this.domElement).css({height:height + 'px'});
 			container.plugin.didShowContent();
 		}
@@ -255,7 +259,7 @@ paella.TimelineContainer = Class.create(paella.PopUpContainer,{
 			container.button.className = container.button.className + ' selected';
 			$(container.element).show();
 			this.currentContainerId = identifier;
-			var height = $(container.element).height();
+			height = $(container.element).height();
 			$(this.domElement).css({height:height + 'px'});
 			container.plugin.didShowContent();
 		}
@@ -361,7 +365,7 @@ paella.ButtonPlugin = Class.create(paella.Plugin,{
 paella.ButtonPlugin.alignment = {
 	left:'left',
 	right:'right'
-}
+};
 paella.ButtonPlugin.kClassName = 'buttonPlugin';
 paella.ButtonPlugin.kPopUpClassName = 'buttonPluginPopUp';
 paella.ButtonPlugin.kTimeLineClassName = 'buttonTimeLine';
@@ -369,7 +373,7 @@ paella.ButtonPlugin.type = {
 	actionButton:1,
 	popUpButton:2,
 	timeLineButton:3
-}
+};
 
 
 paella.ButtonPlugin.buildPluginButton = function(plugin,id) {
@@ -393,7 +397,7 @@ paella.ButtonPlugin.buildPluginButton = function(plugin,id) {
 		}
 	});
 	return elem;
-}
+};
 
 paella.ButtonPlugin.buildPluginPopUp = function(parent,plugin,id) {
 	plugin.subclass = plugin.getSubclass();
@@ -404,7 +408,7 @@ paella.ButtonPlugin.buildPluginPopUp = function(parent,plugin,id) {
 	elem.plugin = plugin;
 	plugin.buildContent(elem);
 	return elem;
-}
+};
 
 paella.VideoOverlayButtonPlugin = Class.create(paella.ButtonPlugin,{
 	type:'videoOverlayButton',
@@ -439,7 +443,7 @@ paella.EventDrivenPlugin = Class.create(paella.Plugin,{
 	},
 
 	getEvents:function() {
-		return new Array();
+		return [];
 	},
 
 	onEvent:function(eventType,params) {

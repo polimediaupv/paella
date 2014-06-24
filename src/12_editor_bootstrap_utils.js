@@ -15,9 +15,9 @@ var bootstrapUtils = {
 
 	navbar:function(title,subclass) {
 		var nav = this.elem("div",{"class":"navbar tiny " + subclass});
-		var navInner = this.append(nav,this.elem("div",{"class":"navbar-inner tiny"}))
+		var navInner = this.append(nav,this.elem("div",{"class":"navbar-inner tiny"}));
 		if (title) {
-			this.append(navInner,this.elem("div",{"class":"brand","href":"JavaScript:void(0);"},title));
+			this.append(navInner,this.elem("div",{"class":"brand","href":"javascript:void(0);"},title));
 		}
 		return nav;
 	},

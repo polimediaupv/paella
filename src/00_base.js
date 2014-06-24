@@ -1,4 +1,4 @@
-/*
+/*  
 	Paella HTML 5 Multistream Player
 	Copyright (C) 2013  Universitat Politècnica de València
 
@@ -37,7 +37,7 @@ paella.debug = {
 			console.log(msg);
 		}
 	}
-}
+};
 
 paella.pluginList = [
 	'usertracking_collector.js',

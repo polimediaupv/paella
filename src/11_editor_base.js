@@ -4,4 +4,4 @@ paella.editor.utils = {
 	mouse: {
 		mouseDownTarget:'',
 	}
-}
+};

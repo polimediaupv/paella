@@ -75,7 +75,7 @@ paella.editor.Track = Class.create({
 		track.trackInfo = {
 			trackData:trackData,
 			plugin:plugin
-		}
+		};
 		
 		var label = document.createElement('div');
 		if (trackData.name && trackData.name!='') {
@@ -152,9 +152,10 @@ paella.editor.Track = Class.create({
 	lastPos:{x:0,y:0},
 	
 	selectTrack:function(requestedTrack,noEvents) {
+		var i, trackElem;
 		if (typeof(requestedTrack)=="number") {
-			for (var i=0;i<this.trackElemList.length;++i) {
-				var trackElem = this.trackElemList[i];
+			for (i=0;i<this.trackElemList.length;++i) {
+				trackElem = this.trackElemList[i];
 				if (trackElem.trackInfo.trackData.id==requestedTrack) {
 					requestedTrack = trackElem;
 					break;
@@ -163,8 +164,8 @@ paella.editor.Track = Class.create({
 		}
 		if (typeof(requestedTrack)!="number" && this.currentTrack!=requestedTrack) {
 			if (!noEvents) this.onUnselect();
-			for (var i=0;i<this.trackElemList.length;++i) {
-				var trackElem = this.trackElemList[i];
+			for (i=0;i<this.trackElemList.length;++i) {
+				trackElem = this.trackElemList[i];
 				if (trackElem==requestedTrack) {
 					this.currentTrack = trackElem;
 					if (!noEvents) this.onSelect(trackElem.trackInfo);
@@ -229,8 +230,6 @@ paella.editor.Track = Class.create({
 			paella.editor.instance.rightBar.updateCurrentTab();
 			paella.editor.instance.bottomBar.timeline.rebuildTrack(plugin.getName());
 			
-			this.resizeTrack.trackInfo.trackData;
-
 			$(this.resizeTrack).css({
 				'left':left + '%',
 				'width':width + '%'
@@ -244,7 +243,7 @@ paella.editor.Track = Class.create({
 			var diff = {
 				x:event.clientX - this.lastPos.x,
 				y:event.clientY - this.lastPos.y
-			}
+			};
 			var duration = paella.player.videoContainer.duration(true);
 			var left = $(this.resizeTrack).position().left;
 			var width = $(this.resizeTrack).width();

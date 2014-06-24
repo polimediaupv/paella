@@ -51,7 +51,7 @@ paella.editor.Editor = Class.create({
 			$(document).trigger(paella.events.pause);	
 		},100);
 		paella.events.bind(paella.events.documentChanged,function(event,params) {
-			window.onbeforeunload = function(event) { return paella.dictionary.translate('There are unsaved changes'); }
+			window.onbeforeunload = function(event) { return paella.dictionary.translate('There are unsaved changes'); };
 		});
 		paella.events.bind(paella.events.didSaveChanges,function(event,params) {
 			window.onbeforeunload = null;

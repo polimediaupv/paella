@@ -21,13 +21,14 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 		}
 	},
 						      
-	checkStreams:function(){
+	checkStreams:function() {
+		var key, j;
 		this.currentMaster = paella.player.videoContainer.currentMasterVideoData;
 		this.currentSlave = paella.player.videoContainer.currentSlaveVideoData;
 		
 		var allMasterSources = paella.player.videoContainer.masterVideoData.sources;
 		for (key in allMasterSources){
-			for (var j =0; j < allMasterSources[key].length; ++j ){ 
+			for (j =0; j < allMasterSources[key].length; ++j ){ 
 				if ((allMasterSources[key][j].type == this.currentMaster.type)){
 					this.availableMasters.push(allMasterSources[key][j]);
 				}
@@ -38,7 +39,7 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 		if (this.currentSlave){
 			var allSlaveSources = paella.player.videoContainer.slaveVideoData.sources;
 			for (key in allSlaveSources){
-				for (var j =0; j < allSlaveSources[key].length; ++j ){
+				for (j =0; j < allSlaveSources[key].length; ++j ){
 					if ((allSlaveSources[key][j].type == this.currentSlave.type)){
 						this.availableSlaves.push(allSlaveSources[key][j]);
 					}
@@ -46,12 +47,13 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 			}
 		}
 		
-		return (this.availableMasters.length > 1 || this.availableSlaves.length > 1)
+		return (this.availableMasters.length > 1 || this.availableSlaves.length > 1);
 	},
 	
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
 	
 	buildContent:function(domElement) {
+		var j,w,h,option;
 		var thisClass = this;
 		this.currentUrl = window.location;
 			
@@ -69,10 +71,10 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 		});
 			
 		if (this.availableMasters.length > 1){
-			for (var j =0; j < this.availableMasters.length; ++j ){
-				var w = this.availableMasters[j].res.w;
-				var h = this.availableMasters[j].res.h
-				var option = document.createElement('option');
+			for (j =0; j < this.availableMasters.length; ++j ){
+				w = this.availableMasters[j].res.w;
+				h = this.availableMasters[j].res.h;
+				option = document.createElement('option');
 				option.value = w+"x"+h;
 				option.innerHTML = w+" x "+h;
 				if ((w == this.currentMaster.res.w) && (h == this.currentMaster.res.h)){
@@ -95,10 +97,10 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 		});
 			
 		if (this.availableSlaves.length+1 > 1){
-			for (var j =0; j < this.availableSlaves.length; ++j ){
-				var w = this.availableSlaves[j].res.w;
-				var h = this.availableSlaves[j].res.h
-				var option = document.createElement('option');
+			for (j=0; j < this.availableSlaves.length; ++j ){
+				w = this.availableSlaves[j].res.w;
+				h = this.availableSlaves[j].res.h;
+				option = document.createElement('option');
 				option.value = w+"x"+h;
 				option.innerHTML = w+" x "+h;
 				if ((w == this.currentSlave.res.w) && (h == this.currentSlave.res.h)){
@@ -130,7 +132,7 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 				newUrl = this.currentUrl+"&resslave="+newRes;
 		}
 		
-		window.open (newUrl,'_self',false)
+		window.open (newUrl,'_self',false);
 	},
 	
 	constructNewUrl:function(param1,param1Q,param2,param2Q) {
