@@ -1,14 +1,13 @@
 module.exports = function(grunt) { 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
-		
-		
+				
 		copy: {
-			dist: {
+			paella: {
 				files: [
-					{expand: true, src: ['config/**', 'javascript/**', 'resources/**', 'index.html', 'extended.html', 'paella-standalone.js', 'player.swf'], dest: 'dist/player/'},			
-					{expand: true, cwd: 'repository_test/', src: '**', dest: 'dist/'},			
-					{expand: true, src: 'plugins/*/resources/*', dest: 'dist/player/resources/plugins/', flatten:true }
+					{expand: true, src: ['config/**', 'javascript/**', 'resources/**', 'index.html', 'extended.html', 'paella-standalone.js', 'player.swf'], dest: 'build/player/'},			
+					{expand: true, cwd: 'repository_test/', src: '**', dest: 'build/'},			
+					{expand: true, src: 'plugins/*/resources/*', dest: 'build/player/resources/plugins/', flatten:true }
 				]
 			}
 		},
@@ -24,13 +23,13 @@ module.exports = function(grunt) {
 					'src/*.js',
 					'plugins/*/*.js'
 				],
-				dest: 'dist/player/javascript/paella_player.js'
+				dest: 'build/player/javascript/paella_player.js'
 			},
-			'dist.css': {
+			'plugins.css': {
 				src: [
 					'plugins/**/*.css'
 				],
-				dest: 'dist/player/resources/plugins/plugins.css'
+				dest: 'build/player/resources/plugins/plugins.css'
 			}
 		},
 		uglify: {
@@ -45,7 +44,7 @@ module.exports = function(grunt) {
 			},
 			dist: {
 				files: {
-					'dist/player/javascript/paella_player.min.js': ['dist/player/javascript/paella_player.js']
+					'build/player/javascript/paella_player.js': ['build/player/javascript/paella_player.js']
 				}
 			}
 		},
@@ -62,7 +61,7 @@ module.exports = function(grunt) {
 		
 		
 		watch: {
-			 dist: {
+			 release: {
 				 files: [
 				 	'index.html',
 				 	'extended.html',
@@ -70,32 +69,43 @@ module.exports = function(grunt) {
 				 	'plugins/*/*.js',
 				 	'plugins/*/*.css'
 				 ],
-				 tasks: ['dist']
+				 tasks: ['build.release']
+			},
+			debug: {
+				 files: [
+				 	'index.html',
+				 	'extended.html',
+				 	'src/*.js',
+				 	'plugins/*/*.js',
+				 	'plugins/*/*.css'
+				 ],
+				 tasks: ['build.debug']
 			}
 		},
-		connect: {
-			server: {
-				options: {
-					port: 8000,
-					hostname: '*',
-					base: 'dist'
-				}
-			}
-		}
+		express: {
+			paella: {
+		      options: {
+			      port:8000,
+			      bases: 'build'
+		      }
+		  }
+		}		
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-express');	
 	
-	
+		
 	grunt.registerTask('default', ['dist']);
 	grunt.registerTask('checksyntax', ['jshint']);
 	
-	grunt.registerTask('dist', ['copy:dist', 'concat:dist.js', 'concat:dist.css', 'uglify:dist']);	
-	grunt.registerTask('server', ['connect', 'watch:dist']);
-		
+	grunt.registerTask('build.release', ['copy:paella', 'concat:dist.js', 'concat:plugins.css', 'uglify:dist']);	
+	grunt.registerTask('build.debug', ['copy:paella', 'concat:dist.js', 'concat:plugins.css']);
+	
+	grunt.registerTask('server.release', ['build.release', 'express', 'watch:release']);
+	grunt.registerTask('server.debug', ['build.debug', 'express', 'watch:debug']);
 };

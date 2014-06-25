@@ -3,5 +3,5 @@ test
 config/config.json
 *~
 tmp
-dist
+build
 node_modules
