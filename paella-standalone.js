@@ -222,12 +222,14 @@ paella.standalone.StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 
 			// Set the image stream for presentation
 			var imagesArray = [];
-			if (presentation != undefined) {
-				if (imageSource.count > 0) { imagesArray.push(imageSource); }
-				if (thumbSource.count > 0) { imagesArray.push(thumbSource); }
-				if (imagesArray.length > 0) {
-					presentation.sources.image = imagesArray;
-				}
+			if (presentation == undefined) {
+				presentation = { sources:{}, preview:'' };
+			}
+			
+			if (imageSource.count > 0) { imagesArray.push(imageSource); }
+			if (thumbSource.count > 0) { imagesArray.push(thumbSource); }
+			if (imagesArray.length > 0) {
+				presentation.sources.image = imagesArray;
 			}
 		}
 
