@@ -13,7 +13,7 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 	getButtonType:function() { return paella.ButtonPlugin.type.timeLineButton; },
 	getDefaultToolTip:function() { return paella.dictionary.translate("Navigate by slides"); },
 	checkEnabled:function(onSuccess) {
-		onSuccess(paella.initDelegate.initParams.videoLoader.frameList!=null && paella.initDelegate.initParams.videoLoader.frameList.length>0);
+		onSuccess(paella.initDelegate.initParams.videoLoader.frameList!=null && Object.keys(paella.initDelegate.initParams.videoLoader.frameList).length>0);
 	},
 
 	setup:function() {
