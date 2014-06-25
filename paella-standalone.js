@@ -200,8 +200,9 @@ paella.standalone.StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 				if (/(\d+):(\d+):(\d+)/.test(currentSlide.time)) {
 					time = parseInt(RegExp.$1)*60*60 + parseInt(RegExp.$2)*60 + parseInt(RegExp.$3);
 
-					slideUrl = currentSlide.slide.url;
-					thumbUrl = currentSlide.thumb.url;
+					
+					slideUrl = (currentSlide.slide) ? currentSlide.slide.url : currentSlide.thumb.url;
+					thumbUrl = (currentSlide.thumb) ? currentSlide.thumb.url : currentSlide.slide.url;
 
 					if (! /^[a-zA-Z]+:\/\//.test(slideUrl)) {
 						slideUrl = this.getRepository() + "/" + paella.initDelegate.getId() + "/" + slideUrl;
