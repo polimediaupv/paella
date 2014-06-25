@@ -682,7 +682,7 @@ Class ("paella.SlideshowVideo", paella.VideoElementBase,{
 
 	loadFrames:function(frames,duration) {
 		this._frames = [];
-		for (var i=0;i<duration;++i) {
+		for (var i=0;i<=duration;++i) {
 			var frame = frames['frame_' + i];
 			if (frame) this._frames.push({time:i,image:frame});
 		}
