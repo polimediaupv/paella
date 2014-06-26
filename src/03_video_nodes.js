@@ -403,6 +403,9 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 			}
 			parameters.playerId = this.flashId;
 			parameters.isLiveStream = sourceData.isLiveStream;
+			if (paella.player.config.player.rtmpSettings && paella.player.config.player.rtmpSettings.bufferTime!==undefined) {
+				parameters.bufferTime = paella.player.config.player.rtmpSettings.bufferTime;
+			}
 			this.flashVideo = this.createSwfObject("player.swf",parameters);
 		}
 		else if (sourceData.type=='video/x-flv') {
@@ -412,6 +415,9 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 			}
 			parameters.playerId = this.flashId;
 			parameters.isLiveStream = sourceData.isLiveStream;
+			if (paella.player.config.player.rtmpSettings && paella.player.config.player.rtmpSettings.bufferTime!==undefined) {
+				parameters.bufferTime = paella.player.config.player.rtmpSettings.bufferTime;
+			}
 			this.flashVideo = this.createSwfObject("player.swf",parameters);
 		}
 	},

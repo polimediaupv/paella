@@ -14,7 +14,10 @@
 				   {"name":"image","enabled":true},
 				   {"name":"flash","enabled":true}],
 		"stream0Audio":true,
-		"stream1Audio":false
+		"stream1Audio":false,
+        "rtmpSettings":{
+            "bufferTime":2
+        }
 	},
 	"editor":{
 			"enabled":true

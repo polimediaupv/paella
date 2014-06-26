@@ -1,12 +1,13 @@
-module.exports = function(grunt) { 
+module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
-				
+
 		copy: {
 			paella: {
 				files: [
-					{expand: true, src: ['config/**', 'javascript/**', 'resources/**', 'index.html', 'extended.html', 'paella-standalone.js', 'player.swf'], dest: 'build/player/'},			
-					{expand: true, cwd: 'repository_test/', src: '**', dest: 'build/'},			
+					{expand: true, src: ['config/**', 'javascript/**', 'resources/**', 'index.html', 'extended.html', 'paella-standalone.js'], dest: 'build/player/'},
+					{expand: true, cwd: 'src/flash_player/', src: "player.swf", dest: 'build/player/' },
+					{expand: true, cwd: 'repository_test/', src: '**', dest: 'build/'},
 					{expand: true, src: 'plugins/*/resources/*', dest: 'build/player/resources/plugins/', flatten:true }
 				]
 			}
@@ -58,8 +59,8 @@ module.exports = function(grunt) {
 				'plugins/*/*.js'
 			]
 		},
-		
-		
+
+
 		watch: {
 			 release: {
 				 files: [
@@ -67,7 +68,8 @@ module.exports = function(grunt) {
 				 	'extended.html',
 				 	'src/*.js',
 				 	'plugins/*/*.js',
-				 	'plugins/*/*.css'
+				 	'plugins/*/*.css',
+					'src/flash_player/player.swf'
 				 ],
 				 tasks: ['build.release']
 			},
@@ -77,7 +79,8 @@ module.exports = function(grunt) {
 				 	'extended.html',
 				 	'src/*.js',
 				 	'plugins/*/*.js',
-				 	'plugins/*/*.css'
+				 	'plugins/*/*.css',
+					'src/flash_player/player.swf'
 				 ],
 				 tasks: ['build.debug']
 			}
@@ -89,7 +92,7 @@ module.exports = function(grunt) {
 			      bases: 'build'
 		      }
 		  }
-		}		
+		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
@@ -97,15 +100,15 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks('grunt-express');	
-	
-		
+	grunt.loadNpmTasks('grunt-express');
+
+
 	grunt.registerTask('default', ['dist']);
 	grunt.registerTask('checksyntax', ['jshint']);
-	
-	grunt.registerTask('build.release', ['copy:paella', 'concat:dist.js', 'concat:plugins.css', 'uglify:dist']);	
+
+	grunt.registerTask('build.release', ['copy:paella', 'concat:dist.js', 'concat:plugins.css', 'uglify:dist']);
 	grunt.registerTask('build.debug', ['copy:paella', 'concat:dist.js', 'concat:plugins.css']);
-	
+
 	grunt.registerTask('server.release', ['build.release', 'express', 'watch:release']);
 	grunt.registerTask('server.debug', ['build.debug', 'express', 'watch:debug']);
 };
