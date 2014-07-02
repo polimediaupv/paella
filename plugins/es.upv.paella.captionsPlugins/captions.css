@@ -1,3 +1,4 @@
+/* es.upv.paella.captionsPlayerPlugin */
 .textCaption {
 	background-color: rgba(128,128,128,0.7);
 	text-align: center;
@@ -8,6 +9,29 @@
 	padding-bottom: 10px;
 	border-radius: 12px;
 }
+
+
+
+
+
+
+.selectLang {
+	width: 300px;
+	background-color: rgba(128,128,128,0.8);
+	padding: 10px;
+}
+
+.selectLang select{
+	color: rgb(61, 60, 60);
+}
+
+.selectLang label{
+	color: rgb(248, 243, 243);
+}
+
+
+
+
 
 .showCaptionsPluginButton{
 	background-size: 100%;
@@ -24,8 +48,3 @@
 	height: 0px;
 }
 
-.textCaption.disabled {
-	display: none;
-	width: 0px;
-	height: 0px;
-}
