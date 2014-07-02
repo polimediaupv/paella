@@ -66,6 +66,7 @@ module.exports = function(grunt) {
 				 files: [
 				 	'index.html',
 				 	'extended.html',
+				 	'paella-standalone.js',
 				 	'src/*.js',
 				 	'plugins/*/*.js',
 				 	'plugins/*/*.css',
@@ -77,6 +78,7 @@ module.exports = function(grunt) {
 				 files: [
 				 	'index.html',
 				 	'extended.html',
+				 	'paella-standalone.js',
 				 	'src/*.js',
 				 	'plugins/*/*.js',
 				 	'plugins/*/*.css',

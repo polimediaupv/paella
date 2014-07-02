@@ -333,3 +333,72 @@ paella.dataDelegates.UserDataDelegate = Class.create(paella.DataDelegate,{
       if (typeof(onSuccess)=='function') { onSuccess(value,true); }
     }
 });
+
+
+
+ 
+paella.dataDelegates.StandaloneCaptionsDataDelegate = Class.create(paella.DataDelegate,{	
+	initialize:function() {
+	},
+	
+	read:function(context, params, onSuccess) {
+		var thisClass = this;
+		var id = params.id;
+		var captions;
+		var ret = {error: true};
+		
+		
+		try { 
+			captions = paella.standalone.episode.mediapackage.captions;
+		}
+		catch(e) {}
+		
+		
+		if (captions){
+			if (params.op == "langs") {
+				var langs=[];
+				captions.forEach(function(c) { 
+					langs.push({code: c.lang, text:c.text});
+				});
+				ret = { error: false, langs: langs };
+				if (onSuccess) { onSuccess(ret, true); }			
+			}
+			else if (params.op == "caption") {
+				var selectedCaption;
+				captions.forEach(function(c) {
+					if (c.lang == params.lang) {
+						selectedCaption = c;
+					}
+				});
+				if (selectedCaption){
+					var url = selectedCaption.url;
+					if (! /^[a-zA-Z]+:\/\//.test(url)) {
+						url = paella.player.config.standalone.reposiroty + "/" + params.id + "/" + url;
+					}
+					
+					if (onSuccess) { onSuccess({error: false, url: url, format: selectedCaption.format}, true); }	        
+		        }
+		        else {
+					if (onSuccess) { onSuccess({error: true}, false); }				
+		        }			
+			}
+			else{
+				if (onSuccess) { onSuccess({error: true}, false); }				
+			}
+		}
+		else {
+			if (onSuccess) { onSuccess({error: true}, false); }			
+		}
+	},
+	
+	write:function(context,params,value,onSuccess) {
+		if (onSuccess) { onSuccess({}, false); }
+	},
+	
+	remove:function(context,params,onSuccess) {
+		if (onSuccess) { onSuccess({}, false); }
+	}
+});
+
+
+
