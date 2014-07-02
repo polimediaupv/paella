@@ -35,6 +35,7 @@
 	"plugins":{
 		"defaultConfig":{"enabled":true},
 		"list":{
+			"es.upv.paella.ImageControlPlugin":{"enabled":false},		
 			"es.upv.paella.ShowEditorPlugin":{"enabled":true,"alwaysVisible":true},
 			"es.upv.paella.TrimmingPlayerPlugin":{"enabled":true},
 			"es.upv.paella.editor.TrimmingTrackPlugin":{"enabled":true},
