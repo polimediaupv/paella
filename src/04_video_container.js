@@ -262,7 +262,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		overlayLoader.className = "videoLoaderOverlay";
 		this.overlayContainer.addElement(overlayLoader,{left:0,top:0,width:1280,height:720});
 		//this.overlayContainer.addText("Loading",{left:0,top:0,width:1280,height:720},true);
-		paella.events.bind(paella.events.loadComplete,function() { thisClass.overlayContainer.clear(); });
+		paella.events.bind(paella.events.loadComplete,function() { thisClass.overlayContainer.removeElement(overlayLoader); });
 
 		this.container.addNode(new paella.BackgroundContainer(this.backgroundId,'config/profiles/resources/default_background_paella.jpg'));
 
