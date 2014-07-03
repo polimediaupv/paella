@@ -11,10 +11,10 @@
 .playButtonOnScreen {
 	position: absolute;
 	opacity: 0.7;
-	top: 30%;
-	left: 45%;
-	bottom: 30%;
-	right: 40%;
+	top: 0;
+	left: 0;
+	bottom: 51px;
+	right: 0;
 	z-index: 500;
 }
 

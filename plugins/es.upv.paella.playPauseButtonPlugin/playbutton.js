@@ -31,6 +31,10 @@ paella.plugins.PlayPauseButtonPlugin = Class.create(paella.ButtonPlugin, {
 
 paella.plugins.playPauseButtonPlugn = new paella.plugins.PlayPauseButtonPlugin();
 
+
+
+
+
 paella.plugins.PlayButtonOnScreen = Class.create(paella.EventDrivenPlugin,{
 	containerId:'paella_plugin_PlayButtonOnScreen',
 	container:null,
@@ -42,6 +46,7 @@ paella.plugins.PlayButtonOnScreen = Class.create(paella.EventDrivenPlugin,{
 	},
 
 	setup:function() {
+		var thisClass = this;
 		this.container = document.createElement('div');
 		this.container.className = "playButtonOnScreen";
 		this.container.id = this.containerId;
@@ -51,32 +56,50 @@ paella.plugins.PlayButtonOnScreen = Class.create(paella.EventDrivenPlugin,{
 
 		var icon = document.createElement('canvas');
 		icon.className = "playButtonOnScreenIcon";
-		icon.setAttribute("width", 300);
-		icon.setAttribute("height",300);
-		var ctx = icon.getContext('2d');
-
-		ctx.beginPath();
-		ctx.arc(150,150,140,0,2*Math.PI,true);
-		ctx.closePath();
-
-		ctx.strokeStyle = 'white';
-		ctx.lineWidth = 10;
-		ctx.stroke();
-		ctx.fillStyle = '#8f8f8f';
-		ctx.fill();
-
-		ctx.beginPath();
-		ctx.moveTo(100,70);
-		ctx.lineTo(250,150);
-		ctx.lineTo(100,230);
-		ctx.lineTo(100,70);
-		ctx.closePath();
-		ctx.fillStyle = 'white';
-		ctx.fill();
-
-		ctx.stroke();
-
 		this.container.appendChild(icon);
+				
+		function repaintCanvas(){
+			var width = jQuery(thisClass.container).innerWidth();
+			var height = jQuery(thisClass.container).innerHeight();
+			
+			icon.width = width;
+			icon.height = height;
+			
+			var iconSize = (width<height) ? width/3 : height/3;
+			
+			var ctx = icon.getContext('2d');	
+			// Play Icon size: 300x300
+			ctx.translate((width-iconSize)/2, (height-iconSize)/2);
+			
+			ctx.beginPath();
+			ctx.arc(iconSize/2, iconSize/2 ,iconSize/2, 0, 2*Math.PI, true);
+			ctx.closePath();
+	
+			ctx.strokeStyle = 'white';
+			ctx.lineWidth = 10;
+			ctx.stroke();
+			ctx.fillStyle = '#8f8f8f';
+			ctx.fill();
+	
+			ctx.beginPath();
+			ctx.moveTo(iconSize/3, iconSize/4);
+			ctx.lineTo(3*iconSize/4, iconSize/2);
+			ctx.lineTo(iconSize/3, 3*iconSize/4);
+			ctx.lineTo(iconSize/3, iconSize/4);
+/*			
+			ctx.moveTo(100, 70);
+			ctx.lineTo(250, 150);
+			ctx.lineTo(100, 230);
+			ctx.lineTo(100, 70);
+*/
+			ctx.closePath();
+			ctx.fillStyle = 'white';			
+			ctx.fill();
+			
+			ctx.stroke();			
+		}
+		window.addEventListener('resize', repaintCanvas, false);
+		repaintCanvas();		
 	},
 
 	getEvents:function() {
