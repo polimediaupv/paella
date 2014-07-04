@@ -166,8 +166,7 @@ It shows a modal view over the player window.
 paella.messageBox.showFrame(url,params); // Shows an url in the modal view, using an iframe.
 paella.messageBox.showElement(domElement,params); // Shows a dom element in the modal view
 paella.messageBox.showMessage(message,params); // Shows a text message in the modal view 
-paella.messageBox.showError(message,params); // Shows an error message in the modal view. It works in the same way as 
-showMessage, but using another style.
+paella.messageBox.showError(message,params); // Shows an error message in the modal view. It works in the same way as showMessage, but using another style.
 ```
 
 Parameters:
