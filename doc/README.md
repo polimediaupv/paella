@@ -8,6 +8,16 @@ You can take your first contact with Paella going to [Paella Player Web Page](ht
 ![Paella Player Logo](http://paellaplayer.upv.es/resources/logo_paella.png)
 
 
-## Build and Install ##
+## Related documentation ##
 
-To build Paella, please read the [build documentation](doc/build.md).
+- [Build and Install Paella Player](build.md)
+
+- Integrate Paella with your portal
+	- [Basic](basic.md)
+	- [Advanzed](integration.md)
+
+### Developer documentation
+
+- [Paella Plugins](plugins.md)
+
+- [Paella Utilities](utilities.md)
