@@ -9,33 +9,37 @@ Paella Player assumes that your plugin files are located in the `plugins` direct
 
 You can use several files to implement your plugin. To do this, you only need to register all the files in the plugin array. To keep the code correctly organized, by convention, the new plugin classes will be placed into the "paella.plugins" namespace.
 
-
-	paella.plugins.MyNewPlugin = Class.create(paella.[Any paella.Plugin Subclass],{
-		// plugin implementation
-	});
-
+``` js
+paella.plugins.MyNewPlugin = Class.create(paella.[Any paella.Plugin Subclass],{
+	// plugin implementation
+});
+```
 
 Inmediately after the plugin implementation, we must to instantiate it. By convention, the plugin instance variable will be placed in the same namespace as its class, and with the same name as the class, starting with a lower case character.
 
-
+``` js
 	paella.plugins.myNewPlugin = new paella.plugins.MyNewPlugin()
-
+```
 To test your plugin in development mode, you must to use the file debug.html instead of index.html, and register your plugin in the development plugin array. This array is defined in the file `src/00_base.js`:
 
-	paella.pluginList = [
-		'framecontrol.js',
-		'playbutton.js',
-		'viewmode.js',
-		'basic_editor_plugins.js'
-	];
+``` js
+paella.pluginList = [
+	'framecontrol.js',
+	'playbutton.js',
+	'viewmode.js',
+	'basic_editor_plugins.js'
+];
+```
 
 In production mode, this array is ignored because the build script compile all paella player files, including the plugins, into one unique file: `paella_player.js`. If you want to exclude some plugin file from the build script, you only must to include it in the file `plugins/ignore.json` as follows:
 
-	[
-		"debuglog.js",
-		"annotations.js",
-		"check_publish.js"
-	]
+``` JSON
+[
+	"debuglog.js",
+	"annotations.js",
+	"check_publish.js"
+]
+```
 
 ## Plugin life cycle
 
@@ -103,15 +107,17 @@ utility functions:
 
 - changeSubclass(newSubclass): Use this function to change the button's subclass. This code is extracted from the standard Paella Player play button plugin:
 	
-	setup:function() {
-		var This = this;
-		paella.events.bind(paella.events.play,function(event) {
-			This.changeSubclass(This.pauseSubclass);
-		});
-		paella.events.bind(paella.events.pause,function(event) {
-			This.changeSubclass(This.playSubclass);
-		});
-	}
+``` js
+setup:function() {
+	var This = this;
+	paella.events.bind(paella.events.play,function(event) {
+		This.changeSubclass(This.pauseSubclass);
+	});
+	paella.events.bind(paella.events.pause,function(event) {
+		This.changeSubclass(This.playSubclass);
+	});
+}
+```
 
 To switch between the play and pause icon, the playButton plugin listen to the play and pause events. If the play event is triggered, the button subclass is changed to pauseSubclass, and if the pause event is triggered the button subclass is changed to playSubclass.
 
@@ -135,9 +141,11 @@ Use this class to implement plugins that responds to events.
 
 - getEvents(): Plugin life cycle. Override: required. It returns an array with the events we want to listen. Note that event driven plugin can't listen to paella's early life cycle events, such as paella.events.loadPlugins or paella.events.loadComplete, because the plugins haven't been loaded when these events are triggered.
 
-		getEvents:function() {
-			return [paella.events.event1,paella.events.event2, ... ];
-		}
+``` js
+getEvents:function() {
+	return [paella.events.event1,paella.events.event2, ... ];
+}
+```
 
 - onEvent(eventType,params): Plugin life cycle. Override: required. This function will receive the events we have registered in getEvents() function.
 
