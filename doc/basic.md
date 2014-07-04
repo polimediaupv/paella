@@ -4,16 +4,18 @@
 
 In your html page:
 
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta http-equiv="Content-type" content="text/html; charset=utf-8;">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Paella Engage Example</title>
-      </head>
-      <body>
-      </body>
-    </html>
+``` HTML
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8;">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Paella Engage Example</title>
+  </head>
+  <body>
+  </body>
+</html>
+```
 
 Add the paella css and js dependecies:
 
