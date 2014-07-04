@@ -19,7 +19,7 @@ In your html page:
 
 Add the paella css and js dependecies:
 
-```
+``` HTML
     <!DOCTYPE html>
     <html>
       <head>
