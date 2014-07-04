@@ -144,7 +144,7 @@ paella.dataDelegates.CookieDataDelegate = Class.create(paella.DataDelegate,{
 
 Register cookie data delegate in config.json
 
-``` js
+``` JSON
 {
 	...
 	"data":{
@@ -163,10 +163,10 @@ paella.MessageBox
 It shows a modal view over the player window.
 
 ``` js
-paella.messageBox.showFrame(url,params): shows an url in the modal view, using an iframe.
-paella.messageBox.showElement(domElement,params): shows a dom element in the modal view
-paella.messageBox.showMessage(message,params): shows a text message in the modal view 
-paella.messageBox.showError(message,params): shows an error message in the modal view. It works in the same way as 
+paella.messageBox.showFrame(url,params); // Shows an url in the modal view, using an iframe.
+paella.messageBox.showElement(domElement,params); // Shows a dom element in the modal view
+paella.messageBox.showMessage(message,params); // Shows a text message in the modal view 
+paella.messageBox.showError(message,params); // Shows an error message in the modal view. It works in the same way as 
 showMessage, but using another style.
 ```
 
@@ -183,10 +183,10 @@ paella.utils.ajax: send AJAX request. You can also use the shorter form "paella.
 --------------------
 
 ``` js
-paella.utils.ajax.get(params,onSuccess,onFail): Send a 'GET' request
-paella.utils.ajax.post(params,onSuccess,onFail): Send a 'POST' request
-paella.utils.ajax.put(params,onSuccess,onFail): Send a 'PUT' request
-paella.utils.ajax.delete(params,onSuccess,onFail): Send a 'DELETE' request
+paella.utils.ajax.get(params,onSuccess,onFail); // Send a 'GET' request
+paella.utils.ajax.post(params,onSuccess,onFail); // Send a 'POST' request
+paella.utils.ajax.put(params,onSuccess,onFail); // Send a 'PUT' request
+paella.utils.ajax.delete(params,onSuccess,onFail); // Send a 'DELETE' request
 ```
 
 - params: Object containing the following data:
@@ -215,7 +215,7 @@ paella.utils.parameters: parse URL parameters
 http://myserver.com/my_paella_player/?id=video1
 
 ``` js
-var param = paella.utils.parameters.get("id")
+var param = paella.utils.parameters.get("id");
 ```
 
 now the `param` variable contains "video1"
@@ -224,14 +224,14 @@ paella.utils.require: include javascript files in the HTML header
 --------------------
 
 ``` js
-paella.utils.require("javascript/myfile.js")
+paella.utils.require("javascript/myfile.js");
 ```
 
 paella.utils.importStylesheet: include stylesheet files in the HTML header
 --------------------
 
 ``` js
-	paella.utils.importStylesheet("style/mystylesheet.css")
+paella.utils.importStylesheet("style/mystylesheet.css");
 ```
 
 Keep in mind that there is no way to know when the stylesheet file is loaded, and the new styles will not be available inmediately after calling importStylesheet
@@ -240,7 +240,7 @@ paella.utils.timeParse: time parsing utilities
 --------------------
 
 ``` js
-	paella.utils.timeParse.secondsToTime(34599) => will return: "09:36:39"
+paella.utils.timeParse.secondsToTime(34599); // will return: "09:36:39"
 ```
 
 paella.utils.language: returns the current browser language code
@@ -251,37 +251,38 @@ paella.utils.userAgent: user agent string parsing utilities.
 
 You can test it in your browser javascript console. Example using Google Chrome v29 in OS X 10.9:
 
-	>> paella.utils.userAgent.broser
-	Object {Version: Object, Safari: false, Chrome: true, Name: "Chrome", Vendor: "Google"…}
-		Chrome: true
-		Explorer: false
-		Firefox: false
-		IsMobileVersion: false
-		Name: "Chrome"
-		Opera: false
-		Safari: false
-		Vendor: "Google"
-		Version: Object
-			major: 29
-			minor: 0
-			revision: 1547
-			versionString: "29.0.1547.76"
-	>> paella.utils.userAgent.system
-	Object {MacOS: true, Windows: false, iPhone: false, iPodTouch: false, iPad: false…}
-		Android: false
-		Linux: false
-		MacOS: true
-		OSName: "Mac OS X"
-		Version: Object
-			major: 10
-			minor: 9
-			revision: 0
-			stringValue: "10.9.0"
-		Windows: false
-		iOS: false
-		iPad: false
-		iPhone: false
-		iPodTouch: false
-
+```
+>> paella.utils.userAgent.broser
+Object {Version: Object, Safari: false, Chrome: true, Name: "Chrome", Vendor: "Google"…}
+	Chrome: true
+	Explorer: false
+	Firefox: false
+	IsMobileVersion: false
+	Name: "Chrome"
+	Opera: false
+	Safari: false
+	Vendor: "Google"
+	Version: Object
+		major: 29
+		minor: 0
+		revision: 1547
+		versionString: "29.0.1547.76"
+>> paella.utils.userAgent.system
+Object {MacOS: true, Windows: false, iPhone: false, iPodTouch: false, iPad: false…}
+	Android: false
+	Linux: false
+	MacOS: true
+	OSName: "Mac OS X"
+	Version: Object
+		major: 10
+		minor: 9
+		revision: 0
+		stringValue: "10.9.0"
+	Windows: false
+	iOS: false
+	iPad: false
+	iPhone: false
+	iPodTouch: false
+```
 
 
