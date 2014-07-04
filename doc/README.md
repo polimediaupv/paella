@@ -14,7 +14,7 @@ You can take your first contact with Paella going to [Paella Player Web Page](ht
 
 - Integrate Paella with your portal
 	- [Basic](basic.md)
-	- [Advanzed](integration.md)
+	- [Advanced](integration.md)
 
 ## Developer documentation
 
