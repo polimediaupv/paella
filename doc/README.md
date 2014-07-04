@@ -8,7 +8,7 @@ You can take your first contact with Paella going to [Paella Player Web Page](ht
 ![Paella Player Logo](http://paellaplayer.upv.es/resources/logo_paella.png)
 
 
-## Related documentation ##
+## Documentation
 
 - [Build and Install Paella Player](build.md)
 
@@ -16,7 +16,7 @@ You can take your first contact with Paella going to [Paella Player Web Page](ht
 	- [Basic](basic.md)
 	- [Advanzed](integration.md)
 
-### Developer documentation
+## Developer documentation
 
 - [Paella Plugins](plugins.md)
 
