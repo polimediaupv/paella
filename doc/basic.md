@@ -109,15 +109,17 @@ The loadPaella function can be called with different parameters:
 2. loadPaella(containerId, repository)
 
   This loads paella in a div width id = {containerId} and loads the default config file located at config/config.json, but you can specify the {repository} path.
+  
   Example:
 
-``` js
-loadPaella('playercontainer', 'http://my.server.com/paella/repository')
-````
+  ``` js
+  loadPaella('playercontainer', 'http://my.server.com/paella/repository')
+  ````
 
 3. loadPaella(containerId, config, repository)
 
   This loads paella in a div width id = {containerId}, but instead of loading the the default config file you can provide the config inline. You can  also specify the {repository} path.
+  
   Example:
 
 ``` js
