@@ -122,6 +122,6 @@ The loadPaella function can be called with different parameters:
   
   Example:
 
-``` js
-loadPaella('playercontainer', {...config...}, 'http://my.server.com/paella/repository')
-```
+  ``` js
+  loadPaella('playercontainer', {...config...}, 'http://my.server.com/paella/repository')
+  ```
