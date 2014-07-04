@@ -51,7 +51,7 @@ module.exports = function(grunt) {
 		},
 		jshint: {
 			options: {
-				jshintrc: 'jshintrc'
+				jshintrc: '.jshintrc'
 			},
 			dist: [
 				// 'javascript/base.js',
