@@ -216,7 +216,6 @@ div {
 	background-color: white;
 	border-radius: 22px;
 	box-shadow: 1px 1px 8px black;
-	font-family: sans-serif;
 	font-size: 20px;
 	padding-top: 40px;
 	padding-bottom:40px;
@@ -225,14 +224,13 @@ div {
 .frameContainer {
 	margin: auto;
 	text-align: center;
-	vertical-align: middle;
+	/*vertical-align: middle;*/
 	font-family: sans-serif;
 	padding-left: 80px;
 	padding-right: 80px;
 	background-color: white;
 	border-radius: 22px;
 	box-shadow: 1px 1px 8px black;
-	font-family: sans-serif;
 	font-size: 20px;
 	padding-top: 40px;
 	padding-bottom:40px;

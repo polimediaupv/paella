@@ -66,7 +66,6 @@ a.btn {
 
 .editorTimelineContent {
 	background-image:url(../images/light_background.png);
-	position:absolute;
 	top:0px;
 	box-shadow: inset 0px 0px 10px 0px rgba(0,0,0,0.7);
 	position:relative;
