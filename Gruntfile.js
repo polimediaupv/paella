@@ -59,7 +59,31 @@ module.exports = function(grunt) {
 				'plugins/*/*.js'
 			]
 		},
-
+		csslint: {
+			dist: {
+				options: {
+					import: 2,
+					"adjoining-classes": false,
+					"box-model": false,
+					"ids": false,
+					"outline-none": false,
+					"fallback-colors": false,
+					"zero-units": false,
+					"duplicate-background-images": false,
+					"empty-rules": false,
+					"shorthand": false,
+					"overqualified-elements": false
+				},
+				src: ['plugins/*/*.css', 'resources/style/*.css']
+			}
+		},
+		cssmin: {
+			dist: {
+				files: {
+					'build/player/resources/plugins/plugins.css': ['build/player/resources/plugins/plugins.css']
+				}
+			}
+		},
 
 		watch: {
 			 release: {
@@ -98,6 +122,8 @@ module.exports = function(grunt) {
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-csslint');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');	
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -106,9 +132,9 @@ module.exports = function(grunt) {
 
 
 	grunt.registerTask('default', ['dist']);
-	grunt.registerTask('checksyntax', ['jshint']);
+	grunt.registerTask('checksyntax', ['jshint', 'csslint']);
 
-	grunt.registerTask('build.release', ['copy:paella', 'concat:dist.js', 'concat:plugins.css', 'uglify:dist']);
+	grunt.registerTask('build.release', ['copy:paella', 'concat:dist.js', 'concat:plugins.css', 'uglify:dist', 'cssmin:dist']);
 	grunt.registerTask('build.debug', ['copy:paella', 'concat:dist.js', 'concat:plugins.css']);
 
 	grunt.registerTask('server.release', ['build.release', 'express', 'watch:release']);

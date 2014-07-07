@@ -3,11 +3,10 @@
 	background-image:url(slides_icon.png);
 }
 
-.buttonPlugin.frameControl:hover {
-}
-
-.buttonPlugin.frameControl.selected {
-}
+/*
+.buttonPlugin.frameControl:hover {}
+.buttonPlugin.frameControl.selected {}
+*/
 
 .frameControlContainer {
 	height: 87px;
@@ -84,10 +83,10 @@
 	background-size: 300%;
 	background-image:url(../../resources/images/frame_button.png);
 }
-
+/*
 .showFramesButton:hover {
 }
-
+*/
 .showFramesButton_active {
 	position:absolute;
 	display:block;
@@ -103,10 +102,13 @@
 }
 
 .frameThumbnail {
-	margin-left:3px;
+/*
+	margin-top:8px;
 	margin-right:3px;
 	margin-bottom:8px;
-	margin-top:8px;
+	margin-left:3px;
+*/
+	margin: 8px 3px 8px 3px;
 	height:40px;
 }
 
