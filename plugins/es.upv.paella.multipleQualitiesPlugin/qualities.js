@@ -120,6 +120,7 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 		var resM = paella.utils.parameters.get("resmaster");
 		var resS = paella.utils.parameters.get("resslave");
 		
+		/*
 		if (combo == "master"){
 			if (resM)
 				newUrl = this.constructNewUrl("resmaster",newRes,"resslave",resS);
@@ -131,7 +132,8 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 			else
 				newUrl = this.currentUrl+"&resslave="+newRes;
 		}
-		
+		*/
+		newUrl = this.constructNewUrl("resmaster",newRes,"resslave",resS);
 		window.open (newUrl, '_self', false);
 	},
 	
