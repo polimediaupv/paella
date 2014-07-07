@@ -67,7 +67,7 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 		comboM.id = 'master';
 		$(comboM).change(function() {
 			var param1Q = $(comboM).val();
-			thisClass.changeVideoStream(param1Q,comboM.id);
+			thisClass.changeVideoStream(param1Q, comboM.id);
 		});
 			
 		if (this.availableMasters.length > 1){
@@ -132,12 +132,20 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 				newUrl = this.currentUrl+"&resslave="+newRes;
 		}
 		
-		window.open (newUrl,'_self',false);
+		window.open (newUrl, '_self', false);
 	},
 	
 	constructNewUrl:function(param1,param1Q,param2,param2Q) {
-		var iniUrl = this.currentUrl.href.split("&");
-		return iniUrl[0]+"&"+param1+"="+param1Q+((param2Q) ? "&"+param2+"="+param2Q:'');
+		var iniUrl = this.currentUrl.href.split("?");
+		var url = iniUrl[0] + '?';
+		
+		Object.keys(paella.utils.parameters.list).forEach(function(p){
+			if ( (p != 'resmaster') && (p != 'resslave') && (p !='time') && (p !='autoplay') ) {
+				url = url + p + '=' + paella.utils.parameters.list[p] + '&';
+			}
+		});
+		
+		return url+ 'time=' + parseInt(paella.player.videoContainer.currentTime()) + "s&autoplay=true&"+param1+"="+param1Q+((param2Q) ? "&"+param2+"="+param2Q:'');
 	}
 });
   
