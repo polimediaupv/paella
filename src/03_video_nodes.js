@@ -367,7 +367,54 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 		var domElement = document.createElement('div');
 		this.domElement.appendChild(domElement);
 		domElement.id = id + "Movie";
-		swfobject.embedSWF(swfFile,domElement.id,"100%","100%","9.0.0","",flashVars,parameters);
+		
+		if (swfobject.hasFlashPlayerVersion("9.0.0")) {
+			swfobject.embedSWF(swfFile,domElement.id,"100%","100%","9.0.0","",flashVars,parameters, null, function callbackFn(e){
+				if (e.success == false){
+					var message = document.createElement('div');
+					
+					var header = document.createElement('h3');
+					header.innerHTML = paella.dictionary.translate("Flash player problem");
+		
+					var text = document.createElement('div');
+					text.innerHTML = paella.dictionary.translate("A problem occurred trying to load flash player.") + "<br>" +
+						paella.dictionary.translate("Please go to {0} and install it.")
+						.replace("{0}", "<a style='color: #800000; text-decoration: underline;' href='http://www.adobe.com/go/getflash'>http://www.adobe.com/go/getflash</a>") + '<br>' +
+						paella.dictionary.translate("If the problem presist, contant us.");
+					
+					var link = document.createElement('a');
+					link.setAttribute("href", "http://www.adobe.com/go/getflash");
+					link.innerHTML = '<img style="margin:5px;" src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Obtener Adobe Flash Player" />';		
+				
+					message.appendChild(header);
+					message.appendChild(text);
+					message.appendChild(link);
+				
+					paella.messageBox.showError(message.innerHTML);					
+				}				
+			});
+		}
+		else {
+			var message = document.createElement('div');
+			
+			var header = document.createElement('h3');
+			header.innerHTML = paella.dictionary.translate("Flash player 9 nedded");
+
+			var text = document.createElement('div');
+			text.innerHTML = paella.dictionary.translate("You need at least Flash player 9 installed.") + "<br>" +			
+				paella.dictionary.translate("Please go to {0} and install it.")
+				.replace("{0}", "<a style='color: #800000; text-decoration: underline;' href='http://www.adobe.com/go/getflash'>http://www.adobe.com/go/getflash</a>");
+			
+			var link = document.createElement('a');
+			link.setAttribute("href", "http://www.adobe.com/go/getflash");
+			link.innerHTML = '<img style="margin:5px;" src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Obtener Adobe Flash Player" />';		
+		
+			message.appendChild(header);
+			message.appendChild(text);
+			message.appendChild(link);
+		
+			paella.messageBox.showError(message.innerHTML);
+		}
 
 		var flashObj = $('#' + domElement.id)[0];
 		return flashObj;
