@@ -1,12 +1,4 @@
   {
-	"proxyLoader":{
-		"enabled":false,
-		"url":"",
-		"usejsonp":false
-	},
-	"restServer":{
-		"url":"test/"
-	},
 	"player":{
 		"defaultProfile": "full",
 		"methods":[{"name":"streaming","enabled":true},
@@ -35,15 +27,16 @@
 	"plugins":{
 		"defaultConfig":{"enabled":true},
 		"list":{
-			"es.upv.paella.ImageControlPlugin":{"enabled":false},		
+			"es.upv.paella.ImageControlPlugin":{"enabled":false},
 			"es.upv.paella.ShowEditorPlugin":{"enabled":true,"alwaysVisible":true},
 			"es.upv.paella.TrimmingPlayerPlugin":{"enabled":true},
 			"es.upv.paella.editor.TrimmingTrackPlugin":{"enabled":true},
 			"es.upv.paella.playPauseButtonPlugin":{"enabled":true},
-			"es.upv.paella.repeatButtonPlugin":{"enabled":true}
+			"es.upv.paella.repeatButtonPlugin":{"enabled":true},
+            "es.upv.paella.test.videoLoadPlugin":{"enabled":false}
 		}
 	},
     "standalone" : {
-        "reposiroty": "https://dl.dropboxusercontent.com/u/34345155/repository/"
+        "reposiroty": "../repository/"
     }
 }

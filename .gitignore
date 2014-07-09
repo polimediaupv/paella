@@ -1,6 +1,5 @@
 .DS_Store
 test
-config/config.json
 *~
 tmp
 build

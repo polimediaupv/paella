@@ -50,7 +50,7 @@ Class ("paella.VideoLoader", {
 		var videoElement = document.createElement('video');
 		var h264 = videoElement.canPlayType('video/mp4; codecs="avc1.42E01E"');
 		if (h264=="") h264 = videoElement.canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"');
-		h264 = (h264=='probably') || (h264=='maybe');
+		h264 = (h264=='probably');
 		return h264;
 	},
 
@@ -58,7 +58,7 @@ Class ("paella.VideoLoader", {
 		if (paella.utils.userAgent.browser.IsMobileVersion) return false;
 		var videoElement = document.createElement('video');
 		var ogg = videoElement.canPlayType('video/ogg; codecs="theora"');
-		ogg = (ogg=='probably') || (ogg=='maybe');
+		ogg = (ogg=='probably');
 		return ogg;
 	},
 
@@ -66,7 +66,7 @@ Class ("paella.VideoLoader", {
 		if (paella.utils.userAgent.browser.IsMobileVersion) return false;
 		var videoElement = document.createElement('video');
 		var webm = videoElement.canPlayType('video/webm; codecs="vp8, vorbis"');
-		webm = (webm=='probably') || (webm=='maybe');
+		webm = (webm=='probably');
 		return webm;
 	},
 
