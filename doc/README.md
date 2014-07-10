@@ -19,3 +19,5 @@ You can take your first contact with Paella going to [Paella Player Web Page](ht
 - Developer documentation
 	- [Paella Utilities](developer_utilities.md)
 	- [Paella Plugins](developer_plugins.md)
+		- [Player plugins](developer_plugins_player.md)
+		- [Editor plugins](developer_plugins_editor.md)
