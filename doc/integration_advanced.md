@@ -36,32 +36,32 @@ function loadPaellaExtended(containerId) {
 
 1. Extend paella.AccessControl and implement the checkAccess method:
  
-``` js
-var MyAccessControl = Class.create(paella.AccessControl,{
-	checkAccess:function(onSuccess) {		
-```
+	``` js
+	var MyAccessControl = Class.create(paella.AccessControl,{
+		checkAccess:function(onSuccess) {		
+	```
 
 2. Fill-in the this.permissions object, specifying the privileges that the current user have. You can get this data asynchronously if you want, because Paella Player will be waiting until you call the onSuccess callback. There are two objects that you must to fill-in: permissions and userData:
 
-``` js
-this.permissions.canRead = true;
-this.permissions.canWrite = true;
-this.permissions.canContribute = true;
-this.permissions.loadError = false;
-this.permissions.isAnonymous = true;
-
-this.userData.login = 'anonymous';
-this.userData.name = 'Anonymous';
-this.userData.avatar = 'resources/images/default_avatar.png';
-```
+	``` js
+	this.permissions.canRead = true;
+	this.permissions.canWrite = true;
+	this.permissions.canContribute = true;
+	this.permissions.loadError = false;
+	this.permissions.isAnonymous = true;
+	
+	this.userData.login = 'anonymous';
+	this.userData.name = 'Anonymous';
+	this.userData.avatar = 'resources/images/default_avatar.png';
+	```
 
 3. Call onSuccess when you end loading all the data, and pass the permissions and userData objects to it:
 
-``` js
-		onSuccess(this.permissions,this.userData);
-	}
-});
-```
+	``` js
+			onSuccess(this.permissions,this.userData);
+		}
+	});
+	```
  
 
 
@@ -69,50 +69,50 @@ this.userData.avatar = 'resources/images/default_avatar.png';
 
 1. Extend paella.VideoLoader and implement the loadVideo function:
  
-``` js
-var MyVideoLoader = Class.create(paella.VideoLoader, {
-	loadVideo:function(videoId,onSuccess) {		
-```
+	``` js
+	var MyVideoLoader = Class.create(paella.VideoLoader, {
+		loadVideo:function(videoId,onSuccess) {		
+	```
 
 2. Setup the video stream data:
 
-``` js
-var url = videoId;
-if (url) {
-	var stream = examplePresenterSources;	// See below
-	stream.sources.mp4[0].src = url + stream.sources.mp4[0].src;
-	stream.preview = url + stream.preview;
+	``` js
+	var url = videoId;
+	if (url) {
+		var stream = examplePresenterSources;	// See below
+		stream.sources.mp4[0].src = url + stream.sources.mp4[0].src;
+		stream.preview = url + stream.preview;
+		this.streams.push(stream);
+	
+		stream = exampleSlidesSources;			// See below
+		stream.sources.mp4[0].src = url + stream.sources.mp4[0].src;
+		stream.preview = url + stream.preview;
+		for (var key in stream.sources.image.frames) {
+			stream.sources.image.frames[key] = url + stream.sources.image.frames[key];
+		}
 	this.streams.push(stream);
-
-	stream = exampleSlidesSources;			// See below
-	stream.sources.mp4[0].src = url + stream.sources.mp4[0].src;
-	stream.preview = url + stream.preview;
-	for (var key in stream.sources.image.frames) {
-		stream.sources.image.frames[key] = url + stream.sources.image.frames[key];
-	}
-this.streams.push(stream);
-```		
+	```		
 
 3. Setup the video thumbnails:
  
-``` js
-	this.frameList = exampleFrameList;	// See below
-	for (var key in this.frameList) {
-		this.frameList[key].url = url + this.frameList[key].url;
-		this.frameList[key].thumb = url + this.frameList[key].thumb;
+	``` js
+		this.frameList = exampleFrameList;	// See below
+		for (var key in this.frameList) {
+			this.frameList[key].url = url + this.frameList[key].url;
+			this.frameList[key].thumb = url + this.frameList[key].thumb;
+		}
 	}
-}
-```
+	```
 
 4. Set this.loadStatus = true if all went Ok and call onSuccess:
  
-``` js
-		// Callback
-		this.loadStatus = true;
-		onSuccess();
+	``` js
+			// Callback
+			this.loadStatus = true;
+			onSuccess();
+		}
 	}
-}
-```
+	```
 
 Video and frame thumnail data
 ---------------
