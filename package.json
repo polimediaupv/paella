@@ -1,6 +1,6 @@
 {
   "name": "PaellaPlayer",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Paella Player",
   "repository": {
     "type": "git",
@@ -18,7 +18,8 @@
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-uglify": "~0.5.0",
     "grunt-contrib-watch": "~0.6.1",
-    "grunt-express": "~1.4.0"
+    "grunt-express": "~1.4.0",
+    "grunt-jsonlint": "^1.0.4"
   },
   "scripts": {
     "test": "grunt checksyntax"

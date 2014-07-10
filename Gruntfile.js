@@ -23,6 +23,9 @@ module.exports = function(grunt) {
 				}
 			},
 			'dist.js': {
+				options: {
+					footer: 'paella.player.version = "<%= pkg.version %>";\n'
+				},
 				src: [
 					'src/*.js',
 					'plugins/*/*.js'
@@ -39,7 +42,7 @@ module.exports = function(grunt) {
 		uglify: {
 			options: {
 				banner: '/*\n' +
-						'	Paella HTML 5 Multistream Player\n' +
+						'	Paella HTML5 Multistream Player v.<%= pkg.version %>\n' +
 						'	Copyright (C) 2013  Universitat Politècnica de València' +
 						'\n'+
 						'	File generated at <%= grunt.template.today("dd-mm-yyyy") %>\n' +
@@ -121,7 +124,12 @@ module.exports = function(grunt) {
 			      bases: 'build'
 		      }
 		  }
-		}
+		},
+		jsonlint: {
+			paella: {
+				src: [ 'package.json', 'config/*.json', 'config/profiles/profiles.json', 'repository_test/*/*.json' ]
+			}
+		}		
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
@@ -132,13 +140,15 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-express');
+	grunt.loadNpmTasks('grunt-jsonlint');
 
 
 	grunt.registerTask('default', ['dist']);
-	grunt.registerTask('checksyntax', ['jshint', 'csslint']);
+	grunt.registerTask('checksyntax', ['jshint', 'csslint', 'jsonlint']);
 
-	grunt.registerTask('build.release', ['copy:paella', 'concat:dist.js', 'concat:plugins.css', 'uglify:dist', 'cssmin:dist']);
-	grunt.registerTask('build.debug', ['copy:paella', 'concat:dist.js', 'concat:plugins.css']);
+	grunt.registerTask('build.common', ['checksyntax', 'copy:paella', 'concat:dist.js', 'concat:plugins.css']);
+	grunt.registerTask('build.release', ['build.common', 'uglify:dist', 'cssmin:dist']);
+	grunt.registerTask('build.debug', ['build.common']);
 
 	grunt.registerTask('server.release', ['build.release', 'express', 'watch:release']);
 	grunt.registerTask('server.debug', ['build.debug', 'express', 'watch:debug']);
