@@ -16,8 +16,6 @@ You can take your first contact with Paella going to [Paella Player Web Page](ht
 	- [Basic](integration_basic.md)
 	- [Advanced](integration_advanced.md)
 
-## Developer documentation
-
-- [Paella Plugins](developer_plugins.md)
-
-- [Paella Utilities](developer_utilities.md)
+- Developer documentation
+	- [Paella Utilities](developer_utilities.md)
+	- [Paella Plugins](developer_plugins.md)
