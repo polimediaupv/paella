@@ -13,11 +13,11 @@ You can take your first contact with Paella going to [Paella Player Web Page](ht
 - [Build and Install Paella Player](build.md)
 
 - Integrate Paella with your portal
-	- [Basic](basic.md)
-	- [Advanced](integration.md)
+	- [Basic](integration_basic.md)
+	- [Advanced](integration_advanced.md)
 
 ## Developer documentation
 
-- [Paella Plugins](plugins.md)
+- [Paella Plugins](developer_plugins.md)
 
-- [Paella Utilities](utilities.md)
+- [Paella Utilities](developer_utilities.md)

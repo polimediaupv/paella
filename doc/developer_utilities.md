@@ -42,11 +42,11 @@ loader.addCallback(new MyLoaderCallback2("loader2"));
 loader.addCallback(new MyLoaderCallback3("loader3"));
 
 loader.load(function() {
-				console.log("Operation successfully completed");
-			},
-			function() {
-				console.log("Load error");
-			});
+		console.log("Operation successfully completed");
+	},
+	function() {
+		console.log("Load error");
+	});
 ```
 
 paella.AsyncLoaderCallback: Implement a callback:
@@ -89,7 +89,7 @@ var timer = new paella.Timer(function(timer) {
 		if (counter==numberOfMessages) {
 			timer.cancel;
 		}
-	},t);
+	}, t);
 timer.repeat = true;
 ```
 
