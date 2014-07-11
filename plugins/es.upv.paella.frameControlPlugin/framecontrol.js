@@ -131,12 +131,12 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 			numFrames = framesKeys.length;
 
 			framesKeys.map(function(i){return parseInt(i, 10);})
-			.sort(function(a, b){return a-b})
+			.sort(function(a, b){return a-b;})
 			.forEach(function(key){
 				var frameItem = thisClass.getFrame(frames[key]);
 				content.appendChild(frameItem,'frameContrlItem_' + numFrames);
 				thisClass.frames.push(frameItem);
-			})
+			});
 		}
 
 		$(content).css({width:(numFrames * itemWidth) + 'px'});
