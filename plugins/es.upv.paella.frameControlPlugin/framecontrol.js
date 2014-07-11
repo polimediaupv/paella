@@ -127,13 +127,16 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 		var frames = paella.initDelegate.initParams.videoLoader.frameList;
 		var numFrames;
 		if (frames) {
-			numFrames = 0;
-			for (var key in frames) {
-				var frameItem = this.getFrame(frames[key]);
+			var framesKeys = Object.keys(frames);
+			numFrames = framesKeys.length;
+
+			framesKeys.map(function(i){return parseInt(i, 10);})
+			.sort(function(a, b){return a-b})
+			.forEach(function(key){
+				var frameItem = thisClass.getFrame(frames[key]);
 				content.appendChild(frameItem,'frameContrlItem_' + numFrames);
-				this.frames.push(frameItem);
-				++numFrames;
-			}
+				thisClass.frames.push(frameItem);
+			})
 		}
 
 		$(content).css({width:(numFrames * itemWidth) + 'px'});
