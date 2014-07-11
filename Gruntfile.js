@@ -10,8 +10,10 @@ module.exports = function(grunt) {
 				files: [
 					{expand: true, src: ['config/**', 'javascript/**', 'resources/**', 'index.html', 'extended.html', 'paella-standalone.js'], dest: 'build/player/'},
 					{expand: true, cwd: 'src/flash_player/', src: "player.swf", dest: 'build/player/' },
-					{expand: true, cwd: 'repository_test/', src: '**', dest: 'build/'},
-					{expand: true, src: 'plugins/*/resources/*', dest: 'build/player/resources/plugins/', flatten:true }
+					//{expand: true, cwd: 'repository_test/', src: '**', dest: 'build/'},
+					{expand: true, src:'plugins/*/resources/**', dest: 'build/player/resources/plugins/',
+						rename: function (dest, src) { return dest+src.split('/').splice(3).join('/'); }
+					}
 				]
 			}
 		},
@@ -24,7 +26,7 @@ module.exports = function(grunt) {
 			},
 			'dist.js': {
 				options: {
-					footer: 'paella.player.version = "<%= pkg.version %>";\n'
+					footer: 'paella.version = "<%= pkg.version %>";\n'
 				},
 				src: [
 					'src/*.js',
@@ -98,8 +100,7 @@ module.exports = function(grunt) {
 				 	'extended.html',
 				 	'paella-standalone.js',
 				 	'src/*.js',
-				 	'plugins/*/*.js',
-				 	'plugins/*/*.css',
+				 	'plugins/**',
 					'src/flash_player/player.swf'
 				 ],
 				 tasks: ['build.release']
@@ -110,8 +111,7 @@ module.exports = function(grunt) {
 				 	'extended.html',
 				 	'paella-standalone.js',
 				 	'src/*.js',
-				 	'plugins/*/*.js',
-				 	'plugins/*/*.css',
+				 	'plugins/**',
 					'src/flash_player/player.swf'
 				 ],
 				 tasks: ['build.debug']
