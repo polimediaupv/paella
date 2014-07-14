@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="main style" charset="utf-8">
+	</head>
+	<body>
+		<div>
+			<h1>Paella Player usage and features guide</h1>
+			
+			<h2>1   Basic usage</h2>
+			
+			<p>Paella is designed to display two video windows, with the camera and the presentation view, and some information
+			regarding the lecture. You can navigate through the slides and tabs, but you can also begin viewing the lecture 
+			by pressing the play button on top of the video window or in the control bar.</p>
+			
+			<p><img alt="Image" title="" src="images/capture_player.jpg" class="alignCenter"></p>
+			
+			<ol><li><p>Paella display areas</p><p>There are three main areas in Paella:</p><p>The video display, where you can see the video of the lecture hall and the video of the presentation device 
+			and the player control buttons. The bottom pane, where you will find useful information of this lecture
+			The right pane, where you will find information related to this lecture, like other lectures for this series
+			or lecture suggestions.</p><p><img alt="Image" title="" src="images/capture_extended.jpg" class="alignCenter"></p><p>You can change the arrangement of those areas using the resize tool. You will find four sizes, from the 
+			smallest video window to the fullscreen video area.</p><p><img alt="Image" title="" src="images/toolbar_pagelayout.png" class="alignCenter"></p><p>Be noticed you can also drag the player window to any extent; Paella will fill the browser window accordingly.</p></li><li><p>Subtitles</p><p>Paella can display subtitles from a Matterhorn server. As today, if there are multiple subtitles for a 
+			lecture, Paella will only display the first one.</p><p><img alt="Image" title="" src="images/toolbar_captions.png" class="alignCenter"></p></li></ol>
+			
+			<h2>2	Managing views</h2>
+			
+			<p>The view button selects which arrangement between the lecture video and the presentation video is displayed, 
+			so you can focus on the most interesting points.</p>
+			
+			<p><img alt="Image" title="" src="images/toolbar_videolayout.png" class="alignCenter"></p>
+			
+			<p>These views are configurable by the administrator of your site.</p>
+			
+			<h2>3	Locating content</h2>
+			
+			<p>In most cases you don’t want to see the whole lecture, but going to some interesting part of it. Paella provides
+			several tools to navigate through the lecture and locate those interesting points.</p>
+			
+			<ol>
+				<li><p>The progress bar</p>
+					<p>The progress bar shows the current playing time. You can click over it to jump to any point in the lecture.</p>
+					<p><img alt="Image" title="" src="images/toolbar_playbar.png" class="alignCenter"></p>
+				</li>
+				
+				<li><p>The slide navigation tool</p>
+					<p>Clicking on the last button you can open the slide navigation tool. There you can move your mouse over the slides and a 
+						high resolution slide will be shown over the presentation video.</p>
+					<p>Click on any slide to go to that point.</p>
+					<p><img alt="Image" title="" src="images/toolbar_slides.png" class="alignCenter"></p>
+				</li>
+				<li><p>The view again tool</p>
+					<p>The view again plugin goes back 30 seconds into the past, to review any difficult point on the lecture.</p>
+					<p><img alt="Image" title="" src="images/toolbar_rewind30.png" class="alignCenter"></p>
+				</li>
+			
+			
+				<li><p>The comments plugin*</p>
+					<p>Using the comments tool you can tell whatever you want about the lecture. Comments are public and 
+						anybody can view them</p>
+					<p><img alt="Image" title="" src="images/extendedtab_comments.png" class="alignCenter"></p>
+				</li>
+				<li><p>The footprints plugin</p>
+					<p>Clicking on the footprints button you can see a “heat map” on the views of the lecture, showing the most
+						and least viewed parts of it. Click on the progress bar to go there if you are interested.</p>
+					<p><img alt="Image" title="" src="images/toolbar_footprints.png" class="alignCenter"></p>
+				</li>
+			</ol>
+			
+			<h2>4	Sharing content</h2>
+			
+			<ol><li><p>The social network plugin</p><p>The social network plugin allows publishing a link for this lecture in Facebook, Twitter or embed in your own page. Please take
+			into account that the access policy of your server may not allow it. </p><p><img alt="Image" title="" src="images/toolbar_social.png" class="alignCenter"></p></li></ol>
+			
+<!--			
+			<h2>5	Editing lectures</h2>
+			
+			<p>Paella allows teachers and video owners to edit a lecture.
+			A requisite to do that is to have a Matterhorn 1.4 server or newer with the public annotations service.</p>
+			
+			<ol><li><p>The edit button</p><p>If you have enough rights to edit a video (usually because you are the teacher of the lecture), then you will
+			notice a pen icon on the top left of the video window. Clicking on that pen you will go to the editing mode.
+			<img alt="Image" title="" src="images/button_editor.png" class="alignCenter"> </p><p>When you enter the edit mode you will notice a timeline on the lower part of the screen. There you will 
+			find the editing tools (currently Trimming, Breaks and Subtitles) on the left and a save button on the right.</p><p><img alt="Image" title="" src="images/capture_editor.jpg" class="alignCenter"></p><p>Editing is done always in full/embedded mode. It is advised to maximize your web window for clear viewing.</p></li><li><p>Soft editing and hard editing</p><p>Paella works in Soft edit mode. So, when you make any editing on a lecture you are not changing the real
+			lecture, you are writing some special marks on the lecture and Paella will recognize those marks and change
+			the behavior of the playing session. If you want to undo the editings you can do that, but on the other hand,
+			if the content could be accessed by other means than Paella, users could access to the unedited lecture.</p><p>This is quite different than the hard editing approach, in which the changes are applied to the lecture are
+			permanent and forever.</p></li><li><p>Setting the beginning and the end of a lecture (Trimming tool)</p><p>Using the trimming tool you can decide the beginning and the end of lecture. Select the tool and slide left
+			and right to the desired time. Zoom button, on the bottom left, can be useful for finding the end of a lecture.</p><p>After setting that, press save to apply the changes. From now on, Paella will recognize the settings and jump
+			to that point when playing.</p></li><li><p>Setting breaks in a lecture</p><p>Using the breaks tool you can set intervals in which the lecture is not useful. When paella arrives to the
+			beginning of a break, it will automatically jump to the end of that break. You can set several breaks in a lecture.</p><p>Remember to save changes after doing that with the save button.</p></li><li><p>Editing subtitles</p><p>Using the subtitles tool you can modify the subtitles for a lecture. Select the desired subtitle and you can
+			modify it on the left pane.</p><p>This tool is currently under development.</p><p>*Requires a Matterhorn lecture  with uploaded subtitles </p></li><li><p>The publishing plugin</p><p>This plugin sets a flag that indicates a Sakai CMS server that the owner of a lecture allows publishing.
+			If you don’t have that environment you probably won’t use it.</p></li></ol>
+			
+			
+			<h2>7 References</h2>
+			
+			<ol><li><a href="http://paellaplayer.upv.es" title="">Paella Player Web Page</a></li></ol>
+-->
+		</div>
+	</body>
+</html>
