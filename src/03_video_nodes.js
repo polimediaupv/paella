@@ -560,8 +560,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		source.src = sourceData.src;
 		source.type = sourceData.type;
 		this.domElement.appendChild(source);
-		var ua = new UserAgent();
-		if (ua.browser.IsMobileVersion) {
+		if (base.userAgent.browser.IsMobileVersion) {
 			this.ready = true;
 		}
 	},
