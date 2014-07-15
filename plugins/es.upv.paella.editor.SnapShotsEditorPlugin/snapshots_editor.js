@@ -11,7 +11,7 @@ paella.plugins.SnapShotsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
 	},
 
 	setup:function() {
-		if (paella.utils.language()=="es") {
+		if (base.dictionary.currentLanguage()=="es") {
 			var esDict = {
 				'Slides':'Diapositivas',
 				'Slide': 'Diapositiva' 

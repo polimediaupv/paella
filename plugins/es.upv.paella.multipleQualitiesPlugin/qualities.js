@@ -12,7 +12,7 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 	getDefaultToolTip:function() { return paella.dictionary.translate("Change video quality"); },	
 	checkEnabled:function(onSuccess) { onSuccess(this.checkStreams()); },
 	setup:function() {
-		if (paella.utils.language()=="es") {
+		if (base.dictionary.currentLanguage()=="es") {
 			var esDict = {
 				'Presenter':'Presentador',
 				'Slide':'Diapositiva'

@@ -14,12 +14,12 @@ paella.plugins.AnnotationsEditorPlugin = Class.create(paella.editor.TrackPlugin,
 	},
 
 	setup:function() {
-		if (paella.utils.language()=="es") {
+		if (base.dictionary.currentLanguage()=="es") {
 			var esDict = {
 				'Annotation':'Anotación',
 				'Annotations':'Anotaciones'
 			};
-			paella.dictionary.addDictionary(esDict);
+			base.dictionary.addDictionary(esDict);
 		}
 	},
 
@@ -29,8 +29,8 @@ paella.plugins.AnnotationsEditorPlugin = Class.create(paella.editor.TrackPlugin,
 	
 	getTools:function() {
 		return [
-			{name:'create',label:paella.dictionary.translate('Create'),hint:paella.dictionary.translate('Create a new caption in the current position')},
-			{name:'delete',label:paella.dictionary.translate('Delete'),hint:paella.dictionary.translate('Delete selected caption')}
+			{name:'create',label:base.dictionary.translate('Create'),hint:base.dictionary.translate('Create a new caption in the current position')},
+			{name:'delete',label:base.dictionary.translate('Delete'),hint:base.dictionary.translate('Delete selected caption')}
 		];
 	},
 	
@@ -45,7 +45,7 @@ paella.plugins.AnnotationsEditorPlugin = Class.create(paella.editor.TrackPlugin,
 			var start = paella.player.videoContainer.currentTime();
 			var end = start + 30;
 			var id = this.getTrackUniqueId();
-			var content = paella.dictionary.translate('Annotation');
+			var content = base.dictionary.translate('Annotation');
 			this.tracks.push({id:id,s:start,e:end,content:content,name:content});
 			return true;
 		}
@@ -67,7 +67,7 @@ paella.plugins.AnnotationsEditorPlugin = Class.create(paella.editor.TrackPlugin,
 	},
 	
 	getTrackName:function() {
-		return paella.dictionary.translate("Annotations");
+		return base.dictionary.translate("Annotations");
 	},
 	
 	getColor:function() {
@@ -111,7 +111,7 @@ paella.plugins.AnnotationsEditorPlugin = Class.create(paella.editor.TrackPlugin,
 	},
 	
 	contextHelpString:function() {
-		if (paella.utils.language()=="es") {
+		if (base.dictionary.currentLanguage()=="es") {
 			return "Utiliza esta herramienta para crear, borrar y editar anotaciones. Para crear una anotación, selecciona el instante de tiempo haciendo clic en el fondo de la línea de tiempo, y pulsa el botón 'Crear'. Utiliza esta pestaña para editar el texto de las anotaciones";
 		}
 		else {
