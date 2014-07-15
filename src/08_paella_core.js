@@ -234,24 +234,6 @@ Class ("paella.PlayerBase", {
 		}
 	},
 
-	includePlugins:function(productionPluginFile,devPluginsDir,devPluginsArray,productionPluginCss) {
-		if (!productionPluginCss) productionPluginCss = 'resources/plugins/plugins.css';
-
-		if (/debug/.test(window.location.href)) {
-			paella.debug.debug = true;
-			for (var i=0; i<devPluginsArray.length; i++) {
-				var jsFile = devPluginsArray[i];
-				var cssFile = jsFile.substr(0, jsFile.lastIndexOf(".")) + ".css";
-				paella.debug.log(devPluginsDir + jsFile + ", " + devPluginsDir + cssFile);
-				paella.utils.require(devPluginsDir + jsFile);
-				paella.utils.importStylesheet(devPluginsDir + cssFile);
-			}
-		}
-		else {
-			paella.utils.importStylesheet(productionPluginCss);
-		}
-	},
-
 	loadComplete:function(event,params) {
 
 	}
