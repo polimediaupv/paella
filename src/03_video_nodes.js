@@ -374,13 +374,13 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 					var message = document.createElement('div');
 					
 					var header = document.createElement('h3');
-					header.innerHTML = paella.dictionary.translate("Flash player problem");
+					header.innerHTML = base.dictionary.translate("Flash player problem");
 		
 					var text = document.createElement('div');
-					text.innerHTML = paella.dictionary.translate("A problem occurred trying to load flash player.") + "<br>" +
-						paella.dictionary.translate("Please go to {0} and install it.")
+					text.innerHTML = base.dictionary.translate("A problem occurred trying to load flash player.") + "<br>" +
+						base.dictionary.translate("Please go to {0} and install it.")
 						.replace("{0}", "<a style='color: #800000; text-decoration: underline;' href='http://www.adobe.com/go/getflash'>http://www.adobe.com/go/getflash</a>") + '<br>' +
-						paella.dictionary.translate("If the problem presist, contant us.");
+						base.dictionary.translate("If the problem presist, contant us.");
 					
 					var link = document.createElement('a');
 					link.setAttribute("href", "http://www.adobe.com/go/getflash");
@@ -398,11 +398,11 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 			var message = document.createElement('div');
 			
 			var header = document.createElement('h3');
-			header.innerHTML = paella.dictionary.translate("Flash player 9 nedded");
+			header.innerHTML = base.dictionary.translate("Flash player 9 nedded");
 
 			var text = document.createElement('div');
-			text.innerHTML = paella.dictionary.translate("You need at least Flash player 9 installed.") + "<br>" +			
-				paella.dictionary.translate("Please go to {0} and install it.")
+			text.innerHTML = base.dictionary.translate("You need at least Flash player 9 installed.") + "<br>" +			
+				base.dictionary.translate("Please go to {0} and install it.")
 				.replace("{0}", "<a style='color: #800000; text-decoration: underline;' href='http://www.adobe.com/go/getflash'>http://www.adobe.com/go/getflash</a>");
 			
 			var link = document.createElement('a');

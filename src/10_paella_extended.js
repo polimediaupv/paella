@@ -257,7 +257,7 @@ Class ("paella.Extended", {
 
 	setMainProfile:function() {
 		var profile = 'full';
-		var cookieProfile = paella.utils.cookies.get("paella.extended.profile");
+		var cookieProfile = base.cookies.get("paella.extended.profile");
 		if (cookieProfile) {
 			profile = cookieProfile;
 		}
@@ -268,7 +268,7 @@ Class ("paella.Extended", {
 	},
 
 	setProfile:function(profileName) {
-		paella.utils.cookies.set("paella.extended.profile", profileName);
+		base.cookies.set("paella.extended.profile", profileName);
 		var thisClass = this;
 		this.container.className = this.settings.containerClass + " " + profileName;
 		this.paellaHeader.className = this.settings.playerHeaderClass + " " + profileName;

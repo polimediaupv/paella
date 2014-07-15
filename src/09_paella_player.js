@@ -78,16 +78,16 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 					thisClass.videoContainer.publishVideo();
 				}
 				else {
-					thisClass.unloadAll(paella.dictionary.translate("You are not authorized to view this resource"));
+					thisClass.unloadAll(base.dictionary.translate("You are not authorized to view this resource"));
 				}
 			}
 			else if (permissions.isAnonymous) {
-				errorMessage = paella.dictionary.translate("You are not logged in");
+				errorMessage = base.dictionary.translate("You are not logged in");
 				thisClass.unloadAll(errorMessage);
 				paella.events.trigger(paella.events.error,{error:errorMessage});
 			}
 			else {
-				errorMessage = paella.dictionary.translate("You are not authorized to view this resource");
+				errorMessage = base.dictionary.translate("You are not authorized to view this resource");
 				thisClass.unloadAll(errorMessage);
 				paella.events.trigger(paella.events.error,{error:errorMessage});
 			}
@@ -110,7 +110,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 	//setupEditor:function() {
 		//if (paella.extended) return;
-	//	if (paella.editor && paella.player.config.editor && paella.player.config.editor.enabled && !paella.utils.userAgent.browser.IsMobileVersion) {
+	//	if (paella.editor && paella.player.config.editor && paella.player.config.editor.enabled && !base.userAgent.browser.IsMobileVersion) {
 			//this.controls.showEditorButton();
 	//	}
 	//	else {
@@ -161,10 +161,10 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 						paella.events.trigger(paella.events.loadPlugins,{pluginManager:paella.pluginManager});
 
 						// The loadComplete event depends on the readyState of presenter and slide video
-						new paella.utils.Timer(function(timer) {
+						new base.Timer(function(timer) {
 							if (thisClass.videoContainer.isReady()) {
 								paella.events.trigger(paella.events.loadComplete,{masterVideo:master,slaveVideo:slave,frames:frames});
-								thisClass.onresize();
+								//thisClass.onresize();
 								timer.repeat = false;
 							}
 							else {
@@ -173,13 +173,13 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 						},500);
 					}
 					else {
-						errorMessage = paella.dictionary.translate("Your browser is not compatible with the required video codec");
+						errorMessage = base.dictionary.translate("Your browser is not compatible with the required video codec");
 						paella.messageBox.showError(errorMessage);
 						paella.events.trigger(paella.events.error,{error:errorMessage});
 					}
 				}
 				else {
-					errorMessage = paella.dictionary.translate("Error loading video data");
+					errorMessage = base.dictionary.translate("Error loading video data");
 					paella.messageBox.showError(errorMessage);
 					paella.events.trigger(paella.events.error,{error:errorMessage});
 				}
@@ -247,10 +247,10 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 	loadComplete:function(event,params) {
 		var thisClass = this;
-		var time = paella.utils.parameters.get('time');
+		var time = base.parameters.get('time');
 		var master = paella.player.videoContainer.masterVideo();
-		var getProfile = paella.utils.parameters.get('profile');
-		var cookieProfile = paella.utils.cookies.get('lastProfile');
+		var getProfile = base.parameters.get('profile');
+		var cookieProfile = base.cookies.get('lastProfile');
 		if (getProfile) {
 			this.setProfile(getProfile);
 		}
@@ -263,8 +263,8 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 		// TODO: No sé muy bien por qué pero si no se reproduce el vídeo al menos un segundo no funciona el setSeek
 		paella.events.trigger(paella.events.play);
-		new paella.utils.Timer(function(timer) {
-			var autoplay = paella.utils.parameters.list.autoplay ? paella.utils.parameters.list.autoplay:'';
+		new base.Timer(function(timer) {
+			var autoplay = base.parameters.list.autoplay ? base.parameters.list.autoplay:'';
 			autoplay = autoplay.toLowerCase();
 
 			var playerConfig = paella.player.config.player;

@@ -84,7 +84,7 @@ paella.plugins.FootPrintsPlugin = Class.create(paella.ButtonPlugin,{
 	willShowContent:function() {
 		var thisClass = this;
 		this.loadFootprints();
-		this.footPrintsTimer = new paella.utils.Timer(function(timer) {
+		this.footPrintsTimer = new base.Timer(function(timer) {
 			thisClass.loadFootprints();
 			},5000);
 		this.footPrintsTimer.repeat = true;
