@@ -14,7 +14,7 @@ paella.ShowEditorPlugin = Class.create(paella.VideoOverlayButtonPlugin,{
 	getDefaultToolTip:function() { return base.dictionary.translate("Enter editor mode"); },
 
 	checkEnabled:function(onSuccess) {
-		onSuccess(paella.editor && paella.player.config.editor && paella.player.config.editor.enabled && !paella.utils.userAgent.browser.IsMobileVersion &&
+		onSuccess(paella.editor && paella.player.config.editor && paella.player.config.editor.enabled && !base.userAgent.browser.IsMobileVersion &&
 			(paella.initDelegate.initParams.accessControl.permissions.canWrite || this.config.alwaysVisible) && !paella.player.isLiveStream());
 	},
 
