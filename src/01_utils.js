@@ -57,17 +57,7 @@ Class ("paella.MouseManager", {
 
 // paella.utils
 ///////////////////////////////////////////////////////
-paella.utils = {
-	ajax: base.ajax,
-	cookies: base.cookies,
-	parameters: base.parameters,
-    require: base.require,
-    importStylesheet: base.importStylesheet,
-	language: base.dictionary.currentLanguage,	
-	uuid: base.uuid,
-	userAgent: base.userAgent,
-	
-	
+paella.utils = {	
 	mouseManager: new paella.MouseManager(),
 	
 	timeParse:{
