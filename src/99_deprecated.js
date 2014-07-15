@@ -28,7 +28,6 @@ function DeprecatedFunc(name, replacedBy, func) {
 DeprecatedClass("paella.Dictionary", "base.Dictionary", base.Dictionary);
 paella.dictionary = base.dictionary;
 
-
 // Paella AsyncLoader
 ///////////////////////////////////////////////////////
 DeprecatedClass("paella.AsyncLoaderCallback", "base.AsyncLoaderCallback", base.AsyncLoaderCallback);
@@ -50,7 +49,7 @@ paella.ajax = {
 	get: DeprecatedFunc("paella.ajax.get", "base.ajax.get", base.ajax.get),
 	put: DeprecatedFunc("paella.ajax.put", "base.ajax.put", base.ajax.put),
 	post: DeprecatedFunc("paella.ajax.post", "base.ajax.post", base.ajax.post),
-	'delete': DeprecatedFunc("paella.ajax.delete", "base.ajax.delete", base.ajax.send),
+	'delete': DeprecatedFunc("paella.ajax.delete", "base.ajax.delete", base.ajax.send)
 };
 
 
