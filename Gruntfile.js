@@ -36,7 +36,7 @@ module.exports = function(grunt) {
 			},
 			'plugins.css': {
 				src: [
-					'plugins/**/*.css'
+					'plugins/*/*.css'
 				],
 				dest: 'build/player/resources/plugins/plugins.css'
 			}
