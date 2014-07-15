@@ -221,7 +221,7 @@ Class ("paella.Data", {
 				this.dataDelegates[key] = delegateInstance;
 			}
 			catch (e) {
-				paella.debug.log("Warning: delegate not found - " + delegateName);
+				base.log.debug("Warning: delegate not found - " + delegateName);
 			}
 		}
 		if (!this.dataDelegates["default"]) {

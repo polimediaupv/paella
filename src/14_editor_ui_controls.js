@@ -187,7 +187,7 @@ Class ("paella.editor.Toolbar", {
 
 	discardAndClose:function() {
 		paella.editor.pluginManager.onDiscard(function(status) {
-			paella.debug.log("Discard changes");
+			base.log.debug("Discard changes");
 			paella.editor.instance.unloadEditor();
 		});
 	}

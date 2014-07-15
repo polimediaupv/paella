@@ -223,7 +223,7 @@ Class ("paella.PlaybackControl",paella.DomNode,{
 
 	onresize:function() {
 		var windowSize = $(this.domElement).width();
-		paella.debug.log("resize playback bar (width=" + windowSize + ")");
+		base.log.debug("resize playback bar (width=" + windowSize + ")");
 
 		for (var i=0;i<this.buttonPlugins.length;++i) {
 			var plugin = this.buttonPlugins[i];
@@ -353,7 +353,7 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 			paella.events.trigger(paella.events.controlBarWillHide);
 		}
 		else {
-			paella.debug.log("Mobile version: controls will not hide");
+			base.log.debug("Mobile version: controls will not hide");
 		}
 	},
 

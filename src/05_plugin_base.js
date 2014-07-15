@@ -54,7 +54,7 @@ Class ("paella.PluginManager", {
 				}
 			}
 			if ((config && config.enabled) || !config) {
-				paella.debug.log("loading plugin " + name);
+				base.log.debug("loading plugin " + name);
 				plugin.config = config;
 				plugin.load(this);
 			}
@@ -298,19 +298,19 @@ Class ("paella.ButtonPlugin", paella.Plugin,{
 	},
 
 	willShowContent:function() {
-		paella.debug.log(this.getName() + " willDisplayContent");
+		base.log.debug(this.getName() + " willDisplayContent");
 	},
 
 	didShowContent:function() {
-		paella.debug.log(this.getName() + " didDisplayContent");
+		base.log.debug(this.getName() + " didDisplayContent");
 	},
 
 	willHideContent:function() {
-		paella.debug.log(this.getName() + " willHideContent");
+		base.log.debug(this.getName() + " willHideContent");
 	},
 
 	didHideContent:function() {
-		paella.debug.log(this.getName() + " didHideContent");
+		base.log.debug(this.getName() + " didHideContent");
 	},
 
 	getButtonType:function() {

@@ -66,7 +66,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		this.accessControl.checkAccess(function(permissions) {
 			var errorMessage;
 			if (!permissions.loadError) {
-				paella.debug.log("read:" + permissions.canRead + ", contribute:" + permissions.canContribute + ", write:" + permissions.canWrite);
+				base.log.debug("read:" + permissions.canRead + ", contribute:" + permissions.canContribute + ", write:" + permissions.canWrite);
 				if (permissions.canWrite) {
 					//thisClass.setupEditor();
 					paella.events.bind(paella.events.showEditor,function(event) { thisClass.showEditor(); });

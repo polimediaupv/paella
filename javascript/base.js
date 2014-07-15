@@ -933,7 +933,7 @@ Class ("base.Log", {
                 this.setLevel(base.Log.kLevelDebug);
                 break;
             case "log":
-                this.setLevel(base.log.kLevelLog);
+                this.setLevel(base.Log.kLevelLog);
                 break;
         }
     },
@@ -946,16 +946,16 @@ Class ("base.Log", {
         else if (level>=base.Log.kLevelError && level<=base.Log.kLevelLog) {
             switch (level) {
                 case base.Log.kLevelError:
-                    message = "ERROR: ";
+                    prefix = "ERROR: ";
                     break;
                 case base.Log.kLevelWarning:
-                    message = "WARNING: ";
+                    prefix = "WARNING: ";
                     break;
                 case base.Log.kLevelDebug:
-                    message = "DEBUG: ";
+                    prefix = "DEBUG: ";
                     break;
                 case base.Log.kLevelLog:
-                    message = "LOG: ";
+                    prefix = "LOG: ";
                     break;
             }
         }
@@ -966,19 +966,19 @@ Class ("base.Log", {
     },
 
     error:function(message) {
-        this.logMessage(this.LEVEL_ERROR,message);
+        this.logMessage(base.Log.kLevelError, message);
     },
 
     warning:function(message) {
-        this.logMessage(this.LEVEL_WARNING,message);
+        this.logMessage(base.Log.kLevelWarning, message);
     },
 
     debug:function(message) {
-        this.logMessage(this.LEVEL_DEBUG,message);
+        this.logMessage(base.Log.kLevelDebug, message);
     },
 
     log:function(message) {
-        this.logMessage(this.LEVEL_LOG,message);
+        this.logMessage(base.Log.kLevelLog, message);
     },
 
     setLevel:function(level) {

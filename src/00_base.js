@@ -24,21 +24,6 @@ var GlobalParams = {
 var paella = {};
 paella.player = null;
 
-paella.debug = {
-	init:false,
-	debug:false,
-
-	log:function(msg) {
-		if (!this.init) {
-			this.debug = /debug/.test(location.href);
-			this.init = true;
-		}
-		if (this.debug) {
-			console.log(msg);
-		}
-	}
-};
-
 paella.events = {
 	play:"paella:play",
 	pause:"paella:pause",

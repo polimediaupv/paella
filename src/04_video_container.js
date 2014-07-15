@@ -118,11 +118,11 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	},
 
 	play:function() {
-		paella.debug.log('VideoContainerBase.play()');
+		base.log.debug('VideoContainerBase.play()');
 	},
 
 	pause:function() {
-		paella.debug.log('VideoContainerBase.pause()');
+		base.log.debug('VideoContainerBase.pause()');
 	},
 
 	trimStart:function() {
@@ -177,43 +177,43 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	},
 
 	setCurrentTime:function(time) {
-		paella.debug.log("VideoContainerBase.setCurrentTime(" +  time + ")");
+		base.log.debug("VideoContainerBase.setCurrentTime(" +  time + ")");
 	},
 
 	currentTime:function() {
-		paella.debug.log("VideoContainerBase.currentTime()");
+		base.log.debug("VideoContainerBase.currentTime()");
 		return 0;
 	},
 
 	duration:function() {
-		paella.debug.log("VideoContainerBase.duration()");
+		base.log.debug("VideoContainerBase.duration()");
 		return 0;
 	},
 
 	paused:function() {
-		paella.debug.log("VideoContainerBase.paused()");
+		base.log.debug("VideoContainerBase.paused()");
 		return true;
 	},
 
 	setupVideo:function(onSuccess) {
-		paella.debug.log("VideoContainerBase.setupVide()");
+		base.log.debug("VideoContainerBase.setupVide()");
 	},
 
 	setPlaybackRate:function(params) {
-		paella.debug.log("VideoContainerBase.setPlaybackBase(" + params.rate + ")");
+		base.log.debug("VideoContainerBase.setPlaybackBase(" + params.rate + ")");
 	},
 
 	setVolume:function(params) {
-		paella.debug.log("VideoContainerBase.setVolume(" + params.master + ")");
+		base.log.debug("VideoContainerBase.setVolume(" + params.master + ")");
 	},
 
 	volume:function() {
-		paella.debug.log("VideoContainerBase.volume()");
+		base.log.debug("VideoContainerBase.volume()");
 		return 1;
 	},
 
 	isReady:function() {
-		paella.debug.log("VideoContainerBase.isReady()");
+		base.log.debug("VideoContainerBase.isReady()");
 		return true;
 	},
 
@@ -312,7 +312,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			var diff = Math.abs(masterVideo.currentTime() - slaveVideo.currentTime());
 
 			if (diff>this.maxSyncDelay) {
-				paella.debug.log("Sync videos performed, diff=" + diff);
+				base.log.debug("Sync videos performed, diff=" + diff);
 				slaveVideo.setCurrentTime(masterVideo.currentTime());
 			}
 		}
@@ -743,7 +743,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 				minMasterDiff = masterDiff;
 				rectMaster = profileMaster;
 			}
-			//paella.debug.log(profileMasterAspectRatio + ' - ' + masterAspectRatio + ' = ' + masterDiff);
+			//base.log.debug(profileMasterAspectRatio + ' - ' + masterAspectRatio + ' = ' + masterDiff);
 		}
 
 		var minSlaveDiff = 10;

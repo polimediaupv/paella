@@ -10,7 +10,7 @@ paella.Profiles = {
 				onSuccessFunction(data[profileName]);
 			},
 			function(data,mimetype,code) {
-				paella.debug.log("Error loading video profiles. Check your Paella Player configuration");
+				base.log.debug("Error loading video profiles. Check your Paella Player configuration");
 			});
 	},
 
@@ -24,7 +24,7 @@ paella.Profiles = {
 				onSuccessFunction(data);
 			},
 			function(data,mimetype,code) {
-				paella.debug.log("Error loading video profiles. Check your Paella Player configuration");
+				base.log.debug("Error loading video profiles. Check your Paella Player configuration");
 			});
 	}
 };
@@ -75,48 +75,48 @@ Class ("paella.VideoElementBase", paella.DomNode,{
 	},
 
 	play:function() {
-		paella.debug.log("TODO: implement play() function in your VideoElementBase subclass");
+		base.log.debug("TODO: implement play() function in your VideoElementBase subclass");
 	},
 
 	pause:function() {
-		paella.debug.log("TODO: implement pause() function in your VideoElementBase subclass");
+		base.log.debug("TODO: implement pause() function in your VideoElementBase subclass");
 	},
 
 	isPaused:function() {
-		paella.debug.log("TODO: implement isPaused() function in your VideoElementBase subclass");
+		base.log.debug("TODO: implement isPaused() function in your VideoElementBase subclass");
 		return false;
 	},
 
 	duration:function() {
-		paella.debug.log("TODO: implement duration() function in your VideoElementBase subclass");
+		base.log.debug("TODO: implement duration() function in your VideoElementBase subclass");
 		return -1;
 	},
 
 	setCurrentTime:function(time) {
-		paella.debug.log("TODO: implement setCurrentTime() function in your VideoElementBase subclass");
+		base.log.debug("TODO: implement setCurrentTime() function in your VideoElementBase subclass");
 	},
 
 	currentTime:function() {
-		paella.debug.log("TODO: implement currentTime() function in your VideoElementBase subclass");
+		base.log.debug("TODO: implement currentTime() function in your VideoElementBase subclass");
 		return 0;
 	},
 
 	setVolume:function(volume) {
-		paella.debug.log("TODO: implement setVolume() function in your VideoElementBase subclass");
+		base.log.debug("TODO: implement setVolume() function in your VideoElementBase subclass");
 		return false;
 	},
 
 	volume:function() {
-		paella.debug.log("TODO: implement volume() function in your VideoElementBase subclass");
+		base.log.debug("TODO: implement volume() function in your VideoElementBase subclass");
 		return -1;
 	},
 
 	setPlaybackRate:function(rate) {
-		paella.debug.log("TODO: implement setPlaybackRate() function in your VideoElementBase subclass");
+		base.log.debug("TODO: implement setPlaybackRate() function in your VideoElementBase subclass");
 	},
 
 	addSource:function(sourceData) {
-		paella.debug.log("TODO: implement addSource() function in your VideoElementBase subclass");
+		base.log.debug("TODO: implement addSource() function in your VideoElementBase subclass");
 	},
 
 	setClassName:function(className) {
@@ -344,7 +344,7 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 						timer.repeat = false;
 					}
 					catch(e2) {
-						paella.debug.log('Fail to set volume on ' + thisClass.identifier);
+						base.log.debug('Fail to set volume on ' + thisClass.identifier);
 						timer.repeat = true;
 					}
 				},100);
@@ -485,7 +485,7 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 			dim.height = this.flashVideo.getHeight();
 		}
 		catch (e) {
-			paella.debug.log("Warning: flash video is not loaded");
+			base.log.debug("Warning: flash video is not loaded");
 		}
 		return dim;
 	}

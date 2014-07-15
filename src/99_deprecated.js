@@ -8,7 +8,7 @@
 function DeprecatedClass(name, replacedBy, p) {
 	Class (name, p, {
 		initialize: function() {
-			paella.debug.log("WARNING: " + name +  " is deprecated, use " + replacedBy + " instead.");
+			base.log.warning(name +  " is deprecated, use " + replacedBy + " instead.");
 			this.parent.apply(this, arguments);
 		}
 	});
@@ -16,7 +16,7 @@ function DeprecatedClass(name, replacedBy, p) {
 
 function DeprecatedFunc(name, replacedBy, func) {
 	function ret(){
-		paella.debug.log("WARNING: " + name +  " is deprecated, use " + replacedBy + " instead.");
+		base.log.warning(name +  " is deprecated, use " + replacedBy + " instead.");
 		func.apply(this, arguments);
 	}
 	
@@ -44,13 +44,13 @@ DeprecatedClass("paella.utils.Timer", "base.Timer", base.Timer);
 
 // Paella Ajax
 ///////////////////////////////////////////////////////
-paella.ajax = {
-	send: DeprecatedFunc("paella.ajax.send", "base.ajax.send", base.ajax.send),
-	get: DeprecatedFunc("paella.ajax.get", "base.ajax.get", base.ajax.get),
-	put: DeprecatedFunc("paella.ajax.put", "base.ajax.put", base.ajax.put),
-	post: DeprecatedFunc("paella.ajax.post", "base.ajax.post", base.ajax.post),
-	'delete': DeprecatedFunc("paella.ajax.delete", "base.ajax.delete", base.ajax.send)
-};
+paella.ajax = {};
+paella.ajax['send'] = DeprecatedFunc("paella.ajax.send", "base.ajax.send", base.ajax.send);
+paella.ajax['get'] = DeprecatedFunc("paella.ajax.get", "base.ajax.get", base.ajax.get);
+paella.ajax['put'] = DeprecatedFunc("paella.ajax.put", "base.ajax.put", base.ajax.put);
+paella.ajax['post'] = DeprecatedFunc("paella.ajax.post", "base.ajax.post", base.ajax.post);
+paella.ajax['delete'] = DeprecatedFunc("paella.ajax.delete", "base.ajax.delete", base.ajax.send);
+
 
 
 // Paella UI
@@ -78,3 +78,15 @@ paella.utils.importStylesheet = base.importStylesheet;
 paella.utils.language = base.dictionary.currentLanguage;
 paella.utils.uuid = base.uuid;
 paella.utils.userAgent = base.userAgent;
+
+
+
+
+// paella.debug
+///////////////////////////////////////////////////////
+paella.debug = {
+	log:function(msg) {
+		base.log.warning("paella.debug.log is deprecated, use base.debug.[error/warning/debug/log] instead.");
+		base.log.log(msg);
+	}
+};

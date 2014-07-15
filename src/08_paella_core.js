@@ -82,7 +82,7 @@ Class ("paella.VideoLoader", {
 			var ogg = this.isOggCapable();
 			var webm = this.isWebmCapable();
 
-			paella.debug.log("Browser video capabilities: mp4=" + ((h264) ? 'yes':'no') + ', ogg=' + ((ogg) ? 'yes':'no') + ', webm=' + ((webm) ? 'yes':'no'));
+			base.log.debug("Browser video capabilities: mp4=" + ((h264) ? 'yes':'no') + ', ogg=' + ((ogg) ? 'yes':'no') + ', webm=' + ((webm) ? 'yes':'no'));
 
 			if (stream.sources.mp4 && h264 && !/rtmp:\/\//.test(stream.sources.mp4.src)) {
 				status = true;
@@ -218,7 +218,7 @@ Class ("paella.PlayerBase", {
 
 	initialize:function(playerId) {
 		if (!this.checkCompatibility()) {
-			paella.debug.log('It seems that your browser is not HTML 5 compatible');
+			base.log.debug('It seems that your browser is not HTML 5 compatible');
 		}
 		else {
 			paella.player = this;
