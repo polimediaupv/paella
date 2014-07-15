@@ -16,7 +16,7 @@ paella.plugins.SnapShotsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
 				'Slides':'Diapositivas',
 				'Slide': 'Diapositiva' 
 			};
-			paella.dictionary.addDictionary(esDict);
+			base.dictionary.addDictionary(esDict);
 		}	
 	},
 
@@ -60,7 +60,7 @@ paella.plugins.SnapShotsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
 		
 		return 	'<div class="snapShotsEditorPluginBox" onmouseover="'+ onMouseOverScript + '" onmouseout="' + onMouseOutScript + '">' +
 				'	<img class="snapShotsEditorPluginImage" src="' + frameItem.thumb + '"/>' +
-				'	<div class="snapShotsEditorPluginSliteText">'+ paella.dictionary.translate("Slide") + ' ' + numSlide +'</div>' +
+				'	<div class="snapShotsEditorPluginSliteText">'+ base.dictionary.translate("Slide") + ' ' + numSlide +'</div>' +
 				'</div>';					
 	},
 
@@ -115,7 +115,7 @@ paella.plugins.SnapShotsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
 	},
 	
 	getTrackName:function() {
-		return paella.dictionary.translate("Slides");
+		return base.dictionary.translate("Slides");
 	},
 	
 	getColor:function() {

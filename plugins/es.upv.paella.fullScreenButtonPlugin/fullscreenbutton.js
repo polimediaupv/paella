@@ -8,7 +8,7 @@ paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
 	checkEnabled:function(onSuccess) {
 		onSuccess(!paella.extended);
 	},
-	getDefaultToolTip:function() { return paella.dictionary.translate("Go Fullscreen"); },
+	getDefaultToolTip:function() { return base.dictionary.translate("Go Fullscreen"); },
 
 
 	action:function(button) {
@@ -27,7 +27,7 @@ paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
 		fs.style.height = '100%';
 		if (this.isFullscreen()) {
 
-			this.setToolTip(paella.dictionary.translate("Go Fullscreen"));
+			this.setToolTip(base.dictionary.translate("Go Fullscreen"));
 
 			if (document.webkitCancelFullScreen) {
 				document.webkitCancelFullScreen();
@@ -52,7 +52,7 @@ paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
 
 		}
 		else {
-			this.setToolTip(paella.dictionary.translate("Exit Fullscreen"));		
+			this.setToolTip(base.dictionary.translate("Exit Fullscreen"));		
 			if (fs.webkitRequestFullScreen) {
 				fs.webkitRequestFullScreen();
 				button.className = this.getButtonItemClass(true);
@@ -74,7 +74,7 @@ paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
 				this._isFullscreen = true;
 			}
 			else {
-				this.setToolTip(paella.dictionary.translate("Go Fullscreen"));
+				this.setToolTip(base.dictionary.translate("Go Fullscreen"));
 				alert('Your browser does not support fullscreen mode');
 			}
 		}

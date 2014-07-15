@@ -19,7 +19,7 @@ paella.editor.ToolStatusPlugin = Class.create(paella.editor.RightBarPlugin,{
 				'from':'desde',
 				'to':'hasta'
 			};
-			paella.dictionary.addDictionary(esDict);
+			base.dictionary.addDictionary(esDict);
 		}
 	},
 
@@ -32,7 +32,7 @@ paella.editor.ToolStatusPlugin = Class.create(paella.editor.RightBarPlugin,{
 	},
 	
 	getTabName:function() {
-		return paella.dictionary.translate("Tool");
+		return base.dictionary.translate("Tool");
 	},
 	
 	getContent:function() {
@@ -40,7 +40,7 @@ paella.editor.ToolStatusPlugin = Class.create(paella.editor.RightBarPlugin,{
 		var elem = document.createElement('div');
 		if (this.currentTrack) {
 			var plugin = paella.pluginManager.getPlugin(this.currentTrack.getName());
-			elem.innerHTML = "<h6>" + paella.dictionary.translate("Tool") + ": " + paella.dictionary.translate(this.currentTrack.getTrackName()) + "</h6>";
+			elem.innerHTML = "<h6>" + base.dictionary.translate("Tool") + ": " + base.dictionary.translate(this.currentTrack.getTrackName()) + "</h6>";
 			var trackList = this.currentTrack.getTrackItems();
 			var trackContainer = document.createElement('div');
 			trackContainer.className = "editorPluginToolStatus_trackItemList";
@@ -54,7 +54,7 @@ paella.editor.ToolStatusPlugin = Class.create(paella.editor.RightBarPlugin,{
 			elem.appendChild(trackContainer);
 		}
 		else {
-			elem.innerHTML = "<h6>" + paella.dictionary.translate("Tool") + ": " + paella.dictionary.translate("Selection") + "</h6>";
+			elem.innerHTML = "<h6>" + base.dictionary.translate("Tool") + ": " + base.dictionary.translate("Selection") + "</h6>";
 			
 		}
 		
@@ -68,8 +68,8 @@ paella.editor.ToolStatusPlugin = Class.create(paella.editor.RightBarPlugin,{
 		//trackData.innerHTML = track.id + " s:" + track.s + ", e:" + track.e;
 		var trackTime = document.createElement('div');
 		var duration = Math.round((track.e - track.s) * 100) / 100;
-		trackTime.innerHTML = paella.dictionary.translate('from') + ' ' + paella.utils.timeParse.secondsToTime(track.s) + ' ' +
-							  paella.dictionary.translate('to') + ' ' + paella.utils.timeParse.secondsToTime(track.e) + ', ' +
+		trackTime.innerHTML = base.dictionary.translate('from') + ' ' + paella.utils.timeParse.secondsToTime(track.s) + ' ' +
+							  base.dictionary.translate('to') + ' ' + paella.utils.timeParse.secondsToTime(track.e) + ', ' +
 							  duration + ' sec';
 		trackData.appendChild(trackTime); 
 		if (track.content) {
@@ -149,14 +149,14 @@ paella.editor.ToolStatusPlugin = Class.create(paella.editor.RightBarPlugin,{
 			helpText = this.currentTrack.contextHelpString();
 		}
 		else {
-			helpText = paella.dictionary.translate("Click on timeline outside any track to select current playback time.");
+			helpText = base.dictionary.translate("Click on timeline outside any track to select current playback time.");
 		}
 		
 		if (helpText!="") {
 			var helpElem = document.createElement('div');
 			helpElem.className = "editorPluginToolStatusHelp";
 			parent.appendChild(helpElem);
-			helpElem.innerHTML = '<strong>' + paella.dictionary.translate('Quick help') + ': </strong>' + helpText;
+			helpElem.innerHTML = '<strong>' + base.dictionary.translate('Quick help') + ': </strong>' + helpText;
 		}		
 	},
 	
@@ -182,7 +182,7 @@ paella.editor.CaptionsPlugin = Class.create(paella.editor.TrackPlugin,{
 				'Create':'Crear',
 				'Delete':'Borrar'
 			};
-			paella.dictionary.addDictionary(esDict);
+			base.dictionary.addDictionary(esDict);
 		}
 	},
 
@@ -195,8 +195,8 @@ paella.editor.CaptionsPlugin = Class.create(paella.editor.TrackPlugin,{
 	
 	getTools:function() {
 		return [
-			{name:'create',label:paella.dictionary.translate('Create'),hint:paella.dictionary.translate('Create a new caption in the current position')},
-			{name:'delete',label:paella.dictionary.translate('Delete'),hint:paella.dictionary.translate('Delete selected caption')}
+			{name:'create',label:base.dictionary.translate('Create'),hint:base.dictionary.translate('Create a new caption in the current position')},
+			{name:'delete',label:base.dictionary.translate('Delete'),hint:base.dictionary.translate('Delete selected caption')}
 		];
 	},
 	
@@ -219,7 +219,7 @@ paella.editor.CaptionsPlugin = Class.create(paella.editor.TrackPlugin,{
 			var start = paella.player.videoContainer.currentTime();
 			var end = start + 60;
 			var id = this.getTrackUniqueId();
-			this.tracks.push({id:id,s:start,e:end,content:paella.dictionary.translate('Caption')});
+			this.tracks.push({id:id,s:start,e:end,content:base.dictionary.translate('Caption')});
 			return true;
 		}
 	},
@@ -240,7 +240,7 @@ paella.editor.CaptionsPlugin = Class.create(paella.editor.TrackPlugin,{
 	},
 	
 	getTrackName:function() {
-		return paella.dictionary.translate("Captions");
+		return base.dictionary.translate("Captions");
 	},
 	
 	getColor:function() {

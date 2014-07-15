@@ -11,7 +11,7 @@ paella.plugins.ActiveCaptionsPlugin = Class.create(paella.ButtonPlugin,{
 	getMinWindowSize:function() { return 300; },
 	getName:function() { return "es.upv.paella.activeCaptionsPlugin"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
-	getDefaultToolTip:function() { return paella.dictionary.translate("Show captions 2"); },
+	getDefaultToolTip:function() { return base.dictionary.translate("Show captions 2"); },
 	checkEnabled:function(onSuccess) {	
 		var thisClass = this;		
 		paella.data.read('captions',{id:paella.initDelegate.getId(),op:'langs'},function(data, status) {
@@ -37,7 +37,7 @@ paella.plugins.ActiveCaptionsPlugin = Class.create(paella.ButtonPlugin,{
         selectLang.className = 'selectLang';
 
         var label = document.createElement('label');
-        label.innerHTML = paella.dictionary.translate("Languages");
+        label.innerHTML = base.dictionary.translate("Languages");
                 
         var combo = document.createElement('select');
         combo.id = 'master';

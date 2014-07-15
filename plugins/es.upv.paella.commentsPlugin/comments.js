@@ -11,10 +11,10 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
   
 	getSubclass:function() { return "showCommentsTabBar"; },
 	getName:function() { return "es.upv.paella.commentsPlugin"; },
-	getTabName:function() { return paella.dictionary.translate("Comments"); },
+	getTabName:function() { return base.dictionary.translate("Comments"); },
 	checkEnabled:function(onSuccess) { onSuccess(paella.extended); },
 	getIndex:function() { return 40; },
-	getDefaultToolTip:function() { return paella.dictionary.translate("Comments"); },	
+	getDefaultToolTip:function() { return base.dictionary.translate("Comments"); },	
 				     
 	action:function(tab) {
 		this.loadContent();
@@ -91,7 +91,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 				thisClass.addComment();
 			}
 		};
-		btnAddComment.innerHTML = paella.dictionary.translate("Publish");
+		btnAddComment.innerHTML = base.dictionary.translate("Publish");
 		
 		this.publishCommentButtons.appendChild(btnAddComment);
 		
@@ -282,7 +282,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 			//var btnRplyComment = document.createElement('button');
 			var btnRplyComment = document.createElement('div');
 			btnRplyComment.className = "reply_button";
-			btnRplyComment.innerHTML = paella.dictionary.translate("Reply");
+			btnRplyComment.innerHTML = base.dictionary.translate("Reply");
 			
 			btnRplyComment.id = rootID+"_comment_reply_button";
 			btnRplyComment.onclick = function(){
@@ -406,7 +406,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 				thisClass.addReply(annotationID,textArea.id);
 			}
 		};
-		btnAddComment.innerHTML = paella.dictionary.translate("Reply");
+		btnAddComment.innerHTML = base.dictionary.translate("Reply");
 		
 		this.publishCommentButtons.appendChild(btnAddComment);
 		

@@ -9,7 +9,7 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 	getIndex:function() { return 2030; },
 	getMinWindowSize:function() { return 300; },
 	getName:function() { return "es.upv.paella.multipleQualitiesPlugin"; },
-	getDefaultToolTip:function() { return paella.dictionary.translate("Change video quality"); },	
+	getDefaultToolTip:function() { return base.dictionary.translate("Change video quality"); },	
 	checkEnabled:function(onSuccess) { onSuccess(this.checkStreams()); },
 	setup:function() {
 		if (base.dictionary.currentLanguage()=="es") {
@@ -17,7 +17,7 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 				'Presenter':'Presentador',
 				'Slide':'Diapositiva'
 			};
-			paella.dictionary.addDictionary(esDict);
+			base.dictionary.addDictionary(esDict);
 		}
 	},
 						      
@@ -61,7 +61,7 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 		selectQuality.className = 'selectQuality';
 		
 		var labelM = document.createElement('label');
-		labelM.innerHTML = paella.dictionary.translate("Presenter");
+		labelM.innerHTML = base.dictionary.translate("Presenter");
 				
 		var comboM = document.createElement('select');
 		comboM.id = 'master';
@@ -87,7 +87,7 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 		}
 		
 		var labelS = document.createElement('label');
-		labelS.innerHTML = paella.dictionary.translate("Slide");
+		labelS.innerHTML = base.dictionary.translate("Slide");
 		
 		var comboS = document.createElement('select');
 		comboS.id = 'slave';

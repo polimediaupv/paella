@@ -5,7 +5,7 @@ paella.plugins.HelpPlugin = Class.create(paella.ButtonPlugin, {
 	getSubclass:function() { return "helpButton"; },
 	getName:function() { return "es.upv.paella.helpPlugin"; },
 
-	getDefaultToolTip:function() { return paella.dictionary.translate("Show help"); },
+	getDefaultToolTip:function() { return base.dictionary.translate("Show help"); },
 
 
 	checkEnabled:function(onSuccess) { 

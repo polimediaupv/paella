@@ -23,7 +23,7 @@ paella.plugins.CaptionsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
 				'Create a new caption in the current position': 'Añade un subtítulo en el instante actual',
 				'Delete selected caption': 'Borra el subtítulo seleccionado'
 			};
-			paella.dictionary.addDictionary(esDict);
+			base.dictionary.addDictionary(esDict);
 		}
 	},
 
@@ -33,8 +33,8 @@ paella.plugins.CaptionsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
 	
 	getTools:function() {
 		return [
-			{name:'create',label:paella.dictionary.translate('Create'),hint:paella.dictionary.translate('Create a new caption in the current position')},
-			{name:'delete',label:paella.dictionary.translate('Delete'),hint:paella.dictionary.translate('Delete selected caption')}
+			{name:'create',label:base.dictionary.translate('Create'),hint:base.dictionary.translate('Create a new caption in the current position')},
+			{name:'delete',label:base.dictionary.translate('Delete'),hint:base.dictionary.translate('Delete selected caption')}
 		];
 	},
 	
@@ -49,7 +49,7 @@ paella.plugins.CaptionsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
 			var start = paella.player.videoContainer.currentTime();
 			var end = start + 30;
 			var id = this.getTrackUniqueId();
-			var content = paella.dictionary.translate('Caption');
+			var content = base.dictionary.translate('Caption');
 			this.tracks.push({id:id,s:start,e:end,content:content,name:content});
 			return true;
 		}
@@ -71,7 +71,7 @@ paella.plugins.CaptionsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
 	},
 	
 	getTrackName:function() {
-		return paella.dictionary.translate("Captions");
+		return base.dictionary.translate("Captions");
 	},
 	
 	getColor:function() {

@@ -11,7 +11,7 @@ paella.LiveStreamIndicator = Class.create(paella.VideoOverlayButtonPlugin,{
     getAlignment:function() {
         return 'right';
     },
-    getDefaultToolTip:function() { return paella.dictionary.translate("This video is a live stream"); },
+    getDefaultToolTip:function() { return base.dictionary.translate("This video is a live stream"); },
 
     checkEnabled:function(onSuccess) {
         onSuccess(paella.player.isLiveStream());
@@ -22,7 +22,7 @@ paella.LiveStreamIndicator = Class.create(paella.VideoOverlayButtonPlugin,{
     },
 
     action:function(button) {
-        paella.messageBox.showMessage(paella.dictionary.translate("Live streaming mode: This is a live video, so, some capabilities of the player are disabled"));
+        paella.messageBox.showMessage(base.dictionary.translate("Live streaming mode: This is a live video, so, some capabilities of the player are disabled"));
     },
 
     getName:function() {
