@@ -230,26 +230,6 @@ Class ("paella.PlayerBase", {
 		}
 	},
 
-	includePlugins:function(productionPluginFile,devPluginsDir,devPluginsArray,productionPluginCss) {
-		if (!productionPluginCss) productionPluginCss = 'resources/plugins/plugins.css';
-/*
-		if (/debug/.test(window.location.href)) {
-			paella.debug.debug = true;
-			for (var i=0; i<devPluginsArray.length; i++) {
-				var jsFile = devPluginsArray[i];
-				var cssFile = jsFile.substr(0, jsFile.lastIndexOf(".")) + ".css";
-				paella.debug.log(devPluginsDir + jsFile + ", " + devPluginsDir + cssFile);
-				base.require(devPluginsDir + jsFile);
-				base.importStylesheet(devPluginsDir + cssFile);
-			}
-		}
-		else {
-			base.importStylesheet(productionPluginCss);
-		}
-*/
-		base.importStylesheet(productionPluginCss);
-	},
-
 	loadComplete:function(event,params) {
 
 	}

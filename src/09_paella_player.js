@@ -22,7 +22,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		// if initialization ok
 		if (this.playerId==playerId) {
 			this.loadPaellaPlayer();
-			this.includePlugins('javascript/paella_plugins.js','plugins/',paella.pluginList);
 
 			var thisClass = this;
 			paella.events.bind(paella.events.setProfile,function(event,params) {
