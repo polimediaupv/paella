@@ -3,7 +3,7 @@ paella.Profiles = {
 	loadProfile:function(profileName,onSuccessFunction) {
 		var params = { url:"config/profiles/profiles.json" };
 
-		paella.ajax.get(params,function(data,mimetype,code) {
+		base.ajax.get(params,function(data,mimetype,code) {
 				if (typeof(data)=="string") {
 					data = JSON.parse(data);
 				}
@@ -17,7 +17,7 @@ paella.Profiles = {
 	loadProfileList:function(onSuccessFunction) {
 		var params = { url:"config/profiles/profiles.json" };
 
-		paella.ajax.get(params,function(data,mimetype,code) {
+		base.ajax.get(params,function(data,mimetype,code) {
 				if (typeof(data)=="string") {
 					data = JSON.parse(data);
 				}

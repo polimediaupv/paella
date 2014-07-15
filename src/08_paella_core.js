@@ -273,7 +273,7 @@ Class ("paella.InitDelegate", {
 		var configUrl = this.initParams.configUrl;
 		var params = {};
 		params.url = configUrl;
-		paella.ajax.get(params,function(data,type,returnCode) {
+		base.ajax.get(params,function(data,type,returnCode) {
 				if (typeof(data)=='string') {
 					try {
 						data = JSON.parse(data);
