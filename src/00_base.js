@@ -39,30 +39,6 @@ paella.debug = {
 	}
 };
 
-paella.pluginList = [
-	'usertracking_collector.js',
-	'usertracking_googleanalytics_saver.js',
-	'framecontrol.js',
-	'playbutton.js',
-	'viewmode.js',
-	'basic_editor_plugins.js',
-	'repeatbutton.js',
-	'extended_profiles.js',
-	'trimming.js',
-	'annotations.js',
-	'social.js',
-	'fullscreenbutton.js',
-	'caption_editor.js',
-	'break.js',
-	'comments.js',
-	'description.js',
-	'footprints.js',
-	'videoload_test.js',
-	'qualities.js',
-	'show_editor.js',
-	'snapshots_editor.js'
-];
-
 paella.events = {
 	play:"paella:play",
 	pause:"paella:pause",
