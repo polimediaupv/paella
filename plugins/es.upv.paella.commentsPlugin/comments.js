@@ -109,7 +109,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		var now = new Date();
 		
 		this.comments.push({
-			id: paella.utils.uuid(),
+			id: base.uuid(),
 			userName:paella.initDelegate.initParams.accessControl.userData.name,
 			mode: "normal",
 			value: txtValue,
@@ -134,7 +134,7 @@ paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
 		paella.keyManager.enabled = true;
 
 		this.comments.push({
-			id: paella.utils.uuid(),
+			id: base.uuid(),
 			userName:paella.initDelegate.initParams.accessControl.userData.name,
 			mode: "reply",
 			parent: annotationID,
