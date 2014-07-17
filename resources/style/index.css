@@ -18,7 +18,7 @@
 }
 
 .recordings_header_navigation{
-	display: inline-block;	
+	display: block;	
 	float: right;
 }
 
