@@ -156,7 +156,7 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		if (this.currentTime()>this.trimming.end) {
 			this.setCurrentTime(this.trimming.end);
 		}
-		paella.events.trigger(paella.events.setTrim,{trimEnabled:this.trimming.enabled,trimStart:this.trimming.start,trimEnd:this.trimming.end});
+		//paella.events.trigger(paella.events.setTrim,{trimEnabled:this.trimming.enabled,trimStart:this.trimming.start,trimEnd:this.trimming.end});
 	},
 
 	setTrimmingStart:function(start) {

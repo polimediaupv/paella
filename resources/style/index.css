@@ -19,7 +19,7 @@
 
 .recordings_header_navigation{
 	display: inline-block;	
-	/*float: right;*/
+	float: right;
 }
 
 .recordings_header_navigation_prev {
