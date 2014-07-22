@@ -55,6 +55,7 @@ Class ("paella.RelativeVideoSize", {
 
 Class ("paella.VideoElementBase", paella.DomNode,{
 	ready:false,
+	_metadata:null,
 
 	initialize:function(id,containerType,left,top,width,height) {
 		var thisClass = this;
@@ -123,8 +124,17 @@ Class ("paella.VideoElementBase", paella.DomNode,{
 		this.domElement.className = className;
 	},
 
+	setMetadata:function(data) {
+		this._metadata = data;
+	},
+
 	getDimensions:function() {
-		return { width: this.domElement.videoWidth, height: this.domElement.videoHeight };
+		if (this._metadata && this._metadata.res) {
+			return { width: this._metadata.res.w, height: this._metadata.res.h };
+		}
+		else {
+			return { width: this.domElement.videoWidth, height: this.domElement.videoHeight };
+		}
 	},
 
 	setRect:function(rect,animate) {
@@ -367,52 +377,52 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 		var domElement = document.createElement('div');
 		this.domElement.appendChild(domElement);
 		domElement.id = id + "Movie";
-		
+
 		if (swfobject.hasFlashPlayerVersion("9.0.0")) {
 			swfobject.embedSWF(swfFile,domElement.id,"100%","100%","9.0.0","",flashVars,parameters, null, function callbackFn(e){
 				if (e.success == false){
 					var message = document.createElement('div');
-					
+
 					var header = document.createElement('h3');
 					header.innerHTML = paella.dictionary.translate("Flash player problem");
-		
+
 					var text = document.createElement('div');
 					text.innerHTML = paella.dictionary.translate("A problem occurred trying to load flash player.") + "<br>" +
 						paella.dictionary.translate("Please go to {0} and install it.")
 						.replace("{0}", "<a style='color: #800000; text-decoration: underline;' href='http://www.adobe.com/go/getflash'>http://www.adobe.com/go/getflash</a>") + '<br>' +
 						paella.dictionary.translate("If the problem presist, contant us.");
-					
+
 					var link = document.createElement('a');
 					link.setAttribute("href", "http://www.adobe.com/go/getflash");
-					link.innerHTML = '<img style="margin:5px;" src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Obtener Adobe Flash Player" />';		
-				
+					link.innerHTML = '<img style="margin:5px;" src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Obtener Adobe Flash Player" />';
+
 					message.appendChild(header);
 					message.appendChild(text);
 					message.appendChild(link);
-				
-					paella.messageBox.showError(message.innerHTML);					
-				}				
+
+					paella.messageBox.showError(message.innerHTML);
+				}
 			});
 		}
 		else {
 			var message = document.createElement('div');
-			
+
 			var header = document.createElement('h3');
 			header.innerHTML = paella.dictionary.translate("Flash player 9 nedded");
 
 			var text = document.createElement('div');
-			text.innerHTML = paella.dictionary.translate("You need at least Flash player 9 installed.") + "<br>" +			
+			text.innerHTML = paella.dictionary.translate("You need at least Flash player 9 installed.") + "<br>" +
 				paella.dictionary.translate("Please go to {0} and install it.")
 				.replace("{0}", "<a style='color: #800000; text-decoration: underline;' href='http://www.adobe.com/go/getflash'>http://www.adobe.com/go/getflash</a>");
-			
+
 			var link = document.createElement('a');
 			link.setAttribute("href", "http://www.adobe.com/go/getflash");
-			link.innerHTML = '<img style="margin:5px;" src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Obtener Adobe Flash Player" />';		
-		
+			link.innerHTML = '<img style="margin:5px;" src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Obtener Adobe Flash Player" />';
+
 			message.appendChild(header);
 			message.appendChild(text);
 			message.appendChild(link);
-		
+
 			paella.messageBox.showError(message.innerHTML);
 		}
 
@@ -480,12 +490,18 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 
 	getDimensions:function() {
 		var dim = {width:640, height:480};
-		try {
-			dim.width = this.flashVideo.getWidth();
-			dim.height = this.flashVideo.getHeight();
+		if (this._metadata && this._metadata.res) {
+			dim.width = this._metadata.res.w;
+			dim.height = this._metadata.res.h;
 		}
-		catch (e) {
-			paella.debug.log("Warning: flash video is not loaded");
+		else {
+			try {
+				dim.width = this.flashVideo.getWidth();
+				dim.height = this.flashVideo.getHeight();
+			}
+			catch (e) {
+				paella.debug.log("Warning: flash video is not loaded");
+			}
 		}
 		return dim;
 	}
@@ -567,7 +583,12 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	},
 
 	getDimensions:function() {
-		return { width: this.domElement.videoWidth, height: this.domElement.videoHeight };
+		if (this._metadata && this._metadata.res) {
+			return { width: this._metadata.res.w, height: this._metadata.res.h };
+		}
+		else {
+			return { width: this.domElement.videoWidth, height: this.domElement.videoHeight };
+		}
 	},
 
 	setRect:function(rect,animate) {

@@ -10,7 +10,7 @@ module.exports = function(grunt) {
 				files: [
 					{expand: true, src: ['config/**', 'javascript/**', 'resources/**', 'index.html', 'extended.html', 'paella-standalone.js'], dest: 'build/player/'},
 					{expand: true, cwd: 'src/flash_player/', src: "player.swf", dest: 'build/player/' },
-					//{expand: true, cwd: 'repository_test/', src: '**', dest: 'build/'},
+					{expand: true, cwd: 'repository_test/', src: '**', dest: 'build/'},
 					{expand: true, src:'plugins/*/resources/**', dest: 'build/player/resources/plugins/',
 						rename: function (dest, src) { return dest+src.split('/').splice(3).join('/'); }
 					}
@@ -129,12 +129,12 @@ module.exports = function(grunt) {
 			paella: {
 				src: [ 'package.json', 'config/*.json', 'config/profiles/profiles.json', 'repository_test/*/*.json' ]
 			}
-		}		
+		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-csslint');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');	
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
