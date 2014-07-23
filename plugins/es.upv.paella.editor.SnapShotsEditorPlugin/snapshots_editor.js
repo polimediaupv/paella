@@ -10,17 +10,6 @@ paella.plugins.SnapShotsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
 		onSuccess(frames!=null);
 	},
 
-	setup:function() {
-		if (paella.utils.language()=="es") {
-			var esDict = {
-				'Slides':'Diapositivas',
-				'Slide': 'Diapositiva' 
-			};
-			paella.dictionary.addDictionary(esDict);
-		}	
-	},
-
-
 	showHiResFrame:function(url) {
 		var frameRoot = document.createElement("div"); 
 		var frame = document.createElement("div"); 
