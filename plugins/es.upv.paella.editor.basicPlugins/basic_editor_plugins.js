@@ -4,24 +4,6 @@ paella.editor.ToolStatusPlugin = Class.create(paella.editor.RightBarPlugin,{
 	currentTextField:null,
 	trackItemContainer:null,
 	selectedColor:"rgb(255, 255, 236)",
-	
-	initialize:function() {
-		this.parent();
-		if (paella.utils.language()=='es') {
-			var esDict = {
-				'Tool':'Herramienta',
-				'Selected tool':'Herramienta seleccionada',
-				'this track does not contain any item':'esta pista no contiene ningún elemento',
-				'Click on timeline outside any track to select current playback time.':'Haz clic en el fondo de la línea de tiempo para establecer el instante actual de reproducción',
-				'Quick help':'Ayuda rápida',
-				'item':'elemento',
-				'items':'elementos',
-				'from':'desde',
-				'to':'hasta'
-			};
-			paella.dictionary.addDictionary(esDict);
-		}
-	},
 
 	getIndex:function() {
 		return 10000;
