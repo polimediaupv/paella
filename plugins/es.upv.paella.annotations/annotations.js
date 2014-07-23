@@ -13,24 +13,14 @@ paella.plugins.AnnotationsEditorPlugin = Class.create(paella.editor.TrackPlugin,
 		});
 	},
 
-	setup:function() {
-		if (paella.utils.language()=="es") {
-			var esDict = {
-				'Annotation':'Anotación',
-				'Annotations':'Anotaciones'
-			};
-			paella.dictionary.addDictionary(esDict);
-		}
-	},
-
 	getTrackItems:function() {
 		return this.tracks;
 	},
 	
 	getTools:function() {
 		return [
-			{name:'create',label:paella.dictionary.translate('Create'),hint:paella.dictionary.translate('Create a new caption in the current position')},
-			{name:'delete',label:paella.dictionary.translate('Delete'),hint:paella.dictionary.translate('Delete selected caption')}
+			{name:'create',label:paella.dictionary.translate('Create'),hint:paella.dictionary.translate('Create a new annotation in the current position')},
+			{name:'delete',label:paella.dictionary.translate('Delete'),hint:paella.dictionary.translate('Delete selected annotation')}
 		];
 	},
 	
