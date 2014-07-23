@@ -92,6 +92,15 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		'merge-json': {
+			'i18n': {
+				files: {
+					'build/player/localization/en.json': [ 'localization/*en.json', 'plugins/*/localization/*en.json' ],
+					'build/player/localization/es.json': [ 'localization/*es.json', 'plugins/*/localization/*es.json' ]
+				}
+			}
+		},
+
 
 		watch: {
 			 release: {
@@ -127,7 +136,13 @@ module.exports = function(grunt) {
 		},
 		jsonlint: {
 			paella: {
-				src: [ 'package.json', 'config/*.json', 'config/profiles/profiles.json', 'repository_test/*/*.json' ]
+				src: [	'package.json',
+						'config/*.json', 
+						'config/profiles/profiles.json', 
+						'repository_test/*/*.json',
+						'plugins/*/localization/*.json',
+						'localization/*.json'
+				]
 			}
 		}		
 	});
@@ -141,12 +156,13 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-express');
 	grunt.loadNpmTasks('grunt-jsonlint');
+	grunt.loadNpmTasks('grunt-merge-json');
 
 
 	grunt.registerTask('default', ['dist']);
 	grunt.registerTask('checksyntax', ['jshint', 'csslint', 'jsonlint']);
 
-	grunt.registerTask('build.common', ['checksyntax', 'copy:paella', 'concat:dist.js', 'concat:plugins.css']);
+	grunt.registerTask('build.common', ['checksyntax', 'copy:paella', 'concat:dist.js', 'concat:plugins.css', 'merge-json:i18n']);
 	grunt.registerTask('build.release', ['build.common', 'uglify:dist', 'cssmin:dist']);
 	grunt.registerTask('build.debug', ['build.common']);
 
