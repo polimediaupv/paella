@@ -111,19 +111,14 @@ paella.plugins.AnnotationsEditorPlugin = Class.create(paella.editor.TrackPlugin,
 	},
 	
 	contextHelpString:function() {
-		if (paella.utils.language()=="es") {
-			return "Utiliza esta herramienta para crear, borrar y editar anotaciones. Para crear una anotación, selecciona el instante de tiempo haciendo clic en el fondo de la línea de tiempo, y pulsa el botón 'Crear'. Utiliza esta pestaña para editar el texto de las anotaciones";
-		}
-		else {
-			return "Use this tool to create, delete and edit video annotations. To create an annotation, select the time instant clicking the timeline's background and press 'create' button. Use this tab to edit the annotation text.";
-		}
+		return paella.dictionary.translate("Use this tool to create, delete and edit video annotations. To create an annotation, select the time instant clicking the timeline's background and press 'create' button. Use this tab to edit the annotation text.");
 	},
 	
 	onSave:function(success) {
 		var data = {
 			annotations:this.tracks
 		};
-		paella.data.write('annotations',{id:paella.initDelegate.getId()},data,function(response,status) {
+		paella.data.write('annotations', {id:paella.initDelegate.getId()},data,function(response,status) {
 			paella.plugins.annotationsPlayerlugin.annotations = data.annotations;
 			success(status);
 		});
