@@ -1,0 +1,9 @@
+{
+	"Breaks": "Descansos",
+	"Break": "Descanso",
+	"Create a new break in the current position": "Añade un descanso en el instante actual",
+	"Delete selected break": "Borra el descanso seleccionado",
+	
+	"Use this tool to create, delete and edit breaks. To create a break, select the time instant clicking the timeline's background and press 'create' button. Use this tab to edit the break text.": "Utiliza esta herramienta para crear, borrar y editar descansos. Para crear un descanso, selecciona el instante de tiempo haciendo clic en el fondo de la línea de tiempo, y pulsa el botón 'Crear'. Utiliza esta pestaña para editar el texto de los descansos"
+
+}

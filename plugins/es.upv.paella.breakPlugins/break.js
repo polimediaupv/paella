@@ -13,18 +13,6 @@ paella.plugins.BreaksEditorPlugin = Class.create(paella.editor.MainTrackPlugin,{
 		});
 	},
 
-	setup:function() {
-		if (paella.utils.language()=="es") {
-			var esDict = {
-				'Breaks':'Descansos',
-				'Break':'Descanso',
-				'Create a new break in the current position': 'Añade un descanso en el instante actual',
-				'Delete selected break': 'Borra el descanso seleccionado'
-			};
-			paella.dictionary.addDictionary(esDict);
-		}
-	},
-
 	getTrackItems:function() {
 		return this.tracks;
 	},
@@ -110,12 +98,7 @@ paella.plugins.BreaksEditorPlugin = Class.create(paella.editor.MainTrackPlugin,{
 	},
 	
 	contextHelpString:function() {
-		if (paella.utils.language()=="es") {
-			return "Utiliza esta herramienta para crear, borrar y editar descansos. Para crear un descanso, selecciona el instante de tiempo haciendo clic en el fondo de la línea de tiempo, y pulsa el botón 'Crear'. Utiliza esta pestaña para editar el texto de los descansos";
-		}
-		else {
-			return "Use this tool to create, delete and edit breaks. To create a break, select the time instant clicking the timeline's background and press 'create' button. Use this tab to edit the break text.";
-		}
+		return paella.dictionary.translate("Use this tool to create, delete and edit breaks. To create a break, select the time instant clicking the timeline's background and press 'create' button. Use this tab to edit the break text.");
 	},
 	
 	onSave:function(success) {
