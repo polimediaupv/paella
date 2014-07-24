@@ -7,14 +7,7 @@ paella.plugins.VideoLoadTestPlugin = Class.create(paella.EventDrivenPlugin,{
 
 	initialize:function() {
 		this.parent();
-		this.startTime = Date.now();
-		
-        if (paella.utils.language()=='es') {
-                var esDict = {
-                        'Video loaded in {0} seconds':'Video cargado en {0} segundos',
-                };
-                paella.dictionary.addDictionary(esDict);
-        }		
+		this.startTime = Date.now();		
 	},
 
 		
