@@ -14,19 +14,6 @@ paella.plugins.SocialPlugin = Class.create(paella.ButtonPlugin,{
 	selected_button: null,
 
 
-    initialize:function() {
-        this.parent();
-        if (paella.utils.language()=='es') {
-            var esDict = {
-                'Custom size:': 'Tamaño personalizado:',
-                'Choose your embed size. Copy the text and paste it in your html page.': 'Elija el tamaño del video a embeber. Copie el texto y péguelo en su página html.',
-                'Width:':'Ancho:',
-                'Height:':'Alto:'
-            };
-            paella.dictionary.addDictionary(esDict);
-        }
-    },
-
 	setup:function() {
 		var thisClass = this;
 
