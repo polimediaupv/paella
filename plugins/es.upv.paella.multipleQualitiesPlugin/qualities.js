@@ -11,15 +11,6 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 	getName:function() { return "es.upv.paella.multipleQualitiesPlugin"; },
 	getDefaultToolTip:function() { return paella.dictionary.translate("Change video quality"); },	
 	checkEnabled:function(onSuccess) { onSuccess(this.checkStreams()); },
-	setup:function() {
-		if (paella.utils.language()=="es") {
-			var esDict = {
-				'Presenter':'Presentador',
-				'Slide':'Diapositiva'
-			};
-			paella.dictionary.addDictionary(esDict);
-		}
-	},
 						      
 	checkStreams:function() {
 		var key, j;
