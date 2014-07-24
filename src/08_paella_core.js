@@ -260,8 +260,8 @@ Class ("paella.PlayerBase", {
 Class ("paella.InitDelegate", {
 	initParams:{
 		configUrl:'config/config.json',
-		dictionaryUrl:'config/dictionary',
-		editorDictionaryUrl:'config/editor_dictionary',
+		dictionaryUrl:'localization/paella',
+		//editorDictionaryUrl:'config/editor_dictionary',
 		accessControl:new paella.DefaultAccessControl(),
 		videoLoader:new paella.VideoLoader()
 	},
@@ -281,7 +281,7 @@ Class ("paella.InitDelegate", {
 	loadDictionary:function(onSuccess) {
 		var asyncLoader = new paella.AsyncLoader();
 		asyncLoader.addCallback(new paella.DictionaryCallback(this.initParams.dictionaryUrl));
-		asyncLoader.addCallback(new paella.DictionaryCallback(this.initParams.editorDictionaryUrl));
+		//asyncLoader.addCallback(new paella.DictionaryCallback(this.initParams.editorDictionaryUrl));
 		asyncLoader.load(function() {
 				onSuccess();
 			},

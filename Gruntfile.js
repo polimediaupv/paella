@@ -95,8 +95,8 @@ module.exports = function(grunt) {
 		'merge-json': {
 			'i18n': {
 				files: {
-					'build/player/localization/en.json': [ 'localization/*en.json', 'plugins/*/localization/*en.json' ],
-					'build/player/localization/es.json': [ 'localization/*es.json', 'plugins/*/localization/*es.json' ]
+					'build/player/localization/paella_en.json': [ 'localization/*en.json', 'plugins/*/localization/*en.json' ],
+					'build/player/localization/paella_es.json': [ 'localization/*es.json', 'plugins/*/localization/*es.json' ]
 				}
 			}
 		},
