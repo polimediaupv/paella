@@ -15,6 +15,9 @@ paella.plugins.PlayPauseButtonPlugin = Class.create(paella.ButtonPlugin, {
 
 	setup:function() {
 		var This = this;
+		if (paella.player.playing()) {
+			this.changeSubclass(This.pauseSubclass);
+		}
 		paella.events.bind(paella.events.play,function(event) { This.changeSubclass(This.pauseSubclass); This.setToolTip(paella.dictionary.translate("Pause"));});
 		paella.events.bind(paella.events.pause,function(event) { This.changeSubclass(This.playSubclass); This.setToolTip(paella.dictionary.translate("Play"));});
 	},

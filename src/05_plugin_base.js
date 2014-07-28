@@ -1,3 +1,4 @@
+
 Class ("paella.PluginManager", {
 	targets:null,
 	pluginList: [],
@@ -35,8 +36,56 @@ Class ("paella.PluginManager", {
 			return a.getIndex() - b.getIndex();
 		});
 	},
-
+	
+	// callback => function(plugin,pluginConfig)
+	loadEventDrivenPlugins:function() {
+		var This = this;
+		this.foreach(function(plugin,config) {
+			if (config.enabled) {
+				paella.debug.log("load plugin " + name);
+				plugin.config = config;
+				if (plugin.type=="eventDriven") {
+					plugin.load(This);
+				}
+			}
+		});
+	},
+	
 	loadPlugins:function() {
+		var This = this;
+		this.foreach(function(plugin,config) {
+			if (config.enabled) {
+				paella.debug.log("load plugin " + name);
+				plugin.config = config;
+				if (plugin.type!="eventDriven") {
+					plugin.load(This);
+				}
+			}
+		});
+	},
+	
+	foreach:function(callback) {
+		var pluginConfig = paella.player.config.plugins;
+		if (!pluginConfig) {
+			pluginConfig = { defaultConfig:{enabled:true}, list:{}};
+		}
+		for (var i=0; i<this.pluginList.length; ++i) {
+			var plugin = this.pluginList[i];
+			var name = plugin.getName();
+			var config = pluginConfig.list[name];
+			if (!config) {
+				config = pluginConfig.defaultConfig;
+			}
+			else {
+				for (var key in pluginConfig.defaultConfig) {
+					if (config[key]===undefined) config[key] = pluginConfig.defaultConfig[key];
+				}
+			}
+			callback(this.pluginList[i],config);
+		}
+	},
+
+/*	loadPlugins:function() {
 		var pluginConfig = paella.player.config.plugins;
 		if (!pluginConfig) {
 			pluginConfig = {defaultConfig:{enabled:true},list:{}};
@@ -60,6 +109,7 @@ Class ("paella.PluginManager", {
 			}
 		}
 	},
+*/
 
 	addPlugin:function(plugin) {
 		var thisClass = this;

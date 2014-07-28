@@ -247,6 +247,8 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		else {
 			this.setProfile(this.config.defaultProfile);
 		}
+		
+		paella.pluginManager.loadEventDrivenPlugins();
 
 /*
 		// TODO: No sé muy bien por qué pero si no se reproduce el vídeo al menos un segundo no funciona el setSeek
@@ -363,6 +365,14 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 	pause:function() {
 		this.videoContainer.pause();
+	},
+	
+	playing:function() {
+		return this.paused();
+	},
+	
+	paused:function() {
+		return this.videoContainer.paused();
 	}
 });
 
