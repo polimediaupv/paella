@@ -80,6 +80,10 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		$(playbackFull.domElement).bind('mousemove',function(event) { paella.utils.mouseManager.move(event); });
 		$(this.domElement).bind('mouseup',function(event) { paella.utils.mouseManager.up(event); });
 		$(playbackFull.domElement).bind('mouseup',function(event) { paella.utils.mouseManager.up(event); });
+
+		if (paella.player.isLiveStream()) {
+			$(this.domElement).hide();
+		}
 	},
 
 	playbackFull:function() {

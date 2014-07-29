@@ -90,7 +90,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			}
 		});
 	},
-	
+
 	initVideoEvents:function() {
 		var thisClass = this;
 		paella.events.bind(paella.events.play,function(event) { thisClass.play(); });
@@ -156,7 +156,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 						);
 
 						if (paella.player.isLiveStream()) {
-							$(paella.player.controls.playbackControl().playbackBar().domElement).hide();
+							This.showPlaybackBar();
 						}
 
 						paella.events.trigger(paella.events.loadComplete,{masterVideo:master,slaveVideo:slave,frames:frames});
@@ -172,6 +172,16 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 					paella.events.trigger(paella.events.error,{error:errorMessage});
 				}
 			});
+		}
+	},
+
+	showPlaybackBar:function() {
+		if (!this.controls) {
+			this.controls = new paella.ControlsContainer(this.playerId + '_controls');
+			this.mainContainer.appendChild(this.controls.domElement);
+			this.controls.onresize();
+			paella.events.trigger(paella.events.loadPlugins,{pluginManager:paella.pluginManager});
+
 		}
 	},
 
@@ -247,73 +257,13 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		else {
 			this.setProfile(this.config.defaultProfile);
 		}
-		
+
 		paella.pluginManager.loadEventDrivenPlugins();
-
-/*
-		// TODO: No sé muy bien por qué pero si no se reproduce el vídeo al menos un segundo no funciona el setSeek
-		//paella.events.trigger(paella.events.play);
-		new paella.utils.Timer(function(timer) {
-			var autoplay = paella.utils.parameters.list.autoplay ? paella.utils.parameters.list.autoplay:'';
-			autoplay = autoplay.toLowerCase();
-
-			var playerConfig = paella.player.config.player;
-			if (playerConfig.stream0Audio===false && paella.player.videoContainer.numberOfStreams()>=1) {
-				paella.player.videoContainer.masterVideo().setVolume(0);
-			}
-			else if (paella.player.videoContainer.numberOfStreams()>=1) {
-				paella.player.videoContainer.masterVideo().setVolume(1);
-			}
-			if (playerConfig.stream1Audio!==true && paella.player.videoContainer.numberOfStreams()>=2) {
-				paella.player.videoContainer.slaveVideo().setVolume(1);
-			}
-			else if (paella.player.videoContainer.numberOfStreams()>=2) {
-				paella.player.videoContainer.slaveVideo().setVolume(0);
-			}
-
-			if (autoplay!='true' && autoplay!='yes') paella.events.trigger(paella.events.pause);
-			var time = paella.utils.parameters.get('time');
-			if (time) {
-				var duration = master.duration();
-				var trimStart = thisClass.videoContainer.trimStart();
-				var trimEnd = thisClass.videoContainer.trimEnd();
-				if (thisClass.videoContainer.trimEnabled()) {
-					duration = trimEnd - trimStart;
-				}
-				var hour = 0;
-				var minute = 0;
-				var second = 0;
-				if (/([0-9]+)h/.test(time)) {
-					hour = Number(RegExp.$1);
-				}
-				if (/([0-9]+)m/.test(time)) {
-					minute = Number(RegExp.$1);
-				}
-				if (/([0-9]+)s/.test(time)) {
-					second = Number(RegExp.$1);
-				}
-				var currentTime = hour * 60 * 60 + minute * 60 + second;
-				var currentPercent = currentTime * 100 / duration;
-				paella.events.trigger(paella.events.seekTo,{newPositionPercent:currentPercent});
-			}
-			thisClass.loadPreviews();
-			if (paella.player.config.editor &&
-				paella.player.config.editor.enabled &&
-				paella.player.config.editor.loadOnStartup) {
-				paella.events.trigger(paella.events.showEditor);
-			}
-		},1000);
-		*/
 	},
 
 	play:function() {
-		if (!this.controls) {
-			this.controls = new paella.ControlsContainer(this.playerId + '_controls');
-			this.mainContainer.appendChild(this.controls.domElement);
-			this.controls.onresize();
-			paella.events.trigger(paella.events.loadPlugins,{pluginManager:paella.pluginManager});
-		}
-		
+		this.showPlaybackBar();
+
 		this.videoContainer.play();
 		var playerConfig = paella.player.config.player;
 		if (playerConfig.stream0Audio===false && paella.player.videoContainer.numberOfStreams()>=1) {
@@ -366,11 +316,11 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	pause:function() {
 		this.videoContainer.pause();
 	},
-	
+
 	playing:function() {
 		return this.paused();
 	},
-	
+
 	paused:function() {
 		return this.videoContainer.paused();
 	}
