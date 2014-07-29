@@ -497,7 +497,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		}
 		else {
 			this.isMasterReady = true;
-			this.setMonoStreamMode = true;
+			this.setMonoStreamMode(true);
 		}
 	},
 
@@ -614,7 +614,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	*/
 
 	setMonoStreamMode:function() {
-		this.isMonoStream = true;
+		this.isMonostream = true;
 		this.isSlaveReady = true;
 	},
 
