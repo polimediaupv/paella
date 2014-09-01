@@ -217,12 +217,39 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	}
 });
 
+Class ("paella.ProfileFrameStrategy",{
+	valid:function() {
+		return true;
+	},
+
+	adaptFrame:function(videoDimensions,frameRect) {
+		return frameRect;
+	}
+});
+
+Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
+	adaptFrame:function(videoDimensions,frameRect) {
+		if (videoDimensions.width<frameRect.width || videoDimensions.height<frameRect.height) {
+			var frameRectCopy = JSON.parse(JSON.stringify(frameRect));
+			frameRectCopy.width = videoDimensions.width;
+			frameRectCopy.height = videoDimensions.height;
+			var diff = { w:frameRect.width - videoDimensions.width,
+						 h:frameRect.height - videoDimensions.height };
+			frameRectCopy.top = frameRectCopy.top + diff.h/2;
+			frameRectCopy.left = frameRectCopy.left + diff.w/2;
+			return frameRectCopy;
+		}
+		return frameRect;
+	}
+});
+
 Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	containerId:'',
 	video1Id:'',
 	video2Id:'',
 	backgroundId:'',
 	container:null,
+	profileFrameStrategy:null,
 
 	videoClasses:{
 		master:"video masterVideo",
@@ -272,6 +299,24 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			thisClass.syncVideos();
 		},thisClass.videoSyncTimeMillis);
 		timer.repeat = true;
+
+		var config = paella.player.config;
+		try {
+			var StrategyClass = config.player.profileFrameStrategy;
+			var ClassObject = Class.fromString(StrategyClass);
+			var strategy = new ClassObject();
+			if (dynamic_cast("paella.ProfileFrameStrategy", strategy)) {
+				this.setProfileFrameStrategy(strategy);
+			}
+		}
+		catch (e) {
+
+		}
+
+	},
+
+	setProfileFrameStrategy:function(strategy) {
+		this.profileFrameStrategy = strategy;
 	},
 
 	getMasterVideoRect:function() {
@@ -729,14 +774,15 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		};
 	},
 
-	setProfile:function(profileName,onSuccess) {
+	setProfile:function(profileName,onSuccess,animate) {
 		var thisClass = this;
+		var Animate = animate;
 		paella.Profiles.loadProfile(profileName,function(profileData) {
 			if (thisClass.numberOfStreams()==1) {
 				profileData.masterVideo = thisClass.getMonostreamMasterProfile();
 				profileData.slaveVideo = thisClass.getMonostreamSlaveProfile();
 			}
-			thisClass.applyProfileWithJson(profileData);
+			thisClass.applyProfileWithJson(profileData,Animate);
 			onSuccess(profileName);
 			paella.utils.cookies.set("lastProfile",profileName);
 		});
@@ -780,9 +826,11 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		}
 	},
 
-	applyProfileWithJson:function(profileData) {
+	applyProfileWithJson:function(profileData,animate) {
+		if (animate==undefined) animate = true;
 		var video1 = this.container.getNode(this.video1Id);
 		var video2 = this.container.getNode(this.video2Id);
+		if (!video1) return;	// The video is not loaded
 
 		var background = this.container.getNode(this.backgroundId);
 
@@ -830,13 +878,24 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		// Create or show new logos
 		this.showLogos(profileData.logos);
 
-		video1.setRect(rectMaster,true);
+		if (dynamic_cast("paella.ProfileFrameStrategy",this.profileFrameStrategy)) {
+			var containerSize = { width:$(this.domElement).width(), height:$(this.domElement).height() };
+			var scaleFactor = rectMaster.width / containerSize.width;
+			var scaledMaster = { width:masterDimensions.width*scaleFactor, height:masterDimensions.height*scaleFactor };
+			rectMaster = this.profileFrameStrategy.adaptFrame(scaledMaster,rectMaster);
+			if (video2) {
+				var scaledSlave = { width:slaveDimensions.width * scaleFactor, height:slaveDimensions.height * scaleFactor };
+				rectSlave = this.profileFrameStrategy.adaptFrame(scaledSlave,rectSlave);
+			}
+		}
+
+		video1.setRect(rectMaster,animate);
 		this.currentMasterVideoRect = rectMaster;
-		video1.setVisible(profileData.masterVideo.visible,true);
+		video1.setVisible(profileData.masterVideo.visible,animate);
 		if (video2) {
-			video2.setRect(rectSlave,true);
+			video2.setRect(rectSlave,animate);
 			this.currentSlaveVideoRect = rectSlave;
-			video2.setVisible(profileData.slaveVideo.visible,true);
+			video2.setVisible(profileData.slaveVideo.visible,animate);
 			video2.setLayer(profileData.slaveVideo.layer);
 		}
 		video1.setLayer(profileData.masterVideo.layer);

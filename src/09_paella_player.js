@@ -9,11 +9,11 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	// Video data:
 	videoData:null,
 
-	setProfile:function(profileName) {
+	setProfile:function(profileName,animate) {
 		var thisClass = this;
 		this.videoContainer.setProfile(profileName,function(newProfileName) {
 			thisClass.selectedProfile = newProfileName;
-		});
+		},animate);
 	},
 
 	initialize:function(playerId) {
@@ -107,6 +107,15 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		if (this.controls) this.controls.onresize();
 		if (this.editor) {
 			this.editor.resize();
+		}
+
+		// Resize the layout profile
+		var cookieProfile = paella.utils.cookies.get('lastProfile');
+		if (cookieProfile) {
+			this.setProfile(cookieProfile,false);
+		}
+		else {
+			this.setProfile(this.config.defaultProfile,false);
 		}
 	},
 
