@@ -4,8 +4,8 @@
         "profileFrameStrategy":"paella.LimitedSizeProfileFrameStrategy",
 		"methods":[{"name":"streaming","enabled":true},
 				   {"name":"html","enabled":true},
-				   {"name":"image","enabled":true},
-				   {"name":"flash","enabled":true}],
+				   {"name":"flash","enabled":true},
+                   {"name":"image","enabled":true}],
 		"stream0Audio":true,
 		"stream1Audio":false,
         "rtmpSettings":{

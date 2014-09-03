@@ -436,13 +436,14 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 			if (!/rtmp:\/\//.test(sourceData.src)) {
 				parameters.url = sourceData.src;
 				parameters.playerId = this.flashId;
-
+				parameters.isLiveStream = false;
 				this.flashVideo = this.createSwfObject("player.swf",parameters);
 			}
 		}
 		else if (sourceData.type=='video/x-flv') {
 			parameters.url = sourceData.src;
 			parameters.playerId = this.flashId;
+			parameters.isLiveStream = false;
 			this.flashVideo = this.createSwfObject("player.swf",parameters);
 		}
 	},
@@ -459,7 +460,7 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 				parameters.url = "mp4:" + RegExp.$4;
 			}
 			parameters.playerId = this.flashId;
-			parameters.isLiveStream = sourceData.isLiveStream;
+			parameters.isLiveStream = sourceData.isLiveStream!==undefined ? sourceData.isLiveStream:false;
 			if (paella.player.config.player.rtmpSettings && paella.player.config.player.rtmpSettings.bufferTime!==undefined) {
 				parameters.bufferTime = paella.player.config.player.rtmpSettings.bufferTime;
 			}
@@ -471,7 +472,7 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 				parameters.url = RegExp.$4;
 			}
 			parameters.playerId = this.flashId;
-			parameters.isLiveStream = sourceData.isLiveStream;
+			parameters.isLiveStream = sourceData.isLiveStream!==undefined ? sourceData.isLiveStream:false;
 			if (paella.player.config.player.rtmpSettings && paella.player.config.player.rtmpSettings.bufferTime!==undefined) {
 				parameters.bufferTime = paella.player.config.player.rtmpSettings.bufferTime;
 			}

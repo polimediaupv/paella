@@ -882,9 +882,17 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			var containerSize = { width:$(this.domElement).width(), height:$(this.domElement).height() };
 			var scaleFactor = rectMaster.width / containerSize.width;
 			var scaledMaster = { width:masterDimensions.width*scaleFactor, height:masterDimensions.height*scaleFactor };
+			rectMaster.left = Number(rectMaster.left);
+			rectMaster.top = Number(rectMaster.top);
+			rectMaster.width = Number(rectMaster.width);
+			rectMaster.height = Number(rectMaster.height);
 			rectMaster = this.profileFrameStrategy.adaptFrame(scaledMaster,rectMaster);
 			if (video2) {
 				var scaledSlave = { width:slaveDimensions.width * scaleFactor, height:slaveDimensions.height * scaleFactor };
+				rectSlave.left = Number(rectSlave.left);
+				rectSlave.top = Number(rectSlave.top);
+				rectSlave.width = Number(rectSlave.width);
+				rectSlave.height = Number(rectSlave.height);
 				rectSlave = this.profileFrameStrategy.adaptFrame(scaledSlave,rectSlave);
 			}
 		}
