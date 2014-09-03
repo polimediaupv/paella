@@ -9,11 +9,11 @@ paella.plugins.VideoLoadTestPlugin = Class.create(paella.EventDrivenPlugin,{
 		this.parent();
 		this.startTime = Date.now();
 		
-        if (paella.utils.language()=='es') {
+        if (base.dictionary.currentLanguage()=='es') {
                 var esDict = {
                         'Video loaded in {0} seconds':'Video cargado en {0} segundos',
                 };
-                paella.dictionary.addDictionary(esDict);
+                base.dictionary.addDictionary(esDict);
         }		
 	},
 
@@ -40,7 +40,7 @@ paella.plugins.VideoLoadTestPlugin = Class.create(paella.EventDrivenPlugin,{
 		this.endTime = Date.now();
 	
 		var bench = (this.endTime - this.startTime)/1000.0;
-		this.showOverlayMessage(paella.dictionary.translate("Video loaded in {0} seconds").replace(/\{0\}/g,bench));
+		this.showOverlayMessage(base.dictionary.translate("Video loaded in {0} seconds").replace(/\{0\}/g,bench));
 	},	
 	
 		

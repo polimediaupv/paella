@@ -11,7 +11,7 @@ paella.plugins.ImageControlPlugin = Class.create(paella.ButtonPlugin,{
 	getMinWindowSize:function() { return 200; },
 	getName:function() { return "es.upv.paella.ImageControlPlugin"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.timeLineButton; },
-	getDefaultToolTip:function() { return paella.dictionary.translate("Enlarge presenter"); },	
+	getDefaultToolTip:function() { return base.dictionary.translate("Enlarge presenter"); },	
 	checkEnabled:function(onSuccess) { 
 		var thisClass = this;
 		paella.data.read('images',{},function(data,status) {

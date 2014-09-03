@@ -14,14 +14,14 @@ paella.plugins.BreaksEditorPlugin = Class.create(paella.editor.MainTrackPlugin,{
 	},
 
 	setup:function() {
-		if (paella.utils.language()=="es") {
+		if (base.dictionary.currentLanguage()=="es") {
 			var esDict = {
 				'Breaks':'Descansos',
 				'Break':'Descanso',
 				'Create a new break in the current position': 'Añade un descanso en el instante actual',
 				'Delete selected break': 'Borra el descanso seleccionado'
 			};
-			paella.dictionary.addDictionary(esDict);
+			base.dictionary.addDictionary(esDict);
 		}
 	},
 
@@ -31,8 +31,8 @@ paella.plugins.BreaksEditorPlugin = Class.create(paella.editor.MainTrackPlugin,{
 	
 	getTools:function() {
 		return [
-			{name:'create',label:paella.dictionary.translate('Create'),hint:paella.dictionary.translate('Create a new break in the current position')},
-			{name:'delete',label:paella.dictionary.translate('Delete'),hint:paella.dictionary.translate('Delete selected break')}
+			{name:'create',label:base.dictionary.translate('Create'),hint:base.dictionary.translate('Create a new break in the current position')},
+			{name:'delete',label:base.dictionary.translate('Delete'),hint:base.dictionary.translate('Delete selected break')}
 		];
 	},
 	
@@ -47,7 +47,7 @@ paella.plugins.BreaksEditorPlugin = Class.create(paella.editor.MainTrackPlugin,{
 			var start = paella.player.videoContainer.currentTime();
 			var end = start + 30;
 			var id = this.getTrackUniqueId();
-			var content = paella.dictionary.translate('Break');
+			var content = base.dictionary.translate('Break');
 			this.tracks.push({id:id,s:start,e:end,content:content,name:content});
 			return true;
 		}
@@ -69,7 +69,7 @@ paella.plugins.BreaksEditorPlugin = Class.create(paella.editor.MainTrackPlugin,{
 	},
 	
 	getTrackName:function() {
-		return paella.dictionary.translate("Breaks");
+		return base.dictionary.translate("Breaks");
 	},
 	
 	getColor:function() {
@@ -110,7 +110,7 @@ paella.plugins.BreaksEditorPlugin = Class.create(paella.editor.MainTrackPlugin,{
 	},
 	
 	contextHelpString:function() {
-		if (paella.utils.language()=="es") {
+		if (base.dictionary.currentLanguage()=="es") {
 			return "Utiliza esta herramienta para crear, borrar y editar descansos. Para crear un descanso, selecciona el instante de tiempo haciendo clic en el fondo de la línea de tiempo, y pulsa el botón 'Crear'. Utiliza esta pestaña para editar el texto de los descansos";
 		}
 		else {

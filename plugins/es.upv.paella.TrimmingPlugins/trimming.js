@@ -54,7 +54,7 @@ paella.plugins.TrimmingTrackPlugin = Class.create(paella.editor.MainTrackPlugin,
 	getName:function() { return "es.upv.paella.editor.TrimmingTrackPlugin"; },
 	
 	getTrackName:function() {
-		return paella.dictionary.translate("Trimming");
+		return base.dictionary.translate("Trimming");
 	},
 	
 	getColor:function() {
@@ -93,8 +93,8 @@ paella.plugins.TrimmingTrackPlugin = Class.create(paella.editor.MainTrackPlugin,
 	},
 
 	contextHelpString:function() {
-		// TODO: Implement this using the standard paella.dictionary class
-		if (paella.utils.language()=="es") {
+		// TODO: Implement this using the standard base.dictionary class
+		if (base.dictionary.currentLanguage()=="es") {
 			return "Utiliza la herramienta de recorte para definir el instante inicial y el instante final de la clase. Para cambiar la duración solo hay que arrastrar el inicio o el final de la pista \"Recorte\", en la linea de tiempo.";
 		}
 		else {

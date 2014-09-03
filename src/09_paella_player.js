@@ -64,7 +64,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		this.accessControl.checkAccess(function(permissions) {
 			var errorMessage;
 			if (!permissions.loadError) {
-				paella.debug.log("read:" + permissions.canRead + ", contribute:" + permissions.canContribute + ", write:" + permissions.canWrite);
+				base.log.debug("read:" + permissions.canRead + ", contribute:" + permissions.canContribute + ", write:" + permissions.canWrite);
 				if (permissions.canWrite) {
 					//thisClass.setupEditor();
 					paella.events.bind(paella.events.showEditor,function(event) { thisClass.showEditor(); });
@@ -75,16 +75,16 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 					thisClass.videoContainer.publishVideo();
 				}
 				else {
-					thisClass.unloadAll(paella.dictionary.translate("You are not authorized to view this resource"));
+					thisClass.unloadAll(base.dictionary.translate("You are not authorized to view this resource"));
 				}
 			}
 			else if (permissions.isAnonymous) {
-				errorMessage = paella.dictionary.translate("You are not logged in");
+				errorMessage = base.dictionary.translate("You are not logged in");
 				thisClass.unloadAll(errorMessage);
 				paella.events.trigger(paella.events.error,{error:errorMessage});
 			}
 			else {
-				errorMessage = paella.dictionary.translate("You are not authorized to view this resource");
+				errorMessage = base.dictionary.translate("You are not authorized to view this resource");
 				thisClass.unloadAll(errorMessage);
 				paella.events.trigger(paella.events.error,{error:errorMessage});
 			}
@@ -127,7 +127,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 	//setupEditor:function() {
 		//if (paella.extended) return;
-	//	if (paella.editor && paella.player.config.editor && paella.player.config.editor.enabled && !paella.utils.userAgent.browser.IsMobileVersion) {
+	//	if (paella.editor && paella.player.config.editor && paella.player.config.editor.enabled && !base.userAgent.browser.IsMobileVersion) {
 			//this.controls.showEditorButton();
 	//	}
 	//	else {
@@ -165,7 +165,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 							{ data:slave, type:preferredMethodSlave }
 						);
 
-
 						paella.events.trigger(paella.events.loadComplete,{masterVideo:master,slaveVideo:slave,frames:frames});
 						if (paella.player.isLiveStream()) {
 							This.showPlaybackBar();
@@ -175,9 +174,10 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 					//catch(e) {
 					//	paella.messageBox.showError(paella.dictionary.translate(e.message));
 					//}
+
 				}
 				else {
-					errorMessage = paella.dictionary.translate("Error loading video data");
+					errorMessage = base.dictionary.translate("Error loading video data");
 					paella.messageBox.showError(errorMessage);
 					paella.events.trigger(paella.events.error,{error:errorMessage});
 				}
@@ -255,9 +255,10 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 	loadComplete:function(event,params) {
 		var thisClass = this;
+
 		var master = paella.player.videoContainer.masterVideo();
-		var getProfile = paella.utils.parameters.get('profile');
-		var cookieProfile = paella.utils.cookies.get('lastProfile');
+		var getProfile = base.parameters.get('profile');
+		var cookieProfile = base.cookies.get('lastProfile');
 		if (getProfile) {
 			this.setProfile(getProfile);
 		}

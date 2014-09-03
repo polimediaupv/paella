@@ -13,13 +13,13 @@
   permitted provided that the following conditions are met:
 
   * Redistributions of source code must retain the above copyright notice, this list
-    of conditions and the following disclaimer.
+	of conditions and the following disclaimer.
   * Redistributions in binary form must reproduce the above copyright notice, this
-    list of conditions and the following disclaimer in the documentation and/or other
-    materials provided with the distribution.
+	list of conditions and the following disclaimer in the documentation and/or other
+	materials provided with the distribution.
   * Neither the name of typicalnoise.com nor the names of its contributors may be
-    used to endorse or promote products derived from this software without specific prior
-    written permission.
+	used to endorse or promote products derived from this software without specific prior
+	written permission.
 
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
   EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -30,7 +30,30 @@
   HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
   TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 */
+
+/*
+	Class definition improved by Fernando Serrano Carpena to support C++ typed dynamic casting.
+	// Default method, defined by Alex Arnell:
+	var MyClass = Class.extend.apply(parent,{ class definition })
+
+	// New method:
+	Class.create("MyClass",parent,{ class definition })
+
+	// Improvements
+	// 	- automatic namespace creation:
+	Class.create("myns.MyClass",myns.Parent, { class definition })
+
+	//	- Dynamic casting:
+	var instance = dynamic_cast("myns.MyClass",anObject);
+
+	// You can also use:
+	var MyClass = Class.create({ class definition })
+	// or
+	var MyClass = Class.create(parent, { class definition })
+*/
+
 var ClassBase = (function() {
   var __extending = {};
 
@@ -216,11 +239,36 @@ Class.fromString = function(str) {
 };
 
 
-/* Part 2: base.js library */
+/* Part 2: javascript extension */
+Array.prototype.contains = function(obj) {
+	var i = this.length;
+	while (i--) {
+		if (this[i] == obj) {
+			return true;
+		}
+	}
+	return false;
+}
 
-var UserAgent = Class.create({
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+};
+
+String.prototype.trim = function () {
+	return this.replace(/^\s*/, "").replace(/\s*$/, "");
+}
+
+/* Part 3: base.js library */
+var base = {};
+
+Class ("base.UserAgent",{
 	system:{},
 	browser:{},
+
+	// ie11: "Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; .NET4.0E; .NET4.0C; .NET CLR 3.5.30729; .NET CLR 2.0.50727; .NET CLR 3.0.30729; rv:11.0) like Gecko"
+	// ie10:
 
 	initialize:function(userAgentString) {
 		if (!userAgentString) {
@@ -298,8 +346,25 @@ var UserAgent = Class.create({
 			this.browser.Version.versionString = RegExp.$1;
 		}
 
-		this.browser.Explorer = /MSIE ([\d\.]+)/.test(userAgentString) || /rv:([\d\.]+)/.test(userAgentString);
-		if (this.browser.Explorer) {
+		this.browser.Explorer = /MSIE ([\d\.]+)/.test(userAgentString);
+		if (!this.browser.Explorer) {
+			var re = /\Mozilla\/5.0 \(([^)]+)\) like Gecko/
+			var matches = re.exec(userAgentString);
+			if (matches) {
+				re = /rv:(.*)/
+				var version = re.exec(matches[1]);
+				this.browser.Explorer = true;
+				this.browser.Name = "Internet Explorer";
+				this.browser.Vendor = "Microsoft";
+				if (version) {
+					this.browser.Version.versionString = version[1];
+				}
+				else {
+					this.browser.Version.versionString = "unknown";
+				}
+			}
+		}
+		else {
 			this.browser.Name = "Internet Explorer";
 			this.browser.Vendor = "Microsoft";
 			this.browser.Version.versionString = RegExp.$1;
@@ -486,8 +551,9 @@ var UserAgent = Class.create({
 	}
 });
 
+base.userAgent = new base.UserAgent();
 
-var TimerManager = Class.create({
+Class ("base.TimerManager", {
 	timerArray:new Array(),
 	lastId:0,
 
@@ -510,9 +576,9 @@ var TimerManager = Class.create({
 	}
 });
 
-var timerManager = new TimerManager();
+base.timerManager = new base.TimerManager();
 
-var Timer = Class.create({
+Class ("base.Timer",{
 	timerId:0,
 	callback:null,
 	params:null,
@@ -523,7 +589,7 @@ var Timer = Class.create({
 	initialize:function(callback,time,params) {
 		this.callback = callback;
 		this.params = params;
-		timerManager.setupTimer(this,time);
+		base.timerManager.setupTimer(this,time);
 	},
 
 	cancel:function() {
@@ -531,785 +597,424 @@ var Timer = Class.create({
 	}
 });
 
+// Deprecated
+var TimerManager = base.TimerManager
+var timerManager = base.timerManager
+var Timer = base.Timer;
 
-/*!	SWFObject v2.2 <http://code.google.com/p/swfobject/>
-	is released under the MIT License <http://www.opensource.org/licenses/mit-license.php>
-*/
-var swfobject = function() {
+base.Timer.sleep = function(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+	if ((new Date().getTime() - start) > milliseconds){
+	  break;
+	}
+  }
+}
 
-	var UNDEF = "undefined",
-		OBJECT = "object",
-		SHOCKWAVE_FLASH = "Shockwave Flash",
-		SHOCKWAVE_FLASH_AX = "ShockwaveFlash.ShockwaveFlash",
-		FLASH_MIME_TYPE = "application/x-shockwave-flash",
-		EXPRESS_INSTALL_ID = "SWFObjectExprInst",
-		ON_READY_STATE_CHANGE = "onreadystatechange",
+base.cookies = {
+	set:function(name,value) {
+		document.cookie = name + "=" + value;
+	},
 
-		win = window,
-		doc = document,
-		nav = navigator,
-
-		plugin = false,
-		domLoadFnArr = [main],
-		regObjArr = [],
-		objIdArr = [],
-		listenersArr = [],
-		storedAltContent,
-		storedAltContentId,
-		storedCallbackFn,
-		storedCallbackObj,
-		isDomLoaded = false,
-		isExpressInstallActive = false,
-		dynamicStylesheet,
-		dynamicStylesheetMedia,
-		autoHideShow = true,
-
-	/* Centralized function for browser feature detection
-		- User agent string detection is only used when no good alternative is possible
-		- Is executed directly for optimal performance
-	*/
-	ua = function() {
-		var w3cdom = typeof doc.getElementById != UNDEF && typeof doc.getElementsByTagName != UNDEF && typeof doc.createElement != UNDEF,
-			u = nav.userAgent.toLowerCase(),
-			p = nav.platform.toLowerCase(),
-			windows = p ? /win/.test(p) : /win/.test(u),
-			mac = p ? /mac/.test(p) : /mac/.test(u),
-			webkit = /webkit/.test(u) ? parseFloat(u.replace(/^.*webkit\/(\d+(\.\d+)?).*$/, "$1")) : false, // returns either the webkit version or false if not webkit
-			ie = !+"\v1", // feature detection based on Andrea Giammarchi's solution: http://webreflection.blogspot.com/2009/01/32-bytes-to-know-if-your-browser-is-ie.html
-			playerVersion = [0,0,0],
-			d = null;
-		if (typeof nav.plugins != UNDEF && typeof nav.plugins[SHOCKWAVE_FLASH] == OBJECT) {
-			d = nav.plugins[SHOCKWAVE_FLASH].description;
-			if (d && !(typeof nav.mimeTypes != UNDEF && nav.mimeTypes[FLASH_MIME_TYPE] && !nav.mimeTypes[FLASH_MIME_TYPE].enabledPlugin)) { // navigator.mimeTypes["application/x-shockwave-flash"].enabledPlugin indicates whether plug-ins are enabled or disabled in Safari 3+
-				plugin = true;
-				ie = false; // cascaded feature detection for Internet Explorer
-				d = d.replace(/^.*\s+(\S+\s+\S+$)/, "$1");
-				playerVersion[0] = parseInt(d.replace(/^(.*)\..*$/, "$1"), 10);
-				playerVersion[1] = parseInt(d.replace(/^.*\.(.*)\s.*$/, "$1"), 10);
-				playerVersion[2] = /[a-zA-Z]/.test(d) ? parseInt(d.replace(/^.*[a-zA-Z]+(.*)$/, "$1"), 10) : 0;
+	get:function(name) {
+		var i,x,y,ARRcookies=document.cookie.split(";");
+		for (i=0;i<ARRcookies.length;i++) {
+			x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+			y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+			x=x.replace(/^\s+|\s+$/g,"");
+			if (x==name) {
+				return unescape(y);
 			}
-		}
-		else if (typeof win.ActiveXObject != UNDEF) {
-			try {
-				var a = new ActiveXObject(SHOCKWAVE_FLASH_AX);
-				if (a) { // a will return null when ActiveX is disabled
-					d = a.GetVariable("$version");
-					if (d) {
-						ie = true; // cascaded feature detection for Internet Explorer
-						d = d.split(" ")[1].split(",");
-						playerVersion = [parseInt(d[0], 10), parseInt(d[1], 10), parseInt(d[2], 10)];
-					}
-				}
-			}
-			catch(e) {}
-		}
-		return { w3:w3cdom, pv:playerVersion, wk:webkit, ie:ie, win:windows, mac:mac };
-	}(),
-
-	/* Cross-browser onDomLoad
-		- Will fire an event as soon as the DOM of a web page is loaded
-		- Internet Explorer workaround based on Diego Perini's solution: http://javascript.nwbox.com/IEContentLoaded/
-		- Regular onload serves as fallback
-	*/
-	onDomLoad = function() {
-		if (!ua.w3) { return; }
-		if ((typeof doc.readyState != UNDEF && doc.readyState == "complete") || (typeof doc.readyState == UNDEF && (doc.getElementsByTagName("body")[0] || doc.body))) { // function is fired after onload, e.g. when script is inserted dynamically
-			callDomLoadFunctions();
-		}
-		if (!isDomLoaded) {
-			if (typeof doc.addEventListener != UNDEF) {
-				doc.addEventListener("DOMContentLoaded", callDomLoadFunctions, false);
-			}
-			if (ua.ie && ua.win) {
-				doc.attachEvent(ON_READY_STATE_CHANGE, function() {
-					if (doc.readyState == "complete") {
-						doc.detachEvent(ON_READY_STATE_CHANGE, arguments.callee);
-						callDomLoadFunctions();
-					}
-				});
-				if (win == top) { // if not inside an iframe
-					(function(){
-						if (isDomLoaded) { return; }
-						try {
-							doc.documentElement.doScroll("left");
-						}
-						catch(e) {
-							setTimeout(arguments.callee, 0);
-							return;
-						}
-						callDomLoadFunctions();
-					})();
-				}
-			}
-			if (ua.wk) {
-				(function(){
-					if (isDomLoaded) { return; }
-					if (!/loaded|complete/.test(doc.readyState)) {
-						setTimeout(arguments.callee, 0);
-						return;
-					}
-					callDomLoadFunctions();
-				})();
-			}
-			addLoadEvent(callDomLoadFunctions);
-		}
-	}();
-
-	function callDomLoadFunctions() {
-		if (isDomLoaded) { return; }
-		try { // test if we can really add/remove elements to/from the DOM; we don't want to fire it too early
-			var t = doc.getElementsByTagName("body")[0].appendChild(createElement("span"));
-			t.parentNode.removeChild(t);
-		}
-		catch (e) { return; }
-		isDomLoaded = true;
-		var dl = domLoadFnArr.length;
-		for (var i = 0; i < dl; i++) {
-			domLoadFnArr[i]();
 		}
 	}
+};
 
-	function addDomLoadEvent(fn) {
-		if (isDomLoaded) {
-			fn();
+base.hashParams = {
+	extractUrl:function() {
+		var urlOnly = window.location.href;
+		if (urlOnly.lastIndexOf('#')>=0) {
+			urlOnly = urlOnly.substr(0,urlOnly.lastIndexOf('#'));
+		}
+		return urlOnly;
+	},
+
+	extractParams:function() {
+		var params = window.location.href;
+		if (params.lastIndexOf('#')>=0) {
+			params = params.substr(window.location.href.lastIndexOf('#'));
 		}
 		else {
-			domLoadFnArr[domLoadFnArr.length] = fn; // Array.push() is only available in IE5.5+
+			params = "";
 		}
-	}
+		return params;
+	},
 
-	/* Cross-browser onload
-		- Based on James Edwards' solution: http://brothercake.com/site/resources/scripts/onload/
-		- Will fire an event as soon as a web page including all of its assets are loaded
-	 */
-	function addLoadEvent(fn) {
-		if (typeof win.addEventListener != UNDEF) {
-			win.addEventListener("load", fn, false);
-		}
-		else if (typeof doc.addEventListener != UNDEF) {
-			doc.addEventListener("load", fn, false);
-		}
-		else if (typeof win.attachEvent != UNDEF) {
-			addListener(win, "onload", fn);
-		}
-		else if (typeof win.onload == "function") {
-			var fnOld = win.onload;
-			win.onload = function() {
-				fnOld();
-				fn();
-			};
-		}
-		else {
-			win.onload = fn;
-		}
-	}
+	clear:function() {
+		window.location.href = this.extractUrl() + '#';
+	},
 
-	/* Main function
-		- Will preferably execute onDomLoad, otherwise onload (as a fallback)
-	*/
-	function main() {
-		if (plugin) {
-			testPlayerVersion();
-		}
-		else {
-			matchVersions();
-		}
-	}
-
-	/* Detect the Flash Player version for non-Internet Explorer browsers
-		- Detecting the plug-in version via the object element is more precise than using the plugins collection item's description:
-		  a. Both release and build numbers can be detected
-		  b. Avoid wrong descriptions by corrupt installers provided by Adobe
-		  c. Avoid wrong descriptions by multiple Flash Player entries in the plugin Array, caused by incorrect browser imports
-		- Disadvantage of this method is that it depends on the availability of the DOM, while the plugins collection is immediately available
-	*/
-	function testPlayerVersion() {
-		var b = doc.getElementsByTagName("body")[0];
-		var o = createElement(OBJECT);
-		o.setAttribute("type", FLASH_MIME_TYPE);
-		var t = b.appendChild(o);
-		if (t) {
-			var counter = 0;
-			(function(){
-				if (typeof t.GetVariable != UNDEF) {
-					var d = t.GetVariable("$version");
-					if (d) {
-						d = d.split(" ")[1].split(",");
-						ua.pv = [parseInt(d[0], 10), parseInt(d[1], 10), parseInt(d[2], 10)];
-					}
-				}
-				else if (counter < 10) {
-					counter++;
-					setTimeout(arguments.callee, 10);
-					return;
-				}
-				b.removeChild(o);
-				t = null;
-				matchVersions();
-			})();
-		}
-		else {
-			matchVersions();
-		}
-	}
-
-	/* Perform Flash Player and SWF version matching; static publishing only
-	*/
-	function matchVersions() {
-		var rl = regObjArr.length;
-		if (rl > 0) {
-			for (var i = 0; i < rl; i++) { // for each registered object element
-				var id = regObjArr[i].id;
-				var cb = regObjArr[i].callbackFn;
-				var cbObj = {success:false, id:id};
-				if (ua.pv[0] > 0) {
-					var obj = getElementById(id);
-					if (obj) {
-						if (hasPlayerVersion(regObjArr[i].swfVersion) && !(ua.wk && ua.wk < 312)) { // Flash Player version >= published SWF version: Houston, we have a match!
-							setVisibility(id, true);
-							if (cb) {
-								cbObj.success = true;
-								cbObj.ref = getObjectById(id);
-								cb(cbObj);
-							}
-						}
-						else if (regObjArr[i].expressInstall && canExpressInstall()) { // show the Adobe Express Install dialog if set by the web page author and if supported
-							var att = {};
-							att.data = regObjArr[i].expressInstall;
-							att.width = obj.getAttribute("width") || "0";
-							att.height = obj.getAttribute("height") || "0";
-							if (obj.getAttribute("class")) { att.styleclass = obj.getAttribute("class"); }
-							if (obj.getAttribute("align")) { att.align = obj.getAttribute("align"); }
-							// parse HTML object param element's name-value pairs
-							var par = {};
-							var p = obj.getElementsByTagName("param");
-							var pl = p.length;
-							for (var j = 0; j < pl; j++) {
-								if (p[j].getAttribute("name").toLowerCase() != "movie") {
-									par[p[j].getAttribute("name")] = p[j].getAttribute("value");
-								}
-							}
-							showExpressInstall(att, par, id, cb);
-						}
-						else { // Flash Player and SWF version mismatch or an older Webkit engine that ignores the HTML object element's nested param elements: display alternative content instead of SWF
-							displayAltContent(obj);
-							if (cb) { cb(cbObj); }
-						}
-					}
-				}
-				else {	// if no Flash Player is installed or the fp version cannot be detected we let the HTML object element do its job (either show a SWF or alternative content)
-					setVisibility(id, true);
-					if (cb) {
-						var o = getObjectById(id); // test whether there is an HTML object element or not
-						if (o && typeof o.SetVariable != UNDEF) {
-							cbObj.success = true;
-							cbObj.ref = o;
-						}
-						cb(cbObj);
-					}
+	unset:function(key) {
+		var url = location.href;
+		var lastIndex = url.lastIndexOf('#');
+		var urlOnly = this.extractUrl();
+		if (lastIndex>=0 && lastIndex+1<url.length) {
+			var newParams = "";
+			var params = url.substr(url.lastIndexOf('#')+1);
+			params = params.split('&');
+			for (var i=0;i<params.length;++i) {
+				var current = params[i];
+				var keyValue = current.split('=');
+				if ((keyValue.length>=2 && keyValue[0]!=key) || keyValue.length<2) {
+					if (newParams=="") newParams += '#';
+					else newParams += "&";
+					newParams += current;
 				}
 			}
+			if (newParams=="") newParams = "#";
+			location.href = urlOnly + newParams;
 		}
-	}
+	},
 
-	function getObjectById(objectIdStr) {
-		var r = null;
-		var o = getElementById(objectIdStr);
-		if (o && o.nodeName == "OBJECT") {
-			if (typeof o.SetVariable != UNDEF) {
-				r = o;
+	set:function(key,value) {
+		if (key && value) {
+			this.unset(key);
+			var url = this.extractUrl();
+			var params = this.extractParams();
+			var result = url;
+			if (params.length==0) {
+				result += '#' + key + '=' + value;
+			}
+			else if (params.length==1) {
+				result +=  params + key + '=' + value;
 			}
 			else {
-				var n = o.getElementsByTagName(OBJECT)[0];
-				if (n) {
-					r = n;
-				}
+				result +=  params + "&" + key + '=' + value;
 			}
+			location.href = result;
 		}
-		return r;
-	}
+	},
 
-	/* Requirements for Adobe Express Install
-		- only one instance can be active at a time
-		- fp 6.0.65 or higher
-		- Win/Mac OS only
-		- no Webkit engines older than version 312
-	*/
-	function canExpressInstall() {
-		return !isExpressInstallActive && hasPlayerVersion("6.0.65") && (ua.win || ua.mac) && !(ua.wk && ua.wk < 312);
+	get:function(key) {
+		var url = location.href;
+		var index = url.indexOf("#");
+		if (index==-1) return "";
+		index = url.indexOf(key,index) + key.length;
+		if (url.charAt(index)=="=") {
+			var result = url.indexOf("&",index);
+			if (result==-1) {
+				result = url.length;
+			}
+			return url.substring(index + 1, result);
+		}
+		return "";
 	}
+}
 
-	/* Show the Adobe Express Install dialog
-		- Reference: http://www.adobe.com/cfusion/knowledgebase/index.cfm?id=6a253b75
-	*/
-	function showExpressInstall(att, par, replaceElemIdStr, callbackFn) {
-		isExpressInstallActive = true;
-		storedCallbackFn = callbackFn || null;
-		storedCallbackObj = {success:false, id:replaceElemIdStr};
-		var obj = getElementById(replaceElemIdStr);
-		if (obj) {
-			if (obj.nodeName == "OBJECT") { // static publishing
-				storedAltContent = abstractAltContent(obj);
-				storedAltContentId = null;
-			}
-			else { // dynamic publishing
-				storedAltContent = obj;
-				storedAltContentId = replaceElemIdStr;
-			}
-			att.id = EXPRESS_INSTALL_ID;
-			if (typeof att.width == UNDEF || (!/%$/.test(att.width) && parseInt(att.width, 10) < 310)) { att.width = "310"; }
-			if (typeof att.height == UNDEF || (!/%$/.test(att.height) && parseInt(att.height, 10) < 137)) { att.height = "137"; }
-			doc.title = doc.title.slice(0, 47) + " - Flash Player Installation";
-			var pt = ua.ie && ua.win ? "ActiveX" : "PlugIn",
-				fv = "MMredirectURL=" + win.location.toString().replace(/&/g,"%26") + "&MMplayerType=" + pt + "&MMdoctitle=" + doc.title;
-			if (typeof par.flashvars != UNDEF) {
-				par.flashvars += "&" + fv;
+base.parameters = {
+    list:null,
+
+	parse:function() {
+		if (!this.list) {
+			var url = window.location.href;
+			if (/https?:\/\/([a-z0-9.\-_\/\~:]*\?)([a-z0-9.\/\-_\%\=\&]*)\#*/i.test(url)) {
+				var params = RegExp.$2;
+				var paramArray = params.split('&');
+				this.list = {};
+				for (var i=0; i<paramArray.length;++i) {
+					var keyValue = paramArray[i].split('=');
+					var key = keyValue[0];
+					var value = keyValue.length==2 ? keyValue[1]:'';
+					this.list[key] = value;
+				}
 			}
 			else {
-				par.flashvars = fv;
+				this.list = [];
 			}
-			// IE only: when a SWF is loading (AND: not available in cache) wait for the readyState of the object element to become 4 before removing it,
-			// because you cannot properly cancel a loading SWF file without breaking browser load references, also obj.onreadystatechange doesn't work
-			if (ua.ie && ua.win && obj.readyState != 4) {
-				var newObj = createElement("div");
-				replaceElemIdStr += "SWFObjectNew";
-				newObj.setAttribute("id", replaceElemIdStr);
-				obj.parentNode.insertBefore(newObj, obj); // insert placeholder div that will be replaced by the object element that loads expressinstall.swf
-				obj.style.display = "none";
-				(function(){
-					if (obj.readyState == 4) {
-						obj.parentNode.removeChild(obj);
-					}
-					else {
-						setTimeout(arguments.callee, 10);
-					}
-				})();
-			}
-			createSWF(att, par, replaceElemIdStr);
 		}
-	}
+	},
 
-	/* Functions to abstract and display alternative content
-	*/
-	function displayAltContent(obj) {
-		if (ua.ie && ua.win && obj.readyState != 4) {
-			// IE only: when a SWF is loading (AND: not available in cache) wait for the readyState of the object element to become 4 before removing it,
-			// because you cannot properly cancel a loading SWF file without breaking browser load references, also obj.onreadystatechange doesn't work
-			var el = createElement("div");
-			obj.parentNode.insertBefore(el, obj); // insert placeholder div that will be replaced by the alternative content
-			el.parentNode.replaceChild(abstractAltContent(obj), el);
-			obj.style.display = "none";
-			(function(){
-				if (obj.readyState == 4) {
-					obj.parentNode.removeChild(obj);
-				}
-				else {
-					setTimeout(arguments.callee, 10);
-				}
-			})();
+	get:function(parameter) {
+        if (this.list==null) {
+            this.parse();
+        }
+		return this.list[parameter];
+	},
+
+	extractUrl:function() {
+		var urlOnly = base.hashParams.extractUrl();
+		if (urlOnly.lastIndexOf('?')>=0) {
+			urlOnly = urlOnly.substr(0,urlOnly.lastIndexOf('?'));
+		}
+		return urlOnly;
+	},
+
+	extractParams:function() {
+		// Primero quitar los parámetros hash
+		var urlAndParams = base.hashParams.extractUrl();
+		var params = urlAndParams;
+		if (params.lastIndexOf('?')>=0) {
+			params = params.substr(window.location.href.lastIndexOf('?'));
 		}
 		else {
-			obj.parentNode.replaceChild(abstractAltContent(obj), obj);
+			params = "";
 		}
-	}
+		return params;
+	},
 
-	function abstractAltContent(obj) {
-		var ac = createElement("div");
-		if (ua.win && ua.ie) {
-			ac.innerHTML = obj.innerHTML;
-		}
-		else {
-			var nestedObj = obj.getElementsByTagName(OBJECT)[0];
-			if (nestedObj) {
-				var c = nestedObj.childNodes;
-				if (c) {
-					var cl = c.length;
-					for (var i = 0; i < cl; i++) {
-						if (!(c[i].nodeType == 1 && c[i].nodeName == "PARAM") && !(c[i].nodeType == 8)) {
-							ac.appendChild(c[i].cloneNode(true));
-						}
-					}
-				}
-			}
-		}
-		return ac;
-	}
-
-	/* Cross-browser dynamic SWF creation
-	*/
-	function createSWF(attObj, parObj, id) {
-		var r, el = getElementById(id);
-		if (ua.wk && ua.wk < 312) { return r; }
-		if (el) {
-			if (typeof attObj.id == UNDEF) { // if no 'id' is defined for the object element, it will inherit the 'id' from the alternative content
-				attObj.id = id;
-			}
-			if (ua.ie && ua.win) { // Internet Explorer + the HTML object element + W3C DOM methods do not combine: fall back to outerHTML
-				var att = "";
-				for (var i in attObj) {
-					if (attObj[i] != Object.prototype[i]) { // filter out prototype additions from other potential libraries
-						if (i.toLowerCase() == "data") {
-							parObj.movie = attObj[i];
-						}
-						else if (i.toLowerCase() == "styleclass") { // 'class' is an ECMA4 reserved keyword
-							att += ' class="' + attObj[i] + '"';
-						}
-						else if (i.toLowerCase() != "classid") {
-							att += ' ' + i + '="' + attObj[i] + '"';
-						}
-					}
-				}
-				var par = "";
-				for (var j in parObj) {
-					if (parObj[j] != Object.prototype[j]) { // filter out prototype additions from other potential libraries
-						par += '<param name="' + j + '" value="' + parObj[j] + '" />';
-					}
-				}
-				el.outerHTML = '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"' + att + '>' + par + '</object>';
-				objIdArr[objIdArr.length] = attObj.id; // stored to fix object 'leaks' on unload (dynamic publishing only)
-				r = getElementById(attObj.id);
-			}
-			else { // well-behaving browsers
-				var o = createElement(OBJECT);
-				o.setAttribute("type", FLASH_MIME_TYPE);
-				for (var m in attObj) {
-					if (attObj[m] != Object.prototype[m]) { // filter out prototype additions from other potential libraries
-						if (m.toLowerCase() == "styleclass") { // 'class' is an ECMA4 reserved keyword
-							o.setAttribute("class", attObj[m]);
-						}
-						else if (m.toLowerCase() != "classid") { // filter out IE specific attribute
-							o.setAttribute(m, attObj[m]);
-						}
-					}
-				}
-				for (var n in parObj) {
-					if (parObj[n] != Object.prototype[n] && n.toLowerCase() != "movie") { // filter out prototype additions from other potential libraries and IE specific param element
-						createObjParam(o, n, parObj[n]);
-					}
-				}
-				el.parentNode.replaceChild(o, el);
-				r = o;
-			}
-		}
-		return r;
-	}
-
-	function createObjParam(el, pName, pValue) {
-		var p = createElement("param");
-		p.setAttribute("name", pName);
-		p.setAttribute("value", pValue);
-		el.appendChild(p);
-	}
-
-	/* Cross-browser SWF removal
-		- Especially needed to safely and completely remove a SWF in Internet Explorer
-	*/
-	function removeSWF(id) {
-		var obj = getElementById(id);
-		if (obj && obj.nodeName == "OBJECT") {
-			if (ua.ie && ua.win) {
-				obj.style.display = "none";
-				(function(){
-					if (obj.readyState == 4) {
-						removeObjectInIE(id);
-					}
-					else {
-						setTimeout(arguments.callee, 10);
-					}
-				})();
-			}
-			else {
-				obj.parentNode.removeChild(obj);
-			}
-		}
-	}
-
-	function removeObjectInIE(id) {
-		var obj = getElementById(id);
-		if (obj) {
-			for (var i in obj) {
-				if (typeof obj[i] == "function") {
-					obj[i] = null;
-				}
-			}
-			obj.parentNode.removeChild(obj);
-		}
-	}
-
-	/* Functions to optimize JavaScript compression
-	*/
-	function getElementById(id) {
-		var el = null;
-		try {
-			el = doc.getElementById(id);
-		}
-		catch (e) {}
-		return el;
-	}
-
-	function createElement(el) {
-		return doc.createElement(el);
-	}
-
-	/* Updated attachEvent function for Internet Explorer
-		- Stores attachEvent information in an Array, so on unload the detachEvent functions can be called to avoid memory leaks
-	*/
-	function addListener(target, eventType, fn) {
-		target.attachEvent(eventType, fn);
-		listenersArr[listenersArr.length] = [target, eventType, fn];
-	}
-
-	/* Flash Player and SWF content version matching
-	*/
-	function hasPlayerVersion(rv) {
-		var pv = ua.pv, v = rv.split(".");
-		v[0] = parseInt(v[0], 10);
-		v[1] = parseInt(v[1], 10) || 0; // supports short notation, e.g. "9" instead of "9.0.0"
-		v[2] = parseInt(v[2], 10) || 0;
-		return (pv[0] > v[0] || (pv[0] == v[0] && pv[1] > v[1]) || (pv[0] == v[0] && pv[1] == v[1] && pv[2] >= v[2])) ? true : false;
-	}
-
-	/* Cross-browser dynamic CSS creation
-		- Based on Bobby van der Sluis' solution: http://www.bobbyvandersluis.com/articles/dynamicCSS.php
-	*/
-	function createCSS(sel, decl, media, newStyle) {
-		if (ua.ie && ua.mac) { return; }
-		var h = doc.getElementsByTagName("head")[0];
-		if (!h) { return; } // to also support badly authored HTML pages that lack a head element
-		var m = (media && typeof media == "string") ? media : "screen";
-		if (newStyle) {
-			dynamicStylesheet = null;
-			dynamicStylesheetMedia = null;
-		}
-		if (!dynamicStylesheet || dynamicStylesheetMedia != m) {
-			// create dynamic stylesheet + get a global reference to it
-			var s = createElement("style");
-			s.setAttribute("type", "text/css");
-			s.setAttribute("media", m);
-			dynamicStylesheet = h.appendChild(s);
-			if (ua.ie && ua.win && typeof doc.styleSheets != UNDEF && doc.styleSheets.length > 0) {
-				dynamicStylesheet = doc.styleSheets[doc.styleSheets.length - 1];
-			}
-			dynamicStylesheetMedia = m;
-		}
-		// add style rule
-		if (ua.ie && ua.win) {
-			if (dynamicStylesheet && typeof dynamicStylesheet.addRule == OBJECT) {
-				dynamicStylesheet.addRule(sel, decl);
-			}
+	// Pasa los parámetros de la URL a hash. Esta acción recargará la página
+	toHash:function() {
+		var urlOnly = this.extractUrl();
+		var hashParameters = base.hashParams.extractParams();
+		var parameters = this.extractParams();
+		var newHashParams = "";
+		var result = urlOnly;
+		if (parameters.length==0 || parameters.length==1) {
+			result += hashParameters;
 		}
 		else {
-			if (dynamicStylesheet && typeof doc.createTextNode != UNDEF) {
-				dynamicStylesheet.appendChild(doc.createTextNode(sel + " {" + decl + "}"));
+			parameters = parameters.substr(1);
+			parameters = parameters.split('&');
+			for (var i=0;i<parameters.length;++i) {
+				keyValue = parameters[i].split('=');
+				if (keyValue.length>=2 && base.hashParams.get(keyValue[0])=='') {
+					if (hashParameters=="" && newHashParams=="") newHashParams += '#';
+					else newHashParams += '&';
+					newHashParams += keyValue[0] + '=' + keyValue[1];
+				}
 			}
+			result += hashParameters + newHashParams;
+		}
+		if (location.href!=result) {
+			location.href = result;
 		}
 	}
+}
 
-	function setVisibility(id, isVisible) {
-		if (!autoHideShow) { return; }
-		var v = isVisible ? "visible" : "hidden";
-		if (isDomLoaded && getElementById(id)) {
-			getElementById(id).style.visibility = v;
+base.require = function(libraryName) {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = libraryName;
+    document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+base.importStylesheet = function(stylesheetFile) {
+	var link = document.createElement('link');
+	link.setAttribute("rel","stylesheet");
+	link.setAttribute("href",stylesheetFile);
+	link.setAttribute("type","text/css");
+	link.setAttribute("media","screen");
+	document.getElementsByTagName('head')[0].appendChild(link);
+}
+
+// Deprecated
+base.dom = {
+	createElement: function(type,params,attributes) {
+		if (!params) params = {};
+		var elem = document.createElement(type);
+		if (params.className) elem.className = params.className;
+		if (params.id) elem.id = params.id;
+		if (params.style) $(elem).css(params.style);
+		if (params.innerHTML) elem.innerHTML = params.innerHTML;
+
+		if (attributes) {
+			for (var key in attributes) {
+				var value = attributes[key];
+				if (value===undefined) { value = "" }
+				if (typeof(value)=='string') {
+					value.trim();
+				}
+
+				elem.setAttribute(key,value);
+			}
+		}
+
+		return elem;
+	},
+
+	fontSize:function(domElement) {
+		var size = {size:0,units:'px'}
+		var measure = $(domElement).css('font-size');
+		if (/(\d+\.*\d*)(\D+)/.test(measure)) {
+			size.size = RegExp.$1;
+			size.units = RegExp.$2;
+		}
+		return size;
+	},
+
+	// Convert all measures in px into %, inside domNode.
+	toPercent:function(domNode) {
+		var baseSize = {w:$(domNode).width(),h:$(domNode).height()};
+
+		for (var i=0;i<domNode.children.length;++i) {
+			var child = domNode.children[i];
+			var nodeSize = {x:$(child).position().left,y:$(child).position().top,w:$(child).width(),h:$(child).height()};
+
+			child.originalSize = {fontSize:this.fontSize(child)}
+			child.originalSize.x = nodeSize.x;
+			child.originalSize.y = nodeSize.y;
+			child.originalSize.w = nodeSize.w;
+			child.originalSize.h = nodeSize.h;
+
+			nodeSize.x = nodeSize.x * 100 / baseSize.w;
+			nodeSize.y = nodeSize.y * 100 / baseSize.h;
+			nodeSize.w = nodeSize.w * 100 / baseSize.w;
+			nodeSize.h = nodeSize.h * 100 / baseSize.h;
+			child.style.left	= nodeSize.x + '%';
+			child.style.top		= nodeSize.y + '%';
+			child.style.width	= nodeSize.w + '%';
+			child.style.height	= nodeSize.h + '%';
+			//console.log(nodeSize);
+		}
+	},
+
+	prepareToScaleTexts:function(domNode) {
+		for (var i=0;i<domNode.children.length;++i) {
+			var child = domNode.children[i];
+			var nodeSize = {x:$(child).position().left,y:$(child).position().top,w:$(child).width(),h:$(child).height()};
+
+			child.originalSize = {fontSize:this.fontSize(child)}
+			child.originalSize.x = nodeSize.x;
+			child.originalSize.y = nodeSize.y;
+			child.originalSize.w = nodeSize.w;
+			child.originalSize.h = nodeSize.h;
+		}
+	},
+
+	scaleTexts:function(domNode) {
+		for (var i=0;i<domNode.children.length;++i) {
+			var child = domNode.children[i];
+			var nodeSize = {x:$(child).position().left,
+							y:$(child).position().top,
+							w:$(child).width(),
+							h:$(child).height()};
+
+			var originalSize = child.originalSize;
+
+			if (!originalSize) {
+				base.log.debug("base.dom.scaleTexts(): domNode could not be scaled. Original element size not found.");
+				return;
+			}
+
+			var scaleFactor = nodeSize.w / originalSize.w;
+			var fontSize = originalSize.fontSize.size * scaleFactor;
+			child.style.fontSize = fontSize + originalSize.fontSize.units;
+		}
+	},
+
+	proportionalSize: function(domElement,width,height,animate) {
+		var parent = domElement.parentNode;
+		var parentSize = {w:$(parent).width(),h:$(parent).height()};
+		var parentRatio = parentSize.w/parentSize.h;
+		var childRatio = width / height;
+		var finalWidth = parentSize.w;
+		var finalHeight = parentSize.h;
+		var marginTop = "";
+
+		// DEBUG: coloreamos el fondo para ver que pasa
+		//domElement.style.backgroundColor = "blue";
+		if (parentRatio>childRatio) {
+			finalWidth = finalHeight * childRatio;
 		}
 		else {
-			createCSS("#" + id, "visibility:" + v);
+		 	finalHeight = finalWidth / childRatio;
+		 	var margin = (parentSize.h - finalHeight) / 2;
+		 	marginTop = margin + "px";
+		}
+
+		if (animate) {
+			$(domElement).animate({'width':finalWidth + 'px','height':finalHeight + 'px',marginTop:marginTop});
+		}
+		else {
+			$(domElement).css({'width':finalWidth + 'px','height':finalHeight + 'px',marginTop:marginTop});
 		}
 	}
+}
 
-	/* Filter to avoid XSS attacks
-	*/
-	function urlEncodeIfNecessary(s) {
-		var regex = /[\\\"<>\.;]/;
-		var hasBadChars = regex.exec(s) != null;
-		return hasBadChars && typeof encodeURIComponent != UNDEF ? encodeURIComponent(s) : s;
-	}
+Class ("base.Log", {
+    _currentLevel:0,
 
-	/* Release memory to avoid memory leaks caused by closures, fix hanging audio/video threads and force open sockets/NetConnections to disconnect (Internet Explorer only)
-	*/
-	var cleanup = function() {
-		if (ua.ie && ua.win) {
-			window.attachEvent("onunload", function() {
-				// remove listeners to avoid memory leaks
-				var ll = listenersArr.length;
-				for (var i = 0; i < ll; i++) {
-					listenersArr[i][0].detachEvent(listenersArr[i][1], listenersArr[i][2]);
-				}
-				// cleanup dynamically embedded objects to fix audio/video threads and force open sockets and NetConnections to disconnect
-				var il = objIdArr.length;
-				for (var j = 0; j < il; j++) {
-					removeSWF(objIdArr[j]);
-				}
-				// cleanup library's main closures to avoid memory leaks
-				for (var k in ua) {
-					ua[k] = null;
-				}
-				ua = null;
-				for (var l in swfobject) {
-					swfobject[l] = null;
-				}
-				swfobject = null;
-			});
-		}
-	}();
+    initialize:function() {
+        var logLevelParam = base.parameters.get("logLevel");
+        logLevelParam = logLevelParam ? logLevelParam:base.hashParams.get("logLevel");
+        logLevelParam = logLevelParam.toLowerCase();
+        switch (logLevelParam) {
+            case "error":
+                this.setLevel(base.Log.kLevelError);
+                break;
+            case "warning":
+                this.setLevel(base.Log.kLevelWarning);
+                break;
+            case "debug":
+                this.setLevel(base.Log.kLevelDebug);
+                break;
+            case "log":
+                this.setLevel(base.Log.kLevelLog);
+                break;
+        }
+    },
 
-	return {
-		/* Public API
-			- Reference: http://code.google.com/p/swfobject/wiki/documentation
-		*/
-		registerObject: function(objectIdStr, swfVersionStr, xiSwfUrlStr, callbackFn) {
-			if (ua.w3 && objectIdStr && swfVersionStr) {
-				var regObj = {};
-				regObj.id = objectIdStr;
-				regObj.swfVersion = swfVersionStr;
-				regObj.expressInstall = xiSwfUrlStr;
-				regObj.callbackFn = callbackFn;
-				regObjArr[regObjArr.length] = regObj;
-				setVisibility(objectIdStr, false);
-			}
-			else if (callbackFn) {
-				callbackFn({success:false, id:objectIdStr});
-			}
-		},
+    logMessage:function(level,message) {
+        var prefix = "";
+        if (typeof(level)=="string") {
+            message = level;
+        }
+        else if (level>=base.Log.kLevelError && level<=base.Log.kLevelLog) {
+            switch (level) {
+                case base.Log.kLevelError:
+                    prefix = "ERROR: ";
+                    break;
+                case base.Log.kLevelWarning:
+                    prefix = "WARNING: ";
+                    break;
+                case base.Log.kLevelDebug:
+                    prefix = "DEBUG: ";
+                    break;
+                case base.Log.kLevelLog:
+                    prefix = "LOG: ";
+                    break;
+            }
+        }
 
-		getObjectById: function(objectIdStr) {
-			if (ua.w3) {
-				return getObjectById(objectIdStr);
-			}
-		},
+        if (this._currentLevel>=level && console.log) {
+            console.log(prefix + message);
+        }
+    },
 
-		embedSWF: function(swfUrlStr, replaceElemIdStr, widthStr, heightStr, swfVersionStr, xiSwfUrlStr, flashvarsObj, parObj, attObj, callbackFn) {
-			var callbackObj = {success:false, id:replaceElemIdStr};
-			if (ua.w3 && !(ua.wk && ua.wk < 312) && swfUrlStr && replaceElemIdStr && widthStr && heightStr && swfVersionStr) {
-				setVisibility(replaceElemIdStr, false);
-				addDomLoadEvent(function() {
-					widthStr += ""; // auto-convert to string
-					heightStr += "";
-					var att = {};
-					if (attObj && typeof attObj === OBJECT) {
-						for (var i in attObj) { // copy object to avoid the use of references, because web authors often reuse attObj for multiple SWFs
-							att[i] = attObj[i];
-						}
-					}
-					att.data = swfUrlStr;
-					att.width = widthStr;
-					att.height = heightStr;
-					var par = {};
-					if (parObj && typeof parObj === OBJECT) {
-						for (var j in parObj) { // copy object to avoid the use of references, because web authors often reuse parObj for multiple SWFs
-							par[j] = parObj[j];
-						}
-					}
-					if (flashvarsObj && typeof flashvarsObj === OBJECT) {
-						for (var k in flashvarsObj) { // copy object to avoid the use of references, because web authors often reuse flashvarsObj for multiple SWFs
-							if (typeof par.flashvars != UNDEF) {
-								par.flashvars += "&" + k + "=" + flashvarsObj[k];
-							}
-							else {
-								par.flashvars = k + "=" + flashvarsObj[k];
-							}
-						}
-					}
-					if (hasPlayerVersion(swfVersionStr)) { // create SWF
-						var obj = createSWF(att, par, replaceElemIdStr);
-						if (att.id == replaceElemIdStr) {
-							setVisibility(replaceElemIdStr, true);
-						}
-						callbackObj.success = true;
-						callbackObj.ref = obj;
-					}
-					else if (xiSwfUrlStr && canExpressInstall()) { // show Adobe Express Install
-						att.data = xiSwfUrlStr;
-						showExpressInstall(att, par, replaceElemIdStr, callbackFn);
-						return;
-					}
-					else { // show alternative content
-						setVisibility(replaceElemIdStr, true);
-					}
-					if (callbackFn) { callbackFn(callbackObj); }
-				});
-			}
-			else if (callbackFn) { callbackFn(callbackObj);	}
-		},
+    error:function(message) {
+        this.logMessage(base.Log.kLevelError, message);
+    },
 
-		switchOffAutoHideShow: function() {
-			autoHideShow = false;
-		},
+    warning:function(message) {
+        this.logMessage(base.Log.kLevelWarning, message);
+    },
 
-		ua: ua,
+    debug:function(message) {
+        this.logMessage(base.Log.kLevelDebug, message);
+    },
 
-		getFlashPlayerVersion: function() {
-			return { major:ua.pv[0], minor:ua.pv[1], release:ua.pv[2] };
-		},
+    log:function(message) {
+        this.logMessage(base.Log.kLevelLog, message);
+    },
 
-		hasFlashPlayerVersion: hasPlayerVersion,
+    setLevel:function(level) {
+        this._currentLevel = level;
+    }
+});
 
-		createSWF: function(attObj, parObj, replaceElemIdStr) {
-			if (ua.w3) {
-				return createSWF(attObj, parObj, replaceElemIdStr);
-			}
-			else {
-				return undefined;
-			}
-		},
+base.Log.kLevelError    = 1;
+base.Log.kLevelWarning  = 2;
+base.Log.kLevelDebug    = 3;
+base.Log.kLevelLog      = 4;
 
-		showExpressInstall: function(att, par, replaceElemIdStr, callbackFn) {
-			if (ua.w3 && canExpressInstall()) {
-				showExpressInstall(att, par, replaceElemIdStr, callbackFn);
-			}
-		},
+base.log = new base.Log();
 
-		removeSWF: function(objElemIdStr) {
-			if (ua.w3) {
-				removeSWF(objElemIdStr);
-			}
-		},
-
-		createCSS: function(selStr, declStr, mediaStr, newStyleBoolean) {
-			if (ua.w3) {
-				createCSS(selStr, declStr, mediaStr, newStyleBoolean);
-			}
-		},
-
-		addDomLoadEvent: addDomLoadEvent,
-
-		addLoadEvent: addLoadEvent,
-
-		getQueryParamValue: function(param) {
-			var q = doc.location.search || doc.location.hash;
-			if (q) {
-				if (/\?/.test(q)) { q = q.split("?")[1]; } // strip question mark
-				if (param == null) {
-					return urlEncodeIfNecessary(q);
-				}
-				var pairs = q.split("&");
-				for (var i = 0; i < pairs.length; i++) {
-					if (pairs[i].substring(0, pairs[i].indexOf("=")) == param) {
-						return urlEncodeIfNecessary(pairs[i].substring((pairs[i].indexOf("=") + 1)));
-					}
-				}
-			}
-			return "";
-		},
-
-		// For internal usage only
-		expressInstallCallback: function() {
-			if (isExpressInstallActive) {
-				var obj = getElementById(EXPRESS_INSTALL_ID);
-				if (obj && storedAltContent) {
-					obj.parentNode.replaceChild(storedAltContent, obj);
-					if (storedAltContentId) {
-						setVisibility(storedAltContentId, true);
-						if (ua.ie && ua.win) { storedAltContent.style.display = "block"; }
-					}
-					if (storedCallbackFn) { storedCallbackFn(storedCallbackObj); }
-				}
-				isExpressInstallActive = false;
-			}
-		}
-	};
-}();
-
-var base = {}
+// Deprecated
+base.debug = {
+    log:function(message) {
+        base.log.warning("Use of deprecated function base.debug.log()");
+        base.log.debug(message);
+    }
+}
 
 // This class requires jquery
 base.ajax = {
@@ -1339,23 +1044,266 @@ base.ajax = {
 	},
 
 	assertParams:function(params) {
-		if (!params.url) throw new Error("paella.ajax.send: url parameter not found");
+		if (!params.url) throw new Error("base.ajax.send: url parameter not found");
 		if (!params.params) params.params = {}
 	}
 }
 
 base.ajax["get"] = function(params,onSuccess,onFail) {
-	paella.ajax.send('get',params,onSuccess,onFail);
+	base.ajax.send('get',params,onSuccess,onFail);
 }
 
 base.ajax["post"] = function(params,onSuccess,onFail) {
-	paella.ajax.send('post',params,onSuccess,onFail);
+	base.ajax.send('post',params,onSuccess,onFail);
 }
 
 base.ajax["put"] = function(params,onSuccess,onFail) {
-	paella.ajax.send('put',params,onSuccess,onFail);
+	base.ajax.send('put',params,onSuccess,onFail);
 }
 
 base.ajax["delete"] = function(params,onSuccess,onFail) {
-	paella.ajax.send('delete',params,onSuccess,onFail);
+	base.ajax.send('delete',params,onSuccess,onFail);
+}
+
+Class ("base.AsyncLoaderCallback", {
+	name:"",
+	prevCb:null,
+	nextCb:null,
+	loader:null,
+
+	initialize:function(name) {
+		this.name = name;
+	},
+
+	load:function(onSuccess,onError) {
+		base.debug.log("loading " + this.name);
+		onSuccess();
+		// If error: onError()
+	}
+});
+
+Class ("base.AjaxCallback", base.AsyncLoaderCallback,{
+	params:null,
+	type:'get',
+
+	data:null,
+	mimeType:null,
+	statusCode:null,
+	rawData:null,
+
+	getParams:function() {
+		return this.params;
+	},
+
+	willLoad:function(callback) {
+
+	},
+
+	didLoadSuccess:function(callback) {
+		return true;
+	},
+
+	didLoadFail:function(callback) {
+		return false;
+	},
+
+	initialize:function(params,type) {
+		this.name = "ajaxCallback";
+		if (type) this.type = type;
+		if (typeof(params)=='string') this.params = {url:params}
+		else if (typeof(params)=='object') this.params = params;
+		else this.params = {}
+	},
+
+	load:function(onSuccess,onError) {
+		var This = this;
+		if (typeof(this.willLoad)=='function') this.willLoad(this);
+		base.ajax.send(this.type,this.getParams(),
+			function(data,type,code,rawData) {
+				var status = true;
+				This.data = data;
+				This.mimeType = type;
+				This.statusCode = code;
+				This.rawData = rawData;
+				if (typeof(This.didLoadSuccess)=='function') status = This.didLoadSuccess(This);
+				if (status) onSuccess();
+				else onError();
+			},
+			function(data,type,code,rawData) {
+				var status = false;
+				This.data = data;
+				This.mimeType = type;
+				This.statusCode = code;
+				This.rawData = rawData;
+				if (typeof(This.didLoadFail)=='function') status = This.didLoadFail(This);
+				if (status) onSuccess();
+				else onError();
+			});
+	}
+});
+
+Class ("base.JSONCallback", base.AjaxCallback, {
+	initialize:function(params,type) { this.parent(params,type); },
+
+	didLoadSuccess:function(callback) {
+		if (typeof(callback.data)=='object') return true;
+
+		try {
+			callback.data = JSON.parse(callback.data);
+			return true;
+		}
+		catch (e) {
+			callback.data = {error:"Unexpected data format",data:callback.data}
+			return false;
+		}
+	}
+});
+
+Class ("base.DictionaryCallback", base.AjaxCallback,{
+	initialize:function(dictionaryUrl) { this.parent({url:dictionaryUrl}); },
+
+	getParams:function() {
+		var lang = base.dictionary.currentLanguage();
+		this.params.url = this.params.url + '_' + lang + '.json';
+		return this.params;
+	},
+
+	didLoadSuccess:function(callback) {
+		if (typeof(callback.data)=="string") {
+			try {
+				callback.data = JSON.parse(callback.data);
+			}
+			catch (e) {
+				return false;
+			}
+		}
+		base.dictionary.addDictionary(callback.data);
+		return true;
+	},
+
+	didLoadFail:function(callback) {
+		return true;
+	}
+})
+
+Class ("base.AsyncLoader", {
+	firstCb:null,
+	lastCb:null,
+	callbackArray:null,
+	generatedId:0,
+
+	continueOnError:false,
+	errorCallbacks:null,
+
+	currentCb:null,
+
+	clearError:function() {
+		this.errorCallbacks = [];
+	},
+
+	initialize:function() {
+		this.callbackArray = {};
+		this.errorCallbacks = [];
+		this.generatedId = 0;
+	},
+
+	addCallback:function(cb,name) {
+		if (!name) {
+			name = "callback_" + this.generatedId++;
+		}
+		cb.__cbName__ = name;
+		this.callbackArray[name] = cb;
+		if (!this.firstCb) {
+			this.firstCb = cb;
+			this.currentCb = cb;
+		}
+		cb.prevCb = this.lastCb;
+		if (this.lastCb) this.lastCb.nextCb = cb;
+		this.lastCb = cb;
+		cb.loader = this;
+		return cb;
+	},
+
+	getCallback:function(name) {
+		return this.callbackArray[name];
+	},
+
+	load:function(onSuccess,onError) {
+		var This = this;
+		if (this.currentCb) {
+			this.currentCb.load(function() {
+				This.onComplete(This.currentCb,This.currentCb.__cbName__,true);
+				This.currentCb = This.currentCb.nextCb;
+				This.load(onSuccess,onError);
+			},
+			function() {
+				This.onComplete(This.currentCb,This.currentCb.__cbName__,false);
+				if (This.continueOnError) {
+					This.errorCallbacks.push(This.currentCb);
+					This.currentCb = This.currentCb.nextCb;
+					This.load(onSuccess,onError);
+				}
+				else if (typeof(onError)=='function') {
+					onError();
+				}
+			});
+		}
+		else if (typeof(onSuccess)=='function') {
+			onSuccess();
+		}
+	},
+
+	onComplete:function(callback,cbName,status) {
+
+	}
+});
+
+Class ("base.Dictionary", {
+	dictionary:{},
+
+	initialize:function() {
+
+	},
+
+	addDictionary:function(dict) {
+		for (var key in dict) {
+			this.dictionary[key] = dict[key];
+		}
+	},
+
+	translate:function(key) {
+		var value = base.dictionary.dictionary[key];
+		if (value) return value;
+		else return key;
+	},
+
+	currentLanguage:function() {
+		var lang = navigator.language || window.navigator.userLanguage;
+		return lang.substr(0, 2).toLowerCase();
+	}
+});
+
+base.dictionary = new base.Dictionary();
+
+base.types = {
+	parseNumber:function(num) {
+		return parseFloat(num);
+	},
+
+	parseBoolean:function(num) {
+		return /^true$/i.test(num) || /^1$/i.test(num) || /^yes$/.test(num);
+	},
+
+	parseDictionary:function(num) {
+		try {
+			return JSON.parse(num);
+		}
+		catch (e) {
+			return null;
+		}
+	}
+}
+
+base.uuid = function() {
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {var r = Math.random()*16|0,v=c=='x'?r:r&0x3|0x8;return v.toString(16);});
 }

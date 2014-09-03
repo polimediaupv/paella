@@ -10,7 +10,7 @@ paella.plugins.FootPrintsPlugin = Class.create(paella.ButtonPlugin,{
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "footPrints"; },
 	getIndex:function() { return 590; },
-	getDefaultToolTip:function() { return paella.dictionary.translate("Show statistics"); },
+	getDefaultToolTip:function() { return base.dictionary.translate("Show statistics"); },
 	getName:function() { return "es.upv.paella.FootPrintsPlugin"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.timeLineButton; },
 
@@ -84,7 +84,7 @@ paella.plugins.FootPrintsPlugin = Class.create(paella.ButtonPlugin,{
 	willShowContent:function() {
 		var thisClass = this;
 		this.loadFootprints();
-		this.footPrintsTimer = new paella.utils.Timer(function(timer) {
+		this.footPrintsTimer = new base.Timer(function(timer) {
 			thisClass.loadFootprints();
 			},5000);
 		this.footPrintsTimer.repeat = true;

@@ -7,7 +7,7 @@ paella.plugins.SocialPlugin = Class.create(paella.ButtonPlugin,{
 	getMinWindowSize:function() { return 300; },
 	getName:function() { return "es.upv.paella.socialPlugin"; },
 	checkEnabled:function(onSuccess) { onSuccess(true); },
-	getDefaultToolTip:function() { return paella.dictionary.translate("Share this video"); },
+	getDefaultToolTip:function() { return base.dictionary.translate("Share this video"); },
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
 
 	buttons: [],
@@ -16,14 +16,14 @@ paella.plugins.SocialPlugin = Class.create(paella.ButtonPlugin,{
 
     initialize:function() {
         this.parent();
-        if (paella.utils.language()=='es') {
+        if (base.dictionary.currentLanguage()=='es') {
             var esDict = {
                 'Custom size:': 'Tamaño personalizado:',
                 'Choose your embed size. Copy the text and paste it in your html page.': 'Elija el tamaño del video a embeber. Copie el texto y péguelo en su página html.',
                 'Width:':'Ancho:',
                 'Height:':'Alto:'
             };
-            paella.dictionary.addDictionary(esDict);
+            base.dictionary.addDictionary(esDict);
         }
     },
 
@@ -126,13 +126,13 @@ paella.plugins.SocialPlugin = Class.create(paella.ButtonPlugin,{
             "    <input class='embedSizeButton' style='width:80px;  height:50px;' value='380x214' />" +
             "    <input class='embedSizeButton' style='width:70px;  height:42px;' value='300x169' />" +
             "</div><div style='display:inline-block; vertical-align:bottom; margin-left:10px;'>"+
-            "    <div>"+paella.dictionary.translate("Custom size:")+"</div>" +
-            "    <div>"+paella.dictionary.translate("Width:")+" <input id='social_embed_width-input' class='embedSizeInput' maxlength='4' type='text' name='Costum width min 300px' alt='Costum width min 300px' title='Costum width min 300px' value=''></div>" +
-            "    <div>"+paella.dictionary.translate("Height:")+" <input id='social_embed_height-input' class='embedSizeInput' maxlength='4' type='text' name='Costum width min 300px' alt='Costum width min 300px' title='Costum width min 300px' value=''></div>" +
+            "    <div>"+base.dictionary.translate("Custom size:")+"</div>" +
+            "    <div>"+base.dictionary.translate("Width:")+" <input id='social_embed_width-input' class='embedSizeInput' maxlength='4' type='text' name='Costum width min 300px' alt='Costum width min 300px' title='Costum width min 300px' value=''></div>" +
+            "    <div>"+base.dictionary.translate("Height:")+" <input id='social_embed_height-input' class='embedSizeInput' maxlength='4' type='text' name='Costum width min 300px' alt='Costum width min 300px' title='Costum width min 300px' value=''></div>" +
             "</div>";
 
 
-        var divEmbed = "<div id='embedContent' style='text-align:left; font-size:14px; color:black;'><div id=''>"+divSelectSize+"</div> <div id=''>"+paella.dictionary.translate("Choose your embed size. Copy the text and paste it in your html page.")+"</div> <div id=''><textarea id='social_embed-textarea' class='social_embed-textarea' rows='4' cols='1' style='font-size:12px; width:95%; overflow:auto; margin-top:5px; color:black;'></textarea></div>  </div>";
+        var divEmbed = "<div id='embedContent' style='text-align:left; font-size:14px; color:black;'><div id=''>"+divSelectSize+"</div> <div id=''>"+base.dictionary.translate("Choose your embed size. Copy the text and paste it in your html page.")+"</div> <div id=''><textarea id='social_embed-textarea' class='social_embed-textarea' rows='4' cols='1' style='font-size:12px; width:95%; overflow:auto; margin-top:5px; color:black;'></textarea></div>  </div>";
 
 
         paella.messageBox.showMessage(divEmbed, {

@@ -8,7 +8,7 @@ paella.plugins.UserTrackingGoogleAnalyticsSaverPlugIn = Class.create(paella.Even
 		var trackingID = this.config.trackingID;
 		var domain = this.config.domain || "auto";
 		if (trackingID){
-			paella.debug.log("Google Analitycs Enabled");
+			base.log.debug("Google Analitycs Enabled");
 			/* jshint ignore:start */
 				(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 				(i[r].q=i[r].q||[]).push(arguments);},i[r].l=1*new Date();a=s.createElement(o),
@@ -20,7 +20,7 @@ paella.plugins.UserTrackingGoogleAnalyticsSaverPlugIn = Class.create(paella.Even
 			onSuccess(true);
 		}		
 		else {
-			paella.debug.log("No Google Tracking ID found in config file. Disabling Google Analitycs PlugIn");
+			base.log.debug("No Google Tracking ID found in config file. Disabling Google Analitycs PlugIn");
 			onSuccess(false);
 		}				
 	},

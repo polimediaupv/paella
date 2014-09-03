@@ -11,7 +11,7 @@ paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
 	getMinWindowSize:function() { return 200; },
 	getName:function() { return "es.upv.paella.FrameControlPlugin"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.timeLineButton; },
-	getDefaultToolTip:function() { return paella.dictionary.translate("Navigate by slides"); },
+	getDefaultToolTip:function() { return base.dictionary.translate("Navigate by slides"); },
 	checkEnabled:function(onSuccess) {
 		onSuccess(paella.initDelegate.initParams.videoLoader.frameList!=null && Object.keys(paella.initDelegate.initParams.videoLoader.frameList).length>0);
 	},

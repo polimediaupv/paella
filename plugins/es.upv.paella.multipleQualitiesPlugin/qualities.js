@@ -9,15 +9,15 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 	getIndex:function() { return 2030; },
 	getMinWindowSize:function() { return 300; },
 	getName:function() { return "es.upv.paella.multipleQualitiesPlugin"; },
-	getDefaultToolTip:function() { return paella.dictionary.translate("Change video quality"); },	
+	getDefaultToolTip:function() { return base.dictionary.translate("Change video quality"); },	
 	checkEnabled:function(onSuccess) { onSuccess(this.checkStreams()); },
 	setup:function() {
-		if (paella.utils.language()=="es") {
+		if (base.dictionary.currentLanguage()=="es") {
 			var esDict = {
 				'Presenter':'Presentador',
 				'Slide':'Diapositiva'
 			};
-			paella.dictionary.addDictionary(esDict);
+			base.dictionary.addDictionary(esDict);
 		}
 	},
 						      
@@ -61,7 +61,7 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 		selectQuality.className = 'selectQuality';
 		
 		var labelM = document.createElement('label');
-		labelM.innerHTML = paella.dictionary.translate("Presenter");
+		labelM.innerHTML = base.dictionary.translate("Presenter");
 				
 		var comboM = document.createElement('select');
 		comboM.id = 'master';
@@ -87,7 +87,7 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 		}
 		
 		var labelS = document.createElement('label');
-		labelS.innerHTML = paella.dictionary.translate("Slide");
+		labelS.innerHTML = base.dictionary.translate("Slide");
 		
 		var comboS = document.createElement('select');
 		comboS.id = 'slave';
@@ -117,8 +117,8 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 	
 	changeVideoStream:function(newRes,combo) {
 		var newUrl;
-		var resM = paella.utils.parameters.get("resmaster");
-		var resS = paella.utils.parameters.get("resslave");
+		var resM = base.parameters.get("resmaster");
+		var resS = base.parameters.get("resslave");
 		
 		/*
 		if (combo == "master"){
@@ -141,9 +141,9 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 		var iniUrl = this.currentUrl.href.split("?");
 		var url = iniUrl[0] + '?';
 		
-		Object.keys(paella.utils.parameters.list).forEach(function(p){
+		Object.keys(base.parameters.list).forEach(function(p){
 			if ( (p != 'resmaster') && (p != 'resslave') && (p !='time') && (p !='autoplay') ) {
-				url = url + p + '=' + paella.utils.parameters.list[p] + '&';
+				url = url + p + '=' + base.parameters.list[p] + '&';
 			}
 		});
 		

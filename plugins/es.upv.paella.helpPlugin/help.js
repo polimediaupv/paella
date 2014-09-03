@@ -5,7 +5,7 @@ paella.plugins.HelpPlugin = Class.create(paella.ButtonPlugin, {
 	getSubclass:function() { return "helpButton"; },
 	getName:function() { return "es.upv.paella.helpPlugin"; },
 
-	getDefaultToolTip:function() { return paella.dictionary.translate("Show help"); },
+	getDefaultToolTip:function() { return base.dictionary.translate("Show help"); },
 
 
 	checkEnabled:function(onSuccess) { 
@@ -14,7 +14,7 @@ paella.plugins.HelpPlugin = Class.create(paella.ButtonPlugin, {
 	},
 
 	action:function(button) {
-		var mylang = paella.utils.language();
+		var mylang = base.dictionary.currentLanguage();
 		
 		var availableLangs = (this.config && this.config.langs) || [];
 		var idx = availableLangs.indexOf(mylang);
