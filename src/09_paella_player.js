@@ -274,7 +274,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			else if (paella.player.videoContainer.numberOfStreams()>=1) {
 				paella.player.videoContainer.masterVideo().setVolume(1);
 			}
-			if (playerConfig.stream1Audio!==true && paella.player.videoContainer.numberOfStreams()>=2) {
+			if (playerConfig.stream1Audio===true && paella.player.videoContainer.numberOfStreams()>=2) {
 				paella.player.videoContainer.slaveVideo().setVolume(1);
 			}
 			else if (paella.player.videoContainer.numberOfStreams()>=2) {
