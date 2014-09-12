@@ -368,6 +368,14 @@ Class ("paella.ButtonPlugin", paella.Plugin,{
 		//return paella.ButtonPlugin.type.timeLineButton;
 		return paella.ButtonPlugin.type.actionButton;
 	},
+	
+	getText:function() {
+		return "";
+	},
+	
+	setText:function(text) {
+		this.container.innerHTML = text;
+	},
 
 	hideButton:function() {
 		this.button.setAttribute('aria-hidden', 'false');
@@ -431,6 +439,7 @@ paella.ButtonPlugin.buildPluginButton = function(plugin,id) {
 	var elem = document.createElement('div');
 	elem.className = plugin.getClassName();
 	elem.id = id;
+	elem.innerHTML = plugin.getText();
 	elem.setAttribute("tabindex", 1000+plugin.getIndex());
 	elem.setAttribute("alt", "");
 	elem.setAttribute("role", "button");

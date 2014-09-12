@@ -289,39 +289,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		else if (paella.player.videoContainer.numberOfStreams()>=2) {
 			paella.player.videoContainer.slaveVideo().setVolume(0);
 		}
-
-/*
-		var time = paella.utils.parameters.get('time');
-		if (time) {
-			var duration = master.duration();
-			var trimStart = thisClass.videoContainer.trimStart();
-			var trimEnd = thisClass.videoContainer.trimEnd();
-			if (thisClass.videoContainer.trimEnabled()) {
-				duration = trimEnd - trimStart;
-			}
-			var hour = 0;
-			var minute = 0;
-			var second = 0;
-			if (/([0-9]+)h/.test(time)) {
-				hour = Number(RegExp.$1);
-			}
-			if (/([0-9]+)m/.test(time)) {
-				minute = Number(RegExp.$1);
-			}
-			if (/([0-9]+)s/.test(time)) {
-				second = Number(RegExp.$1);
-			}
-			var currentTime = hour * 60 * 60 + minute * 60 + second;
-			var currentPercent = currentTime * 100 / duration;
-			paella.events.trigger(paella.events.seekTo,{newPositionPercent:currentPercent});
-		}
-		thisClass.loadPreviews();
-		if (paella.player.config.editor &&
-			paella.player.config.editor.enabled &&
-			paella.player.config.editor.loadOnStartup) {
-			paella.events.trigger(paella.events.showEditor);
-		}
-		*/
 	},
 
 	pause:function() {

@@ -1,0 +1,300 @@
+body {
+	height: 100%;
+	font-family: Verdana, sans-serif;
+	font-size: 12px;
+}
+
+h2 {
+}
+
+a {
+	color: #636363;
+}
+
+a:hover {
+	color: #a4a4a4;
+}
+
+a:active {
+	color: #3d3d3d;
+}
+
+a:visited {
+	color: #636363;
+}
+
+.video {
+	-moz-box-shadow: 2px 2px 6px #000;
+	-webkit-box-shadow: 2px 2px 6px #000;
+	box-shadow: 2px 2px 6px #000;
+}
+
+div {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+#playerContainer:-webkit-full-screen	{ width: 100%; }
+#playerContainer:-moz-full-screen		{ width: 100%; }
+#playerContainer:-ms-full-screen		{ width: 100%; }
+#playerContainer:-o-full-screen			{ width: 100%; }
+#playerContainer:full-screen			{ width: 100%; }
+
+#ignoreBrowserCheckLink {
+	color:black;
+	text-decoration: underline;
+}
+
+.masterVideo {	
+}
+
+.slaveVideo {
+}
+
+.playbackControls {
+	background-color: @backgroundColor;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	height: 51px;
+	z-index: 100;
+}
+
+.playbackBarPlugins {
+	position:absolute;
+	bottom: 0px;
+	left:0px;
+	right:0px;
+	height:37px;
+}
+
+.playbackBar {
+	position:absolute;
+	left:0px;
+	right:0px;
+	height: 12px;
+	background-color: rgba(125,125,125,0.5);
+	border-bottom: 1px solid rgba(90,90,90,0.6);
+	border-top: 1px solid rgba(90,90,90,0.6);
+	cursor: pointer;
+}
+
+.playbackBar:focus {
+	box-shadow: inset 0px 0px 5px 0px @hoverBackgroundColor;
+	outline: none;
+}
+
+.playbackBarFull {
+	height: 12px;
+	background-color: @mainColor;
+}
+
+.buttonPlugin {
+	width:40px;
+	height:37px;
+	cursor:pointer;
+}
+
+.buttonPlugin.left {
+	float: left;
+}
+
+.buttonPlugin.right {
+	float:right;
+}
+
+.buttonPlugin:hover {
+	background-color: @hoverBackgroundColor;
+}
+
+.buttonPlugin:focus {
+	box-shadow: inset 0px 0px 5px 0px @hoverBackgroundColor;
+	outline: none;
+}
+
+
+.buttonPlugin.selected {
+	background-color: @mainColor;
+}
+
+.popUpPluginContainer {
+	position: absolute;
+	right: 0px;
+	z-index: 1;
+}
+
+.buttonPluginPopUp {
+	background-color: @backgroundColor;
+	position: absolute;
+	bottom: 0px;
+}
+
+.timelinePluginContainer {
+	position: absolute;
+	left:0px;
+	width: 100%;
+	background-color: @backgroundColor;
+	bottom: 51px;
+}
+
+.buttonTimeLine {
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+}
+
+/* old style time control */
+.timeControlOld {
+	color:white;
+	display:block;
+	position:relative;
+	width:69px;
+	height:44px;
+	background-size: 100%;
+	background-image:url(../images/time_monitor.png);
+	font-size: 10px;
+	padding-top: 11px;
+	background-repeat: no-repeat;
+	bottom: 70px;
+	font-family: verdana;
+	text-align: center;
+	z-index:100;
+}
+
+.timeControl {
+	color: white;
+	display: block;
+	position: relative;
+	width: 69px;
+	height: 12px;
+	font-size: 10px;
+	background-repeat: no-repeat;
+	padding-left: 5px;
+	font-family: verdana;
+	text-align: left;
+	z-index: 100;
+	line-height: 12px;
+	margin-top: -12px;
+	cursor:pointer;
+}
+
+.editControlContainer {
+	z-index: 20;
+}
+
+.paellaLoadErrorContainer {
+	width: 1000px;
+	margin: auto;
+	margin-top:200px;
+	text-align: center;
+	padding-top: 80px;
+	padding-bottom: 80px;
+	background-color: rgba(220,228,234,0.9);
+	border-radius: 22px;
+	box-shadow: 1px 1px 8px black;
+	font-family: sans-serif;
+	font-size: 20px;
+}
+
+.modalMessageContainer {
+	background-color: rgba(0,0,0,0.5);
+}
+
+.messageContainer {
+	margin: auto;
+	text-align: center;
+	vertical-align: middle;
+	font-family: sans-serif;
+	padding-left: 80px;
+	padding-right: 80px;
+	background-color: white;
+	border-radius: 22px;
+	box-shadow: 1px 1px 8px black;
+	font-size: 20px;
+	padding-top: 40px;
+	padding-bottom:40px;
+}
+
+.frameContainer {
+	margin: auto;
+	text-align: center;
+	/*vertical-align: middle;*/
+	font-family: sans-serif;
+	padding-left: 80px;
+	padding-right: 80px;
+	background-color: white;
+	border-radius: 22px;
+	box-shadow: 1px 1px 8px black;
+	font-size: 20px;
+	padding-top: 40px;
+	padding-bottom:40px;
+	display:block;
+}
+
+.errorContainer {
+	margin: auto;
+	text-align: center;
+	vertical-align: middle;
+	padding-left: 120px;
+	padding-right: 60px;
+	background-color: white;
+	border-radius: 22px;
+	box-shadow: 1px 1px 8px black;
+	font-family: sans-serif;
+	font-size: 20px;
+	padding-top: 40px;
+	padding-bottom: 40px;
+	border: 7px solid maroon;
+	color: maroon;
+	font-weight: bold;
+	background-image: url(../images/error_icon.png);
+	background-size: 10%;
+	background-repeat: no-repeat;
+	background-position: 50px 40px;
+}
+
+.paella_messageContainer_closeButton {
+	background-image: url(../images/close_button.png);
+	width:20px;
+	height:20px;
+	position:absolute;
+	display:block;
+	top: 10px;
+	right: 10px;
+	z-index: 999999999;
+	background-size: 60px 20px;
+}
+
+.paella_messageContainer_closeButton:hover {
+	background-position: -20px;
+}
+
+.paella_messageContainer_closeButton:active {
+	background-position: 20px;
+}
+
+.overlayContainer {
+	
+}
+
+.overlayContainer.background {
+	background-color: rgba(0,0,0,0.5);
+}
+
+.videoLoaderOverlay {
+	background-color: black;
+}
+
+.videoOverlayButtonPlugins {
+	z-index: 100;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	left: 0px;
+}
