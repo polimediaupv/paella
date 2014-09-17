@@ -142,6 +142,13 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	hideEditor:function() {
 	},
 
+	reloadVideos:function(quality) {
+		if (this.videoContainer) {
+			this.videoContainer.reloadVideos(quality);
+			this.onresize();
+		}
+	},
+
 	loadVideo:function() {
 		if (this.videoIdentifier) {
 			this.initVideoEvents();
@@ -159,22 +166,16 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 					var preferredMethodMaster = loader.getPreferredMethod(0);
 					var preferredMethodSlave  = loader.getPreferredMethod(1);
 
-					//try {
-						paella.player.videoContainer.setSources(
-							{ data:master, type:preferredMethodMaster },
-							{ data:slave, type:preferredMethodSlave }
-						);
+					paella.player.videoContainer.setSources(
+						{ data:master, type:preferredMethodMaster },
+						{ data:slave, type:preferredMethodSlave }
+					);
 
-						paella.events.trigger(paella.events.loadComplete,{masterVideo:master,slaveVideo:slave,frames:frames});
-						if (paella.player.isLiveStream()) {
-							This.showPlaybackBar();
-						}
-						This.onresize();
-					//}
-					//catch(e) {
-					//	paella.messageBox.showError(paella.dictionary.translate(e.message));
-					//}
-
+					paella.events.trigger(paella.events.loadComplete,{masterVideo:master,slaveVideo:slave,frames:frames});
+					if (paella.player.isLiveStream()) {
+						This.showPlaybackBar();
+					}
+					This.onresize();
 				}
 				else {
 					errorMessage = base.dictionary.translate("Error loading video data");

@@ -19,6 +19,14 @@ Class ("paella.Node", {
 
 	getNode:function(id) {
 		return this.nodeList[id];
+	},
+	
+	removeNode:function(childNode) {
+		if (this.nodeList[childNode.identifier]) {
+			delete this.nodeList[childNode.identifier];
+			return true;
+		}
+		return false;
 	}
 });
 
@@ -39,6 +47,12 @@ Class ("paella.DomNode", paella.Node,{
 	},
 
 	onresize:function() {
+	},
+	
+	removeNode:function(childNode) {
+		if (this.parent(childNode)) {
+			this.domElement.removeChild(childNode.domElement);
+		}
 	}
 });
 

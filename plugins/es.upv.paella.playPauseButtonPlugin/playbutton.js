@@ -43,6 +43,7 @@ paella.plugins.PlayButtonOnScreen = Class.create(paella.EventDrivenPlugin,{
 	container:null,
 	enabled:true,
 	isPlaying:false,
+	showIcon:true,
 
 	checkEnabled:function(onSuccess) {
 		onSuccess(!paella.player.isLiveStream());
@@ -139,11 +140,13 @@ paella.plugins.PlayButtonOnScreen = Class.create(paella.EventDrivenPlugin,{
 
 	play:function() {
 		this.isPlaying = true;
+		this.showIcon = false;
 		this.checkStatus();
 	},
 
 	pause:function() {
 		this.isPlaying = false;
+		this.showIcon = false;
 		this.checkStatus();
 	},
 
@@ -158,7 +161,7 @@ paella.plugins.PlayButtonOnScreen = Class.create(paella.EventDrivenPlugin,{
 	},
 
 	checkStatus:function() {
-		if ((this.enabled && this.isPlaying) || !this.enabled) {
+		if ((this.enabled && this.isPlaying) || !this.enabled || !this.showIcon) {
 			$(this.container).hide();
 		}
 		else {

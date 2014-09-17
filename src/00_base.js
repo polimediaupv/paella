@@ -56,8 +56,19 @@ paella.events = {
 	hidePopUp:'paella:hidePopUp',
 	showPopUp:'paella:showPopUp',
 	userTracking:'paella:userTracking',
+	videoLoaded:'paella:videoLoaded',
+	videoUnloaded:'paella:videoUnloaded',
 
-	trigger:function(event,params) { $(document).trigger(event,params); },
-	bind:function(event,callback) { $(document).bind(event,function(event,params) { callback(event,params);}) ;}
+	trigger:function(event,params) { $(document).trigger(event,params);  },
+	bind:function(event,callback) { $(document).bind(event,function(event,params) { callback(event,params);}) ;},
+	
+	setupExternalListener:function() {
+		console.log("Setup external listeners");
+		window.addEventListener("message", function(event) {
+			paella.events.trigger(event.data.event,event.data.params);
+		}, false);
+	}
 };
+
+paella.events.setupExternalListener();
 
