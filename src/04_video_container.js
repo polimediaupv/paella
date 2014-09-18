@@ -543,10 +543,9 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		this._slaveQualit = quality;
 	},
 
-	reloadVideos:function(quality) {
-		// TODO: hacer algo con la calidad, con esto solamente se recarga el vídeo
-		// También habría que guardar el instante actual de reproducción para ponerlo
-		// igual después de recargar
+	reloadVideos:function(masterQuality,slaveQuality) {
+		this.setMasterQuality(masterQuality);
+		this.setSlaveQuality(slaveQuality);
 		var currentTime = this.currentTime();
 		var paused = this.paused();
 		this.setSources(this._videoSourceData.master,this._videoSourceData.slave);

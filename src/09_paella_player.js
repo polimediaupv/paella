@@ -142,9 +142,9 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	hideEditor:function() {
 	},
 
-	reloadVideos:function(quality) {
+	reloadVideos:function(masterQuality,slaveQuality) {
 		if (this.videoContainer) {
-			this.videoContainer.reloadVideos(quality);
+			this.videoContainer.reloadVideos(masterQuality,slaveQuality);
 			this.onresize();
 		}
 	},
