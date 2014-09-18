@@ -6,6 +6,13 @@ module.exports = function(grunt) {
 			build: ["build"],
 			less: ["build/style.less"]
 		},
+		revision: {
+			options: {
+				property: 'meta.revision',
+				ref: 'HEAD',
+				short: true
+			}
+		},
 		copy: {
 			paella: {
 				files: [
@@ -27,7 +34,7 @@ module.exports = function(grunt) {
 			},
 			'dist.js': {
 				options: {
-					footer: 'paella.version = "<%= pkg.version %>";\n'
+					footer: 'paella.version = "<%= pkg.version %> - build: <%= meta.revision %>";\n'
 				},
 				src: [
 					'src/*.js',
@@ -167,6 +174,7 @@ module.exports = function(grunt) {
 		}
 	});
 	
+	grunt.loadNpmTasks('grunt-git-revision');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-watch');
@@ -183,7 +191,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('default', ['dist']);
 	grunt.registerTask('checksyntax', ['concat:less','less:production','jshint', 'csslint', 'jsonlint']);
 
-	grunt.registerTask('build.common', ['checksyntax', 'copy:paella', 'concat:dist.js', 'concat:style.css', 'clean:less']);
+	grunt.registerTask('build.common', ['revision', 'checksyntax', 'copy:paella', 'concat:dist.js', 'concat:style.css', 'clean:less']);
 	grunt.registerTask('build.release', ['build.common', 'uglify:dist', 'cssmin:dist']);
 	grunt.registerTask('build.debug', ['build.common']);
 
