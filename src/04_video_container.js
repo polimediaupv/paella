@@ -278,6 +278,9 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	currentMasterVideoRect:{},
 	currentSlaveVideoRect:{},
 
+	_masterQuality:null,
+	_slaveQualit:null,
+
 	initialize:function(id) {
 		this.parent(id);
 		var thisClass = this;
@@ -532,12 +535,27 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		}
 	},
 
+	setMasterQuality:function(quality) {
+		this._masterQuality = quality;
+	},
+	
+	setSlaveQuality:function(quality) {
+		this._slaveQualit = quality;
+	},
+
 	reloadVideos:function(quality) {
 		// TODO: hacer algo con la calidad, con esto solamente se recarga el vídeo
 		// También habría que guardar el instante actual de reproducción para ponerlo
 		// igual después de recargar
+		var currentTime = this.currentTime();
+		var paused = this.paused();
 		this.setSources(this._videoSourceData.master,this._videoSourceData.slave);
 		this.play();
+		var This = this;
+		setTimeout(function() {
+			if (paused) This.pause();
+			This.seekToTime(currentTime);
+		},500);
 	},
 
 	/**
@@ -628,7 +646,13 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 
 	getVideoQuality:function(source,stream) {
 		if (source.length>0) {
-			var query = base.parameters.list['res' + stream];
+			var query = null;
+			if (stream=="master") {
+				query = this._masterQuality;
+			}
+			else if (stream=="slave") {
+				query = this._slaveQuality;
+			}
 			var selected = source[0];
 			var win_w = $(window).width();
 			var win_h = $(window).height();

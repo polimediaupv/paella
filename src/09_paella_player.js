@@ -156,6 +156,9 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			var loader = paella.initDelegate.initParams.videoLoader;
 			this.onresize();
 			loader.loadVideo(this.videoIdentifier,function() {
+				paella.player.videoContainer.setMasterQuality(base.parameters.list['resmaster']);
+				paella.player.videoContainer.setSlaveQuality(base.parameters.list['resslave']);
+				
 				var master = loader.streams[0];
 				var slave = loader.streams[1];
 				if (slave && slave.data && Object.keys(slave.data.sources).length==0) slave = null;

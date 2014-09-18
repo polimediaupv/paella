@@ -63,7 +63,6 @@ paella.events = {
 	bind:function(event,callback) { $(document).bind(event,function(event,params) { callback(event,params);}) ;},
 	
 	setupExternalListener:function() {
-		console.log("Setup external listeners");
 		window.addEventListener("message", function(event) {
 			paella.events.trigger(event.data.event,event.data.params);
 		}, false);

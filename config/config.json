@@ -1,7 +1,7 @@
   {
 	"player":{
 		"defaultProfile": "full",
-        "profileFrameStrategy":"paella.LimitedSizeProfileFrameStrategy",
+        "profileFrameStrategy":"paella.ProfileFrameStrategy",
 		"methods":[{"name":"streaming","enabled":true},
 				   {"name":"html","enabled":true},
 				   {"name":"flash","enabled":true},
