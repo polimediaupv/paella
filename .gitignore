@@ -4,3 +4,4 @@ test
 tmp
 build
 node_modules
+repository_test/repository/local*
