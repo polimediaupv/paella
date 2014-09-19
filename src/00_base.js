@@ -24,45 +24,6 @@ var GlobalParams = {
 var paella = {};
 paella.player = null;
 
-paella.debug = {
-	init:false,
-	debug:false,
-
-	log:function(msg) {
-		if (!this.init) {
-			this.debug = /debug/.test(location.href);
-			this.init = true;
-		}
-		if (this.debug) {
-			console.log(msg);
-		}
-	}
-};
-
-paella.pluginList = [
-	'usertracking_collector.js',
-	'usertracking_googleanalytics_saver.js',
-	'framecontrol.js',
-	'playbutton.js',
-	'viewmode.js',
-	'basic_editor_plugins.js',
-	'repeatbutton.js',
-	'extended_profiles.js',
-	'trimming.js',
-	'annotations.js',
-	'social.js',
-	'fullscreenbutton.js',
-	'caption_editor.js',
-	'break.js',
-	'comments.js',
-	'description.js',
-	'footprints.js',
-	'videoload_test.js',
-	'qualities.js',
-	'show_editor.js',
-	'snapshots_editor.js'
-];
-
 paella.events = {
 	play:"paella:play",
 	pause:"paella:pause",
@@ -95,8 +56,18 @@ paella.events = {
 	hidePopUp:'paella:hidePopUp',
 	showPopUp:'paella:showPopUp',
 	userTracking:'paella:userTracking',
+	videoLoaded:'paella:videoLoaded',
+	videoUnloaded:'paella:videoUnloaded',
 
-	trigger:function(event,params) { $(document).trigger(event,params); },
-	bind:function(event,callback) { $(document).bind(event,function(event,params) { callback(event,params);}) ;}
+	trigger:function(event,params) { $(document).trigger(event,params);  },
+	bind:function(event,callback) { $(document).bind(event,function(event,params) { callback(event,params);}) ;},
+	
+	setupExternalListener:function() {
+		window.addEventListener("message", function(event) {
+			paella.events.trigger(event.data.event,event.data.params);
+		}, false);
+	}
 };
+
+paella.events.setupExternalListener();
 

@@ -9,24 +9,33 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 	getIndex:function() { return 2030; },
 	getMinWindowSize:function() { return 300; },
 	getName:function() { return "es.upv.paella.multipleQualitiesPlugin"; },
-	getDefaultToolTip:function() { return paella.dictionary.translate("Change video quality"); },	
+	getDefaultToolTip:function() { return base.dictionary.translate("Change video quality"); },
 	checkEnabled:function(onSuccess) { onSuccess(this.checkStreams()); },
-						      
+	setup:function() {
+		if (base.dictionary.currentLanguage()=="es") {
+			var esDict = {
+				'Presenter':'Presentador',
+				'Slide':'Diapositiva'
+			};
+			base.dictionary.addDictionary(esDict);
+		}
+	},
+
 	checkStreams:function() {
 		var key, j;
 		this.currentMaster = paella.player.videoContainer.currentMasterVideoData;
 		this.currentSlave = paella.player.videoContainer.currentSlaveVideoData;
-		
+
 		var allMasterSources = paella.player.videoContainer.masterVideoData.sources;
 		for (key in allMasterSources){
-			for (j =0; j < allMasterSources[key].length; ++j ){ 
+			for (j =0; j < allMasterSources[key].length; ++j ){
 				if ((allMasterSources[key][j].type == this.currentMaster.type)){
 					this.availableMasters.push(allMasterSources[key][j]);
 				}
 			}
 		}
 
-		
+
 		if (this.currentSlave){
 			var allSlaveSources = paella.player.videoContainer.slaveVideoData.sources;
 			for (key in allSlaveSources){
@@ -37,30 +46,30 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 				}
 			}
 		}
-		
+
 		return (this.availableMasters.length > 1 || this.availableSlaves.length > 1);
 	},
-	
+
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
-	
+
 	buildContent:function(domElement) {
 		var j,w,h,option;
 		var thisClass = this;
 		this.currentUrl = window.location;
-			
+
 		var selectQuality = document.createElement('div');
 		selectQuality.className = 'selectQuality';
-		
+
 		var labelM = document.createElement('label');
-		labelM.innerHTML = paella.dictionary.translate("Presenter");
-				
+		labelM.innerHTML = base.dictionary.translate("Presenter");
+
 		var comboM = document.createElement('select');
 		comboM.id = 'master';
 		$(comboM).change(function() {
 			var param1Q = $(comboM).val();
 			thisClass.changeVideoStream(param1Q, comboM.id);
 		});
-			
+
 		if (this.availableMasters.length > 1){
 			for (j =0; j < this.availableMasters.length; ++j ){
 				w = this.availableMasters[j].res.w;
@@ -71,22 +80,22 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 				if ((w == this.currentMaster.res.w) && (h == this.currentMaster.res.h)){
 					option.setAttribute('selected',true);
 				}
-				comboM.appendChild(option);	
+				comboM.appendChild(option);
 			}
 			selectQuality.appendChild(labelM);
 			selectQuality.appendChild(comboM);
 		}
-		
+
 		var labelS = document.createElement('label');
-		labelS.innerHTML = paella.dictionary.translate("Slide");
-		
+		labelS.innerHTML = base.dictionary.translate("Slide");
+
 		var comboS = document.createElement('select');
 		comboS.id = 'slave';
 		$(comboS).change(function() {
 			var param1Q = $(comboS).val();
 			thisClass.changeVideoStream(param1Q,comboS.id);
 		});
-			
+
 		if (this.availableSlaves.length+1 > 1){
 			for (j=0; j < this.availableSlaves.length; ++j ){
 				w = this.availableSlaves[j].res.w;
@@ -97,27 +106,27 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 				if ((w == this.currentSlave.res.w) && (h == this.currentSlave.res.h)){
 					option.setAttribute('selected',true);
 				}
-				comboS.appendChild(option);	
+				comboS.appendChild(option);
 			}
 			selectQuality.appendChild(labelS);
 			selectQuality.appendChild(comboS);
 		}
-		
+
 		domElement.appendChild(selectQuality);
 	},
-	
+
 	changeVideoStream:function(newRes,combo) {
 		var newUrl;
-		var resM = paella.utils.parameters.get("resmaster");
-		var resS = paella.utils.parameters.get("resslave");
-		
+		var resM = base.parameters.get("resmaster");
+		var resS = base.parameters.get("resslave");
+
 		/*
 		if (combo == "master"){
 			if (resM)
 				newUrl = this.constructNewUrl("resmaster",newRes,"resslave",resS);
-			else 
+			else
 				newUrl = this.currentUrl+"&resmaster="+newRes;
-		} else { 
+		} else {
 			if (resS)
 				newUrl = this.constructNewUrl("resslave",newRes,"resmaster",resM);
 			else
@@ -127,20 +136,20 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 		newUrl = this.constructNewUrl("resmaster",newRes,"resslave",resS);
 		window.open (newUrl, '_self', false);
 	},
-	
+
 	constructNewUrl:function(param1,param1Q,param2,param2Q) {
 		var iniUrl = this.currentUrl.href.split("?");
 		var url = iniUrl[0] + '?';
-		
-		Object.keys(paella.utils.parameters.list).forEach(function(p){
+
+		Object.keys(base.parameters.list).forEach(function(p){
 			if ( (p != 'resmaster') && (p != 'resslave') && (p !='time') && (p !='autoplay') ) {
-				url = url + p + '=' + paella.utils.parameters.list[p] + '&';
+				url = url + p + '=' + base.parameters.list[p] + '&';
 			}
 		});
-		
+
 		return url+ 'time=' + parseInt(paella.player.videoContainer.currentTime()) + "s&autoplay=true&"+param1+"="+param1Q+((param2Q) ? "&"+param2+"="+param2Q:'');
 	}
 });
-  
+
 
 paella.plugins.multipleQualitiesPlugin = new paella.plugins.MultipleQualitiesPlugin();

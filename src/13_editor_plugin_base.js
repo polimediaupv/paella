@@ -123,10 +123,10 @@ paella.editor.pluginManager = new paella.editor.PluginManager();
 Class ("paella.editor.EditorPlugin", paella.Plugin,{
 	onTrackSelected:function(newTrack) {
 		if (newTrack) {
-			paella.debug.log(this.getName() + ": New track selected " + newTrack.getName());
+			base.log.debug(this.getName() + ": New track selected " + newTrack.getName());
 		}
 		else {
-			paella.debug.log("No track selected");
+			base.log.debug("No track selected");
 		}
 	},
 
@@ -189,21 +189,21 @@ Class ("paella.editor.TrackPlugin", paella.editor.EditorPlugin,{
 	},
 
 	onTrackChanged:function(id,start,end) {
-		//paella.debug.log('Track changed: id=' + id + ", start: " + start + ", end:" + end);
+		//base.log.debug('Track changed: id=' + id + ", start: " + start + ", end:" + end);
 		paella.events.trigger(paella.events.documentChanged);
 	},
 
 	onTrackContentChanged:function(id,content) {
-		//paella.debug.log('Track content changed: id=' + id + ', new content: ' + content);
+		//base.log.debug('Track content changed: id=' + id + ', new content: ' + content);
 		paella.events.trigger(paella.events.documentChanged);
 	},
 
 	onSelect:function(trackItemId) {
-		paella.debug.log('Track list selected: ' + this.getTrackName());
+		base.log.debug('Track list selected: ' + this.getTrackName());
 	},
 
 	onUnselect:function() {
-		paella.debug.log('Track list unselected: ' + this.getTrackName());
+		base.log.debug('Track list unselected: ' + this.getTrackName());
 	},
 
 	onDblClick:function(trackData) {
@@ -214,7 +214,7 @@ Class ("paella.editor.TrackPlugin", paella.editor.EditorPlugin,{
 	},
 
 	onToolSelected:function(toolName) {
-		//paella.debug.log('Tool selected: ' + toolName);
+		//base.log.debug('Tool selected: ' + toolName);
 		paella.events.trigger(paella.events.documentChanged);
 	},
 

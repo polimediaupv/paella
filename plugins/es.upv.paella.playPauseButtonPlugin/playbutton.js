@@ -6,7 +6,7 @@ paella.plugins.PlayPauseButtonPlugin = Class.create(paella.ButtonPlugin, {
 	getAlignment:function() { return 'left'; },
 	getSubclass:function() { return this.playSubclass; },
 	getName:function() { return "es.upv.paella.playPauseButtonPlugin"; },
-	getDefaultToolTip:function() { return paella.dictionary.translate("Play"); },
+	getDefaultToolTip:function() { return base.dictionary.translate("Play"); },
 	getIndex:function() {return 110;},
 
 	checkEnabled:function(onSuccess) {
@@ -15,6 +15,9 @@ paella.plugins.PlayPauseButtonPlugin = Class.create(paella.ButtonPlugin, {
 
 	setup:function() {
 		var This = this;
+		if (paella.player.playing()) {
+			this.changeSubclass(This.pauseSubclass);
+		}
 		paella.events.bind(paella.events.play,function(event) { This.changeSubclass(This.pauseSubclass); This.setToolTip(paella.dictionary.translate("Pause"));});
 		paella.events.bind(paella.events.pause,function(event) { This.changeSubclass(This.playSubclass); This.setToolTip(paella.dictionary.translate("Play"));});
 	},
@@ -40,6 +43,8 @@ paella.plugins.PlayButtonOnScreen = Class.create(paella.EventDrivenPlugin,{
 	container:null,
 	enabled:true,
 	isPlaying:false,
+	showIcon:true,
+	firstPlay:false,
 
 	checkEnabled:function(onSuccess) {
 		onSuccess(!paella.player.isLiveStream());
@@ -56,49 +61,49 @@ paella.plugins.PlayButtonOnScreen = Class.create(paella.EventDrivenPlugin,{
 		var icon = document.createElement('canvas');
 		icon.className = "playButtonOnScreenIcon";
 		this.container.appendChild(icon);
-				
+
 		function repaintCanvas(){
 			var width = jQuery(thisClass.container).innerWidth();
 			var height = jQuery(thisClass.container).innerHeight();
-			
+
 			icon.width = width;
 			icon.height = height;
-			
+
 			var iconSize = (width<height) ? width/3 : height/3;
-			
-			var ctx = icon.getContext('2d');	
+
+			var ctx = icon.getContext('2d');
 			// Play Icon size: 300x300
 			ctx.translate((width-iconSize)/2, (height-iconSize)/2);
-			
+
 			ctx.beginPath();
 			ctx.arc(iconSize/2, iconSize/2 ,iconSize/2, 0, 2*Math.PI, true);
 			ctx.closePath();
-	
+
 			ctx.strokeStyle = 'white';
 			ctx.lineWidth = 10;
 			ctx.stroke();
 			ctx.fillStyle = '#8f8f8f';
 			ctx.fill();
-	
+
 			ctx.beginPath();
 			ctx.moveTo(iconSize/3, iconSize/4);
 			ctx.lineTo(3*iconSize/4, iconSize/2);
 			ctx.lineTo(iconSize/3, 3*iconSize/4);
 			ctx.lineTo(iconSize/3, iconSize/4);
-/*			
+/*
 			ctx.moveTo(100, 70);
 			ctx.lineTo(250, 150);
 			ctx.lineTo(100, 230);
 			ctx.lineTo(100, 70);
 */
 			ctx.closePath();
-			ctx.fillStyle = 'white';			
+			ctx.fillStyle = 'white';
 			ctx.fill();
-			
-			ctx.stroke();			
+
+			ctx.stroke();
 		}
 		window.addEventListener('resize', repaintCanvas, false);
-		repaintCanvas();		
+		repaintCanvas();
 	},
 
 	getEvents:function() {
@@ -126,7 +131,8 @@ paella.plugins.PlayButtonOnScreen = Class.create(paella.EventDrivenPlugin,{
 	},
 
 	onPlayButtonClick:function() {
-		$(document).trigger(paella.events.play);
+		this.firstPlay = true;
+		this.checkStatus();
 	},
 
 	endVideo:function() {
@@ -136,11 +142,13 @@ paella.plugins.PlayButtonOnScreen = Class.create(paella.EventDrivenPlugin,{
 
 	play:function() {
 		this.isPlaying = true;
+		this.showIcon = false;
 		this.checkStatus();
 	},
 
 	pause:function() {
 		this.isPlaying = false;
+		this.showIcon = false;
 		this.checkStatus();
 	},
 
@@ -155,7 +163,7 @@ paella.plugins.PlayButtonOnScreen = Class.create(paella.EventDrivenPlugin,{
 	},
 
 	checkStatus:function() {
-		if ((this.enabled && this.isPlaying) || !this.enabled) {
+		if ((this.enabled && this.isPlaying) || !this.enabled || !this.showIcon) {
 			$(this.container).hide();
 		}
 		else {

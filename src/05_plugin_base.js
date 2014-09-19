@@ -1,3 +1,4 @@
+
 Class ("paella.PluginManager", {
 	targets:null,
 	pluginList: [],
@@ -35,8 +36,56 @@ Class ("paella.PluginManager", {
 			return a.getIndex() - b.getIndex();
 		});
 	},
-
+	
+	// callback => function(plugin,pluginConfig)
+	loadEventDrivenPlugins:function() {
+		var This = this;
+		this.foreach(function(plugin,config) {
+			if (config.enabled) {
+				paella.debug.log("load plugin " + name);
+				plugin.config = config;
+				if (plugin.type=="eventDriven") {
+					plugin.load(This);
+				}
+			}
+		});
+	},
+	
 	loadPlugins:function() {
+		var This = this;
+		this.foreach(function(plugin,config) {
+			if (config.enabled) {
+				paella.debug.log("load plugin " + name);
+				plugin.config = config;
+				if (plugin.type!="eventDriven") {
+					plugin.load(This);
+				}
+			}
+		});
+	},
+	
+	foreach:function(callback) {
+		var pluginConfig = paella.player.config.plugins;
+		if (!pluginConfig) {
+			pluginConfig = { defaultConfig:{enabled:true}, list:{}};
+		}
+		for (var i=0; i<this.pluginList.length; ++i) {
+			var plugin = this.pluginList[i];
+			var name = plugin.getName();
+			var config = pluginConfig.list[name];
+			if (!config) {
+				config = pluginConfig.defaultConfig;
+			}
+			else {
+				for (var key in pluginConfig.defaultConfig) {
+					if (config[key]===undefined) config[key] = pluginConfig.defaultConfig[key];
+				}
+			}
+			callback(this.pluginList[i],config);
+		}
+	},
+
+/*	loadPlugins:function() {
 		var pluginConfig = paella.player.config.plugins;
 		if (!pluginConfig) {
 			pluginConfig = {defaultConfig:{enabled:true},list:{}};
@@ -54,12 +103,13 @@ Class ("paella.PluginManager", {
 				}
 			}
 			if ((config && config.enabled) || !config) {
-				paella.debug.log("loading plugin " + name);
+				base.log.debug("loading plugin " + name);
 				plugin.config = config;
 				plugin.load(this);
 			}
 		}
 	},
+*/
 
 	addPlugin:function(plugin) {
 		var thisClass = this;
@@ -298,25 +348,33 @@ Class ("paella.ButtonPlugin", paella.Plugin,{
 	},
 
 	willShowContent:function() {
-		paella.debug.log(this.getName() + " willDisplayContent");
+		base.log.debug(this.getName() + " willDisplayContent");
 	},
 
 	didShowContent:function() {
-		paella.debug.log(this.getName() + " didDisplayContent");
+		base.log.debug(this.getName() + " didDisplayContent");
 	},
 
 	willHideContent:function() {
-		paella.debug.log(this.getName() + " willHideContent");
+		base.log.debug(this.getName() + " willHideContent");
 	},
 
 	didHideContent:function() {
-		paella.debug.log(this.getName() + " didHideContent");
+		base.log.debug(this.getName() + " didHideContent");
 	},
 
 	getButtonType:function() {
 		//return paella.ButtonPlugin.type.popUpButton;
 		//return paella.ButtonPlugin.type.timeLineButton;
 		return paella.ButtonPlugin.type.actionButton;
+	},
+	
+	getText:function() {
+		return "";
+	},
+	
+	setText:function(text) {
+		this.container.innerHTML = text;
 	},
 
 	hideButton:function() {
@@ -381,6 +439,7 @@ paella.ButtonPlugin.buildPluginButton = function(plugin,id) {
 	var elem = document.createElement('div');
 	elem.className = plugin.getClassName();
 	elem.id = id;
+	elem.innerHTML = plugin.getText();
 	elem.setAttribute("tabindex", 1000+plugin.getIndex());
 	elem.setAttribute("alt", "");
 	elem.setAttribute("role", "button");

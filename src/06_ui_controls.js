@@ -80,6 +80,10 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		$(playbackFull.domElement).bind('mousemove',function(event) { paella.utils.mouseManager.move(event); });
 		$(this.domElement).bind('mouseup',function(event) { paella.utils.mouseManager.up(event); });
 		$(playbackFull.domElement).bind('mouseup',function(event) { paella.utils.mouseManager.up(event); });
+
+		if (paella.player.isLiveStream()) {
+			$(this.domElement).hide();
+		}
 	},
 
 	playbackFull:function() {
@@ -222,8 +226,8 @@ Class ("paella.PlaybackControl",paella.DomNode,{
 	},
 
 	onresize:function() {
-		paella.debug.log("resize playback bar");
 		var windowSize = $(this.domElement).width();
+		base.log.debug("resize playback bar (width=" + windowSize + ")");
 
 		for (var i=0;i<this.buttonPlugins.length;++i) {
 			var plugin = this.buttonPlugins[i];
@@ -345,8 +349,7 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 
 	hide:function() {
 		var This = this;
-		var userAgent = new UserAgent();
-		if (!userAgent.browser.IsMobileVersion) {
+		if (!base.userAgent.browser.IsMobileVersion) {
 			$(this.domElement).animate({opacity:0.0},{duration:300, complete:function(){
 				This.domElement.setAttribute('aria-hidden', 'true');
 				//$(This.domElement).hide();
@@ -354,7 +357,7 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 			paella.events.trigger(paella.events.controlBarWillHide);
 		}
 		else {
-			paella.debug.log("Mobile version: controls will not hide");
+			base.log.debug("Mobile version: controls will not hide");
 		}
 	},
 
@@ -424,7 +427,7 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 	restartAutohideTimer:function() {
 		this.clearAutohideTimer();
 		var thisClass = this;
-		this.autohideTimer = new paella.utils.Timer(function(timer) {
+		this.autohideTimer = new base.Timer(function(timer) {
 			thisClass.autohideTimeout();
 		},this.hideControlsTimeMillis);
 	},

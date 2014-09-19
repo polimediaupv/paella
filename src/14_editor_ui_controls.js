@@ -28,7 +28,7 @@ Class ("paella.editor.Toolbar", {
 	},
 
 	buildTrackTools:function() {
-		var selectionTrackName = paella.dictionary.translate("Selection");
+		var selectionTrackName = base.dictionary.translate("Selection");
 		var tools = {};
 		tools[selectionTrackName] = "paella.editor.instance.bottomBar.toolbar.onToolChanged('select','" + selectionTrackName + "')";
 		var trackPlugins = paella.editor.pluginManager.trackPlugins;
@@ -40,7 +40,7 @@ Class ("paella.editor.Toolbar", {
 			//var action = "paella.editor.instance.bottomBar.timeline.selectTrackList('" + plugin.getName() + "');";
 			tools[label] = action;
 		}
-		var defaultText = paella.dictionary.translate("Tool") + ": " + paella.dictionary.translate('Selection');
+		var defaultText = base.dictionary.translate("Tool") + ": " + base.dictionary.translate('Selection');
 		this.toolButton = bootstrapUtils.dropdown(defaultText,'toolDropdown',tools,'btn-mini','',false);
 		this.container.appendChild(this.toolButton);
 		this.selectedToolUtils = document.createElement('span');
@@ -108,10 +108,10 @@ Class ("paella.editor.Toolbar", {
 	buildEditorMenu:function() {
 		var tools = {
 		};
-		tools[paella.dictionary.translate("Save and close editor")] = "paella.editor.instance.bottomBar.toolbar.saveAndClose();";
-		tools[paella.dictionary.translate("Save changes")] = "paella.editor.instance.bottomBar.toolbar.save();";
-		tools[paella.dictionary.translate("Discard changes and close")] = "paella.editor.instance.bottomBar.toolbar.discardAndClose();";
-		this.editorMenu = bootstrapUtils.dropdown(paella.dictionary.translate('Paella Editor'),'editorDropdown',tools,'btn-mini','icon-edit icon-white',true);
+		tools[base.dictionary.translate("Save and close editor")] = "paella.editor.instance.bottomBar.toolbar.saveAndClose();";
+		tools[base.dictionary.translate("Save changes")] = "paella.editor.instance.bottomBar.toolbar.save();";
+		tools[base.dictionary.translate("Discard changes and close")] = "paella.editor.instance.bottomBar.toolbar.discardAndClose();";
+		this.editorMenu = bootstrapUtils.dropdown(base.dictionary.translate('Paella Editor'),'editorDropdown',tools,'btn-mini','icon-edit icon-white',true);
 		this.container.appendChild(this.editorMenu);
 	},
 
@@ -129,7 +129,7 @@ Class ("paella.editor.Toolbar", {
 	onToolChanged:function(toolName,trackName) {
 		paella.editor.instance.bottomBar.timeline.selectTrackList(toolName);
 		var textElem = $(this.toolButton).find('.text')[0];
-		textElem.innerHTML = paella.dictionary.translate("Tool") + ": " + trackName;
+		textElem.innerHTML = base.dictionary.translate("Tool") + ": " + trackName;
 		this.setupTrackTool(toolName);
 	},
 
@@ -166,7 +166,7 @@ Class ("paella.editor.Toolbar", {
 			}
 			if (buttonData.length>0) {
 				var toolLabel = document.createElement('span');
-				toolLabel.innerHTML = '&nbsp;' + paella.dictionary.translate('Options') + ':';
+				toolLabel.innerHTML = '&nbsp;' + base.dictionary.translate('Options') + ':';
 				this.selectedToolUtils.appendChild(toolLabel);
 				this.selectedToolUtils.appendChild(bootstrapUtils.buttonGroup(buttonData,'btn-mini'));
 			}
@@ -187,7 +187,7 @@ Class ("paella.editor.Toolbar", {
 
 	discardAndClose:function() {
 		paella.editor.pluginManager.onDiscard(function(status) {
-			paella.debug.log("Discard changes");
+			base.log.debug("Discard changes");
 			paella.editor.instance.unloadEditor();
 		});
 	}
@@ -381,7 +381,7 @@ Class ("paella.editor.Timeline", {
 	onresize:function() {
 		this.buildTimeMarks();
 		var height = $(this.tracks).outerHeight();
-		if (paella.utils.userAgent.system.Windows) {
+		if (base.userAgent.system.Windows) {
 			var padding = $(this.tracks).outerHeight() - $(this.tracks).height();
 			height = height + padding - 3;
 		}

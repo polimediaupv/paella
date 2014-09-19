@@ -3,28 +3,28 @@ paella.Profiles = {
 	loadProfile:function(profileName,onSuccessFunction) {
 		var params = { url:"config/profiles/profiles.json" };
 
-		paella.ajax.get(params,function(data,mimetype,code) {
+		base.ajax.get(params,function(data,mimetype,code) {
 				if (typeof(data)=="string") {
 					data = JSON.parse(data);
 				}
 				onSuccessFunction(data[profileName]);
 			},
 			function(data,mimetype,code) {
-				paella.debug.log("Error loading video profiles. Check your Paella Player configuration");
+				base.log.debug("Error loading video profiles. Check your Paella Player configuration");
 			});
 	},
 
 	loadProfileList:function(onSuccessFunction) {
 		var params = { url:"config/profiles/profiles.json" };
 
-		paella.ajax.get(params,function(data,mimetype,code) {
+		base.ajax.get(params,function(data,mimetype,code) {
 				if (typeof(data)=="string") {
 					data = JSON.parse(data);
 				}
 				onSuccessFunction(data);
 			},
 			function(data,mimetype,code) {
-				paella.debug.log("Error loading video profiles. Check your Paella Player configuration");
+				base.log.debug("Error loading video profiles. Check your Paella Player configuration");
 			});
 	}
 };
@@ -55,6 +55,7 @@ Class ("paella.RelativeVideoSize", {
 
 Class ("paella.VideoElementBase", paella.DomNode,{
 	ready:false,
+	_metadata:null,
 
 	initialize:function(id,containerType,left,top,width,height) {
 		var thisClass = this;
@@ -75,56 +76,65 @@ Class ("paella.VideoElementBase", paella.DomNode,{
 	},
 
 	play:function() {
-		paella.debug.log("TODO: implement play() function in your VideoElementBase subclass");
+		base.log.debug("TODO: implement play() function in your VideoElementBase subclass");
 	},
 
 	pause:function() {
-		paella.debug.log("TODO: implement pause() function in your VideoElementBase subclass");
+		base.log.debug("TODO: implement pause() function in your VideoElementBase subclass");
 	},
 
 	isPaused:function() {
-		paella.debug.log("TODO: implement isPaused() function in your VideoElementBase subclass");
+		base.log.debug("TODO: implement isPaused() function in your VideoElementBase subclass");
 		return false;
 	},
 
 	duration:function() {
-		paella.debug.log("TODO: implement duration() function in your VideoElementBase subclass");
+		base.log.debug("TODO: implement duration() function in your VideoElementBase subclass");
 		return -1;
 	},
 
 	setCurrentTime:function(time) {
-		paella.debug.log("TODO: implement setCurrentTime() function in your VideoElementBase subclass");
+		base.log.debug("TODO: implement setCurrentTime() function in your VideoElementBase subclass");
 	},
 
 	currentTime:function() {
-		paella.debug.log("TODO: implement currentTime() function in your VideoElementBase subclass");
+		base.log.debug("TODO: implement currentTime() function in your VideoElementBase subclass");
 		return 0;
 	},
 
 	setVolume:function(volume) {
-		paella.debug.log("TODO: implement setVolume() function in your VideoElementBase subclass");
+		base.log.debug("TODO: implement setVolume() function in your VideoElementBase subclass");
 		return false;
 	},
 
 	volume:function() {
-		paella.debug.log("TODO: implement volume() function in your VideoElementBase subclass");
+		base.log.debug("TODO: implement volume() function in your VideoElementBase subclass");
 		return -1;
 	},
 
 	setPlaybackRate:function(rate) {
-		paella.debug.log("TODO: implement setPlaybackRate() function in your VideoElementBase subclass");
+		base.log.debug("TODO: implement setPlaybackRate() function in your VideoElementBase subclass");
 	},
 
 	addSource:function(sourceData) {
-		paella.debug.log("TODO: implement addSource() function in your VideoElementBase subclass");
+		base.log.debug("TODO: implement addSource() function in your VideoElementBase subclass");
 	},
 
 	setClassName:function(className) {
 		this.domElement.className = className;
 	},
 
+	setMetadata:function(data) {
+		this._metadata = data;
+	},
+
 	getDimensions:function() {
-		return { width: this.domElement.videoWidth, height: this.domElement.videoHeight };
+		if (this._metadata && this._metadata.res) {
+			return { width: this._metadata.res.w, height: this._metadata.res.h };
+		}
+		else {
+			return { width: this.domElement.videoWidth, height: this.domElement.videoHeight };
+		}
 	},
 
 	setRect:function(rect,animate) {
@@ -344,7 +354,7 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 						timer.repeat = false;
 					}
 					catch(e2) {
-						paella.debug.log('Fail to set volume on ' + thisClass.identifier);
+						base.log.debug('Fail to set volume on ' + thisClass.identifier);
 						timer.repeat = true;
 					}
 				},100);
@@ -367,52 +377,53 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 		var domElement = document.createElement('div');
 		this.domElement.appendChild(domElement);
 		domElement.id = id + "Movie";
-		
+
 		if (swfobject.hasFlashPlayerVersion("9.0.0")) {
 			swfobject.embedSWF(swfFile,domElement.id,"100%","100%","9.0.0","",flashVars,parameters, null, function callbackFn(e){
 				if (e.success == false){
 					var message = document.createElement('div');
-					
+
 					var header = document.createElement('h3');
-					header.innerHTML = paella.dictionary.translate("Flash player problem");
-		
+					header.innerHTML = base.dictionary.translate("Flash player problem");
 					var text = document.createElement('div');
-					text.innerHTML = paella.dictionary.translate("A problem occurred trying to load flash player.") + "<br>" +
-						paella.dictionary.translate("Please go to {0} and install it.")
+					text.innerHTML = base.dictionary.translate("A problem occurred trying to load flash player.") + "<br>" +
+						base.dictionary.translate("Please go to {0} and install it.")
 						.replace("{0}", "<a style='color: #800000; text-decoration: underline;' href='http://www.adobe.com/go/getflash'>http://www.adobe.com/go/getflash</a>") + '<br>' +
-						paella.dictionary.translate("If the problem presist, contant us.");
-					
+
+						base.dictionary.translate("If the problem presist, contant us.");
+
 					var link = document.createElement('a');
 					link.setAttribute("href", "http://www.adobe.com/go/getflash");
-					link.innerHTML = '<img style="margin:5px;" src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Obtener Adobe Flash Player" />';		
-				
+					link.innerHTML = '<img style="margin:5px;" src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Obtener Adobe Flash Player" />';
+
 					message.appendChild(header);
 					message.appendChild(text);
 					message.appendChild(link);
-				
-					paella.messageBox.showError(message.innerHTML);					
-				}				
+
+					paella.messageBox.showError(message.innerHTML);
+				}
 			});
 		}
 		else {
 			var message = document.createElement('div');
-			
+
 			var header = document.createElement('h3');
-			header.innerHTML = paella.dictionary.translate("Flash player 9 nedded");
+			header.innerHTML = base.dictionary.translate("Flash player 9 nedded");
 
 			var text = document.createElement('div');
-			text.innerHTML = paella.dictionary.translate("You need at least Flash player 9 installed.") + "<br>" +			
-				paella.dictionary.translate("Please go to {0} and install it.")
+
+			text.innerHTML = base.dictionary.translate("You need at least Flash player 9 installed.") + "<br>" +
+				base.dictionary.translate("Please go to {0} and install it.")
 				.replace("{0}", "<a style='color: #800000; text-decoration: underline;' href='http://www.adobe.com/go/getflash'>http://www.adobe.com/go/getflash</a>");
-			
+
 			var link = document.createElement('a');
 			link.setAttribute("href", "http://www.adobe.com/go/getflash");
-			link.innerHTML = '<img style="margin:5px;" src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Obtener Adobe Flash Player" />';		
-		
+			link.innerHTML = '<img style="margin:5px;" src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Obtener Adobe Flash Player" />';
+
 			message.appendChild(header);
 			message.appendChild(text);
 			message.appendChild(link);
-		
+
 			paella.messageBox.showError(message.innerHTML);
 		}
 
@@ -450,7 +461,7 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 				parameters.url = "mp4:" + RegExp.$4;
 			}
 			parameters.playerId = this.flashId;
-			parameters.isLiveStream = sourceData.isLiveStream !== undefined ? sourceData.isLiveStream: false;
+			parameters.isLiveStream = sourceData.isLiveStream!==undefined ? sourceData.isLiveStream:false;
 			if (paella.player.config.player.rtmpSettings && paella.player.config.player.rtmpSettings.bufferTime!==undefined) {
 				parameters.bufferTime = paella.player.config.player.rtmpSettings.bufferTime;
 			}
@@ -462,7 +473,9 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 				parameters.url = RegExp.$4;
 			}
 			parameters.playerId = this.flashId;
-			parameters.isLiveStream = sourceData.isLiveStream !== undefined ? sourceData.isLiveStream: false;
+
+			parameters.isLiveStream = sourceData.isLiveStream!==undefined ? sourceData.isLiveStream:false;
+
 			if (paella.player.config.player.rtmpSettings && paella.player.config.player.rtmpSettings.bufferTime!==undefined) {
 				parameters.bufferTime = paella.player.config.player.rtmpSettings.bufferTime;
 			}
@@ -481,12 +494,18 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 
 	getDimensions:function() {
 		var dim = {width:640, height:480};
-		try {
-			dim.width = this.flashVideo.getWidth();
-			dim.height = this.flashVideo.getHeight();
+		if (this._metadata && this._metadata.res) {
+			dim.width = this._metadata.res.w;
+			dim.height = this._metadata.res.h;
 		}
-		catch (e) {
-			paella.debug.log("Warning: flash video is not loaded");
+		else {
+			try {
+				dim.width = this.flashVideo.getWidth();
+				dim.height = this.flashVideo.getHeight();
+			}
+			catch (e) {
+				base.log.debug("Warning: flash video is not loaded");
+			}
 		}
 		return dim;
 	}
@@ -561,14 +580,18 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		source.src = sourceData.src;
 		source.type = sourceData.type;
 		this.domElement.appendChild(source);
-		var ua = new UserAgent();
-		if (ua.browser.IsMobileVersion) {
+		if (base.userAgent.browser.IsMobileVersion) {
 			this.ready = true;
 		}
 	},
 
 	getDimensions:function() {
-		return { width: this.domElement.videoWidth, height: this.domElement.videoHeight };
+		if (this._metadata && this._metadata.res) {
+			return { width: this._metadata.res.w, height: this._metadata.res.h };
+		}
+		else {
+			return { width: this.domElement.videoWidth, height: this.domElement.videoHeight };
+		}
 	},
 
 	setRect:function(rect,animate) {

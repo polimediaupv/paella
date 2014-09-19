@@ -9,9 +9,10 @@ paella.plugins.ViewModePlugin = Class.create(paella.ButtonPlugin,{
 	getMinWindowSize:function() { return 300; },
 	getName:function() { return "es.upv.paella.viewModePlugin"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
-	getDefaultToolTip:function() { return paella.dictionary.translate("Change video layout"); },		
+	getDefaultToolTip:function() { return base.dictionary.translate("Change video layout"); },		
 	checkEnabled:function(onSuccess) {
-		onSuccess(paella.initDelegate.initParams.videoLoader.streams.length>=2);
+		onSuccess(!paella.player.videoContainer.isMonostream);
+		//onSuccess(paella.initDelegate.initParams.videoLoader.streams.length>=2);
 	},
 
 	setup:function() {
@@ -25,16 +26,16 @@ paella.plugins.ViewModePlugin = Class.create(paella.ButtonPlugin,{
 		           if(thisClass.selected_button>0){
 			            if(thisClass.selected_button<thisClass.buttons.length)
 				            thisClass.buttons[thisClass.selected_button].className = 'viewModeItemButton '+thisClass.buttons[thisClass.selected_button].data.profile;
-				    
+
 					    thisClass.selected_button--;
-					    thisClass.buttons[thisClass.selected_button].className = thisClass.buttons[thisClass.selected_button].className+' selected'; 
+					    thisClass.buttons[thisClass.selected_button].className = thisClass.buttons[thisClass.selected_button].className+' selected';
 		           	}
 	            }
 	            else if (event.keyCode == Keys.Down) {
 	            	if( thisClass.selected_button < thisClass.buttons.length-1){
 	            		if(thisClass.selected_button>=0)
 	            			thisClass.buttons[thisClass.selected_button].className = 'viewModeItemButton '+thisClass.buttons[thisClass.selected_button].data.profile;
-	            		
+
 	            		thisClass.selected_button++;
 	               		thisClass.buttons[thisClass.selected_button].className = thisClass.buttons[thisClass.selected_button].className+' selected';
 	            	}
@@ -60,7 +61,7 @@ paella.plugins.ViewModePlugin = Class.create(paella.ButtonPlugin,{
 			thisClass.selected_button = thisClass.buttons.length;
 		});
 	},
-	
+
 	getProfileItemButton:function(profile,profileData) {
 		var elem = document.createElement('div');
 		elem.className = this.getButtonItemClass(profile,false);
@@ -75,19 +76,19 @@ paella.plugins.ViewModePlugin = Class.create(paella.ButtonPlugin,{
 		});
 		return elem;
 	},
-	
+
 	onItemClick:function(button,profile,profileData) {
 		var prevButtonItem = this.buttonItems[paella.player.selectedProfile];
 		var nextButtonItem = this.buttonItems[profile];
-		
+
 		if (nextButtonItem && prevButtonItem!=nextButtonItem) {
 			prevButtonItem.className = this.getButtonItemClass(paella.player.selectedProfile,false);
 			nextButtonItem.className = this.getButtonItemClass(profile,true);
 			paella.events.trigger(paella.events.setProfile,{profileName:profile});
-			paella.events.trigger(paella.events.hidePopUp,{identifier:this.getName()});
 		}
+		paella.events.trigger(paella.events.hidePopUp,{identifier:this.getName()});
 	},
-	
+
 	getButtonItemClass:function(profileName,selected) {
 		return 'viewModeItemButton ' + profileName  + ((selected) ? ' selected':'');
 	}

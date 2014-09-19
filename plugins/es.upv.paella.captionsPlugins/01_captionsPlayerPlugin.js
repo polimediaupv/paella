@@ -124,7 +124,7 @@ paella.plugins.CaptionsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
 	getCaptions: function() {return this.captions; },
 	loadCaptions: function(url, format, done) {
 		var thisClass = this;
-		paella.utils.ajax.get({url: url},
+		base.ajax.get({url: url},
 			function(data, contentType, returnCode, dataRaw) {
 				var parser = new DfxpParser();
 				thisClass.captions = parser.parseCaptions(dataRaw);
