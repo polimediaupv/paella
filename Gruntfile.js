@@ -4,14 +4,22 @@ module.exports = function(grunt) {
 
 		clean: {
 			build: ["build"],
+			less: ["build/style.less"]
+		},
+		revision: {
+			options: {
+				property: 'meta.revision',
+				ref: 'HEAD',
+				short: true
+			}
 		},
 		copy: {
 			paella: {
 				files: [
-					{expand: true, src: ['config/**', 'javascript/**', 'resources/**', 'index.html', 'extended.html', 'paella-standalone.js'], dest: 'build/player/'},
+					{expand: true, src: ['config/**', 'javascript/**', 'resources/bootstrap/**', 'resources/images/**', 'index.html', 'extended.html', 'paella-standalone.js'], dest: 'build/player/'},
 					{expand: true, cwd: 'src/flash_player/', src: "player.swf", dest: 'build/player/' },
 					{expand: true, cwd: 'repository_test/', src: '**', dest: 'build/'},
-					{expand: true, src:'plugins/*/resources/**', dest: 'build/player/resources/plugins/',
+					{expand: true, src:'plugins/*/resources/**', dest: 'build/player/resources/style/',
 						rename: function (dest, src) { return dest+src.split('/').splice(3).join('/'); }
 					}
 				]
@@ -26,7 +34,7 @@ module.exports = function(grunt) {
 			},
 			'dist.js': {
 				options: {
-					footer: 'paella.version = "<%= pkg.version %>";\n'
+					footer: 'paella.version = "<%= pkg.version %> - build: <%= meta.revision %>";\n'
 				},
 				src: [
 					'src/*.js',
@@ -34,11 +42,20 @@ module.exports = function(grunt) {
 				],
 				dest: 'build/player/javascript/paella_player.js'
 			},
-			'plugins.css': {
+			'less':{
 				src: [
+					'plugins/*/*.less',
+					'resources/style/*.less'
+				],
+				dest: 'build/style.less'
+			},
+			'style.css': {
+				src: [
+					'build/player/resources/style/style.css',
+					'resources/style/*.css',
 					'plugins/*/*.css'
 				],
-				dest: 'build/player/resources/plugins/plugins.css'
+				dest: 'build/player/resources/style/style.css'
 			}
 		},
 		uglify: {
@@ -67,10 +84,34 @@ module.exports = function(grunt) {
 				'plugins/*/*.js'
 			]
 		},
+		less: {
+			development: {
+				options: {
+					paths: [ "css" ]
+				},
+				modifyVars: {
+					titleColor: '#AAAAFF'
+				},
+				files:{
+					"build/player/resources/style/style.css":"build/style.less"
+				}
+			},
+			production: {
+				options:{
+					paths: [ "css" ]
+				},
+				modifyVars: {
+					titleColor: '#FF0000'
+				},
+				files:{
+					"build/player/resources/style/style.css":"build/style.less"
+				}
+			}
+		},
 		csslint: {
 			dist: {
 				options: {
-					import: 2,
+					"import": 2,
 					"adjoining-classes": false,
 					"box-model": false,
 					"ids": false,
@@ -92,7 +133,6 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-
 		watch: {
 			 release: {
 				 files: [
@@ -101,6 +141,7 @@ module.exports = function(grunt) {
 				 	'paella-standalone.js',
 				 	'src/*.js',
 				 	'plugins/**',
+					'resources/style/*.less',
 					'src/flash_player/player.swf'
 				 ],
 				 tasks: ['build.release']
@@ -112,6 +153,7 @@ module.exports = function(grunt) {
 				 	'paella-standalone.js',
 				 	'src/*.js',
 				 	'plugins/**',
+					'resources/style/*.less',
 					'src/flash_player/player.swf'
 				 ],
 				 tasks: ['build.debug']
@@ -131,7 +173,10 @@ module.exports = function(grunt) {
 			}
 		}
 	});
-
+	
+	grunt.loadNpmTasks('grunt-git-revision');
+	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-csslint');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
@@ -144,9 +189,9 @@ module.exports = function(grunt) {
 
 
 	grunt.registerTask('default', ['dist']);
-	grunt.registerTask('checksyntax', ['jshint', 'csslint', 'jsonlint']);
+	grunt.registerTask('checksyntax', ['concat:less','less:production','jshint', 'csslint', 'jsonlint']);
 
-	grunt.registerTask('build.common', ['checksyntax', 'copy:paella', 'concat:dist.js', 'concat:plugins.css']);
+	grunt.registerTask('build.common', ['revision', 'checksyntax', 'copy:paella', 'concat:dist.js', 'concat:style.css', 'clean:less']);
 	grunt.registerTask('build.release', ['build.common', 'uglify:dist', 'cssmin:dist']);
 	grunt.registerTask('build.debug', ['build.common']);
 

@@ -19,15 +19,6 @@ Class ("paella.VideoOverlay", paella.DomNode,{
 		var style = {position:'absolute',left:'0px',right:'0px',top:'0px',bottom:'0px',overflow:'hidden',zIndex:10};
 		this.parent('div','overlayContainer',style);
 		this.domElement.setAttribute("role", "main");
-		
-		$(this.domElement).click(function(event) {
-			if (paella.player.paused()) {
-				paella.events.trigger(paella.events.play);
-			}
-			else {
-				paella.events.trigger(paella.events.pause);
-			}
-		});
 	},
 
 	enableBackgroundMode:function() {
@@ -93,6 +84,15 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	initialize:function(id) {
 		var style = {position:'absolute',left:'0px',right:'0px',top:'0px',bottom:'0px',overflow:'hidden'};
 		this.parent('div',id,style);
+		$(this.domElement).click(function(evt) {
+			if (paella.player.videoContainer.paused()) {
+				$(document).trigger(paella.events.play);
+			}
+			else {
+				$(document).trigger(paella.events.pause);
+			}
+
+		});
 	},
 
 	triggerTimeupdate:function() {
@@ -444,14 +444,14 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		else return 0;
 	},
 
-	setPlaybackRate:function(params) {
+	setPlaybackRate:function(rate) {
 		var masterVideo = this.masterVideo();
 		var slaveVideo = this.slaveVideo();
 		if (masterVideo) {
-			masterVideo.setPlaybackRate(params.rate);
+			masterVideo.setPlaybackRate(rate);
 		}
 		if (slaveVideo) {
-			slaveVideo.setPlaybackRate(params.rate);
+			slaveVideo.setPlaybackRate(rate);
 		}
 		this.parent();
 	},
