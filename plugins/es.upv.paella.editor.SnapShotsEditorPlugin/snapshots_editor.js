@@ -1,4 +1,4 @@
-paella.plugins.SnapShotsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
+Class ("paella.plugins.SnapShotsEditorPlugi",paella.editor.TrackPlugin,{
 	tracks:null,
 	selectedTrackItem:null,
 	highResFrames:null,
