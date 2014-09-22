@@ -50,10 +50,10 @@ Class ("paella.VideoLoader", {
 		var videoElement = document.createElement('video');
 		var h264 = videoElement.canPlayType('video/mp4; codecs="avc1.42E01E"');
 		if (h264=="") h264 = videoElement.canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"');
-		h264 = (h264=='probably');
+		h264 = (h264=='probably' && !base.userAgent.browser.Firefox);
 		return h264;
 	},
-
+	
 	isOggCapable:function() {
 		if (paella.utils.userAgent.browser.IsMobileVersion) return false;
 		var videoElement = document.createElement('video');
