@@ -1,4 +1,4 @@
-paella.plugins.BreaksEditorPlugin = Class.create(paella.editor.MainTrackPlugin,{
+Class ("paella.plugins.BreaksEditorPlugin",paella.editor.MainTrackPlugin, {
 	tracks:null,
 	selectedTrackItem:null,
 
