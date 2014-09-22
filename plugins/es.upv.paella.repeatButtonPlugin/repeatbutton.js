@@ -1,4 +1,4 @@
-paella.plugins.RepeatButtonPlugin = Class.create(paella.ButtonPlugin, {
+Class ("paella.plugins.RepeatButtonPlugin",paella.ButtonPlugin, {
 	repeatSubclass:'repeatButton',
 
 	getAlignment:function() { return 'left'; },

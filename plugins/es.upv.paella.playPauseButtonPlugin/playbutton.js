@@ -1,5 +1,4 @@
-
-paella.plugins.PlayPauseButtonPlugin = Class.create(paella.ButtonPlugin, {
+Class ("paella.plugins.PlayPauseButtonPlugin",paella.ButtonPlugin, {
 	playSubclass:'playButton',
 	pauseSubclass:'pauseButton',
 
