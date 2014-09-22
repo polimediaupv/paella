@@ -1,4 +1,4 @@
-paella.plugins.AnnotationsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
+Class ("paella.plugins.AnnotationsEditorPlugin",paella.editor.TrackPlugin, {
 	tracks:null,
 	selectedTrackItem:null,
 
