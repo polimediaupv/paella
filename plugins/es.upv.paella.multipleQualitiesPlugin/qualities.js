@@ -1,4 +1,4 @@
-paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
+Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 	currentUrl:null,
 	currentMaster:null,
 	currentSlave:null,

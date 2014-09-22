@@ -1,4 +1,4 @@
-paella.plugins.ImageControlPlugin = Class.create(paella.ButtonPlugin,{
+Class ("paella.plugins.ImageControlPlugin",paella.ButtonPlugin,{
 	button:null,
 	frames:null,
 	activeImageZoom:false,
@@ -112,7 +112,7 @@ paella.plugins.ImageControlPlugin = Class.create(paella.ButtonPlugin,{
 paella.plugins.imageControlPlugin = new paella.plugins.ImageControlPlugin();
 
 
-paella.dataDelegates.ImageZoomDataDelegate = Class.create(paella.DataDelegate,{
+Class ("paella.dataDelegates.ImageZoomDataDelegate",paella.DataDelegate,{
     initialize:function() {
     },
 
