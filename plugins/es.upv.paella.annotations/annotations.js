@@ -133,7 +133,7 @@ Class ("paella.plugins.AnnotationsEditorPlugin",paella.editor.TrackPlugin, {
 paella.plugins.annotationsEditorPlugin = new paella.plugins.AnnotationsEditorPlugin();
 
 
-paella.plugins.AnnotationsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
+Class ("paella.plugins.AnnotationsPlayerPlugin",paella.EventDrivenPlugin,{
 	annotations:null,
 	lastEvent:0,
 
