@@ -15,7 +15,34 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 
 	},
 
+	setup:function() {
+		console.log("FUNCION SETUP");
+		var This = this;
+		$(function() {
+			$('#playerContainer_videoContainer_1').hover(function(e){
+				This.mouseMove(e);
+			});
+		});
+	},
+
+	mousemove:function(event) {
+		var pos = $(this).offset();
+			var posX = (e.pageX - pos.left);
+			var posY = (e.pageY - pos.top);
+
+			console.log("X: "+posX+" Y: "+posY);
+	},
+
 	action:function(button) {
+
+		console.log("FUNCION CLICK");
+		// VIDEO MASTER CONTAINER ID=playerContainer_videoContainer_1
+
+		// ACTIVE THE PLUGIN
+
+		// CHECK THE MOUSE CORDS
+
+
 	},
 
 		getName:function() { 
