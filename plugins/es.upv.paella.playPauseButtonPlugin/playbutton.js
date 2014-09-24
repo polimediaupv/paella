@@ -1,3 +1,4 @@
+//paella.plugins.PlayPauseButtonPlugin = Class.create(paella.ButtonPlugin, {
 Class ("paella.plugins.PlayPauseButtonPlugin",paella.ButtonPlugin, {
 	playSubclass:'playButton',
 	pauseSubclass:'pauseButton',
@@ -37,7 +38,8 @@ paella.plugins.playPauseButtonPlugn = new paella.plugins.PlayPauseButtonPlugin()
 
 
 
-paella.plugins.PlayButtonOnScreen = Class.create(paella.EventDrivenPlugin,{
+//paella.plugins.PlayButtonOnScreen = Class.create(paella.EventDrivenPlugin,{
+Class ("paella.plugins.PlayButtonOnScreen",paella.EventDrivenPlugin,{
 	containerId:'paella_plugin_PlayButtonOnScreen',
 	container:null,
 	enabled:true,
