@@ -1,5 +1,5 @@
 Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
-	
+
 	getIndex:function(){return 20;},
 
 	getAlignment:function(){
@@ -16,27 +16,33 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 	},
 
 	setup:function() {
-		console.log("FUNCION SETUP");
+		//WE TAKE THE COORDS
 		var This = this;
-		$(function() {
-			$('#playerContainer_videoContainer_1').hover(function(e){
-				This.mouseMove(e);
-			});
+		$('#playerContainer_videoContainer_1').mousemove(function(e){
+			This.mouseMove(e);
 		});
 	},
 
-	mousemove:function(event) {
-		var pos = $(this).offset();
-			var posX = (e.pageX - pos.left);
-			var posY = (e.pageY - pos.top);
-
-			console.log("X: "+posX+" Y: "+posY);
+	mouseMove:function(event) {
+			console.log("X: "+event.pageX+" Y: "+event.pageY);
 	},
 
 	action:function(button) {
+		if($('.newframe').length<1){
+			var newframe = document.createElement("div");
+			newframe.className = "newframe";
+			newframe.setAttribute('style', 'display: table;');
+			overlayContainer = paella.player.videoContainer.overlayContainer;
+			overlayContainer.addElement(newframe, overlayContainer.getMasterRect());
+			$(".newframe").css("background-color","rgba(255,0,0,0.4)");
+		}
+		else if ($('.newframe').is(':hidden'))
+   					$('.newframe').show();
+			else
+   				$('.newframe').hide();
 
-		console.log("FUNCION CLICK");
-		// VIDEO MASTER CONTAINER ID=playerContainer_videoContainer_1
+		// CREATE THE NEW CONTAINER
+
 
 		// ACTIVE THE PLUGIN
 
