@@ -55,15 +55,17 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 	buildContent:function(domElement) {
 		var j,w,h,option;
 		var thisClass = this;
-		this.currentUrl = window.location;
+		//this.currentUrl = window.location;
 
 		var selectQuality = document.createElement('div');
 		selectQuality.className = 'selectQuality';
 
-		var labelM = document.createElement('label');
-		labelM.innerHTML = base.dictionary.translate("Presenter");
+		/*var labelM = document.createElement('label');
+		labelM.innerHTML = base.dictionary.translate("Presenter");*/
+		
 
 		var comboM = document.createElement('select');
+		comboM.setAttribute("size", '3');
 		comboM.id = 'master';
 		$(comboM).change(function() {
 			var param1Q = $(comboM).val();
@@ -82,7 +84,7 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 				}
 				comboM.appendChild(option);
 			}
-			selectQuality.appendChild(labelM);
+			//selectQuality.appendChild(labelM);
 			selectQuality.appendChild(comboM);
 		}
 
@@ -124,3 +126,6 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 
 
 paella.plugins.multipleQualitiesPlugin = new paella.plugins.MultipleQualitiesPlugin();
+
+
+		
