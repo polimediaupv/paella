@@ -51,7 +51,58 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 	},
 
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
+	
+	buildContent:function(domElement) {
+		var w, h;
+		for(var i=0;i<this.availableMasters.length;i++){
+			w = this.availableMasters[i].res.w;
+			h = this.availableMasters[i].res.h;
+			domElement.appendChild(this.getItemButton(w+"x"+h,w+"x"+h));
+		}
+	},
 
+	getItemButton:function(label,reso) {
+		var elem = document.createElement('div');
+		elem.className = this.getButtonItemClass(label,false);
+		elem.id = label + '_button';
+		elem.innerHTML = label;
+		elem.data = {
+			label:label,
+			reso:reso,
+			plugin:this
+		};
+		$(elem).click(function(event) {
+			this.data.plugin.onItemClick(this,this.data.label,this.data.reso);
+		});
+		return elem;
+	},
+
+	onItemClick:function(button,label,reso) {
+		//paella.player.videoContainer.setPlaybackRate(rate);
+		//paella.player.reloadVideos(rate, rate);
+		//this.setText(label);
+		paella.events.trigger(paella.events.hidePopUp,{identifier:this.getName()});
+		paella.player.reloadVideos(reso, reso);
+	},
+	getProfileItemButton:function(profile,profileData) {
+		var elem = document.createElement('div');
+		elem.className = this.getButtonItemClass(profile,false);
+		elem.id = profile + '_button';
+		
+		elem.data = {
+			profile:profile,
+			profileData:profileData,
+			plugin:this
+		};
+		$(elem).click(function(event) {
+			this.data.plugin.onItemClick(this,this.data.profile,this.data.profileData);
+		});
+		return elem;
+	},
+
+	getButtonItemClass:function(profileName,selected) {
+		return 'playbackRateItem ' + profileName  + ((selected) ? ' selected':'');
+	},/*
 	buildContent:function(domElement) {
 		var j,w,h,option;
 		var thisClass = this;
@@ -60,8 +111,8 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 		var selectQuality = document.createElement('div');
 		selectQuality.className = 'selectQuality';
 
-		/*var labelM = document.createElement('label');
-		labelM.innerHTML = base.dictionary.translate("Presenter");*/
+		var labelM = document.createElement('label');
+		//labelM.innerHTML = base.dictionary.translate("Presenter");
 		
 
 		var comboM = document.createElement('select');
@@ -84,7 +135,7 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 				}
 				comboM.appendChild(option);
 			}
-			//selectQuality.appendChild(labelM);
+			selectQuality.appendChild(labelM);
 			selectQuality.appendChild(comboM);
 		}
 
@@ -121,7 +172,7 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 
 		paella.player.reloadVideos(newRes, newRes);
 		
-	}
+	}*/
 });
 
 
