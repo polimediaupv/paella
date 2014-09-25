@@ -16,15 +16,6 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 	},
 
 	setup:function() {
-		//WE TAKE THE COORDS
-		var This = this;
-		$('#playerContainer_videoContainer_1').mousemove(function(e){
-			This.mouseMove(e);
-		});
-	},
-
-	mouseMove:function(event) {
-			console.log("X: "+event.pageX+" Y: "+event.pageY);
 	},
 
 	action:function(button) {
@@ -33,29 +24,35 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 			var newframe = document.createElement("div");
 			newframe.className = "newframe";
 			newframe.setAttribute('style', 'display: table;');
+
 			// IMAGE
 			var hiResImage = document.createElement('img');
    			hiResImage.className = 'frameHiRes';
-       		hiResImage.setAttribute('src',"http://us.cdn281.fansshare.com/photos/lamborghiniaventador/lamborghini-aventador-estatura-gxx-orange-1157912976.jpg");
+       		hiResImage.setAttribute('src',"resources/style/000060.png");
         	hiResImage.setAttribute('style', 'width: 100%;');
         	hiResImage.id ='photo_01';
         	hiResImage.setAttribute("id", "photo_01");
         	$(newframe).append(hiResImage);
+
         	// OVERLAY
 			overlayContainer = paella.player.videoContainer.overlayContainer;
 			overlayContainer.addElement(newframe, overlayContainer.getMasterRect());
 			$(".newframe").css("background-color","rgba(80,80,80,0.4)");
 			$(".newframe img").css("opacity","0");
-			// APPLY ZOOM
-			$("#photo_01").elevateZoom({ zoomType	: "inner", cursor: "crosshair" });
-		}
-		else if ($('.newframe').is(':hidden')){
-   				$('.newframe').show();
-   				}
-			else
-   				$('.newframe').hide();
 
-   		
+			// APPLY ZOOM
+			$("#photo_01").elevateZoom({ zoomType	: "inner", cursor: "crosshair", scrollZoom : true });
+			// OPEN NEW WINDOW WITH FULLSCREEN IMAGE
+			
+			$(".newframe").click(function(e){
+			window.open('resources/style/000060.png');
+			});
+		}
+		else { // IF EXISTS REMOVE ON CLICK
+			$( ".newframe" ).remove();
+			$( ".zoomContainer" ).remove();
+		}
+
 	},
 
 		getName:function() { 
