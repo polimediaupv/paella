@@ -10,7 +10,7 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 	getDefaultToolTip:function() { return base.dictionary.translate("Zoom");},
 
 	chechEnabled:function(onSuccess) {
-		// TODO: check if the image to zoom is loaded
+		// TODO: CHECK IF THE VIDEO HAS HIRESIMAGES
 		return true;
 
 	},
@@ -42,11 +42,18 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 
 			// APPLY ZOOM
 			$("#photo_01").elevateZoom({ zoomType	: "inner", cursor: "crosshair", scrollZoom : true });
+
+			//TODO: ADAPT TO IMAGE_RES
+
 			// OPEN NEW WINDOW WITH FULLSCREEN IMAGE
-			
 			$(".newframe").click(function(e){
 			window.open('resources/style/000060.png');
 			});
+
+
+			//TODO: REMOVE ON COMPOSITION CHANGE
+
+			//TODO: CHANGE IMAGES ON TIMELINE
 		}
 		else { // IF EXISTS REMOVE ON CLICK
 			$( ".newframe" ).remove();

@@ -257,8 +257,8 @@ if ( typeof Object.create !== 'function' ) {
 				//create the div's                                                + ""
 				//self.zoomContainer = $('<div/>').addClass('zoomContainer').css({"position":"relative", "height":self.nzHeight, "width":self.nzWidth});
 
-				self.zoomContainer = $('<div class="zoomContainer" style="-webkit-transform: translateZ(0);position:absolute;left:'+self.nzOffset.left+'px;top:'+self.nzOffset.top+'px;height:'+self.nzHeight+'px;width:'+self.nzWidth+'px;z-index: 10"></div>');
-				$('body').append(self.zoomContainer);	
+				self.zoomContainer = $('<div class="zoomContainer" style="-webkit-transform: translateZ(0);position:absolute;height:'+self.nzHeight+'px;width:'+self.nzWidth+'px;z-index: 10"></div>');
+				$('.newframe').append(self.zoomContainer);	
 
 
 				//this will add overflow hidden and contrain the lens on lens mode       
@@ -637,8 +637,8 @@ if ( typeof Object.create !== 'function' ) {
 				}
 
 				//container fix
-				self.zoomContainer.css({ top: self.nzOffset.top});
-				self.zoomContainer.css({ left: self.nzOffset.left});
+				self.zoomContainer.css({ top: "0px"});
+				self.zoomContainer.css({ left: "0px"});
 				self.mouseLeft = parseInt(e.pageX - self.nzOffset.left);
 				self.mouseTop = parseInt(e.pageY - self.nzOffset.top);
 				//calculate the Location of the Lens
@@ -1773,5 +1773,4 @@ if ( typeof Object.create !== 'function' ) {
 			onImageSwap: $.noop,
 			onImageSwapComplete: $.noop
 	};
-
 })( jQuery, window, document );
