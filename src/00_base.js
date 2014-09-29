@@ -58,6 +58,8 @@ paella.events = {
 	userTracking:'paella:userTracking',
 	videoLoaded:'paella:videoLoaded',
 	videoUnloaded:'paella:videoUnloaded',
+	enterFullscreen:'paella:enterFullscreen',
+	exitFullscreen:'paella:exitFullscreen',
 
 	trigger:function(event,params) { $(document).trigger(event,params);  },
 	bind:function(event,callback) { $(document).bind(event,function(event,params) { callback(event,params);}) ;},
