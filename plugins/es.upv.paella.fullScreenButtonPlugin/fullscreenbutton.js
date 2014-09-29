@@ -19,27 +19,12 @@ paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
 	},
 
 	action:function(button) {
-		this.doFullScreen(button);
-	},
-
-	doFullScreen:function(button) {
-		var fs = document.getElementById(paella.player.mainContainer.id);
-		fs.style.width = '100%';
-		fs.style.height = '100%';
-		
 		if (paella.player.isFullScreen()) {
 			paella.player.exitFullScreen();			
 		}
 		else {
 			paella.player.goFullScreen();
-			if (this.isFullscreen() == false) {
-				alert(base.dictionary.translate('Your browser does not support fullscreen mode'));
-			}
-		}
-	},
-
-	isFullscreen:function() {
-		return paella.player.isFullScreen();
+		}		
 	},
 
 	onEnterFullscreen: function() {
@@ -51,7 +36,6 @@ paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
 		this.setToolTip(base.dictionary.translate("Go Fullscreen"));
 		this.button.className = this.getButtonItemClass(false);		
 	},
-
 
 	getButtonItemClass:function(selected) {
 		return 'buttonPlugin '+this.getAlignment() +' '+ this.getSubclass() + ((selected) ? ' active':'');

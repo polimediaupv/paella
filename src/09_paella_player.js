@@ -8,7 +8,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 	// Video data:
 	videoData:null,
-	_isFullScreen:false,
 
 	getPlayerMode: function() {	
 		if (paella.player.isFullScreen()) {
@@ -30,84 +29,95 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		if ((fs.webkitRequestFullScreen) || (fs.mozRequestFullScreen) || (fs.msRequestFullscreen) || (fs.requestFullScreen)) {
 			return true;
 		}
-
 		if (base.userAgent.browser.IsMobileVersion && paella.player.videoContainer.isMonostream) {
 			return true;
-		}
-		
+		}		
 		return false;
 	},
 
+	addFullScreenListeners : function() {
+		var thisClass = this;
+		
+		var onFullScreenChangeEvent = function() {
+			var fs = document.getElementById(paella.player.mainContainer.id);
+			if (paella.player.isFullScreen()) {				
+				fs.style.width = '100%';
+				fs.style.height = '100%';
+			}
+			else {
+				fs.style.width = '';
+				fs.style.height = '';
+			}
+						
+			if (thisClass.isFullScreen()) {
+				paella.events.trigger(paella.events.enterFullscreen);				
+			}
+			else{
+				paella.events.trigger(paella.events.exitFullscreen);
+			}			
+		};
+	
+		if (!this.eventFullScreenListenerAdded) {
+			this.eventFullScreenListenerAdded = true;
+			document.addEventListener("fullscreenchange", onFullScreenChangeEvent, false);
+			document.addEventListener("webkitfullscreenchange", onFullScreenChangeEvent, false);
+			document.addEventListener("mozfullscreenchange", onFullScreenChangeEvent, false);	
+			document.addEventListener("MSFullscreenChange", onFullScreenChangeEvent, false);
+		}		
+	},
+
 	isFullScreen: function() {
-		return this._isFullScreen;
+		var webKitIsFullScreen = (document.webkitIsFullScreen === true);
+		var msIsFullScreen = (document.msFullscreenElement !== undefined && document.msFullscreenElement !== null);
+		var mozIsFullScreen = (document.mozFullScreen === true);
+		var stdIsFullScreen = (document.fullScreenElement !== undefined && document.fullScreenElement !== null);
+		
+		return (webKitIsFullScreen || msIsFullScreen || mozIsFullScreen || stdIsFullScreen);
+
 	},
 	goFullScreen: function() {
-		if (!this._isFullScreen) {
-			var fs = document.getElementById(paella.player.mainContainer.id);
-			fs.style.width = '100%';
-			fs.style.height = '100%';
-
+		this.addFullScreenListeners();
+		if (!this.isFullScreen()) {
 			if (base.userAgent.browser.IsMobileVersion && paella.player.videoContainer.isMonostream) {
 				var video = paella.player.videoContainer.masterVideo().domElement;
-				if (video.webkitSupportsFullscreen) {
-					if (!this.eventFullScreenListenerAdded) {
-						var thisClass = this;
-						video.addEventListener("webkitfullscreenchange",function(){
-							this._isFullScreen = document.webkitIsFullScreen;
-						}, false);
-					}
+				if (video.webkitSupportsFullscreen) {					
 					video.webkitEnterFullscreen();
 				}
 			}
-			else {			
+			else {
+				var fs = document.getElementById(paella.player.mainContainer.id);		
 				if (fs.webkitRequestFullScreen) {			
 					fs.webkitRequestFullScreen();
-					this._isFullScreen = true;
 				}
 				else if (fs.mozRequestFullScreen){
 					fs.mozRequestFullScreen();
-					this._isFullScreen = true;
 				}
 				else if (fs.msRequestFullscreen) {
 					fs.msRequestFullscreen();
-					this._isFullScreen = true;
 				}
 				else if (fs.requestFullScreen) {
 					fs.requestFullScreen();
-					this._isFullScreen = true;
-				}
-				
-				if (this._isFullScreen) {
-					paella.events.trigger(paella.events.enterFullscreen);				
-				}
+				}				
 			}
 		}
-		return this._isFullScreen;
-	},	
+	},
+	
 	exitFullScreen: function() {
-		if (this._isFullScreen) {			
+		this.addFullScreenListeners();	
+		if (this.isFullScreen()) {			
 			if (document.webkitCancelFullScreen) {
 				document.webkitCancelFullScreen();
-				this._isFullScreen = false;
 			}
 			else if (document.mozCancelFullScreen) {
 				document.mozCancelFullScreen();
-				this._isFullScreen = false;
 			}
 			else if (document.msExitFullscreen()) {
 				document.msExitFullscreen();
-				this._isFullScreen = false;
 			}
 			else if (document.cancelFullScreen) {
 				document.cancelFullScreen();
-				this._isFullScreen = false;
-			}
-			
-			if (!this._isFullScreen) {
-				paella.events.trigger(paella.events.exitFullscreen);
-			}			
+			}								
 		}		
-		return this._isFullScreen;
 	},
 
 
