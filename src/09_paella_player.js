@@ -394,6 +394,13 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 var PaellaPlayer = paella.PaellaPlayer;
 
+paella.PaellaPlayer.mode = {
+	standard: 'standard',
+	fullscreen: 'fullscreen',
+	extended: 'extended',
+	embed: 'embed'
+};
+
 /* Initializer function */
 function initPaellaEngage(playerId,initDelegate) {
 	if (!initDelegate) {

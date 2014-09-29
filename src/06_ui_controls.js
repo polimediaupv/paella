@@ -178,7 +178,8 @@ Class ("paella.PlaybackControl",paella.DomNode,{
 			var parent;
 			if (isEnabled) {
 				$(plugin.button).show();
-				plugin.setup();
+				paella.pluginManager.setupPlugin(plugin);
+
 				var id = 'buttonPlugin' + thisClass.buttonPlugins.length;
 				if (plugin.getButtonType()==paella.ButtonPlugin.type.popUpButton) {
 					parent = thisClass.popUpPluginContainer.domElement;
@@ -267,7 +268,7 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 		plugin.checkEnabled(function(isEnabled) {
 			if (isEnabled) {
 				$(plugin.button).show();
-				plugin.setup();
+				paella.pluginManager.setupPlugin(plugin);
 			}
 		});
 	},
