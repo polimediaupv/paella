@@ -53,15 +53,56 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
 	
 	buildContent:function(domElement) {
-		var w, h;
-		for(var i=0;i<this.availableMasters.length;i++){
-			w = this.availableMasters[i].res.w;
-			h = this.availableMasters[i].res.h;
-			domElement.appendChild(this.getItemButton(w+"x"+h,w+"x"+h));
+		var w, h,d,e,b=0;
+		var percen1, percen2, reso2, act_percen;
+		percen1=100/this.availableMasters.length;
+		percen2=100/this.availableSlaves.length;
+		if(this.availableMasters.length >= this.availableSlaves.length){
+			act_percen= percen2;
+			for(var i=0;i<this.availableMasters.length;i++){
+				w = this.availableMasters[i].res.w;
+				h = this.availableMasters[i].res.h;
+				if(this.availableSlaves.length > 0){
+					if(percen1 * (i+1) < act_percen){
+						d = this.availableSlaves[b].res.w;
+						e = this.availableSlaves[b].res.h;
+						reso2 = d+"x"+e;
+					}
+					else{
+						act_percen = percen2 + act_percen;
+						d = this.availableSlaves[b].res.w;
+						e = this.availableSlaves[b].res.h;
+						reso2 = d+"x"+e;
+						b++;
+					}
+				}
+				domElement.appendChild(this.getItemButton(w+"x"+h,w+"x"+h, reso2));
+			}
+		}else{
+			act_percen= percen1;
+			for(var z=0;z<this.availableSlaves.length;z++){
+				w = this.availableSlaves[z].res.w;
+				h = this.availableSlaves[z].res.h;
+				if(this.availableMasters.length > 0){
+					if(percen2 * (z+1) < act_percen){
+						d = this.availableMasters[b].res.w;
+						e = this.availableMasters[b].res.h;
+						reso2 = d+"x"+e;
+					}
+					else{
+						act_percen = percen1 + act_percen;
+						d = this.availableMasters[b].res.w;
+						e = this.availableMasters[b].res.h;
+						reso2 = d+"x"+e;
+						b++;
+					}
+				}
+				domElement.appendChild(this.getItemButton(w+"x"+h,w+"x"+h, reso2));
+			}
 		}
 	},
 
-	getItemButton:function(label,reso) {
+	getItemButton:function(label,reso, reso2) {
 		var elem = document.createElement('div');
 		elem.className = this.getButtonItemClass(label,false);
 		elem.id = label + '_button';
@@ -69,35 +110,21 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 		elem.data = {
 			label:label,
 			reso:reso,
+			reso2:reso2,
 			plugin:this
 		};
 		$(elem).click(function(event) {
-			this.data.plugin.onItemClick(this,this.data.label,this.data.reso);
+			this.data.plugin.onItemClick(this,this.data.label,this.data.reso,this.data.reso2);
 		});
 		return elem;
 	},
 
-	onItemClick:function(button,label,reso) {
+	onItemClick:function(button,label,reso, reso2) {
 		//paella.player.videoContainer.setPlaybackRate(rate);
 		//paella.player.reloadVideos(rate, rate);
 		//this.setText(label);
 		paella.events.trigger(paella.events.hidePopUp,{identifier:this.getName()});
-		paella.player.reloadVideos(reso, reso);
-	},
-	getProfileItemButton:function(profile,profileData) {
-		var elem = document.createElement('div');
-		elem.className = this.getButtonItemClass(profile,false);
-		elem.id = profile + '_button';
-		
-		elem.data = {
-			profile:profile,
-			profileData:profileData,
-			plugin:this
-		};
-		$(elem).click(function(event) {
-			this.data.plugin.onItemClick(this,this.data.profile,this.data.profileData);
-		});
-		return elem;
+		paella.player.reloadVideos(reso, reso2);
 	},
 
 	getButtonItemClass:function(profileName,selected) {
