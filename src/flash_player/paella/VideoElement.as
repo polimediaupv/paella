@@ -9,6 +9,8 @@ import flash.media.SoundTransform;
 import flash.utils.Timer;
 
 public class VideoElement extends Sprite implements IMediaElement {
+	private var _javascriptInterface:JavascriptInterface;
+	
 	private var _currentUrl:String = "";
 	private var _autoplay:Boolean = true;
 	private var _preload:String = "";
@@ -79,7 +81,9 @@ public class VideoElement extends Sprite implements IMediaElement {
 	    return currentTime;
 	}
 	
-    public function VideoElement(autoplay:Boolean, preload:String, timerRate:Number, startVolume:Number, streamer:String) {
+    public function VideoElement(jsInterface:JavascriptInterface, autoplay:Boolean, preload:String, timerRate:Number, startVolume:Number, streamer:String) {
+		_javascriptInterface = jsInterface;
+		
 		_autoplay = autoplay;
 		_volume = startVolume;
 		_preload = preload;
@@ -90,8 +94,8 @@ public class VideoElement extends Sprite implements IMediaElement {
 
 		_connection = new NetConnection();
 		_connection.client = { onBWDone: function():void{} };
-		//_connection.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
-		//_connection.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
+		_connection.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
+		_connection.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
 
 		_timer = new Timer(timerRate);
 		_timer.addEventListener("timer", timerHandler);
@@ -111,7 +115,7 @@ public class VideoElement extends Sprite implements IMediaElement {
 	}
 	
 	private function netStatusHandler(event:NetStatusEvent):void {
-	    trace("netStatus", event.info.code);
+		JavascriptTrace.debug("netStatus " + event.info.code);
 
 	    switch (event.info.code) {
 
@@ -134,7 +138,7 @@ public class VideoElement extends Sprite implements IMediaElement {
 	        sendEvent(HtmlEvent.CANPLAY);
 	        break;
 	      case "NetStream.Play.StreamNotFound":
-	        trace("Unable to locate video");
+	        JavascriptTrace.error("Unable to locate video");
 	        break;
 
 	      // STREAM
@@ -175,48 +179,273 @@ public class VideoElement extends Sprite implements IMediaElement {
 	}
 	
 	private function securityErrorHandler(event:SecurityErrorEvent):void {
+		JavascriptTrace.error("Security error: " + event);
 	}
 
 	private function asyncErrorHandler(event:AsyncErrorEvent):void {
 	}
 	
 	private function onMetaDataHandler(info:Object):void {
+	    // Only set the duration when we first load the video
+	    if (_duration == 0) {
+			_duration = info.duration;
+	    }
+	    _framerate = info.framerate;
+	    _videoWidth = info.width;
+	    _videoHeight = info.height;
+
+	    // set size?
+	    sendEvent(HtmlEvent.LOADEDMETADATA);
+
+	    if (_isPreloading) {
+			_stream.pause();
+			_isPaused = true;
+			_isPreloading = false;
+
+			sendEvent(HtmlEvent.PROGRESS);
+			sendEvent(HtmlEvent.TIMEUPDATE);
+	    }
 	}
 	
 	
 	// IMediaElement
 	public function setSrc(url:String):void {
+		if (_isConnected && _stream) {
+			_stream.pause();
+		}
+		
+		_duration = 0;
+		_currentUrl = url;
+		_isRTMP = !!_currentUrl.match(/^rtmp(s|t|e|te)?\:\/\//) || _streamer != "";
+		_isConnected = false;
+		_hasStartedPlaying = false;
 	}
 	
 	public function load():void {
+		// disconnect existing stream and connection
+		if (_isConnected && _stream) {
+			_stream.pause();
+			_stream.close();
+			_connection.close();
+		}
+		_isConnected = false;
+		_isPreloading = false;
+
+
+		_isEnded = false;
+		_bufferEmpty = false;
+
+		// start new connection
+		if (_isRTMP) {
+			var rtmpInfo:Object = parseRTMP(_currentUrl);
+			if (_streamer != "") {
+				rtmpInfo.server = _streamer;
+				rtmpInfo.stream = _currentUrl;
+			}
+			_connection.connect(rtmpInfo.server);
+		} else {
+			_connection.connect(null);
+		}
+
+		// in a few moments the "NetConnection.Connect.Success" event will fire
+		// and call createConnection which finishes the "load" sequence
+		sendEvent(HtmlEvent.LOADSTART);
 	}
 	
 	public function connectStream():void {
+		JavascriptTrace.debug("connectStream");
+		
+		_stream = new NetStream(_connection);
+
+		// explicitly set the sound since it could have come before the connection was made
+		_soundTransform = new SoundTransform(_volume);
+		_stream.soundTransform = _soundTransform;
+
+		// set the buffer to ensure nice playback
+		_stream.bufferTime = 1;
+		_stream.bufferTimeMax = 3;
+
+		_stream.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler); // same event as connection
+		_stream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler);
+
+		var customClient:Object = new Object();
+		customClient.onMetaData = onMetaDataHandler;
+		_stream.client = customClient;
+
+		_video.attachNetStream(_stream);
+
+		// start downloading without playing )based on preload and play() hasn't been called)
+		// I wish flash had a load() command to make this less awkward
+		if (_preload != "none" && !_playWhenConnected) {
+			_isPaused = true;
+			//stream.bufferTime = 20;
+			_stream.play(getCurrentUrl(0), 0, 0);
+			_stream.pause();
+
+			_isPreloading = true;
+
+			//_stream.pause();
+			//
+			//sendEvent(HtmlEvent.PAUSE); // have to send this because the "playing" event gets sent via event handlers
+		}
+
+		_isConnected = true;
+
+		if (_playWhenConnected && !_hasStartedPlaying) {
+			play();
+			_playWhenConnected = false;
+		}
 	}
 	
 	public function play():void {
+		if (!_hasStartedPlaying && !_isConnected) {
+			_playWhenConnected = true;
+			load();
+			return;
+		}
+
+		if (_hasStartedPlaying) {
+			if (_isPaused) {
+				_stream.resume();
+				_timer.start();
+				_isPaused = false;
+				sendEvent(HtmlEvent.PLAY);
+				sendEvent(HtmlEvent.PLAYING);
+			}
+		}
+		else {
+
+			if (_isRTMP) {
+				var rtmpInfo:Object = parseRTMP(_currentUrl);
+				_stream.play(rtmpInfo.stream);
+			}
+			else {
+				_stream.play(getCurrentUrl(0));
+			}
+			_timer.start();
+			_isPaused = false;
+			_hasStartedPlaying = true;
+
+			// don't toss play/playing events here, because we haven't sent a
+			// canplay / loadeddata event yet. that'll be handled in the net
+			// event listener
+		}
 	}
 	
 	public function pause():void {
+		if (_stream == null)
+			return;
+
+		_stream.pause();
+		_isPaused = true;
+
+		if (_bytesLoaded == _bytesTotal) {
+			_timer.stop();
+		}
+
+		_isPaused = true;
+		sendEvent(HtmlEvent.PAUSE);
 	}
 	
 	public function stop():void {
+	    if (_stream == null)
+	     	return;
+
+	    _stream.close();
+	    _isPaused = false;
+	    _timer.stop();
+	    sendEvent(HtmlEvent.STOP);
 	}
 	
 	public function setCurrentTime(pos:Number):void {
+		if (_stream == null) {
+			return;
+		}
+
+		// Calculate the position of the buffered video
+		var bufferPosition:Number = _bytesLoaded / _bytesTotal * _duration;
+
+		if (_pseudoStreamingEnabled) {
+			sendEvent(HtmlEvent.SEEKING);
+			// Normal seek if it is in buffer and this is the first seek
+			if (pos < bufferPosition && _seekOffset == 0) {
+				_stream.seek(pos);
+			}
+			else {
+				// Uses server-side pseudo-streaming to seek
+				_stream.play(getCurrentUrl(pos));
+				_seekOffset = pos;
+			}
+		}
+		else {
+			sendEvent(HtmlEvent.SEEKING);
+			_stream.seek(pos);
+		}
+
+		if (!_isEnded) {
+			sendEvent(HtmlEvent.TIMEUPDATE);
+		}
 	}
 	
 	public function setVolume(volume:Number):void {
+		if (_stream != null) {
+			_soundTransform = new SoundTransform(volume);
+			_stream.soundTransform = _soundTransform;
+		}
+
+		_volume = volume;
+
+		_isMuted = (_volume == 0);
+
+		sendEvent(HtmlEvent.VOLUMECHANGE);
 	}
 	
 	public function getVolume():Number {
-		return 1.0;
+	    if(_isMuted) {
+	     	return 0;
+	    }
+		else {
+	    	return _volume;
+	    }
 	}
 	
 	public function setMuted(muted:Boolean):void {
+		if (_isMuted == muted)
+			return;
+
+		if (muted) {
+			_oldVolume = (_stream == null) ? _oldVolume : _stream.soundTransform.volume;
+			setVolume(0);
+		}
+		else {
+			setVolume(_oldVolume);
+		}
+
+		_isMuted = muted;
 	}
 	
 	private function sendEvent(eventName:String):void {
+		// calculate this to mimic HTML5
+		_bufferedTime = _bytesLoaded / _bytesTotal * _duration;
+
+		// build JSON
+		var values:String =
+			"duration:" + _duration +
+			",framerate:" + _framerate +
+			",currentTime:" + currentTime() +
+			",muted:" + _isMuted +
+			",paused:" + _isPaused +
+			",ended:" + _isEnded +
+			",volume:" + _volume +
+			",src:\"" + _currentUrl + "\"" +
+			",bytesTotal:" + _bytesTotal +
+			",bufferedBytes:" + _bytesLoaded +
+			",bufferedTime:" + _bufferedTime +
+			",videoWidth:" + _videoWidth +
+			",videoHeight:" + _videoHeight +
+			"";
+
+		_javascriptInterface.sendEvent(eventName, values);
 	}
 	
 	private function parseRTMP(url:String):Object {
@@ -235,13 +464,22 @@ public class VideoElement extends Sprite implements IMediaElement {
 			rtmpInfo.stream = url.split("/").pop();
 		}
 
-		//trace("parseRTMP - server: " + rtmpInfo.server + " stream: " + rtmpInfo.stream);
+		JavascriptTrace.debug("parseRTMP - server: " + rtmpInfo.server + " stream: " + rtmpInfo.stream);
 
 		return rtmpInfo;
 	}
 	
 	private function getCurrentUrl(pos:Number):String {
-		return "";
+	    var url:String = _currentUrl;
+	    if (_pseudoStreamingEnabled) {
+			if (url.indexOf('?') > -1) {
+				url = url + '&' + _pseudoStreamingStartQueryParam + '=' + pos;
+			}
+			else {
+				url = url + '?' + _pseudoStreamingStartQueryParam + '=' + pos;
+			}
+	    }
+	    return url;
 	}
 }
 

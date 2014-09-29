@@ -17,6 +17,12 @@ public class HtmlEvent {
 	public static var CANPLAY:String = "canplay";
 	
 	public static var LOADEDDATA:String = "loadeddata";
+	
+	public static var SEEKING:String = "seeking";		
+	
+	public static var FULLSCREENCHANGE:String = "fullscreenchange";		
+
+	public static var KEYDOWN:String = "keydown";
 }
 
 }
