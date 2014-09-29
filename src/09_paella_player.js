@@ -31,6 +31,10 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			return true;
 		}
 
+		if (base.userAgent.browser.IsMobileVersion && paella.player.videoContainer.isMonostream) {
+			return true;
+		}
+		
 		return false;
 	},
 
@@ -42,26 +46,40 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			var fs = document.getElementById(paella.player.mainContainer.id);
 			fs.style.width = '100%';
 			fs.style.height = '100%';
-			
-			if (fs.webkitRequestFullScreen) {
-				fs.webkitRequestFullScreen();
-				this._isFullScreen = true;
+
+			if (base.userAgent.browser.IsMobileVersion && paella.player.videoContainer.isMonostream) {
+				var video = paella.player.videoContainer.masterVideo().domElement;
+				if (video.webkitSupportsFullscreen) {
+					if (!this.eventFullScreenListenerAdded) {
+						var thisClass = this;
+						video.addEventListener("webkitfullscreenchange",function(){
+							this._isFullScreen = document.webkitIsFullScreen;
+						}, false);
+					}
+					video.webkitEnterFullscreen();
+				}
 			}
-			else if (fs.mozRequestFullScreen){
-				fs.mozRequestFullScreen();
-				this._isFullScreen = true;
-			}
-			else if (fs.msRequestFullscreen) {
-				fs.msRequestFullscreen();
-				this._isFullScreen = true;
-			}
-			else if (fs.requestFullScreen) {
-				fs.requestFullScreen();
-				this._isFullScreen = true;
-			}
-			
-			if (this._isFullScreen) {
-				paella.events.trigger(paella.events.enterFullscreen);				
+			else {			
+				if (fs.webkitRequestFullScreen) {			
+					fs.webkitRequestFullScreen();
+					this._isFullScreen = true;
+				}
+				else if (fs.mozRequestFullScreen){
+					fs.mozRequestFullScreen();
+					this._isFullScreen = true;
+				}
+				else if (fs.msRequestFullscreen) {
+					fs.msRequestFullscreen();
+					this._isFullScreen = true;
+				}
+				else if (fs.requestFullScreen) {
+					fs.requestFullScreen();
+					this._isFullScreen = true;
+				}
+				
+				if (this._isFullScreen) {
+					paella.events.trigger(paella.events.enterFullscreen);				
+				}
 			}
 		}
 		return this._isFullScreen;
