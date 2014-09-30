@@ -67,8 +67,7 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 						d = this.availableSlaves[b].res.w;
 						e = this.availableSlaves[b].res.h;
 						reso2 = d+"x"+e;
-					}
-					else{
+					}else{
 						act_percen = percen2 + act_percen;
 						d = this.availableSlaves[b].res.w;
 						e = this.availableSlaves[b].res.h;
@@ -88,8 +87,7 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 						d = this.availableMasters[b].res.w;
 						e = this.availableMasters[b].res.h;
 						reso2 = d+"x"+e;
-					}
-					else{
+					}else{
 						act_percen = percen1 + act_percen;
 						d = this.availableMasters[b].res.w;
 						e = this.availableMasters[b].res.h;
