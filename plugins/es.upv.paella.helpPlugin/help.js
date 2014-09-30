@@ -1,4 +1,4 @@
-paella.plugins.HelpPlugin = Class.create(paella.ButtonPlugin, {
+Class ("paella.plugins.HelpPlugin",paella.ButtonPlugin, {
 
 	getIndex:function() { return 509; },
 	getAlignment:function() { return 'right'; },

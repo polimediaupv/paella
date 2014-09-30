@@ -41,7 +41,8 @@ CaptionDataDelegate Interface
 */
 
 
-paella.dataDelegates.NoneCaptionsDataDelegate = Class.create(paella.DataDelegate,{	
+	
+Class ("paella.dataDelegates.NoneCaptionsDataDelegate", paella.DataDelegate,{
 	initialize:function() {
 	},
 	

@@ -1,4 +1,4 @@
-paella.ShowEditorPlugin = Class.create(paella.VideoOverlayButtonPlugin,{
+Class ("paella.ShowEditorPlugin",paella.VideoOverlayButtonPlugin,{
 	isEditorVisible:function() {
 		return paella.editor.instance!=null;
 	},

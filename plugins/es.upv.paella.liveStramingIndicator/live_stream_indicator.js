@@ -1,4 +1,4 @@
-paella.LiveStreamIndicator = Class.create(paella.VideoOverlayButtonPlugin,{
+Class ("paella.LiveStreamIndicator",paella.VideoOverlayButtonPlugin,{
     isEditorVisible:function() {
         return paella.editor.instance!=null;
     },
