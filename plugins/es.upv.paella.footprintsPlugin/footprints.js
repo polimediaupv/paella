@@ -1,5 +1,4 @@
-
-paella.plugins.FootPrintsPlugin = Class.create(paella.ButtonPlugin,{
+Class ("paella.plugins.FootPrintsPlugin",paella.ButtonPlugin,{
 	INTERVAL_LENGTH:5,
 	inPosition:0,
 	outPosition:0,

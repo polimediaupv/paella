@@ -1,4 +1,4 @@
-paella.plugins.UserTrackingCollectorPlugIn = Class.create(paella.EventDrivenPlugin,{
+Class ("paella.plugins.UserTrackingCollectorPlugIn",paella.EventDrivenPlugin,{
 	heartbeatTimer:null,
 
 	getName:function() { return "es.upv.paella.userTrackingCollectorPlugIn"; },

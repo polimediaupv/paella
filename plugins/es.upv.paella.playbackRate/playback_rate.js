@@ -1,4 +1,4 @@
-paella.plugins.PlaybackRate = Class.create(paella.ButtonPlugin,{
+Class ("paella.plugins.PlaybackRate",paella.ButtonPlugin,{
 	buttonItems:null,
 	buttons: [],
 	selected_button: null,

@@ -1,4 +1,4 @@
-paella.plugins.FullScreenPlugin = Class.create(paella.ButtonPlugin, {
+Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 	getIndex:function() { return 551; },
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "showFullScreenButton"; },

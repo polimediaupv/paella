@@ -1,4 +1,4 @@
-paella.plugins.ExtendedProfilesPlugin = Class.create(paella.ButtonPlugin,{
+Class ("paella.plugins.ExtendedProfilesPlugin",paella.ButtonPlugin,{
 	buttonItems: null,
 	extendedModes: null,
 	getAlignment:function() { return 'right'; },

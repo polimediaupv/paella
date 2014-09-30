@@ -52,7 +52,7 @@ var DfxpParser =  Class.create({
 });
 
 
-paella.plugins.CaptionsPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
+Class ("paella.plugins.CaptionsPlayerPlugin", paella.EventDrivenPlugin,{
 	captions:[],
 	captionsEnabled: false,
 	

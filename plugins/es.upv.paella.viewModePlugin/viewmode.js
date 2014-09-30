@@ -1,4 +1,4 @@
-paella.plugins.ViewModePlugin = Class.create(paella.ButtonPlugin,{
+Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
 	buttonItems:null,
 	buttons: [],
 	selected_button: null,

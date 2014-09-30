@@ -1,4 +1,4 @@
-paella.plugins.FrameControlPlugin = Class.create(paella.ButtonPlugin,{
+Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 	frames:null,
 	highResFrames:null,
 	currentFrame:null,

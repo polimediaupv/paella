@@ -1,4 +1,4 @@
-paella.plugins.BreaksEditorPlugin = Class.create(paella.editor.MainTrackPlugin,{
+Class ("paella.plugins.BreaksEditorPlugin",paella.editor.MainTrackPlugin, {
 	tracks:null,
 	selectedTrackItem:null,
 
@@ -133,7 +133,7 @@ paella.plugins.BreaksEditorPlugin = Class.create(paella.editor.MainTrackPlugin,{
 paella.plugins.breaksEditorPlugin = new paella.plugins.BreaksEditorPlugin();
 
 
-paella.plugins.BreaksPlayerPlugin = Class.create(paella.EventDrivenPlugin,{
+Class ("paella.plugins.BreaksPlayerPlugin",paella.EventDrivenPlugin,{
 	breaks:null,
 	lastEvent:0,
 	visibleBreaks:null,

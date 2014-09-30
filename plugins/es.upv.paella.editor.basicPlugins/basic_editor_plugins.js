@@ -1,5 +1,4 @@
-
-paella.editor.ToolStatusPlugin = Class.create(paella.editor.RightBarPlugin,{
+Class ("paella.editor.ToolStatusPlugin",paella.editor.RightBarPlugin,{
 	currentTrack:null,
 	currentTextField:null,
 	trackItemContainer:null,
@@ -171,7 +170,7 @@ new paella.editor.ToolStatusPlugin();
 /*
 
 
-paella.editor.CaptionsPlugin = Class.create(paella.editor.TrackPlugin,{
+Class ("paella.editor.CaptionsPlugin",paella.editor.TrackPlugin,{
 	tracks:[],
 	selectedTrackItem:null,
 
