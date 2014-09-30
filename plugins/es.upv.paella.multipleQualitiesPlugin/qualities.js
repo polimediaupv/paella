@@ -1,4 +1,4 @@
-paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
+Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 	currentUrl:null,
 	currentMaster:null,
 	currentSlave:null,
@@ -51,19 +51,97 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 	},
 
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
+	
+	buildContent:function(domElement) {
+		var w, h,d,e,b=0;
+		var percen1, percen2, reso2, act_percen;
+		percen1=100/this.availableMasters.length;
+		percen2=100/this.availableSlaves.length;
+		if(this.availableMasters.length >= this.availableSlaves.length){
+			act_percen= percen2;
+			for(var i=0;i<this.availableMasters.length;i++){
+				w = this.availableMasters[i].res.w;
+				h = this.availableMasters[i].res.h;
+				if(this.availableSlaves.length > 0){
+					if(percen1 * (i+1) < act_percen){
+						d = this.availableSlaves[b].res.w;
+						e = this.availableSlaves[b].res.h;
+						reso2 = d+"x"+e;
+					}else{
+						act_percen = percen2 + act_percen;
+						d = this.availableSlaves[b].res.w;
+						e = this.availableSlaves[b].res.h;
+						reso2 = d+"x"+e;
+						b++;
+					}
+				}
+				domElement.appendChild(this.getItemButton(w+"x"+h,w+"x"+h, reso2));
+			}
+		}else{
+			act_percen= percen1;
+			for(var z=0;z<this.availableSlaves.length;z++){
+				w = this.availableSlaves[z].res.w;
+				h = this.availableSlaves[z].res.h;
+				if(this.availableMasters.length > 0){
+					if(percen2 * (z+1) < act_percen){
+						d = this.availableMasters[b].res.w;
+						e = this.availableMasters[b].res.h;
+						reso2 = d+"x"+e;
+					}else{
+						act_percen = percen1 + act_percen;
+						d = this.availableMasters[b].res.w;
+						e = this.availableMasters[b].res.h;
+						reso2 = d+"x"+e;
+						b++;
+					}
+				}
+				domElement.appendChild(this.getItemButton(w+"x"+h,w+"x"+h, reso2));
+			}
+		}
+	},
 
+	getItemButton:function(label,reso, reso2) {
+		var elem = document.createElement('div');
+		elem.className = this.getButtonItemClass(label,false);
+		elem.id = label + '_button';
+		elem.innerHTML = label;
+		elem.data = {
+			label:label,
+			reso:reso,
+			reso2:reso2,
+			plugin:this
+		};
+		$(elem).click(function(event) {
+			this.data.plugin.onItemClick(this,this.data.label,this.data.reso,this.data.reso2);
+		});
+		return elem;
+	},
+
+	onItemClick:function(button,label,reso, reso2) {
+		//paella.player.videoContainer.setPlaybackRate(rate);
+		//paella.player.reloadVideos(rate, rate);
+		//this.setText(label);
+		paella.events.trigger(paella.events.hidePopUp,{identifier:this.getName()});
+		paella.player.reloadVideos(reso, reso2);
+	},
+
+	getButtonItemClass:function(profileName,selected) {
+		return 'playbackRateItem ' + profileName  + ((selected) ? ' selected':'');
+	},/*
 	buildContent:function(domElement) {
 		var j,w,h,option;
 		var thisClass = this;
-		this.currentUrl = window.location;
+		//this.currentUrl = window.location;
 
 		var selectQuality = document.createElement('div');
 		selectQuality.className = 'selectQuality';
 
 		var labelM = document.createElement('label');
-		labelM.innerHTML = base.dictionary.translate("Presenter");
+		//labelM.innerHTML = base.dictionary.translate("Presenter");
+		
 
 		var comboM = document.createElement('select');
+		comboM.setAttribute("size", '3');
 		comboM.id = 'master';
 		$(comboM).change(function() {
 			var param1Q = $(comboM).val();
@@ -116,40 +194,14 @@ paella.plugins.MultipleQualitiesPlugin = Class.create(paella.ButtonPlugin,{
 	},
 
 	changeVideoStream:function(newRes,combo) {
-		var newUrl;
-		var resM = base.parameters.get("resmaster");
-		var resS = base.parameters.get("resslave");
 
-		/*
-		if (combo == "master"){
-			if (resM)
-				newUrl = this.constructNewUrl("resmaster",newRes,"resslave",resS);
-			else
-				newUrl = this.currentUrl+"&resmaster="+newRes;
-		} else {
-			if (resS)
-				newUrl = this.constructNewUrl("resslave",newRes,"resmaster",resM);
-			else
-				newUrl = this.currentUrl+"&resslave="+newRes;
-		}
-		*/
-		newUrl = this.constructNewUrl("resmaster",newRes,"resslave",resS);
-		window.open (newUrl, '_self', false);
-	},
-
-	constructNewUrl:function(param1,param1Q,param2,param2Q) {
-		var iniUrl = this.currentUrl.href.split("?");
-		var url = iniUrl[0] + '?';
-
-		Object.keys(base.parameters.list).forEach(function(p){
-			if ( (p != 'resmaster') && (p != 'resslave') && (p !='time') && (p !='autoplay') ) {
-				url = url + p + '=' + base.parameters.list[p] + '&';
-			}
-		});
-
-		return url+ 'time=' + parseInt(paella.player.videoContainer.currentTime()) + "s&autoplay=true&"+param1+"="+param1Q+((param2Q) ? "&"+param2+"="+param2Q:'');
-	}
+		paella.player.reloadVideos(newRes, newRes);
+		
+	}*/
 });
 
 
 paella.plugins.multipleQualitiesPlugin = new paella.plugins.MultipleQualitiesPlugin();
+
+
+		

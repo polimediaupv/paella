@@ -9,6 +9,118 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	// Video data:
 	videoData:null,
 
+	getPlayerMode: function() {	
+		if (paella.player.isFullScreen()) {
+			return paella.PaellaPlayer.mode.fullscreen;
+		}
+		else if (window.self !== window.top) {
+			return paella.PaellaPlayer.mode.embed;
+		}
+		else if (paella.extended) {
+			return paella.PaellaPlayer.mode.extended;			
+		}
+
+		return paella.PaellaPlayer.mode.standard;
+	},
+
+
+	checkFullScreenCapability: function() {
+		var fs = document.getElementById(paella.player.mainContainer.id);
+		if ((fs.webkitRequestFullScreen) || (fs.mozRequestFullScreen) || (fs.msRequestFullscreen) || (fs.requestFullScreen)) {
+			return true;
+		}
+		if (base.userAgent.browser.IsMobileVersion && paella.player.videoContainer.isMonostream) {
+			return true;
+		}		
+		return false;
+	},
+
+	addFullScreenListeners : function() {
+		var thisClass = this;
+		
+		var onFullScreenChangeEvent = function() {
+			var fs = document.getElementById(paella.player.mainContainer.id);
+			if (paella.player.isFullScreen()) {				
+				fs.style.width = '100%';
+				fs.style.height = '100%';
+			}
+			else {
+				fs.style.width = '';
+				fs.style.height = '';
+			}
+						
+			if (thisClass.isFullScreen()) {
+				paella.events.trigger(paella.events.enterFullscreen);				
+			}
+			else{
+				paella.events.trigger(paella.events.exitFullscreen);
+			}			
+		};
+	
+		if (!this.eventFullScreenListenerAdded) {
+			this.eventFullScreenListenerAdded = true;
+			document.addEventListener("fullscreenchange", onFullScreenChangeEvent, false);
+			document.addEventListener("webkitfullscreenchange", onFullScreenChangeEvent, false);
+			document.addEventListener("mozfullscreenchange", onFullScreenChangeEvent, false);	
+			document.addEventListener("MSFullscreenChange", onFullScreenChangeEvent, false);
+		}		
+	},
+
+	isFullScreen: function() {
+		var webKitIsFullScreen = (document.webkitIsFullScreen === true);
+		var msIsFullScreen = (document.msFullscreenElement !== undefined && document.msFullscreenElement !== null);
+		var mozIsFullScreen = (document.mozFullScreen === true);
+		var stdIsFullScreen = (document.fullScreenElement !== undefined && document.fullScreenElement !== null);
+		
+		return (webKitIsFullScreen || msIsFullScreen || mozIsFullScreen || stdIsFullScreen);
+
+	},
+	goFullScreen: function() {
+		this.addFullScreenListeners();
+		if (!this.isFullScreen()) {
+			if (base.userAgent.browser.IsMobileVersion && paella.player.videoContainer.isMonostream) {
+				var video = paella.player.videoContainer.masterVideo().domElement;
+				if (video.webkitSupportsFullscreen) {					
+					video.webkitEnterFullscreen();
+				}
+			}
+			else {
+				var fs = document.getElementById(paella.player.mainContainer.id);		
+				if (fs.webkitRequestFullScreen) {			
+					fs.webkitRequestFullScreen();
+				}
+				else if (fs.mozRequestFullScreen){
+					fs.mozRequestFullScreen();
+				}
+				else if (fs.msRequestFullscreen) {
+					fs.msRequestFullscreen();
+				}
+				else if (fs.requestFullScreen) {
+					fs.requestFullScreen();
+				}				
+			}
+		}
+	},
+	
+	exitFullScreen: function() {
+		this.addFullScreenListeners();	
+		if (this.isFullScreen()) {			
+			if (document.webkitCancelFullScreen) {
+				document.webkitCancelFullScreen();
+			}
+			else if (document.mozCancelFullScreen) {
+				document.mozCancelFullScreen();
+			}
+			else if (document.msExitFullscreen()) {
+				document.msExitFullscreen();
+			}
+			else if (document.cancelFullScreen) {
+				document.cancelFullScreen();
+			}								
+		}		
+	},
+
+
 	setProfile:function(profileName,animate) {
 		var thisClass = this;
 		this.videoContainer.setProfile(profileName,function(newProfileName) {
@@ -309,6 +421,13 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 });
 
 var PaellaPlayer = paella.PaellaPlayer;
+
+paella.PaellaPlayer.mode = {
+	standard: 'standard',
+	fullscreen: 'fullscreen',
+	extended: 'extended',
+	embed: 'embed'
+};
 
 /* Initializer function */
 function initPaellaEngage(playerId,initDelegate) {

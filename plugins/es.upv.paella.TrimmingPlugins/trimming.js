@@ -1,4 +1,4 @@
-paella.plugins.TrimmingLoaderPlugin = Class.create(paella.EventDrivenPlugin,{
+Class ("paella.plugins.TrimmingLoaderPlugin",paella.EventDrivenPlugin,{
 	
 	getName:function() { return "es.upv.paella.TrimmingPlayerPlugin"; },
 	//checkEnabled:function(onSuccess) { onSuccess(paella.player.config.trimming && paella.player.config.trimming.enabled); },

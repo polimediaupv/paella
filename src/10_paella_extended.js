@@ -178,7 +178,7 @@ Class ("paella.Extended", {
 		var thisClass = this;
 		plugin.checkEnabled(function(isEnabled) {
 			if (isEnabled) {
-				plugin.setup();
+				paella.pluginManager.setupPlugin(plugin);
 				if (plugin.type=='rightBarPlugin') {
 					thisClass.rightBarPlugins.push(plugin);
 					thisClass.addRightBarPlugin(plugin);

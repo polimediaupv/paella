@@ -1,5 +1,4 @@
-paella.plugins.CommentsPlugin = Class.create(paella.TabBarPlugin,{
-	divRoot:null,
+Class ("paella.plugins.CommentsPlugin",paella.TabBarPlugin,{
 	divPublishComment:null,
 	divComments:null,
 	publishCommentTextArea:null,

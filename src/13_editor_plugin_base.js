@@ -47,7 +47,7 @@ Class ("paella.editor.PluginManager", {
 		var thisClass = this;
 		plugin.checkEnabled(function(isEnabled) {
 			if (isEnabled) {
-				plugin.setup();
+				paella.pluginManager.setupPlugin(plugin);
 				if (plugin.type=='editorTrackPlugin') {
 					thisClass.trackPlugins.push(plugin);
 				}

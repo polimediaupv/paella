@@ -1,4 +1,4 @@
-paella.plugins.UserTrackingGoogleAnalyticsSaverPlugIn = Class.create(paella.EventDrivenPlugin,{
+Class ("paella.plugins.UserTrackingGoogleAnalyticsSaverPlugIn",paella.EventDrivenPlugin,{
 	getName:function() { return "es.upv.paella.userTrackingGoogleAnalyticsSaverPlugIn"; },
 	getEvents:function() { return [paella.events.userTracking]; },
 	
