@@ -28,7 +28,7 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 			// IMAGE
 			var hiResImage = document.createElement('img');
    			hiResImage.className = 'frameHiRes';
-       		hiResImage.setAttribute('src',"resources/style/000060.png");
+       		hiResImage.setAttribute('src',"resources/style/image.png");
         	hiResImage.setAttribute('style', 'width: 100%;');
         	hiResImage.id ='photo_01';
         	hiResImage.setAttribute("id", "photo_01");
@@ -47,7 +47,7 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 
 			// OPEN NEW WINDOW WITH FULLSCREEN IMAGE
 			$(".newframe").click(function(e){
-			window.open('resources/style/000060.png');
+			window.open('resources/style/image.png');
 			});
 
 
