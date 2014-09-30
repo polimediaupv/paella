@@ -3,6 +3,27 @@ Class ("paella.PluginManager", {
 	targets:null,
 	pluginList: [],
 	eventDrivenPlugins: [],
+	enabledPlugins: [],
+
+
+//	checkPluginVisibility
+
+	setupPlugin: function(plugin) {
+		plugin.setup();
+		this.enabledPlugins.push(plugin);
+		if (dynamic_cast("paella.UIPlugin", plugin)) {
+			plugin.checkVisibility();
+		}	
+	},
+
+
+	checkPluginsVisibility: function() {	
+		this.enabledPlugins.forEach(function(plugin) {		
+			if (dynamic_cast("paella.UIPlugin", plugin)) {
+				plugin.checkVisibility();
+			}								
+		});	
+	},
 
 	initialize:function() {
 		this.targets = {};
@@ -46,7 +67,7 @@ Class ("paella.PluginManager", {
 				plugin.config = config;
 				if (plugin.type=="eventDriven") {
 					plugin.load(This);
-				}
+				}				
 			}
 		});
 	},
@@ -56,10 +77,10 @@ Class ("paella.PluginManager", {
 		this.foreach(function(plugin,config) {
 			if (config.enabled) {
 				paella.debug.log("load plugin " + name);
-				plugin.config = config;
+				plugin.config = config;							
 				if (plugin.type!="eventDriven") {
 					plugin.load(This);
-				}
+				}			
 			}
 		});
 	},
@@ -115,7 +136,7 @@ Class ("paella.PluginManager", {
 		var thisClass = this;
 		plugin.checkEnabled(function(isEnabled) {
 			if (plugin.type=="eventDriven" && isEnabled) {
-				plugin.setup();
+				paella.pluginManager.setupPlugin(plugin);
 				thisClass.eventDrivenPlugins.push(plugin);
 				var events = plugin.getEvents();
 				var eventBind = function(event,params) {
@@ -316,7 +337,49 @@ Class ("paella.TimelineContainer", paella.PopUpContainer,{
 	}
 });
 
-Class ("paella.ButtonPlugin", paella.Plugin,{
+
+	
+Class ("paella.UIPlugin", paella.Plugin, {
+	ui: null,
+	
+	checkVisibility: function() {
+		var modes = this.config.visibleOn || [	paella.PaellaPlayer.mode.standard, 
+												paella.PaellaPlayer.mode.fullscreen, 
+												paella.PaellaPlayer.mode.extended, 
+												paella.PaellaPlayer.mode.embed ];
+		
+		var visible = false;
+		modes.forEach(function(m){
+			if (m == paella.player.getPlayerMode()) {
+				visible = true;
+			}
+		});
+		
+		if (visible){
+			this.showUI();
+		}
+		else {
+			this.hideUI();
+		}
+	},
+	
+	hideUI:function() {
+		this.ui.setAttribute('aria-hidden', 'false');
+		$(this.ui).hide();
+	},
+	
+	showUI:function() {
+		paella.pluginManager.enabledPlugins.forEach(function(p) {
+			if (p == this) {
+				this.ui.setAttribute('aria-hidden', 'true');
+				$(this.ui).show();				
+			}
+		});	
+	},
+});
+
+
+Class ("paella.ButtonPlugin", paella.UIPlugin,{
 	type:'button',
 	subclass:'',
 	container:null,
@@ -378,13 +441,15 @@ Class ("paella.ButtonPlugin", paella.Plugin,{
 	},
 
 	hideButton:function() {
-		this.button.setAttribute('aria-hidden', 'false');
-		$(this.button).hide();
+		this.hideUI();
+	//	this.button.setAttribute('aria-hidden', 'false');
+	//	$(this.button).hide();
 	},
 
 	showButton:function() {
-		this.button.setAttribute('aria-hidden', 'true');
-		$(this.button).show();
+		this.showUI();
+	//	this.button.setAttribute('aria-hidden', 'true');
+	//	$(this.button).show();
 	},
 
 	// Utility functions: do not override
@@ -446,6 +511,7 @@ paella.ButtonPlugin.buildPluginButton = function(plugin,id) {
 	elem.plugin = plugin;
 	plugin.button = elem;
 	plugin.container = elem;
+	plugin.ui = elem;
 	plugin.setToolTip(plugin.getDefaultToolTip());
 	$(elem).click(function(event) {
 		this.plugin.action(this);

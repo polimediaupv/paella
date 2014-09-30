@@ -143,7 +143,7 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 
 		var This = this;
 		paella.events.bind(paella.events.setTrim,function(event,params) {
-			This.checkVisibility(params.trimEnabled,params.trimStart,params.trimEnd);
+			This.isFrameVisible(params.trimEnabled,params.trimStart,params.trimEnd);
 		});
 
 		paella.events.bind(paella.events.timeupdate,function(event,params) { This.onTimeUpdate(params.currentTime); });
@@ -181,7 +181,7 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 		overlayContainer.disableBackgroundMode();
 	},
 
-	checkVisibility:function(trimEnabled,trimStart,trimEnd) {
+	isFrameVisible:function(trimEnabled,trimStart,trimEnd) {
 		var i;
 		if (!trimEnabled) {
 			for (i = 0; i<this.frames.length;++i) {
