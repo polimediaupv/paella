@@ -234,10 +234,10 @@ Class ("paella.PlaybackControl",paella.DomNode,{
 			var plugin = this.buttonPlugins[i];
 			var minSize = plugin.getMinWindowSize();
 			if (minSize>0 && windowSize<minSize) {
-				$(plugin.container).hide();
+				plugin.hideUI();
 			}
 			else {
-				$(plugin.container).show();
+				plugin.checkVisibility();
 			}
 		}
 	}

@@ -364,15 +364,16 @@ Class ("paella.UIPlugin", paella.Plugin, {
 	},
 	
 	hideUI:function() {
-		this.ui.setAttribute('aria-hidden', 'false');
+		this.ui.setAttribute('aria-hidden', 'true');
 		$(this.ui).hide();
 	},
 	
 	showUI:function() {
+		var thisClass = this;
 		paella.pluginManager.enabledPlugins.forEach(function(p) {
-			if (p == this) {
-				this.ui.setAttribute('aria-hidden', 'true');
-				$(this.ui).show();				
+			if (p == thisClass) {
+				thisClass.ui.setAttribute('aria-hidden', 'false');
+				$(thisClass.ui).show();				
 			}
 		});	
 	},
