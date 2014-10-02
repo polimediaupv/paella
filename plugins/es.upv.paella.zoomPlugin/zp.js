@@ -38,20 +38,21 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 			
 			image = Math.floor(sec / 30); //15 is the capture interval
 			nimage = image*30;
-			//console.log("numero imagen: "+image);
 			image_name = ("000000"+nimage).slice(nimage.toString().length);
-			//console.log("nombre imagen: "+image_name+".png");
 			//TODO: check if is the same image for this time update
 			var src = $("#photo_01")[0].src;
 			var mi_src = "http://localhost:8000/player/resources/style/"+image_name+".png";
-			//console.log(src + " - " + mi_src);
-			//console.log(src == mi_src);
+			
+			//if diff image, set new image
 			if(src != mi_src){
-			//set the image
-			$( ".newframe" ).remove();
-			self.createOverlay();
-			$("#photo_01").attr('src',"resources/style/"+image_name+".png");
-			$("#photo_01").elevateZoom({ zoomType	: "inner", cursor: "crosshair", scrollZoom : true });
+			$("#photo_01").attr('src',"resources/style/"+image_name+".png").load();
+			if($(".zoomContainer").length<1) // only 1 zoomcontainer
+				$("#photo_01").elevateZoom({ zoomType	: "inner", cursor: "crosshair", scrollZoom : true }); // ZOOM
+
+
+			$( ".zoomWindow" ).css('background-image', 'url(' + mi_src + ')'); // UPDATING IMAGE
+
+			// OPEN NEW WINDOW WITH FULLSCREEN IMAGE
 			}
 			
 		}
@@ -64,14 +65,8 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 		var newframe = document.createElement("div");
 			newframe.className = "newframe";
 			newframe.setAttribute('style', 'display: table;');
+			
 			// IMAGE
-			/*var img = new Image();
-			img.className
-			img.addEventListener("load",function(event) {
-
-			})
-			img.src = "";
-*/
 			var hiResImage = document.createElement('img');
    			hiResImage.className = 'frameHiRes';
    			// GET IMAGE FOR TIMELINE
@@ -87,14 +82,6 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 			overlayContainer.addElement(newframe, overlayContainer.getMasterRect());
 			$(".newframe").css("background-color","rgba(80,80,80,0.4)");
 			$(".newframe img").css("opacity","0");
-
-			// APPLY ZOOM
-			//$("#photo_01").elevateZoom({ zoomType	: "inner", cursor: "crosshair", scrollZoom : true });
-
-			// OPEN NEW WINDOW WITH FULLSCREEN IMAGE
-			$(".newframe").click(function(e){
-			window.open('resources/style/image.png');
-			});
 	},
 
 	action:function(button) {
