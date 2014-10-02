@@ -45,14 +45,23 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 			
 			//if diff image, set new image
 			if(src != mi_src){
-			$("#photo_01").attr('src',"resources/style/"+image_name+".png").load();
-			if($(".zoomContainer").length<1) // only 1 zoomcontainer
-				$("#photo_01").elevateZoom({ zoomType	: "inner", cursor: "crosshair", scrollZoom : true }); // ZOOM
+				$("#photo_01").attr('src',"resources/style/"+image_name+".png").load();
+				if($(".zoomContainer").length<1) // only 1 zoomcontainer
+					$("#photo_01").elevateZoom({ zoomType	: "inner", cursor: "crosshair", scrollZoom : true }); // ZOOM
 
 
-			$( ".zoomWindow" ).css('background-image', 'url(' + mi_src + ')'); // UPDATING IMAGE
+				//PRELOAD NEXT IMAGE
+				var image = new Image();
+				image.onload = function(){
+    			$( ".zoomWindow" ).css('background-image', 'url(' + mi_src + ')'); // UPDATING IMAGE
+				};
+				image.src = src;
 
-			// OPEN NEW WINDOW WITH FULLSCREEN IMAGE
+				
+				// OPEN NEW WINDOW WITH FULLSCREEN IMAGE
+
+				$("#photo_link").attr("href", mi_src).attr("target","_blank");
+
 			}
 			
 		}
@@ -71,11 +80,15 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
    			hiResImage.className = 'frameHiRes';
    			// GET IMAGE FOR TIMELINE
 
+   			var link = document.createElement('a');
+   			link.setAttribute("id", "photo_link");
+
        		//hiResImage.setAttribute('src',"resources/style/000000.png");
         	hiResImage.setAttribute('style', 'width: 100%;');
-        	hiResImage.id ='photo_01';
         	hiResImage.setAttribute("id", "photo_01");
-        	$(newframe).append(hiResImage);
+
+        	$(link).append(hiResImage);
+        	$(newframe).append(link);
 
         	// OVERLAY
 			overlayContainer = paella.player.videoContainer.overlayContainer;
