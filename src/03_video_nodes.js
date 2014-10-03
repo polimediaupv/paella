@@ -267,7 +267,7 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 	},
 	
 	processEvent:function(eventName,params) {
-		if (params.duration!=0 && !this._isReady) {
+		if (eventName!="loadedmetadata" && eventName!="pause" && params.duration!=0 && !this._isReady) {
 			this._isReady = true;
 			this._duration = params.duration;
 			this.callReadyEvent();
@@ -552,6 +552,7 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 		if (this.flashVideo) {
 			this.domElement.innerHTML = "";
 			this.flashVideo = null;
+			this._isReady = false;
 		}
 		this.parent();
 	},
@@ -583,6 +584,16 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		this.parent(id,'video',left,top,width,height);
 		var thisClass = this;
 		$(this.domElement).bind('progress',function(event) {
+			thisClass.onVideoProgress(event);
+		});
+		$(this.domElement).bind('loadstart',function(event) {
+			thisClass.onVideoProgress(event);
+		});
+		$(this.domElement).bind('loadedmetadata',function(event) {
+			thisClass.onVideoProgress(event);
+		});
+		
+		$(this.domElement).bind('canplay',function(event) {
 			thisClass.onVideoProgress(event);
 		});
 	},
@@ -657,6 +668,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	},
 	
 	unload:function() {
+		this.ready = false;
 		this.domElement.innerHTML = "";
 		this.parent();
 	},

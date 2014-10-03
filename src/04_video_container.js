@@ -280,6 +280,9 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 
 	_masterQuality:null,
 	_slaveQualit:null,
+	
+	_playOnLoad:false,
+	_seekToOnLoad:0,
 
 	initialize:function(id) {
 		this.parent(id);
@@ -332,25 +335,6 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		}
 		catch (e) {
 
-		}
-
-	},
-	
-	onVideoLoaded:function(sender) {
-		if (sender==this.masterVideo()) {
-			console.log("Master video loaded");
-		}
-		if (sender==this.slaveVideo()) {
-			console.log("Slave video loaded");
-		}
-	},
-	
-	onVideoUnloaded:function(sender) {
-		if (sender==this.masterVideo()) {
-			console.log("Master video unloaded");
-		}
-		if (sender==this.slaveVideo()) {
-			console.log("Slave video unloaded");
 		}
 	},
 
@@ -577,9 +561,17 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		 
 		this.setMasterQuality(masterQuality);
 		this.setSlaveQuality(slaveQuality);
-		var currentTime = this.currentTime();
+		this._seekToOnLoad = this.currentTime();
 		var paused = this.paused();
 		this.setSources(this._videoSourceData.master,this._videoSourceData.slave);
+		if (paused) {
+			this._playOnLoad = false;
+		}
+		else {
+			this._playOnLoad = true;
+		}
+		
+		/*
 		this.play();
 		
 		
@@ -588,7 +580,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		setTimeout(function() {
 			if (paused) This.pause();
 			This.seekToTime(currentTime);
-		},500);
+		},500);*/
 	},
 
 	/**
@@ -615,6 +607,33 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		}
 		else {
 			this.setMonoStreamMode(true);
+		}
+	},
+	
+	onVideoLoaded:function(sender) {
+		var This = this;
+		if (this.isMonostream && this.masterVideo() && this.masterVideo().isReady()) {
+			if (this._playOnLoad) {
+				this.play();
+			}
+			setTimeout(function() { This.seekToTime(This._seekToOnLoad); },500);
+		}
+		else if (this.masterVideo() && this.masterVideo().isReady() &&
+				 this.slaveVideo() && this.slaveVideo().isReady()){
+			if (this._playOnLoad) {
+				this.play();
+			}
+			setTimeout(function() { This.seekToTime(This._seekToOnLoad); },500);
+		}
+	},
+	
+	onVideoUnloaded:function(sender) {
+		if (this.isMonostream) {
+			paella.events.trigger(paella.events.videoUnloaded);
+		}
+		else if (this.masterVideo() && !this.masterVideo().isReady() &&
+				this.slaveVideo() && !this.slaveVideo().isReady()){
+			paella.events.trigger(paella.events.videoUnloaded);
 		}
 	},
 	
