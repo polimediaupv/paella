@@ -2,6 +2,7 @@ package paella {
 
 import flash.external.ExternalInterface;
 
+
 public class External {
 	public static function get available():Boolean {
 		return flash.external.ExternalInterface.available;
@@ -22,7 +23,6 @@ public class External {
 			flash.external.ExternalInterface.call(functionName,arguments);
 		}
 	}
-	
 }
 
 }

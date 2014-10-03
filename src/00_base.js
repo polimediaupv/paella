@@ -60,6 +60,8 @@ paella.events = {
 	videoUnloaded:'paella:videoUnloaded',
 	enterFullscreen:'paella:enterFullscreen',
 	exitFullscreen:'paella:exitFullscreen',
+	
+	flashVideoEvent:'paella:flashVideoEvent',
 
 	trigger:function(event,params) { $(document).trigger(event,params);  },
 	bind:function(event,callback) { $(document).bind(event,function(event,params) { callback(event,params);}) ;},
@@ -72,4 +74,3 @@ paella.events = {
 };
 
 paella.events.setupExternalListener();
-

@@ -27,5 +27,9 @@ package paella {
 		
 		function currentProgress():Number;
 		
+		function get videoWidth():Number;
+		
+		function get videoHeight():Number;
+		
 	}
 }

@@ -219,6 +219,10 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 		this.parent(id,'div',left,top,width,height);
 		this.flashId = id + 'Movie';
 		paella_flash_VideoContainers[this.flashId] = this;
+		
+		paella.events.bind(paella.events.flashVideoEvent,function(event,params) {
+			console.log(params);
+		});
 	},
 
 	isReady:function() {

@@ -13,7 +13,7 @@ public class VideoElement extends Sprite implements IMediaElement {
 	
 	private var _currentUrl:String = "";
 	private var _autoplay:Boolean = true;
-	private var _preload:String = "";
+	private var _preload:Boolean = false;
 	private var _isPreloading:Boolean = false;
 	
 	private var _connection:NetConnection;
@@ -81,7 +81,7 @@ public class VideoElement extends Sprite implements IMediaElement {
 	    return currentTime;
 	}
 	
-    public function VideoElement(jsInterface:JavascriptInterface, autoplay:Boolean, preload:String, timerRate:Number, startVolume:Number, streamer:String) {
+    public function VideoElement(jsInterface:JavascriptInterface, autoplay:Boolean, preload:Boolean, timerRate:Number, startVolume:Number, streamer:String) {
 		_javascriptInterface = jsInterface;
 		
 		_autoplay = autoplay;
@@ -276,7 +276,7 @@ public class VideoElement extends Sprite implements IMediaElement {
 
 		// start downloading without playing )based on preload and play() hasn't been called)
 		// I wish flash had a load() command to make this less awkward
-		if (_preload != "none" && !_playWhenConnected) {
+		if (_preload && !_playWhenConnected) {
 			_isPaused = true;
 			//stream.bufferTime = 20;
 			_stream.play(getCurrentUrl(0), 0, 0);
