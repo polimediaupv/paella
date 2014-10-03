@@ -56,10 +56,14 @@ paella.events = {
 	hidePopUp:'paella:hidePopUp',
 	showPopUp:'paella:showPopUp',
 	userTracking:'paella:userTracking',
-	videoLoaded:'paella:videoLoaded',
-	videoUnloaded:'paella:videoUnloaded',
 	enterFullscreen:'paella:enterFullscreen',
 	exitFullscreen:'paella:exitFullscreen',
+	
+	singleVideoReady:'paella:singleVideoReady',
+	singleVideoUnloaded:'paella:singleVideoUnloaded',
+	videoReady:'paella:videoReady',
+	videoUnloaded:'paella:videoUnloaded',
+	
 	
 	flashVideoEvent:'paella:flashVideoEvent',
 

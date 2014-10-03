@@ -115,7 +115,7 @@ public class VideoElement extends Sprite implements IMediaElement {
 	}
 	
 	private function netStatusHandler(event:NetStatusEvent):void {
-		JavascriptTrace.debug("netStatus " + event.info.code);
+		//JavascriptTrace.debug("netStatus " + event.info.code);
 
 	    switch (event.info.code) {
 

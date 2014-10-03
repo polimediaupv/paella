@@ -307,6 +307,14 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		this.container.addNode(new paella.BackgroundContainer(this.backgroundId,'config/profiles/resources/default_background_paella.jpg'));
 
 		paella.events.bind(paella.events.timeupdate,function(event) { thisClass.checkVideoTrimming(); } );
+		
+		paella.events.bind(paella.events.singleVideoReady, function(evt,params) {
+			thisClass.onVideoLoaded(params.sender);
+		});
+		
+		paella.events.bind(paella.events.singleVideoUnloaded, function(evt,params) {
+			thisClass.onVideoUnloaded(params.sender);
+		});
 
 		var timer = new base.Timer(function(timer) {
 			thisClass.syncVideos();
@@ -326,6 +334,24 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 
 		}
 
+	},
+	
+	onVideoLoaded:function(sender) {
+		if (sender==this.masterVideo()) {
+			console.log("Master video loaded");
+		}
+		if (sender==this.slaveVideo()) {
+			console.log("Slave video loaded");
+		}
+	},
+	
+	onVideoUnloaded:function(sender) {
+		if (sender==this.masterVideo()) {
+			console.log("Master video unloaded");
+		}
+		if (sender==this.slaveVideo()) {
+			console.log("Slave video unloaded");
+		}
 	},
 
 	setProfileFrameStrategy:function(strategy) {
@@ -544,12 +570,20 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	reloadVideos:function(masterQuality,slaveQuality) {
+		var masterVideo = this.masterVideo();
+		var slaveVideo = this.slaveVideo();
+		if (masterVideo) masterVideo.unload();
+		if (slaveVideo) slaveVideo.unload();
+		 
 		this.setMasterQuality(masterQuality);
 		this.setSlaveQuality(slaveQuality);
 		var currentTime = this.currentTime();
 		var paused = this.paused();
 		this.setSources(this._videoSourceData.master,this._videoSourceData.slave);
 		this.play();
+		
+		
+		
 		var This = this;
 		setTimeout(function() {
 			if (paused) This.pause();
@@ -577,17 +611,11 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		};
 		if (slave && slave.data  && slave.type) {
 			this._setSource(slave.data, this.video2Id, slave.type, 'slave', slaveRect);
-			this.isMasterReady = true;
-			this.isSlaveReady = true;
 			this._videoSourceData.slave = slave;
 		}
 		else {
-			this.isMasterReady = true;
 			this.setMonoStreamMode(true);
 		}
-		
-		
-		paella.events.trigger(paella.events.videoLoaded);
 	},
 	
 	_unloadVideos:function() {
@@ -604,7 +632,6 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		this.masterVideoData = null;
 		this.slaveVideoData = null;
 		this.sourceData = [];
-		paella.events.trigger(paella.events.videoUnloaded);
 	},
 
 	_setSource:function(data,videoNodeId,type,target,rect) {
