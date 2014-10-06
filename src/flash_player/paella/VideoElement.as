@@ -30,6 +30,7 @@ public class VideoElement extends Sprite implements IMediaElement {
     private var _volume:Number = 1;
     private var _isMuted:Boolean = false;
 
+	private var _bufferTime:Number = 1;
     private var _bytesLoaded:Number = 0;
     private var _bytesTotal:Number = 0;
     private var _bufferedTime:Number = 0;
@@ -81,8 +82,10 @@ public class VideoElement extends Sprite implements IMediaElement {
 	    return currentTime;
 	}
 	
-    public function VideoElement(jsInterface:JavascriptInterface, autoplay:Boolean, preload:Boolean, timerRate:Number, startVolume:Number, streamer:String) {
+    public function VideoElement(jsInterface:JavascriptInterface, autoplay:Boolean, preload:Boolean, timerRate:Number, startVolume:Number, streamer:String, bufferTime:Number) {
 		_javascriptInterface = jsInterface;
+		_playWhenConnected = true;
+		_bufferTime = bufferTime;
 		
 		_autoplay = autoplay;
 		_volume = startVolume;
@@ -102,6 +105,14 @@ public class VideoElement extends Sprite implements IMediaElement {
 		
 		_timer.start();
     }
+	
+	public function set bufferTime(time:Number):void {
+		_bufferTime = time;
+	}
+	
+	public function get bufferTime():Number {
+		return _bufferTime;
+	}
 	
 	private function timerHandler(e:TimerEvent):void {
 		_bytesLoaded = _stream.bytesLoaded;
@@ -143,16 +154,13 @@ public class VideoElement extends Sprite implements IMediaElement {
 
 	      // STREAM
 	      case "NetStream.Play.Start":
-
 	        _isPaused = false;
 	        sendEvent(HtmlEvent.LOADEDDATA);
 	        sendEvent(HtmlEvent.CANPLAY);
 
 	        if (!_isPreloading) {
-
 	          sendEvent(HtmlEvent.PLAY);
 	          sendEvent(HtmlEvent.PLAYING);
-
 	        }
 
 	        break;
@@ -234,7 +242,9 @@ public class VideoElement extends Sprite implements IMediaElement {
 		_bufferEmpty = false;
 
 		// start new connection
+		JavascriptTrace.debug("URL: " + _currentUrl);
 		if (_isRTMP) {
+			JavascriptTrace.debug("Playing RTMP video stream");
 			var rtmpInfo:Object = parseRTMP(_currentUrl);
 			if (_streamer != "") {
 				rtmpInfo.server = _streamer;
@@ -242,6 +252,7 @@ public class VideoElement extends Sprite implements IMediaElement {
 			}
 			_connection.connect(rtmpInfo.server);
 		} else {
+			JavascriptTrace.debug("Playing progressive download video");
 			_connection.connect(null);
 		}
 
@@ -260,8 +271,8 @@ public class VideoElement extends Sprite implements IMediaElement {
 		_stream.soundTransform = _soundTransform;
 
 		// set the buffer to ensure nice playback
-		_stream.bufferTime = 1;
-		_stream.bufferTimeMax = 3;
+		_stream.bufferTime = this._bufferTime;
+		_stream.bufferTimeMax = this._bufferTime * 2;
 
 		_stream.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler); // same event as connection
 		_stream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler);
@@ -271,14 +282,14 @@ public class VideoElement extends Sprite implements IMediaElement {
 		_stream.client = customClient;
 
 		_video.attachNetStream(_stream);
-
+		
 		// start downloading without playing )based on preload and play() hasn't been called)
 		// I wish flash had a load() command to make this less awkward
 		if (_preload && !_playWhenConnected) {
 			_isPaused = true;
 			//stream.bufferTime = 20;
 			_stream.play(getCurrentUrl(0), 0, 0);
-			_stream.pause();
+			//_stream.pause();
 
 			_isPreloading = true;
 
@@ -291,16 +302,16 @@ public class VideoElement extends Sprite implements IMediaElement {
 
 		if (_playWhenConnected && !_hasStartedPlaying) {
 			play();
-			_playWhenConnected = false;
+			//_playWhenConnected = false;
 		}
 	}
 	
 	public function play():void {
-		if (!_hasStartedPlaying && !_isConnected) {
+		/*if (!_hasStartedPlaying && !_isConnected) {
 			_playWhenConnected = true;
 			load();
 			return;
-		}
+		}*/
 
 		if (_hasStartedPlaying) {
 			if (_isPaused) {
@@ -310,6 +321,10 @@ public class VideoElement extends Sprite implements IMediaElement {
 				sendEvent(HtmlEvent.PLAY);
 				sendEvent(HtmlEvent.PLAYING);
 			}
+			else {
+				JavascriptTrace.debug("No Esta pausado");
+			}
+			
 		}
 		else {
 
