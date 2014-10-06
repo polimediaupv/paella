@@ -1,6 +1,10 @@
 Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 	_zImages:null,
 	_isActivated:false,
+	_keys:null,
+	_ant:null,
+	_next:null,
+	_videoLength:null,
 
 	getIndex:function(){return 20;},
 
@@ -45,7 +49,7 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 		}
 
 		this._zImages = n_res[index].frames; // COPY TO LOCAL
-
+		this._videoLength = n_res[index].duration; // video duration in frames
 		// REMOVE ON COMPOSITION CHANGE
 		paella.events.bind(paella.events.setComposition, function(event,params) {
 			self.compositionChanged(event,params);
@@ -55,6 +59,14 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 		paella.events.bind(paella.events.timeUpdate, function(event,params) { 
 			self.imageUpdate(event,params);
 		});
+
+		// SORT KEYS FOR SEARCH CLOSEST
+		this._keys = Object.keys(this._zImages);
+		this._keys = this._keys.sort();
+
+		//NEXT
+		this._next = 0;
+		this._ant = 0;
 	},
 
 	imageUpdate:function(event,params) {
@@ -66,10 +78,11 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 
 			if($('.newframe').length>0){
 
+				if(this._zImages.hasOwnProperty("frame_"+sec)) src = this._zImages["frame_"+sec];
 
-				if(src != this._zImages["frame_"+sec]){
-					
-					src = this._zImages["frame_"+sec];
+				else if(sec > this._next || sec < this._ant) { src = self.returnSrc(sec); }
+					else return;
+
 					$("#photo_01").attr('src',src).load();
 					if($(".zoomContainer").length<1) // only 1 zoomcontainer
 						$("#photo_01").elevateZoom({ zoomType	: "inner", cursor: "crosshair", scrollZoom : true }); // ZOOM
@@ -78,7 +91,7 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 					//PRELOAD NEXT IMAGE
 					var image = new Image();
 					image.onload = function(){
-	    			$( ".zoomWindow" ).css('background-image', 'url(' + mi_src + ')'); // UPDATING IMAGE
+	    			$( ".zoomWindow" ).css('background-image', 'url(' + src + ')'); // UPDATING IMAGE
 					};
 					image.src = src;
 
@@ -87,11 +100,30 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 
 					$("#photo_link").attr("href", src).attr("target","_blank");
 
-				}
 				
 			}
 		}
 		
+	},
+
+	returnSrc:function(sec){
+		var ant = 0;
+		for (i=0; i<this._keys.length; i++){
+			var id = parseInt(this._keys[i].slice(6));
+			var lastId = parseInt(this._keys[(this._keys.length-1)].slice(6));
+			if(sec < id) {  // PREVIOUS IMAGE
+				this._next = id; 
+				this._ant = ant; 
+				//console.log(this._ant+"---"+this._next);
+				return this._zImages["frame_"+ant];} // return previous and keep next change
+			else if(sec > lastId && sec < this._videoLength){ // LAST INTERVAL
+					this._next = this._videoLength;
+					this._ant = lastId;
+					//console.log(this._ant+"---"+this._next);
+					return this._zImages["frame_"+ant]; 
+			}
+				else ant = id;
+		}
 	},
 
 	createOverlay:function(){
