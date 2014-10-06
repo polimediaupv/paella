@@ -99,6 +99,8 @@ public class VideoElement extends Sprite implements IMediaElement {
 
 		_timer = new Timer(timerRate);
 		_timer.addEventListener("timer", timerHandler);
+		
+		_timer.start();
     }
 	
 	private function timerHandler(e:TimerEvent):void {
@@ -115,8 +117,6 @@ public class VideoElement extends Sprite implements IMediaElement {
 	}
 	
 	private function netStatusHandler(event:NetStatusEvent):void {
-		//JavascriptTrace.debug("netStatus " + event.info.code);
-
 	    switch (event.info.code) {
 
 	      case "NetStream.Buffer.Empty":
@@ -154,8 +154,6 @@ public class VideoElement extends Sprite implements IMediaElement {
 	          sendEvent(HtmlEvent.PLAYING);
 
 	        }
-
-	        _timer.start();
 
 	        break;
 
@@ -427,6 +425,7 @@ public class VideoElement extends Sprite implements IMediaElement {
 	private function sendEvent(eventName:String):void {
 		// calculate this to mimic HTML5
 		_bufferedTime = _bytesLoaded / _bytesTotal * _duration;
+		JavascriptTrace.debug(eventName + " - buffered time: " + _bufferedTime + ", current time: " + currentTime());
 
 		// build JSON
 		var values:String =

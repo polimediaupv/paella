@@ -243,6 +243,10 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 	},
 	
 	eventReceived:function(eventName,params) {
+		if (eventName=="progress") {
+			console.log(eventName);
+		}
+		
 		params = params.split(",");
 		var processedParams = {};
 		for (var i=0; i<params.length; ++i) {
@@ -272,8 +276,12 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 			this._duration = params.duration;
 			this.callReadyEvent();
 		}
-//		console.log("Flash event " + eventName);
-//		console.log(params);
+		if (eventName=="progress") {
+			base.log.debug("Flash video event: " + eventName + ", progress: " + this.flashVideo.currentProgress());
+		}
+		else {
+			base.log.debug("Flash video event: " + eventName);
+		}
 	},
 
 	// Adobe Flash utils
@@ -420,7 +428,16 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 	},
 
 	volume:function() {
-		return this.flashVideo.getVolume();
+		var volume = 0;
+		if (this.flashVideo) {
+			try {
+				volume = this.flashVideo.getVolume();
+			}
+			catch (e) {
+				
+			}
+		}
+		return volume;
 	},
 
 	setPlaybackRate:function(rate) {
@@ -489,6 +506,9 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 
 	addSourceProgresiveDownload:function(sourceData){
 		var parameters = {};
+		if (base.parameters.get('debug')=="true") {
+			parameters.debugMode = true;
+		}
 		if (sourceData.type=='video/mp4') {
 			if (!/rtmp:\/\//.test(sourceData.src)) {
 				parameters.url = sourceData.src;
@@ -507,6 +527,9 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 
 	addSourceStreaming:function(sourceData) {
 		var parameters = {};
+		if (base.parameters.get('debug')=="true") {
+			parameters.debugMode = true;
+		}
 		if (sourceData.type=='video/mp4') {
 			if (/(rtmp:\/\/[\w\d\.\-_]+[:+\d]*\/[\w\d\-_]+\/)(mp4:)([\w\d\.\/\-_]+)/i.test(sourceData.src)) {
 				sourceData.src = RegExp.$1 + RegExp.$3;
