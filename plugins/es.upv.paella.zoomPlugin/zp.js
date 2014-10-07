@@ -78,9 +78,12 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 
 			if($('.newframe').length>0){
 
-				if(this._zImages.hasOwnProperty("frame_"+sec)) src = this._zImages["frame_"+sec];
+				if(this._zImages.hasOwnProperty("frame_"+sec)) { // SWAP IMAGES WHEN PLAYING
+					if(src == this._zImages["frame_"+sec]) return;
+					else src = this._zImages["frame_"+sec]; 
+					}
 
-				else if(sec > this._next || sec < this._ant) { src = self.returnSrc(sec); }
+				else if(sec > this._next || sec < this._ant) { src = self.returnSrc(sec); } // RELOAD IF OUT OF INTERVAL
 					else return;
 
 					$("#photo_01").attr('src',src).load();
