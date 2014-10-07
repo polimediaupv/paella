@@ -76,14 +76,65 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		paella.events.bind(paella.events.timeupdate,function(event,params) { thisClass.onTimeUpdate(params); });
 		$(this.domElement).bind('mousedown',function(event) { paella.utils.mouseManager.down(thisClass,event); event.stopPropagation(); });
 		$(playbackFull.domElement).bind('mousedown',function(event) { paella.utils.mouseManager.down(thisClass,event); event.stopPropagation();  });
-		$(this.domElement).bind('mousemove',function(event) { paella.utils.mouseManager.move(event); });
+		$(this.domElement).bind('mousemove',function(event) { thisClass.movePassive(event); paella.utils.mouseManager.move(event); });
 		$(playbackFull.domElement).bind('mousemove',function(event) { paella.utils.mouseManager.move(event); });
 		$(this.domElement).bind('mouseup',function(event) { paella.utils.mouseManager.up(event); });
 		$(playbackFull.domElement).bind('mouseup',function(event) { paella.utils.mouseManager.up(event); });
 
+		//MOUSE OUT BIND
+		$(this.domElement).bind("mouseout",function(event) { thisClass.mouseOut(event); });
+
 		if (paella.player.isLiveStream()) {
 			$(this.domElement).hide();
 		}
+	},
+
+	mouseOut:function(event){
+		if($("#divTimeOverlay").length == 1) $("#divTimeOverlay").remove();
+	},
+
+	movePassive:function(event){
+		var width = $(this.domElement).width();
+		var position = event.clientX * 100 / width;
+		var time = paella.player.videoContainer.duration("");
+
+		time = ( position * time / 100 );
+
+		var hou = Math.floor(time / 3600);
+		hou = ("00"+hou).slice(hou.toString().length);
+		var min = Math.floor(time / 60);
+		min = ("00"+min).slice(min.toString().length);
+		var sec = Math.floor(time%60);
+		sec = ("00"+sec).slice(sec.toString().length);
+		//console.log("move: " + position);
+		var timestr = (hou+":"+min+":"+sec);
+
+		// BAR POSITON
+		var p = $("#playerContainer_controls_playback_playbackBar");
+		var pos = p.offset();
+		//console.log(pos.top);
+
+		// CREATING THE OVERLAY
+		// IF NOT CREATED
+		if($("#divTimeOverlay").length == 0){
+		var div = document.createElement("div");
+		div.className = "divTimeOverlay";
+		div.style.top = (pos.top-20)+"px"; 
+		div.id = ("divTimeOverlay");
+		div.innerHTML = timestr;
+		document.body.appendChild(div);
+		}
+		else $("#divTimeOverlay")[0].innerHTML = timestr;
+		var ancho = $("#divTimeOverlay").width();
+		//console.log(ancho);
+		var posx = event.clientX-(ancho/2);
+		$("#divTimeOverlay").css("left",posx);
+
+		// POSITION
+
+
+
+		//console.log(event.clientX+"-"+event.clientY);
 	},
 
 	playbackFull:function() {
