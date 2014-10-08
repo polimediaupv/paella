@@ -122,7 +122,9 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		div.style.top = (pos.top-20)+"px"; 
 		div.id = ("divTimeOverlay");
 		div.innerHTML = timestr;
-		document.body.appendChild(div);
+
+		var controlBar = document.getElementById('playerContainer_controls_playback_playbackBar');
+		controlBar.appendChild(div); //CHILD OF CONTROLS_BAR
 		}
 		else $("#divTimeOverlay")[0].innerHTML = timestr; //IF CREATED, UPDATE
 		var ancho = $("#divTimeOverlay").width();
