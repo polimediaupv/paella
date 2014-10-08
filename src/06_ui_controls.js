@@ -94,8 +94,14 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	},
 
 	movePassive:function(event){
-		var width = $(this.domElement).width();
-		var position = event.clientX * 100 / width; // GET % OF THE STREAM
+		// CONTROLS_BAR POSITON
+		var p = $("#playerContainer_controls_playback_playbackBar");
+		var pos = p.offset();
+
+		var width = $("#playerContainer_controls_playback_playbackBar").width();
+		var left = (event.clientX-pos.left);
+		left = (left < 0) ? 0 : left;
+		var position = left * 100 / width; // GET % OF THE STREAM
 		var time = paella.player.videoContainer.duration("");
 
 		time = ( position * time / 100 );
@@ -108,10 +114,6 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		sec = ("00"+sec).slice(sec.toString().length);
 
 		var timestr = (hou+":"+min+":"+sec);
-
-		// CONTROLS_BAR POSITON
-		var p = $("#playerContainer_controls_playback_playbackBar");
-		var pos = p.offset();
 
 		// CREATING THE OVERLAY
 		if($("#divTimeOverlay").length == 0){
