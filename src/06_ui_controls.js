@@ -94,8 +94,14 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	},
 
 	movePassive:function(event){
-		var width = $(this.domElement).width();
-		var position = event.clientX * 100 / width; // GET % OF THE STREAM
+		// CONTROLS_BAR POSITON
+		var p = $("#playerContainer_controls_playback_playbackBar");
+		var pos = p.offset();
+
+		var width = $("#playerContainer_controls_playback_playbackBar").width();
+		var left = (event.clientX-pos.left);
+		left = (left < 0) ? 0 : left;
+		var position = left * 100 / width; // GET % OF THE STREAM
 		var time = paella.player.videoContainer.duration("");
 
 		time = ( position * time / 100 );
@@ -109,10 +115,6 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 
 		var timestr = (hou+":"+min+":"+sec);
 
-		// CONTROLS_BAR POSITON
-		var p = $("#playerContainer_controls_playback_playbackBar");
-		var pos = p.offset();
-
 		// CREATING THE OVERLAY
 		if($("#divTimeOverlay").length == 0){
 		var div = document.createElement("div");
@@ -120,7 +122,9 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		div.style.top = (pos.top-20)+"px"; 
 		div.id = ("divTimeOverlay");
 		div.innerHTML = timestr;
-		document.body.appendChild(div);
+
+		var controlBar = document.getElementById('playerContainer_controls_playback_playbackBar');
+		controlBar.appendChild(div); //CHILD OF CONTROLS_BAR
 		}
 		else $("#divTimeOverlay")[0].innerHTML = timestr; //IF CREATED, UPDATE
 		var ancho = $("#divTimeOverlay").width();
