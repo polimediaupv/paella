@@ -378,13 +378,13 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		var getProfile = base.parameters.get('profile');
 		var cookieProfile = base.cookies.get('lastProfile');
 		if (getProfile) {
-			this.setProfile(getProfile);
+			this.setProfile(getProfile, false);
 		}
 		else if (cookieProfile) {
-			this.setProfile(cookieProfile);
+			this.setProfile(cookieProfile, false);
 		}
 		else {
-			this.setProfile(this.config.defaultProfile);
+			this.setProfile(this.config.defaultProfile, false);
 		}
 
 		paella.pluginManager.loadEventDrivenPlugins();
