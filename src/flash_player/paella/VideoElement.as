@@ -82,6 +82,8 @@ public class VideoElement extends Sprite implements IMediaElement {
 	    return currentTime;
 	}
 	
+	public function setAutoplay(autoplay:Boolean):void { _playWhenConnected = autoplay; }
+	
     public function VideoElement(jsInterface:JavascriptInterface, autoplay:Boolean, preload:Boolean, timerRate:Number, startVolume:Number, streamer:String, bufferTime:Number) {
 		_javascriptInterface = jsInterface;
 		_playWhenConnected = true;
