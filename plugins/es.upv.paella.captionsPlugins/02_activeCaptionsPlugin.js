@@ -1,5 +1,4 @@
-
-paella.plugins.ActiveCaptionsPlugin = Class.create(paella.ButtonPlugin,{
+Class ("paella.plugins.ActiveCaptionsPlugin",paella.ButtonPlugin,{
 	button: null,
 	availableLangs: [],
 

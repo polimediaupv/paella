@@ -1,4 +1,4 @@
-paella.plugins.DescriptionPlugin = Class.create(paella.TabBarPlugin,{
+Class ("paella.plugins.DescriptionPlugin",paella.TabBarPlugin,{
 	getSubclass:function() { return "showDescriptionTabBar"; },
 	getName:function() { return "es.upv.paella.descriptionPlugin"; },
 	getTabName:function() { return "Descripción"; },

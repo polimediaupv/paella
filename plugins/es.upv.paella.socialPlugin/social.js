@@ -1,4 +1,4 @@
-paella.plugins.SocialPlugin = Class.create(paella.ButtonPlugin,{
+Class ("paella.plugins.SocialPlugin",paella.ButtonPlugin,{
 	buttonItems: null,
 	socialMedia: null,
 	getAlignment:function() { return 'right'; },

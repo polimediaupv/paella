@@ -56,9 +56,11 @@ Class ("paella.RelativeVideoSize", {
 Class ("paella.VideoElementBase", paella.DomNode,{
 	ready:false,
 	_metadata:null,
+	_rect:null,
 
 	initialize:function(id,containerType,left,top,width,height) {
 		var thisClass = this;
+		this._rect = { left:left, top:top, width:width, height:height };
 		var relativeSize = new paella.RelativeVideoSize();
 		var percentTop = relativeSize.percentVSize(top) + '%';
 		var percentLeft = relativeSize.percentWSize(left) + '%';
@@ -138,6 +140,7 @@ Class ("paella.VideoElementBase", paella.DomNode,{
 	},
 
 	setRect:function(rect,animate) {
+		this._rect = JSON.parse(JSON.stringify(rect));
 		var relativeSize = new paella.RelativeVideoSize();
 		var percentTop = relativeSize.percentVSize(rect.top) + '%';
 		var percentLeft = relativeSize.percentWSize(rect.left) + '%';
@@ -147,12 +150,21 @@ Class ("paella.VideoElementBase", paella.DomNode,{
 		if (animate) {
 			this.disableClassName();
 			var thisClass = this;
-			$(this.domElement).animate(style,400,function(){ thisClass.enableClassName(); });
+			
+			$(this.domElement).animate(style,400,function(){
+				thisClass.enableClassName();
+				paella.events.trigger(paella.events.setComposition, { video:thisClass });
+			});
 			this.enableClassNameAfter(400);
 		}
 		else {
 			$(this.domElement).css(style);
+			paella.events.trigger(paella.events.setComposition, { video:this });
 		}
+	},
+	
+	getRect:function() {
+		return this._rect;
 	},
 
 	disableClassName:function() {
@@ -591,24 +603,6 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		}
 		else {
 			return { width: this.domElement.videoWidth, height: this.domElement.videoHeight };
-		}
-	},
-
-	setRect:function(rect,animate) {
-		var relativeSize = new paella.RelativeVideoSize();
-		var percentTop = relativeSize.percentVSize(rect.top) + '%';
-		var percentLeft = relativeSize.percentWSize(rect.left) + '%';
-		var percentWidth = relativeSize.percentWSize(rect.width) + '%';
-		var percentHeight = relativeSize.percentVSize(rect.height) + '%';
-		var style = {top:percentTop,left:percentLeft,width:percentWidth,height:percentHeight,position:'absolute'};
-		if (animate) {
-			this.disableClassName();
-			var thisClass = this;
-			$(this.domElement).animate(style,400,function(){ thisClass.enableClassName(); });
-			this.enableClassNameAfter(400);
-		}
-		else {
-			$(this.domElement).css(style);
 		}
 	},
 

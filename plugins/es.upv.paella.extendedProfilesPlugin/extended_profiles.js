@@ -1,4 +1,4 @@
-paella.plugins.ExtendedProfilesPlugin = Class.create(paella.ButtonPlugin,{
+Class ("paella.plugins.ExtendedProfilesPlugin",paella.ButtonPlugin,{
 	buttonItems: null,
 	extendedModes: null,
 	getAlignment:function() { return 'right'; },
@@ -12,8 +12,6 @@ paella.plugins.ExtendedProfilesPlugin = Class.create(paella.ButtonPlugin,{
 
 	buttons: [],
 	selected_button: null,
-
-	_isFullscreen:false,
 
 	setup:function() {
 		var thisClass = this;
@@ -51,13 +49,15 @@ paella.plugins.ExtendedProfilesPlugin = Class.create(paella.ButtonPlugin,{
 		var thisClass = this;
 		this.buttonItems = {};
 		extendedModes = ['fullScr','full','big','small'];
-		for (var mode in extendedModes){
-		  var modeData = extendedModes[mode];
-		  var buttonItem = thisClass.getProfileItemButton(mode,modeData);
-		  thisClass.buttonItems[mode] = buttonItem;
-		  domElement.appendChild(buttonItem);
-		  this.buttons.push(buttonItem);
-		}
+		extendedModes.forEach(function(mode) {
+			if (mode != 'fullScr' || paella.player.checkFullScreenCapability()) {		
+				var modeIdx = extendedModes.indexOf(mode);
+				var buttonItem = thisClass.getProfileItemButton(modeIdx, mode);
+				thisClass.buttonItems[modeIdx] = buttonItem;
+				domElement.appendChild(buttonItem);
+				thisClass.buttons.push(buttonItem);
+			}
+		});
 		this.selected_button = thisClass.buttons.length;
 	},
 
@@ -71,120 +71,39 @@ paella.plugins.ExtendedProfilesPlugin = Class.create(paella.ButtonPlugin,{
 			plugin:this
 		};
 		$(elem).click(function(event) {
-			this.data.plugin.onItemClick(elem,this.data.profile, this.data.profileData);
+			this.data.plugin.onItemClick(elem, this.data.profile, this.data.profileData);
 		});
 		return elem;
 	},
 
-	onItemClick:function(button,profile,profileData) {
+	onItemClick:function(button, profile, profileData) {		
 		if (profileData == "fullScr") {
-			//paella.extended.setProfile('full');
-			this.switchFullScreen(profile,profileData);
-		} else {
-			if (this.isFullscreen()) {
-				if (document.webkitCancelFullScreen) {
-					document.webkitCancelFullScreen();
-					this._isFullscreen = false;
-				}
-				else if (document.mozCancelFullScreen) {
-					document.mozCancelFullScreen();
-					this._isFullscreen = false;
-				}
-				else if (document.msExitFullscreen) {
-					document.msExitFullscreen();
-					this._isFullscreen = false;
-				}
-				else if (document.cancelFullScreen) {
-					document.cancelFullScreen();
-					this._isFullscreen = false;
-				}
-				this.buttonItems[0].className  = this.getButtonItemClass('fullScr',false);
+			this.switchFullScreen(profile, profileData);
+		} 
+		else {
+			if (paella.player.isFullScreen()) {
+				paella.player.exitFullScreen();				
+				this.buttonItems[0].className  = this.getButtonItemClass('fullScr', false);
 			}
 
-			this.buttonItems[extendedModes.indexOf(paella.extended.getProfile())].className = this.getButtonItemClass(paella.extended.getProfile(),false);
+			this.buttonItems[extendedModes.indexOf(paella.extended.getProfile())].className = this.getButtonItemClass(paella.extended.getProfile(), false);
 			this.buttonItems[profile].className = this.getButtonItemClass(profileData,true);
 			paella.extended.setProfile(button.data.profileData);
 		}
-	    paella.events.trigger(paella.events.hidePopUp,{identifier:this.getName()});
+	    paella.events.trigger(paella.events.hidePopUp, {identifier:this.getName()});
 	},
 
 	getButtonItemClass:function(profileName,selected) {
 		return 'extendedProfilesItemButton ' + profileName  + ((selected) ? ' selected':'');
 	},
 
-	switchFullScreen:function(profile,profileData){
-		var thisClass = this;
-		var fs = document.getElementById(paella.player.mainContainer.id);
-		if (this.isFullscreen()) {
-			this.buttonItems[extendedModes.indexOf(paella.extended.getProfile())].className = this.getButtonItemClass(paella.extended.getProfile(),true);
-			if (document.webkitCancelFullScreen) {
-				document.webkitCancelFullScreen();
-				this.buttonItems[profile].className  = this.getButtonItemClass(profileData,false);
-				this._isFullscreen = false;
-			}
-			else if (document.mozCancelFullScreen) {
-				document.mozCancelFullScreen();
-				this.buttonItems[profile].className = this.getButtonItemClass(profileData,false);
-				this._isFullscreen = false;
-			}
-			else if (document.msExitFullscreen) {
-				document.msExitFullscreen();
-				this.buttonItems[profile].className = this.getButtonItemClass(profileData,false);
-				this._isFullscreen = false;
-			}
-			else if (document.cancelFullScreen) {
-				document.cancelFullScreen();
-				this.buttonItems[profile].className  = this.getButtonItemClass(profileData,false);
-				this._isFullscreen = false;
-			}
+	switchFullScreen:function(profile,profileData){		
+		if (paella.player.isFullScreen()) {
+			paella.player.exitFullScreen();
 		}
 		else {
-			this.buttonItems[extendedModes.indexOf(paella.extended.getProfile())].className = this.getButtonItemClass(paella.extended.getProfile(),false);
-			if (fs.webkitRequestFullScreen) {
-				fs.webkitRequestFullScreen();
-				this.buttonItems[profile].className  = this.getButtonItemClass(profileData,true);
-				this._isFullscreen = true;
-			}
-			else if (fs.mozRequestFullScreen){
-				fs.mozRequestFullScreen();
-				this.buttonItems[profile].className  = this.getButtonItemClass(profileData,true);
-				this._isFullscreen = true;
-			}
-			else if (fs.msRequestFullscreen) {
-				fs.msRequestFullscreen();
-				this.buttonItems[profile].className = this.getButtonItemClass(profileData,true);
-				this._isFullscreen = true;
-			}
-			else if (fs.requestFullScree) {
-				fs.requestFullScreen();
-				this.buttonItems[profile].className  = this.getButtonItemClass(profileData,true);
-				this._isFullscreen = true;
-			}
-			else {
-				alert('Your browser does not support fullscreen mode');
-			}
-
-			var onFullScreenEvent = function(){
-				var fs = thisClass.isFullscreen();
-				if (fs) {
-					fs = document.getElementById(paella.player.mainContainer.id);
-					fs.style.width = '100%';
-					fs.style.height = '100%';
-				}
-				else {
-					fs = document.getElementById(paella.player.mainContainer.id);
-					fs.style.width = '';
-					fs.style.height = '';
-				}
-			};
-			document.addEventListener("fullscreenchange", onFullScreenEvent, false);
-			document.addEventListener("webkitfullscreenchange", onFullScreenEvent, false);
-			document.addEventListener("mozfullscreenchange", onFullScreenEvent, false);
+			paella.player.goFullScreen();
 		}
-	},
-
-	isFullscreen:function() {
-		return this._isFullscreen;
 	}
 });
 

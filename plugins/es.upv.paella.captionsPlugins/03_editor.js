@@ -1,7 +1,6 @@
 /*
 
-paella.plugins.CaptionsEditorPlugin = Class.create(paella.editor.TrackPlugin,{
-	tracks:null,
+Class ("paella.plugins.CaptionsEditorPlugin",paella.editor.TrackPlugin,{
 	selectedTrackItem:null,
 	
 	checkEnabled:function(onSuccess) {

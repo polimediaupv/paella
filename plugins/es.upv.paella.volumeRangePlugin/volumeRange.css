@@ -1,0 +1,76 @@
+.buttonPlugin.volumeRangeButton {
+	background-size: 400%;
+	background-image:url(../../resources/images/volume_button.png);
+	background-position: 40px 0px;	
+}
+
+.buttonPlugin.volumeRangeButton.mute {
+	background-position: 0px 0px;
+}
+
+.buttonPlugin.volumeRangeButton.max {
+	background-position: 40px 0px;
+}
+
+.buttonPlugin.volumeRangeButton.med {
+	background-position: 80px 0px;
+}
+
+.buttonPlugin.volumeRangeButton.min {
+	background-position: 120px 0px;
+}
+
+
+.buttonPluginPopUp.volumeRangeButton {
+	position: absolute;
+	right: -260px;
+}
+
+
+.videoRangeContainer {	
+	width: 300px;
+}
+
+.videoRangeContainer .range {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -moz-box;
+	/*display: -moz-flex; */
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-moz-box-align: center;
+	-ms-box-align: center;
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	-moz-align-items: center;
+	align-items: center;
+}
+
+.videoRangeContainer .range .image {
+	
+}
+
+.videoRangeContainer .range .image.master {
+	background-image: url(view_mode_icons.png);
+	background-size: 200% auto;
+	width: 78px;
+	height: 41px;
+	cursor: pointer;
+	background-position: 0 207px;	
+}
+
+.videoRangeContainer .range .image.slave {
+	background-image: url(view_mode_icons.png);
+	background-size: 200% auto;
+	width: 78px;
+	height: 41px;
+	cursor: pointer;
+	background-position: 0 168px;
+}
+
+
+
+
+
+
