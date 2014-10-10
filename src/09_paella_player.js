@@ -39,6 +39,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		var thisClass = this;
 		
 		var onFullScreenChangeEvent = function() {
+			paella.pluginManager.checkPluginsVisibility();
 			var fs = document.getElementById(paella.player.mainContainer.id);
 			if (paella.player.isFullScreen()) {				
 				fs.style.width = '100%';
@@ -48,7 +49,8 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 				fs.style.width = '';
 				fs.style.height = '';
 			}
-						
+			
+			
 			if (thisClass.isFullScreen()) {
 				paella.events.trigger(paella.events.enterFullscreen);				
 			}
@@ -84,7 +86,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 					video.webkitEnterFullscreen();
 				}
 			}
-			else {
+			else {			
 				var fs = document.getElementById(paella.player.mainContainer.id);		
 				if (fs.webkitRequestFullScreen) {			
 					fs.webkitRequestFullScreen();
@@ -97,7 +99,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 				}
 				else if (fs.requestFullScreen) {
 					fs.requestFullScreen();
-				}				
+				}
 			}
 		}
 	},
@@ -376,13 +378,13 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		var getProfile = base.parameters.get('profile');
 		var cookieProfile = base.cookies.get('lastProfile');
 		if (getProfile) {
-			this.setProfile(getProfile);
+			this.setProfile(getProfile, false);
 		}
 		else if (cookieProfile) {
-			this.setProfile(cookieProfile);
+			this.setProfile(cookieProfile, false);
 		}
 		else {
-			this.setProfile(this.config.defaultProfile);
+			this.setProfile(this.config.defaultProfile, false);
 		}
 
 		paella.pluginManager.loadEventDrivenPlugins();

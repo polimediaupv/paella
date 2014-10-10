@@ -56,10 +56,16 @@ paella.events = {
 	hidePopUp:'paella:hidePopUp',
 	showPopUp:'paella:showPopUp',
 	userTracking:'paella:userTracking',
-	videoLoaded:'paella:videoLoaded',
-	videoUnloaded:'paella:videoUnloaded',
 	enterFullscreen:'paella:enterFullscreen',
 	exitFullscreen:'paella:exitFullscreen',
+	
+	singleVideoReady:'paella:singleVideoReady',
+	singleVideoUnloaded:'paella:singleVideoUnloaded',
+	videoReady:'paella:videoReady',
+	videoUnloaded:'paella:videoUnloaded',
+	
+	
+	flashVideoEvent:'paella:flashVideoEvent',
 
 	trigger:function(event,params) { $(document).trigger(event,params);  },
 	bind:function(event,callback) { $(document).bind(event,function(event,params) { callback(event,params);}) ;},
@@ -72,4 +78,3 @@ paella.events = {
 };
 
 paella.events.setupExternalListener();
-

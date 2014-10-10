@@ -63,7 +63,7 @@ Class ("paella.PluginManager", {
 		var This = this;
 		this.foreach(function(plugin,config) {
 			if (config.enabled) {
-				paella.debug.log("load plugin " + name);
+				base.log.debug("load plugin " + name);
 				plugin.config = config;
 				if (plugin.type=="eventDriven") {
 					plugin.load(This);
@@ -76,7 +76,7 @@ Class ("paella.PluginManager", {
 		var This = this;
 		this.foreach(function(plugin,config) {
 			if (config.enabled) {
-				paella.debug.log("load plugin " + name);
+				base.log.debug("load plugin " + name);
 				plugin.config = config;							
 				if (plugin.type!="eventDriven") {
 					plugin.load(This);
@@ -364,15 +364,16 @@ Class ("paella.UIPlugin", paella.Plugin, {
 	},
 	
 	hideUI:function() {
-		this.ui.setAttribute('aria-hidden', 'false');
+		this.ui.setAttribute('aria-hidden', 'true');
 		$(this.ui).hide();
 	},
 	
 	showUI:function() {
+		var thisClass = this;
 		paella.pluginManager.enabledPlugins.forEach(function(p) {
-			if (p == this) {
-				this.ui.setAttribute('aria-hidden', 'true');
-				$(this.ui).show();				
+			if (p == thisClass) {
+				thisClass.ui.setAttribute('aria-hidden', 'false');
+				$(thisClass.ui).show();				
 			}
 		});	
 	},
