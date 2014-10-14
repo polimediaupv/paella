@@ -2,3 +2,9 @@
 	background-image: url(fullscreen_button.png);
 	background-size: 200%;
 }
+
+.showFullScreenButton.active {
+	background-image: url(fullscreen_button.png);
+	background-size: 200%;
+	background-position: 40px 0px;
+}
