@@ -11,9 +11,10 @@
 	padding: 10px;
 }*/
 
-.showMultipleQualitiesPlugin {
-	background-image: url(advanced_button.png);
-	background-size: 300%;
+.buttonPlugin.showMultipleQualitiesPlugin {
+	text-align: center;
+	line-height: 38px;
+	color: white;
 }
 
 .buttonPluginPopUp.showMultipleQualitiesPlugin {

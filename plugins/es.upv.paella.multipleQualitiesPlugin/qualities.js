@@ -19,6 +19,7 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 			};
 			base.dictionary.addDictionary(esDict);
 		}
+		this.setQualityLabel();
 	},
 
 	checkStreams:function() {
@@ -77,7 +78,8 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 				}
 				domElement.appendChild(this.getItemButton(w+"x"+h,w+"x"+h, reso2));
 			}
-		}else{
+		}
+		else{
 			act_percen= percen1;
 			for(var z=0;z<this.availableSlaves.length;z++){
 				w = this.availableSlaves[z].res.w;
@@ -123,6 +125,13 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 		//this.setText(label);
 		paella.events.trigger(paella.events.hidePopUp,{identifier:this.getName()});
 		paella.player.reloadVideos(reso, reso2);
+
+		this.setQualityLabel();
+	},
+	
+	setQualityLabel:function() {
+		var res = paella.player.videoContainer.currentMasterVideoData.res;
+		this.setText(res.h + "p");
 	},
 
 	getButtonItemClass:function(profileName,selected) {
