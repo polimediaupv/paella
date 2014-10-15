@@ -5,21 +5,20 @@
 }
 
 .buttonPlugin.showViewModeButton {
-	background-image:url(viewmode.png);
-	background-repeat:no-repeat;
-	background-size:auto 100%;
+	background-position: -440px -2px;
 }
 
 .viewModeItemButton {
-	background-image: url(view_mode_icons.png);
-	background-size: 200% auto;
-	width: 78px;
-	height: 41px;
+	background-image: url(../images/paella_icons_light.png);
+	width: 80px;
+	height: 40px;
+	background-size: 800px 400px;
 	cursor: pointer;
+	background-position: 80px 0px;
 }
 
 .viewModeItemButton:hover {
-	box-shadow: inset 0px 0px 4px 0px @shadowColor;
+	background-color: @hoverBackgroundColor;
 }
 
 .viewModeItemButton.selected {
@@ -29,28 +28,27 @@
 }
 
 .viewModeItemButton.slide_professor {
-	background-position: 0 82px;
+	background-position: 80px -80px;
 }
 
 .viewModeItemButton.professor_slide {
-	background-position: 0 124px;
+	background-position: 80px -120px;
 }
 
 .viewModeItemButton.professor {
-	background-position: 0 207px;
+	background-position: 80px -40px;
 }
 
-/*
-.viewModeItemButton.slide_over_professor {	
+.viewModeItemButton.slide_over_professor {
+	background-position: 80px -200px;
 }
-*/
 
 .viewModeItemButton.slide_over_professor_right {
-	background-position: 0 41px;
+	background-position: 80px -160px;
 }
 
 .viewModeItemButton.slide {
-	background-position: 0 168px;
+	background-position: 80px 0px;
 }
 
 
