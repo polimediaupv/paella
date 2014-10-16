@@ -395,6 +395,14 @@ Class ("paella.ButtonPlugin", paella.UIPlugin,{
 		return "myButtonPlugin";
 	},
 
+	addSubclass:function($subclass) {
+		$(this.container).addClass($subclass);
+	},
+	
+	removeSubclass:function($subclass) {
+		$(this.container).removeClass($subclass);
+	},
+
 	action:function(button) {
 		// Implement this if you want to do something when the user push the plugin button
 	},

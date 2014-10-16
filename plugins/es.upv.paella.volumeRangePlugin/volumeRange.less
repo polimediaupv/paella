@@ -1,34 +1,31 @@
 .buttonPlugin.volumeRangeButton {
-	background-size: 400%;
-	background-image:url(../../resources/images/volume_button.png);
-	background-position: 40px 0px;	
 }
 
 .buttonPlugin.volumeRangeButton.mute {
-	background-position: 0px 0px;
+	background-position: -120px 0px;
 }
 
 .buttonPlugin.volumeRangeButton.max {
-	background-position: 40px 0px;
+	background-position: -240px 0px;
 }
 
 .buttonPlugin.volumeRangeButton.med {
-	background-position: 80px 0px;
+	background-position: -200px 0px;
 }
 
 .buttonPlugin.volumeRangeButton.min {
-	background-position: 120px 0px;
+	background-position: -160px 0px;
 }
 
 
 .buttonPluginPopUp.volumeRangeButton {
 	position: absolute;
-	right: -260px;
+	right: -220px;
 }
 
 
 .videoRangeContainer {	
-	width: 300px;
+	width: 260px;
 }
 
 .videoRangeContainer .range {
@@ -48,25 +45,18 @@
 }
 
 .videoRangeContainer .range .image {
-	
+	background-image: @paella_icons_image;
+	width: 40px;
+	height: 40px;
+	background-size: 800px 400px;
 }
 
 .videoRangeContainer .range .image.master {
-	background-image: url(view_mode_icons.png);
-	background-size: 200% auto;
-	width: 78px;
-	height: 41px;
-	cursor: pointer;
-	background-position: 0 207px;	
+	background-position: -740px -40px;
 }
 
 .videoRangeContainer .range .image.slave {
-	background-image: url(view_mode_icons.png);
-	background-size: 200% auto;
-	width: 78px;
-	height: 41px;
-	cursor: pointer;
-	background-position: 0 168px;
+	background-position: -740px 0px;
 }
 
 
