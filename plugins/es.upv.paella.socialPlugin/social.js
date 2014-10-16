@@ -63,13 +63,12 @@ Class ("paella.plugins.SocialPlugin",paella.ButtonPlugin,{
 		var thisClass = this;
 		this.buttonItems = {};
 		socialMedia = ['facebook','twitter', 'embed'];
-		for (var media in socialMedia){
-		  var mediaData = socialMedia[media];
+		socialMedia.forEach(function(mediaData) {
 		  var buttonItem = thisClass.getSocialMediaItemButton(mediaData);
-		  thisClass.buttonItems[media] = buttonItem;
+		  thisClass.buttonItems[socialMedia.indexOf(mediaData)] = buttonItem;
 		  domElement.appendChild(buttonItem);
-		  this.buttons.push(buttonItem);
-		}
+		  thisClass.buttons.push(buttonItem);
+		});
 		this.selected_button = thisClass.buttons.length;
 	},
 
