@@ -1,4 +1,3 @@
-.helpButton {
-	background-image: url(help_button.png);
-	background-size: 200%;
+.buttonPlugin.helpButton {
+	background-position: -520px 0px;
 }

@@ -76,7 +76,7 @@ Class ("paella.plugins.ExtendedProfilesPlugin",paella.ButtonPlugin,{
 		return elem;
 	},
 
-	onItemClick:function(button, profile, profileData) {		
+	onItemClick:function(button, profile, profileData) {
 		if (profileData == "fullScr") {
 			this.switchFullScreen(profile, profileData);
 		} 

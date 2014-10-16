@@ -13,8 +13,10 @@
 
 .buttonPlugin.showMultipleQualitiesPlugin {
 	text-align: center;
-	line-height: 38px;
-	color: white;
+	line-height: 40px;
+	color: rgb(21, 21, 21);
+	background-position: -240px -40px;
+	font-size: 12px;
 }
 
 .buttonPluginPopUp.showMultipleQualitiesPlugin {
