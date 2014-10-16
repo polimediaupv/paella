@@ -259,7 +259,7 @@ Class ("paella.InitDelegate", {
 	loadDictionary:function(onSuccess) {
 		var asyncLoader = new base.AsyncLoader();
 		asyncLoader.addCallback(new base.DictionaryCallback(this.initParams.dictionaryUrl));
-		asyncLoader.addCallback(new base.DictionaryCallback(this.initParams.editorDictionaryUrl));
+		//asyncLoader.addCallback(new base.DictionaryCallback(this.initParams.editorDictionaryUrl));
 		asyncLoader.load(function() {
 				onSuccess();
 			},
