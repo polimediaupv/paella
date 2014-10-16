@@ -32,14 +32,13 @@ Class ("paella.editor.Toolbar", {
 		var tools = {};
 		tools[selectionTrackName] = "paella.editor.instance.bottomBar.toolbar.onToolChanged('select','" + selectionTrackName + "')";
 		var trackPlugins = paella.editor.pluginManager.trackPlugins;
-		for (var i in trackPlugins) {
-			var plugin = trackPlugins[i];
+		trackPlugins.forEach(function(plugin) {
 			var label = plugin.getTrackName();
 			// TODO: tool icon
 			var action = "paella.editor.instance.bottomBar.toolbar.onToolChanged('" + plugin.getName() + "','" + plugin.getTrackName() +"')";
 			//var action = "paella.editor.instance.bottomBar.timeline.selectTrackList('" + plugin.getName() + "');";
 			tools[label] = action;
-		}
+		});
 		var defaultText = base.dictionary.translate("Tool") + ": " + base.dictionary.translate('Selection');
 		this.toolButton = bootstrapUtils.dropdown(defaultText,'toolDropdown',tools,'btn-mini','',false);
 		this.container.appendChild(this.toolButton);
@@ -81,6 +80,7 @@ Class ("paella.editor.Toolbar", {
 	},
 
 	buildPlugins:function() {
+		var This = this;
 		if (!this.toolbarPlugins) {
 			this.toolbarPlugins = document.createElement('span');
 			this.container.appendChild(this.toolbarPlugins);
@@ -89,8 +89,8 @@ Class ("paella.editor.Toolbar", {
 			this.toolbarPlugins.innerHTML = "";
 		}
 		var plugins = paella.editor.pluginManager.toolbarPlugins;
-		for (var i=0;i<plugins.length;++i) {
-			var plugin = plugins[i];
+		plugins.forEach(function(plugin) {
+			var i = plugins.indexOf(plugin);
 			var pluginName = plugin.getName();
 			var name = plugin.getButtonName();
 			var options = plugin.getOptions();
@@ -101,8 +101,8 @@ Class ("paella.editor.Toolbar", {
 				optionsObject[options[j]] = "paella.editor.instance.bottomBar.toolbar.selectPluginOption('" + pluginName + "'," + j + ")";
 			}
 			var button = bootstrapUtils.dropdown(name,'editorDropdown',optionsObject,'btn-mini',icon,true);
-			this.toolbarPlugins.appendChild(button);
-		}
+			This.toolbarPlugins.appendChild(button);
+		});
 	},
 
 	buildEditorMenu:function() {
@@ -117,12 +117,11 @@ Class ("paella.editor.Toolbar", {
 
 	selectPluginOption:function(pluginName,optionIndex) {
 		var plugins = paella.editor.pluginManager.toolbarPlugins;
-		for (var i=0;i<plugins.length;++i) {
-			var plugin = plugins[i];
+		plugins.forEach(function(plugin) {
 			if (plugin.getName()==pluginName) {
 				plugin.onOptionSelected(optionIndex);
 			}
-		}
+		});
 		this.buildPlugins();
 	},
 
@@ -308,23 +307,23 @@ Class ("paella.editor.Timeline", {
 		var plugins = paella.editor.pluginManager.trackPlugins;
 		var secTrackIndex = 0;
 		var subclass = "";
-		for (var i in plugins) {
-			if (plugins[i].getTrackType()=='secondary') {
+		plugins.forEach(function(plugin) {
+			if (plugin.getTrackType()=='secondary') {
 				subclass = "track" + secTrackIndex;
 				++secTrackIndex;
 			}
 			else {
 				subclass = "";
 			}
-			var track = new paella.editor.Track(container,plugins[i],subclass);
-			this.trackItemList.push(track);
-		}
+			var track = new paella.editor.Track(container,plugin,subclass);
+			thisClass.trackItemList.push(track);
+		});
 		this.selectTrackList(this.currentTrackList);
 	},
 
 	rebuildTrack:function(pluginName) {
 		var plugins = paella.editor.pluginManager.trackPlugins;
-		for (var i in this.trackItemList) {
+		for (var i=0; i<this.trackItemList.length; ++i) {
 			var track = this.trackItemList[i];
 			if (track.getName()==pluginName) {
 				track.rebuild();
@@ -394,7 +393,7 @@ Class ("paella.editor.Timeline", {
 			this.currentTrackList = null;
 		}
 		else {
-			for (var i in this.trackItemList) {
+			for (var i=0; i<this.trackItemList.length; ++i) {
 				var trackItemObj = this.trackItemList[i];
 				var container = trackItemObj.container;
 				if (trackItemObj.getName()==trackItem) {
@@ -458,7 +457,7 @@ Class ("paella.editor.BottomToolbar", {
 	}
 });
 
-Class ("paella.editor.BottomBar", paella.AsyncLoaderCallback,{
+Class ("paella.editor.BottomBar", base.AsyncLoaderCallback, {
 	editor:null,
 	container:null,
 	toolbar:null,
@@ -494,7 +493,7 @@ Class ("paella.editor.BottomBar", paella.AsyncLoaderCallback,{
 	}
 });
 
-Class ("paella.editor.RightBar", paella.AsyncLoaderCallback,{
+Class ("paella.editor.RightBar", base.AsyncLoaderCallback,{
 	editor:null,
 	container:null,
 	tabBar:null,
@@ -530,11 +529,10 @@ Class ("paella.editor.RightBar", paella.AsyncLoaderCallback,{
 		var plugins = paella.editor.pluginManager.rightBarPlugins;
 		if (plugins.length>0) {
 			var i=0;
-			for (i in plugins) {
-				var plugin = plugins[i];
-				ul.appendChild(this.getTab(plugin,i));
-				++i;
-			}
+			plugins.forEach(function(plugin) {
+				var i = plugins.indexOf(plugin);
+				ul.appendChild(thisClass.getTab(plugin,i));
+			});
 			container.appendChild(ul);
 
 			var currentTab = plugins[this.selectedTab];
