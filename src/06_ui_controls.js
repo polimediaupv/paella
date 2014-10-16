@@ -140,14 +140,30 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		// CALL IMAGEUPDATE
 		self.imageUpdate(time);	
 		
-		// UPDATE POSITION 
-		var ancho = $("#divTimeOverlay").width();
-		var posx = event.clientX-(ancho/2);
-		$("#divTimeOverlay").css("left",posx); // CENTER THE DIV HOVER THE MOUSE
+		// UPDATE POSITION IMAGE OVERLAY
 
-		ancho = $("#divTimeImageOverlay").width();
-		posx = event.clientX-(ancho/2);
+		var ancho = $("#divTimeImageOverlay").width();
+		var posx = event.clientX-(ancho/2);
+		if(event.clientX > (ancho/2 + pos.left)  &&  event.clientX < (pos.left+width - ancho/2) ) { // LEFT
 		$("#divTimeImageOverlay").css("left",posx); // CENTER THE DIV HOVER THE MOUSE
+		}
+		else if(event.clientX < width / 2)
+			$("#divTimeImageOverlay").css("left",pos.left);
+		else 
+			$("#divTimeImageOverlay").css("left",pos.left + width - ancho);
+
+		// UPDATE POSITION TIME OVERLAY
+
+		var ancho2 = $("#divTimeOverlay").width();
+		var posx2 = event.clientX-(ancho2/2);
+		if(event.clientX > ancho2/2 + pos.left  && event.clientX < (pos.left+width - ancho2/2) ){
+		$("#divTimeOverlay").css("left",posx2); // CENTER THE DIV HOVER THE MOUSE
+		}
+		else if(event.clientX < width / 2)
+			$("#divTimeOverlay").css("left",pos.left);
+		else 
+			$("#divTimeOverlay").css("left",pos.left + width - ancho2-2);
+
 
 		//TOP ADJUSTO TO IMAGE RES
 		p = $("#divTimeImageOverlay").height();
