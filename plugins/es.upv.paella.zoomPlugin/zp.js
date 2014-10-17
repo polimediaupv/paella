@@ -5,6 +5,8 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 	_ant:null,
 	_next:null,
 	_videoLength:null,
+	_compChanged:false,
+	_restartPlugin:false,
 
 	getIndex:function(){return 20;},
 
@@ -33,27 +35,10 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 		this._zImages = {};
 		var n = paella.player.videoContainer.sourceData;
 		var n_res = 0;
-		/*
-		for(i=0; i < n.length; i++){ // GET THE IMAGE SOURCES
-			if(n[i].sources.hasOwnProperty("image")){
-				n_res = n[i].sources.image;
-			}
-		}
-		
-		
-		n_res = n[0].sources.image; // TEST source 0
-		var max = -1;
-		var index;
-		for(i=0; i < n_res.length; i++){ // GET HIGHEST RESOLUTION
-			if(n_res[i].res.h > max) { 
-				max = n_res[i].res.h;
-				index = i;
-			}
-		}
-		*/
 
 		this._zImages = paella.player.videoContainer.sourceData[0].sources.image[0].frames; // COPY TO LOCAL
 		this._videoLength = paella.player.videoContainer.sourceData[0].sources.image[0].duration; // video duration in frames
+		
 		// REMOVE ON COMPOSITION CHANGE
 		paella.events.bind(paella.events.setComposition, function(event,params) {
 			self.compositionChanged(event,params);
@@ -91,7 +76,10 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 					else src = this._zImages["frame_"+sec]; 
 					}
 
-				else if(sec > this._next || sec < this._ant) { src = self.returnSrc(sec); } // RELOAD IF OUT OF INTERVAL
+				else if(sec > this._next || sec < this._ant || self._compChanged) { 
+					if(self._compChanged) self._compChanged = false;
+					src = self.returnSrc(sec); 
+					} // RELOAD IF OUT OF INTERVAL
 					else return;
 
 					$("#photo_01").attr('src',src).load();
@@ -169,6 +157,7 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 		if($('.newframe').length<1){
 			//CREATE OVERLAY
 			self.createOverlay();
+			self._compChanged = true;
 			this._isActivated = true;
 		}
 		else { // IF EXISTS REMOVE ON CLICK
@@ -184,6 +173,7 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 			$( ".newframe" ).remove();// REMOVE PLUGIN
 			self.createOverlay();//CALL AGAIN
 		}
+		self._compChanged = true;
 	},
 
 
