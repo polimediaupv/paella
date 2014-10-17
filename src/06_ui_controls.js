@@ -37,8 +37,21 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	playbackFullId:'',
 	updatePlayBar:true,
 	timeControlId:'',
+	//OVERLAY VARIABLES
+	_images:null,
+	_keys:null,
+	_ant:null,
+	_next:null,
+	_videoLength:null,
+	_lastSrc:null,
+	_aspectRatio:1.3333333333, // 4:3
 
 	initialize:function(id) {
+		var self = this;
+		//OVERLAY INITIALIZE
+		self.imageSetup();
+		//END OVERLAY INITIALIZE
+
 		var style = {};
 		this.parent('div',id,style);
 		this.domElement.className = "playbackBar";
@@ -90,10 +103,12 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	},
 
 	mouseOut:function(event){
-		if($("#divTimeOverlay").length == 1) $("#divTimeOverlay").remove();
+			$("#divTimeImageOverlay").remove();
 	},
 
 	movePassive:function(event){
+		var self = this;
+		
 		// CONTROLS_BAR POSITON
 		var p = $("#playerContainer_controls_playback_playbackBar");
 		var pos = p.offset();
@@ -106,6 +121,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 
 		time = ( position * time / 100 );
 
+
 		var hou = Math.floor(time / 3600);
 		hou = ("00"+hou).slice(hou.toString().length);
 		var min = Math.floor(time / 60);
@@ -116,21 +132,133 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		var timestr = (hou+":"+min+":"+sec);
 
 		// CREATING THE OVERLAY
-		if($("#divTimeOverlay").length == 0){
+		if($("#divTimeImageOverlay").length == 0) self.setupTimeImageOverlay(timestr,pos.top,width);
+		else {
+			$("#divTimeOverlay")[0].innerHTML = timestr; //IF CREATED, UPDATE TIME AND IMAGE
+		}
+
+		// CALL IMAGEUPDATE
+		self.imageUpdate(time);	
+		
+		// UPDATE POSITION IMAGE OVERLAY
+
+		var ancho = $("#divTimeImageOverlay").width();
+		var posx = event.clientX-(ancho/2);
+		if(event.clientX > (ancho/2 + pos.left)  &&  event.clientX < (pos.left+width - ancho/2) ) { // LEFT
+		$("#divTimeImageOverlay").css("left",posx); // CENTER THE DIV HOVER THE MOUSE
+		}
+		else if(event.clientX < width / 2)
+			$("#divTimeImageOverlay").css("left",pos.left);
+		else 
+			$("#divTimeImageOverlay").css("left",pos.left + width - ancho);
+
+		// UPDATE POSITION TIME OVERLAY
+
+		var ancho2 = $("#divTimeOverlay").width();
+		var posx2 = event.clientX-(ancho2/2);
+		if(event.clientX > ancho2/2 + pos.left  && event.clientX < (pos.left+width - ancho2/2) ){
+		$("#divTimeOverlay").css("left",posx2); // CENTER THE DIV HOVER THE MOUSE
+		}
+		else if(event.clientX < width / 2)
+			$("#divTimeOverlay").css("left",pos.left);
+		else 
+			$("#divTimeOverlay").css("left",pos.left + width - ancho2-2);
+
+
+		//TOP ADJUSTO TO IMAGE RES
+		p = $("#divTimeImageOverlay").height();
+		$("#divTimeImageOverlay").css("top",pos.top-p);
+
+
+	},
+
+	imageSetup:function(){
+		var self = this;
+		
+		//  BRING THE IMAGE ARRAY TO LOCAL
+		this._images = {};
+		var n = paella.initDelegate.initParams.videoLoader.frameList;
+
+		this._images = n; // COPY TO LOCAL
+		this._videoLength = paella.player.videoContainer.duration(""); // video duration in frames
+
+		// SORT KEYS FOR SEARCH CLOSEST
+		this._keys = Object.keys(this._images);
+		this._keys = this._keys.sort();
+
+		//NEXT
+		this._next = 0;
+		this._ant = 0;
+	},
+
+	imageUpdate:function(sec){
+		var self = this;
+
+		var src = $("#imgOverlay").attr('src');
+
+				if(sec > this._next || sec < this._ant) { 
+					src = self.returnSrc(sec);
+					self._lastSrc = src;
+					$( "#imgOverlay" ).attr('src', src); // UPDATING IMAGE
+				} // RELOAD IF OUT OF INTERVAL
+					else { 	
+						if(src!=undefined) { return; }
+						else { 
+							$( "#imgOverlay" ).attr('src', self._lastSrc); 
+						}// KEEP LAST IMAGE
+					}			
+
+				
+
+	},
+
+	returnSrc:function(sec){
+		var ant = 0;
+		for (i=0; i<this._keys.length; i++){
+			var id = parseInt(this._keys[i]);
+			var lastId = parseInt(this._keys[(this._keys.length-1)]);
+			if(sec < id) {  // PREVIOUS IMAGE
+				this._next = id; 
+				this._ant = ant; 
+				return this._images[ant].thumb;} // return previous and keep next change
+			else if(sec > lastId && sec < this._videoLength){ // LAST INTERVAL
+					this._next = this._videoLength;
+					this._ant = lastId;
+					return this._images[ant].thumb; 
+			}
+				else ant = id;
+		}
+	},
+
+	setupTimeImageOverlay:function(time_str,top,width){
+		var self = this;
+
 		var div = document.createElement("div");
-		div.className = "divTimeOverlay";
-		div.style.top = (pos.top-20)+"px"; 
-		div.id = ("divTimeOverlay");
-		div.innerHTML = timestr;
+		div.className = "divTimeImageOverlay";
+		div.id = ("divTimeImageOverlay");
+
+		var aux = Math.round(width/10);
+		div.style.width = Math.round(aux*self._aspectRatio)+"px"; //KEEP ASPECT RATIO 4:3
+		div.style.height = Math.round(aux)+"px";
+
+		var img = document.createElement("img");
+		img.className =  "imgOverlay";
+		img.id = "imgOverlay";
+
+		div.appendChild(img);
+
+
+		var div2 = document.createElement("div");
+		div2.className = "divTimeOverlay";
+		div2.style.top = (top-20)+"px"; 
+		div2.id = ("divTimeOverlay");
+		div2.innerHTML = time_str;
+
+		div.appendChild(div2);
 
 		var controlBar = document.getElementById('playerContainer_controls_playback_playbackBar');
 		controlBar.appendChild(div); //CHILD OF CONTROLS_BAR
-		}
-		else $("#divTimeOverlay")[0].innerHTML = timestr; //IF CREATED, UPDATE
-		var ancho = $("#divTimeOverlay").width();
 
-		var posx = event.clientX-(ancho/2);
-		$("#divTimeOverlay").css("left",posx); // CENTER THE DIV HOVER THE MOUSE
 	},
 
 	playbackFull:function() {

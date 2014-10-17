@@ -7,7 +7,7 @@ Class ("paella.plugins.UserTrackingCollectorPlugIn",paella.EventDrivenPlugin,{
 		var thisClass = this;
 		
 		if ( this.config.heartBeatTime > 0) {		
-			this.heartbeatTimer = new paella.Timer(function(timer) {thisClass.registerEvent('HEARTBEAT'); }, this.config.heartBeatTime);
+			this.heartbeatTimer = new base.Timer(function(timer) {thisClass.registerEvent('HEARTBEAT'); }, this.config.heartBeatTime);
 			this.heartbeatTimer.repeat = true;
 		}
 		//--------------------------------------------------

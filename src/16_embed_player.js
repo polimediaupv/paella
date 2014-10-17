@@ -1,4 +1,4 @@
-Class ("paella.editor.EmbedPlayer", paella.AsyncLoaderCallback,{
+Class ("paella.editor.EmbedPlayer", base.AsyncLoaderCallback,{
 	editar:null,
 
 	initialize:function() {

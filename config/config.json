@@ -9,7 +9,7 @@
 		"stream0Audio":true,
 		"stream1Audio":false,
         "rtmpSettings":{
-            "bufferTime":2
+            "bufferTime":5
         }
 	},
 	"editor":{
@@ -36,7 +36,12 @@
 			"es.upv.paella.repeatButtonPlugin":{"enabled":true},
             "es.upv.paella.test.videoLoadPlugin":{"enabled":false},
 			"es.upv.paella.test.playbackRate":{"enabled":false},
-            "es.upv.paella.helpPlugin":{"enabled":true, "langs":["en"]}
+			"es.upv.paella.volumeRangePlugin":{"enabled":true, "showMasterVolume": true, "showSlaveVolume": false },
+			"es.upv.paella.userTrackingCollectorPlugIn": {"enabled": true, "heartBeatTime": 5000},
+			"es.upv.paella.repeatButtonPlugin": {"enabled":false},
+			"es.upv.paella.footprintsPlugin": {"enabled":false},
+			"es.upv.paella.playbackRate": {"enabled":false},
+            "es.upv.paella.helpPlugin": {"enabled":true, "langs":["en"]}
 		}
 	},
     "standalone" : {

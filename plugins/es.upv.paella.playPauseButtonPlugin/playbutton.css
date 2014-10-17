@@ -1,11 +1,9 @@
-.playButton {
-	background-size: 200%;
-	background-image:url(../../resources/images/play_button.png);
+.buttonPlugin.playButton {
+	background-position: -199px -40px;
 }
-.pauseButton {
-	background-size: 200%;
-	background-image:url(../../resources/images/pause_button.png);
-	
+
+.buttonPlugin.pauseButton {
+	background-position: -40px -0px;
 }
 
 .playButtonOnScreen {

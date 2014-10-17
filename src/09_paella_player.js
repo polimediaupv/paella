@@ -275,6 +275,14 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 				var master = loader.streams[0];
 				var slave = loader.streams[1];
+				var playerConfig = paella.player.config.player;
+				if (playerConfig.stream0Audio===false && master) {
+					paella.player.videoContainer.setDefaultMasterVolume(0);
+				}
+				if (playerConfig.stream1Audio===false && slave) {
+					paella.player.videoContainer.setDefaultSlaveVolume(0);
+				}
+				
 				if (slave && slave.data && Object.keys(slave.data.sources).length==0) slave = null;
 				var frames = loader.frameList;
 				var errorMessage;
@@ -394,19 +402,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		this.showPlaybackBar();
 
 		this.videoContainer.play();
-		var playerConfig = paella.player.config.player;
-		if (playerConfig.stream0Audio===false && paella.player.videoContainer.numberOfStreams()>=1) {
-			paella.player.videoContainer.masterVideo().setVolume(0);
-		}
-		else if (paella.player.videoContainer.numberOfStreams()>=1) {
-			paella.player.videoContainer.masterVideo().setVolume(1);
-		}
-		if (playerConfig.stream1Audio!==true && paella.player.videoContainer.numberOfStreams()>=2) {
-			paella.player.videoContainer.slaveVideo().setVolume(1);
-		}
-		else if (paella.player.videoContainer.numberOfStreams()>=2) {
-			paella.player.videoContainer.slaveVideo().setVolume(0);
-		}
 	},
 
 	pause:function() {

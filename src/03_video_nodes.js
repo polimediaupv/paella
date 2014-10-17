@@ -404,6 +404,10 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 		return -1;
 	},
 
+	setDefaultVolume:function(vol) {
+		this._defaultVolume = vol;
+	},
+	
 	setVolume:function(volume) {
 		if (this.flashVideo) {
 			var thisClass = this;
@@ -667,12 +671,19 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		return 0;
 	},
 
+	setDefaultVolume:function(vol) {
+		if (vol==0) this.domElement.setAttribute("muted",true);
+	},
+	
 	setVolume:function(volume) {
+		if (volume==0) this.domElement.muted = true;
+		else this.domElement.muted = false;
 		this.domElement.volume = volume;
 		return true;
 	},
 
 	volume:function() {
+		if (this.domElement.muted) return 0;
 		return this.domElement.volume;
 	},
 
@@ -829,6 +840,9 @@ Class ("paella.SlideshowVideo", paella.VideoElementBase,{
 		return false;
 	},
 
+	setDefaultVolume:function(vol) {
+	},
+	
 	volume:function() {
 		return -1;
 	},

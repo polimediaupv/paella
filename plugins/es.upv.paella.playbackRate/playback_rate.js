@@ -3,9 +3,9 @@ Class ("paella.plugins.PlaybackRate",paella.ButtonPlugin,{
 	buttons: [],
 	selected_button: null,
 
-	getAlignment:function() { return 'right'; },
+	getAlignment:function() { return 'left'; },
 	getSubclass:function() { return "showPlaybackRateButton"; },
-	getIndex:function() { return 640; },
+	getIndex:function() { return 140; },
 	getMinWindowSize:function() { return 200; },
 	getName:function() { return "es.upv.paella.playbackRate"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },

@@ -10,7 +10,7 @@ Class ("paella.plugins.FootPrintsPlugin",paella.ButtonPlugin,{
 	getSubclass:function() { return "footPrints"; },
 	getIndex:function() { return 590; },
 	getDefaultToolTip:function() { return base.dictionary.translate("Show statistics"); },
-	getName:function() { return "es.upv.paella.FootPrintsPlugin"; },
+	getName:function() { return "es.upv.paella.footprintsPlugin"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.timeLineButton; },
 
 

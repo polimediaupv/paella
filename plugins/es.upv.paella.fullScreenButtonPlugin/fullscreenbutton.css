@@ -1,4 +1,7 @@
-.showFullScreenButton {
-	background-image: url(fullscreen_button.png);
-	background-size: 200%;
+.buttonPlugin.showFullScreenButton {
+	background-position: 440px -2px;
+}
+
+.buttonPlugin.showFullScreenButton.active {
+	background-position: 400px 0px;
 }

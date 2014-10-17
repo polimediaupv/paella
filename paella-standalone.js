@@ -135,6 +135,7 @@ paella.standalone.StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 		var streams = {};
 		var tracks = paella.standalone.episode.mediapackage.media.tracks;
 		var slides = paella.standalone.episode.mediapackage.slides;
+		var blackboard = paella.standalone.episode.mediapackage.blackboard;
 		this.frameList = {}
 
 
@@ -216,23 +217,62 @@ paella.standalone.StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 					thumbSource.frames["frame_"+time] = thumbUrl;
 					thumbSource.count = thumbSource.count +1;
 
-          this.frameList[time] = {id:'frame_'+time, mimetype:currentSlide.mimetype, time:time, url:slideUrl, thumb:thumbUrl};
+					this.frameList[time] = {id:'frame_'+time, mimetype:currentSlide.mimetype, time:time, url:slideUrl, thumb:thumbUrl};
 				}
 			}
 
 
 			// Set the image stream for presentation
 			var imagesArray = [];
-			if (presentation == undefined) {
-				presentation = { sources:{}, preview:'' };
-			}
-			
 			if (imageSource.count > 0) { imagesArray.push(imageSource); }
 			if (thumbSource.count > 0) { imagesArray.push(thumbSource); }
+			
 			if (imagesArray.length > 0) {
+				if (presentation == undefined) {
+					presentation = { sources:{}, preview:'' };
+				}
 				presentation.sources.image = imagesArray;
 			}
 		}
+
+
+		// Read the blackboard
+		if (blackboard) {
+			var duration = parseInt(paella.standalone.episode.mediapackage.metadata.duration/1000);
+			var thumbSource = {type:"image/jpeg", frames:{}, count:0, duration: duration, res:{w:1280, h:720}}
+
+			for (var i=0; i<slides.length; ++i) {
+				var currentBlackboard = blackboard[i];
+
+				if (/(\d+):(\d+):(\d+)/.test(currentBlackboard.time)) {
+					time = parseInt(RegExp.$1)*60*60 + parseInt(RegExp.$2)*60 + parseInt(RegExp.$3);
+					
+					thumbUrl = (currentBlackboard.thumb);
+
+					if (! /^[a-zA-Z]+:\/\//.test(thumbUrl)) {
+						thumbUrl = this.getRepository() + "/" + paella.initDelegate.getId() + "/" + thumbUrl;
+					}
+
+					thumbSource.frames["frame_"+time] = thumbUrl;
+					thumbSource.count = thumbSource.count +1;
+				}
+			}
+
+
+			// Set the image stream for presentation
+			var imagesArray = [];
+			if (thumbSource.count > 0) { imagesArray.push(thumbSource); }
+			
+			
+			if (imagesArray.length > 0) {
+				if (presenter == undefined) {
+					presenter = { sources:{}, preview:'' };
+				}			
+				presenter.sources.image = imagesArray;
+			}
+		}
+
+
 
 		// Finaly push the streams
 		if (presenter) { this.streams.push(presenter); }
