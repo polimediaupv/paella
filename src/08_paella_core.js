@@ -51,6 +51,7 @@ Class ("paella.VideoLoader", {
 		var h264 = videoElement.canPlayType('video/mp4; codecs="avc1.42E01E"');
 		if (h264=="") h264 = videoElement.canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"');
 		h264 = (h264=='probably' && !base.userAgent.browser.Firefox);
+		if(base.userAgent.browser.Firefox) h264 = base.userAgent.browser.Version.major >= 26;
 		return h264;
 	},
 
