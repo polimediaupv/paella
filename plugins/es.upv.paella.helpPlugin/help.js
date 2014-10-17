@@ -21,7 +21,7 @@ Class ("paella.plugins.HelpPlugin",paella.ButtonPlugin, {
 		if (idx < 0) { idx = 0; }
 						
 		//paella.messageBox.showFrame("http://paellaplayer.upv.es/?page=usage");
-		paella.messageBox.showFrame("resources/plugins/help/help_" + availableLangs[idx] + ".html");
+		paella.messageBox.showFrame("resources/style/help/help_" + availableLangs[idx] + ".html");
 	}
 	
 });
