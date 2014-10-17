@@ -49,7 +49,7 @@ Class ("paella.editor.Track", {
 	buildTracks:function(container) {
 		var plugin = this.plugin;
 		var trackList = plugin.getTrackItems();
-		for (var i in trackList) {
+		for (var i=0; i<trackList.length; ++i) {
 			var trackItem = this.getTrack(trackList[i]);
 			this.trackElemList.push(trackItem);
 			this.container.appendChild(trackItem);
