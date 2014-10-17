@@ -33,12 +33,15 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 		this._zImages = {};
 		var n = paella.player.videoContainer.sourceData;
 		var n_res = 0;
-
+		/*
 		for(i=0; i < n.length; i++){ // GET THE IMAGE SOURCES
 			if(n[i].sources.hasOwnProperty("image")){
 				n_res = n[i].sources.image;
 			}
 		}
+		
+		
+		n_res = n[0].sources.image; // TEST source 0
 		var max = -1;
 		var index;
 		for(i=0; i < n_res.length; i++){ // GET HIGHEST RESOLUTION
@@ -47,9 +50,10 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 				index = i;
 			}
 		}
+		*/
 
-		this._zImages = n_res[index].frames; // COPY TO LOCAL
-		this._videoLength = n_res[index].duration; // video duration in frames
+		this._zImages = paella.player.videoContainer.sourceData[0].sources.image[0].frames; // COPY TO LOCAL
+		this._videoLength = paella.player.videoContainer.sourceData[0].sources.image[0].duration; // video duration in frames
 		// REMOVE ON COMPOSITION CHANGE
 		paella.events.bind(paella.events.setComposition, function(event,params) {
 			self.compositionChanged(event,params);
@@ -62,7 +66,11 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 
 		// SORT KEYS FOR SEARCH CLOSEST
 		this._keys = Object.keys(this._zImages);
-		this._keys = this._keys.sort();
+		this._keys = this._keys.sort(function(a, b){
+			a = a.slice(6);
+			b = b.slice(6);
+			return parseInt(a)-parseInt(b); 
+		});
 
 		//NEXT
 		this._next = 0;
@@ -110,6 +118,7 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 	},
 
 	returnSrc:function(sec){
+
 		var ant = 0;
 		for (i=0; i<this._keys.length; i++){
 			var id = parseInt(this._keys[i].slice(6));
@@ -117,12 +126,10 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 			if(sec < id) {  // PREVIOUS IMAGE
 				this._next = id; 
 				this._ant = ant; 
-				//console.log(this._ant+"---"+this._next);
 				return this._zImages["frame_"+ant];} // return previous and keep next change
 			else if(sec > lastId && sec < this._videoLength){ // LAST INTERVAL
 					this._next = this._videoLength;
 					this._ant = lastId;
-					//console.log(this._ant+"---"+this._next);
 					return this._zImages["frame_"+ant]; 
 			}
 				else ant = id;
