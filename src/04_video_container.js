@@ -283,6 +283,9 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	
 	_playOnLoad:false,
 	_seekToOnLoad:0,
+	
+	_defaultMasterVolume:1,
+	_defaultSlaveVolume:1,
 
 	initialize:function(id) {
 		this.parent(id);
@@ -498,6 +501,14 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			return 0;
 		}
 	},
+	
+	setDefaultMasterVolume:function(vol) {
+		this._defaultMasterVolume = vol;
+	},
+	
+	setDefaultSlaveVolume:function(vol) {
+		this._defaultSlaveVolume = vol;
+	},
 
 	masterVideo:function() {
 		return this.container.getNode(this.video1Id);
@@ -671,16 +682,19 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 				videoNode = new paella.SlideshowVideo(videoNodeId,rect.x,rect.y,rect.w,rect.h);
 				break;
 		}
+		if (target=='master') {
+			videoNode.setDefaultVolume(this._defaultMasterVolume);
+			this.masterVideoData = data;
+		}
+		else {
+			videoNode.setDefaultVolume(this._defaultSlaveVolume);
+			this.slaveVideoData = data;
+		}
 		videoNode.setClassName(this.videoClasses[target]);
 		this.container.addNode(videoNode);
 		this.sourceData.push(data);
 		this.setupVideo(videoNode,data,type.name,target);
-		if (target=='master') {
-			this.masterVideoData = data;
-		}
-		else {
-			this.slaveVideoData = data;
-		}
+		
 		return true;
 	},
 

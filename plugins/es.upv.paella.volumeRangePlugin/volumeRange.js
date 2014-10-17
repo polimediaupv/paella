@@ -22,7 +22,14 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 			}
 		}	
 		onSuccess(enabled);
-	}, 
+	},
+	
+	setup:function() {
+		paella.events.bind(paella.events.videoReady,function(event,params) {
+			console.log(paella.player.videoContainer.slaveVolume());
+			console.log(params);
+		});
+	},
 
 	buildContent:function(domElement) {
 		var thisClass = this;

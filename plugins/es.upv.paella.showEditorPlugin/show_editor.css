@@ -1,4 +1,4 @@
-.showEditorButton {
-	float:right;
-	background-image:url(edit_button.png);
+.buttonPlugin.showEditorButton {
+	background-color: rgba(0,0,0,0.6);
+	background-position: -160px -41px;
 }
