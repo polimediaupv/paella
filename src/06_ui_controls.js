@@ -44,7 +44,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	_next:null,
 	_videoLength:null,
 	_lastSrc:null,
-	_aspectRatio:1.3333333333, // 4:3
+	_aspectRatio:1.777777778, // 16:9
 
 	initialize:function(id) {
 		var self = this;
@@ -122,12 +122,16 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		time = ( position * time / 100 );
 
 
-		var hou = Math.floor(time / 3600);
+		var hou = Math.floor(time / 3600)%24;
 		hou = ("00"+hou).slice(hou.toString().length);
-		var min = Math.floor(time / 60);
+
+		var min = Math.floor(time / 60)%60;
 		min = ("00"+min).slice(min.toString().length);
+
 		var sec = Math.floor(time%60);
 		sec = ("00"+sec).slice(sec.toString().length);
+
+
 
 		var timestr = (hou+":"+min+":"+sec);
 
@@ -184,7 +188,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 
 		// SORT KEYS FOR SEARCH CLOSEST
 		this._keys = Object.keys(this._images);
-		this._keys = this._keys.sort();
+		this._keys = this._keys.sort(function(a, b){return parseInt(a)-parseInt(b);}); // SORT FRAME NUMBERS STRINGS
 
 		//NEXT
 		this._next = 0;
