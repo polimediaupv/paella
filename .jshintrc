@@ -1,4 +1,5 @@
 {
+	"laxbreak" : true,
 	"eqnull": true,
 	"-W041": false,
 	"scripturl": true,

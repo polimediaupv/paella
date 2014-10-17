@@ -135,7 +135,7 @@ paella.standalone.StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 		var streams = {};
 		var tracks = paella.standalone.episode.mediapackage.media.tracks;
 		var slides = paella.standalone.episode.mediapackage.slides;
-		var blackboard = paella.standalone.episode.mediapackage.blackboard;
+		var blackboards = paella.standalone.episode.mediapackage.blackboard;
 		this.frameList = {}
 
 
@@ -237,17 +237,17 @@ paella.standalone.StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 
 
 		// Read the blackboard
-		if (blackboard) {
+		if (blackboards) {
 			var duration = parseInt(paella.standalone.episode.mediapackage.metadata.duration/1000);
 			var thumbSource = {type:"image/jpeg", frames:{}, count:0, duration: duration, res:{w:1280, h:720}}
 
-			for (var i=0; i<slides.length; ++i) {
-				var currentBlackboard = blackboard[i];
+			for (var i=0; i<blackboards.length; ++i) {
+				var currentBlackboard = blackboards[i];
 
 				if (/(\d+):(\d+):(\d+)/.test(currentBlackboard.time)) {
 					time = parseInt(RegExp.$1)*60*60 + parseInt(RegExp.$2)*60 + parseInt(RegExp.$3);
 					
-					thumbUrl = (currentBlackboard.thumb);
+					thumbUrl = (currentBlackboard.thumb.url);
 
 					if (! /^[a-zA-Z]+:\/\//.test(thumbUrl)) {
 						thumbUrl = this.getRepository() + "/" + paella.initDelegate.getId() + "/" + thumbUrl;
