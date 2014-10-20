@@ -131,7 +131,7 @@ def dumpEpisodeToFolder(episodeMH, saveTo, saveLocal):
 		except:
 			pass
 		try:
-			track['mediainfo']["audio"] = trackMH['video']
+			track['mediainfo']["video"] = trackMH['video']
 		except:
 			pass
 

@@ -1,4 +1,4 @@
-  {
+{
 	"player":{
 		"defaultProfile": "full",
         "profileFrameStrategy":"paella.ProfileFrameStrategy",
@@ -48,3 +48,4 @@
         "reposiroty": "../repository/"
     }
 }
+

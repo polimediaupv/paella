@@ -1,4 +1,4 @@
-Class ("paella.editor.PluginSaveCallback", paella.AsyncLoaderCallback,{
+Class ("paella.editor.PluginSaveCallback", base.AsyncLoaderCallback,{
 	plugin:null,
 
 	initialize:function(plugin) {
@@ -13,7 +13,7 @@ Class ("paella.editor.PluginSaveCallback", paella.AsyncLoaderCallback,{
 	}
 });
 
-Class ("paella.editor.PluginDiscardCallback", paella.AsyncLoaderCallback,{
+Class ("paella.editor.PluginDiscardCallback", base.AsyncLoaderCallback,{
 	plugin:null,
 
 	initialize:function(plugin) {

@@ -117,7 +117,7 @@
                     "tags": [],
                     "url": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/3fb63b9c-8133-40a4-b71e-8a19e6df80b5/SCREEN.mp4",
                     "mediainfo": {
-                        "audio": {
+                        "video": {
                             "scantype": {
                                 "type": "Progressive"
                             },
@@ -140,7 +140,7 @@
                     "tags": [],
                     "url": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/cd608c08-cb10-4658-a71b-ecf763347dd2/PRESENTER.mp4",
                     "mediainfo": {
-                        "audio": {
+                        "video": {
                             "scantype": {
                                 "type": "Progressive"
                             },
