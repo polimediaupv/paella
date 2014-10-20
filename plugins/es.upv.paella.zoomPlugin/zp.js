@@ -19,13 +19,11 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 
 	checkEnabled:function(onSuccess) {
 		// CHECK IF THE VIDEO HAS HIRESIMAGES
-		var n = paella.player.videoContainer.sourceData;
+		var n = paella.player.videoContainer.sourceData[0].sources;
 
-		for(i=0; i < n.length; i++){
-			if(n[i].sources.hasOwnProperty("image")){
-				onSuccess(true);
-			} else if(i == n.length) onSuccess(false);
-		}
+		if(n.hasOwnProperty("image"))onSuccess(true);
+		else onSuccess(false);
+		
 	},
 
 	setup:function() {
@@ -138,8 +136,8 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
    			var link = document.createElement('a');
    			link.setAttribute("id", "photo_link");
 
-       		//hiResImage.setAttribute('src',"resources/style/000000.png");
         	hiResImage.setAttribute('style', 'width: 100%;');
+        	hiResImage.setAttribute('style', 'height: auto;');
         	hiResImage.setAttribute("id", "photo_01");
 
         	$(link).append(hiResImage);
@@ -148,6 +146,8 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
         	// OVERLAY
 			overlayContainer = paella.player.videoContainer.overlayContainer;
 			overlayContainer.addElement(newframe, overlayContainer.getMasterRect());
+
+
 			$(".newframe").css("background-color","rgba(80,80,80,0.4)");
 			$(".newframe img").css("opacity","0");
 	},
