@@ -11,7 +11,6 @@ Class ("paella.LoaderContainer", paella.DomNode,{
 		this.timer = new base.Timer(function(timer) {
 			thisClass.loaderPosition -= 128;
 			thisClass.loader.domElement.style.backgroundPosition = thisClass.loaderPosition + 'px';
-			timer.timeout = timer.timeout * 2;
 		},1000);
 		this.timer.repeat = true;
 	},
