@@ -96,7 +96,6 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 					// OPEN NEW WINDOW WITH FULLSCREEN IMAGE
 
 					$("#photo_link").attr("href", src).attr("target","_blank");
-
 				
 			}
 		}
@@ -126,19 +125,15 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 		var self = this;
 		var newframe = document.createElement("div");
 			newframe.className = "newframe";
-			newframe.setAttribute('style', 'display: table;');
 			
 			// IMAGE
 			var hiResImage = document.createElement('img');
    			hiResImage.className = 'frameHiRes';
-   			// GET IMAGE FOR TIMELINE
+   			hiResImage.setAttribute("id", "photo_01");
 
+   			//LINK
    			var link = document.createElement('a');
    			link.setAttribute("id", "photo_link");
-
-        	hiResImage.setAttribute('style', 'width: 100%;');
-        	hiResImage.setAttribute('style', 'height: auto;');
-        	hiResImage.setAttribute("id", "photo_01");
 
         	$(link).append(hiResImage);
         	$(newframe).append(link);
