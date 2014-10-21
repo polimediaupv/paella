@@ -13,3 +13,43 @@
 	width: 100%;
 	height: auto;
 }
+
+.iconsFrame {
+	display: block;
+    border-style: solid;
+    border-color: #98bf21;
+    float: left;
+    margin-right: 5px;
+    text-align: center;
+    line-height: 50px;
+	z-index: 1000;
+	top: 0px;
+	left: 0px;
+	position: absolute;
+}
+
+.buttonZoomOut{
+	display:block;
+	width: 30px;
+	height: 30px;
+}
+.buttonZoomIn{
+	display:block;
+	width: 30px;
+	height: 30px;
+}
+.buttonSnapshot{
+	display:block;
+	width: 30px;
+	height: 30px;
+}
+
+.buttonSnapshot:before{
+	content: "[·]";
+}
+.buttonZoomIn:before{
+	content: "+";
+}
+.buttonZoomOut:before{
+	content: "-";
+}

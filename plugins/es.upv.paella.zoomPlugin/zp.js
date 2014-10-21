@@ -7,6 +7,7 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 	_videoLength:null,
 	_compChanged:false,
 	_restartPlugin:false,
+	_actualImage: null,
 
 	getIndex:function(){return 20;},
 
@@ -24,6 +25,39 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 		if(n.hasOwnProperty("image"))onSuccess(true);
 		else onSuccess(false);
 		
+	},
+
+	setupIcons:function(){
+		var self = this;
+
+		var iconsFrame = document.createElement("div");
+			iconsFrame.className = "iconsFrame";
+
+		var buttonZoomIn = document.createElement("button");
+			buttonZoomIn.className = "buttonZoomIn";
+
+		var buttonZoomOut = document.createElement("button");
+			buttonZoomOut.className = "buttonZoomOut";
+
+		var buttonSnapshot = document.createElement("button");
+			buttonSnapshot.className = "buttonSnapshot";
+			buttonSnapshot.type = "button";
+
+		$(iconsFrame).append(buttonSnapshot);
+		$(iconsFrame).append(buttonZoomIn);
+		$(iconsFrame).append(buttonZoomOut);
+
+		$(".newframe").append(iconsFrame);
+		$(".iconsFrame").mouseover(function(){
+			$(".zoomWindow").css('display','block');
+		});
+
+		$(".buttonSnapshot").click(function(){
+			if(self._actualImage != null)
+			window.open(self._actualImage, "_blank");
+		});
+
+
 	},
 
 	setup:function() {
@@ -92,11 +126,9 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 					};
 					image.src = src;
 
-					
 					// OPEN NEW WINDOW WITH FULLSCREEN IMAGE
+					self._actualImage = src;
 
-					$("#photo_link").attr("href", src).attr("target","_blank");
-				
 			}
 		}
 		
@@ -143,8 +175,8 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 			overlayContainer.addElement(newframe, overlayContainer.getMasterRect());
 
 
-			$(".newframe").css("background-color","rgba(80,80,80,0.4)");
 			$(".newframe img").css("opacity","0");
+			$(".playerContainer_videoContainer_1");
 	},
 
 	action:function(button) {
@@ -152,6 +184,7 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 		if($('.newframe').length<1){
 			//CREATE OVERLAY
 			self.createOverlay();
+			self.setupIcons();
 			self._compChanged = true;
 			this._isActivated = true;
 		}
@@ -167,6 +200,7 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 		if($('.newframe').length>0){
 			$( ".newframe" ).remove();// REMOVE PLUGIN
 			self.createOverlay();//CALL AGAIN
+			self.setupIcons();
 		}
 		self._compChanged = true;
 	},
