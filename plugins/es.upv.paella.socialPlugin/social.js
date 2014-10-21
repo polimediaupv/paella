@@ -167,7 +167,7 @@ Class ("paella.plugins.SocialPlugin",paella.ButtonPlugin,{
         for (var i=0; i< embs.length; i=i+1){
             var e = embs[i];
             e.onclick=function(event){
-                var value = event.toElement.value;
+                var value = event.target? event.target.value: event.toElement.value;
                 if (value) {
                     var size = value.split("x");
 
