@@ -9,11 +9,6 @@
 	overflow: hidden;
 }
 
-.frameHiRes {
-	width: 100%;
-	height: auto;
-}
-
 .iconsFrame {
 	display: block;
     border-style: solid;
@@ -57,7 +52,8 @@
 .zoomFrame {
 position: absolute;
 display: block;
-background-color: red;
+background-color: rgba(80,80,80, 0.2);
+opacity: 0;
 z-index: 400;
 width: 100%;
 height: 100%;
