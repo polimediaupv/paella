@@ -13,7 +13,10 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 	getButtonType:function() { return paella.ButtonPlugin.type.timeLineButton; },
 	getDefaultToolTip:function() { return base.dictionary.translate("Navigate by slides"); },
 	checkEnabled:function(onSuccess) {
-		onSuccess(paella.initDelegate.initParams.videoLoader.frameList!=null && Object.keys(paella.initDelegate.initParams.videoLoader.frameList).length>0);
+		if (paella.initDelegate.initParams.videoLoader.frameList==null) onSuccess(false);
+		else if (paella.initDelegate.initParams.videoLoader.frameList.length===0) onSuccess(false);
+		else if (Object.keys(paella.initDelegate.initParams.videoLoader.frameList).length==0) onSuccess(false);
+		else onSuccess(true);
 	},
 
 	setup:function() {
