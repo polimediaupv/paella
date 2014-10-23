@@ -136,7 +136,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		// if initialization ok
 		if (this.playerId==playerId) {
 			this.loadPaellaPlayer();
-
 			var thisClass = this;
 			paella.events.bind(paella.events.setProfile,function(event,params) {
 				thisClass.setProfile(params.profileName);
@@ -151,6 +150,15 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		paella.events.trigger(paella.events.loadStarted);
 
 		paella.initDelegate.loadDictionary(function() {
+			var minFirefoxVersion = base.userAgent.system.MacOS ? 34:(base.userAgent.system.Windows) ? 25:26;
+			if (base.userAgent.browser.Firefox && base.userAgent.browser.Version.major<minFirefoxVersion) {
+				message = "You are using Firefox version, and some required video playback capabilities are not available until Firefox min_version. Please, update your browser and try again.";
+				message = base.dictionary.translate(message);
+				message = message.replace("version",base.userAgent.browser.Version.major);
+				message = message.replace("min_version",minFirefoxVersion);
+				paella.messageBox.showError(message);
+				return false;
+			}
 			paella.initDelegate.loadConfig(function(config) {
 				thisClass.onLoadConfig(config);
 			});

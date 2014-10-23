@@ -202,13 +202,6 @@ Class ("paella.PlayerBase", {
 		if (base.parameters.get('ignoreBrowserCheck')) {
 			return true;
 		}
-		if (base.userAgent.browser.Firefox && base.userAgent.browser.Version.major<34) {
-			message = "You are using Firefox /version/, and some required video playback capabilities are not available until Firefox 34. Please, update your browser and try again.";
-			message = base.dictionary.translate(message);
-			message = message.replace("/version/",base.userAgent.browser.Version.major);
-			paella.messageBox.showError(message);
-			return false;
-		}
 		if (base.userAgent.browser.IsMobileVersion) return true;
 		if (base.userAgent.browser.Chrome || base.userAgent.browser.Safari || base.userAgent.browser.Firefox || base.userAgent.browser.Opera ||
 				(base.userAgent.browser.Explorer && base.userAgent.browser.Version.major>=9)) {
