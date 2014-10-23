@@ -41,7 +41,8 @@
 			"es.upv.paella.repeatButtonPlugin": {"enabled":false},
 			"es.upv.paella.footprintsPlugin": {"enabled":false},
 			"es.upv.paella.playbackRate": {"enabled":false},
-            "es.upv.paella.helpPlugin": {"enabled":true, "langs":["en"]}
+            "es.upv.paella.helpPlugin": {"enabled":true, "langs":["en"]},
+            "es.upv.paella.ZoomPlugin": {"enabled": true, "maxZoom":500, "minZoom":100, "zoomIncr":10}
 		}
 	},
     "standalone" : {
