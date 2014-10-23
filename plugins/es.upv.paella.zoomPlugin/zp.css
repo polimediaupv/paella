@@ -53,3 +53,16 @@
 .buttonZoomOut:before{
 	content: "-";
 }
+
+.zoomFrame {
+position: absolute;
+display: block;
+background-color: red;
+z-index: 400;
+width: 100%;
+height: 100%;
+/*ZOOM CONTROL*/
+background-size: 100% auto;
+background-repeat: no-repeat;
+background-position: 0% 0%;
+}

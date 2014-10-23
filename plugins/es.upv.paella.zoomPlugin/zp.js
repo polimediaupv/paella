@@ -8,6 +8,7 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 	_compChanged:false,
 	_restartPlugin:false,
 	_actualImage: null,
+	_zoomRatio: 1.111111111111111112,
 
 	getIndex:function(){return 20;},
 
@@ -55,6 +56,37 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 		$(".buttonSnapshot").click(function(){
 			if(self._actualImage != null)
 			window.open(self._actualImage, "_blank");
+		});
+
+		$(".buttonZoomIn").click(function(){
+			var fm = $(".frameHiRes")[0];
+			var w = fm.naturalWidth;
+			var h = fm.naturalHeight;
+			var bs = $(".zoomWindow").css('background-size');
+			var bp = $(".zoomWindow").css('background-position');
+			
+			if(bs == "auto")
+				$(".zoomWindow").css('background-size',w*self._zoomRatio+"px"+" "+h*self._zoomRatio+"px");
+			else {
+				bs = bs.split(" ");
+				w = parseInt(bs[0]);
+				h = parseInt(bs[1]);
+				$(".zoomWindow").css('background-size',w*self._zoomRatio+"px"+" "+h*self._zoomRatio+"px");
+			}
+			var w_new = w*self._zoomRatio;
+			var h_new = h*self._zoomRatio;
+
+			bp = bp.split(" ");
+			var px = parseFloat(bp[0]);
+			var py = parseFloat(bp[1]);
+
+			$(".zoomWindow").css('background-position',px*w_new/w+"px"+" "+py*h_new/h+"px");
+
+		});
+
+		$(".buttonZoomOut").click(function(){
+			self.setupZoom();
+
 		});
 
 
@@ -115,14 +147,14 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 					else return;
 
 					$("#photo_01").attr('src',src).load();
-					if($(".zoomContainer").length<1) // only 1 zoomcontainer
-						$("#photo_01").elevateZoom({ zoomType	: "inner", cursor: "crosshair", scrollZoom : true }); // ZOOM
+					//if($(".zoomContainer").length<1) // only 1 zoomcontainer
+						//$("#photo_01").elevateZoom({ zoomType	: "inner", cursor: "crosshair", scrollZoom : true }); // ZOOM
 			
 
 					//PRELOAD NEXT IMAGE
 					var image = new Image();
 					image.onload = function(){
-	    			$( ".zoomWindow" ).css('background-image', 'url(' + src + ')'); // UPDATING IMAGE
+	    			$( ".zoomFrame" ).css('background-image', 'url(' + src + ')'); // UPDATING IMAGE
 					};
 					image.src = src;
 
@@ -176,7 +208,6 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 
 
 			$(".newframe img").css("opacity","0");
-			$(".playerContainer_videoContainer_1");
 	},
 
 	action:function(button) {
@@ -203,6 +234,16 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 			self.setupIcons();
 		}
 		self._compChanged = true;
+	},
+
+	/* INTERNAL ZOOM */
+
+	setupZoom:function(){
+		var zoomframe = document.createElement("div");
+			zoomframe.className = "zoomFrame";	
+
+		var parent = $('.newframe')[0];
+      	parent.insertBefore(zoomframe,parent.firstChild);
 	},
 
 
