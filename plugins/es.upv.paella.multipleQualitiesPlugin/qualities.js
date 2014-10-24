@@ -12,6 +12,12 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 	getDefaultToolTip:function() { return base.dictionary.translate("Change video quality"); },
 	checkEnabled:function(onSuccess) { onSuccess(this.checkStreams()); },
 	setup:function() {
+		var self = this;
+		//RELOAD EVENT
+		paella.events.bind(paella.events.singleVideoReady,function(event,params) {
+			self.setQualityLabel();
+		});
+
 		if (base.dictionary.currentLanguage()=="es") {
 			var esDict = {
 				'Presenter':'Presentador',
@@ -21,7 +27,7 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 		}
 		this.setQualityLabel();
 	},
-
+	
 	checkStreams:function() {
 		var key, j;
 		this.currentMaster = paella.player.videoContainer.currentMasterVideoData;
