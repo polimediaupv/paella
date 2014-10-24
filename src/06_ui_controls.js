@@ -45,6 +45,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	_videoLength:null,
 	_lastSrc:null,
 	_aspectRatio:1.777777778, // 16:9
+	_hasSlides:null,
 
 	initialize:function(id) {
 		var self = this;
@@ -103,7 +104,11 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	},
 
 	mouseOut:function(event){
+		var self = this;
+		if(self._hasSlides)
 			$("#divTimeImageOverlay").remove();
+		else
+			$("#divTimeOverlay").remove();
 	},
 
 	movePassive:function(event){
@@ -136,25 +141,34 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		var timestr = (hou+":"+min+":"+sec);
 
 		// CREATING THE OVERLAY
-		if($("#divTimeImageOverlay").length == 0) self.setupTimeImageOverlay(timestr,pos.top,width);
-		else {
-			$("#divTimeOverlay")[0].innerHTML = timestr; //IF CREATED, UPDATE TIME AND IMAGE
-		}
+		if(self._hasSlides) {
+			if($("#divTimeImageOverlay").length == 0) 
+				self.setupTimeImageOverlay(timestr,pos.top,width);
+			else {
+				$("#divTimeOverlay")[0].innerHTML = timestr; //IF CREATED, UPDATE TIME AND IMAGE
+			}
 
-		// CALL IMAGEUPDATE
-		self.imageUpdate(time);	
+			// CALL IMAGEUPDATE
+			self.imageUpdate(time);
+		}
+		else {
+			if($("#divTimeOverlay").length == 0) self.setupTimeOnly(timestr,pos.top,width);
+			else $("#divTimeOverlay")[0].innerHTML = timestr;
+		}	
 		
 		// UPDATE POSITION IMAGE OVERLAY
 
-		var ancho = $("#divTimeImageOverlay").width();
-		var posx = event.clientX-(ancho/2);
-		if(event.clientX > (ancho/2 + pos.left)  &&  event.clientX < (pos.left+width - ancho/2) ) { // LEFT
-		$("#divTimeImageOverlay").css("left",posx); // CENTER THE DIV HOVER THE MOUSE
+		if(self._hasSlides) {
+			var ancho = $("#divTimeImageOverlay").width();
+			var posx = event.clientX-(ancho/2);
+			if(event.clientX > (ancho/2 + pos.left)  &&  event.clientX < (pos.left+width - ancho/2) ) { // LEFT
+			$("#divTimeImageOverlay").css("left",posx); // CENTER THE DIV HOVER THE MOUSE
+			}
+			else if(event.clientX < width / 2)
+				$("#divTimeImageOverlay").css("left",pos.left);
+			else 
+				$("#divTimeImageOverlay").css("left",pos.left + width - ancho);
 		}
-		else if(event.clientX < width / 2)
-			$("#divTimeImageOverlay").css("left",pos.left);
-		else 
-			$("#divTimeImageOverlay").css("left",pos.left + width - ancho);
 
 		// UPDATE POSITION TIME OVERLAY
 
@@ -168,11 +182,11 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		else 
 			$("#divTimeOverlay").css("left",pos.left + width - ancho2-2);
 
-
-		//TOP ADJUSTO TO IMAGE RES
-		p = $("#divTimeImageOverlay").height();
-		$("#divTimeImageOverlay").css("top",pos.top-p);
-
+		if(self._hasSlides) {
+			//TOP ADJUSTO TO IMAGE RES
+			p = $("#divTimeImageOverlay").height();
+			$("#divTimeImageOverlay").css("top",pos.top-p);
+		}
 
 	},
 
@@ -182,6 +196,10 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		//  BRING THE IMAGE ARRAY TO LOCAL
 		this._images = {};
 		var n = paella.initDelegate.initParams.videoLoader.frameList;
+
+		if(Object.keys(n).length === 0) { self._hasSlides = false; return;}
+		else self._hasSlides = true;
+
 
 		this._images = n; // COPY TO LOCAL
 		this._videoLength = paella.player.videoContainer.duration(""); // video duration in frames
@@ -245,11 +263,13 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		div.style.width = Math.round(aux*self._aspectRatio)+"px"; //KEEP ASPECT RATIO 4:3
 		div.style.height = Math.round(aux)+"px";
 
+		if(self._hasSlides){
 		var img = document.createElement("img");
 		img.className =  "imgOverlay";
 		img.id = "imgOverlay";
 
 		div.appendChild(img);
+		}
 
 
 		var div2 = document.createElement("div");
@@ -263,6 +283,17 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		var controlBar = document.getElementById('playerContainer_controls_playback_playbackBar');
 		controlBar.appendChild(div); //CHILD OF CONTROLS_BAR
 
+	},
+	
+	setupTimeOnly:function(time_str,top,width){
+		var div2 = document.createElement("div");
+		div2.className = "divTimeOverlay";
+		div2.style.top = (top-20)+"px"; 
+		div2.id = ("divTimeOverlay");
+		div2.innerHTML = time_str;
+
+		var controlBar = document.getElementById('playerContainer_controls_playback_playbackBar');
+		controlBar.appendChild(div2); //CHILD OF CONTROLS_BAR
 	},
 
 	playbackFull:function() {
