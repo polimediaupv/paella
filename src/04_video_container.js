@@ -60,7 +60,14 @@ Class ("paella.VideoOverlay", paella.DomNode,{
 	},
 
 	removeElement:function(element) {
-		this.domElement.removeChild(element);
+		if (element) {
+			try {
+				this.domElement.removeChild(element);
+			}
+			catch (e) {
+				
+			}
+		}
 	},
 
 	getVSize:function(px) {

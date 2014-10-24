@@ -180,7 +180,9 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 
 	removeHiResFrame:function() {
 		overlayContainer = paella.player.videoContainer.overlayContainer;
-		overlayContainer.removeElement(this.hiResFrame);
+		if (this.hiResFrame) {
+			overlayContainer.removeElement(this.hiResFrame);
+		}
 		overlayContainer.disableBackgroundMode();
 	},
 
@@ -259,7 +261,7 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 	onTimeUpdate:function(currentTime) {
 		var frame = null;
 		for (var i = 0; i<this.frames.length; ++i) {
-			if (this.frames[i].frameData.time<=currentTime) {
+			if (this.frames[i].frameData && this.frames[i].frameData.time<=currentTime) {
 				frame = this.frames[i];
 			}
 			else {
