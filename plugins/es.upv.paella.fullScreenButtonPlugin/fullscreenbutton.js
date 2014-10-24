@@ -1,4 +1,6 @@
 Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
+	_reload:null,
+
 	getIndex:function() { return 551; },
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "showFullScreenButton"; },
@@ -14,27 +16,32 @@ Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 
 	setup:function() {
 		var thisClass = this;
+
+		thisClass._reload = thisClass.config.reloadOnFullscreen || "mantain";
 		paella.events.bind(paella.events.enterFullscreen, function(event) { thisClass.onEnterFullscreen(); });
 		paella.events.bind(paella.events.exitFullscreen, function(event) { thisClass.onExitFullscreen(); });
 	},
 
 	action:function(button) {
+		var self = this;
 		if (paella.player.isFullScreen()) {
 			paella.player.exitFullScreen();			
 		}
 		else {
 			paella.player.goFullScreen();
-		}		
+		}
+		setTimeout(function(){if(self._reload == "reload") paella.player.reloadVideos();}, 1000);		
 	},
 
 	onEnterFullscreen: function() {
 		this.setToolTip(base.dictionary.translate("Exit Fullscreen"));
-		this.button.className = this.getButtonItemClass(true);		
+		this.button.className = this.getButtonItemClass(true);
+				
 	},
 	
 	onExitFullscreen: function() {
 		this.setToolTip(base.dictionary.translate("Go Fullscreen"));
-		this.button.className = this.getButtonItemClass(false);		
+		this.button.className = this.getButtonItemClass(false);	
 	},
 
 	getButtonItemClass:function(selected) {

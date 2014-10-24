@@ -1,6 +1,8 @@
 Class ("paella.plugins.ExtendedProfilesPlugin",paella.ButtonPlugin,{
 	buttonItems: null,
 	extendedModes: null,
+	_reload:null,
+
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "showExtendedProfilesButton"; },
 	getIndex:function() { return 550; },
@@ -16,6 +18,7 @@ Class ("paella.plugins.ExtendedProfilesPlugin",paella.ButtonPlugin,{
 	setup:function() {
 		var thisClass = this;
 
+		thisClass._reload = thisClass.config.reloadOnFullscreen || "mantain";
     	Keys = {Tab:9,Return:13,Esc:27,End:35,Home:36,Left:37,Up:38,Right:39,Down:40};
 
         $(this.button).keyup(function(event) {
@@ -97,13 +100,15 @@ Class ("paella.plugins.ExtendedProfilesPlugin",paella.ButtonPlugin,{
 		return 'extendedProfilesItemButton ' + profileName  + ((selected) ? ' selected':'');
 	},
 
-	switchFullScreen:function(profile,profileData){		
+	switchFullScreen:function(profile,profileData){
+		var self = this;		
 		if (paella.player.isFullScreen()) {
 			paella.player.exitFullScreen();
 		}
 		else {
 			paella.player.goFullScreen();
 		}
+		setTimeout(function(){if(self._reload == "reload") paella.player.reloadVideos();}, 1000);
 	}
 });
 
