@@ -56,7 +56,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		this.parent('div',id,style);
 		this.domElement.className = "playbackBar";
 		this.domElement.setAttribute("alt", "");
-		this.domElement.setAttribute("title", "Timeline Slider");
+		//this.domElement.setAttribute("title", "Timeline Slider");
 		this.domElement.setAttribute("aria-label", "Timeline Slider");
 		this.domElement.setAttribute("role", "slider");
 		this.domElement.setAttribute("aria-valuemin", "0");
