@@ -62,14 +62,17 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 		$(".buttonSnapshot").click(function(){
 			if(self._actualImage != null)
 			window.open(self._actualImage, "_blank");
+			event.stopPropagation();
 		});
 
 		$(".buttonZoomIn").click(function(){
 			self.zoomIn();
+			event.stopPropagation();
 		});
 
 		$(".buttonZoomOut").click(function(){
 			self.zoomOut();
+			event.stopPropagation();
 		});
 
 
@@ -249,10 +252,19 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 
 	action:function(button) {
 		var self = this;
-		if($('.newframe').length<1){
+		
+		if($('.newframe').length<1 && paella.player.videoContainer.getMasterVideoRect().visible){
 			//CREATE OVERLAY
 			self.createOverlay();
 			self.setupIcons();
+
+			// UPDATE IMAGE ON PAUSE
+			if(paella.player.paused()){
+			var currentTime = paella.player.videoContainer.currentTime();
+			self.imageUpdateOnPause(currentTime);
+		}
+			
+
 			self._compChanged = true;
 			this._isActivated = true;
 		}
@@ -263,12 +275,49 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 
 	},
 
+	imageUpdateOnPause:function(params) {
+			var self = this;
+			var sec = Math.round(params);
+			var src = $( ".zoomFrame" ).css('background-image');
+
+			if($('.newframe').length>0 && src != self._actualImage){
+
+				if(this._zImages.hasOwnProperty("frame_"+sec)) { // SWAP IMAGES WHEN PLAYING
+					if(src == this._zImages["frame_"+sec]) return;
+					else src = this._zImages["frame_"+sec]; 
+					}
+
+				else { 
+					if(self._compChanged) self._compChanged = false;
+					src = self.returnSrc(sec); 
+					}
+
+					$("#photo_01").attr('src',src).load();
+
+					//PRELOAD NEXT IMAGE
+					var image = new Image();
+					image.onload = function(){
+	    			$( ".zoomFrame" ).css('background-image', 'url(' + src + ')'); // UPDATING IMAGE
+					};
+					image.src = src;
+
+					// OPEN NEW WINDOW WITH FULLSCREEN IMAGE
+					self._actualImage = src;
+
+			}
+	},
+
 	compositionChanged:function(event,params){
 		var self = this;
-		if($('.newframe').length>0){
-			$( ".newframe" ).remove();// REMOVE PLUGIN
+		$( ".newframe" ).remove();// REMOVE PLUGIN
+		if(this._isActivated && paella.player.videoContainer.getMasterVideoRect().visible){
 			self.createOverlay();//CALL AGAIN
 			self.setupIcons();
+			// IF IS PAUSED ON COMPOSITION CHANGED
+			if(paella.player.paused()){
+			var currentTime = paella.player.videoContainer.currentTime();
+			self.imageUpdateOnPause(currentTime);
+			}
 		}
 		self._compChanged = true;
 	},
