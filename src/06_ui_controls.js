@@ -495,7 +495,9 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 
 		paella.events.bind(paella.events.play,function(event) { thisClass.onPlayEvent(); });
 		paella.events.bind(paella.events.pause,function(event) { thisClass.onPauseEvent(); });
-		paella.events.bind('mousemove',function(event) { thisClass.onMouseMoveEvent(); });
+		$(document).mousemove(function(event) {
+			paella.player.controls.restartTimerEvent();
+		});
 		paella.events.bind(paella.events.endVideo,function(event) { thisClass.onEndVideoEvent(); });
 		paella.events.bind('keydown',function(event) { thisClass.onKeyEvent(); });
 
@@ -586,10 +588,10 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 	autohideTimeout:function() {
 		var playbackBar = this.playbackControl().playbackBar();
 		if (playbackBar.isSeeking()) {
-			this.restartAutohideTimer();
+			paella.player.controls.restartHideTimer();
 		}
 		else {
-			this.hideControls();
+			paella.player.controls.hideControls();
 		}
 	},
 
@@ -602,7 +604,7 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 	},
 
 	onPlayEvent:function() {
-		this.restartAutohideTimer();
+		this.restartHideTimer();
 	},
 
 	onPauseEvent:function() {
@@ -617,14 +619,15 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 	onKeyEvent:function() {
 		this.showControls();
 		if (paella.player.videoContainer.isReady() && !paella.player.videoContainer.paused()) {
-			this.restartAutohideTimer();
+			paella.player.controls.restartHideTimer();
 		}
 	},
 
-	onMouseMoveEvent:function() {
+	restartTimerEvent:function() {
 		this.showControls();
-		if (paella.player.videoContainer.isReady() && !paella.player.videoContainer.paused()) {
-			this.restartAutohideTimer();
+		var paused = paella.player.videoContainer.paused();
+		if (!paused) {
+			this.restartHideTimer();
 		}
 	},
 
@@ -635,7 +638,7 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 		}
 	},
 
-	restartAutohideTimer:function() {
+	restartHideTimer:function() {
 		this.clearAutohideTimer();
 		var thisClass = this;
 		this.autohideTimer = new base.Timer(function(timer) {
