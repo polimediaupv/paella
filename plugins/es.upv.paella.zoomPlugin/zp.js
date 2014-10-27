@@ -253,7 +253,7 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 	action:function(button) {
 		var self = this;
 		
-		if($('.newframe').length<1){
+		if($('.newframe').length<1 && paella.player.videoContainer.getMasterVideoRect().visible){
 			//CREATE OVERLAY
 			self.createOverlay();
 			self.setupIcons();
@@ -309,11 +309,10 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 
 	compositionChanged:function(event,params){
 		var self = this;
-		if($('.newframe').length>0){
-			$( ".newframe" ).remove();// REMOVE PLUGIN
+		$( ".newframe" ).remove();// REMOVE PLUGIN
+		if(this._isActivated && paella.player.videoContainer.getMasterVideoRect().visible){
 			self.createOverlay();//CALL AGAIN
 			self.setupIcons();
-
 			// IF IS PAUSED ON COMPOSITION CHANGED
 			if(paella.player.paused()){
 			var currentTime = paella.player.videoContainer.currentTime();
