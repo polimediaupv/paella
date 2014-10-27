@@ -953,9 +953,13 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		video1.setRect(rectMaster,animate);
 		this.currentMasterVideoRect = rectMaster;
 		video1.setVisible(profileData.masterVideo.visible,animate);
+		this.currentMasterVideoRect.visible = /true/i.test(profileData.masterVideo.visible) ? true:false;
+		this.currentMasterVideoRect.layer = parseInt(profileData.masterVideo.layer);
 		if (video2) {
 			video2.setRect(rectSlave,animate);
 			this.currentSlaveVideoRect = rectSlave;
+			this.currentSlaveVideoRect.visible = /true/i.test(profileData.slaveVideo.visible) ? true:false;
+			this.currentSlaveVideoRect.layer = parseInt(profileData.slaveVideo.layer);
 			video2.setVisible(profileData.slaveVideo.visible,animate);
 			video2.setLayer(profileData.slaveVideo.layer);
 		}
