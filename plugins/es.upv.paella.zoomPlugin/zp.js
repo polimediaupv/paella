@@ -1,4 +1,4 @@
-Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
+Class ("paella.ZoomPlugin", paella.EventDrivenPlugin,{
 	_zImages:null,
 	_isActivated:false,
 	_keys:null,
@@ -21,6 +21,20 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 
 	getDefaultToolTip:function() { return base.dictionary.translate("Zoom");},
 
+	getEvents:function() {
+		return[
+		paella.events.timeUpdate,
+		paella.events.setComposition
+		];
+    },
+
+    onEvent:function(event, params){
+    	var self = this;
+    	switch(event){
+    		case paella.events.timeUpdate: self.imageUpdate(event,params); break;
+    		case paella.events.setCompositon: self.compositionChanged(event,params); break;
+    	}
+    },
 	checkEnabled:function(onSuccess) {
 		// CHECK IF THE VIDEO HAS HIRESIMAGES
 		var n = paella.player.videoContainer.sourceData[0].sources;
