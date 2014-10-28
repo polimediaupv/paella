@@ -34,17 +34,17 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 		var self = this;
 
 		var iconsFrame = document.createElement("div");
-			iconsFrame.className = "iconsFrame";
+		iconsFrame.className = "iconsFrame";
 
 		var buttonZoomIn = document.createElement("button");
-			buttonZoomIn.className = "buttonZoomIn";
+		buttonZoomIn.className = "zoomActionButton buttonZoomIn";
 
 		var buttonZoomOut = document.createElement("button");
-			buttonZoomOut.className = "buttonZoomOut";
+		buttonZoomOut.className = "zoomActionButton buttonZoomOut";
 
 		var buttonSnapshot = document.createElement("button");
-			buttonSnapshot.className = "buttonSnapshot";
-			buttonSnapshot.type = "button";
+		buttonSnapshot.className = "zoomActionButton buttonSnapshot";
+		buttonSnapshot.type = "button";
 
 		$(iconsFrame).append(buttonSnapshot);
 		$(iconsFrame).append(buttonZoomIn);
