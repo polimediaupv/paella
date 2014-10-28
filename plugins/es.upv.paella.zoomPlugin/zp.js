@@ -1,4 +1,4 @@
-Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
+Class ("paella.ZoomPlugin", paella.EventDrivenPlugin,{
 	_zImages:null,
 	_isActivated:false,
 	_keys:null,
@@ -21,6 +21,22 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 
 	getDefaultToolTip:function() { return base.dictionary.translate("Zoom");},
 
+	getEvents:function() {
+		return[
+		paella.events.timeUpdate,
+		paella.events.setComposition,
+		paella.events.loadPlugins
+		];
+    },
+
+    onEvent:function(event, params){
+    	var self = this;
+    	switch(event){
+    		case paella.events.timeUpdate: self.imageUpdate(event,params); break;
+    		case paella.events.setComposition: self.compositionChanged(event,params); break;
+    		case paella.events.loadPlugins: self.loadPlugin(event,params); break;
+    	}
+    },
 	checkEnabled:function(onSuccess) {
 		// CHECK IF THE VIDEO HAS HIRESIMAGES
 		var n = paella.player.videoContainer.sourceData[0].sources;
@@ -38,20 +54,27 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 
 		var buttonZoomIn = document.createElement("button");
 		buttonZoomIn.className = "zoomActionButton buttonZoomIn";
+		buttonZoomIn.style.display = 'none';
 
 		var buttonZoomOut = document.createElement("button");
 		buttonZoomOut.className = "zoomActionButton buttonZoomOut";
+		buttonZoomOut.style.display = 'none';
 
 		var buttonSnapshot = document.createElement("button");
 		buttonSnapshot.className = "zoomActionButton buttonSnapshot";
-		buttonSnapshot.type = "button";
+		buttonSnapshot.style.display = 'none';
 
+		var buttonZoomOn = document.createElement("button");
+		buttonZoomOn.className = "zoomActionButton buttonZoomOn";
+
+		$(iconsFrame).append(buttonZoomOn);
 		$(iconsFrame).append(buttonSnapshot);
 		$(iconsFrame).append(buttonZoomIn);
 		$(iconsFrame).append(buttonZoomOut);
 
 		$(".newframe").append(iconsFrame);
        	
+
        	$(iconsFrame).mouseleave(function() {
    			 $('.zoomFrame').css('opacity','0');
   			});
@@ -59,23 +82,41 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
    			 $('.zoomFrame').css('opacity','1');
   			});
 
-		$(".buttonSnapshot").click(function(){
+		$(buttonZoomOn).click(function(){
+			if(self._isActivated){
+				$( ".zoomFrame" ).hide();
+				self._isActivated = false;
+				// HIDE ZOOM ICONS
+				$('.buttonSnapshot').hide();
+				$('.buttonZoomOut').hide();
+				$('.buttonZoomIn').hide();
+			}
+			else{
+				$( ".zoomFrame" ).show();
+				self._isActivated = true;
+				// SHOW ZOOM ICONS
+				$('.buttonSnapshot').show();
+				$('.buttonZoomOut').show();
+				$('.buttonZoomIn').show();
+			}
+			event.stopPropagation();
+		});
+
+		$(buttonSnapshot).click(function(){
 			if(self._actualImage != null)
 			window.open(self._actualImage, "_blank");
 			event.stopPropagation();
 		});
 
-		$(".buttonZoomIn").click(function(){
+		$(buttonZoomIn).click(function(){
 			self.zoomIn();
 			event.stopPropagation();
 		});
 
-		$(".buttonZoomOut").click(function(){
+		$(buttonZoomOut).click(function(){
 			self.zoomOut();
 			event.stopPropagation();
 		});
-
-
 	},
 
 	setup:function() {
@@ -88,21 +129,8 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 
 		//  BRING THE IMAGE ARRAY TO LOCAL
 		this._zImages = {};
-		var n = paella.player.videoContainer.sourceData;
-		var n_res = 0;
-
 		this._zImages = paella.player.videoContainer.sourceData[0].sources.image[0].frames; // COPY TO LOCAL
 		this._videoLength = paella.player.videoContainer.sourceData[0].sources.image[0].duration; // video duration in frames
-		
-		// REMOVE ON COMPOSITION CHANGE
-		paella.events.bind(paella.events.setComposition, function(event,params) {
-			self.compositionChanged(event,params);
-		});
-
-		// BIND TIMEUPDATEVENT	
-		paella.events.bind(paella.events.timeUpdate, function(event,params) { 
-			self.imageUpdate(event,params);
-		});
 
 		// SORT KEYS FOR SEARCH CLOSEST
 		this._keys = Object.keys(this._zImages);
@@ -117,8 +145,15 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 		this._ant = 0;
 	},
 
+	loadPlugin:function(){
+		var self = this;
+		self.createOverlay();
+		self.setupIcons();
+		$( ".zoomFrame" ).hide();
+		self._isActivated = false;
+	},
+
 	imageUpdate:function(event,params) {
-		if(this._isActivated){
 
 			var self = this;
 			var sec = Math.round(params.currentTime);
@@ -150,7 +185,6 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 					self._actualImage = src;
 
 			}
-		}
 		
 	},
 
@@ -174,21 +208,22 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 	},
 
 	createOverlay:function(){
-		var self = this;
-		var newframe = document.createElement("div");
+			var self = this;
+
+			var newframe = document.createElement("div");
 			newframe.className = "newframe";
-
-        	// ZOOM
-        	var zoomframe = document.createElement("div");
-			zoomframe.className = "zoomFrame";	
-      		newframe.insertBefore(zoomframe,newframe.firstChild);
-
-        	// OVERLAY
+			
 			overlayContainer = paella.player.videoContainer.overlayContainer;
 			overlayContainer.addElement(newframe, overlayContainer.getMasterRect());
 
-			//BIND MOUSEWHEEL
-		    $(zoomframe).bind('mousewheel', function(e){
+			var zoomframe = document.createElement("div");
+			zoomframe.className = "zoomFrame";	
+      		newframe.insertBefore(zoomframe,newframe.firstChild);
+
+
+
+      		// BINDS JQUERY
+      		$(zoomframe).bind('mousewheel', function(e){
         		if(e.originalEvent.wheelDelta /120 > 0) {
             		self.zoomIn();
         		}
@@ -209,6 +244,7 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
   			$(zoomframe).mousemove(function(){
   				self.mouseMove();
   			});
+
 	},
 
 	mouseMove:function(){
@@ -250,31 +286,6 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 		}	
 	},
 
-	action:function(button) {
-		var self = this;
-		
-		if($('.newframe').length<1 && paella.player.videoContainer.getMasterVideoRect().visible){
-			//CREATE OVERLAY
-			self.createOverlay();
-			self.setupIcons();
-
-			// UPDATE IMAGE ON PAUSE
-			if(paella.player.paused()){
-			var currentTime = paella.player.videoContainer.currentTime();
-			self.imageUpdateOnPause(currentTime);
-		}
-			
-
-			self._compChanged = true;
-			this._isActivated = true;
-		}
-		else { // IF EXISTS REMOVE ON CLICK
-			$( ".newframe" ).remove();
-			this._isActivated = false;
-		}
-
-	},
-
 	imageUpdateOnPause:function(params) {
 			var self = this;
 			var sec = Math.round(params);
@@ -310,9 +321,8 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 	compositionChanged:function(event,params){
 		var self = this;
 		$( ".newframe" ).remove();// REMOVE PLUGIN
-		if(this._isActivated && paella.player.videoContainer.getMasterVideoRect().visible){
-			self.createOverlay();//CALL AGAIN
-			self.setupIcons();
+		if(paella.player.videoContainer.getMasterVideoRect().visible){
+			self.loadPlugin();
 			// IF IS PAUSED ON COMPOSITION CHANGED
 			if(paella.player.paused()){
 			var currentTime = paella.player.videoContainer.currentTime();
@@ -320,6 +330,7 @@ Class ("paella.ZoomPlugin", paella.VideoOverlayButtonPlugin,{
 			}
 		}
 		self._compChanged = true;
+
 	},
 
 	getName:function() { 
