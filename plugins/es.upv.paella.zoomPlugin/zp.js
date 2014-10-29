@@ -54,7 +54,7 @@ Class ("paella.ZoomPlugin", paella.EventDrivenPlugin,{
 
 	setupIcons:function(){
 		var self = this;
-
+		var width = $('.zoomFrame').width();
 		//ARROWS
 		var arrowsLeft = document.createElement("div");
 		arrowsLeft.className = "arrowsLeft";
@@ -63,6 +63,7 @@ Class ("paella.ZoomPlugin", paella.EventDrivenPlugin,{
 		var arrowsRight = document.createElement("div");
 		arrowsRight.className = "arrowsRight";
 		arrowsRight.style.display = 'none';
+		arrowsRight.style.left = (width-24)+'px';
 
 		$(arrowsLeft).click(function(){
 			self.arrowCallLeft();
