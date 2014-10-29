@@ -53,7 +53,7 @@ Class ("paella.ZoomPlugin", paella.EventDrivenPlugin,{
 	},
 
 	setupIcons:function(){
-		// PRUEBA
+		// PRUEBA 2
 		var self = this;
 		var width = $('.zoomFrame').width();
 		//ARROWS
