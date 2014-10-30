@@ -11,7 +11,7 @@
 			{"aspectRatio":"4/3","left":"5","top":"92","width":"700","height":"526"},
 			{"aspectRatio":"5/4","left":"10","top":"77","width":"675","height":"540"}],"visible":"true","layer":"1"},
 		"background":{"content":"slide_professor_paella.jpg","zIndex":5,"rect":{"left":"0","top":"0","width":"1280","height":"720"},"visible":"true","layer":"0"},
-		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}},{"content":"logo.png","zIndex":5,"rect":{"top":"10","left":"70","width":"125","height":"42"}}]
+		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}}]
 	},
 	"professor_slide":{
 		"name":{"es":"Presentador y presentación"},
@@ -24,7 +24,7 @@
 			{"aspectRatio":"4/3","left":"944","top":"370","width":"330","height":"247"},
 			{"aspectRatio":"5/4","left":"944","top":"355","width":"330","height":"264"}],"visible":"true","layer":"1"},
 		"background":{"content":"slide_professor_paella.jpg","zIndex":5,"rect":{"left":"0","top":"0","width":"1280","height":"720"},"visible":"true","layer":"0"},
-		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}},{"content":"logo.png","zIndex":5,"rect":{"top":"10","left":"70","width":"125","height":"42"}}]
+		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}}]
 		},
 	"professor":{
 		"name":{"es":"Solo profesor"},
@@ -35,7 +35,7 @@
 		"slaveVideo":{"content":"presentation","rect":[
 			{"aspectRatio":"4/3","left":"0","top":"0","width":"300","height":"300"}],"visible":"false","layer":"1"},
 		"background":{"content":"default_background_paella.jpg","zIndex":5,"rect":{"left":"0","top":"0","width":"1280","height":"720"},"visible":"true","layer":"0"},
-		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}},{"content":"logo.png","zIndex":5,"rect":{"top":"10","left":"70","width":"125","height":"42"}}]
+		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}}]
 	},
 	"slide":{
 		"name":{"es":"Solo presentación"},
@@ -46,7 +46,7 @@
 			{"aspectRatio":"16/9","left":"0","top":"0","width":"1280","height":"720"},
 			{"aspectRatio":"4/3","left":"190","top":"5","width":"910","height":"683"}],"visible":"true","layer":"1"},
 		"background":{"content":"default_background_paella.jpg","zIndex":5,"rect":{"left":"0","top":"0","width":"1280","height":"720"},"visible":"true","layer":"0"},
-		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}},{"content":"logo.png","zIndex":5,"rect":{"top":"10","left":"70","width":"125","height":"42"}}]
+		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}}]
 	},
 	"slide_over_professor":{
 		"name":{"es":"Presentación sobre profesor"},
@@ -59,7 +59,7 @@
 			{"aspectRatio":"4/3","left":"50","top":"400","width":"350","height":"262"}
 			],"visible":"true","layer":"1"},
 		"background":{"content":"default_background_paella.jpg","zIndex":5,"rect":{"left":"0","top":"0","width":"1280","height":"720"},"visible":"true","layer":"0"},
-		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}},{"content":"logo.png","zIndex":5,"rect":{"top":"10","left":"70","width":"125","height":"42"}}]
+		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}}]
 	},
 	"slide_over_professor_right":{
 		"name":{"es":"Presentación a la derecha, sobre profesor"},
@@ -71,6 +71,6 @@
 			{"aspectRatio":"16/9","left":"710","top":"470","width":"350","height":"197"},
 			{"aspectRatio":"4/3","left":"910","top":"400","width":"350","height":"262"}],"visible":"true","layer":"1"},
 		"background":{"content":"default_background_paella.jpg","zIndex":5,"rect":{"left":"0","top":"0","width":"1280","height":"720"},"visible":"true","layer":"0"},
-		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}},{"content":"logo.png","zIndex":5,"rect":{"top":"10","left":"70","width":"125","height":"42"}}]
+		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}}]
 	}
 }
