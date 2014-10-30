@@ -60,6 +60,28 @@ Class ("paella.MouseManager", {
 paella.utils = {	
 	mouseManager: new paella.MouseManager(),
 	
+	styleSheet: {
+		remove:function(fileName) {
+			var links = document.head.getElementsByTagName('link');
+			for (var i =0; i<links.length; ++i) {
+				if (links[i].href) {
+					document.head.removeChild(links[i]);
+					break;
+				}
+			}
+		},
+		
+		add:function(fileName) {
+			var link = document.createElement('link');
+			link.rel = 'stylesheet';
+			link.href = fileName;
+			link.type = 'text/css';
+			link.media = 'screen';
+			link.charset = 'utf-8';
+			document.head.addChild(link);
+		}
+	},
+
 	timeParse:{
 		secondsToTime:function(seconds) {
 			var hrs = ~~ (seconds / 3600);
