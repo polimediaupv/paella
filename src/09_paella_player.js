@@ -221,7 +221,13 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		paella.events.bind(paella.events.seekToTime,function(event,params) { paella.player.videoContainer.seekToTime(params.time); });
 		paella.events.bind(paella.events.setPlaybackRate,function(event,params) { paella.player.videoContainer.setPlaybackRate(params); });
 		paella.events.bind(paella.events.setVolume,function(event,params) { paella.player.videoContainer.setVolume(params); });
-		paella.events.bind(paella.events.setTrim,function(event,params) { paella.player.videoContainer.setTrimming(params.trimStart, params.trimEnd); });
+		paella.events.bind(paella.events.setTrim,function(event,params) {
+			if (params.trimEnabled)
+				paella.player.videoContainer.enableTrimming();
+			else
+				paella.player.videoContainer.disableTrimming();
+			paella.player.videoContainer.setTrimming(params.trimStart, params.trimEnd);
+		});
 	},
 
 	onresize:function() {

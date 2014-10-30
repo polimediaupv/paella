@@ -164,12 +164,12 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 
 	enableTrimming:function() {
 		this.trimming.enabled = true;
-		paella.events.trigger(paella.events.setTrim,{trimEnabled:this.trimming.enabled,trimStart:this.trimming.start,trimEnd:this.trimming.end});
+		//paella.events.trigger(paella.events.setTrim,{trimEnabled:this.trimming.enabled,trimStart:this.trimming.start,trimEnd:this.trimming.end});
 	},
 
 	disableTrimming:function() {
 		this.trimming.enabled = false;
-		paella.events.trigger(paella.events.setTrim,{trimEnabled:this.trimming.enabled,trimStart:this.trimming.start,trimEnd:this.trimming.end});
+		//paella.events.trigger(paella.events.setTrim,{trimEnabled:this.trimming.enabled,trimStart:this.trimming.start,trimEnd:this.trimming.end});
 	},
 
 	setTrimming:function(start,end) {
@@ -445,6 +445,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	setCurrentTime:function(time) {
+		if (time<=0) time = 1; 
 		if (this.trimming.enabled) {
 			if (time<this.trimming.start) time = this.trimming.start;
 			if (time>this.trimming.end) time = this.trimming.end;
