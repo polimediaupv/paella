@@ -45,17 +45,19 @@ module.exports = function(grunt) {
 			'less':{
 				src: [
 					'plugins/*/*.less',
-					'resources/style/*.less'
+					'resources/style/*.less',
+					'resources/style/skins/dark.less'
 				],
-				dest: 'build/style.less'
+				dest: 'build/style_dark.less'
 			},
-			'style.css': {
-				src: [
-					'build/player/resources/style/style.css',
-					'resources/style/*.css',
-					'plugins/*/*.css'
-				],
-				dest: 'build/player/resources/style/style.css'
+			'test':{
+				'files':{
+					'build/style1.less':[
+						'plugins/*/*.less',
+						'resources/style/*.less',
+						'resources/style/skins/dark.less'
+					]
+				}
 			}
 		},
 		uglify: {
@@ -208,7 +210,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('default', ['dist']);
 	grunt.registerTask('checksyntax', ['concat:less','less:production','jshint', 'csslint', 'jsonlint']);
 
-	grunt.registerTask('build.common', ['revision', 'checksyntax', 'copy:paella', 'concat:dist.js', 'concat:style.css', 'clean:less', 'merge-json:i18n']);
+	grunt.registerTask('build.common', ['revision', 'checksyntax', 'copy:paella', 'concat:dist.js', 'clean:less', 'merge-json:i18n']);
 	grunt.registerTask('build.release', ['build.common', 'uglify:dist', 'cssmin:dist']);
 	grunt.registerTask('build.debug', ['build.common']);
 
