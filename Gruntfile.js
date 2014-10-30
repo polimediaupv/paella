@@ -205,6 +205,9 @@ module.exports = function(grunt) {
 		paellaConfig.skin.available.push(skinName);
 	};
 
+	if (!fs.existsSync(__dirname + '/build')) {
+		fs.mkdirSync(__dirname + '/build');
+	}
 	fs.writeFileSync(__dirname + '/build/config_temp.json',JSON.stringify(paellaConfig,null,4));
 	
 	grunt.initConfig(initConfig);
