@@ -61,6 +61,13 @@ paella.utils = {
 	mouseManager: new paella.MouseManager(),
 	
 	styleSheet: {
+		removeById:function(id) {
+			var outStyleSheet = $(document.head).find('#' + id)[0];
+			if (outStyleSheet) {
+				document.head.removeChild(outStyleSheet);
+			}
+		},
+		
 		remove:function(fileName) {
 			var links = document.head.getElementsByTagName('link');
 			for (var i =0; i<links.length; ++i) {
@@ -71,14 +78,28 @@ paella.utils = {
 			}
 		},
 		
-		add:function(fileName) {
+		add:function(fileName,id) {
 			var link = document.createElement('link');
 			link.rel = 'stylesheet';
 			link.href = fileName;
 			link.type = 'text/css';
 			link.media = 'screen';
 			link.charset = 'utf-8';
-			document.head.addChild(link);
+			if (id) link.id = id;
+			document.head.appendChild(link);
+		},
+		
+		swap:function(outFile,inFile) {
+			this.remove(outFile);
+			this.add(inFile);
+		}
+	},
+	
+	skin: {
+		set:function(skinName) {
+			var skinId = 'paellaSkin';
+			paella.utils.styleSheet.removeById(skinId);
+			paella.utils.styleSheet.add('resources/style/style_' + skinName + '.css');
 		}
 	},
 

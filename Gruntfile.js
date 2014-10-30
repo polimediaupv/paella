@@ -23,7 +23,8 @@ module.exports = function(grunt) {
 					{expand: true, cwd: 'repository_test/', src: '**', dest: 'build/'},
 					{expand: true, src:'plugins/*/resources/**', dest: 'build/player/resources/style/',
 						rename: function (dest, src) { return dest+src.split('/').splice(3).join('/'); }
-					}
+					},
+					{src:['build/config_temp.json'],dest: 'build/player/config/config.json'}
 				]
 			}
 		},
@@ -153,6 +154,12 @@ module.exports = function(grunt) {
 		}
 	};
 	
+	var paellaConfig = require(__dirname + '/config/config.json');
+	if (!paellaConfig.skin) {
+		paellaConfig.skin = { 'default':'dark' };
+	}
+	paellaConfig.skin.available = [];
+
 	var skinsPath = __dirname + '/resources/style/skins/';
 	var skins = fs.readdirSync(skinsPath);
 	var externalSkinsPath = __dirname + '/../paella-styles/';
@@ -195,8 +202,11 @@ module.exports = function(grunt) {
 		var stylePath = 'build/style_' + skinName + '.less';
 		initConfig.concat.less.files[stylePath] = concatRule;
 		initConfig.less.production.files['build/player/resources/style/style_' + skinName + '.css'] = stylePath;
+		paellaConfig.skin.available.push(skinName);
 	};
 
+	fs.writeFileSync(__dirname + '/build/config_temp.json',JSON.stringify(paellaConfig,null,4));
+	
 	grunt.initConfig(initConfig);
 
 	grunt.loadNpmTasks('grunt-git-revision');
@@ -223,4 +233,5 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('server.release', ['build.release', 'express', 'watch:release']);
 	grunt.registerTask('server.debug', ['build.debug', 'express', 'watch:debug']);
+	
 };
