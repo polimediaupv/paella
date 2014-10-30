@@ -130,6 +130,8 @@ Class ("paella.ZoomPlugin", paella.EventDrivenPlugin,{
 	},
 	
 	enterPhotoMode:function() {
+		var self = this;
+
 		$( ".zoomFrame" ).show();
 		$( ".zoomFrame").css('opacity','1');
 		this._isActivated = true;
@@ -141,6 +143,10 @@ Class ("paella.ZoomPlugin", paella.EventDrivenPlugin,{
 		$('.arrowsRight').show();
 		$('.arrowsLeft').show();
 		paella.events.trigger(paella.events.pause);
+
+		//UPDATE ARROWS
+		if(self._imageNumber <= 1) $('.arrowsLeft').hide(); else if(this._isActivated) $('.arrowsLeft').show();
+		if(self._imageNumber >= self._keys.length-2) $('.arrowsRight').hide(); else if(this._isActivated) $('.arrowsRight').show();
 	},
 	
 	exitPhotoMode:function() {
@@ -223,6 +229,9 @@ Class ("paella.ZoomPlugin", paella.EventDrivenPlugin,{
 					// OPEN NEW WINDOW WITH FULLSCREEN IMAGE
 					self._actualImage = src;
 
+					// UPDATE ARROWS
+					if(self._imageNumber <= 1) $('.arrowsLeft').hide(); else if(this._isActivated) $('.arrowsLeft').show();
+					if(self._imageNumber >= self._keys.length-2) $('.arrowsRight').hide(); else if(this._isActivated) $('.arrowsRight').show();
 			}
 		
 	},
@@ -248,20 +257,23 @@ Class ("paella.ZoomPlugin", paella.EventDrivenPlugin,{
 	},
 	arrowCallLeft:function(){
 		var self=this;
-
+		var obj = {};
 		if(self._imageNumber-1 >= 0){
 			var frame = self._keys[self._imageNumber-1];
 			self._imageNumber -= 1;
-			paella.player.videoContainer.seekToTime(frame.slice(6));
+			obj.time = parseInt(frame.slice(6));
+			//paella.player.videoContainer.seekToTime(frame.slice(6));
+			paella.events.trigger(paella.events.seekToTime,obj);
 		}
 	},
 	arrowCallRight:function(){
 		var self=this;
-
+		var obj = {};
 		if(self._imageNumber+1 <= self._keys.length){
 			var frame = self._keys[self._imageNumber+1];
 			self._imageNumber += 1;
-			paella.player.videoContainer.seekToTime(frame.slice(6));
+			obj.time = parseInt(frame.slice(6));
+			paella.events.trigger(paella.events.seekToTime,obj);
 		}
 	},
 
