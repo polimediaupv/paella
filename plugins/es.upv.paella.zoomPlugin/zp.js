@@ -44,12 +44,16 @@ Class ("paella.ZoomPlugin", paella.EventDrivenPlugin,{
     	}
     },
 	checkEnabled:function(onSuccess) {
+		if (paella.player.videoContainer.sourceData.length<2) {
+			onSuccess(false);
+			return;
+		}
+
 		// CHECK IF THE VIDEO HAS HIRESIMAGES
 		var n = paella.player.videoContainer.sourceData[0].sources;
 
 		if(n.hasOwnProperty("image"))onSuccess(true);
 		else onSuccess(false);
-		
 	},
 
 	setupIcons:function(){
