@@ -105,9 +105,12 @@ Class ("paella.ZoomPlugin", paella.EventDrivenPlugin,{
 		$(buttonZoomOn).click(function(){
 			if(self._isActivated){
 				self.exitPhotoMode();
+				$('.zoomActionButton.buttonZoomOn').removeClass("clicked");
 			}
 			else{
 				self.enterPhotoMode();
+				//clicked
+				$('.zoomActionButton.buttonZoomOn').addClass("clicked");
 			}
 			event.stopPropagation();
 		});
