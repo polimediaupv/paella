@@ -106,16 +106,8 @@ The loadPaella function can be called with different parameters:
   The basic call. this loads paella in a div width id = {containerId} and loads the default config file located at config/config.json
   
   ``` js
- function loadPaella(containerId) {
-	var initDelegate = new paella.InitDelegate({
-		accessControl:new MyAccessControl(),
-		videoLoader:new MyVideoLoader()
-	});
-
-	initPaellaEngage(containerId,initDelegate);
-}
+  loadPaella(containerId)
   ```
-
 
 2. loadPaella(containerId, repository)
 
