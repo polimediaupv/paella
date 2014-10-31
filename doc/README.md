@@ -11,6 +11,7 @@ You can take your first contact with Paella going to [Paella Player Web Page](ht
 ## Documentation
 
 - [Build and Install Paella Player](build.md)
+- [Configure and Customize Paella Player](configure.md)
 
 - Integrate Paella with your portal
 	- [Basic](integration_basic.md)
