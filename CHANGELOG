@@ -1,0 +1,79 @@
+CHANGELOG
+=========
+
+ 
+* Paella 4.0.0 (in beta)
+ 
+ * Better Video Quality management (Change video source to higher quality file seamlessly when switching to full screen. And switch to smaller file seamlessly when going back to embed)
+ * Dual audio in dual track videos: Configurable option to mute one of the sources for desktop browsers.
+ * Pause video by clicking in the video area – and restart video by clicking there again.
+ * Don’t display the play icon in the video area after the video has started
+ * Don’t display the control bar until the user has pressed the large play symbol (or hovered the mouse into the video area).
+ * Adaptive display for 4:3 videos
+ * Multiple speed support in HTML5 mode.
+ * Improved Flash fallback for desktop browsers not able to play HTML5 video.
+ * Better Fullscreen management.
+ * Solved the issue that happened when calling the page, the video plays for half a second (with audio), then goes back to the pause and waits for user interaction; that shouldn’t happen.
+ * Icon redesign and cosmetic changes
+ * Plugin activation and deactivation depending on the player state (displayed / not displayed only in embed / only in full screen).
+ * Change colour scheme: New skinning options
+ * Removed the “zoom in” effect when player starts.
+ * Change symbol for full screen when in full screen: Invert arrows.
+ * iOS: Control bar now disappears automatically after x seconds
+ * Slides now appear on top of the timeline on hovering.
+ * Now there is a configuration option that don’t allow a video to be larger than its real size.
+ * Preview release of the Blackboard zoom plugin
+ 
+ 
+* Paella 3.1.0 (22-07-2014)
+ 
+ * RTMP Live Streaming
+ * Multiple Language Captions
+ * Changes on the plugin management
+ * Bug fixes
+ 
+* Paella 3.0.0 (13-03.2014)
+ 
+ * Redesign of the timeline
+ * New style of the slide list
+ * Auto hide buttons/features when they aren't relevant
+ * New still image video provider
+ * Android 4.x and iPad Support
+ * Multi-Quality video support
+ * New plugin: Download
+ * Improved accessibility for disabled users (Tooltips, ARIA roles and alerts)
+ * Enable/Disable plugins in the config file.
+ * Login/logout button for Matterhorn
+ * Integrated Video Editor with Soft Trimming and Soft Breaks
+ * Added the embed code in the share button).
+ * Fixed some bugs in Export Videos plugin
+ * Localization support
+ 
+* Paella 2.0.0 (21-06-2013)
+
+ * Jump by clicking on the slide list
+ * High quality slides while seeking
+ * Can handle RTMP streaming servers
+ * Support of .flv  files
+ * Embeddable
+ * Captions support
+ * Comments (experimental)
+ * Soft Editing features: Trimming and breaks
+ * Support of Chrome, Firefox, Safari and Internet Explorer 9 an 10 browsers
+ * Compatible with Opencast Matterhorn 1.4
+ 
+* Paella 1.0 (Paella Engage Player) (28-05-2012)
+ 
+ * Multi stream video player
+ * Completely based in HTML5 and Javascript
+ * Can play audio from any of the two videos, mute any of them or mix both
+ * Resize position/size of video windows while playing
+ * Play/Pause/30 seconds back controls
+ * Jump anywhere in the video keeping both tracks in sync
+ * Can handle progressive download and pseudostreaming servers
+ * Easily change the relative position of presenter and presentation windows
+ * Native Fullscreen version
+ * “Publish to” buttons for Facebook and Twitter
+ * Easy skinning
+ * Easy install. Just get the code, point to your server and run (if you have mp4/ogg videos available)
+ * Compatible with Opencast Matterhorn
