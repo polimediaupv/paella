@@ -4,7 +4,7 @@
 
 @playbackControlHeight: unit(@playbackControlHeightPx,px);
 
-@playbackBarHeightPx: (@playbackBarButtonHeightPx + @playbackControlHeightPx);
+@playbackBarHeightPx: (@playbackBarButtonHeightPx + @playbackControlHeightPx + 2);
 
 @playbackBarHeight: unit(@playbackBarHeightPx,px);
 
@@ -68,6 +68,7 @@ div {
 .playbackControls {
 	background-color: @backgroundColor;
 	background-image: @backgroundImage;
+	background-size: @backgroundImageSize;
 	position: absolute;
 	bottom: 0px;
 	left: 0px;
