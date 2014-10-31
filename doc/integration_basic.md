@@ -63,7 +63,7 @@ Then add the container where paella is going to load:
     <script type="text/javascript" src="example.js"></script>
   </head>
   <body>
-    [<div id="playerContainer" style="display:block;width:100%"></div>]
+    <div id="playerContainer" style="display:block;width:100%"></div>
   </body>
 </html>
 ```
@@ -105,8 +105,8 @@ The loadPaella function can be called with different parameters:
 
   The basic call. this loads paella in a div width id = {containerId} and loads the default config file located at config/config.json
   
-  ```
-  function loadPaella(containerId) {
+  ``` js
+ function loadPaella(containerId) {
 	var initDelegate = new paella.InitDelegate({
 		accessControl:new MyAccessControl(),
 		videoLoader:new MyVideoLoader()
