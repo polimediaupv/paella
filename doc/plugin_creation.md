@@ -47,7 +47,7 @@ Class ("paella.plugins.HelpPlugin",paella.ButtonPlugin, {...});
 
 example: zoomPlugin.js (EventDrivenPlugin)
 ```javascript
-Class ("paella.ZoomPlugin", paella.EventDrivenPlugin,{
+Class ("paella.ZoomPlugin", paella.EventDrivenPlugin,{...});
 
 ```
 
