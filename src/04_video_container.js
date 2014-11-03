@@ -89,16 +89,23 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	currentSlaveVideoData:null,
 
 	initialize:function(id) {
+		var self = this;
 		var style = {position:'absolute',left:'0px',right:'0px',top:'0px',bottom:'0px',overflow:'hidden'};
 		this.parent('div',id,style);
 		$(this.domElement).click(function(evt) {
+			if (self.firstClick && base.userAgent.browser.IsMobileVersion) return;
 			if (paella.player.videoContainer.paused()) {
 				$(document).trigger(paella.events.play);
 			}
 			else {
 				$(document).trigger(paella.events.pause);
 			}
-
+			self.firstClick = true;
+		});
+		this.domElement.addEventListener("touchstart",function(event) {
+			if (paella.player.controls) {
+				paella.player.controls.restartHideTimer();
+			}
 		});
 	},
 
