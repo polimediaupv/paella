@@ -100,6 +100,17 @@ paella.utils = {
 			var skinId = 'paellaSkin';
 			paella.utils.styleSheet.removeById(skinId);
 			paella.utils.styleSheet.add('resources/style/style_' + skinName + '.css');
+			base.cookies.set("skin",skinName);
+		},
+		
+		restore:function(defaultSkin) {
+			var storedSkin = base.cookies.get("skin");
+			if (storedSkin) {
+				this.set(storedSkin);
+			}
+			else {
+				this.set(defaultSkin);
+			}
 		}
 	},
 
