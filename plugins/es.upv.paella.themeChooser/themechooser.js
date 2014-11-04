@@ -17,12 +17,14 @@ Class ("paella.plugins.ThemeChooserPlugin", paella.ButtonPlugin,{
 	},
 	
 	buildContent:function(domElement) {
-		paella.player.config.skin.available.forEach(function(item){			
+		var This = this;
+		paella.player.config.skin.available.forEach(function(item){
 			var elem = document.createElement('div');
 			elem.className = "themebutton";
-			elem.innerHTML = item;
+			elem.innerHTML = item.replace('-',' ').replace('_',' ');
 			$(elem).click(function(event) {
 				paella.utils.skin.set(item);
+				paella.events.trigger(paella.events.hidePopUp,{identifier:This.getName()});
 			});
 			
 			domElement.appendChild(elem);			

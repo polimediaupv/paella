@@ -12,31 +12,38 @@
 	width: 90%;
 	overflow: hidden;
 	display: inline-block;
+	margin-left: 5%;
 }
 
 .frameControl.navButton {
-	width: 3%;
-	height: 37px;
-	display: inline-block;
+	width: 40px;
+	height: 40px;
+	display: block;
 	cursor: pointer;
-	background-image: url(hscroll_arrows_orange.png);
-	background-size: 200% 200%;
-	background-position: 0 100%;
-	margin-left: 1%;
-	margin-right: 1%;
-	margin-bottom: 21px;
+	background-image: @paella_icons_image;
+	background-size: 2000% 1000%;
+	background-position: 100% 100%;
+	position: absolute;
+	top: 28px;
+}
+
+.frameControl.navButton.left {
+	background-position: -1600% -100%;
+	opacity: 0.5;
 }
 
 .frameControl.navButton.right {
-	background-position:100% 100%;
+	right: 0px;
+	opacity: 0.5;
+	background-position: -1500% -100%;
 }
 
 .frameControl.navButton.left:hover {
-	background-position: 0 0%;
+	opacity: 1.0;
 }
 
 .frameControl.navButton.right:hover {
-	background-position:100% 0%;
+	opacity: 1.0;
 }
 
 .frameControlContent {
