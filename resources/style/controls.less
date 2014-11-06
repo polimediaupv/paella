@@ -8,6 +8,8 @@
 
 @playbackBarHeight: unit(@playbackBarHeightPx,px);
 
+@playbackControlOuterHeight: unit(@playbackControlHeightPx + 2, px);
+
 body {
 	height: 100%;
 	font-family: @fontFamily;
@@ -151,7 +153,7 @@ div {
 .buttonPluginPopUp {
 	background-color: @backgroundColor;
 	position: absolute;
-	bottom: 0px;
+	bottom: -@playbackControlOuterHeight;
 }
 
 .timelinePluginContainer {
