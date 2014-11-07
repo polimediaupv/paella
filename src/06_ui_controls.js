@@ -280,7 +280,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 
 		div.appendChild(div2);
 
-		var controlBar = document.getElementById('playerContainer_controls_playback_playbackBar');
+		var controlBar = document.getElementById('playerContainer_controls_playback');
 		controlBar.appendChild(div); //CHILD OF CONTROLS_BAR
 
 	},
@@ -292,7 +292,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		div2.id = ("divTimeOverlay");
 		div2.innerHTML = time_str;
 
-		var controlBar = document.getElementById('playerContainer_controls_playback_playbackBar');
+		var controlBar = document.getElementById('playerContainer_controls_playback');
 		controlBar.appendChild(div2); //CHILD OF CONTROLS_BAR
 	},
 
