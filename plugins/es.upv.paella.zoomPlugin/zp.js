@@ -166,6 +166,7 @@ Class ("paella.ZoomPlugin", paella.EventDrivenPlugin,{
 		//ARROWS
 		$('.arrowsRight').hide();
 		$('.arrowsLeft').hide();
+		$('.zoomActionButton.buttonZoomOn').removeClass("clicked");
 	},
 
 	setup:function() {
