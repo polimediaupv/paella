@@ -1,5 +1,7 @@
+var fs = require('fs');
+
 module.exports = function(grunt) {
-	grunt.initConfig({
+	var initConfig = {
 		pkg: grunt.file.readJSON('package.json'),
 
 		clean: {
@@ -21,7 +23,8 @@ module.exports = function(grunt) {
 					{expand: true, cwd: 'repository_test/', src: '**', dest: 'build/'},
 					{expand: true, src:'plugins/*/resources/**', dest: 'build/player/resources/style/',
 						rename: function (dest, src) { return dest+src.split('/').splice(3).join('/'); }
-					}
+					},
+					{src:['build/config_temp.json'],dest: 'build/player/config/config.json'}
 				]
 			}
 		},
@@ -41,23 +44,6 @@ module.exports = function(grunt) {
 					'plugins/*/*.js'
 				],
 				dest: 'build/player/javascript/paella_player.js'
-			},
-			'less':{
-				src: [
-					'plugins/*/*.less',
-					'resources/style/*.less',
-					'resources/style/skins/dark.less'
-				],
-				dest: 'build/style_dark.less'
-			},
-			'test':{
-				'files':{
-					'build/style1.less':[
-						'plugins/*/*.less',
-						'resources/style/*.less',
-						'resources/style/skins/dark.less'
-					]
-				}
 			}
 		},
 		uglify: {
@@ -85,30 +71,6 @@ module.exports = function(grunt) {
 				'src/*.js',
 				'plugins/*/*.js'
 			]
-		},
-		less: {
-			development: {
-				options: {
-					paths: [ "css" ]
-				},
-				modifyVars: {
-					titleColor: '#AAAAFF'
-				},
-				files:{
-					"build/player/resources/style/style.css":"build/style.less"
-				}
-			},
-			production: {
-				options:{
-					paths: [ "css" ]
-				},
-				modifyVars: {
-					titleColor: '#FF0000'
-				},
-				files:{
-					"build/player/resources/style/style.css":"build/style.less"
-				}
-			}
 		},
 		csslint: {
 			dist: {
@@ -190,7 +152,65 @@ module.exports = function(grunt) {
 				]
 			}
 		}
+	};
+	
+	var paellaConfig = require(__dirname + '/config/config.json');
+	if (!paellaConfig.skin) {
+		paellaConfig.skin = { 'default':'dark' };
+	}
+	paellaConfig.skin.available = [];
+
+	var skinsPath = __dirname + '/resources/style/skins/';
+	var skins = fs.readdirSync(skinsPath);
+	var externalSkinsPath = __dirname + '/../paella-styles/';
+	var externalSkins = [];
+	if (fs.existsSync(externalSkinsPath)) {
+		externalSkins = fs.readdirSync(externalSkinsPath);
+	}
+	
+	initConfig.concat.less = { 'files':{} };
+	initConfig.less = {
+		production: {
+			options:{ paths: [ "css" ] },
+			files:{}
+		}
+	};
+	
+	var paellaSkins = {}
+	skins.forEach(function(file) {
+		var extension = file.split('.').pop();
+		if (extension=='less') {
+			var skinName = file.replace(/\.[^/.]+$/, "");
+			paellaSkins[skinName] = skinsPath + file;
+		}
 	});
+	externalSkins.forEach(function(file) {
+		var extension = file.split('.').pop();
+		if (extension=='less') {
+			var skinName = file.replace(/\.[^/.]+$/, "");
+			paellaSkins[skinName] = externalSkinsPath + file;
+		}
+	});
+	
+	for (var skinName in paellaSkins) {
+		var file = paellaSkins[skinName];
+		var concatRule = [
+			'plugins/*/*.less',
+			'resources/style/*.less',
+			file
+		]
+		var stylePath = 'build/style_' + skinName + '.less';
+		initConfig.concat.less.files[stylePath] = concatRule;
+		initConfig.less.production.files['build/player/resources/style/style_' + skinName + '.css'] = stylePath;
+		paellaConfig.skin.available.push(skinName);
+	};
+
+	if (!fs.existsSync(__dirname + '/build')) {
+		fs.mkdirSync(__dirname + '/build');
+	}
+	fs.writeFileSync(__dirname + '/build/config_temp.json',JSON.stringify(paellaConfig,null,4));
+	
+	grunt.initConfig(initConfig);
 
 	grunt.loadNpmTasks('grunt-git-revision');
 	grunt.loadNpmTasks('grunt-contrib-clean');
@@ -216,4 +236,5 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('server.release', ['build.release', 'express', 'watch:release']);
 	grunt.registerTask('server.debug', ['build.debug', 'express', 'watch:debug']);
+	
 };

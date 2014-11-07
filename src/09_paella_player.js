@@ -160,6 +160,8 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 				return false;
 			}
 			paella.initDelegate.loadConfig(function(config) {
+				var skin = (config.skin && config.skin.default) ? config.skin.default:'dark';
+				paella.utils.skin.restore(skin);
 				thisClass.onLoadConfig(config);
 			});
 		});

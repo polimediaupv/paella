@@ -17,7 +17,8 @@ Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 	setup:function() {
 		var thisClass = this;
 
-		thisClass._reload = thisClass.config.reloadOnFullscreen || "mantain";
+		this._reload = this.config.reloadOnFullscreen ? this.config.reloadOnFullscreen.enabled:false;
+		this._keepUserQuality = this.config.reloadOnFullscreen ? this.config.reloadOnFullscreen.keepUserSelection:true;
 		paella.events.bind(paella.events.enterFullscreen, function(event) { thisClass.onEnterFullscreen(); });
 		paella.events.bind(paella.events.exitFullscreen, function(event) { thisClass.onExitFullscreen(); });
 	},
@@ -25,12 +26,16 @@ Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 	action:function(button) {
 		var self = this;
 		if (paella.player.isFullScreen()) {
-			paella.player.exitFullScreen();			
+			paella.player.exitFullScreen();
 		}
 		else {
 			paella.player.goFullScreen();
 		}
-		setTimeout(function(){if(self._reload == "reload") paella.player.reloadVideos();}, 1000);		
+		setTimeout(function() {
+			if(self._reload) {
+				paella.player.reloadVideos();
+			}
+		}, 1000);
 	},
 
 	onEnterFullscreen: function() {

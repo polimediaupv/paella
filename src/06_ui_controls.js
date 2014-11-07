@@ -90,13 +90,13 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		paella.events.bind(paella.events.timeupdate,function(event,params) { thisClass.onTimeUpdate(params); });
 		$(this.domElement).bind('mousedown',function(event) { paella.utils.mouseManager.down(thisClass,event); event.stopPropagation(); });
 		$(playbackFull.domElement).bind('mousedown',function(event) { paella.utils.mouseManager.down(thisClass,event); event.stopPropagation();  });
-		$(this.domElement).bind('mousemove',function(event) { thisClass.movePassive(event); paella.utils.mouseManager.move(event); });
-		$(playbackFull.domElement).bind('mousemove',function(event) { paella.utils.mouseManager.move(event); });
+		if (!base.userAgent.browser.IsMobileVersion) {
+			$(this.domElement).bind('mousemove',function(event) { thisClass.movePassive(event); paella.utils.mouseManager.move(event); });
+			$(playbackFull.domElement).bind('mousemove',function(event) { paella.utils.mouseManager.move(event); });
+			$(this.domElement).bind("mouseout",function(event) { thisClass.mouseOut(event); });
+		}
 		$(this.domElement).bind('mouseup',function(event) { paella.utils.mouseManager.up(event); });
 		$(playbackFull.domElement).bind('mouseup',function(event) { paella.utils.mouseManager.up(event); });
-
-		//MOUSE OUT BIND
-		$(this.domElement).bind("mouseout",function(event) { thisClass.mouseOut(event); });
 
 		if (paella.player.isLiveStream()) {
 			$(this.domElement).hide();
@@ -466,6 +466,8 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 	videoOverlayButtons:null,
 
 	buttonPlugins:[],
+	
+	_hidden:false,
 
 	addPlugin:function(plugin) {
 		var thisClass = this;
@@ -560,17 +562,23 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 		this.show();
 	},
 
+	isHidden:function() {
+		return this._hidden;
+	},
+
 	hide:function() {
 		var This = this;
 		if (!base.userAgent.browser.IsMobileVersion) {
 			$(this.domElement).animate({opacity:0.0},{duration:300, complete:function(){
 				This.domElement.setAttribute('aria-hidden', 'true');
-				//$(This.domElement).hide();
+				This._hidden = true;
 			}});
 			paella.events.trigger(paella.events.controlBarWillHide);
 		}
 		else {
-			base.log.debug("Mobile version: controls will not hide");
+			$(this.domElement).css({opacity:0.0});
+			this.domElement.setAttribute('aria-hidden','true');
+			this._hidden = true;
 		}
 	},
 
@@ -579,7 +587,7 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 			if (this.domElement.style.opacity!=1.0) {
 				this.domElement.style.opacity = 1.0;
 				this.domElement.setAttribute('aria-hidden', 'false');
-				//$(this.domElement).show();
+				this._hidden = false;
 				paella.events.trigger(paella.events.controlBarDidShow);
 			}
 		}
