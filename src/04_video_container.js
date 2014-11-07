@@ -588,14 +588,9 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		this.setMasterQuality(masterQuality);
 		this.setSlaveQuality(slaveQuality);
 		this._seekToOnLoad = this.currentTime();
-		var paused = this.paused();
 		this.setSources(this._videoSourceData.master,this._videoSourceData.slave);
-		if (paused) {
-			this._playOnLoad = false;
-		}
-		else {
-			this._playOnLoad = true;
-		}
+		this.play();
+		this._playOnLoad = true;
 		
 		/*
 		this.play();
@@ -639,17 +634,23 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	onVideoLoaded:function(sender) {
 		var This = this;
 		if (this.isMonostream && this.masterVideo() && this.masterVideo().isReady()) {
-			if (this._playOnLoad) {
-				this.play();
-			}
-			setTimeout(function() { This.seekToTime(This._seekToOnLoad); },500);
+			this.play();
+			setTimeout(function() {
+				This.seekToTime(This._seekToOnLoad);
+				if (!This._playOnLoad) {
+					This.pause();
+				}
+			},200);
 		}
 		else if (this.masterVideo() && this.masterVideo().isReady() &&
 				 this.slaveVideo() && this.slaveVideo().isReady()){
-			if (this._playOnLoad) {
-				this.play();
-			}
-			setTimeout(function() { This.seekToTime(This._seekToOnLoad); },500);
+			 this.play();
+			setTimeout(function() {
+				This.seekToTime(This._seekToOnLoad);
+				if (!This._playOnLoad) {
+					This.pause();
+				}
+			},200);
 		}
 	},
 	
@@ -837,7 +838,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 
 	setProfile:function(profileName,onSuccess,animate) {
 		var thisClass = this;
-		var Animate = animate;
+		var Animate = base.userAgent.browser.Explorer ? false:animate;
 		paella.Profiles.loadProfile(profileName,function(profileData) {
 			if (thisClass.numberOfStreams()==1) {
 				profileData.masterVideo = thisClass.getMonostreamMasterProfile();

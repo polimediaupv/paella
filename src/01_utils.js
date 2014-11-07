@@ -105,7 +105,7 @@ paella.utils = {
 		
 		restore:function(defaultSkin) {
 			var storedSkin = base.cookies.get("skin");
-			if (storedSkin) {
+			if (storedSkin && storedSkin!="") {
 				this.set(storedSkin);
 			}
 			else {
