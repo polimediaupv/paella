@@ -295,6 +295,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	_masterQuality:null,
 	_slaveQualit:null,
 	
+	_firstLoad:false,
 	_playOnLoad:false,
 	_seekToOnLoad:0,
 	
@@ -421,7 +422,12 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	play:function() {
-		this._playOnLoad = true;
+		if (!this._firstLoad) {
+			this._firstLoad = true;
+		}
+		else {
+			this._playOnLoad = true;
+		}
 		var masterVideo = this.masterVideo();
 		var slaveVideo = this.slaveVideo();
 		if (masterVideo) masterVideo.play();
