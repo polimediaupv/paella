@@ -33,7 +33,6 @@
 			"es.upv.paella.TrimmingPlayerPlugin":{"enabled":true},
 			"es.upv.paella.editor.TrimmingTrackPlugin":{"enabled":true},
 			"es.upv.paella.playPauseButtonPlugin":{"enabled":true},
-			"es.upv.paella.repeatButtonPlugin":{"enabled":true},
             "es.upv.paella.test.videoLoadPlugin":{"enabled":false},
 			"es.upv.paella.test.playbackRate":{"enabled":false},
 			"es.upv.paella.volumeRangePlugin":{"enabled":true, "showMasterVolume": true, "showSlaveVolume": false },
