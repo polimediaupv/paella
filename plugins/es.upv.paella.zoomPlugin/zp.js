@@ -450,7 +450,7 @@ Class ("paella.ZoomPlugin", paella.EventDrivenPlugin,{
 	},
 
 	getName:function() { 
-		return "es.upv.paella.ZoomPlugin";
+		return "es.upv.paella.zoomPlugin";
 	}
 });
 
