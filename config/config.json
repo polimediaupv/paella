@@ -38,6 +38,8 @@
 			"es.upv.paella.volumeRangePlugin":{"enabled":true, "showMasterVolume": true, "showSlaveVolume": false },
 			"es.upv.paella.userTrackingCollectorPlugIn": {"enabled": true, "heartBeatTime": 5000},
 			"es.upv.paella.repeatButtonPlugin": {"enabled":false},
+			"edu.harvard.dce.paella.flexSkipPlugin": {"enabled":true, "direction": "Rewind", "seconds": 10},
+			"edu.harvard.dce.paella.flexSkipPluginForward": {"enabled":true, "direction": "Forward", "seconds": 30},
 			"es.upv.paella.footprintsPlugin": {"enabled":false},
 			"es.upv.paella.playbackRate": {"enabled":false},
             "es.upv.paella.helpPlugin": {"enabled":true, "langs":["en"]},
