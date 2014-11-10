@@ -421,6 +421,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	play:function() {
+		this._playOnLoad = true;
 		var masterVideo = this.masterVideo();
 		var slaveVideo = this.slaveVideo();
 		if (masterVideo) masterVideo.play();
@@ -589,19 +590,9 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		this.setSlaveQuality(slaveQuality);
 		this._seekToOnLoad = this.currentTime();
 		this.setSources(this._videoSourceData.master,this._videoSourceData.slave);
+		this.seekToTime(this._seekToOnLoad);
 		this.play();
 		this._playOnLoad = true;
-		
-		/*
-		this.play();
-		
-		
-		
-		var This = this;
-		setTimeout(function() {
-			if (paused) This.pause();
-			This.seekToTime(currentTime);
-		},500);*/
 	},
 
 	/**
@@ -633,25 +624,22 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	
 	onVideoLoaded:function(sender) {
 		var This = this;
-		if (this.isMonostream && this.masterVideo() && this.masterVideo().isReady()) {
+		if ((this.isMonostream && this.masterVideo() && this.masterVideo().isReady()) ||
+			(this.masterVideo() && this.masterVideo().isReady() &&
+			 this.slaveVideo() && this.slaveVideo().isReady())) {
 			this.play();
-			setTimeout(function() {
-				This.seekToTime(This._seekToOnLoad);
-				if (!This._playOnLoad) {
-					This.pause();
-				}
-			},200);
+			
+			if (!this._playOnLoad) {
+				this.pause();
+			}
 		}
-		else if (this.masterVideo() && this.masterVideo().isReady() &&
+/*		else if (this.masterVideo() && this.masterVideo().isReady() &&
 				 this.slaveVideo() && this.slaveVideo().isReady()){
-			 this.play();
-			setTimeout(function() {
-				This.seekToTime(This._seekToOnLoad);
-				if (!This._playOnLoad) {
-					This.pause();
-				}
-			},200);
-		}
+ 			this.play();
+ 			if (!this._playOnLoad) {
+ 				this.pause();
+ 			}
+		}*/
 	},
 	
 	onVideoUnloaded:function(sender) {

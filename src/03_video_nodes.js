@@ -606,6 +606,8 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 Class ("paella.Html5Video", paella.VideoElementBase,{
 	classNameBackup:'',
 	ready:false,
+	
+	_initialCurrentTime:0,
 
 	initialize:function(id,left,top,width,height) {
 		this.parent(id,'video',left,top,width,height);
@@ -628,6 +630,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	onVideoProgress:function(event) {
 		if (!this.ready && this.domElement.readyState==4) {
 			this.ready = true;
+			this.domElement.currentTime = this._initialCurrentTime;
 			this.callReadyEvent();
 		}
 	},
@@ -659,6 +662,10 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	},
 
 	setCurrentTime:function(time) {
+		if (!this.ready) {
+			this._initialCurrentTime = time;
+		}
+		
 		if (this.domElement && this.domElement.currentTime) {
 			this.domElement.currentTime = time;
 		}
