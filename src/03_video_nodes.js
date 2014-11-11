@@ -647,7 +647,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	onVideoProgress:function(event) {
 		if (!this.ready && this.domElement.readyState==4) {
 			this.ready = true;
-			this.domElement.currentTime = this._initialCurrentTime;
+			if (this._initialCurrentTime!=0) this.domElement.currentTime = this._initialCurrentTime;
 			this.callReadyEvent();
 		}
 	},
