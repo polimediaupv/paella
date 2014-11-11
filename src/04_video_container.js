@@ -293,7 +293,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	currentSlaveVideoRect:{},
 
 	_masterQuality:null,
-	_slaveQualit:null,
+	_slaveQuality:null,
 	
 	_firstLoad:false,
 	_playOnLoad:false,
@@ -430,8 +430,12 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		}
 		var masterVideo = this.masterVideo();
 		var slaveVideo = this.slaveVideo();
-		if (masterVideo) masterVideo.play();
-		if (slaveVideo) slaveVideo.play();
+		if (masterVideo) {
+			masterVideo.play();
+		}
+		if (slaveVideo) {
+			slaveVideo.play();
+		}
 		this.parent();
 	},
 
@@ -583,7 +587,12 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 	
 	setSlaveQuality:function(quality) {
-		this._slaveQualit = quality;
+		this._slaveQuality = quality;
+	},
+
+	setStartTime:function(time) {
+//		this._startTime = time;
+		this.seekToTime(time);
 	},
 
 	reloadVideos:function(masterQuality,slaveQuality) {

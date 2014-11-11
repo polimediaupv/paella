@@ -671,6 +671,10 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	play:function() {
 		if (this.domElement && this.domElement.play) {
 			this.domElement.play();
+			if (this._initialCurrentTime) {
+				this.domElement.currentTime = this._initialCurrentTime;
+				delete this._initialCurrentTime;
+			}
 		}
 	},
 
@@ -694,9 +698,12 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		if (!this.ready) {
 			this._initialCurrentTime = time;
 		}
-		
+
 		if (this.domElement && this.domElement.currentTime) {
 			this.domElement.currentTime = time;
+		}
+		else if (this.domElement) {
+			this._initialCurrentTime = time;
 		}
 	},
 
