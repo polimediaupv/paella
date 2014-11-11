@@ -28,6 +28,7 @@
 	"plugins":{
 		"defaultConfig":{"enabled":true},
 		"list":{
+      "edu.harvard.dce.paella.SkipToTimeFromFragment": {"enabled":true},
 			"es.upv.paella.ImageControlPlugin":{"enabled":false},
 			"es.upv.paella.ShowEditorPlugin":{"enabled":true,"alwaysVisible":true},
 			"es.upv.paella.TrimmingPlayerPlugin":{"enabled":true},
