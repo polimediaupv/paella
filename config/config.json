@@ -42,7 +42,7 @@
 			"edu.harvard.dce.paella.flexSkipPluginForward": {"enabled":true, "direction": "Forward", "seconds": 30},
 			"es.upv.paella.footprintsPlugin": {"enabled":false},
 			"es.upv.paella.playbackRate": {"enabled":false},
-            "es.upv.paella.helpPlugin": {"enabled":true, "langs":["en"]},
+            "es.upv.paella.helpPlugin": {"enabled":true, "langs":["en","es"]},
             "es.upv.paella.ZoomPlugin": {"enabled": true, "maxZoom":500, "minZoom":100, "zoomIncr":10},
             "es.upv.paella.fullScreenButtonPlugin": {"enabled":true, "reloadOnFullscreen":{ "enabled":true, "keepUserSelection":true }},
             "es.upv.paella.extendedProfilesPlugin": {"enabled":true, "reloadOnFullscreen":"reload" },
