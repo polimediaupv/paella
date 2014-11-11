@@ -144,6 +144,10 @@ Class ("paella.VideoElementBase", paella.DomNode,{
 		base.log.debug("TODO: implement addSource() function in your VideoElementBase subclass");
 	},
 	
+	setPosterFrame:function(url) {
+		base.log.debug("TODO: implement setPosterFrame() function");
+	},
+	
 	unload:function() {
 		this.callUnloadEvent();
 	},
@@ -625,6 +629,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	ready:false,
 	
 	_initialCurrentTime:0,
+	_posterFrame:null,
 
 	initialize:function(id,left,top,width,height) {
 		this.parent(id,'video',left,top,width,height);
@@ -654,6 +659,13 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 
 	isReady:function() {
 		return this.ready;
+	},
+	
+	setPosterFrame:function(url) {
+		this._posterFrame = url;
+		if (this.domElement) {
+			this.domElement.setAttribute("poster",url);
+		}
 	},
 
 	play:function() {
