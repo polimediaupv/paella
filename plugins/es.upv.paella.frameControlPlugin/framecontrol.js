@@ -49,7 +49,10 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 	            		}
 
 	            		if(this.hiResFrame)thisClass.removeHiResFrame();
-					    thisClass.buttons[selectedItem].frameControl.onMouseOver(null,thisClass.buttons[selectedItem].frameData);
+						if (!base.userAgent.browser.IsMobileVersion) {
+							thisClass.buttons[selectedItem].frameControl.onMouseOver(null,thisClass.buttons[selectedItem].frameData);
+						}
+					    
 					    oldClassName = thisClass.buttons[selectedItem].className;
 					    thisClass.buttons[selectedItem].className = 'frameControlItem selected';
 		           	}
@@ -71,7 +74,10 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 	            		}
 
 	            		if(this.hiResFrame)thisClass.removeHiResFrame();
-	            		thisClass.buttons[selectedItem].frameControl.onMouseOver(null,thisClass.buttons[selectedItem].frameData);
+						if (!base.userAgent.browser.IsMobileVersion) {
+							thisClass.buttons[selectedItem].frameControl.onMouseOver(null,thisClass.buttons[selectedItem].frameData);
+						}
+	            		
 	               		oldClassName = thisClass.buttons[selectedItem].className;
 	               		thisClass.buttons[selectedItem].className = 'frameControlItem selected';
 	            	}
@@ -228,9 +234,12 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 			image = frameData.thumb ? frameData.thumb:frameData.url;
 			var labelTime = paella.utils.timeParse.secondsToTime(frameData.time);
 			frame.innerHTML = '<img src="' + image + '" alt="" class="frameControlImage" title="'+labelTime+'" aria-label="'+labelTime+'"></img>';
-			$(frame).mouseover(function(event) {
-				this.frameControl.onMouseOver(event,this.frameData);
-			});
+			if (!base.userAgent.browser.IsMobileVersion) {
+				$(frame).mouseover(function(event) {
+					this.frameControl.onMouseOver(event,this.frameData);
+				});
+			}
+			
 			$(frame).mouseout(function(event) {
 				this.frameControl.onMouseOut(event,this.frameData);
 			});
