@@ -17,3 +17,7 @@ Class ("paella.ZoomPlugin", paella.EventDrivenPlugin, {...});
 ```javascript
 Class ("paella.TimeControl", paella.DomNode, {...});
 ```
+
+##Variable Declaration
+
+For declarate our variables inside new classes we are going to declare only basic types (number, string, boolean) in the class implementation and the "object" types inside class's constructor. If not object variables will be set as static ones.
