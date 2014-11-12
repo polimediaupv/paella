@@ -4,7 +4,7 @@ For inherit our classes we are going to use a specific sintaxis based on the pro
 
 We can see how to do so in the code below:
 
-```
+```javascript
 Class ("ns.A", {
         initialize:function() {
         },
