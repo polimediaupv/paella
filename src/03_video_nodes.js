@@ -652,7 +652,10 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	onVideoProgress:function(event) {
 		if (!this.ready && this.domElement.readyState==4) {
 			this.ready = true;
-			if (this._initialCurrentTime!=0) this.domElement.currentTime = this._initialCurrentTime;
+			if (this._initialCurrentTime!=0) {
+				this.domElement.currentTime = this._initialCurrentTime;
+				delete this._initialCurrentTime;
+			}
 			this.callReadyEvent();
 		}
 	},
@@ -671,7 +674,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	play:function() {
 		if (this.domElement && this.domElement.play) {
 			this.domElement.play();
-			if (this._initialCurrentTime) {
+			if (this._initialCurrentTime && this.domElement.readyState==4) {
 				this.domElement.currentTime = this._initialCurrentTime;
 				delete this._initialCurrentTime;
 			}
