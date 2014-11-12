@@ -14,14 +14,14 @@ Class ("ns.B", ns.A, {
 		sayGoodBye:function(){...}
 });
 
-var b = new ns.B();
+// TO KNOW THE CLASS OF "obj" AND MAKE SOMETHING DEPENDING OF THE CLASS
+function doSomething ( obj ) {
+	var is_nsB = dynamic_cast("ns.B", obj);
+	var is_nsA = dynamic_cast("ns.A", obj);
 
-// TO KNOW THE CLASS OF B AND MAKE SOMETHING DEPENDING OF THE CLASS
-var is_nsB = dynamic_cast("ns.B", b);
-var is_nsA = dynamic_cast("ns.A", b);
+	if(is_nsB) {obj.sayGoodBye();}
 
-if(is_nsB) {b.sayGoodBye();}
-if(is_nsA) {b.sayHello();}
+	if(is_nsA) {obj.sayHello();}
 
 }
 ```

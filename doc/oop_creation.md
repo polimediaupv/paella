@@ -1,7 +1,14 @@
-#JavaScript OOP - Creation
+#Paella JavaScript OOP - Creation
 
 For defining a new classes for making new plugins or adding new features to the paella core, we must use this sintaxis:
 
+if the new class has not parent:
+
+```javascript
+Class (<CLASSNAME>, {<OUR CODE>});
+```
+
+if the new class has parent:
 ```javascript
 Class (<CLASSNAME>, <PARENT>, {<OUR CODE>});
 ```
