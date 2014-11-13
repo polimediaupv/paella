@@ -4,6 +4,9 @@
 
 - [Advanced](integrate.md#--advanced)
 
+- [Paella & Matterhorn] (http://github.com/polimediaupv/paella-matterhorn/blob/master/doc/README.md)
+
+
 # - Basic
 
 ## How to integrate paella ##
