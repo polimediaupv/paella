@@ -1,13 +1,11 @@
 ##Instructions for integrate Paella Player
 
-	- <a href="#BASIC">Basic</a>
-	- <a href="#ADV">Advanced</a>
+###[Basic](integrate.md#--basic)
 
-<hr>
+###[Advanced](integrate.md#--advanced)
 
-<a name="BASIC">
+
 # - Basic
-</a>
 
 ## How to integrate paella ##
 
@@ -138,9 +136,9 @@ The loadPaella function can be called with different parameters:
   ``` js
   loadPaella('playercontainer', {...config...}, 'http://my.server.com/paella/repository')
   ```
-<a name="ADV">
+
 # - ADVANCED #
-</a>
+
 ## Integrate Paella with your portal
 
 To integrate Paella Player in your portal, you must to suply a series of data about the video streams and the user account. 
