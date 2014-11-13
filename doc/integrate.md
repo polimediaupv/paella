@@ -4,12 +4,6 @@
 
 - [Advanced](integrate.md#--advanced)
 
-  
-     
-     
-     
-      
-
 # - Basic
 
 ## How to integrate paella ##
