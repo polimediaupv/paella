@@ -1,9 +1,14 @@
 ##Instructions for integrate Paella Player
 
-###[Basic](integrate.md#--basic)
+- [Basic](integrate.md#--basic)
 
-###[Advanced](integrate.md#--advanced)
+- [Advanced](integrate.md#--advanced)
 
+  
+     
+     
+     
+      
 
 # - Basic
 
