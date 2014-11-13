@@ -5,7 +5,7 @@ Welcome to the The Paella Player documentation page, this documentation is made 
 ## Structure
 
 - [Introduction](introduction.md)
-- [Install Paella with your portal](setup.md)
-- [Integrate Paella](integrate.md)
+- [Install Paella](setup.md)
+- [Integrate Paella with your portal](integrate.md)
 - [API Documentation](api.md)
 - [FAQ](faq.md)
