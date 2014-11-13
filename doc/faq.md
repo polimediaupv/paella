@@ -1,22 +1,8 @@
-#F.A.Q. about Paella
-
-##General
-
-###**- Why do you talk sometimes about Paella Player and sometimes about Paella Player for Matterhorn?**
-
-One new feature of Paella Player 3 is that, with some restrictions, it can be used without a Opencast Matterhorn server. So, all references that belong only to a Matterhorn environment are referred as "Paella Player for Matterhorn" and all references that apply to both environments are under the ["Paella Player" section](faq.md#paella-player-faq).
+#Paella Player FAQ
 
 ###**- Can I use Paella Player for free?**
 
 Paella Player is licensed as GPLv3. So, yes, you can use Paella Player for free, but keep in mind that license restrictions still apply.
-
-###**- Which version of Paella Player do I need to install?**
-
-If your institution uses Opencast Matterhorn, you can go to Paella Player for Matterhorn.
-
-Otherwise you need to download Paella Player Standalone, and you will need to [develop an adapter](integrate.md) for your institution. After that, if you think your adapter can be useful to others, please tell us and we add it to a Third-Parties adapters page.
-
-##Paella Player FAQ
 
 ###**- What browsers are supported in Paella?**
 
