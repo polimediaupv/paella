@@ -4,7 +4,7 @@
 
 ###**- Why do you talk sometimes about Paella Player and sometimes about Paella Player for Matterhorn?**
 
-One new feature of Paella Player 3 is that, with some restrictions, it can be used without a Opencast Matterhorn server. So, all references that belong only to a Matterhorn environment are referred as "Paella Player for Matterhorn" and all references that apply to both environments are under the "Paella Player" section.
+One new feature of Paella Player 3 is that, with some restrictions, it can be used without a Opencast Matterhorn server. So, all references that belong only to a Matterhorn environment are referred as "Paella Player for Matterhorn" and all references that apply to both environments are under the ["Paella Player" section](faq.md#paella-player-faq).
 
 ###**- Can I use Paella Player for free?**
 
