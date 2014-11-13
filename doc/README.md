@@ -6,4 +6,6 @@ Welcome to the The Paella Player documentation page, this documentation is made 
 
 - [Introduction](introduction.md)
 - [Install Paella](setup.md)
+- [Integrate Paella](integrate.md)
 - [API Documentation](api.md)
+- [FAQ](faq.md)

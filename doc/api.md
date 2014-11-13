@@ -15,7 +15,12 @@ ___
     - [Creation.](plugin_creation.md)
     - [Types.](plugin_type.md)
 
-3. **Customization**.
+3. **Configuration**.
+    
+    About how to change the configuration of Paella.
+    - [Configuration File.](config.md)
+
+4. **Customization**.
     
     About how to change the visual aspect of the player.
     - [Define a new skin.](customize_newskin.md)
