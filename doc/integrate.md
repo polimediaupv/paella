@@ -4,7 +4,7 @@
 
 - [Advanced](integrate.md#--advanced)
 
-- [Paella & Matterhorn] (http://github.com/polimediaupv/paella-matterhorn/blob/master/doc/README.md)
+- [Paella & Matterhorn] (http://github.com/polimediaupv/paella-matterhorn)
 
 
 # - Basic
