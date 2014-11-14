@@ -46,4 +46,4 @@ Icons used for the skins are located at /resources/images
 
  ![](../resources/images/paella_icons_dark.png)
 
-We use 1 image with all icons for precharge all icons at same time and we use them using css (background-image and background-size)
+We use 1 image with all icons for precharge all icons at same time and we use them using css (background-image and background-size), the icons are made for high resolution screens.
