@@ -212,6 +212,7 @@ Class ("paella.VideoElementBase", paella.DomNode,{
 
 	setVisible:function(visible,animate) {
 		if (visible=="true" && animate) {
+			$(this.domElement).show();
 			$(this.domElement).animate({opacity:1.0},300);
 		}
 		else if (visible=="true" && !animate) {
