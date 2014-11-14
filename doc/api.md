@@ -24,6 +24,5 @@ ___
     
     About how to change the visual aspect of the player.
     - [Define a new skin.](customize_newskin.md)
-    - [Adding new icons.](customize_newicon.md)
 
     
