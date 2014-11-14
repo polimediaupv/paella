@@ -44,6 +44,6 @@ If you want to create new one, just make a new ".less" with the name of your ski
 
 Icons used for the skins are located at /resources/images
 
- ![](./resources/images/paella_icons_dark.png)
+ ![](../resources/images/paella_icons_dark.png)
 
 We use 1 image with all icons for precharge all icons at same time and we use them using css (background-image and background-size)
