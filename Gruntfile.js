@@ -24,6 +24,9 @@ module.exports = function(grunt) {
 					{expand: true, src:'plugins/*/resources/**', dest: 'build/player/resources/style/',
 						rename: function (dest, src) { return dest+src.split('/').splice(3).join('/'); }
 					},
+					{expand: true, src:'vendor/plugins/*/resources/**', dest: 'build/player/resources/style/',
+						rename: function (dest, src) { return dest+src.split('/').splice(3).join('/'); }
+					},
 					{src:['build/config_temp.json'],dest: 'build/player/config/config.json'}
 				]
 			}
@@ -41,7 +44,8 @@ module.exports = function(grunt) {
 				},
 				src: [
 					'src/*.js',
-					'plugins/*/*.js'
+					'plugins/*/*.js',
+					'vendor/plugins/*/*.js'
 				],
 				dest: 'build/player/javascript/paella_player.js'
 			}
@@ -69,7 +73,8 @@ module.exports = function(grunt) {
 			dist: [
 				// 'javascript/base.js',
 				'src/*.js',
-				'plugins/*/*.js'
+				'plugins/*/*.js',
+				'vendor/plugins/*/*.js'
 			]
 		},
 		csslint: {
@@ -100,8 +105,8 @@ module.exports = function(grunt) {
 		'merge-json': {
 			'i18n': {
 				files: {
-					'build/player/localization/paella_en.json': [ 'localization/*en.json', 'plugins/*/localization/*en.json' ],
-					'build/player/localization/paella_es.json': [ 'localization/*es.json', 'plugins/*/localization/*es.json' ]
+					'build/player/localization/paella_en.json': [ 'localization/*en.json', 'plugins/*/localization/*en.json', 'vendor/plugins/*/localization/*en.json' ],
+					'build/player/localization/paella_es.json': [ 'localization/*es.json', 'plugins/*/localization/*es.json', 'vendor/plugins/*/localization/*es.json' ]
 				}
 			}
 		},
@@ -115,6 +120,7 @@ module.exports = function(grunt) {
 				 	'paella-standalone.js',
 				 	'src/*.js',
 				 	'plugins/**',
+					'vendor/plugins/**',
 					'resources/style/*.less',
 					'src/flash_player/player.swf'
 				 ],
@@ -127,6 +133,7 @@ module.exports = function(grunt) {
 				 	'paella-standalone.js',
 				 	'src/*.js',
 				 	'plugins/**',
+					'vendor/plugins/**',
 					'resources/style/*.less',
 					'src/flash_player/player.swf'
 				 ],
@@ -148,6 +155,7 @@ module.exports = function(grunt) {
 						'config/profiles/profiles.json',
 						'repository_test/*/*.json',
 						'plugins/*/localization/*.json',
+						'vendor/plugins/*/localization/*.json',
 						'localization/*.json'
 				]
 			}
@@ -162,7 +170,7 @@ module.exports = function(grunt) {
 
 	var skinsPath = __dirname + '/resources/style/skins/';
 	var skins = fs.readdirSync(skinsPath);
-	var externalSkinsPath = __dirname + '/../paella-styles/';
+	var externalSkinsPath = __dirname + '/vendor/skins/';
 	var externalSkins = [];
 	if (fs.existsSync(externalSkinsPath)) {
 		externalSkins = fs.readdirSync(externalSkinsPath);
@@ -196,6 +204,7 @@ module.exports = function(grunt) {
 		var file = paellaSkins[skinName];
 		var concatRule = [
 			'plugins/*/*.less',
+			'vendor/plugins/*/*.less',
 			'resources/style/*.less',
 			file
 		]
