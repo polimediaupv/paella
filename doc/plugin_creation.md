@@ -1,5 +1,9 @@
 # PLUGIN CREATION
 
+You can create plugin for your purposes at local installation using the **'vendor/'** directory, but if you want to create a new plugin and integrate it with paella make the new plugin under **'plugins/'** directory and send us a pull request when its done for integrate your functionality with our system.
+
+###CREATION
+
 For explain better the plugin creation steps we are going to use the current "helpPlugin" as an example. This plugin shows a popup window with help to the final user.
 
 ##Step #1 
