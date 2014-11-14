@@ -777,6 +777,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 
 	setVisible:function(visible,animate) {
 		if (visible=="true" && animate) {
+			$(this.domElement).show();
 			$(this.domElement).animate({opacity:1.0},300);
 		}
 		else if (visible=="true" && !animate) {
