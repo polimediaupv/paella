@@ -1,23 +1,16 @@
-# Paella Player #
-Paella (pronounced 'paeja') Player is the new HTML 5 multistream player, developed by the Universitat Politècnica de València. It is specially designed for lecture recordings, like Matterhorn Lectures or Polimedia pills.
+# Documentation
 
-Paella Player is capable of playing multiple audio & video streams synchronously and can be integrated into almost any video platform using it's powerfull and easy to use plugin's architecture.
+Welcome to the The Paella Player documentation page, this documentation is made for developers and its structured as a tree, the more deep, the more complex and specific.
 
-You can take your first contact with Paella going to [Paella Player Web Page](http://paellaplayer.upv.es).
+## Structure
 
-![Paella Player Logo](http://paellaplayer.upv.es/resources/logo_paella.png)
-
-
-## Documentation
-
-- [Build and Install Paella Player](build.md)
-
-- Integrate Paella with your portal
-	- [Basic](integration_basic.md)
-	- [Advanced](integration_advanced.md)
-
-- Developer documentation
-	- [Paella Utilities](developer_utilities.md)
-	- [Paella Plugins](developer_plugins.md)
-		- [Player plugins](developer_plugins_player.md)
-		- [Editor plugins](developer_plugins_editor.md)
+- [Introduction.](introduction.md)
+- [Install Paella.](setup.md)
+- [Configure Paella.](configure.md)
+- [Customization: Define a new skin.](customize_newskin.md)
+- [Integrate Paella with your portal.](integrate.md)
+    - [Basic.](integrate.md#--basic)
+    - [Advanced.](integrate.md#--advanced)
+    - [Paella & Matterhorn.](http://github.com/polimediaupv/paella-matterhorn)
+- [API Documentation.](api.md)
+- [FAQ](faq.md)
