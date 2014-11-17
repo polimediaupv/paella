@@ -7,8 +7,7 @@ Welcome to the The Paella Player documentation page, this documentation is made 
 - [Introduction.](introduction.md)
 - [Install Paella.](setup.md)
 - [Configure Paella.](configure.md)
-- Customization: How to change the visual aspect of the player.
-	- [Define a new skin.](customize_newskin.md)
+- [Customization: Define a new skin.](customize_newskin.md)
 - [Integrate Paella with your portal.](integrate.md)
     - [Basic.](integrate.md#--basic)
     - [Advanced.](integrate.md#--advanced)
