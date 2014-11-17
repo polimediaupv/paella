@@ -39,3 +39,17 @@ Yes. By default Paella tries to do it by RTMP, then by HTML5 <video> tag and as 
 ###**- Do Paella player support Live Streaming?**
 
 Yes, Since Paella 3.1 we support RTMP Live Streaming. Go to [documentation page](README.md) form more information.
+
+###**- Can I integrate Paella Player in my website?**
+
+Yes, and if you need info about how, read the [Integration doc.](integrate.md)
+
+###**- Can I change the visual aspect of Paella Player?**
+
+Yes, you can change all visual details since css, images, icons.. etc. 
+Read More about how to do it in [Customization doc.](customize_newskin.md)
+
+###**- Can I change default configuration of Paella?**
+
+Yes, all about configuration its explained in [Configure Paella doc.](configure.md)
+
