@@ -3,10 +3,35 @@
 The core file for configure Paella Player is under the /config directory and its called "config.json". 
 In this file we have all the setups concerning plugins.. streams.. compositions.. skins.. 
 
-look the code below related to the plugins, used for enable or disable plugins, or for set constant variables... etc.
 
 ```javascript
-"plugins":{
+{
+	"player":{
+        "profileFrameStrategy":"paella.ProfileFrameStrategy",
+		"methods":[{"name":"streaming","enabled":true},
+				   {"name":"html","enabled":true},
+				   {"name":"flash","enabled":true},
+                   {"name":"image","enabled":true}],
+		"stream0Audio":true,
+		"stream1Audio":false,
+        "rtmpSettings":{
+            "bufferTime":5
+        }
+	},
+	"editor":{
+			"enabled":true
+	},
+	"defaultProfile":"slide_professor",
+	"data":{
+		"enabled":true,
+		"dataDelegates":{
+			"default":"CookieDataDelegate",
+			"trimming":"CookieDataDelegate",
+			"userInfo": "UserDataDelegate",
+			"images":"ImageZoomDataDelegate"
+		}
+	},
+	"plugins":{
 		"defaultConfig":{"enabled":true},
 		"list":{
 			"es.upv.paella.ImageControlPlugin":{"enabled":false},
@@ -30,11 +55,28 @@ look the code below related to the plugins, used for enable or disable plugins, 
             "es.upv.paella.themeChooserPlugin":  {"enabled":true}
 		}
 	},
-```
-when we are inside a plugin we can acces this variables using:
-
-```javascript
-this.config.<variable>
+}
 ```
 
-###More about [Plugin Creation](plugin_creation.md) and [Plugin Types](plugin_type.md)
+#- How To ?
+
+- How to set streaming method priority?
+
+In "player" : { "methods" } We can set the priority of streaming method.
+
+- How to mute sound channels?
+
+Use "player" : { "stream0Audio" , "stream1Audio" } for set the volume of sources.
+
+- How to enable or disable editor mode?
+
+Use "editor" : { "enabled" }
+
+- How set the default composition?
+
+Use "defaultProfile" for set the default video composition.
+
+- How to set/modify data delegates?
+
+Take a look to the [Integrate Paella section](integrate.md)
+	
