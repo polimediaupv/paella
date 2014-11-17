@@ -115,6 +115,22 @@ paella.utils = {
 	},
 
 	timeParse:{
+		timeToSeconds:function(timeString) {
+			var hours = 0;
+			var minutes = 0;
+			var seconds =0;
+			if (/([0-9]+)h/i.test(timeString)) {
+				hours = parseInt(RegExp.$1) * 60 * 60;
+			}
+			if (/([0-9]+)m/i.test(timeString)) {
+				minutes = parseInt(RegExp.$1) * 60;
+			}
+			if (/([0-9]+)s/i.test(timeString)) {
+				seconds = parseInt(RegExp.$1);
+			}
+			return hours + minutes + seconds;
+		},
+	
 		secondsToTime:function(seconds) {
 			var hrs = ~~ (seconds / 3600);
 			if (hrs<10) hrs = '0' + hrs;

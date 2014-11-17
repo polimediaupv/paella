@@ -255,16 +255,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		paella.messageBox.showError(message);
 	},
 
-	//setupEditor:function() {
-		//if (paella.extended) return;
-	//	if (paella.editor && paella.player.config.editor && paella.player.config.editor.enabled && !base.userAgent.browser.IsMobileVersion) {
-			//this.controls.showEditorButton();
-	//	}
-	//	else {
-	//		setTimeout('paella.player.setupEditor()',500);
-	//	}
-	//},
-
 	showEditor:function() {
 		new paella.editor.Editor();
 	},
@@ -415,7 +405,17 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	},
 
 	play:function() {
-		this.showPlaybackBar();
+		if (!this.controls) {
+			this.showPlaybackBar();
+			var urlParamTime = base.parameters.get("time");
+			var hashParamTime = base.hashParams.get("time");
+			var timeString = hashParamTime ? hashParamTime:urlParamTime ? urlParamTime:"0s";
+			var startTime = paella.utils.timeParse.timeToSeconds(timeString);
+			if (startTime) {
+				paella.player.videoContainer.setStartTime(startTime);
+			}
+			paella.events.trigger(paella.events.play);
+		}
 
 		this.videoContainer.play();
 	},

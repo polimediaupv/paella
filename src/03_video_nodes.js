@@ -144,6 +144,10 @@ Class ("paella.VideoElementBase", paella.DomNode,{
 		base.log.debug("TODO: implement addSource() function in your VideoElementBase subclass");
 	},
 	
+	setPosterFrame:function(url) {
+		base.log.debug("TODO: implement setPosterFrame() function");
+	},
+	
 	unload:function() {
 		this.callUnloadEvent();
 	},
@@ -208,6 +212,7 @@ Class ("paella.VideoElementBase", paella.DomNode,{
 
 	setVisible:function(visible,animate) {
 		if (visible=="true" && animate) {
+			$(this.domElement).show();
 			$(this.domElement).animate({opacity:1.0},300);
 		}
 		else if (visible=="true" && !animate) {
@@ -625,6 +630,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	ready:false,
 	
 	_initialCurrentTime:0,
+	_posterFrame:null,
 
 	initialize:function(id,left,top,width,height) {
 		this.parent(id,'video',left,top,width,height);
@@ -647,7 +653,10 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	onVideoProgress:function(event) {
 		if (!this.ready && this.domElement.readyState==4) {
 			this.ready = true;
-			if (this._initialCurrentTime!=0) this.domElement.currentTime = this._initialCurrentTime;
+			if (this._initialCurrentTime!=0) {
+				this.domElement.currentTime = this._initialCurrentTime;
+				delete this._initialCurrentTime;
+			}
 			this.callReadyEvent();
 		}
 	},
@@ -655,10 +664,21 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	isReady:function() {
 		return this.ready;
 	},
+	
+	setPosterFrame:function(url) {
+		this._posterFrame = url;
+		if (this.domElement) {
+			this.domElement.setAttribute("poster",url);
+		}
+	},
 
 	play:function() {
 		if (this.domElement && this.domElement.play) {
 			this.domElement.play();
+			if (this._initialCurrentTime && this.domElement.readyState==4) {
+				this.domElement.currentTime = this._initialCurrentTime;
+				delete this._initialCurrentTime;
+			}
 		}
 	},
 
@@ -682,9 +702,12 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		if (!this.ready) {
 			this._initialCurrentTime = time;
 		}
-		
+
 		if (this.domElement && this.domElement.currentTime) {
 			this.domElement.currentTime = time;
+		}
+		else if (this.domElement) {
+			this._initialCurrentTime = time;
 		}
 	},
 
@@ -755,6 +778,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 
 	setVisible:function(visible,animate) {
 		if (visible=="true" && animate) {
+			$(this.domElement).show();
 			$(this.domElement).animate({opacity:1.0},300);
 		}
 		else if (visible=="true" && !animate) {
