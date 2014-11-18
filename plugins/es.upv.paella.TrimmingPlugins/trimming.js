@@ -3,11 +3,11 @@ Class ("paella.plugins.TrimmingLoaderPlugin",paella.EventDrivenPlugin,{
 	getName:function() { return "es.upv.paella.TrimmingPlayerPlugin"; },
 	//checkEnabled:function(onSuccess) { onSuccess(paella.player.config.trimming && paella.player.config.trimming.enabled); },
 		
-	getEvents:function() { return [paella.events.loadComplete,paella.events.showEditor,paella.events.hideEditor]; },
+	getEvents:function() { return [paella.events.controlBarLoaded,paella.events.showEditor,paella.events.hideEditor]; },
 
 	onEvent:function(eventType,params) {
 		switch (eventType) {
-			case paella.events.loadComplete:
+			case paella.events.controlBarLoaded:
 				this.loadTrimming();
 				break;
 			case paella.events.showEditor:
