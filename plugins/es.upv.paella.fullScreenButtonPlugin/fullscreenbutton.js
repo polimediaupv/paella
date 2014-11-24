@@ -29,7 +29,20 @@ Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 			paella.player.exitFullScreen();
 		}
 		else {
-			paella.player.goFullScreen();
+			//console.log("IE: "+base.userAgent.browser.Explorer);
+			//console.log("Mobile: "+base.userAgent.browser.IsMobileVersion);
+			//console.log("Iframe: "+(window.location !== window.parent.location));
+			if( (base.userAgent.browser.Explorer || base.userAgent.browser.IsMobileVersion) && (window.location !== window.parent.location) ) {
+				var url = window.location.href;
+
+				//PAUSE IFRAME
+				paella.events.trigger(paella.events.pause);
+				var sec = paella.player.videoContainer.currentTime();
+				var obj = self.secondsToHours(sec);
+				window.open(url+"&time="+obj.h+"h"+obj.m+"m"+obj.s+"s");
+				return;
+			}
+			else paella.player.goFullScreen();
 		}
 		setTimeout(function() {
 			if(self._reload) {
@@ -38,10 +51,24 @@ Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 		}, 1000);
 	},
 
+	secondsToHours:function(sec_numb) {
+		var hours   = Math.floor(sec_numb / 3600);
+		var minutes = Math.floor((sec_numb - (hours * 3600)) / 60);
+		var seconds =  Math.floor(sec_numb - (hours * 3600) - (minutes * 60));
+		var obj = {};
+
+		if (hours < 10) {hours = "0"+hours;}
+		if (minutes < 10) {minutes = "0"+minutes;}
+		if (seconds < 10) {seconds = "0"+seconds;}
+		obj.h = hours;
+		obj.m = minutes;
+		obj.s = seconds;
+		return obj;
+	},
+
 	onEnterFullscreen: function() {
 		this.setToolTip(base.dictionary.translate("Exit Fullscreen"));
-		this.button.className = this.getButtonItemClass(true);
-				
+		this.button.className = this.getButtonItemClass(true);				
 	},
 	
 	onExitFullscreen: function() {
