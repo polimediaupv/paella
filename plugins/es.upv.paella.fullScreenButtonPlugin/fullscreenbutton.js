@@ -29,9 +29,6 @@ Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 			paella.player.exitFullScreen();
 		}
 		else {
-			//console.log("IE: "+base.userAgent.browser.Explorer);
-			//console.log("Mobile: "+base.userAgent.browser.IsMobileVersion);
-			//console.log("Iframe: "+(window.location !== window.parent.location));
 			if( (base.userAgent.browser.Explorer || base.userAgent.browser.IsMobileVersion) && (window.location !== window.parent.location) ) {
 				var url = window.location.href;
 
