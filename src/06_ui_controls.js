@@ -568,15 +568,17 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 
 	hide:function() {
 		var This = this;
-		if (!base.userAgent.browser.IsMobileVersion) {
+		if (!base.userAgent.browser.IsMobileVersion && !base.userAgent.browser.Explorer) {
 			$(this.domElement).animate({opacity:0.0},{duration:300, complete:function(){
 				This.domElement.setAttribute('aria-hidden', 'true');
+				$(This.domElement).hide();
 				This._hidden = true;
 			}});
 			paella.events.trigger(paella.events.controlBarWillHide);
 		}
 		else {
 			$(this.domElement).css({opacity:0.0});
+			$(this.domElement).hide();
 			this.domElement.setAttribute('aria-hidden','true');
 			this._hidden = true;
 		}
@@ -588,6 +590,7 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 				this.domElement.style.opacity = 1.0;
 				this.domElement.setAttribute('aria-hidden', 'false');
 				this._hidden = false;
+				$(this.domElement).show();
 				paella.events.trigger(paella.events.controlBarDidShow);
 			}
 		}
