@@ -4,7 +4,7 @@ Class ("paella.plugins.SocialPlugin",paella.ButtonPlugin,{
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "showSocialPluginButton"; },
 	getIndex:function() { return 560; },
-	getMinWindowSize:function() { return 300; },
+	getMinWindowSize:function() { return 600; },
 	getName:function() { return "es.upv.paella.socialPlugin"; },
 	checkEnabled:function(onSuccess) { onSuccess(true); },
 	getDefaultToolTip:function() { return base.dictionary.translate("Share this video"); },

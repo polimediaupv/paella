@@ -7,7 +7,7 @@ Class ("paella.plugins.ThemeChooserPlugin", paella.ButtonPlugin,{
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "themeChooserPlugin"; },
 	getIndex:function() { return 2030; },
-	getMinWindowSize:function() { return 300; },
+	getMinWindowSize:function() { return 600; },
 	getName:function() { return "es.upv.paella.themeChooserPlugin"; },	
 	getDefaultToolTip:function() { return base.dictionary.translate("Change theme"); },	
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },

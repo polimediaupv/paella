@@ -416,6 +416,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			}
 			paella.events.trigger(paella.events.controlBarLoaded);
 			paella.events.trigger(paella.events.play);
+			this.controls.onresize();
 		}
 
 		this.videoContainer.play();
