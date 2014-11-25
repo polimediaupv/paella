@@ -64,6 +64,7 @@ paella.events = {
 	videoReady:'paella:videoReady',
 	videoUnloaded:'paella:videoUnloaded',
 	
+	controlBarLoaded:'paella:controlBarLoaded',	
 	
 	flashVideoEvent:'paella:flashVideoEvent',
 

@@ -414,6 +414,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			if (startTime) {
 				paella.player.videoContainer.setStartTime(startTime);
 			}
+			paella.events.trigger(paella.events.controlBarLoaded);
 			paella.events.trigger(paella.events.play);
 		}
 
