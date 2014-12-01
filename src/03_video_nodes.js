@@ -761,14 +761,17 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		source.src = sourceData.src + '?caches=' + Math.random();
 		source.type = sourceData.type;
 		this.domElement.appendChild(source);
-//		if (base.userAgent.browser.IsMobileVersion) {
-//			this.ready = true;
-//		}
 	},
 	
 	unload:function() {
 		this.ready = false;
-		this.domElement.innerHTML = "";
+		var sources = $(this.domElement).find('source');
+		for (var i=0; i<sources.length; ++i) {
+			this.domElement.removeChild(sources[i]);
+			sources[i].src = "";
+		}
+		this.domElement.src = '';
+		this.domElement.load();
 		this.parent();
 	},
 
