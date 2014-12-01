@@ -2,7 +2,7 @@ CHANGELOG
 =========
 
  
-* Paella 4.0.0
+* Paella 4.0.0 (01-12-2014)
  
  * Better Video Quality management (Change video source to higher quality file seamlessly when switching to full screen. And switch to smaller file seamlessly when going back to embed).
  * Video download bandwidth improved in multi resolution videos.
