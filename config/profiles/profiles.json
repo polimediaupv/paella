@@ -18,10 +18,10 @@
 		"icon":"professor_slide_icon.png",
 		"masterVideo":{"content":"presenter","rect":[
 			{"aspectRatio":"16/9","left":"10","top":"225","width":"695","height":"390"},
-			{"aspectRatio":"4/3","left":"121","top":"94","width":"700","height":"525"}],"visible":"true","layer":"1"},
+			{"aspectRatio":"4/3","left":"10","top":"94","width":"700","height":"525"}],"visible":"true","layer":"1"},
 		"slaveVideo":{"content":"presentation","rect":[
 			{"aspectRatio":"16/9","left":"712","top":"300","width":"560","height":"315"},
-			{"aspectRatio":"4/3","left":"944","top":"370","width":"330","height":"247"},
+			{"aspectRatio":"4/3","left":"712","top":"196","width":"560","height":"420"},
 			{"aspectRatio":"5/4","left":"944","top":"355","width":"330","height":"264"}],"visible":"true","layer":"1"},
 		"background":{"content":"slide_professor_paella.jpg","zIndex":5,"rect":{"left":"0","top":"0","width":"1280","height":"720"},"visible":"true","layer":"0"},
 		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}}]
