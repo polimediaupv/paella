@@ -60,23 +60,31 @@ In this file we have all the setups concerning plugins.. streams.. compositions.
 
 #- How To ?
 
-- How to set streaming method priority?
+##- How to set streaming method priority?
 
 In "player" : { "methods" } We can set the priority of streaming method.
 
-- How to mute sound channels?
+##- How to mute sound channels?
 
 Use "player" : { "stream0Audio" , "stream1Audio" } for set the volume of sources.
 
-- How to enable or disable editor mode?
+##- How to enable or disable editor mode?
 
 Use "editor" : { "enabled" }
 
-- How set the default composition?
+##- How set the default composition?
 
 Use "defaultProfile" for set the default video composition.
 
-- How to set/modify data delegates?
+##- How to set/modify data delegates?
 
 Take a look to the [Integrate Paella section](integrate.md)
+
+##- Can I choose when a plugin is showed depending on play mode ( embed, fullScreen, standard .. etc )?
+
+Inside config file at plugins section you can set the mode for show the plugin using:
+```javascript
+"es.upv.paella.xxx":{"enabled":true,......,"visibleOn":['standard', 'fullscreen', 'extended', 'embed']},
+```
+Remember that this only works, with ButtonPlugins.
 	

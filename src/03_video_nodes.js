@@ -265,9 +265,8 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 	},
 	
 	eventReceived:function(eventName,params) {
-		if (eventName=="progress") {
-			console.log(eventName);
-		}
+//		if (eventName=="progress") {
+//		}
 		
 		params = params.split(",");
 		var processedParams = {};
@@ -299,10 +298,24 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 			this.callReadyEvent();
 		}
 		if (eventName=="progress") {
+			try { this.flashVideo.setVolume(this._volume); }
+			catch(e) {}
 			base.log.debug("Flash video event: " + eventName + ", progress: " + this.flashVideo.currentProgress());
 		}
 		else {
 			base.log.debug("Flash video event: " + eventName);
+		}
+	},
+	
+	setPosterFrame:function(url) {
+		if (this._posterFrame===undefined) {
+			this._posterFrame = url;
+			var posterFrame = document.createElement('img');
+			posterFrame.src = url;
+			posterFrame.className = "videoPosterFrameImage";
+			posterFrame.alt = "poster frame";
+			this.domElement.appendChild(posterFrame);
+			this._posterFrameElement = posterFrame;
 		}
 	},
 
@@ -375,6 +388,9 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 			try {
 				this.flashVideo.play();
 				this.paused = false;
+				if (this._posterFrameElement) {
+					$(this._posterFrameElement).hide();
+				}
 				return true;
 			}
 			catch(e) {
@@ -428,10 +444,12 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 
 	setDefaultVolume:function(vol) {
 		this._defaultVolume = vol;
+		this._volume = vol;
 	},
 	
 	setVolume:function(volume) {
 		if (this.flashVideo) {
+			this._volume = volume;
 			var thisClass = this;
 			try {
 				this.flashVideo.setVolume(volume);
@@ -743,14 +761,17 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		source.src = sourceData.src + '?caches=' + Math.random();
 		source.type = sourceData.type;
 		this.domElement.appendChild(source);
-//		if (base.userAgent.browser.IsMobileVersion) {
-//			this.ready = true;
-//		}
 	},
 	
 	unload:function() {
 		this.ready = false;
-		this.domElement.innerHTML = "";
+		var sources = $(this.domElement).find('source');
+		for (var i=0; i<sources.length; ++i) {
+			this.domElement.removeChild(sources[i]);
+			sources[i].src = "";
+		}
+		this.domElement.src = '';
+		this.domElement.load();
 		this.parent();
 	},
 

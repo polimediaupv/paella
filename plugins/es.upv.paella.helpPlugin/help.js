@@ -4,6 +4,7 @@ Class ("paella.plugins.HelpPlugin",paella.ButtonPlugin, {
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "helpButton"; },
 	getName:function() { return "es.upv.paella.helpPlugin"; },
+	getMinWindowSize:function() { return 650; },
 
 	getDefaultToolTip:function() { return base.dictionary.translate("Show help") + ' (' + base.dictionary.translate("Paella version:") + ' ' + paella.version + ')'; },
 

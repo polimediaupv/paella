@@ -1307,3 +1307,20 @@ base.types = {
 base.uuid = function() {
 	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {var r = Math.random()*16|0,v=c=='x'?r:r&0x3|0x8;return v.toString(16);});
 }
+
+base.imgBase64 = function(url) {
+	var img = new Image();
+	img.onload = function(event) {
+		var canvas = document.createElement('canvas');
+		var ctx = canvas.getContext('2d');
+		canvas.width = event.srcElement.width;
+		canvas.height = event.srcElement.height;
+		ctx.drawImage(event.srcElement,0,0);
+		var dataUrl = canvas.toDataURL('image/png');
+		event.srcElement.onload = null;
+		event.srcElement.src = dataUrl;
+		canvas = null;
+	};
+	img.src = url;
+	return img;
+}
