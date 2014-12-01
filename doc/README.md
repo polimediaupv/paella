@@ -5,6 +5,7 @@ Welcome to the The Paella Player documentation page, this documentation is made 
 ## Structure
 
 - [Introduction.](introduction.md)
+- [Usage and Features Guide](help.md)
 - [Install Paella.](setup.md)
 - [Configure Paella.](configure.md)
 - [Customization: Define a new skin.](customize_newskin.md)
