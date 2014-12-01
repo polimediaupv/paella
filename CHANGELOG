@@ -2,27 +2,32 @@ CHANGELOG
 =========
 
  
-* Paella 4.0.0 (in beta)
+* Paella 4.0.0
  
- * Better Video Quality management (Change video source to higher quality file seamlessly when switching to full screen. And switch to smaller file seamlessly when going back to embed)
+ * Better Video Quality management (Change video source to higher quality file seamlessly when switching to full screen. And switch to smaller file seamlessly when going back to embed).
+ * Video download bandwidth improved in multi resolution videos.
  * Dual audio in dual track videos: Configurable option to mute one of the sources for desktop browsers.
  * Pause video by clicking in the video area – and restart video by clicking there again.
- * Don’t display the play icon in the video area after the video has started
+ * Don’t display the play icon in the video area after the video has started.
  * Don’t display the control bar until the user has pressed the large play symbol (or hovered the mouse into the video area).
- * Adaptive display for 4:3 videos
+ * Adaptive display for 4:3 videos.
  * Multiple speed support in HTML5 mode.
+ * Better RTMP video playback.
  * Improved Flash fallback for desktop browsers not able to play HTML5 video.
  * Better Fullscreen management.
  * Solved the issue that happened when calling the page, the video plays for half a second (with audio), then goes back to the pause and waits for user interaction; that shouldn’t happen.
- * Icon redesign and cosmetic changes
+ * Icon redesign and cosmetic changes.
  * Plugin activation and deactivation depending on the player state (displayed / not displayed only in embed / only in full screen).
- * Change colour scheme: New skinning options
+ * Change colour scheme: New skinning options.
  * Removed the “zoom in” effect when player starts.
  * Change symbol for full screen when in full screen: Invert arrows.
- * iOS: Control bar now disappears automatically after x seconds
+ * iOS: Control bar now disappears automatically after x seconds.
+ * Internet Explorer: Control bar now hide automatically after x seconds.
  * Slides now appear on top of the timeline on hovering.
  * Now there is a configuration option that don’t allow a video to be larger than its real size.
- * Preview release of the Blackboard zoom plugin
+ * Preview release of the Blackboard zoom plugin.
+ * New layout calculator to create or modify the video layouts (thank's to Daniel Collins-Puro from Harvard for his contribution).
+ * The fullscreen plugin now opens the player in a new window, in those platforms that doesn't support HTML 5 fullscreen.
  
  
 * Paella 3.1.0 (22-07-2014)
