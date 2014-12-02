@@ -103,7 +103,7 @@ Class ("paella.plugins.PlayButtonOnScreen",paella.EventDrivenPlugin,{
 
 			ctx.stroke();
 		}
-		window.addEventListener('resize', repaintCanvas, false);
+		paella.events.bind(paella.events.resize,repaintCanvas);
 		repaintCanvas();
 	},
 
