@@ -58,6 +58,7 @@ paella.events = {
 	userTracking:'paella:userTracking',
 	enterFullscreen:'paella:enterFullscreen',
 	exitFullscreen:'paella:exitFullscreen',
+	resize:'paella:resize',		// params: { width:paellaPlayerContainer width, height:paellaPlayerContainer height }
 	
 	singleVideoReady:'paella:singleVideoReady',
 	singleVideoUnloaded:'paella:singleVideoUnloaded',
