@@ -596,6 +596,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	reloadVideos:function(masterQuality,slaveQuality) {
+		var memoizedCurrentTime = this.currentTime();
 		var masterVideo = this.masterVideo();
 		var slaveVideo = this.slaveVideo();
 		if (masterVideo) masterVideo.unload();
@@ -603,7 +604,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		 
 		this.setMasterQuality(masterQuality);
 		this.setSlaveQuality(slaveQuality);
-		this._seekToOnLoad = this.currentTime();
+		this._seekToOnLoad = memoizedCurrentTime;
 		this.setSources(this._videoSourceData.master,this._videoSourceData.slave);
 		this.seekToTime(this._seekToOnLoad);
 		this.play();
