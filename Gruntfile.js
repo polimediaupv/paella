@@ -19,6 +19,7 @@ module.exports = function(grunt) {
 			paella: {
 				files: [
 					{expand: true, src: ['config/**', 'javascript/**', 'resources/bootstrap/**', 'resources/images/**', 'index.html', 'extended.html', 'paella-standalone.js'], dest: 'build/player/'},
+ 					{expand: true, src: ['vendor/images/**'], dest: 'build/player/resources/'},
 					{expand: true, cwd: 'src/flash_player/', src: "player.swf", dest: 'build/player/' },
 					{expand: true, cwd: 'repository_test/', src: '**', dest: 'build/'},
 					{expand: true, src:'plugins/*/resources/**', dest: 'build/player/resources/style/',
