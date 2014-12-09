@@ -6,6 +6,10 @@ CHANGELOG
  * Improvements to tools/layout_calculator.
  
 
+* Paella 4.0.3 (09-12-2014)
+
+ * Fix html5 videonode setDefaultVolume in firefox. (#78)
+ 
 * Paella 4.0.2 (04-12-2014)
 
  * Fix a bug that causes that time were not retained when switching resolutions. (#74)
