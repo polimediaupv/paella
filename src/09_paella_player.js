@@ -285,9 +285,9 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 				var slave = loader.streams[1];
 				var playerConfig = paella.player.config.player;
 				// SET DEFAULT AUDIO VOLUME
-				if(playerConfig && playerConfig.audio && playerConfig.audio.master)
+				if(playerConfig && playerConfig.audio && playerConfig.audio.master !== undefined)
 					paella.player.videoContainer.setDefaultMasterVolume(playerConfig.audio.master);
-				if(playerConfig && playerConfig.audio && playerConfig.audio.slave)
+				if(playerConfig && playerConfig.audio && playerConfig.audio.slave !== undefined)
 					paella.player.videoContainer.setDefaultSlaveVolume(playerConfig.audio.slave);
 				
 
