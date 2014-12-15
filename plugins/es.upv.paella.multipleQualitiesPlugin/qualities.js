@@ -4,6 +4,8 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 	currentSlave:null,
 	availableMasters:[],
 	availableSlaves:[],
+	showWidthRes:null,
+
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "showMultipleQualitiesPlugin"; },
 	getIndex:function() { return 2030; },
@@ -26,6 +28,9 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 			base.dictionary.addDictionary(esDict);
 		}
 		this.setQualityLabel();
+
+		//config
+		self.showWidthRes = (self.config.showWidthRes !== undefined) ? self.config.showWidthRes : true;
 	},
 	
 	checkStreams:function() {
@@ -60,6 +65,7 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
 	
 	buildContent:function(domElement) {
+		var self = this;
 		var w, h,d,e,b=0;
 		var percen1, percen2, reso2, act_percen;
 		percen1=100/this.availableMasters.length;
@@ -85,7 +91,10 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 						b++;
 					}
 				}
-				domElement.appendChild(this.getItemButton(w+"x"+h,w+"x"+h, reso2));
+				if(self.showWidthRes)
+					domElement.appendChild(this.getItemButton(w+"x"+h,w+"x"+h, reso2));
+				else
+					domElement.appendChild(this.getItemButton(h+"p",w+"x"+h, reso2));
 			}
 		}
 		else{
@@ -106,7 +115,10 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 						b++;
 					}
 				}
-				domElement.appendChild(this.getItemButton(w+"x"+h,w+"x"+h, reso2));
+				if(self.showWidthRes)
+					domElement.appendChild(this.getItemButton(w+"x"+h,w+"x"+h, reso2));
+				else
+					domElement.appendChild(this.getItemButton(h+"p",w+"x"+h, reso2));
 			}
 		}
 	},
