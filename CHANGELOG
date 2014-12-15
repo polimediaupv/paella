@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+* Paella 4.0.4 (XX-XX-2014)
+
+ * Fixed issues in multi quality plugin (list is not sorted (#83) and show only vertical resolition (#84)
 
 * Paella 4.0.3 (09-12-2014)
 
