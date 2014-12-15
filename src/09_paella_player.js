@@ -150,7 +150,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		paella.events.trigger(paella.events.loadStarted);
 
 		paella.initDelegate.loadDictionary(function() {
-			var minFirefoxVersion = base.userAgent.system.MacOS ? 34:(base.userAgent.system.Windows) ? 25:26;
+			var minFirefoxVersion = base.userAgent.system.MacOS ? 35:(base.userAgent.system.Windows) ? 25:26;
 			if (base.userAgent.browser.Firefox && base.userAgent.browser.Version.major<minFirefoxVersion) {
 				message = "You are using Firefox version, and some required video playback capabilities are not available until Firefox min_version. Please, update your browser and try again.";
 				message = base.dictionary.translate(message);
