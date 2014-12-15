@@ -64,6 +64,9 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 		var percen1, percen2, reso2, act_percen;
 		percen1=100/this.availableMasters.length;
 		percen2=100/this.availableSlaves.length;
+		this.availableMasters.sort(function(a,b){
+			return parseInt(a.res.h) >= parseInt(b.res.h);
+		});
 		if(this.availableMasters.length >= this.availableSlaves.length){
 			act_percen= percen2;
 			for(var i=0;i<this.availableMasters.length;i++){
