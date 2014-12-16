@@ -29,7 +29,7 @@ Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 			paella.player.exitFullScreen();
 		}
 		else {
-			if( (base.userAgent.browser.Explorer || base.userAgent.browser.IsMobileVersion) && (window.location !== window.parent.location) ) {
+			if( (base.userAgent.browser.IsMobileVersion) && (window.location !== window.parent.location) ) {
 				var url = window.location.href;
 
 				//PAUSE IFRAME
