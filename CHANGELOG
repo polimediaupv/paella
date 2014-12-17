@@ -3,7 +3,9 @@ CHANGELOG
 
 * Paella 4.x.x (Work In Progress)
 
+ * Don't ignore vendor directories to make collaboration easier.
  * Improvements to tools/layout_calculator.
+ * Changes in default audio configuration.
  * Video resolution refactoring: class VideoQualityStrategy extracted, to create custom video resolution selection strategies.
 
 * Paella 4.0.4 (17-12-2014)
