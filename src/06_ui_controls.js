@@ -154,7 +154,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		else {
 			if($("#divTimeOverlay").length == 0) self.setupTimeOnly(timestr,pos.top,width);
 			else $("#divTimeOverlay")[0].innerHTML = timestr;
-		}	
+		}
 		
 		// UPDATE POSITION IMAGE OVERLAY
 
@@ -261,7 +261,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 
 		var aux = Math.round(width/10);
 		div.style.width = Math.round(aux*self._aspectRatio)+"px"; //KEEP ASPECT RATIO 4:3
-		div.style.height = Math.round(aux)+"px";
+		//div.style.height = Math.round(aux)+"px";
 
 		if(self._hasSlides){
 		var img = document.createElement("img");

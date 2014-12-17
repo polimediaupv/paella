@@ -56,6 +56,8 @@ Class ("paella.plugins.PlayButtonOnScreen",paella.EventDrivenPlugin,{
 		this.container = document.createElement('div');
 		this.container.className = "playButtonOnScreen";
 		this.container.id = this.containerId;
+		this.container.style.width = "100%";
+		this.container.style.height = "100%";		
 		paella.player.videoContainer.domElement.appendChild(this.container);
 		$(this.container).click(function(event){thisClass.onPlayButtonClick();});
 

@@ -1,4 +1,4 @@
-Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
+Class ("paella.plugins.EthzMultipleQualitiesPlugin", paella.ButtonPlugin,{
 	currentUrl:null,
 	currentMaster:null,
 	currentSlave:null,
@@ -7,12 +7,12 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 	showWidthRes:null,
 
 	getAlignment:function() { return 'right'; },
-	getSubclass:function() { return "showMultipleQualitiesPlugin"; },
+	getSubclass:function() { return "showEthzMultipleQualitiesPlugin"; },
 	getIndex:function() { return 2030; },
 	getMinWindowSize:function() { return 550; },
-	getName:function() { return "es.upv.paella.multipleQualitiesPlugin"; },
+	getName:function() { return "ch.ethz.paella.multipleQualitiesPlugin"; },
 	getDefaultToolTip:function() { return base.dictionary.translate("Change video quality"); },
-		
+	
 	checkEnabled:function(onSuccess) { 	
 		var key, j;
 		this.currentMaster = paella.player.videoContainer.currentMasterVideoData;
@@ -44,12 +44,17 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 		});
 		this.availableSlaves.sort(function(a,b){
 			return parseInt(a.res.h) >= parseInt(b.res.h);
-		});		
+		});
+
+		// Remove the lowest resolution
+		this.availableMasters = this.availableMasters.slice(1);
+		this.availableSlaves = this.availableSlaves.slice(1);
+		
 		
 		var isenabled = (this.availableMasters.length > 1 || this.availableSlaves.length > 1);
 		onSuccess(isenabled);
-	},		
-		
+	},	
+	
 	setup:function() {
 		var self = this;
 		//RELOAD EVENT
@@ -69,7 +74,7 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 		//config
 		self.showWidthRes = (self.config.showWidthRes !== undefined) ? self.config.showWidthRes : true;
 	},
-	
+
 
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
 	
@@ -79,7 +84,8 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 		var percen1, percen2, reso2, act_percen;
 		percen1=100/this.availableMasters.length;
 		percen2=100/this.availableSlaves.length;
-
+		
+		
 		if(this.availableMasters.length >= this.availableSlaves.length){
 			act_percen= percen2;
 			for(var i=0;i<this.availableMasters.length;i++){
@@ -148,7 +154,7 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 	},
 
 	onItemClick:function(button,label,reso, reso2) {
-		paella.events.trigger(paella.events.hidePopUp,{identifier:this.getName()});
+		paella.events.trigger(paella.events.hidePopUp, {identifier:this.getName()});
 		paella.player.reloadVideos(reso, reso2);
 
 		this.setQualityLabel();
@@ -165,7 +171,7 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 });
 
 
-paella.plugins.multipleQualitiesPlugin = new paella.plugins.MultipleQualitiesPlugin();
+paella.plugins.ethzMultipleQualitiesPlugin = new paella.plugins.EthzMultipleQualitiesPlugin();
 
 
 		
