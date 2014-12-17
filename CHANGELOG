@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-* Paella 4.0.4 (XX-XX-2014)
+* Paella 4.0.4 (17-12-2014)
 
  * Fixed issues in multi quality plugin (list is not sorted (#83) and show only vertical resolition (#84)
  * Change the OSX/Firefox error message to show it in Firefox 34 (#89)
