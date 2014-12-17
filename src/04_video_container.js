@@ -363,7 +363,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		this.video2Id = id + '_2';
 		this.backgroundId = id + '_bkg';
 		this.logos = [];
-		this._videoQualityStrategy = new paella.BestFitVideoQualityStrategy();
+		this._videoQualityStrategy = new paella.VideoQualityStrategy();
 
 		this.container = new paella.DomNode('div',this.containerId,{position:'relative',display:'block',marginLeft:'auto',marginRight:'auto',width:'1024px',height:'567px'});
 		this.container.domElement.setAttribute('role','main');
@@ -407,6 +407,10 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		catch (e) {
 
 		}
+	},
+	
+	setVideoQualityStrategy:function(strategy) {
+		this._videoQualityStrategy = strategy;
 	},
 
 	setProfileFrameStrategy:function(strategy) {
