@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+* Paella 4.0.4 (17-12-2014)
+
+ * Fixed issues in multi quality plugin (list is not sorted (#83) and show only vertical resolition (#84)
+ * Change the OSX/Firefox error message to show it in Firefox 34 (#89)
+ * Fixed a bug in timeline-preview images (#85)
+ * When switching between resolutions no preview picture is showed (#87)
+ * Fix issues when trying to change from embed to fullscreen in IE11 (#88)
+ * New plugin added: ch.ethz.paella.multipleQualitiesPlugin
 
 * Paella 4.0.3 (09-12-2014)
 

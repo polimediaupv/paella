@@ -28,6 +28,7 @@
 	"plugins":{
 		"defaultConfig":{"enabled":true},
 		"list":{
+			"ch.ethz.paella.multipleQualitiesPlugin": {"enabled": false},
 			"es.upv.paella.ImageControlPlugin":{"enabled":false},
 			"es.upv.paella.ShowEditorPlugin":{"enabled":true,"alwaysVisible":true},
 			"es.upv.paella.TrimmingPlayerPlugin":{"enabled":true},
@@ -46,7 +47,8 @@
             "es.upv.paella.ZoomPlugin": {"enabled": true, "maxZoom":500, "minZoom":100, "zoomIncr":10},
             "es.upv.paella.fullScreenButtonPlugin": {"enabled":true, "reloadOnFullscreen":{ "enabled":true, "keepUserSelection":true }},
             "es.upv.paella.extendedProfilesPlugin": {"enabled":true, "reloadOnFullscreen":"reload" },
-            "es.upv.paella.themeChooserPlugin":  {"enabled":true}
+            "es.upv.paella.themeChooserPlugin":  {"enabled":true},
+            "es.upv.paella.multipleQualitiesPlugin":  {"showWidthRes":true}
 		}
 	},
     "standalone" : {

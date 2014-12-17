@@ -301,6 +301,8 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	
 	_defaultMasterVolume:1,
 	_defaultSlaveVolume:1,
+	
+	_showPosterFrame:true,
 
 	initialize:function(id) {
 		this.parent(id);
@@ -596,6 +598,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	reloadVideos:function(masterQuality,slaveQuality) {
+		this._showPosterFrame = false;
 		var memoizedCurrentTime = this.currentTime();
 		var masterVideo = this.masterVideo();
 		var slaveVideo = this.slaveVideo();
@@ -707,7 +710,9 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			videoNode.setDefaultVolume(this._defaultSlaveVolume);
 			this.slaveVideoData = data;
 		}
-		videoNode.setPosterFrame(data.preview);
+		if (this._showPosterFrame) {
+			videoNode.setPosterFrame(data.preview);
+		}
 		videoNode.setClassName(this.videoClasses[target]);
 		this.container.addNode(videoNode);
 		this.sourceData.push(data);
@@ -979,19 +984,19 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	resizePortrail:function() {
-		var width = $(this.domElement).width();
+		var width = (paella.player.isFullScreen() == true) ? $(window).width() : $(this.domElement).width();
 		var relativeSize = new paella.RelativeVideoSize();
 		var height = relativeSize.proportionalHeight(width);
 		this.container.domElement.style.width = width + 'px';
 		this.container.domElement.style.height = height + 'px';
 
-		var containerHeight = $(this.domElement).height();
+		var containerHeight = (paella.player.isFullScreen() == true) ? $(window).height() : $(this.domElement).height();
 		var newTop = containerHeight / 2 - height / 2;
 		this.container.domElement.style.top = newTop + "px";
 	},
 
 	resizeLandscape:function() {
-		var height = $(this.domElement).height();
+		var height = (paella.player.isFullScreen() == true) ? $(window).height() : $(this.domElement).height();
 		var relativeSize = new paella.RelativeVideoSize();
 		var width = relativeSize.proportionalWidth(height);
 		this.container.domElement.style.width = width + 'px';
@@ -999,11 +1004,12 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		this.container.domElement.style.top = '0px';
 	},
 
-	onresize:function() { this.parent();
+	onresize:function() {
+		this.parent();
 		var relativeSize = new paella.RelativeVideoSize();
 		var aspectRatio = relativeSize.aspectRatio();
-		var width = $(this.domElement).width();
-		var height = $(this.domElement).height();
+		var width = (paella.player.isFullScreen() == true) ? $(window).width() : $(this.domElement).width();
+		var height = (paella.player.isFullScreen() == true) ? $(window).height() : $(this.domElement).height();
 		var containerAspectRatio = width/height;
 
 		if (containerAspectRatio>aspectRatio) {
