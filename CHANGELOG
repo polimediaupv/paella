@@ -4,7 +4,7 @@ CHANGELOG
 * Paella 4.x.x (Work In Progress)
 
  * Improvements to tools/layout_calculator.
- 
+ * Video resolution refactoring: class VideoQualityStrategy extracted, to create custom video resolution selection strategies.
 
 * Paella 4.0.3 (09-12-2014)
 
