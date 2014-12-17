@@ -2,6 +2,7 @@
 	"player":{
 		"defaultProfile": "full",
         "profileFrameStrategy":"paella.ProfileFrameStrategy",
+		"videoQualityStrategy":"paella.BestFitVideoQualityStrategy",
 		"methods":[{"name":"streaming","enabled":true},
 				   {"name":"html","enabled":true},
 				   {"name":"flash","enabled":true},

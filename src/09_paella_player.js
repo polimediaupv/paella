@@ -176,6 +176,17 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		if (this.videoIdentifier) {
 			if (this.mainContainer) {
 				this.videoContainer = new paella.VideoContainer(this.playerId + "_videoContainer");
+				var videoQualityStrategy = new paella.BestFitVideoQualityStrategy();
+				try {
+					var StrategyClass = this.config.player.videoQualityStrategy;
+					var ClassObject = Class.fromString(StrategyClass);
+					videoQualityStrategy = new ClassObject();
+				}
+				catch(e) {
+					base.log.warning("Error selecting video quality strategy: strategy not found");
+				}
+				this.videoContainer.setVideoQualityStrategy(videoQualityStrategy);
+				
 				this.mainContainer.appendChild(this.videoContainer.domElement);
 			}
 			$(window).resize(function(event) { paella.player.onresize(); });
