@@ -150,15 +150,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		paella.events.trigger(paella.events.loadStarted);
 
 		paella.initDelegate.loadDictionary(function() {
-			var minFirefoxVersion = base.userAgent.system.MacOS ? 35:(base.userAgent.system.Windows) ? 25:26;
-			if (base.userAgent.browser.Firefox && base.userAgent.browser.Version.major<minFirefoxVersion) {
-				message = "You are using Firefox version, and some required video playback capabilities are not available until Firefox min_version. Please, update your browser and try again.";
-				message = base.dictionary.translate(message);
-				message = message.replace("version",base.userAgent.browser.Version.major);
-				message = message.replace("min_version",minFirefoxVersion);
-				paella.messageBox.showError(message);
-				return false;
-			}
 			paella.initDelegate.loadConfig(function(config) {
 				var skin = (config.skin && config.skin.default) ? config.skin.default:'dark';
 				paella.utils.skin.restore(skin);
@@ -309,6 +300,23 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 				if (loader.loadStatus) {
 					var preferredMethodMaster = loader.getPreferredMethod(0);
 					var preferredMethodSlave  = loader.getPreferredMethod(1);
+					
+					var h264WarningMessage = true;
+					if ((master.sources.ogv || master.sources.webm) && (slave.sources.ogv || slave.sources.webm)) {
+						h264WarningMessage = false;
+					}
+					
+					if (h264WarningMessage) {
+						var minFirefoxVersion = base.userAgent.system.MacOS ? 35:(base.userAgent.system.Windows) ? 25:26;
+						if (base.userAgent.browser.Firefox && base.userAgent.browser.Version.major<minFirefoxVersion) {
+							message = "You are using Firefox version, and some required video playback capabilities are not available until Firefox min_version. Please, update your browser and try again.";
+							message = base.dictionary.translate(message);
+							message = message.replace("version",base.userAgent.browser.Version.major);
+							message = message.replace("min_version",minFirefoxVersion);
+							paella.messageBox.showError(message);
+							return false;
+						}
+					}
 
 					paella.player.videoContainer.setSources(
 						{ data:master, type:preferredMethodMaster },
