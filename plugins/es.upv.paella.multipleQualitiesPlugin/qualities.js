@@ -18,11 +18,21 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 		this.currentMaster = paella.player.videoContainer.currentMasterVideoData;
 		this.currentSlave = paella.player.videoContainer.currentSlaveVideoData;
 
+		var minVerticalRes = parseInt(this.config.minVerticalRes);
+		var maxVerticalRes = parseInt(this.config.maxVerticalRes);
+
 		// Search for the resolutions
 		var allMasterSources = paella.player.videoContainer.masterVideoData.sources;
+		
 		for (key in allMasterSources){
 			for (j =0; j < allMasterSources[key].length; ++j ){
 				if ((allMasterSources[key][j].type == this.currentMaster.type)){
+					if ( (isNaN(minVerticalRes)==false) && (parseInt(allMasterSources[key][j].res.h) < minVerticalRes) ) {
+						continue;
+					}
+					if ( (isNaN(maxVerticalRes)==false) && (parseInt(allMasterSources[key][j].res.h) > maxVerticalRes) ) {
+						continue;
+					}
 					this.availableMasters.push(allMasterSources[key][j]);
 				}
 			}
@@ -32,19 +42,24 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 			for (key in allSlaveSources){
 				for (j =0; j < allSlaveSources[key].length; ++j ){
 					if ((allSlaveSources[key][j].type == this.currentSlave.type)){
+						if ( (isNaN(minVerticalRes)==false) && (parseInt(allSlaveSources[key][j].res.h) < minVerticalRes) ) {
+							continue;
+						}
+						if ( (isNaN(maxVerticalRes)==false) && (parseInt(allSlaveSources[key][j].res.h) > maxVerticalRes) ) {
+							continue;
+						}
 						this.availableSlaves.push(allSlaveSources[key][j]);
 					}
 				}
 			}
 		}
-
+		
 		// Sort the available resolutions
-		this.availableMasters.sort(function(a,b){
+		function sortfunc(a,b){
 			return parseInt(a.res.h) >= parseInt(b.res.h);
-		});
-		this.availableSlaves.sort(function(a,b){
-			return parseInt(a.res.h) >= parseInt(b.res.h);
-		});		
+		}
+		this.availableMasters.sort(sortfunc);
+		this.availableSlaves.sort(sortfunc);		
 		
 		var isenabled = (this.availableMasters.length > 1 || this.availableSlaves.length > 1);
 		onSuccess(isenabled);
