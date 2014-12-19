@@ -7,8 +7,13 @@ CHANGELOG
  * Improvements to tools/layout_calculator.
  * Changes in default audio configuration.
  * Video resolution refactoring: class VideoQualityStrategy extracted, to create custom video resolution selection strategies.
- * multipleQualitiesPlugin updated. Ability to configure a minimum/maximum resolution to show in the available resolutions list.
 
+* Paella 4.0.5 (XX-XX-XXXX)
+
+ * multipleQualitiesPlugin updated. Ability to configure a minimum/maximum resolution to show in the available resolutions list.
+ * OSX/Firefox minimum version required only showed when playing mp4 files.
+ * Plugin ch.ethz.paella.multipleQualitiesPlugin removed. es.upv.paella.multipleQualitiesPlugin does that functionality.
+ 
 * Paella 4.0.4 (17-12-2014)
 
  * Fixed issues in multi quality plugin (list is not sorted (#83) and show only vertical resolition (#84)
