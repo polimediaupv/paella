@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-* Paella 4.0.5 (XX-XX-XXXX)
+* Paella 4.0.5 (22-12-2014)
 
  * multipleQualitiesPlugin updated. Ability to configure a minimum/maximum resolution to show in the available resolutions list.
  * OSX/Firefox minimum version required only showed when playing mp4 files.
