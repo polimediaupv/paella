@@ -82,7 +82,7 @@ Use "defaultProfile" for set the default video composition.
 
 Take a look to the [Integrate Paella section](integrate.md)
 
-##- Can I choose when a plugin is showed depending on play mode ( embed, fullScreen, standard .. etc )?
+##- Can I choose when a plugin is shown depending on the play mode ( embed, fullScreen, standard .. etc )?
 
 Inside config file at plugins section you can set the mode for show the plugin using:
 ```javascript
