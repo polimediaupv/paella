@@ -318,7 +318,8 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 					}
 					else if (base.parameters.get('autoplay')=="true" &&
 							paella.player.config.experimental &&
-							paella.player.config.experimental.autoplay)
+							paella.player.config.experimental.autoplay &&
+							!base.userAgent.browser.IsMobileVersion)
 					{
 						paella.player.videoContainer.setAutoplay();
 						This.play();
