@@ -8,6 +8,10 @@ CHANGELOG
  * Changes in default audio configuration.
  * Video resolution refactoring: class VideoQualityStrategy extracted, to create custom video resolution selection strategies.
 
+* Paella 4.0.6 (26-1-2015)
+
+ * experimental autoplay mode in non-mobile devices
+
 * Paella 4.0.5 (22-12-2014)
 
  * multipleQualitiesPlugin updated. Ability to configure a minimum/maximum resolution to show in the available resolutions list.

@@ -322,11 +322,20 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 						{ data:master, type:preferredMethodMaster },
 						{ data:slave, type:preferredMethodSlave }
 					);
-
+					
 					paella.events.trigger(paella.events.loadComplete,{masterVideo:master,slaveVideo:slave,frames:frames});
 					if (paella.player.isLiveStream()) {
 						This.showPlaybackBar();
 					}
+					else if (base.parameters.get('autoplay')=="true" &&
+							paella.player.config.experimental &&
+							paella.player.config.experimental.autoplay &&
+							!base.userAgent.browser.IsMobileVersion)
+					{
+						paella.player.videoContainer.setAutoplay();
+						This.play();
+					}
+					
 					This.onresize();
 				}
 				else {
