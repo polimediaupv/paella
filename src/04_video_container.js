@@ -641,6 +641,15 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		}
 	},
 	
+	setAutoplay:function() {
+		if (this.masterVideo()) {
+			this.masterVideo().setAutoplay(true);
+		}
+		if (this.slaveVideo()) {
+			this.slaveVideo().setAutoplay(true);
+		}
+	},
+	
 	onVideoLoaded:function(sender) {
 		var This = this;
 		if ((this.isMonostream && this.masterVideo() && this.masterVideo().isReady()) ||

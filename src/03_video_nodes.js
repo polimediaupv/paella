@@ -74,6 +74,7 @@ Class ("paella.VideoElementBase", paella.DomNode,{
 	ready:false,
 	_metadata:null,
 	_rect:null,
+	_autoplay:false,
 
 	initialize:function(id,containerType,left,top,width,height) {
 		var thisClass = this;
@@ -97,6 +98,10 @@ Class ("paella.VideoElementBase", paella.DomNode,{
 
 	isReady:function() {
 		return this.ready;
+	},
+
+	setAutoplay:function(autoplay) {
+		this._autoplay = autoplay;
 	},
 
 	play:function() {
@@ -687,6 +692,13 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		this._posterFrame = url;
 		if (this.domElement) {
 			this.domElement.setAttribute("poster",url);
+		}
+	},
+
+	setAutoplay:function(auto) {
+		this._autoplay = auto;
+		if (auto) {
+			this.domElement.setAttribute("autoplay",auto);
 		}
 	},
 
