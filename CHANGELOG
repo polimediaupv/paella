@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 4.0.7 (29-1-2015)
+
+ * Slide flickering bug fixed
+
 * Paella 4.0.6 (26-1-2015)
 
  * experimental autoplay mode in non-mobile devices
