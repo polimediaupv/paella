@@ -132,6 +132,13 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 
 		var itemWidth = $(frame).outerWidth(true);
 		content.innerHTML = '';
+		$(window).mousemove(function(event) {
+			if ($(content).offset().top>event.pageY || !$(content).is(":visible") ||
+				($(content).offset().top + $(content).height())<event.pageY)
+			{
+				This.removeHiResFrame();
+			}
+		});
 
 		var frames = paella.initDelegate.initParams.videoLoader.frameList;
 		var numFrames;
@@ -260,7 +267,7 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 	},
 
 	onMouseOut:function(event,frameData) {
-		this.removeHiResFrame();
+		//this.removeHiResFrame();
 	},
 
 	onClick:function(event,frameData) {
