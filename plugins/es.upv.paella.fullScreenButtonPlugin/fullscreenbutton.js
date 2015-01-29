@@ -29,14 +29,14 @@ Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 			paella.player.exitFullScreen();
 		}
 		else {
-			if( (base.userAgent.browser.IsMobileVersion) && (window.location !== window.parent.location) ) {
+			if( (base.userAgent.browser.IsMobileVersion || base.userAgent.browser.Explorer) && (window.location !== window.parent.location) ) {
 				var url = window.location.href;
 
 				//PAUSE IFRAME
 				paella.events.trigger(paella.events.pause);
 				var sec = paella.player.videoContainer.currentTime();
 				var obj = self.secondsToHours(sec);
-				window.open(url+"&time="+obj.h+"h"+obj.m+"m"+obj.s+"s");
+				window.open(url+"&time="+obj.h+"h"+obj.m+"m"+obj.s+"s&autoplay=true");
 				return;
 			}
 			else paella.player.goFullScreen();
