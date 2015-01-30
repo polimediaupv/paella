@@ -9,6 +9,10 @@ CHANGELOG
  * Changes in default audio configuration.
  * Video resolution refactoring: class VideoQualityStrategy extracted, to create custom video resolution selection strategies.
 
+* Paella 4.0.8 (30-1-2015)
+
+  * Volume Control bugs when the video reloads (#96)
+
 * Paella 4.0.8 (29-1-2015)
 
  * Internet Explorer fullscreen bug fixed

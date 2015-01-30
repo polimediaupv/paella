@@ -9,6 +9,8 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 
 	_showMasterVolume: null,
 	_showSlaveVolume: null,
+	_tempMasterVolume: 0,
+	_tempSlaveVolume: 0,
 
 	checkEnabled:function(onSuccess) {
 		var enabled = false;
@@ -25,10 +27,24 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 	},
 	
 	setup:function() {
-		paella.events.bind(paella.events.videoReady,function(event,params) {
-			console.log(paella.player.videoContainer.slaveVolume());
-			console.log(params);
-		});
+		var self = this;
+		//STORE VALUES
+		paella.events.bind(paella.events.videoUnloaded,function(event,params) {self.storeVolume();});
+		//RECOVER VALUES
+		paella.events.bind(paella.events.singleVideoReady,function(event,params) {self.loadStoredVolume(params);});
+	},
+
+	storeVolume:function(){
+		var self = this;
+		self._tempSlaveVolume = paella.player.videoContainer.slaveVideo().volume();
+		self._tempMasterVolume = paella.player.videoContainer.masterVideo().volume();
+	},
+
+	loadStoredVolume:function(params){
+		var self = this;
+		if((params.sender.identifier == "playerContainer_videoContainer_1") && self._tempSlaveVolume || self._tempMasterVolume){
+			paella.events.trigger(paella.events.setVolume,{master:self._tempMasterVolume, slave:self._tempSlaveVolume});
+		}
 	},
 
 	buildContent:function(domElement) {
@@ -50,7 +66,7 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 			rangeInputMaster.step = 0.01;
 			rangeInputMaster.value = this.getMasterVolume();
 			
-			var updateMasterVolume = function() {
+		var updateMasterVolume = function() {
 				var slaveVideo = paella.player.videoContainer.slaveVideo();
 				var slaveVolume = 0;
 				if (slaveVideo) { slaveVolume = slaveVideo.volume(); }
@@ -80,7 +96,7 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 			rangeInputSlave.step = 0.01;
 			rangeInputSlave.value = this.getSlaveVolume();
 			
-			var updateSlaveVolume = function() {
+		var updateSlaveVolume = function() {
 				var masterVideo = paella.player.videoContainer.masterVideo();
 				var masterVolume = 0;
 				if (masterVideo) { masterVolume = masterVideo.volume(); }
