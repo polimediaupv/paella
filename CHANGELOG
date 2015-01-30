@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 4.0.8 (30-1-2015)
+
+  * Volume Control bugs when the video reloads (#96)
+
 * Paella 4.0.8 (29-1-2015)
 
  * Internet Explorer fullscreen bug fixed
