@@ -52,9 +52,19 @@ Class ("paella.PluginManager", {
 
 	registerPlugin:function(plugin) {
 		// Registra los plugins en una lista y los ordena
+		this.importLibraries(plugin);
 		this.pluginList.push(plugin);
 		this.pluginList.sort(function(a,b) {
 			return a.getIndex() - b.getIndex();
+		});
+	},
+
+	importLibraries:function(plugin) {
+		plugin.getDependencies().forEach(function(lib) {
+			var script = document.createElement('script');
+			script.type = "text/javascript";
+			script.src = 'javascript/' + lib + '.js';
+			document.head.appendChild(script);
 		});
 	},
 	
@@ -167,6 +177,10 @@ Class ("paella.Plugin", {
 	initialize:function() {
 		var thisClass = this;
 		paella.pluginManager.registerPlugin(this);
+	},
+
+	getDependencies:function() {
+		return [];
 	},
 
 	load:function(pluginManager) {

@@ -26,9 +26,15 @@ module.exports = function(grunt) {
 						rename: function (dest, src) { return dest+src.split('/').splice(3).join('/'); }
 					},
 					{expand: true, src:'vendor/plugins/*/resources/**', dest: 'build/player/resources/style/',
+						rename: function (dest, src) { return dest+src.split('/').splice(4).join('/'); }
+					},
+					{src:['build/config_temp.json'],dest: 'build/player/config/config.json'},
+					{expand: true, src:'plugins/*/lib/**', dest: 'build/player/javascript/' ,
 						rename: function (dest, src) { return dest+src.split('/').splice(3).join('/'); }
 					},
-					{src:['build/config_temp.json'],dest: 'build/player/config/config.json'}
+					{expand: true, src:'vendor/plugins/*/lib/**', dest: 'build/player/javascript/',
+						rename: function (dest, src) { return dest+src.split('/').splice(4).join('/'); }
+					}
 				]
 			}
 		},
