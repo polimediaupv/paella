@@ -1,3 +1,71 @@
 .buttonPlugin.searchButton {
-	background-position: -400% 0%;
+	background-position: -279% 11%;
+	display: block;
 }
+
+.buttonPluginPopUp.searchButton {
+	position: absolute;
+	right: -220px;
+}
+
+
+.searchPluginContainer {	
+	width: 260px;
+	overflow: hidden;
+}
+
+.searchBar input {
+	color: @popup_text_color;
+	background-color: @backgroundColor;
+	border-color: #fa8533;
+	width: 100%;
+}
+
+.searchBody {
+	height: 115px;	
+	overflow-y: scroll;
+}
+
+.sBodyInnerContainer {
+	display: block;
+}
+
+.sBodyPicture {
+	border: 1px solid @backgroundColor;
+	width: 20%;	
+	display: inline-block;
+}
+
+.sBodyText {
+	width: 45%;
+	display: inline-block;
+	text-align: center;
+}
+
+.sBodyTime {
+	width: 30%;
+	display: inline-block;
+	text-align: center;
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+}
+::-webkit-scrollbar-button {
+	width: 8px;
+	height:5px;
+}
+::-webkit-scrollbar-track {
+	background:#eee;
+	border: thin solid lightgray;
+	box-shadow: 0px 0px 3px #dfdfdf inset;
+	border-radius:10px;
+}
+::-webkit-scrollbar-thumb {
+	background:#fa8533;
+	border: thin solid gray;
+	border-radius:10px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background:#faa166;
+}			
