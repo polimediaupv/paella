@@ -211,6 +211,14 @@ Class ("paella.Plugin", {
 	}
 });
 
+
+
+Class ("paella.FastLoadPlugin", paella.Plugin, {});
+Class ("paella.EarlyLoadPlugin", paella.Plugin, {});
+Class ("paella.DeferredLoadPlugin", paella.Plugin, {});
+
+
+
 Class ("paella.PopUpContainer", paella.DomNode,{
 	containers:null,
 	currentContainerId:-1,
@@ -353,7 +361,7 @@ Class ("paella.TimelineContainer", paella.PopUpContainer,{
 
 
 	
-Class ("paella.UIPlugin", paella.Plugin, {
+Class ("paella.UIPlugin", paella.DeferredLoadPlugin, {
 	ui: null,
 	
 	checkVisibility: function() {
@@ -576,7 +584,7 @@ Class ("paella.VideoOverlayButtonPlugin", paella.ButtonPlugin,{
 });
 
 
-Class ("paella.EventDrivenPlugin", paella.Plugin,{
+Class ("paella.EventDrivenPlugin", paella.DeferredLoadPlugin,{
 	type:'eventDriven',
 
 	initialize:function() {
