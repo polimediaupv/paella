@@ -5,11 +5,7 @@ package paella {
 
 		function pause():void;
 
-		function load():void;
-
 		function stop():void;
-
-		function setSrc(url:String):void;
 		
 		function setSize(width:Number, height:Number):void;
 
