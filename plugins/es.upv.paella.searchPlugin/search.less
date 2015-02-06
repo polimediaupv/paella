@@ -5,12 +5,11 @@
 
 .buttonPluginPopUp.searchButton {
 	position: absolute;
-	right: -220px;
 }
 
 
 .searchPluginContainer {	
-	width: 260px;
+	width: 400px;
 	overflow: hidden;
 }
 
@@ -18,34 +17,54 @@
 	color: @popup_text_color;
 	background-color: @backgroundColor;
 	border-color: #fa8533;
-	width: 100%;
+	width: 96%;
+	margin-bottom: 0px;
+	margin-left: 1px;
+}
+
+.searchBar input:hover{
+	border-color: #faa166;
+}
+
+.searchBar input:focus{
+	border-color: #faa166;
 }
 
 .searchBody {
-	height: 115px;	
+	max-height: 280px;	
 	overflow-y: scroll;
+	border: 1px solid black;
 }
 
 .sBodyInnerContainer {
 	display: block;
+	margin-left: 3px;
+	height: 70px;
+	border: 1px solid @backgroundColor;
+}
+
+.hover {
+	background-color: #faa166;
 }
 
 .sBodyPicture {
-	border: 1px solid @backgroundColor;
-	width: 20%;	
-	display: inline-block;
 }
 
 .sBodyText {
-	width: 45%;
-	display: inline-block;
-	text-align: center;
+	width: 100%;
+	display: block;
+	text-align: left;
 }
 
-.sBodyTime {
-	width: 30%;
-	display: inline-block;
+.timeSpan {
+color: #fa8533;
+}
+
+.TimePicContainer {
+	float: left;
+	width: 24%;
 	text-align: center;
+	margin-right: 5px;
 }
 
 ::-webkit-scrollbar {
