@@ -120,7 +120,7 @@ Class ("paella.editor.PluginManager", {
 
 paella.editor.pluginManager = new paella.editor.PluginManager();
 
-Class ("paella.editor.EditorPlugin", paella.Plugin,{
+Class ("paella.editor.EditorPlugin", paella.DeferredLoadPlugin,{
 	onTrackSelected:function(newTrack) {
 		if (newTrack) {
 			base.log.debug(this.getName() + ": New track selected " + newTrack.getName());

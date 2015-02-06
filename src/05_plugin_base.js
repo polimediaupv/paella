@@ -29,7 +29,7 @@ Class ("paella.PluginManager", {
 		this.targets = {};
 		var thisClass = this;
 		paella.events.bind(paella.events.loadPlugins,function(event) {
-			thisClass.loadPlugins();
+			thisClass.loadPlugins("paella.DeferredLoadPlugin");
 		});
 	},
 
@@ -69,31 +69,20 @@ Class ("paella.PluginManager", {
 	},
 	
 	// callback => function(plugin,pluginConfig)
-	loadEventDrivenPlugins:function() {
-		var This = this;
-		this.foreach(function(plugin,config) {
-			if (config.enabled) {
-				base.log.debug("load plugin " + name);
-				plugin.config = config;
-				if (plugin.type=="eventDriven") {
-					plugin.load(This);
-				}				
-			}
-		});
-	},
-	
-	loadPlugins:function() {
-		var This = this;
-		this.foreach(function(plugin,config) {
-			if (config.enabled) {
-				base.log.debug("load plugin " + name);
-				plugin.config = config;							
-				if (plugin.type!="eventDriven") {
-					plugin.load(This);
-				}			
-			}
-		});
-	},
+	loadPlugins:function(pluginBaseClass) {
+		if (pluginBaseClass != undefined) {
+			var This = this;
+			this.foreach(function(plugin,config) {
+				if (dynamic_cast(pluginBaseClass, plugin) != null) {
+					if (config.enabled) {
+						base.log.debug("Load plugin (" + pluginBaseClass + "): " + plugin.getName());
+						plugin.config = config;							
+						plugin.load(This);
+					}				
+				}
+			});
+		}
+	},	
 	
 	foreach:function(callback) {
 		var pluginConfig = paella.player.config.plugins;
@@ -210,6 +199,14 @@ Class ("paella.Plugin", {
 		return "";
 	}
 });
+
+
+
+Class ("paella.FastLoadPlugin", paella.Plugin, {});
+Class ("paella.EarlyLoadPlugin", paella.Plugin, {});
+Class ("paella.DeferredLoadPlugin", paella.Plugin, {});
+
+
 
 Class ("paella.PopUpContainer", paella.DomNode,{
 	containers:null,
@@ -353,7 +350,7 @@ Class ("paella.TimelineContainer", paella.PopUpContainer,{
 
 
 	
-Class ("paella.UIPlugin", paella.Plugin, {
+Class ("paella.UIPlugin", paella.DeferredLoadPlugin, {
 	ui: null,
 	
 	checkVisibility: function() {
@@ -576,7 +573,7 @@ Class ("paella.VideoOverlayButtonPlugin", paella.ButtonPlugin,{
 });
 
 
-Class ("paella.EventDrivenPlugin", paella.Plugin,{
+Class ("paella.EventDrivenPlugin", paella.EarlyLoadPlugin,{
 	type:'eventDriven',
 
 	initialize:function() {

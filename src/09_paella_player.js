@@ -183,6 +183,8 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			$(window).resize(function(event) { paella.player.onresize(); });
 			this.onload();
 		}
+		
+		paella.pluginManager.loadPlugins("paella.FastLoadPlugin");
 	},
 
 	onload:function() {
@@ -431,7 +433,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			this.setProfile(this.config.defaultProfile, false);
 		}
 
-		paella.pluginManager.loadEventDrivenPlugins();
+		paella.pluginManager.loadPlugins("paella.EarlyLoadPlugin");
 	},
 
 	play:function() {
