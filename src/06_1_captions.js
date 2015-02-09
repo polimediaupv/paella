@@ -143,11 +143,11 @@ Class ("paella.CaptionParserPlugIn", paella.FastLoadPlugin, {
 
 
 /////////////////////////////////////////////////
-// DXFP Parser
+// DFXP Parser
 /////////////////////////////////////////////////
-Class ("paella.captions.parsers.DXFPParser", paella.CaptionParserPlugIn, {
-	ext: ["dxfp"],
-	getName: function() { return "es.upv.paella.captions.DXFPParser"; },
+Class ("paella.captions.parsers.DFXPParser", paella.CaptionParserPlugIn, {
+	ext: ["dfxp"],
+	getName: function() { return "es.upv.paella.captions.DFXPParser"; },
 	parse: function(content, langs, next) {
 		var captions={};
 		var self = this;
@@ -200,7 +200,7 @@ Class ("paella.captions.parsers.DXFPParser", paella.CaptionParserPlugIn, {
     }
 });
 
-new paella.captions.parsers.DXFPParser();
+new paella.captions.parsers.DFXPParser();
 
 
 
