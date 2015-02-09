@@ -147,6 +147,7 @@ public class VideoElement extends Sprite implements IMediaElement {
 		switch (event.info.code) {
 			case "NetStream.Buffer.Empty":
 				_bufferEmpty = true;
+				stop();
 				_isEnded ? sendEvent(HtmlEvent.ENDED) : null;
 				break;
 
@@ -243,6 +244,10 @@ public class VideoElement extends Sprite implements IMediaElement {
 			sendEvent(HtmlEvent.PLAY);
 			sendEvent(HtmlEvent.PLAYING);
 		}
+		else if (!_stream) {
+			createNetStream();
+			play();
+		}
 	}
 	
 	public function pause():void {
@@ -254,8 +259,13 @@ public class VideoElement extends Sprite implements IMediaElement {
 	}
 	
 	public function stop():void {
+		JavascriptTrace.debug("Stop");
 	    if (_stream == null)
 	     	return;
+		_stream.close();
+		_stream = null;
+		_playReady = false;
+		_isPaused = true;
 
 	    sendEvent(HtmlEvent.STOP);
 	}
@@ -264,8 +274,8 @@ public class VideoElement extends Sprite implements IMediaElement {
 		if (_stream == null) {
 			return;
 		}
+		_stream.seek(pos);
 		sendEvent(HtmlEvent.SEEKING);
-		//_stream.seek(pos);
 	}
 	
 	public function setVolume(volume:Number):void {
