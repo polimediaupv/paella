@@ -1,7 +1,7 @@
 Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 	_open: false,
-	_sortDefault: 'score',
-	_colorSearch: true,
+	_sortDefault: 'time',
+	_colorSearch: false,
 	_localImages: null,
 
 
@@ -39,6 +39,10 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 
 
 	search:function(text,cb){
+
+ 		paella.captions.search(text, cb);
+
+		/*
 		setTimeout(function(){
 			cb(true,[
 				{
@@ -73,6 +77,7 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 				}
 				]);
 		}, 2000);
+		*/
 	},
 
 	getPreviewImage:function(time){
@@ -119,7 +124,7 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 		//TEMP SEARCH LOADING RESULTS
 		$(searchBody).empty();
 		//BUILD SEARCH RESULTS
-		if(err){
+		if(!err){
 			for(var i=0; i<results.length; i++){
 
 	        	//SEARCH SORT TYPE (TIME oR SCoRE)
@@ -169,7 +174,7 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 
 	        	var sBodyText = document.createElement('p');
 	        	sBodyText.className = 'sBodyText';
-	        	sBodyText.innerHTML = "<span class='timeSpan'>"+timestr+"</span>"+results[i].caption;
+	        	sBodyText.innerHTML = "<span class='timeSpan'>"+timestr+"</span>"+results[i].content;
 
 
 	        	TimePicContainer.appendChild(sBodyPicture);
