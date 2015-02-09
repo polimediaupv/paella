@@ -235,21 +235,32 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	},
 
 	returnSrc:function(sec){
-		var ant = 0;
-		for (i=0; i<this._keys.length; i++){
-			var id = parseInt(this._keys[i]);
-			var lastId = parseInt(this._keys[(this._keys.length-1)]);
-			if(sec < id) {  // PREVIOUS IMAGE
-				this._next = id; 
-				this._ant = ant; 
-				return this._images[ant].thumb;} // return previous and keep next change
-			else if(sec > lastId && sec < this._videoLength){ // LAST INTERVAL
-					this._next = this._videoLength;
-					this._ant = lastId;
-					return this._images[ant].thumb; 
-			}
-				else ant = id;
-		}
+		var thisClass = this;
+		var keys = Object.keys(thisClass._images);
+
+		keys.push(sec);
+
+		keys.sort(function(a,b){
+			return parseInt(a)-parseInt(b);
+		});
+
+		var n = keys.indexOf(sec)-1;
+		n = (n > 0) ? n : 0;
+
+		var i = keys[n];
+
+		var next = keys[n+2];
+		var ant = keys[n];
+
+		next = (next==undefined) ? keys.length-1 : parseInt(next);
+		thisClass._next = next;
+
+		ant = (ant==undefined) ? 0 : parseInt(ant);
+		thisClass._ant = ant;
+
+		i=parseInt(i);
+
+		return thisClass._images[i].thumb;
 	},
 
 	setupTimeImageOverlay:function(time_str,top,width){
