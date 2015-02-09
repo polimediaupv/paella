@@ -68,7 +68,7 @@ paella.captions = {
 	},
 		
 	getLangs: function() {
-		return Object.keys(a); 
+		return Object.keys(this._captions); 
 	},
 	
 	getCaptions: function(lang) {
