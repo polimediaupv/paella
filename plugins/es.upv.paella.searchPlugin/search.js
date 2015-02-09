@@ -2,6 +2,7 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 	_open: false,
 	_sortDefault: 'score',
 	_colorSearch: true,
+	_localImages: null,
 
 
 	getAlignment:function() { return 'right'; },
@@ -32,6 +33,8 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 				}, 0);
 				}
 		});
+		//GET THE FRAME LIST
+		self._localImages = paella.initDelegate.initParams.videoLoader.frameList;
 	},
 
 
@@ -72,8 +75,139 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 		}, 2000);
 	},
 
+	getPreviewImage:function(time){
+		var thisClass = this;
+		var keys = Object.keys(thisClass._localImages);
+
+		keys.push(time);
+
+		keys.sort(function(a,b){
+			return parseInt(a)-parseInt(b);
+		});
+
+		var n = keys.indexOf(time)-1;
+		n = (n > 0) ? n : 0;
+
+		var i = keys[n];
+		i=parseInt(i);
+
+		return thisClass._localImages[i].url;
+	},
+
+	doSearch: function(txt, searchBody) {
+		var thisClass = this;
+		$(searchBody).empty();
+		var loadingResults = document.createElement('div');
+		loadingResults.class = "loader";
+
+		var htmlLoader = "<svg version=\"1.1\" id=\"loader-1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"40px\" height=\"40px\" viewBox=\"0 0 50 50\" style=\"enable-background:new 0 0 50 50;\" xml:space=\"preserve\">"+
+   "<path fill=\"#000\" d=\"M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z\">"+
+    "<animateTransform attributeType=\"xml\""+
+      "attributeName=\"transform\""+
+      "type=\"rotate\""+
+      "from=\"0 25 25\""+
+      "to=\"360 25 25\""+
+      "dur=\"0.6s\""+
+      "repeatCount=\"indefinite\"/>"+
+    "</path>"+
+  "</svg>";
+	loadingResults.innerHTML = htmlLoader;
+	searchBody.appendChild(loadingResults);
+
+	
+		thisClass.search(txt, function(err, results){
+		//TEMP SEARCH LOADING RESULTS
+		$(searchBody).empty();
+		//BUILD SEARCH RESULTS
+		if(err){
+			for(var i=0; i<results.length; i++){
+
+	        	//SEARCH SORT TYPE (TIME oR SCoRE)
+	        	if(thisClass._sortDefault == 'score') {
+		        	results.sort(function(a,b){
+						return b.score - a.score;
+					});
+		        }
+				if(thisClass._sortDefault == 'time') {
+		        	results.sort(function(a,b){
+						return a.time - b.time;
+					});
+		    	}
+
+				var sBodyInnerContainer = document.createElement('div');
+	        	sBodyInnerContainer.className = 'sBodyInnerContainer';
+	        	//COLOR?
+	        	//g rgba(0, 255, 0, 0.2)
+				//r rgba(255, 0, 0, 0.2);
+	        	if(thisClass._colorSearch){ 
+
+	        		if(results[i].score <= 0.3)$(sBodyInnerContainer).addClass('redScore');
+	        		//sBodyInnerContainer.style.backgroundColor="rgba(255, 0, 0, 0.2)";
+
+	        		if(results[i].score >= 0.7)$(sBodyInnerContainer).addClass('greenScore');
+	        		//sBodyInnerContainer.style.backgroundColor="rgba(0, 255, 0, 0.2)";
+	        	}
+
+	        	var TimePicContainer = document.createElement('div');
+	        	TimePicContainer.className = 'TimePicContainer';
+
+
+	        	var sBodyPicture = document.createElement('img');
+	        	sBodyPicture.className = 'sBodyPicture';
+	        	sBodyPicture.src = thisClass.getPreviewImage(results[i].time);
+
+	        	// TIME FORMAT
+	        		var hou = Math.floor(results[i].time / 3600)%24;
+					hou = ("00"+hou).slice(hou.toString().length);
+
+					var min = Math.floor(results[i].time / 60)%60;
+					min = ("00"+min).slice(min.toString().length);
+
+					var sec = Math.floor(results[i].time % 60);
+					sec = ("00"+sec).slice(sec.toString().length);
+					var timestr = (hou+":"+min+":"+sec);
+
+	        	var sBodyText = document.createElement('p');
+	        	sBodyText.className = 'sBodyText';
+	        	sBodyText.innerHTML = "<span class='timeSpan'>"+timestr+"</span>"+results[i].caption;
+
+
+	        	TimePicContainer.appendChild(sBodyPicture);
+	        	
+
+	        	sBodyInnerContainer.appendChild(TimePicContainer);
+	        	sBodyInnerContainer.appendChild(sBodyText);
+	        	
+
+	        	searchBody.appendChild(sBodyInnerContainer);
+	        	//ADD SECS TO DOM FOR EASY HANDLE
+	        	sBodyInnerContainer.setAttribute('sec',results[i].time);
+
+	        	//jQuery Binds for the search
+	        	$(sBodyInnerContainer).hover(
+	        		function(){ 
+	        			//$(this).addClass('hover');
+	        			$(this).css('background-color','#faa166');	           		
+	        		},
+	        		function(){ 
+	        			//$(this).removeClass('hover');
+	        			$(this).removeAttr('style');
+	        		}
+	        	);
+
+	        	$(sBodyInnerContainer).click(function(){ 
+	        		var sec = $(this).attr("sec");
+	        		paella.player.videoContainer.seekToTime(sec);
+	        	});
+			}
+				
+			}
+	    });
+	},
+
 	buildContent:function(domElement) {
 		var thisClass = this;
+		var myUrl = null;
 
 		//SEARCH CONTAINER
 		var searchPluginContainer = document.createElement('div');
@@ -101,78 +235,7 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 
 	        $(input).change(function(){
 	        	var text = $(input).val();
-
-				thisClass.search(text,function(err, results){
-				//BUILD SEARCH RESULTS
-				if(err){
-					for(var i=0; i<results.length; i++){
-
-			        	//SEARCH SORT TYPE (TIME oR SCoRE)
-			        	if(thisClass._sortDefault == 'score') {
-				        	results.sort(function(a,b){
-								return b.score - a.score;
-							});
-				        }
-						if(thisClass._sortDefault == 'time') {
-				        	results.sort(function(a,b){
-								return a.time - b.time;
-							});
-				    	}
-
-						var sBodyInnerContainer = document.createElement('div');
-			        	sBodyInnerContainer.className = 'sBodyInnerContainer';
-			        	//COLOR?
-			        	//g rgba(0, 255, 0, 0.2)
-						//r rgba(255, 0, 0, 0.2);
-			        	if(thisClass._colorSearch){ 
-
-			        		if(results[i].score <= 0.3)
-			        		sBodyInnerContainer.style.backgroundColor="rgba(255, 0, 0, 0.2)";
-
-			        		if(results[i].score >= 0.7)
-			        		sBodyInnerContainer.style.backgroundColor="rgba(0, 255, 0, 0.2)";
-			        	}
-
-			        	var TimePicContainer = document.createElement('div');
-			        	TimePicContainer.className = 'TimePicContainer';
-
-			        	var sBodyPicture = document.createElement('img');
-			        	sBodyPicture.className = 'sBodyPicture';
-			        	sBodyPicture.src ='http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/slides/46561b90-85b3-4ad7-a986-cdd9b52ae02b/presentation_cut.jpg';
-
-			        	var sBodyText = document.createElement('p');
-			        	sBodyText.className = 'sBodyText';
-			        	sBodyText.innerHTML = "<span class=\"timeSpan\">"+results[i].time+"</span>"+results[i].caption;
-
-
-			        	TimePicContainer.appendChild(sBodyPicture);
-			        	
-
-			        	sBodyInnerContainer.appendChild(TimePicContainer);
-			        	sBodyInnerContainer.appendChild(sBodyText);
-			        	
-
-			        	searchBody.appendChild(sBodyInnerContainer);
-			        	//ADD SECS TO DOM FOR EASY HANDLE
-			        	sBodyInnerContainer.setAttribute('sec',results[i].time);
-
-			        	//jQuery Binds for the search
-			        	$(sBodyInnerContainer).hover(
-			        		function(){ 
-			        			$(this).addClass('hover');	           		
-			        		},
-			        		function(){ $(this).removeClass('hover'); 
-			        		}
-			        	);
-
-			        	$(sBodyInnerContainer).click(function(){ 
-			        		var sec = $(this).attr("sec");
-			        		paella.player.videoContainer.seekToTime(sec);
-			        	});
-					}
-						
-					}
-			    });
+	        	thisClass.doSearch(text, searchBody);
 			});
 
         domElement.appendChild(searchPluginContainer);
