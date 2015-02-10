@@ -1,8 +1,10 @@
 Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 	_open: false,
-	_sortDefault: 'time',
-	_colorSearch: false,
+	_sortDefault: 'time', // score || time
+	_colorSearch: false, // true || false
 	_localImages: null,
+	_searchTimer: null,
+	_searchTimerTime: 1500,
 
 
 	getAlignment:function() { return 'right'; },
@@ -25,9 +27,15 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 				self._open = false;
 			}
 			else {
-				paella.events.trigger(paella.events.pause);
+				//paella.events.trigger(paella.events.pause);
 				paella.keyManager.enabled = false;
 				self._open = true;
+				
+   				$("#searchBarInput").focus(function(){
+   					 	paella.events.trigger(paella.events.pause);
+   				});
+				
+
 				setTimeout(function(){
    					 $("#searchBarInput").focus();
 				}, 0);
@@ -53,46 +61,7 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 	},
 
 	search:function(text,cb){
-		setTimeout(function(){
  		paella.captions.search(text, cb);
- 	},3000);
-
-		/*
-		setTimeout(function(){
-			cb(true,[
-				{
-				time:124,
-				caption:"Hola mundo que tal?",
-				score:0.2
-				},
-				{
-				time:300,
-				caption:"Hola mundo que tal?",
-				score:0.5
-				},
-				{
-				time:1300,
-				caption:"Hola mundo que tal?",
-				score:0.75
-				},
-				{
-				time:487,
-				caption:"Hola mundo que tal?",
-				score:0.15
-				},
-				{
-				time:679,
-				caption:"Hola mundo que tal?",
-				score:0.6
-				},
-				{
-				time:1174,
-				caption:"Hola mundo que tal?",
-				score:0.3
-				}
-				]);
-		}, 2000);
-		*/
 	},
 
 	getPreviewImage:function(time){
@@ -150,7 +119,6 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 
 		//LOADING CONTAINER
 		thisClass.createLoadingElement(searchBody);
-
 	
 		thisClass.search(txt, function(err, results){
 
@@ -214,11 +182,9 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 		        	//jQuery Binds for the search
 		        	$(sBodyInnerContainer).hover(
 		        		function(){ 
-		        			//$(this).addClass('hover');
 		        			$(this).css('background-color','#faa166');	           		
 		        		},
 		        		function(){ 
-		        			//$(this).removeClass('hover');
 		        			$(this).removeAttr('style');
 		        		}
 		        	);
@@ -226,6 +192,7 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 		        	$(sBodyInnerContainer).click(function(){ 
 		        		var sec = $(this).attr("sec");
 		        		paella.player.videoContainer.seekToTime(sec);
+		        		paella.events.trigger(paella.events.play);
 		        	});
 				}
 			}
@@ -264,6 +231,16 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 	        $(input).change(function(){
 	        	var text = $(input).val();
 	        	thisClass.doSearch(text, searchBody);
+			});
+
+			$(input).keyup(function(){
+				var text = $(input).val();
+				if(thisClass._searchTimer != null){
+					thisClass._searchTimer.cancel();
+				}
+				thisClass._searchTimer = new base.Timer(function(timer) {
+					thisClass.doSearch(text, searchBody);
+				}, thisClass._searchTimerTime);			
 			});
 
         domElement.appendChild(searchPluginContainer);
