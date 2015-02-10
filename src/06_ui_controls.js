@@ -580,10 +580,13 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 	hide:function() {
 		var This = this;
 		if (!base.userAgent.browser.IsMobileVersion && !base.userAgent.browser.Explorer) {
+			this._doHide = true;
 			$(this.domElement).animate({opacity:0.0},{duration:300, complete:function(){
-				This.domElement.setAttribute('aria-hidden', 'true');
-				$(This.domElement).hide();
-				This._hidden = true;
+				if (This._doHide) {
+					This.domElement.setAttribute('aria-hidden', 'true');
+					$(This.domElement).hide();
+					This._hidden = true;
+				}
 			}});
 			paella.events.trigger(paella.events.controlBarWillHide);
 		}
@@ -597,13 +600,13 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 
 	show:function() {
 		if (this.isEnabled) {
-			if (this.domElement.style.opacity!=1.0) {
-				this.domElement.style.opacity = 1.0;
-				this.domElement.setAttribute('aria-hidden', 'false');
-				this._hidden = false;
-				$(this.domElement).show();
-				paella.events.trigger(paella.events.controlBarDidShow);
-			}
+			$(this.domElement).stop();
+			this._doHide = false;
+			this.domElement.style.opacity = 1.0;
+			this.domElement.setAttribute('aria-hidden', 'false');
+			this._hidden = false;
+			$(this.domElement).show();
+			paella.events.trigger(paella.events.controlBarDidShow);
 		}
 	},
 
@@ -643,6 +646,10 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 		if (paella.player.videoContainer.isReady() && !paella.player.videoContainer.paused()) {
 			paella.player.controls.restartHideTimer();
 		}
+	},
+
+	cancelHideBar:function() {
+		this.restartTimerEvent();
 	},
 
 	restartTimerEvent:function() {
