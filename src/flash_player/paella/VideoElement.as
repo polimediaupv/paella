@@ -2,6 +2,7 @@ package paella {
 	
 import flash.display.Sprite;
 import flash.events.*;
+import paella.DynamicNetStream;
 import flash.net.NetConnection;
 import flash.net.NetStream;
 import flash.media.Video;
@@ -11,10 +12,14 @@ import flash.utils.Timer;
 public class VideoElement extends Sprite implements IMediaElement {
 	private var _javascriptInterface:JavascriptInterface;
 	
-	private var _currentUrl:String = "";
+	private var _url:String = "";
+	private var _streamServer:String = "";
+	private var _streamResource:String = "";
+    private var _isRTMP:Boolean = false;
+    private var _canPlay:Boolean = false;
+	private var _playReady:Boolean = false;
+	
 	private var _autoplay:Boolean = true;
-	private var _preload:Boolean = false;
-	private var _isPreloading:Boolean = false;
 	
 	private var _connection:NetConnection;
 	private var _stream:NetStream;
@@ -44,21 +49,11 @@ public class VideoElement extends Sprite implements IMediaElement {
 
     private var _timer:Timer;
 
-    private var _isRTMP:Boolean = false;
-    private var _streamer:String = "";
-    private var _isConnected:Boolean = false;
-    private var _playWhenConnected:Boolean = false;
-    private var _hasStartedPlaying:Boolean = false;
-
     private var _parentReference:Object;
-    private var _pseudoStreamingEnabled:Boolean = false;
-    private var _pseudoStreamingStartQueryParam:String = "start";
 	
     public function setReference(arg:Object):void { _parentReference = arg; }
 	public function setSize(width:Number, height:Number):void { _video.width = width; _video.height = height; }
-    public function setPseudoStreaming(enablePseudoStreaming:Boolean):void { _pseudoStreamingEnabled = enablePseudoStreaming; }
-    public function setPseudoStreamingStartParam(pseudoStreamingStartQueryParam:String):void { _pseudoStreamingStartQueryParam = pseudoStreamingStartQueryParam; }
-	public function get video():Video { return _video; }
+ 	public function get video():Video { return _video; }
 	public function get videoHeight():Number { return _videoHeight; }
 	public function get videoWidth():Number { return _videoWidth; }
 	public function duration():Number { return _duration; }
@@ -75,38 +70,54 @@ public class VideoElement extends Sprite implements IMediaElement {
 		var currentTime:Number = 0;
 	    if (_stream != null) {
 			currentTime = _stream.time;
-			if (_pseudoStreamingEnabled) {
-				currentTime += _seekOffset;
-			}
 		}
 	    return currentTime;
 	}
-	
-	public function setAutoplay(autoplay:Boolean):void { _playWhenConnected = autoplay; }
-	
-    public function VideoElement(jsInterface:JavascriptInterface, autoplay:Boolean, preload:Boolean, timerRate:Number, startVolume:Number, streamer:String, bufferTime:Number) {
+
+    public function VideoElement(jsInterface:JavascriptInterface, url:String, autoplay:Boolean, startVolume:Number, bufferTime:Number) {
 		_javascriptInterface = jsInterface;
-		_playWhenConnected = true;
 		_bufferTime = bufferTime;
 		
 		_autoplay = autoplay;
 		_volume = startVolume;
-		_preload = preload;
-		_streamer = streamer;
 
 		_video = new Video();
 		addChild(_video);
+		
+		loadUrl(url);
 
 		_connection = new NetConnection();
 		_connection.client = { onBWDone: function():void{} };
 		_connection.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
 		_connection.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
+		_connection.addEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler)
 
-		_timer = new Timer(timerRate);
+		_timer = new Timer(150);
 		_timer.addEventListener("timer", timerHandler);
-		
 		_timer.start();
+		
+		connect();
     }
+	
+	protected function loadUrl(url:String) {
+		if (url.match(/^rtmp(s|t|e|te)?\:\/\//)) {
+			_isRTMP = true;
+			var match:Array = url.match(/(.*)\/((flv|mp4|mp3):.*)/);
+
+			if (match) {
+				_streamServer = match[1];
+				_streamResource = match[2];
+			}
+			else {
+				_streamServer = url.replace(/\/[^\/]+$/,"/");
+				_streamResource = url.split("/").pop();
+			}
+		}
+		else {
+			_isRTMP = false;
+			_url = url;
+		}
+	}
 	
 	public function set bufferTime(time:Number):void {
 		_bufferTime = time;
@@ -117,73 +128,43 @@ public class VideoElement extends Sprite implements IMediaElement {
 	}
 	
 	private function timerHandler(e:TimerEvent):void {
-		_bytesLoaded = _stream.bytesLoaded;
-	    _bytesTotal = _stream.bytesTotal;
+		if (_stream) {
+			if (!_isPaused) {
+				JavascriptTrace.debug("Timeupdate: " + _stream.time);
+				sendEvent(HtmlEvent.TIMEUPDATE);
+			}
+			_bufferedTime = _stream.bytesLoaded;
+			_bytesLoaded = _stream.bytesLoaded;
+		    _bytesTotal = _stream.bytesTotal;
 
-	    if (!_isPaused) {
-			sendEvent(HtmlEvent.TIMEUPDATE);
-	    }
-		
-	    if (_bytesLoaded < _bytesTotal) {
-	    	sendEvent(HtmlEvent.PROGRESS);
-	    }
+		    if (_bytesLoaded < _bytesTotal) {
+		    	sendEvent(HtmlEvent.PROGRESS);
+		    }
+		}
 	}
 	
 	private function netStatusHandler(event:NetStatusEvent):void {
-	    switch (event.info.code) {
+		switch (event.info.code) {
+			case "NetStream.Buffer.Empty":
+				_bufferEmpty = true;
+				stop();
+				_isEnded ? sendEvent(HtmlEvent.ENDED) : null;
+				break;
 
-	      case "NetStream.Buffer.Empty":
-	        _bufferEmpty = true;
-	        _isEnded ? sendEvent(HtmlEvent.ENDED) : null;
-	        break;
+			case "NetStream.Buffer.Full":
+				_bytesLoaded = _stream.bytesLoaded;
+				_bytesTotal = _stream.bytesTotal;
+				_bufferEmpty = false;
+				sendEvent(HtmlEvent.PROGRESS);
+				break;
 
-	      case "NetStream.Buffer.Full":
-	        _bytesLoaded = _stream.bytesLoaded;
-	        _bytesTotal = _stream.bytesTotal;
-	        _bufferEmpty = false;
-
-	        sendEvent(HtmlEvent.PROGRESS);
-	        break;
-
-	      case "NetConnection.Connect.Success":
-	        connectStream();
-			sendEvent(HtmlEvent.LOADEDDATA);
-	        sendEvent(HtmlEvent.CANPLAY);
-	        break;
-	      case "NetStream.Play.StreamNotFound":
-	        JavascriptTrace.error("Unable to locate video");
-	        break;
-
-	      // STREAM
-	      case "NetStream.Play.Start":
-	        _isPaused = false;
-	        sendEvent(HtmlEvent.LOADEDDATA);
-	        sendEvent(HtmlEvent.CANPLAY);
-
-	        if (!_isPreloading) {
-	          sendEvent(HtmlEvent.PLAY);
-	          sendEvent(HtmlEvent.PLAYING);
-	        }
-
-	        break;
-
-	      case "NetStream.Seek.Notify":
-	        sendEvent(HtmlEvent.SEEKED);
-	        break;
-
-	      case "NetStream.Pause.Notify":
-	        _isPaused = true;
-	        sendEvent(HtmlEvent.PAUSE);
-	        break;
-
-	      case "NetStream.Play.Stop":
-	        _isEnded = true;
-	        _isPaused = false;
-	        _timer.stop();
-	        _bufferEmpty ? sendEvent(HtmlEvent.ENDED) : null;
-	        break;
-
-	    }
+			case "NetConnection.Connect.Success":
+				createNetStream();
+				break;
+			case "NetStream.Play.StreamNotFound":
+				JavascriptTrace.error("Unable to locate video");
+				break;
+		}
 	}
 	
 	private function securityErrorHandler(event:SecurityErrorEvent):void {
@@ -191,184 +172,101 @@ public class VideoElement extends Sprite implements IMediaElement {
 	}
 
 	private function asyncErrorHandler(event:AsyncErrorEvent):void {
+		JavascriptTrace.error("Async error: " + event);
 	}
 	
-	private function onMetaDataHandler(info:Object):void {
-	    // Only set the duration when we first load the video
-	    if (_duration == 0) {
-			_duration = info.duration;
-	    }
+	public function metaDataHandler(info:Object):void {
+		JavascriptTrace.debug("Metadata loaded");
+		_duration = info.duration;
 	    _framerate = info.framerate;
 	    _videoWidth = info.width;
 	    _videoHeight = info.height;
+		_canPlay = true;
 
 	    // set size?
+		sendEvent(HtmlEvent.LOADEDDATA);
+		sendEvent(HtmlEvent.CANPLAY);
 	    sendEvent(HtmlEvent.LOADEDMETADATA);
-
-	    if (_isPreloading) {
-			_stream.pause();
-			_isPaused = true;
-			_isPreloading = false;
-
-			sendEvent(HtmlEvent.PROGRESS);
-			sendEvent(HtmlEvent.TIMEUPDATE);
-	    }
+		sendEvent(HtmlEvent.PROGRESS);
+		sendEvent(HtmlEvent.TIMEUPDATE);
 	}
 	
-	
-	// IMediaElement
-	public function setSrc(url:String):void {
-		if (_isConnected && _stream) {
-			_stream.pause();
-		}
+	public function cuePointHandler(info:Object):void {
 		
-		_duration = 0;
-		_currentUrl = url;
-		_isRTMP = !!_currentUrl.match(/^rtmp(s|t|e|te)?\:\/\//) || _streamer != "";
-		_isConnected = false;
-		_hasStartedPlaying = false;
 	}
 	
-	public function load():void {
-		// disconnect existing stream and connection
-		if (_isConnected && _stream) {
-			_stream.pause();
-			_stream.close();
-			_connection.close();
-		}
-		_isConnected = false;
-		_isPreloading = false;
-
-
-		_isEnded = false;
-		_bufferEmpty = false;
-
-		// start new connection
-		JavascriptTrace.debug("URL: " + _currentUrl);
+	public function onBWDone():void	{
+		
+	}
+	
+	protected function connect():void {
 		if (_isRTMP) {
-			JavascriptTrace.debug("Playing RTMP video stream");
-			var rtmpInfo:Object = parseRTMP(_currentUrl);
-			if (_streamer != "") {
-				rtmpInfo.server = _streamer;
-				rtmpInfo.stream = _currentUrl;
-			}
-			_connection.connect(rtmpInfo.server);
-		} else {
-			JavascriptTrace.debug("Playing progressive download video");
+			_connection.connect(_streamServer);
+		}
+		else {
 			_connection.connect(null);
 		}
-
-		// in a few moments the "NetConnection.Connect.Success" event will fire
-		// and call createConnection which finishes the "load" sequence
-		sendEvent(HtmlEvent.LOADSTART);
 	}
 	
-	public function connectStream():void {
-		JavascriptTrace.debug("connectStream");
-		
-		_stream = new NetStream(_connection);
-
-		// explicitly set the sound since it could have come before the connection was made
-		_soundTransform = new SoundTransform(_volume);
-		_stream.soundTransform = _soundTransform;
-
-		// set the buffer to ensure nice playback
-		_stream.bufferTime = this._bufferTime;
-		_stream.bufferTimeMax = this._bufferTime * 2;
-
-		_stream.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler); // same event as connection
-		_stream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler);
-
-		var customClient:Object = new Object();
-		customClient.onMetaData = onMetaDataHandler;
-		_stream.client = customClient;
-
-		_video.attachNetStream(_stream);
-		
-		// start downloading without playing )based on preload and play() hasn't been called)
-		// I wish flash had a load() command to make this less awkward
-		if (_preload && !_playWhenConnected) {
-			_isPaused = true;
-			//stream.bufferTime = 20;
-			_stream.play(getCurrentUrl(0), 0, 0);
-			//_stream.pause();
-
-			_isPreloading = true;
-
-			//_stream.pause();
-			//
-			//sendEvent(HtmlEvent.PAUSE); // have to send this because the "playing" event gets sent via event handlers
-		}
-
-		_isConnected = true;
-
-		if (_playWhenConnected && !_hasStartedPlaying) {
-			play();
-			//_playWhenConnected = false;
+	protected function createNetStream() {
+		if (_connection.connected) {
+			JavascriptTrace.debug("Connected");
+			_stream = new DynamicNetStream(_connection);
+			_video.attachNetStream(_stream);
+			_stream.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
+			_stream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler);
+			_stream.bufferTime = _bufferTime;
+			_stream.onMetaData = metaDataHandler;
+			_stream.onCuePoint = cuePointHandler;
+			_soundTransform = new SoundTransform();
 		}
 	}
 	
 	public function play():void {
-		/*if (!_hasStartedPlaying && !_isConnected) {
-			_playWhenConnected = true;
-			load();
-			return;
-		}*/
-
-		if (_hasStartedPlaying) {
-			if (_isPaused) {
-				_stream.resume();
-				_timer.start();
-				_isPaused = false;
-				sendEvent(HtmlEvent.PLAY);
-				sendEvent(HtmlEvent.PLAYING);
-			}
-			else {
-				JavascriptTrace.debug("No Esta pausado");
-			}
-			
-		}
-		else {
-
+		if (_stream && !_playReady) {
 			if (_isRTMP) {
-				var rtmpInfo:Object = parseRTMP(_currentUrl);
-				_stream.play(rtmpInfo.stream);
+				JavascriptTrace.debug("Playing stream: " + _streamResource);
+				_stream.play(_streamResource);
 			}
 			else {
-				_stream.play(getCurrentUrl(0));
+				JavascriptTrace.debug("Playing stream: " + _url);
+				_stream.play(_url);
 			}
-			_timer.start();
 			_isPaused = false;
-			_hasStartedPlaying = true;
-
-			// don't toss play/playing events here, because we haven't sent a
-			// canplay / loadeddata event yet. that'll be handled in the net
-			// event listener
+			_playReady = true;
+			sendEvent(HtmlEvent.PLAY);
+			sendEvent(HtmlEvent.PLAYING);
+		}
+		else if (_stream && _playReady && _isPaused) {
+			JavascriptTrace.debug("Resume play");
+			_stream.resume();
+			_isPaused = false;
+			sendEvent(HtmlEvent.PLAY);
+			sendEvent(HtmlEvent.PLAYING);
+		}
+		else if (!_stream) {
+			createNetStream();
+			play();
 		}
 	}
 	
 	public function pause():void {
-		if (_stream == null)
-			return;
-
-		_stream.pause();
-		_isPaused = true;
-
-		if (_bytesLoaded == _bytesTotal) {
-			_timer.stop();
+		if (!_isPaused && _playReady) {
+			if (_stream!=null) _stream.pause();
+			_isPaused = true;
+			sendEvent(HtmlEvent.PAUSE);
 		}
-
-		_isPaused = true;
-		sendEvent(HtmlEvent.PAUSE);
 	}
 	
 	public function stop():void {
+		JavascriptTrace.debug("Stop");
 	    if (_stream == null)
 	     	return;
+		_stream.close();
+		_stream = null;
+		_playReady = false;
+		_isPaused = true;
 
-	    _stream.close();
-	    _isPaused = false;
-	    _timer.stop();
 	    sendEvent(HtmlEvent.STOP);
 	}
 	
@@ -376,30 +274,8 @@ public class VideoElement extends Sprite implements IMediaElement {
 		if (_stream == null) {
 			return;
 		}
-
-		// Calculate the position of the buffered video
-		var bufferPosition:Number = _bytesLoaded / _bytesTotal * _duration;
-
-		if (_pseudoStreamingEnabled) {
-			sendEvent(HtmlEvent.SEEKING);
-			// Normal seek if it is in buffer and this is the first seek
-			if (pos < bufferPosition && _seekOffset == 0) {
-				_stream.seek(pos);
-			}
-			else {
-				// Uses server-side pseudo-streaming to seek
-				_stream.play(getCurrentUrl(pos));
-				_seekOffset = pos;
-			}
-		}
-		else {
-			sendEvent(HtmlEvent.SEEKING);
-			_stream.seek(pos);
-		}
-
-		if (!_isEnded) {
-			sendEvent(HtmlEvent.TIMEUPDATE);
-		}
+		_stream.seek(pos);
+		sendEvent(HtmlEvent.SEEKING);
 	}
 	
 	public function setVolume(volume:Number):void {
@@ -453,7 +329,7 @@ public class VideoElement extends Sprite implements IMediaElement {
 			",paused:" + _isPaused +
 			",ended:" + _isEnded +
 			",volume:" + _volume +
-			",src:\"" + _currentUrl + "\"" +
+			",src:\"" + _url + "\"" +
 			",bytesTotal:" + _bytesTotal +
 			",bufferedBytes:" + _bytesLoaded +
 			",bufferedTime:" + _bufferedTime +
@@ -464,38 +340,8 @@ public class VideoElement extends Sprite implements IMediaElement {
 		_javascriptInterface.sendEvent(eventName, values);
 	}
 	
-	private function parseRTMP(url:String):Object {
-		var match:Array = url.match(/(.*)\/((flv|mp4|mp3):.*)/);
-		var rtmpInfo:Object = {
-			server: null,
-			stream: null
-		};
-
-		if (match) {
-			rtmpInfo.server = match[1];
-			rtmpInfo.stream = match[2];
-		}
-		else {
-			rtmpInfo.server = url.replace(/\/[^\/]+$/,"/");
-			rtmpInfo.stream = url.split("/").pop();
-		}
-
-		JavascriptTrace.debug("parseRTMP - server: " + rtmpInfo.server + " stream: " + rtmpInfo.stream);
-
-		return rtmpInfo;
-	}
-	
-	private function getCurrentUrl(pos:Number):String {
-	    var url:String = _currentUrl;
-	    if (_pseudoStreamingEnabled) {
-			if (url.indexOf('?') > -1) {
-				url = url + '&' + _pseudoStreamingStartQueryParam + '=' + pos;
-			}
-			else {
-				url = url + '?' + _pseudoStreamingStartQueryParam + '=' + pos;
-			}
-	    }
-	    return url;
+	private function getCurrentUrl():String {
+	    return _url;
 	}
 }
 
