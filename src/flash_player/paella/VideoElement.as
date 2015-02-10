@@ -81,6 +81,10 @@ public class VideoElement extends Sprite implements IMediaElement {
 		_autoplay = autoplay;
 		_volume = startVolume;
 
+		if (_autoplay) {
+			JavascriptTrace.debug("Autoplay");
+		}
+
 		_video = new Video();
 		addChild(_video);
 		
@@ -160,6 +164,9 @@ public class VideoElement extends Sprite implements IMediaElement {
 
 			case "NetConnection.Connect.Success":
 				createNetStream();
+				if (_autoplay) {
+					play();
+				}
 				break;
 			case "NetStream.Play.StreamNotFound":
 				JavascriptTrace.error("Unable to locate video");

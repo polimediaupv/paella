@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 4.0.11 (10-2-2015)
+
+  * Flash RTMP live streaming bug fixed+
+  
 * Paella 4.0.10 (10-2-2015)
 
   * Flash RTMP streaming stability improved
