@@ -11,7 +11,11 @@ CHANGELOG
  * New plugin loading system implemented.
  * Fixed bug in the image Preview (#98).
 
-* Paella 4.0.8 (30-1-2015)
+* Paella 4.0.10 (10-2-2015)
+
+  * Flash RTMP streaming stability improved
+  
+* Paella 4.0.9 (30-1-2015)
 
   * Volume Control bugs when the video reloads (#96)
 
