@@ -9,6 +9,7 @@ CHANGELOG
  * Changes in default audio configuration.
  * Video resolution refactoring: class VideoQualityStrategy extracted, to create custom video resolution selection strategies.
  * New plugin loading system implemented.
+ * Captions functionality moved into the paella core.
 
 * Paella 4.0.8 (30-1-2015)
 
