@@ -27,103 +27,159 @@ var captionParserManager = new (Class ({
 }))();
 
 
+
 paella.captions = {
 	parsers: {},
 	_captions: {},
-	
-	addCaptions: function(format, content, langs) {
+	_activeCaption: undefined,
+		
+	addCaptions: function(captions) {
+		var cid = captions._captionsProvider + ':' + captions._id;		
+		this._captions[cid] = captions;		
+	},	
+		
+	getAvailableLangs: function() {
+		var ret = [];
 		var self = this;
-		var parser = captionParserManager._formats[format];			
-		if (parser == undefined) {
-			base.log.debug("Error adding captions: Format not supported!");
-		}
-		else {
-			parser.parse(content, langs, function(err, c) {
-				if (!err) {
-					Object.keys(c).forEach(function(k){
-						self._captions[k] = c[k];
-					});
-				}				
+		Object.keys(this._captions).forEach(function(k){
+			var c = self._captions[k];
+			ret.push({
+				id: k,
+				lang: c._lang
 			});
-		}
+		});
+		return ret;
 	},
 	
-	loadCaptions: function(format, url, langs, next) {
-		var self = this;
-		
-		if (typeof(langs) == "string") { langs = [langs]; }
-		if (next == undefined) { next = function(){}; }
-		
-		base.ajax.get({url: url},
-			function(data, contentType, returnCode, dataRaw) {
-				self.addCaptions(format, dataRaw, langs);
-				next();
-			},						
-			function(data, contentType, returnCode) {
-				base.log.debug("Error loading captions: " + url);
-				var err = true;
-				next(err);
-			}
-		);		
-	},
-		
-	getLangs: function() {
-		return Object.keys(this._captions); 
+	getCaptions: function(cid) {	
+		if (cid && this._captions[cid]) {
+			return this._captions[cid];
+		}
+		return undefined;
+	},	
+	
+	getActiveCaptions: function(cid) {
+		return this._activeCaption;
 	},
 	
-	getCaptions: function(lang) {
-		if (lang) {
-			return this._captions[lang];
-		}
-		else {
-			return this._captions;
-		}
+	setActiveCaptions: function(cid) {
+		this._activeCaption = this.getCaptions(cid);
 	},
-	
-	getCaptionAtTime: function(lang, time) {
-		var l_captions = this._captions[lang];
-		if (l_captions) {			
-			for (var i=0; i<l_captions.length; ++i) {
-			
-				l_cap = l_captions[i];
-				if ((l_cap.begin <= time) && (l_cap.end >= time)) {
-					return l_cap.content;
-				}
-			}		
-		}
 		
+	getCaptionAtTime: function(cid, time) {
+		var c = this.getCaptions(cid);		
+		if (c != undefined) {
+			return c.getCaptionAtTime(time);
+		}
 		return undefined;			
-	},
-	
-	search: function(txt, next) {
-		var self = this;
-		
-		var index = lunr(function () {
+	}	
+};
+
+
+Class ("paella.captions.Caption", {
+	initialize: function(id, format, url, lang, next) {
+		this._id = id;
+		this._format = format;
+		this._url = url;
+		this._captions = undefined;
+		this._index = lunr(function () {
 			this.ref('id');
 			this.field('content', {boost: 10});
 		});
 		
-		Object.keys(self._captions).forEach(function(l){
-			self._captions[l].forEach(function(c){				
-				index.add({
-					id: "caption:" + l +":"+c.begin,
-					content: c.content,
-				});				
-			});			
-		});
+		if (typeof(lang) == "string") { lang = {code: lang, txt: lang}; }
+		this._lang = lang;
+		this._captionsProvider = "downloadCaptionsProvider";
 		
-		var results = [];
-		index.search(txt).forEach(function(s){
-			var v = s.ref.split(":");
-			var t = parseFloat(v[2]);
-			var c = self.getCaptionAtTime(v[1], t);
+		this.reloadCaptions(next);
+	},
+	
+	canEdit: function(next) {
+		// next(err, canEdit)
+		next(false, false);
+	},
+	
+	goToEdit: function() {	
+	
+	},	
+	
+	reloadCaptions: function(next) {
+		var self = this;
 			
-			results.push({time: t, content: c, score: s.score});
-		});		
-		
-		next(false, results);
-	}
-};
+		base.ajax.get({url: self._url},
+			function(data, contentType, returnCode, dataRaw) {
+				var parser = captionParserManager._formats[self._format];			
+				if (parser == undefined) {
+					base.log.debug("Error adding captions: Format not supported!");
+					if (next) { next(true); }
+				}
+				else {
+					parser.parse(dataRaw, self._lang.code, function(err, c) {
+						if (!err) {
+							self._captions = c;
+							
+							self._captions.forEach(function(cap){
+								self._index.add({
+									id: cap.id,
+									content: cap.content,
+								});				
+							});							
+						}
+						if (next) { next(err); }						
+					});
+				}
+			},						
+			function(data, contentType, returnCode) {
+				base.log.debug("Error loading captions: " + url);
+				if (next) { next(true); }
+			}
+		);
+	},
+	
+	getCaptionAtTime: function(time) {
+		if (this._captions != undefined) {
+			for (var i=0; i<this._captions.length; ++i) {			
+				l_cap = this._captions[i];
+				if ((l_cap.begin <= time) && (l_cap.end >= time)) {
+					return l_cap;
+				}
+			}
+		}
+		return undefined;		
+	},
+	
+	getCaptionById: function(id) {
+		if (this._captions != undefined) {
+			for (var i=0; i<this._captions.length; ++i) {			
+				l_cap = this._captions[i];
+				if (l_cap.id == id) {
+					return l_cap;
+				}
+			}
+		}
+		return undefined;
+	},
+	
+	search: function(txt, next) {
+		var self = this;	
+		if (this._index == undefined) {
+			if (next) {
+				next(true, "Error. No captions found.");
+			}
+		}
+		else {
+			var results = [];
+			this._index.search(txt).forEach(function(s){
+				var c = self.getCaptionById(s.ref);
+				
+				results.push({time: c.begin, content: c.content, score: s.score});
+			});		
+			if (next) {
+				next(false, results);
+			}
+		}
+	}	
+});
 
 
 
@@ -133,8 +189,8 @@ Class ("paella.CaptionParserPlugIn", paella.FastLoadPlugin, {
 	getIndex: function() {return -1;},
 	
 	ext: [],
-	parse: function(content, langs, next) {
-		next("Error: No parse() function defined!");
+	parse: function(content, lang, next) {
+		throw new Error('paella.CaptionParserPlugIn#parse must be overridden by subclass');
 	}
 });
 
@@ -148,39 +204,46 @@ Class ("paella.CaptionParserPlugIn", paella.FastLoadPlugin, {
 Class ("paella.captions.parsers.DFXPParser", paella.CaptionParserPlugIn, {
 	ext: ["dfxp"],
 	getName: function() { return "es.upv.paella.captions.DFXPParser"; },
-	parse: function(content, langs, next) {
-		var captions={};
+	parse: function(content, lang, next) {
+		var captions = [];
 		var self = this;
 		var xml = $(content);
 		var g_lang = xml.attr("xml:lang");
 		
 		var lls = xml.find("div");
-		lls.each(function(idx, ll){
-			var l_captions = [];
-			ll = $(ll);
+		for(var idx=0; idx<lls.length; ++idx) {
+			var ll = $(lls[idx]);
 			var l_lang = ll.attr("xml:lang");
 			if ((l_lang == undefined) || (l_lang == "")){
 				if ((g_lang == undefined) || (g_lang == "")) {
-					base.log.debug("No xml:lang found! Using '" + langs[0] + "' lang instead.");
-					l_lang = langs[0];
+					base.log.debug("No xml:lang found! Using '" + lang + "' lang instead.");
+					l_lang = lang;
 				}
 				else {
-					l_lang = g_lang;					
+					l_lang = g_lang;
 				}
 			}
 			//
-			ll.find("p").each(function(i, cap){
-				var c = {
-					id: i,
-	            	begin: self.parseTimeTextToSeg(cap.getAttribute("begin")),
-	            	end: self.parseTimeTextToSeg(cap.getAttribute("end")),
-	            	content: $(cap).text().trim()
-	            };				
-				l_captions.push(c);				
-			});
-			captions[l_lang] = l_captions;
-		});
-		next(false, captions);
+			if (l_lang == lang) {
+				ll.find("p").each(function(i, cap){
+					var c = {
+						id: i,
+		            	begin: self.parseTimeTextToSeg(cap.getAttribute("begin")),
+		            	end: self.parseTimeTextToSeg(cap.getAttribute("end")),
+		            	content: $(cap).text().trim()
+		            };				
+					captions.push(c);				
+				});
+				break;
+			}
+		}
+		
+		if (captions.length > 0) {
+			next(false, captions);
+		}
+		else {
+			next(true);
+		}
 	},
 
     parseTimeTextToSeg:function(ttime){
