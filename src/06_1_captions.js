@@ -35,7 +35,8 @@ paella.captions = {
 		
 	addCaptions: function(captions) {
 		var cid = captions._captionsProvider + ':' + captions._id;		
-		this._captions[cid] = captions;		
+		this._captions[cid] = captions;
+		paella.events.trigger(paella.events.captionAdded, cid);
 	},	
 		
 	getAvailableLangs: function() {
@@ -64,6 +65,15 @@ paella.captions = {
 	
 	setActiveCaptions: function(cid) {
 		this._activeCaption = this.getCaptions(cid);
+		
+		if (this._activeCaption != undefined) {				
+			paella.events.trigger(paella.events.captionsEnabled, cid);
+		}
+		else {
+			paella.events.trigger(paella.events.captionsDisabled);			
+		}
+		
+		return this._activeCaption;
 	},
 		
 	getCaptionAtTime: function(cid, time) {
@@ -134,6 +144,10 @@ Class ("paella.captions.Caption", {
 				if (next) { next(true); }
 			}
 		);
+	},
+	
+	getCaptions: function() {
+		return this._captions;	
 	},
 	
 	getCaptionAtTime: function(time) {
