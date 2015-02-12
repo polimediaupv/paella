@@ -9,6 +9,7 @@ CHANGELOG
  * Video resolution refactoring: class VideoQualityStrategy extracted, to create custom video resolution selection strategies.
  * New plugin loading system implemented.
  * Fixed bug in the image Preview (#98).
+ * Captions functionality moved into the paella core.
 
 * Paella 4.0.11 (10-2-2015)
 
