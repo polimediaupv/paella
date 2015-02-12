@@ -27,6 +27,26 @@ var captionParserManager = new (Class ({
 }))();
 
 
+var SearchCallback = Class (base.AsyncLoaderCallback, {
+	initialize: function(caption, text) {
+		this.name = "captionSearchCallback";
+		this.caption = caption;
+		this.text = text;
+	},
+
+	load: function(onSuccess, onError) {
+		var self = this;
+		this.caption.search(this.text, function(err, result) {
+			if (err) {
+				onError();
+			}
+			else {
+				self.result = result;
+				onSuccess();
+			}
+		});
+	}
+});
 
 paella.captions = {
 	parsers: {},
@@ -82,7 +102,28 @@ paella.captions = {
 			return c.getCaptionAtTime(time);
 		}
 		return undefined;			
-	}	
+	},
+	
+	search: function(text, next) {
+		var self = this;
+		var asyncLoader = new base.AsyncLoader();
+		
+		this.getAvailableLangs().forEach(function(l) {			
+			asyncLoader.addCallback(new SearchCallback(self.getCaptions(l.id), text));
+		});
+		
+		asyncLoader.load(function() {
+				var res = [];
+				Object.keys(asyncLoader.callbackArray).forEach(function(k) {
+					res = res.concat(asyncLoader.getCallback(k).result);
+				});
+				if (next) next(false, res);
+			},
+			function() {
+				if (next) next(true);
+			}
+		);		
+	}
 };
 
 
