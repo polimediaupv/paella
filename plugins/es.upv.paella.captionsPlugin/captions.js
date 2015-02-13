@@ -55,7 +55,6 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
         thisClass._select.add(defOption);
 	},
 
-//TODO: DELETE
 	changeSelection:function(){
 		var thisClass = this;
 
@@ -65,7 +64,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 		paella.captions.setActiveCaptions(sel);
 		thisClass._activeCaptions = sel;
 		thisClass.buildBodyContent(paella.captions.getActiveCaptions()._captions,"list");
-		thisClass.setButtonHandler();
+		thisClass.setButtonHideShow();
 	},
 	
 	onChangeSelection:function(obj){
@@ -78,12 +77,12 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 			if(obj==undefined){
 				thisClass._select.value = "";
 			}
-			else{ 
+			else{
 				thisClass._select.value = obj; 
 				thisClass.buildBodyContent(paella.captions.getActiveCaptions()._captions,"list");
 			}
 			thisClass._activeCaptions = obj;
-			thisClass.setButtonHandler();
+			thisClass.setButtonHideShow();
 		}
 	},
 
@@ -210,7 +209,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 		}
     },
 
-    setButtonHandler:function(){
+    setButtonHideShow:function(){
     	var editor = $('.editorButton');
 		var c = paella.captions.getActiveCaptions();
 	   	if(c!=null){
