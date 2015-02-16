@@ -60,11 +60,29 @@ paella.events.enterFullscreen, paella.events.exitFullscreen].forEach(function(ev
 	});
 });
 
+// Log captions Events
+[paella.events.captionAdded, paella.events.captionsEnabled, paella.events.captionsDisabled].forEach(function(event){
+	paella.events.bind(event, function(ev, params) {
+		var label = "";
+		if (params != undefined) {
+			var c = paella.captions.getCaptions(params);
+			label = JSON.stringify({id: params, lang: c._lang, url: c._url});
+		}
+		paella.userTracking.log(event, label);
+	});
+});
+
 // Log param events
 [paella.events.seekTo, paella.events.seekToTime, paella.events.setPlaybackRate, paella.events.setVolume, paella.events.setProfile,
-paella.events.resize, paella.events.captionsEnabled, paella.events.captionsDisabled, paella.events.setProfile].forEach(function(event){
+paella.events.resize, paella.events.setProfile].forEach(function(event){
 	paella.events.bind(event, function(ev, params) {
-		paella.userTracking.log(event, JSON.stringify(params));
+		var label = "";
+		try {
+			label = JSON.stringify(params);
+		}
+		catch(e) {}
+		
+		paella.userTracking.log(event, label);
 	});
 });
 
