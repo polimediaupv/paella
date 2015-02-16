@@ -1,0 +1,114 @@
+.buttonPlugin.searchButton {
+	background-position: -279% 11%;
+	display: block;
+}
+
+.buttonPluginPopUp.searchButton {
+	position: absolute;
+}
+
+
+.searchPluginContainer {	
+	width: 400px;
+	overflow: hidden;
+}
+
+.searchBar input {
+	color: @popup_text_color;
+	background-color: @backgroundColor;
+	border-color: #fa8533;
+	width: 96%;
+	margin-bottom: 0px;
+	margin-left: 1px;
+}
+
+.searchBar input:hover{
+	border-color: #faa166;
+}
+
+.searchBar input:focus{
+	border-color: #faa166;
+}
+
+.searchBody {
+	max-height: 280px;	
+	overflow-y: scroll;
+	border: 1px solid black;
+}
+
+.sBodyInnerContainer {
+	display: block;
+	margin-left: 3px;
+	height: 70px;
+	border: 1px solid @backgroundColor;
+}
+
+.hover {
+	background-color: #faa166;
+}
+
+.redScore {
+	background-color: rgba(255, 0, 0, 0.2);
+}
+
+.greenScore {
+	background-color: rgba(0, 255, 0, 0.2);
+}
+
+.sBodyPicture {
+}
+
+.sBodyText {
+	width: 100%;
+	display: block;
+	text-align: left;
+}
+
+.timeSpan {
+color: #fa8533;
+margin-right: 5px;
+}
+
+.TimePicContainer {
+	float: left;
+	width: 24%;
+	text-align: center;
+	margin-right: 5px;
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+}
+::-webkit-scrollbar-button {
+	width: 8px;
+	height:5px;
+}
+::-webkit-scrollbar-track {
+	background:#eee;
+	border: thin solid lightgray;
+	box-shadow: 0px 0px 3px #dfdfdf inset;
+	border-radius:10px;
+}
+::-webkit-scrollbar-thumb {
+	background:#fa8533;
+	border: thin solid gray;
+	border-radius:10px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background:#faa166;
+}			
+
+svg path,
+svg rect{
+  fill: #FF6700;
+}
+
+.loader{
+  float: left;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.noResults {
+	margin: 5px;
+}
