@@ -284,7 +284,12 @@ Class ("paella.PopUpContainer", paella.DomNode,{
 		button.popUpIdentifier = identifier;
 		button.sourcePlugin = plugin;
 		$(button).click(function(event) {
-			paella.events.trigger(paella.events.showPopUp,{identifier:this.popUpIdentifier,button:this});
+			if (!this.plugin.isPopUpOpen()) {
+				paella.events.trigger(paella.events.showPopUp,{identifier:this.popUpIdentifier,button:this});
+			}
+			else {
+				paella.events.trigger(paella.events.hidePopUp,{identifier:this.popUpIdentifier,button:this});				
+			}
 		});
 		$(button).keyup(function(event) {
 			if ( (event.keyCode == 13) && (!this.plugin.isPopUpOpen()) ){
@@ -533,12 +538,19 @@ paella.ButtonPlugin.buildPluginButton = function(plugin,id) {
 	plugin.container = elem;
 	plugin.ui = elem;
 	plugin.setToolTip(plugin.getDefaultToolTip());
+	
+		
+	function onAction(self) {
+		paella.userTracking.log("paella:button:action", self.plugin.getName());
+		self.plugin.action(self);
+	}
+	
 	$(elem).click(function(event) {
-		this.plugin.action(this);
+		onAction(this);
 	});
 	$(elem).keyup(function(event) {
 		if (event.keyCode == 13) {
-			this.plugin.action(this);
+			onAction(this);
 		}
 	});
 	return elem;
