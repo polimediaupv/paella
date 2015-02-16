@@ -252,7 +252,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			this.setProfile(this.config.defaultProfile,false);
 		}
 		
-		paella.events.trigger(paella.events.resize,{width:$(this.mainContainer).width(), height:$(this.mainContainer).height()});
+		paella.events.trigger(paella.events.resize,{width:$(this.videoContainer.domElement).width(), height:$(this.videoContainer.domElement).height()});
 	},
 
 	unloadAll:function(message) {

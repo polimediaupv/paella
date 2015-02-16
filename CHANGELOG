@@ -10,6 +10,7 @@ CHANGELOG
  * New plugin loading system implemented.
  * Fixed bug in the image Preview (#98).
  * Captions functionality moved into the paella core.
+ * The parameters of paella:resize event are now generated correctly (#102).
 
 * Paella 4.0.11 (10-2-2015)
 
