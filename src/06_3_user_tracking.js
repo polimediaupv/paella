@@ -61,7 +61,7 @@ paella.events.enterFullscreen, paella.events.exitFullscreen].forEach(function(ev
 });
 
 // Log captions Events
-[paella.events.captionAdded, paella.events.captionsEnabled, paella.events.captionsDisabled].forEach(function(event){
+[/*paella.events.captionAdded,*/ paella.events.captionsEnabled, paella.events.captionsDisabled].forEach(function(event){
 	paella.events.bind(event, function(ev, params) {
 		var label = "";
 		if (params != undefined) {
