@@ -40,6 +40,8 @@ paella.searchService = {
 	search: function(text, next) {
 		var asyncLoader = new base.AsyncLoader();
 		
+		paella.userTracking.log("paella:searchService:search", text);
+		
 		searchServiceManager._plugins.forEach(function(p) {
 			asyncLoader.addCallback(new SearchCallback(p, text));
 		});
