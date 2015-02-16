@@ -61,7 +61,7 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 	},
 
 	search:function(text,cb){
- 		paella.captions.search(text, cb);
+ 		paella.searchService.search(text, cb);
 	},
 
 	getPreviewImage:function(time){
