@@ -1,0 +1,43 @@
+{
+    "mediapackage": {
+        "metadata": {
+	        "duration": "0",
+	        "start": "2013-06-17T12:01:00Z",
+	        "title": "UPV-TV",
+	        "creators": [],
+	        "license": ""
+        },    
+        "media": {
+            "tracks": [
+                {
+                    "id": "f32eff0f-a3e7-4562-858b-f390b5443c7f",
+                    "mimetype": "video/mp4",
+                    "url": "rtmp://flash.oit.duke.edu/vod/MP4:test/brunswick.m4v",
+                    "mediainfo": {
+                        "video": {
+                            "resolution": "1280x720"
+                        }
+                    },
+                    "preview": null,
+                    "tags": [],
+                    "type": "presenter/delivery"
+                },
+                {
+                    "id": "f32eff0f-a3e7-4562-858b-f390b5443c7c",
+                    "mimetype": "video/x-flv",
+                    "url": "rtmp://flash.oit.duke.edu/vod/test/Wildlife2.flv",
+                    "mediainfo": {
+                        "video": {
+                            "resolution": "1280x720"
+                        }
+                    },
+                    "preview": null,
+                    "tags": [],
+                    "type": "presentation/delivery"
+                }                      
+            ]
+        },
+        "slides": []
+        
+    }
+}
