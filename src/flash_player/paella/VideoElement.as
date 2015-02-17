@@ -223,6 +223,7 @@ public class VideoElement extends Sprite implements IMediaElement {
 		if (!_autoplay) {
 			pause();
 		}
+		_autoplay = true;
 	}
 	
 	public function cuePointHandler(info:Object):void {
