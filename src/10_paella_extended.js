@@ -16,7 +16,7 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-Class ("paella.ExtendedPlugin", paella.Plugin, {
+Class ("paella.ExtendedPlugin", paella.DeferredLoadPlugin, {
 	type:'extendedPlugin',
 
 	getName:function() { return "es.upv.paella.extended.Plugin"; },

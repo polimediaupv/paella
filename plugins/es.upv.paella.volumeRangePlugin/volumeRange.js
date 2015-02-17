@@ -36,8 +36,12 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 
 	storeVolume:function(){
 		var self = this;
-		self._tempSlaveVolume = paella.player.videoContainer.slaveVideo().volume();
-		self._tempMasterVolume = paella.player.videoContainer.masterVideo().volume();
+		if(paella.player.videoContainer.slaveVideo()){
+			self._tempSlaveVolume = paella.player.videoContainer.slaveVideo().volume();
+		}
+		if(paella.player.videoContainer.masterVideo()){
+			self._tempMasterVolume = paella.player.videoContainer.masterVideo().volume();
+		}
 	},
 
 	loadStoredVolume:function(params){
@@ -61,10 +65,10 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 			rangeImageMaster.className = "image master";
 			var rangeInputMaster = document.createElement('input');
 			rangeInputMaster.type = "range";
-			rangeInputMaster.value = this.getMasterVolume();
 			rangeInputMaster.min = 0;
 			rangeInputMaster.max = 1;
 			rangeInputMaster.step = 0.01;
+			rangeInputMaster.value = this.getMasterVolume();
 			
 		var updateMasterVolume = function() {
 				var slaveVideo = paella.player.videoContainer.slaveVideo();
@@ -91,10 +95,10 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 			rangeImageSlave.className = "image slave";
 			var rangeInputSlave = document.createElement('input');
 			rangeInputSlave.type = "range";
-			rangeInputSlave.value = this.getSlaveVolume();
 			rangeInputSlave.min = 0;
 			rangeInputSlave.max = 1;
 			rangeInputSlave.step = 0.01;
+			rangeInputSlave.value = this.getSlaveVolume();
 			
 		var updateSlaveVolume = function() {
 				var masterVideo = paella.player.videoContainer.masterVideo();

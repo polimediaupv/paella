@@ -280,6 +280,17 @@ paella.standalone.StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 
 		// Callback
 		this.loadStatus = true;
+		
+				
+		// Load Captions
+		var captions = paella.standalone.episode.mediapackage.captions;
+		if (captions) {
+			for (var i=0; i<captions.length; ++i) {
+				var c = new paella.captions.Caption(i, captions[i].format, captions[i].url, {code: captions[i].lang, txt: captions[i].text});
+				paella.captions.addCaptions(c);
+			}
+		}
+		
 		onSuccess();
 	}
 });

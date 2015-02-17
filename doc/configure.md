@@ -9,11 +9,13 @@ In this file we have all the setups concerning plugins.. streams.. compositions.
 	"player":{
         "profileFrameStrategy":"paella.ProfileFrameStrategy",
 		"methods":[{"name":"streaming","enabled":true},
-				   {"name":"html","enabled":true},
-				   {"name":"flash","enabled":true},
-                   {"name":"image","enabled":true}],
-		"stream0Audio":true,
-		"stream1Audio":false,
+			   {"name":"html","enabled":true},
+		   	   {"name":"flash","enabled":true},
+                   	   {"name":"image","enabled":true}],
+	"audio": {
+            "master": 1.0,
+            "slave": 0.0
+        },
         "rtmpSettings":{
             "bufferTime":5
         }
@@ -66,7 +68,7 @@ In "player" : { "methods" } We can set the priority of streaming method.
 
 ##- How to mute sound channels?
 
-Use "player" : { "stream0Audio" , "stream1Audio" } for set the volume of sources.
+Use "player" : "audio" : { "master": "1.0"," slave":"0.0" } for set the volume of sources. [ 1.0 Is the max Volume and 0.0 is muted. ]
 
 ##- How to enable or disable editor mode?
 

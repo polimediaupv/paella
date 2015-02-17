@@ -1,6 +1,19 @@
 CHANGELOG
 =========
 
+* Paella 4.x.x (Work In Progress)
+
+ * Don't ignore vendor directories to make collaboration easier.
+ * Improvements to tools/layout_calculator.
+ * Changes in default audio configuration.
+ * Video resolution refactoring: class VideoQualityStrategy extracted, to create custom video resolution selection strategies.
+ * New plugin loading system implemented.
+ * Fixed bug in the image Preview (#98).
+ * Captions functionality moved into the paella core.
+ * The parameters of paella:resize event are now generated correctly (#102).
+ * Search service added to the core.
+ * New Plugin: es.upv.paella.searchPlugin
+
 * Paella 4.0.11 (10-2-2015)
 
   * Flash RTMP live streaming bug fixed+
