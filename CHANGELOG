@@ -13,6 +13,7 @@ CHANGELOG
  * The parameters of paella:resize event are now generated correctly (#102).
  * Search service added to the core.
  * New Plugin: es.upv.paella.searchPlugin
+ * userTracking logger added to the core.
 
 * Paella 4.0.11 (10-2-2015)
 
