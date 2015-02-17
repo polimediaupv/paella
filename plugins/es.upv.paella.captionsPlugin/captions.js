@@ -59,7 +59,11 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 		var thisClass = this;
 
 		var sel = $(thisClass._select).val();
-       	if(sel == ""){ $(thisClass._body).empty(); return;} // BREAK IF NO ONE SELECTED
+       	if(sel == ""){ 
+       		$(thisClass._body).empty();
+       		paella.captions.setActiveCaptions(sel);
+       		return;
+       	} // BREAK IF NO ONE SELECTED
 		
 		paella.captions.setActiveCaptions(sel);
 		thisClass._activeCaptions = sel;
