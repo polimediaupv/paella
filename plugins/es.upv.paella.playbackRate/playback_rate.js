@@ -45,7 +45,8 @@ Class ("paella.plugins.PlaybackRate",paella.ButtonPlugin,{
 	},
 	
 	onItemClick:function(button,label,rate) {
-		paella.player.videoContainer.setPlaybackRate(rate);
+		//paella.player.videoContainer.setPlaybackRate(rate);
+		paella.events.trigger(paella.events.setPlaybackRate, rate);
 		this.setText(label);
 		paella.events.trigger(paella.events.hidePopUp,{identifier:this.getName()});
 	},
