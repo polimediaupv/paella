@@ -90,7 +90,11 @@ public class VideoElement extends Sprite implements IMediaElement {
 		
 		loadUrl(url);
 
+		NetConnection.prototype.onBWDone = function(p_bw) {
+			JavascriptTrace.debug("onBWDone: "+p_bw);
+		}
 		_connection = new NetConnection();
+		
 		_connection.client = { onBWDone: function():void{} };
 		_connection.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
 		_connection.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
@@ -179,9 +183,9 @@ public class VideoElement extends Sprite implements IMediaElement {
 
 			case "NetConnection.Connect.Success":
 				createNetStream();
-				if (_autoplay) {
-					play();
-				}
+				break;
+			case "NetConnection.Connect.Closed":
+				JavascriptTrace.debug("Connection closed");
 				break;
 			case "NetStream.Play.StreamNotFound":
 				JavascriptTrace.error("Unable to locate video:" + _streamResource);
@@ -215,14 +219,18 @@ public class VideoElement extends Sprite implements IMediaElement {
 	    sendEvent(HtmlEvent.LOADEDMETADATA);
 		sendEvent(HtmlEvent.PROGRESS);
 		sendEvent(HtmlEvent.TIMEUPDATE);
+		
+		if (!_autoplay) {
+			pause();
+		}
 	}
 	
 	public function cuePointHandler(info:Object):void {
 		
 	}
 	
-	public function onBWDone():void	{
-		
+	public function onBWDone(oObject1:Object):void	{
+		JavascriptTrace.debug("onBWDone");
 	}
 	
 	protected function connect():void {
@@ -240,13 +248,16 @@ public class VideoElement extends Sprite implements IMediaElement {
 			JavascriptTrace.debug("Connected");
 			_stream = new DynamicNetStream(_connection);
 			_video.attachNetStream(_stream);
-			_stream.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler);
-			_stream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler);
+			_stream.addEventListener(NetStatusEvent.NET_STATUS, netStatusHandler, false, 0, true);
+			_stream.addEventListener(AsyncErrorEvent.ASYNC_ERROR, asyncErrorHandler, false, 0, true);
 			_stream.bufferTime = _bufferTime;
 			_stream.client = {};
+			_stream.client.onBWDone = onBWDone;
 			_stream.client.onMetaData = metaDataHandler;
 			_stream.client.onCuePoint = cuePointHandler;
 			_soundTransform = new SoundTransform();
+			
+			play();
 		}
 	}
 	
