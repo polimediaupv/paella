@@ -5,7 +5,13 @@ var userTrackingManager = new (Class ({
 	_plugins: [],
 	
 	addPlugin: function(plugin) {
-		this._plugins.push(plugin);
+		var self = this;
+		plugin.checkEnabled(function(isEnabled) {
+			if (isEnabled) {
+				plugin.setup();
+				self._plugins.push(plugin);				
+			}
+		});	
 	},
 	initialize: function() {
 		paella.pluginManager.setTarget('userTrackingSaverPlugIn', this);	
@@ -17,23 +23,24 @@ paella.userTracking = {};
 
 Class ("paella.userTracking.SaverPlugIn", paella.FastLoadPlugin, {
 	type:'userTrackingSaverPlugIn',
-	getIndex: function() {return -1;},
+	getIndex: function() {return -1;},	
+	checkEnabled:function(onSuccess) { onSuccess(true); },
 	
-	log: function(event, label) {
-		throw new Error('paella.paella.userTracking.SaverPlugIn#log must be overridden by subclass');
+	log: function(event, params) {
+		throw new Error('paella.userTracking.SaverPlugIn#log must be overridden by subclass');
 	}
 });
 
 
 var evsentsToLog = {};
 
-paella.userTracking.log = function(event, label) {
+paella.userTracking.log = function(event, params) {
 	if (evsentsToLog[event] != undefined) {
 		evsentsToLog[event].cancel();		
 	}
 	evsentsToLog[event] = new base.Timer(function(timer) {
 		userTrackingManager._plugins.forEach(function(p) {
-			p.log(event, label);
+			p.log(event, params);
 		});
 		delete evsentsToLog[event];
 	}, 500);
@@ -49,7 +56,7 @@ paella.userTracking.log = function(event, label) {
 paella.events.showEditor, paella.events.hideEditor, 
 paella.events.enterFullscreen, paella.events.exitFullscreen].forEach(function(event){
 	paella.events.bind(event, function(ev, params) {
-		paella.userTracking.log(event, "");
+		paella.userTracking.log(event);
 	});
 });
 
@@ -63,42 +70,51 @@ paella.events.enterFullscreen, paella.events.exitFullscreen].forEach(function(ev
 // Log captions Events
 [/*paella.events.captionAdded,*/ paella.events.captionsEnabled, paella.events.captionsDisabled].forEach(function(event){
 	paella.events.bind(event, function(ev, params) {
-		var label = "";
+		var log;
 		if (params != undefined) {
 			var c = paella.captions.getCaptions(params);
-			label = JSON.stringify({id: params, lang: c._lang, url: c._url});
+			log = {id: params, lang: c._lang, url: c._url};
 		}
-		paella.userTracking.log(event, label);
+		paella.userTracking.log(event, log);
 	});
 });
 
-// Log param events
-[paella.events.seekTo, paella.events.seekToTime, paella.events.setPlaybackRate, paella.events.setVolume, paella.events.setProfile,
-paella.events.resize, paella.events.setProfile].forEach(function(event){
+// Log setProfile
+[paella.events.setProfile].forEach(function(event){
+	paella.events.bind(event, function(ev, params) {		
+		paella.userTracking.log(event, params.profileName);
+	});
+});
+
+
+// Log seek events
+[paella.events.seekTo, paella.events.seekToTime].forEach(function(event){
 	paella.events.bind(event, function(ev, params) {
-		var label = "";
+		var log;
 		try {
-			label = JSON.stringify(params);
+			JSON.stringify(params);
+			log = params;
 		}
 		catch(e) {}
 		
-		paella.userTracking.log(event, label);
+		paella.userTracking.log(event, log);
 	});
 });
 
 
-
-/////////////////////////////
-new (Class (paella.FastLoadPlugin, {
-	type:'userTrackingSaverPlugIn',
-	getName: function() {return "test";},
-	
-	log: function(event, label) {
-		console.log("Log: " + event + " " + label);
-	}
-}))();
-
-
+// Log param events
+[paella.events.setVolume, paella.events.resize, paella.events.setPlaybackRate].forEach(function(event){
+	paella.events.bind(event, function(ev, params) {
+		var log;
+		try {
+			JSON.stringify(params);
+			log = params;
+		}
+		catch(e) {}
+		
+		paella.userTracking.log(event, log);
+	});
+});
 
 
 }());

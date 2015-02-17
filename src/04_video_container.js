@@ -889,7 +889,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			videoNode.addSource(selectedSource);
 			videoNode.setMetadata(selectedSource);
 			
-			paella.userTracking.log("paella:VideoContainer:setupVideo:" + stream, JSON.stringify(selectedSource));
+			paella.userTracking.log("paella:VideoContainer:setupVideo:" + stream, selectedSource);
 		}
 	},
 
