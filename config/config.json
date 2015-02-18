@@ -32,6 +32,8 @@
 		"defaultConfig":{"enabled":true},
 		"list":{
 			"ch.ethz.paella.multipleQualitiesPlugin": {"enabled": false},
+			"edu.harvard.dce.paella.flexSkipPlugin": {"enabled":true, "direction": "Rewind", "seconds": 10},
+			"edu.harvard.dce.paella.flexSkipPluginForward": {"enabled":true, "direction": "Forward", "seconds": 30},
 			"es.upv.paella.ImageControlPlugin":{"enabled":false},
 			"es.upv.paella.ShowEditorPlugin":{"enabled":true,"alwaysVisible":true},
 			"es.upv.paella.TrimmingPlayerPlugin":{"enabled":true},
