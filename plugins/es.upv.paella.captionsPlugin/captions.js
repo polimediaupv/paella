@@ -130,7 +130,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 	        thisClass._input.type = "text";
 	        thisClass._input.id ="captionsBarInput";
 	        thisClass._input.name = "captionsString";
-	        thisClass._input.placeholder = base.dictionary.translate("captions");
+	        thisClass._input.placeholder = base.dictionary.translate("Search captions");
 	        thisClass._bar.appendChild(thisClass._input);
 
 	        //INPUT jQuery
