@@ -470,7 +470,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			end = this.trimming.end;
 			start = parseFloat(this.trimming.start);
 		}
-		if (current>=Math.floor(end)) {
+		if (current>=Math.floor(end) && !this.paused()) {
 			var thisClass = this;
 			paella.events.trigger(paella.events.endVideo,{videoContainer:thisClass});
 			this.pause();
