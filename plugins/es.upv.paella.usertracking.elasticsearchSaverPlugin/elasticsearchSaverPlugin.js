@@ -7,12 +7,16 @@ new (Class (paella.userTracking.SaverPlugIn, {
 		this._index = this.config.index || "paellaplayer";
 		this._type = this.config.type || "usertracking";
 		
-		console.log(this);
-		onSuccess((this._url != undefined));
+		var enabled = true;
+		if (this._url == undefined){
+			enabled = false;
+			base.log.debug("No ElasticSearch URL found in config file. Disabling ElasticSearch PlugIn");
+		}
+		
+		onSuccess(enabled);
 	},
 	
-	log: function(event, params) {
-	
+	log: function(event, params) {	
 		var p = params;
 		if (typeof(p) != "object") {
 			p = {value: p};

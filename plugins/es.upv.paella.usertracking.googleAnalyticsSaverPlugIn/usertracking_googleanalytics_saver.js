@@ -1,9 +1,8 @@
-Class ("paella.plugins.UserTrackingGoogleAnalyticsSaverPlugIn",paella.EventDrivenPlugin,{
-	getName:function() { return "es.upv.paella.userTrackingGoogleAnalyticsSaverPlugIn"; },
-	getEvents:function() { return [paella.events.userTracking]; },
-	
-	
 
+
+new (Class (paella.userTracking.SaverPlugIn,{
+	getName:function() { return "es.upv.paella.usertracking.GoogleAnalyticsSaverPlugIn"; },
+		
 	checkEnabled:function(onSuccess) {
 		var trackingID = this.config.trackingID;
 		var domain = this.config.domain || "auto";
@@ -25,27 +24,26 @@ Class ("paella.plugins.UserTrackingGoogleAnalyticsSaverPlugIn",paella.EventDrive
 		}				
 	},
 
-	onEvent:function(eventType, params) {
-		if (this.config.trackingEvents) {
+
+	log: function(event, params) {
+		if ((this.config.category === undefined) || (this.config.category ===true)) {
 			var category = this.config.category || "PaellaPlayer";
-			var action = params.event;
+			var action = event;
 			var label =  "";
 			
 			try {
-				label = JSON.stringify({
-					videoID: paella.player.videoIdentifier,
-					label: params.label,
-				});
+				label = JSON.stringify(params);
 			}
 			catch(e) {}
-							
+			
 			__gaTracker('send', 'event', category, action, label);
 		}
-	}	
-});
+	}
+	
+}))();
 
 
-paella.plugins.userTrackingGoogleAnalyticsSaverPlugIn = new paella.plugins.UserTrackingGoogleAnalyticsSaverPlugIn();
+
 
 
 
