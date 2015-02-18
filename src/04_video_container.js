@@ -111,7 +111,9 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 
 	triggerTimeupdate:function() {
 		var thisClass = this;
-		paella.events.trigger(paella.events.timeupdate,{videoContainer:thisClass, currentTime:thisClass.currentTime() });
+		if (!this.paused()) {
+			paella.events.trigger(paella.events.timeupdate,{videoContainer:thisClass, currentTime:thisClass.currentTime() });
+		}
 	},
 
 	startTimeupdate:function() {
