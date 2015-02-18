@@ -5,7 +5,7 @@
 		"masterVideo":{"content":"presenter","rect":[
 			{"aspectRatio":"16/9","left":"712","top":"300","width":"560","height":"315"},
 			{"aspectRatio":"4/3","left":"712","top":"198","width":"560","height":"420"},
-			{"aspectRatio":"5/4","left":"712","top":"303","width":"560","height":"448"}],"visible":"true","layer":"1"},
+			{"aspectRatio":"5/4","left":"712","top":"171","width":"560","height":"448"}],"visible":"true","layer":"1"},
 		"slaveVideo":{"content":"presentation","rect":[
 			{"aspectRatio":"16/9","left":"10","top":"225","width":"695","height":"390"},
 			{"aspectRatio":"4/3","left":"5","top":"92","width":"700","height":"526"},
@@ -18,7 +18,8 @@
 		"icon":"professor_slide_icon.png",
 		"masterVideo":{"content":"presenter","rect":[
 			{"aspectRatio":"16/9","left":"10","top":"225","width":"695","height":"390"},
-			{"aspectRatio":"4/3","left":"10","top":"94","width":"700","height":"525"}],"visible":"true","layer":"1"},
+			{"aspectRatio":"4/3","left":"10","top":"94","width":"700","height":"525"},
+			{"aspectRatio":"5/4","left":"5","top":"94","width":"700","height":"525"}],"visible":"true","layer":"1"},
 		"slaveVideo":{"content":"presentation","rect":[
 			{"aspectRatio":"16/9","left":"712","top":"300","width":"560","height":"315"},
 			{"aspectRatio":"4/3","left":"712","top":"196","width":"560","height":"420"},
