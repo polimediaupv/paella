@@ -11,6 +11,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 	_select:null,
 	_editor:null,
 	_activeCaptions:null,
+	_lastSel: null,
 
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return 'captionsPluginButton'; },
@@ -39,8 +40,64 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 			self.onCaptionAdded(params);
 		});
 
+		paella.events.bind(paella.events.timeUpdate, function(event,params){
+			self.updateCaptionHiglighted(params);
+		});
+
 		self._activeCaptions = paella.captions.getActiveCaptions();
 
+	},
+
+	updateCaptionHiglighted:function(time){
+		var thisClass = this;
+		var sel = null;
+		var id = null;
+		if(time){
+			id = thisClass.searchIntervaltoHighlight(time);
+
+			if(id){
+				sel = $( ".bodyInnerContainer[sec-id='"+id+"']" );
+
+				if(sel != thisClass._lasSel){
+					$(thisClass._lasSel).removeClass("Highlight");
+				}
+
+				if(sel){
+					$(sel).addClass("Highlight");
+					thisClass.updateScrollFocus(id);
+					thisClass._lasSel = sel;
+				}
+			}
+		}
+		
+
+	},
+
+	searchIntervaltoHighlight:function(time){
+		var thisClass = this;
+		var resul = null;
+
+		if(paella.captions.getActiveCaptions()){
+			n = paella.captions.getActiveCaptions()._captions;
+			n.forEach(function(l){
+				if(l.begin < time.currentTime && time.currentTime < l.end) thisClass.resul = l.id;
+			});
+		}
+		if(thisClass.resul) return thisClass.resul;
+		else return null;
+	},
+
+	updateScrollFocus:function(id){
+		var resul = 0;
+		var t = $(".bodyInnerContainer").slice(0,id);
+		t = t.toArray();
+
+		t.forEach(function(l){
+			var i = $(l).outerHeight(true);
+			resul += i;
+		});
+
+		$(".captionsBody").scrollTop( resul );
 	},
 
 	onCaptionAdded:function(obj){
@@ -242,10 +299,12 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
         	thisClass._inner.className = 'bodyInnerContainer';
         	thisClass._inner.innerHTML = l.content;
         	if(type=="list"){
-        		thisClass._inner.setAttribute('sec',l.begin);
+        		thisClass._inner.setAttribute('sec-begin',l.begin);
+        		thisClass._inner.setAttribute('sec-end',l.end);
+        		thisClass._inner.setAttribute('sec-id',l.id);
         	}
         	if(type=="search"){
-        		thisClass._inner.setAttribute('sec',l.time);
+        		thisClass._inner.setAttribute('sec-begin',l.time);
         	}
         	thisClass._body.appendChild(thisClass._inner);
 
@@ -259,8 +318,8 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 	        		}
 		        );
 		        $(thisClass._inner).click(function(){ 
-		        		var sec = $(this).attr("sec");
-		        		paella.player.videoContainer.seekToTime(parseInt(sec));
+		        		var secBegin = $(this).attr("sec-begin");
+		        		paella.player.videoContainer.seekToTime(parseInt(secBegin));
 		        });
     	});
     }
