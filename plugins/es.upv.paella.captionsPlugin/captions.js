@@ -2,7 +2,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 	_searchTimerTime:1500,
 	_searchTimer:null,
 	_pluginButton:null,
-	_open:false,
+	_open:0, // 0 closed, 1 st click, 2 nd click
 	_parent:null,
 	_body:null,
 	_inner:null,
@@ -11,7 +11,10 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 	_select:null,
 	_editor:null,
 	_activeCaptions:null,
-	_lastSel: null,
+	_lastSel:null,
+	_browserLang:null,
+	_defaultBodyHeight:280,
+	_autoScroll:true,
 
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return 'captionsPluginButton'; },
@@ -26,7 +29,14 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 
 	setup:function() {
 		var self = this;
-		
+
+		// HIDE UI IF NO CaptionsPlugin
+		setTimeout(function(){		
+			if(!paella.captions.getAvailableLangs().length){
+				paella.plugins.captionsPlugin.hideUI();
+			}
+		}, 0);
+
 		//BINDS
 		paella.events.bind(paella.events.captionsEnabled,function(event,params){
 			self.onChangeSelection(params);
@@ -38,14 +48,26 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 
 		paella.events.bind(paella.events.captionAdded,function(event,params){
 			self.onCaptionAdded(params);
+			paella.plugins.captionsPlugin.showUI();
 		});
 
 		paella.events.bind(paella.events.timeUpdate, function(event,params){
 			self.updateCaptionHiglighted(params);
 		});
 
+		paella.events.bind(paella.events.controlBarWillHide, function(evt) {
+			self.cancelHideBar();
+		});
+
 		self._activeCaptions = paella.captions.getActiveCaptions();
 
+	},
+
+	cancelHideBar:function(){
+		var thisClass = this;
+		if(thisClass._open){
+			paella.player.controls.cancelHideBar();
+		}
 	},
 
 	updateCaptionHiglighted:function(time){
@@ -64,7 +86,9 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 
 				if(sel){
 					$(sel).addClass("Highlight");
-					thisClass.updateScrollFocus(id);
+					if(thisClass._autoScroll){
+						thisClass.updateScrollFocus(id);
+					}
 					thisClass._lasSel = sel;
 				}
 			}
@@ -88,6 +112,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 	},
 
 	updateScrollFocus:function(id){
+		var thisClass = this;
 		var resul = 0;
 		var t = $(".bodyInnerContainer").slice(0,id);
 		t = t.toArray();
@@ -97,7 +122,8 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 			resul += i;
 		});
 
-		$(".captionsBody").scrollTop( resul );
+		var x = parseInt(resul / 280);
+		$(".captionsBody").scrollTop( x*thisClass._defaultBodyHeight );
 	},
 
 	onCaptionAdded:function(obj){
@@ -149,18 +175,49 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 
 	action:function(){
 		var self = this;
-			if(self.isPopUpOpen()){
-				paella.events.trigger(paella.events.play);
-				paella.keyManager.enabled = true;
-			}
-			else {
-				paella.keyManager.enabled = false;
-					if(self._input){
-						setTimeout(function(){
-							$(self._input).focus();
-						}, 0);
-					}		
-				}
+		var userLang = navigator.language || navigator.userLanguage;
+		self._browserLang = userLang;
+		self._autoScroll = true;
+		
+		switch(self._open){
+			case 0: if(self._browserLang && paella.captions.getActiveCaptions()==undefined){
+						self.selectDefaultBrowserLang(self._browserLang);
+					}
+					self._open = 1;
+					paella.keyManager.enabled = false;
+					break;
+			
+			case 1: paella.keyManager.enabled = true;
+					self._open = 0;
+					break;
+			
+			/*case 2: paella.keyManager.enabled = true;
+					self._open = 0;
+					break;*/
+		}
+		
+		/*
+		if(self._browserLang && self._open==0){
+			self.selectDefaultBrowserLang(self._browserLang);
+		}
+
+		if(self.isPopUpOpen()){
+			paella.events.trigger(paella.events.play);
+			paella.keyManager.enabled = true;
+		}
+		else {
+			paella.keyManager.enabled = false;
+				if(self._input){
+					setTimeout(function(){
+						$(self._input).focus();
+					}, 0);
+				}		
+		}
+		*/
+
+
+
+		
 	},
 
 	buildContent:function(domElement) {
@@ -174,6 +231,11 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 	        thisClass._body = document.createElement('div');
 	        thisClass._body.className = 'captionsBody';
 	        thisClass._parent.appendChild(thisClass._body);
+
+	        //BODY JQUERY
+	        $(thisClass._body).scroll(function(){
+	        	thisClass._autoScroll = false;
+	        });
 
 
 	    //captions BAR
@@ -205,10 +267,6 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 					thisClass.doSearch(text);
 				}, thisClass._searchTimerTime);			
 			});
-
-			$(thisClass._input).focus(function(){
-   					 	paella.events.trigger(paella.events.pause);
-   			});
 
 	        //SELECT
 	        thisClass._select = document.createElement("select");
@@ -257,6 +315,18 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 		*/
     },
 
+    selectDefaultBrowserLang:function(code){
+		var provider = null;
+		paella.captions.getAvailableLangs().forEach(function(l){
+			if(l.lang.code == code){ provider = l.id; }
+		});
+		
+		if(provider){
+			paella.captions.setActiveCaptions(provider);
+		}
+
+    },
+
     doSearch:function(text){
     	thisClass = this;
 		var c = paella.captions.getActiveCaptions();
@@ -302,6 +372,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
         		thisClass._inner.setAttribute('sec-begin',l.begin);
         		thisClass._inner.setAttribute('sec-end',l.end);
         		thisClass._inner.setAttribute('sec-id',l.id);
+        		thisClass._autoScroll = true;
         	}
         	if(type=="search"){
         		thisClass._inner.setAttribute('sec-begin',l.time);
@@ -311,7 +382,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
         	//JQUERY
 	        	$(thisClass._inner).hover(
 	        		function(){ 
-	        			$(this).css('background-color','#faa166');	           		
+	        			$(this).css('background-color','rgba(250, 161, 102, 0.5)');	           		
 	        		},
 	        		function(){ 
 	        			$(this).removeAttr('style');

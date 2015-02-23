@@ -51,6 +51,7 @@ paella.events = {
 	documentChanged:'paella:documentChanged',
 	didSaveChanges:'paella:didsavechanges',
 	controlBarWillHide:'paella:controlbarwillhide',
+	controlBarDidHide:'paella:controlbardidhide',
 	controlBarDidShow:'paella:controlbardidshow',
 	///beforeUnload:'paella:beforeUnload',		This event has been removed because it not work properly in any browser
 	hidePopUp:'paella:hidePopUp',
