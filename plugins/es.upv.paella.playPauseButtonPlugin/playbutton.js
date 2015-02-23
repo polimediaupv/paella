@@ -105,7 +105,7 @@ Class ("paella.plugins.PlayButtonOnScreen",paella.EventDrivenPlugin,{
 
 			ctx.stroke();
 		}
-		paella.events.bind(paella.events.resize,repaintCanvas);
+		paella.events.bind(paella.events.resize, repaintCanvas);
 		repaintCanvas();
 	},
 
@@ -151,7 +151,7 @@ Class ("paella.plugins.PlayButtonOnScreen",paella.EventDrivenPlugin,{
 
 	pause:function() {
 		this.isPlaying = false;
-		this.showIcon = false;
+		this.showIcon = true;
 		this.checkStatus();
 	},
 
@@ -182,5 +182,5 @@ Class ("paella.plugins.PlayButtonOnScreen",paella.EventDrivenPlugin,{
 		return "es.upv.paella.playButtonOnScreen";
 	}
 });
-
+ 
 new paella.plugins.PlayButtonOnScreen();
