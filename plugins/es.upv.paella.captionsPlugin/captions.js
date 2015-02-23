@@ -193,9 +193,11 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
         domElement.appendChild(thisClass._parent);
 
         //FOCUS AFTER 1st BUILD
+        /*
 		setTimeout(function(){
 			$(thisClass._input).focus();
 		}, 0);
+		*/
     },
 
     doSearch:function(text){
