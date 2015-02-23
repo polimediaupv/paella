@@ -54,7 +54,7 @@ paella.userTracking.log = function(event, params) {
 // Log simple events
 [paella.events.play, paella.events.pause, paella.events.endVideo, 
 paella.events.showEditor, paella.events.hideEditor, 
-paella.events.enterFullscreen, paella.events.exitFullscreen].forEach(function(event){
+paella.events.enterFullscreen, paella.events.exitFullscreen, paella.events.loadComplete].forEach(function(event){
 	paella.events.bind(event, function(ev, params) {
 		paella.userTracking.log(event);
 	});
