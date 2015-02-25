@@ -2,7 +2,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 	_searchTimerTime:1500,
 	_searchTimer:null,
 	_pluginButton:null,
-	_open:0, // 0 closed, 1 st click, 2 nd click
+	_open:0, // 0 closed, 1 st click
 	_parent:null,
 	_body:null,
 	_inner:null,
@@ -27,15 +27,19 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 		onSuccess(true);
 	},
 
+	showUI: function(){
+		if(paella.captions.getAvailableLangs().length){
+			this.parent();
+		}
+	},
+
 	setup:function() {
 		var self = this;
 
-		// HIDE UI IF NO CaptionsPlugin
-		setTimeout(function(){		
+		// HIDE UI IF NO Captions
 			if(!paella.captions.getAvailableLangs().length){
 				paella.plugins.captionsPlugin.hideUI();
 			}
-		}, 0);
 
 		//BINDS
 		paella.events.bind(paella.events.captionsEnabled,function(event,params){
@@ -190,34 +194,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 			case 1: paella.keyManager.enabled = true;
 					self._open = 0;
 					break;
-			
-			/*case 2: paella.keyManager.enabled = true;
-					self._open = 0;
-					break;*/
 		}
-		
-		/*
-		if(self._browserLang && self._open==0){
-			self.selectDefaultBrowserLang(self._browserLang);
-		}
-
-		if(self.isPopUpOpen()){
-			paella.events.trigger(paella.events.play);
-			paella.keyManager.enabled = true;
-		}
-		else {
-			paella.keyManager.enabled = false;
-				if(self._input){
-					setTimeout(function(){
-						$(self._input).focus();
-					}, 0);
-				}		
-		}
-		*/
-
-
-
-		
 	},
 
 	buildContent:function(domElement) {
@@ -306,13 +283,6 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 		        });
 
         domElement.appendChild(thisClass._parent);
-
-        //FOCUS AFTER 1st BUILD
-        /*
-		setTimeout(function(){
-			$(thisClass._input).focus();
-		}, 0);
-		*/
     },
 
     selectDefaultBrowserLang:function(code){
