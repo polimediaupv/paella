@@ -43,6 +43,10 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 		});
 		//GET THE FRAME LIST
 		self._localImages = paella.initDelegate.initParams.videoLoader.frameList;
+
+		//config
+		self._colorSearch = self.config.colorSearch || false;
+		self._sortDefault = self.config.sortType || "time";
 	},
 
 	prettyTime:function(seconds){
