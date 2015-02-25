@@ -586,6 +586,7 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 					This.domElement.setAttribute('aria-hidden', 'true');
 					$(This.domElement).hide();
 					This._hidden = true;
+					paella.events.trigger(paella.events.controlBarDidHide);
 				}
 			}});
 			paella.events.trigger(paella.events.controlBarWillHide);
@@ -595,6 +596,7 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 			$(this.domElement).hide();
 			this.domElement.setAttribute('aria-hidden','true');
 			this._hidden = true;
+			paella.events.trigger(paella.events.controlBarDidHide);
 		}
 	},
 
