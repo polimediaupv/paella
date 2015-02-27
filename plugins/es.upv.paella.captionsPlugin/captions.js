@@ -21,7 +21,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 	getName:function() { return "es.upv.paella.captionsPlugin"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },	
 	getDefaultToolTip:function() { return base.dictionary.translate("Subtitles"); },
-	getIndex:function() {return 2050;},
+	getIndex:function() {return 509;},
 
 	checkEnabled:function(onSuccess) {
 		onSuccess(true);
@@ -271,7 +271,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 	        //BUTTON EDITOR
 	        thisClass._editor = document.createElement("button");
 	        thisClass._editor.className = "editorButton";
-	        thisClass._editor.innerHTML = "Editor";
+	        thisClass._editor.innerHTML = "";
 	        thisClass._bar.appendChild(thisClass._editor);
 
 
@@ -313,22 +313,28 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
     },
 
     setButtonHideShow:function(){
+    	var thisClass = this;
     	var editor = $('.editorButton');
 		var c = paella.captions.getActiveCaptions();
 	   	if(c!=null){
+	   		$(thisClass._select).width('39%');
 		    var res = null;
 		    c.canEdit(function(err, r){res=r;});
 	        if(res){
 	        	$(editor).prop("disabled",false);
+	        	$(editor).show();
 	        }
 	        else{
 	        	$(editor).prop("disabled",true);
+	        	$(editor).hide();
+	        	$(thisClass._select).width('47%');
 	        }
     	}
     	else {
     		$(editor).prop("disabled",true);
+    		$(editor).hide();
+    		$(thisClass._select).width('47%');
     	}
-
     },
 
     buildBodyContent:function(obj,type){
