@@ -159,8 +159,6 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 	},
 	
 	onChangeSelection:function(obj){
-
-
 		var thisClass = this;
 
 		if(thisClass._activeCaptions != obj){
@@ -179,10 +177,9 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 
 	action:function(){
 		var self = this;
-		var userLang = navigator.language || navigator.userLanguage;
-		self._browserLang = userLang;
+		self._browserLang = base.dictionary.currentLanguage();
 		self._autoScroll = true;
-		
+
 		switch(self._open){
 			case 0: if(self._browserLang && paella.captions.getActiveCaptions()==undefined){
 						self.selectDefaultBrowserLang(self._browserLang);
