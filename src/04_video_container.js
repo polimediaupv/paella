@@ -661,16 +661,32 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		var memoizedCurrentTime = this.currentTime();
 		var masterVideo = this.masterVideo();
 		var slaveVideo = this.slaveVideo();
-		if (masterVideo) masterVideo.unload();
-		if (slaveVideo) slaveVideo.unload();
 		 		
 		this.setMasterQuality(masterQuality);
 		this.setSlaveQuality(slaveQuality);
-		this._seekToOnLoad = memoizedCurrentTime;
-		this.setSources(this._videoSourceData.master,this._videoSourceData.slave);
-		this.seekToTime(this._seekToOnLoad);
-		this.play();
-		this._playOnLoad = true;
+		
+		var currentMastr = this.currentMasterVideoData;
+		var currentSlave = this.currentSlaveVideoData;
+		
+		var newMasterSrc = this._videoSourceData.master ? this.selectSource(this._videoSourceData.master.data,this._videoSourceData.master.type.name):null;
+		var newSlaveSrc = this._videoSourceData.slave ? this.selectSource(this._videoSourceData.slave.data,this._videoSourceData.slave.type.name):null;
+		if (newMasterSrc) {
+			newMasterSrc = this.getVideoQuality(newMasterSrc,'master');
+		}
+		if (newSlaveSrc) {
+			newSlaveSrc = this.getVideoQuality(newSlaveSrc,'slave');
+		}
+		
+		if (currentMastr.res.w!=newMasterSrc.res.w || currentMastr.res.h!=newMasterSrc.res.h ||
+			currentMastr.res.w!=newMasterSrc.res.w || currentMastr.res.h!=newMasterSrc.res.h) {
+			if (masterVideo) masterVideo.unload();
+			if (slaveVideo) slaveVideo.unload();
+			this._seekToOnLoad = memoizedCurrentTime;
+			this.setSources(this._videoSourceData.master,this._videoSourceData.slave);
+			this.seekToTime(this._seekToOnLoad);
+			this.play();
+			this._playOnLoad = true;
+		}
 	},
 
 	/**
@@ -788,6 +804,43 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		
 		return true;
 	},
+	
+	selectSource:function(videoData,type) {
+		var mp4Source = videoData.sources.mp4;
+		var oggSource = videoData.sources.ogg;
+		var webmSource = videoData.sources.webm;
+		var flvSource = videoData.sources.flv;
+		var rtmpSource = videoData.sources.rtmp;
+		var imageSource = videoData.sources.image;
+
+		var selectedSource = null;
+
+		if (type=="html") {
+			if (mp4Source) {
+				selectedSource = mp4Source;
+			}
+			if (oggSource) {
+				selectedSource = oggSource;
+			}
+			if (webmSource) {
+				selectedSource = webmSource;
+			}
+		}
+		else if (flvSource && type=="flash") {
+			selectedSource = flvSource;
+		}
+		else if (mp4Source && type=="flash") {
+			selectedSource = mp4Source;
+		}
+		else if (rtmpSource && type=="streaming"){
+			selectedSource = rtmpSource;
+		}
+		else if (imageSource && type=="image") {
+			selectedSource = imageSource;
+		}
+		
+		return selectedSource;
+	},
 
 	setMonoStreamMode:function() {
 		this.isMonostream = true;
@@ -803,87 +856,11 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			userSelection = this._slaveQuality;
 		}
 		return this._videoQualityStrategy.getStream(source,stream,userSelection);
-		/*
-		if (source.length>0) {
-			var query = null;
-			if (stream=="master") {
-				query = this._masterQuality;
-			}
-			else if (stream=="slave") {
-				query = this._slaveQuality;
-			}
-			var selected = source[0];
-			var win_w = $(window).width();
-			var win_h = $(window).height();
-			var win_res = (win_w * win_h);
-			var selected_res = parseInt(selected.res.w) * parseInt(selected.res.h);
-			var selected_diff = Math.abs(win_res - selected_res);
-
-			for (var i=0; i<source.length; ++i) {
-				var res = source[i].res;
-				if (res) {
-					if (query != undefined) {
-						res = res.w + "x" + res.h;
-						if (res==query) {
-							 selected = source[i];
-							break;
-						}
-					}
-					else{
-						var m_res = parseInt(source[i].res.w) * parseInt(source[i].res.h);
-						var m_diff = Math.abs(win_res - m_res);
-
-						if (m_diff < selected_diff){
-							selected_diff = m_diff;
-							selected = source[i];
-						}
-
-
-					}
-				}
-			}
-			return selected;
-		}
-		else {
-			return source;
-		}
-		*/
 	},
 
 	setupVideo:function(videoNode,videoData,type,stream) {
 		if (videoNode && videoData) {
-			var mp4Source = videoData.sources.mp4;
-			var oggSource = videoData.sources.ogg;
-			var webmSource = videoData.sources.webm;
-			var flvSource = videoData.sources.flv;
-			var rtmpSource = videoData.sources.rtmp;
-			var imageSource = videoData.sources.image;
-
-			var selectedSource = null;
-
-			if (type=="html") {
-				if (mp4Source) {
-					selectedSource = mp4Source;
-				}
-				if (oggSource) {
-					selectedSource = oggSource;
-				}
-				if (webmSource) {
-					selectedSource = webmSource;
-				}
-			}
-			else if (flvSource && type=="flash") {
-				selectedSource = flvSource;
-			}
-			else if (mp4Source && type=="flash") {
-				selectedSource = mp4Source;
-			}
-			else if (rtmpSource && type=="streaming"){
-				selectedSource = rtmpSource;
-			}
-			else if (imageSource && type=="image") {
-				selectedSource = imageSource;
-			}
+			var selectedSource = this.selectSource(videoData,type);
 
 			selectedSource = this.getVideoQuality(selectedSource, stream);
 			if (stream=='master') this.currentMasterVideoData = selectedSource;
