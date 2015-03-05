@@ -78,12 +78,17 @@ Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
 	},
 
 	onItemClick:function(button,profile,profileData) {
-		var prevButtonItem = this.buttonItems[paella.player.selectedProfile];
-		var nextButtonItem = this.buttonItems[profile];
+		var thisClass = this;
+		var ButtonItem = this.buttonItems[profile];
+		
+		n = this.buttonItems;
+		arr = Object.keys(n);
+		arr.forEach(function(i){
+			thisClass.buttonItems[i].className = thisClass.getButtonItemClass(i,false);
+		});
 
-		if (nextButtonItem && prevButtonItem!=nextButtonItem) {
-			prevButtonItem.className = this.getButtonItemClass(paella.player.selectedProfile,false);
-			nextButtonItem.className = this.getButtonItemClass(profile,true);
+		if (ButtonItem) {
+			ButtonItem.className = thisClass.getButtonItemClass(profile,true);
 			paella.events.trigger(paella.events.setProfile,{profileName:profile});
 		}
 		paella.events.trigger(paella.events.hidePopUp,{identifier:this.getName()});
