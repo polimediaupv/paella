@@ -295,6 +295,11 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 		}
 		this.processEvent(eventName,processedParams);
 	},
+
+	setAutoplay:function(autoplay) {
+		this._autoplay = autoplay;
+
+	},
 	
 	processEvent:function(eventName,params) {
 		if (eventName!="loadedmetadata" && eventName!="pause" && params.duration!=0 && !this._isReady) {
@@ -555,6 +560,9 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 
 	addSourceProgresiveDownload:function(sourceData){
 		var parameters = {};
+		if (this._autoplay) {
+			parameters.autoplay = this._autoplay;
+		}
 		if (base.parameters.get('debug')=="true") {
 			parameters.debugMode = true;
 		}
