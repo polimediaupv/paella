@@ -584,6 +584,9 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 
 	addSourceStreaming:function(sourceData) {
 		var parameters = {};
+		if (this._autoplay) {
+        	parameters.autoplay = this._autoplay;
+       	}
 		if (base.parameters.get('debug')=="true") {
 			parameters.debugMode = true;
 		}

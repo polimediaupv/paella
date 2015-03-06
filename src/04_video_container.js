@@ -618,7 +618,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	paused:function() {
-		return this.masterVideo().isPaused();
+		return this.masterVideo() ? this.masterVideo().isPaused():true;
 	},
 
 	trimEnabled:function() {
@@ -717,6 +717,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 	
 	setAutoplay:function() {
+		this._autoplay = true;
 		if (this.masterVideo()) {
 			this.masterVideo().setAutoplay(true);
 		}
@@ -785,6 +786,9 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			case 'image':
 				videoNode = new paella.SlideshowVideo(videoNodeId,rect.x,rect.y,rect.w,rect.h);
 				break;
+		}
+		if (this._autoplay) {
+			videoNode.setAutoplay(true);
 		}
 		if (target=='master') {
 			videoNode.setDefaultVolume(this._defaultMasterVolume);

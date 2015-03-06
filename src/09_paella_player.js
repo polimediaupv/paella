@@ -282,6 +282,16 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			var loader = paella.initDelegate.initParams.videoLoader;
 			this.onresize();
 			loader.loadVideo(this.videoIdentifier,function() {
+				var playOnLoad = false;
+				if (base.parameters.get('autoplay')=="true" &&
+						paella.player.config.experimental &&
+						paella.player.config.experimental.autoplay &&
+						!base.userAgent.browser.IsMobileVersion)
+				{
+					paella.player.videoContainer.setAutoplay();
+					playOnLoad = true;
+				}
+
 				paella.player.videoContainer.setMasterQuality(base.parameters.list['resmaster']);
 				paella.player.videoContainer.setSlaveQuality(base.parameters.list['resslave']);
 
@@ -329,12 +339,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 					if (paella.player.isLiveStream()) {
 						This.showPlaybackBar();
 					}
-					else if (base.parameters.get('autoplay')=="true" &&
-							paella.player.config.experimental &&
-							paella.player.config.experimental.autoplay &&
-							!base.userAgent.browser.IsMobileVersion)
-					{
-						paella.player.videoContainer.setAutoplay();
+					else if (playOnLoad) {
 						This.play();
 					}
 					
