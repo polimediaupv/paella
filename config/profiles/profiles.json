@@ -42,7 +42,7 @@
 			{"aspectRatio":"16/9","left":"0","top":"0","width":"1280","height":"720"},
 			{"aspectRatio":"16/10","left":"64","top":"0","width":"1152","height":"720"},
 			{"aspectRatio":"5/3","left":"40","top":"0","width":"1200","height":"720"},
-			{"aspectRatio":"5/4","left":"190","top":"0","width":"900","height":"720"}
+			{"aspectRatio":"5/4","left":"190","top":"0","width":"900","height":"720"},
 			{"aspectRatio":"4/3","left":"160","top":"0","width":"960","height":"720"}],"visible":"true","layer":"1"},
 		"slaveVideo":{"content":"presentation","rect":[
 			{"aspectRatio":"4/3","left":"0","top":"0","width":"300","height":"300"}],"visible":"false","layer":"1"},
@@ -58,7 +58,7 @@
 			{"aspectRatio":"16/9","left":"0","top":"0","width":"1280","height":"720"},
 			{"aspectRatio":"16/10","left":"64","top":"0","width":"1152","height":"720"},
 			{"aspectRatio":"5/3","left":"40","top":"0","width":"1200","height":"720"},
-			{"aspectRatio":"5/4","left":"190","top":"0","width":"900","height":"720"}
+			{"aspectRatio":"5/4","left":"190","top":"0","width":"900","height":"720"},
 			{"aspectRatio":"4/3","left":"160","top":"0","width":"960","height":"720"}],"visible":"true","layer":"1"},
 		"background":{"content":"default_background_paella.jpg","zIndex":5,"rect":{"left":"0","top":"0","width":"1280","height":"720"},"visible":"true","layer":"0"},
 		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}}]
@@ -70,13 +70,13 @@
 			{"aspectRatio":"16/9","left":"0","top":"0","width":"1280","height":"720"},
 			{"aspectRatio":"16/10","left":"64","top":"0","width":"1152","height":"720"},
 			{"aspectRatio":"5/3","left":"40","top":"0","width":"1200","height":"720"},
-			{"aspectRatio":"5/4","left":"190","top":"0","width":"900","height":"720"}
+			{"aspectRatio":"5/4","left":"190","top":"0","width":"900","height":"720"},
 			{"aspectRatio":"4/3","left":"160","top":"0","width":"960","height":"720"}],"visible":"true","layer":"1"},
 		"slaveVideo":{"content":"presentation","rect":[
 			{"aspectRatio":"16/9","left":"50","top":"470","width":"350","height":"197"},
 			{"aspectRatio":"16/10","left":"50","top":"448","width":"350","height":"219"},
 			{"aspectRatio":"5/3","left":"50","top":"457","width":"350","height":"210"},
-			{"aspectRatio":"5/4","left":"50","top":"387","width":"350","height":"280"}
+			{"aspectRatio":"5/4","left":"50","top":"387","width":"350","height":"280"},
 			{"aspectRatio":"4/3","left":"50","top":"404","width":"350","height":"262"}],"visible":"true","layer":"1"},
 		"background":{"content":"default_background_paella.jpg","zIndex":5,"rect":{"left":"0","top":"0","width":"1280","height":"720"},"visible":"true","layer":"0"},
 		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}}]
@@ -88,13 +88,13 @@
 			{"aspectRatio":"16/9","left":"0","top":"0","width":"1280","height":"720"},
 			{"aspectRatio":"16/10","left":"64","top":"0","width":"1152","height":"720"},
 			{"aspectRatio":"5/3","left":"40","top":"0","width":"1200","height":"720"},
-			{"aspectRatio":"5/4","left":"190","top":"0","width":"900","height":"720"}
+			{"aspectRatio":"5/4","left":"190","top":"0","width":"900","height":"720"},
 			{"aspectRatio":"4/3","left":"160","top":"0","width":"960","height":"720"}],"visible":"true","layer":"1"},
 		"slaveVideo":{"content":"presentation","rect":[
 			{"aspectRatio":"16/9","left":"910","top":"470","width":"350","height":"197"},
 			{"aspectRatio":"16/10","left":"910","top":"448","width":"350","height":"219"},
 			{"aspectRatio":"5/3","left":"910","top":"457","width":"350","height":"210"},
-			{"aspectRatio":"5/4","left":"910","top":"387","width":"350","height":"280"}
+			{"aspectRatio":"5/4","left":"910","top":"387","width":"350","height":"280"},
 			{"aspectRatio":"4/3","left":"910","top":"404","width":"350","height":"262"}],"visible":"true","layer":"1"},
 		"background":{"content":"default_background_paella.jpg","zIndex":5,"rect":{"left":"0","top":"0","width":"1280","height":"720"},"visible":"true","layer":"0"},
 		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}}]
