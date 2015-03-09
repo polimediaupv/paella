@@ -46,6 +46,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	_lastSrc:null,
 	_aspectRatio:1.777777778, // 16:9
 	_hasSlides:null,
+	_imgNode:null,
 
 	initialize:function(id) {
 		var self = this;
@@ -217,11 +218,14 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		var self = this;
 
 		var src = $("#imgOverlay").attr('src');
-
+		$(self._imgNode).show();
 				if(sec > this._next || sec < this._ant) { 
 					src = self.returnSrc(sec);
-					self._lastSrc = src;
-					$( "#imgOverlay" ).attr('src', src); // UPDATING IMAGE
+					if(src){
+						self._lastSrc = src;
+						$( "#imgOverlay" ).attr('src', src); // UPDATING IMAGE
+					}
+					else self.hideImg();
 				} // RELOAD IF OUT OF INTERVAL
 					else { 	
 						if(src!=undefined) { return; }
@@ -232,6 +236,10 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 
 				
 
+	},
+	hideImg:function(){
+		var self = this;
+		$(self._imgNode).hide();
 	},
 
 	returnSrc:function(sec){
@@ -259,8 +267,10 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		thisClass._ant = ant;
 
 		i=parseInt(i);
-
-		return thisClass._images[i].thumb;
+		if(thisClass._images[i]){
+			return thisClass._images[i].thumb;
+		}
+		else return false;
 	},
 
 	setupTimeImageOverlay:function(time_str,top,width){
@@ -278,6 +288,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		var img = document.createElement("img");
 		img.className =  "imgOverlay";
 		img.id = "imgOverlay";
+		self._imgNode = img;
 
 		div.appendChild(img);
 		}
