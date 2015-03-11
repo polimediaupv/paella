@@ -234,6 +234,9 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 
 	        $(input).change(function(){
 	        	var text = $(input).val();
+				if(thisClass._searchTimer != null){
+					thisClass._searchTimer.cancel();
+				}
 	        	thisClass.doSearch(text, searchBody);
 			});
 
