@@ -22,20 +22,10 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 		var self = this;
 		$('.searchButton').click(function(event){
 			if(self._open){
-				paella.events.trigger(paella.events.play);
-				paella.keyManager.enabled = true;
 				self._open = false;
 			}
 			else {
-				//paella.events.trigger(paella.events.pause);
-				paella.keyManager.enabled = false;
 				self._open = true;
-				
-   				$("#searchBarInput").focus(function(){
-   					 	paella.events.trigger(paella.events.pause);
-   				});
-				
-
 				setTimeout(function(){
    					 $("#searchBarInput").focus();
 				}, 0);
@@ -47,6 +37,8 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 		//config
 		self._colorSearch = self.config.colorSearch || false;
 		self._sortDefault = self.config.sortType || "time";
+		
+		paella.events.bind(paella.events.controlBarWillHide, function(evt) { if(self._open)paella.player.controls.cancelHideBar(); });
 	},
 
 	prettyTime:function(seconds){
@@ -246,6 +238,16 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 					thisClass.doSearch(text, searchBody);
 				}, thisClass._searchTimerTime);			
 			});
+			
+			$(input).focus(function(){
+				paella.keyManager.enabled = false;
+			});
+			
+			$(input).focusout(function(){
+				paella.keyManager.enabled = true;
+			});
+			
+			
 
         domElement.appendChild(searchPluginContainer);
 
