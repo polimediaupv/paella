@@ -1,11 +1,14 @@
 {
+	"metadata":{
+		"duration":909
+	},
 	"streams": [
 		{
 			"sources": {
 				"mp4": [
 					{
 						"src": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/media/240-presenter.mp4",
-						"type": "video/mp4",
+						"mimetype": "video/mp4",
 						"res": {
 							"w": 426,
 							"h": 240
@@ -13,7 +16,7 @@
 					},
 					{
 						"src": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/media/480-presenter.mp4",
-						"type": "video/mp4",
+						"mimetype": "video/mp4",
 						"res": {
 							"w": 852,
 							"h": 480
@@ -21,7 +24,7 @@
 					},
 					{
 						"src": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/media/720-presenter.mp4",
-						"type": "video/mp4",
+						"mimetype": "video/mp4",
 						"res": {
 							"w": 1280,
 							"h": 720
@@ -29,7 +32,7 @@
 					},
 					{
 						"src": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/media/720-presenter.mp4",
-						"type": "video/mp4",
+						"mimetype": "video/mp4",
 						"res": {
 							"w": 1920,
 							"h": 1080
@@ -44,7 +47,7 @@
 				"mp4": [
 					{
 						"src": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/media/240-presentation.mp4",
-						"type": "video/mp4",
+						"mimetype": "video/mp4",
 						"res": {
 							"w": 320,
 							"h": 240
@@ -52,7 +55,7 @@
 					},
 					{
 						"src": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/media/480-presentation.mp4",
-						"type": "video/mp4",
+						"mimetype": "video/mp4",
 						"res": {
 							"w": 640,
 							"h": 480
@@ -60,7 +63,7 @@
 					},
 					{
 						"src": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/media/720-presentation.mp4",
-						"type": "video/mp4",
+						"mimetype": "video/mp4",
 						"res": {
 							"w": 962,
 							"h": 720
@@ -68,7 +71,7 @@
 					},
 					{
 						"src": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/media/720-presentation.mp4",
-						"type": "video/mp4",
+						"mimetype": "video/mp4",
 						"res": {
 							"w": 1442,
 							"h": 1080
@@ -77,7 +80,7 @@
 				],
 				"image": [
 					{
-						"type": "image/jpeg",
+						"mimetype": "image/jpeg",
 						"frames": [
 							{ "time":854, "src": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/slides/3d90109c-9608-44c1-8660-fce3f216d716/presentation_cut.jpg" },
 							{ "time":751, "src": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/slides/598bd2ba-4fef-4886-884e-0ab82176f13d/presentation_cut.jpg" },
@@ -92,7 +95,7 @@
 						}
 					},
 					{
-						"type": "image/jpeg",
+						"mimetype": "image/jpeg",
 						"frames": [
 							{ "time":854, "src": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/slides/403de1df-aa66-44c0-b600-7683acf249b8/presentation_cut.jpg" },
 							{ "time":751, "src": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/slides/73a6564c-b2d6-4896-b0f1-38129dde2c85/presentation_cut.jpg" },
@@ -140,5 +143,41 @@
 			"url": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/slides/3d90109c-9608-44c1-8660-fce3f216d716/presentation_cut.jpg",
 			"thumb": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/slides/403de1df-aa66-44c0-b600-7683acf249b8/presentation_cut.jpg"
 		}
-	]
+	],
+	"captions": [
+		{
+			"lang": "es",
+			"text": "Español (traducción automática)",
+			"format": "dfxp",
+			"url": "https://fuster.cc.upv.es/tl-pm/dfxp?db=pm&id=be0c7738-039d-9445-8237-8b85f37cd303&lang=es&format=1&pol=0"
+		},
+		{
+			"lang": "en",
+			"text": "English (automatic transciption)",
+			"format": "dfxp",
+			"url": "https://fuster.cc.upv.es/tl-pm/dfxp?db=pm&id=be0c7738-039d-9445-8237-8b85f37cd303&lang=en&format=1&pol=0"
+		},
+		{
+			"lang": "ca",
+			"text": "Valencià/Català (traducció automàtica)",
+			"format": "dfxp",
+			"url": "https://fuster.cc.upv.es/tl-pm/dfxp?db=pm&id=be0c7738-039d-9445-8237-8b85f37cd303&lang=ca&format=1&pol=0"
+		}
+	],
+	"blackboard": {
+		"res": {
+			"w": 2592,
+			"h": 1944
+		},
+		"duration":909,
+		"mimetype": "image/jpeg",
+		"frames": [
+			{ "time": 0, "src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001110.png/001110.jpg" },
+			{ "time": 30, "src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001110.png/001110.jpg" },
+			{ "time": 40, "src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001110.png/001110.jpg" },
+			{ "time": 50, "src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001110.png/001110.jpg" },
+			{ "time": 60, "src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001110.png/001110.jpg" },
+			{ "time": 80, "src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001110.png/001110.jpg" }
+		]
+	}
 }

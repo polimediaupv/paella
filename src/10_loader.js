@@ -68,6 +68,12 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 		if (data.frameList) {
 			this.loadFrameData(data);
 		}
+		if (data.captions) {
+			this.loadCaptions(data.captions);
+		}
+		if (data.blackboard) {
+			this.loadBlackboard(data.streams[0],data.blackboard);
+		}
 		this.streams = data.streams;
 		this.frameList = data.frameList;
 		this.loadStatus = this.streams.length>0;
@@ -86,7 +92,7 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 	},
 
 	loadStream:function(stream) {
-		if (stream.sources && stream.sources.image) {
+		if (stream.sources.image) {
 			stream.sources.image.forEach(function(image) {
 				if (image.frames.forEach) {
 					var newFrames = {};
@@ -98,6 +104,48 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 				}
 			});
 		}
+		for (var type in stream.sources) {
+			if (type!='image') {
+				var source = stream.sources[type];
+				source.forEach(function(sourceItem) {
+					sourceItem.type = sourceItem.mimetype;
+				});
+			}
+		}
+	},
+
+	loadCaptions:function(captions) {
+		if (captions) {
+			for (var i=0; i<captions.length; ++i) {
+				var url = captions[i].url;
+
+				if (! /^[a-zA-Z]+:\/\//.test(url)) {
+					url = this.getRepository() + "/" + paella.initDelegate.getId() + "/" + url;
+				}
+				var c = new paella.captions.Caption(i, captions[i].format, url, {code: captions[i].lang, txt: captions[i].text});
+				paella.captions.addCaptions(c);
+			}
+		}
+	},
+
+	loadBlackboard:function(stream, blackboard) {
+		if (!stream.sources.image) {
+			stream.sources.image = [];
+		}
+		var imageObject = {
+			count: blackboard.frames.length,
+			duration: blackboard.duration,
+			mimetype: blackboard.mimetype,
+			res: blackboard.res,
+			frames: {}
+		};
+
+		blackboard.frames.forEach(function(frame) {
+			var id = "frame_" + Math.round(frame.time);
+			imageObject.frames[id] = frame.src;
+		});
+
+		stream.sources.image.push(imageObject);
 	}
 });
 
