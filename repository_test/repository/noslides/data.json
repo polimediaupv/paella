@@ -1,0 +1,23 @@
+{
+	"metadata": {
+		"duration": 525.955,
+		"title": "Captions Test - Polimedia Excel course"
+	},
+	"streams": [
+		{
+			"sources": {
+				"mp4": [
+					{
+						"src": "http://matterhorn.cc.upv.es:8080/static/engage-player/6b237477-5a2e-4cfb-b30a-3685ea4dd2eb/88d7ab26-ca08-4953-81fb-2872d57650f7/polimedia_muxed.mp4",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1280",
+							"h": "720"
+						}
+					}
+				]
+			},
+			"preview": "http://matterhorn.cc.upv.es:8080/static/engage-player/6b237477-5a2e-4cfb-b30a-3685ea4dd2eb/attachment-2/polimedia_muxed.jpg"
+		}
+	]
+}
