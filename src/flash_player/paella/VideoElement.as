@@ -86,6 +86,7 @@ public class VideoElement extends Sprite implements IMediaElement {
 		}
 
 		_video = new Video();
+		_video.smoothing = true;
 		addChild(_video);
 		
 		loadUrl(url);
