@@ -87,6 +87,7 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	slaveVideoData:null,
 	currentMasterVideoData:null,
 	currentSlaveVideoData:null,
+	_force:false,
 
 	initialize:function(id) {
 		var self = this;
@@ -111,8 +112,9 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 
 	triggerTimeupdate:function() {
 		var thisClass = this;
-		if (!this.paused()) {
+		if (!this.paused() || thisClass._force) {
 			paella.events.trigger(paella.events.timeupdate,{videoContainer:thisClass, currentTime:thisClass.currentTime() });
+			thisClass._force = false;
 		}
 	},
 
@@ -140,12 +142,16 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	},
 
 	seekTo:function(newPositionPercent) {
+		var thisClass = this;
 		this.setCurrentPercent(newPositionPercent);
+		thisClass._force = true;
 		this.triggerTimeupdate();
 	},
 
 	seekToTime:function(time) {
+		var thisClass = this;
 		this.setCurrentTime(time);
+		thisClass._force = true;
 		this.triggerTimeupdate();
 	},
 
