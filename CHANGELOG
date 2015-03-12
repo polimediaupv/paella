@@ -14,6 +14,7 @@ CHANGELOG
  * Search service added to the core.
  * New Plugin: es.upv.paella.searchPlugin
  * userTracking logger added to the core.
+ * New DefaultVideoLoader added to Paella core
 
 * Paella 4.0.12 (19-2-2015)
 
