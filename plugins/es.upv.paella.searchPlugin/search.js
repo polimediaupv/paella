@@ -232,14 +232,16 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 	        	thisClass.doSearch(text, searchBody);
 			});
 
-			$(input).keyup(function(){
-				var text = $(input).val();
-				if(thisClass._searchTimer != null){
-					thisClass._searchTimer.cancel();
-				}
-				thisClass._searchTimer = new base.Timer(function(timer) {
-					thisClass.doSearch(text, searchBody);
-				}, thisClass._searchTimerTime);			
+			$(input).keyup(function(event){
+				if(event.keyCode != 13){ //IF no ENTER PRESSED SETUP THE TIMER
+					var text = $(input).val();
+					if(thisClass._searchTimer != null){
+						thisClass._searchTimer.cancel();
+					}
+					thisClass._searchTimer = new base.Timer(function(timer) {
+						thisClass.doSearch(text, searchBody);
+					}, thisClass._searchTimerTime);
+				}			
 			});
 			
 			$(input).focus(function(){
