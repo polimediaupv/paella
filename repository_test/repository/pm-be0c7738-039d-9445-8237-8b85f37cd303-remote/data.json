@@ -1,0 +1,92 @@
+{
+	"metadata": {
+		"duration": 0,
+		"title": ""
+	},
+	"streams": [
+		{
+			"sources": {
+				"mp4": [
+					{
+						"src": "http://paellaplayer.upv.es/demo/repository/pm-be0c7738-039d-9445-8237-8b85f37cd303/video/720p.mp4",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1280",
+							"h": "720"
+						}
+					},
+					{
+						"src": "http://paellaplayer.upv.es/demo/repository/pm-be0c7738-039d-9445-8237-8b85f37cd303/video/360p.mp4",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "640",
+							"h": "360"
+						}
+					}
+				],
+				"image": [
+					{
+						"mimetype": "image/jpeg",
+						"frames": [
+							{
+								"time": 0,
+								"src": "http://paellaplayer.upv.es/demo/repository/pm-be0c7738-039d-9445-8237-8b85f37cd303/slides/thumb_0.jpg"
+							}
+						],
+						"count": 1,
+						"duration": 0,
+						"res": {
+							"w": 320,
+							"h": 180
+						}
+					},
+					{
+						"mimetype": "image/jpeg",
+						"frames": [
+							{
+								"time": 0,
+								"src": "http://paellaplayer.upv.es/demo/repository/pm-be0c7738-039d-9445-8237-8b85f37cd303/slides/thumb_0.jpg"
+							}
+						],
+						"count": 1,
+						"duration": 0,
+						"res": {
+							"w": 1280,
+							"h": 720
+						}
+					}
+				]
+			},
+			"preview": "http://paellaplayer.upv.es/demo/repository/pm-be0c7738-039d-9445-8237-8b85f37cd303/slides/thumb_0.jpg"
+		}
+	],
+	"frameList": [
+		{
+			"id": "frame_0",
+			"mimetype": "image/jpeg",
+			"time": 0,
+			"url": "http://paellaplayer.upv.es/demo/repository/pm-be0c7738-039d-9445-8237-8b85f37cd303/slides/thumb_0.jpg",
+			"thumb": "http://paellaplayer.upv.es/demo/repository/pm-be0c7738-039d-9445-8237-8b85f37cd303/slides/thumb_0.jpg"
+		}
+	],
+	"captions": [
+		{
+			"lang": "es",
+			"text": "Español (traducción automática)",
+			"format": "dfxp",
+			"url": "https://fuster.cc.upv.es/tl-pm/dfxp?db=pm&id=be0c7738-039d-9445-8237-8b85f37cd303&lang=es&format=1&pol=0"
+		},
+		{
+			"lang": "en",
+			"text": "English (automatic transciption)",
+			"format": "dfxp",
+			"url": "https://fuster.cc.upv.es/tl-pm/dfxp?db=pm&id=be0c7738-039d-9445-8237-8b85f37cd303&lang=en&format=1&pol=0"
+		},
+		{
+			"lang": "ca",
+			"text": "Valencià/Català (traducció automàtica)",
+			"format": "dfxp",
+			"url": "https://fuster.cc.upv.es/tl-pm/dfxp?db=pm&id=be0c7738-039d-9445-8237-8b85f37cd303&lang=ca&format=1&pol=0"
+		}
+	]
+}

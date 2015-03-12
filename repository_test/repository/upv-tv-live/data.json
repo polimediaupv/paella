@@ -1,0 +1,24 @@
+{
+	"metadata": {
+		"duration": 0,
+		"title": "UPV-TV"
+	},
+	"streams": [
+		{
+			"sources": {
+				"rtmp": [
+					{
+						"src": "rtmp://moneres.upv.es/tvupv/livestream",
+						"mimetype": "video/x-flv",
+						"res": {
+							"w": "1280",
+							"h": "720"
+						},
+						"isLiveStream": true
+					}
+				]
+			},
+			"preview": null
+		}
+	]
+}

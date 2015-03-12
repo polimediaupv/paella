@@ -1,0 +1,79 @@
+{
+	"metadata": {
+		"duration": 525.955,
+		"title": "Captions Test - Polimedia Excel course"
+	},
+	"streams": [
+		{
+			"sources": {
+				"mp4": [
+					{
+						"src": "http://matterhorn.cc.upv.es:8080/static/engage-player/6b237477-5a2e-4cfb-b30a-3685ea4dd2eb/88d7ab26-ca08-4953-81fb-2872d57650f7/polimedia_muxed.mp4",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1280",
+							"h": "720"
+						}
+					}
+				],
+				"image": [
+					{
+						"mimetype": "image/jpeg",
+						"frames": [
+							{
+								"time": 0,
+								"src": "http://matterhorn.cc.upv.es:8080/static/engage-player/6b237477-5a2e-4cfb-b30a-3685ea4dd2eb/7d1ea5cf-0c43-4b8e-90ba-65d30cd9bf67/polimedia_muxed.jpg"
+							},
+							{
+								"time": 490,
+								"src": "http://matterhorn.cc.upv.es:8080/static/engage-player/6b237477-5a2e-4cfb-b30a-3685ea4dd2eb/4d76a39b-7f1f-4efc-a08a-391dd58158ac/polimedia_muxed.jpg"
+							}
+						],
+						"count": 2,
+						"duration": 525,
+						"res": {
+							"w": 320,
+							"h": 180
+						}
+					},
+					{
+						"mimetype": "image/jpeg",
+						"frames": [
+							{
+								"time": 0,
+								"src": "http://matterhorn.cc.upv.es:8080/static/engage-player/6b237477-5a2e-4cfb-b30a-3685ea4dd2eb/d8f41c6c-7af4-4f04-86d0-38368ea27842/polimedia_muxed.jpg"
+							},
+							{
+								"time": 490,
+								"src": "http://matterhorn.cc.upv.es:8080/static/engage-player/6b237477-5a2e-4cfb-b30a-3685ea4dd2eb/2b9251dc-3844-4490-bc88-4c92cb55d4c0/polimedia_muxed.jpg"
+							}
+						],
+						"count": 2,
+						"duration": 525,
+						"res": {
+							"w": 1280,
+							"h": 720
+						}
+					}
+				]
+			},
+			"preview": "http://matterhorn.cc.upv.es:8080/static/engage-player/6b237477-5a2e-4cfb-b30a-3685ea4dd2eb/attachment-2/polimedia_muxed.jpg"
+		}
+	],
+	"frameList": [
+		{
+			"id": "frame_0",
+			"mimetype": "image/jpeg",
+			"time": 0,
+			"url": "http://matterhorn.cc.upv.es:8080/static/engage-player/6b237477-5a2e-4cfb-b30a-3685ea4dd2eb/7d1ea5cf-0c43-4b8e-90ba-65d30cd9bf67/polimedia_muxed.jpg",
+			"thumb": "http://matterhorn.cc.upv.es:8080/static/engage-player/6b237477-5a2e-4cfb-b30a-3685ea4dd2eb/d8f41c6c-7af4-4f04-86d0-38368ea27842/polimedia_muxed.jpg"
+		},
+		{
+			"id": "frame_490",
+			"mimetype": "image/jpeg",
+			"time": 490,
+			"url": "http://matterhorn.cc.upv.es:8080/static/engage-player/6b237477-5a2e-4cfb-b30a-3685ea4dd2eb/4d76a39b-7f1f-4efc-a08a-391dd58158ac/polimedia_muxed.jpg",
+			"thumb": "http://matterhorn.cc.upv.es:8080/static/engage-player/6b237477-5a2e-4cfb-b30a-3685ea4dd2eb/2b9251dc-3844-4490-bc88-4c92cb55d4c0/polimedia_muxed.jpg"
+		}
+	]
+}
