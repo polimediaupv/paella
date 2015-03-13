@@ -82,32 +82,3 @@ Class ("paella.editor.Editor", {
 	}
 });
 
-/*
-var EditControl = Class.create(paella.DomNode,{
-	buttonId:'',
-
-	initialize:function(id) {
-		this.buttonId = id + '_button';
-		var style = {position:'absolute',top:'0px',right:'0px'};
-		this.parent('div',id,style);
-		this.domElement.className = 'editControlContainer';
-		var editButton = this;
-		this.addNode(new paella.Button(this.buttonId,'editButton',function(event) {
-			editButton.toggleEditor();
-		},false));
-	},
-
-	toggleEditor:function() {
-		if ((paella.extended) || (window!=window.top)){
-			window.open("index.html?id=" + paella.player.videoIdentifier);
-		}
-		else{
-			$(document).trigger(paella.events.showEditor);
-		}
-	},
-
-	getButton:function() {
-		return this.getNode(this.buttonId);
-	}
-});
-*/

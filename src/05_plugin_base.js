@@ -361,7 +361,6 @@ Class ("paella.UIPlugin", paella.DeferredLoadPlugin, {
 	checkVisibility: function() {
 		var modes = this.config.visibleOn || [	paella.PaellaPlayer.mode.standard, 
 												paella.PaellaPlayer.mode.fullscreen, 
-												paella.PaellaPlayer.mode.extended, 
 												paella.PaellaPlayer.mode.embed ];
 		
 		var visible = false;

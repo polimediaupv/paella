@@ -16,9 +16,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		else if (window.self !== window.top) {
 			return paella.PaellaPlayer.mode.embed;
 		}
-		else if (paella.extended) {
-			return paella.PaellaPlayer.mode.extended;			
-		}
 
 		return paella.PaellaPlayer.mode.standard;
 	},
@@ -477,7 +474,6 @@ var PaellaPlayer = paella.PaellaPlayer;
 paella.PaellaPlayer.mode = {
 	standard: 'standard',
 	fullscreen: 'fullscreen',
-	extended: 'extended',
 	embed: 'embed'
 };
 
