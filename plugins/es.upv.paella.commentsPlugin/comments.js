@@ -11,7 +11,7 @@ Class ("paella.plugins.CommentsPlugin",paella.TabBarPlugin,{
 	getSubclass:function() { return "showCommentsTabBar"; },
 	getName:function() { return "es.upv.paella.commentsPlugin"; },
 	getTabName:function() { return base.dictionary.translate("Comments"); },
-	checkEnabled:function(onSuccess) { onSuccess(paella.extended); },
+	checkEnabled:function(onSuccess) { onSuccess(true); },
 	getIndex:function() { return 40; },
 	getDefaultToolTip:function() { return base.dictionary.translate("Comments"); },	
 				     
