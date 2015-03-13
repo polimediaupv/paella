@@ -57,6 +57,9 @@ Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
 				thisClass.buttonItems[profile] = buttonItem;
 				domElement.appendChild(buttonItem);
 				thisClass.buttons.push(buttonItem);
+				if(paella.player.selectedProfile == profile){
+					thisClass.buttonItems[profile].className = thisClass.getButtonItemClass(profile,true);
+				}
 			}
 			thisClass.selected_button = thisClass.buttons.length;
 		});
