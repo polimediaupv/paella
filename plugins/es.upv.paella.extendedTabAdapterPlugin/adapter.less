@@ -1,0 +1,85 @@
+.buttonPlugin.extendedTabAdapterPlugin {
+	background-position: -500% -200%;
+}
+
+
+.buttonPluginPopUp.extendedTabAdapterPlugin {
+	background-image: none;
+	background-color: rgba(0,0,0,0);
+}
+
+
+
+.extendedTabAdapterPlugin > .tabsPluginContainer {
+	width: 600px;
+	display: block;
+
+/*
+	box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.48);
+	border-radius: 3px 3px 5px 5px;
+	margin: 3px 3px 3px 3px;
+*/
+}
+
+
+.extendedTabAdapterPlugin > .tabsPluginContainer > .tabsLabelContainer {
+
+}
+
+.extendedTabAdapterPlugin > .tabsPluginContainer > .tabsLabelContainer > .tabLabel {
+	display:inline;
+	background-color: @backgroundColor;
+	line-height: 26px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 7px;
+	padding-bottom: 7px;
+	cursor: pointer;
+	cursor: hand;
+	font-family: sans-serif;
+	box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.48);
+	border-radius: 6px 6px 0px 0px;
+	font-size: 12px;
+	margin-left:1px;
+}
+
+.extendedTabAdapterPlugin > .tabsPluginContainer > .tabsLabelContainer > .tabLabel.enabled {
+	/*background-color: #6c6c6c;*/
+	/*color:white;*/
+	cursor:default;
+	box-shadow: inset 0px 0px 12px rgba(0,0,0,0.9);
+}
+
+.extendedTabAdapterPlugin > .tabsPluginContainer > .tabsLabelContainer > .tabLabel.disabled {
+	background-color: #e6e6e6;
+	color: black;	
+}
+
+
+
+
+
+
+.extendedTabAdapterPlugin > .tabsPluginContainer > .tabsContentContainer {
+	height: 200px;
+	background-color: @backgroundColor;
+	padding-left: 5px;
+	padding-top: 9px;
+	padding-right: 5px;
+
+/*	
+	font-size: 12px;
+	line-height: 14px;
+*/
+}
+
+
+.extendedTabAdapterPlugin > .tabsPluginContainer > .tabsContentContainer > .tabContent.enabled {
+	display: block;
+}
+
+.extendedTabAdapterPlugin > .tabsPluginContainer > .tabsContentContainer > .tabContent.disabled {
+	display: none;
+}
+
+
