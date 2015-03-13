@@ -2,6 +2,8 @@ Class ("paella.plugins.PlaybackRate",paella.ButtonPlugin,{
 	buttonItems:null,
 	buttons: [],
 	selected_button: null,
+	defaultRate:null,
+	_domElement:null,
 
 	getAlignment:function() { return 'left'; },
 	getSubclass:function() { return "showPlaybackRateButton"; },
@@ -16,10 +18,12 @@ Class ("paella.plugins.PlaybackRate",paella.ButtonPlugin,{
 
 	setup:function() {
 		var thisClass = this;
+		thisClass.defaultRate = 1.0;
     },
 
 	buildContent:function(domElement) {
 		var This = this;
+		This._domElement = domElement;
 		this.buttonItems = {};
 		//domElement.appendChild(This.getItemButton("0.5x",0.5));
 		domElement.appendChild(This.getItemButton("0.75x",0.75));
@@ -30,7 +34,12 @@ Class ("paella.plugins.PlaybackRate",paella.ButtonPlugin,{
 	
 	getItemButton:function(label,rate) {
 		var elem = document.createElement('div');
-		elem.className = this.getButtonItemClass(label,false);
+		if(rate == 1.0){
+			elem.className = this.getButtonItemClass(label,true);
+		}
+		else{
+			elem.className = this.getButtonItemClass(label,false);
+		}
 		elem.id = label + '_button';
 		elem.innerHTML = label;
 		elem.data = {
@@ -45,10 +54,17 @@ Class ("paella.plugins.PlaybackRate",paella.ButtonPlugin,{
 	},
 	
 	onItemClick:function(button,label,rate) {
+		var self = this;
 		//paella.player.videoContainer.setPlaybackRate(rate);
 		paella.events.trigger(paella.events.setPlaybackRate, rate);
 		this.setText(label);
 		paella.events.trigger(paella.events.hidePopUp,{identifier:this.getName()});
+
+		var arr = self._domElement.children;
+		for(var i=0; i < arr.length; i++){
+			arr[i].className = self.getButtonItemClass(i,false);
+		}
+		button.className = self.getButtonItemClass(i,true);
 	},
 	
 	getText:function() {
