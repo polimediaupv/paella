@@ -235,40 +235,46 @@ Class ("paella.PopUpContainer", paella.DomNode,{
 		}
 	},
 
-	showContainer:function(identifier,button) {
+	showContainer:function(identifier, button) {
+		var thisClass = this;
 		var width = 0;
-		var container = this.containers[identifier];
-		var right = $(button.parentElement).width() - $(button).position().left - $(button).width();
-		if (container && this.currentContainerId!=identifier && this.currentContainerId!=-1) {
-			var prevContainer = this.containers[this.currentContainerId];
-			prevContainer.plugin.willHideContent();
-			prevContainer.button.className = prevContainer.button.className.replace(' selected','');
-			container.button.className = container.button.className + ' selected';
-			$(prevContainer.element).hide();
-			prevContainer.plugin.didHideContent();
-			container.plugin.willShowContent();
-			$(container.element).show();
-			width = $(container.element).width();
-			$(this.domElement).css({width:width + 'px',right:right + 'px'});
-			this.currentContainerId = identifier;
-			container.plugin.didShowContent();
-		}
-		else if (container && this.currentContainerId==identifier) {
+		
+		function hideContainer(container) {
 			container.plugin.willHideContent();
 			$(container.element).hide();
-			$(this.domElement).css({width:'0px'});
+			$(thisClass.domElement).css({width:'0px'});
 			container.button.className = container.button.className.replace(' selected','');
-			this.currentContainerId = -1;
-			container.plugin.didHideContent();
+			thisClass.currentContainerId = -1;
+			container.plugin.didHideContent();			
+		}
+		function showContainer(container) {			
+			container.plugin.willShowContent();
+			container.button.className = container.button.className + ' selected';
+			$(container.element).show();
+			width = $(container.element).width();			
+			if (container.plugin.getAlignment() == 'right') {
+				var right = $(button.parentElement).width() - $(button).position().left - $(button).width();
+				$(thisClass.domElement).css({width:width + 'px', right:right + 'px', left:''});				
+			}
+			else {
+				var left = $(button).position().left;
+				$(thisClass.domElement).css({width:width + 'px', left:left + 'px', right:''});						
+			}			
+			thisClass.currentContainerId = identifier;
+			container.plugin.didShowContent();			
+		}
+		
+		var container = this.containers[identifier];
+		if (container && this.currentContainerId!=identifier && this.currentContainerId!=-1) {
+			var prevContainer = this.containers[this.currentContainerId];
+			hideContainer(prevContainer);
+			showContainer(container);
+		}
+		else if (container && this.currentContainerId==identifier) {
+			hideContainer(container);
 		}
 		else if (container) {
-			container.button.className = container.button.className + ' selected';
-			container.plugin.willShowContent();
-			$(container.element).show();
-			width = $(container.element).width();
-			$(this.domElement).css({width:width + 'px',right:right + 'px'});
-			this.currentContainerId = identifier;
-			container.plugin.didShowContent();
+			showContainer(container);
 		}
 	},
 
