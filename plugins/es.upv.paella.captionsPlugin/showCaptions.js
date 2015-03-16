@@ -19,7 +19,7 @@ Class ("paella.plugins.CaptionsOnScreen",paella.EventDrivenPlugin,{
 	},
 
 	getEvents:function() {
-		return [paella.events.controlBarDidHide, paella.events.controlBarDidShow, paella.events.captionsEnabled, paella.events.captionsDisabled ,paella.events.timeUpdate];
+		return [paella.events.controlBarDidHide, paella.events.resize, paella.events.controlBarDidShow, paella.events.captionsEnabled, paella.events.captionsDisabled ,paella.events.timeUpdate];
 	},
 
 	onEvent:function(eventType,params) {
@@ -31,6 +31,16 @@ Class ("paella.plugins.CaptionsOnScreen",paella.EventDrivenPlugin,{
 				if(thisClass.lastEvent == eventType || thisClass.captions==false)break;
 				thisClass.moveCaptionsOverlay("down");
 				break;
+			case paella.events.resize:
+				if(thisClass.captions==false)break;
+				if(paella.player.controls.isHidden()){
+					thisClass.moveCaptionsOverlay("down");
+				}
+				else {
+					thisClass.moveCaptionsOverlay("top");
+				}
+				break;
+
 			case paella.events.controlBarDidShow:
 				if(thisClass.lastEvent == eventType || thisClass.captions==false)break;
 				thisClass.moveCaptionsOverlay("top");

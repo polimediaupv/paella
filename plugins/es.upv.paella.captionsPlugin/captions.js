@@ -81,7 +81,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 		if(time){
 			id = thisClass.searchIntervaltoHighlight(time);
 
-			if(id){
+			if(id != null){
 				sel = $( ".bodyInnerContainer[sec-id='"+id+"']" );
 
 				if(sel != thisClass._lasSel){
@@ -111,7 +111,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 				if(l.begin < time.currentTime && time.currentTime < l.end) thisClass.resul = l.id;
 			});
 		}
-		if(thisClass.resul) return thisClass.resul;
+		if(thisClass.resul != null) return thisClass.resul;
 		else return null;
 	},
 
