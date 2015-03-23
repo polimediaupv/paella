@@ -786,7 +786,12 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 				videoNode.streamingMode = false;
 				break;
 			case 'streaming':
-				videoNode = new paella.FlashVideo(videoNodeId,rect.x,rect.y,rect.w,rect.h);
+				if (this.supportHLS() && data.sources.hls) {
+					videoNode = new paella.Html5Video(videoNodeId,rect.x,rect.y,rect.w,rect.h);
+				}
+				else {
+					videoNode = new paella.FlashVideo(videoNodeId, rect.x, rect.y, rect.w, rect.h);
+				}
 				videoNode.streamingMode = true;
 				break;
 			case 'image':
@@ -821,6 +826,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		var webmSource = videoData.sources.webm;
 		var flvSource = videoData.sources.flv;
 		var rtmpSource = videoData.sources.rtmp;
+		var hlsSource = videoData.sources.hls;
 		var imageSource = videoData.sources.image;
 
 		var selectedSource = null;
@@ -842,14 +848,21 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		else if (mp4Source && type=="flash") {
 			selectedSource = mp4Source;
 		}
-		else if (rtmpSource && type=="streaming"){
+		else if (rtmpSource && !this.supportHLS() && type=="streaming"){
 			selectedSource = rtmpSource;
+		}
+		else if (hlsSource && this.supportHLS() && type=="streaming") {
+			selectedSource = hlsSource;
 		}
 		else if (imageSource && type=="image") {
 			selectedSource = imageSource;
 		}
 		
 		return selectedSource;
+	},
+
+	supportHLS:function() {
+		return base.userAgent.system.iOS;
 	},
 
 	setMonoStreamMode:function() {

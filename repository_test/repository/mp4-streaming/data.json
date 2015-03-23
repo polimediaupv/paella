@@ -11,6 +11,16 @@
 						"src": "rtmp://flash.oit.duke.edu/vod/MP4:test/brunswick.m4v",
 						"mimetype": "video/mp4",
 						"res": {
+							"w": 1280,
+							"h": 720
+						}
+					}
+				],
+				"hls": [
+					{
+						"src": "http://playertest.longtailvideo.com/adaptive/bipbop/bipbop.m3u8",
+						"mimetype": "video/mp4",
+						"res": {
 							"w": "1280",
 							"h": "720"
 						}

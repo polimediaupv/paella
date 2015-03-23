@@ -198,7 +198,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		this._images = {};
 		var n = paella.initDelegate.initParams.videoLoader.frameList;
 
-		if(Object.keys(n).length === 0) { self._hasSlides = false; return;}
+		if( !n || Object.keys(n).length === 0) { self._hasSlides = false; return;}
 		else self._hasSlides = true;
 
 

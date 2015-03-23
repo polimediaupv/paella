@@ -127,11 +127,12 @@ Class ("paella.VideoLoader", {
 		if (this.streams.length>streamIndex) {
 			var stream = this.streams[streamIndex];
 
-			if (stream.sources.rtmp) status = true;
+			if (base.userAgent.browser.IsMobileVersion && stream.sources.hls) status = true;
+			else if (!base.userAgent.browser.IsMobileVersion && stream.sources.rtmp) status = true;
 			else status = false;
 		}
 
-		return status && !base.userAgent.browser.IsMobileVersion;
+		return status;
 	},
 
 	isStreamCompatible:function(streamIndex,method) {
