@@ -786,7 +786,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 				videoNode.streamingMode = false;
 				break;
 			case 'streaming':
-				if (this.supportHLS()) {
+				if (this.supportHLS() && data.sources.hls) {
 					videoNode = new paella.Html5Video(videoNodeId,rect.x,rect.y,rect.w,rect.h);
 				}
 				else {
