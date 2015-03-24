@@ -105,11 +105,16 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 			});
 		}
 		for (var type in stream.sources) {
-			if (type!='image') {
-				var source = stream.sources[type];
-				source.forEach(function(sourceItem) {
-					sourceItem.type = sourceItem.mimetype;
-				});
+			if (stream.sources[type]) {
+				if (type != 'image') {
+					var source = stream.sources[type];
+					source.forEach(function (sourceItem) {
+						sourceItem.type = sourceItem.mimetype;
+					});
+				}
+			}
+			else {
+				delete stream.sources[type];
 			}
 		}
 	},
