@@ -13,7 +13,7 @@
                         "description":"Url of the video stream",
                         "type":"string"
                     },
-                    "type":{
+                    "mimetype":{
                         "description":"Mimetype of the video",
                         "type":"string",
                         "enum":[
@@ -46,6 +46,14 @@
         }
     },
     "properties":{
+		"metadata":{
+			"description" : "Additional video data",
+			"type":"object",
+			"properties":{
+				"title" : { "type" : "string" },
+				"duration" : { "type" : "number" }
+			}
+		},
         "streams":{
             "description" : "Video streams, paella by default accepts a max of 2",
             "propertyOrder": 1,

@@ -9,7 +9,7 @@
                 "description":"Url of the video stream",
                 "type":"string"
             },
-            "type":{
+            "mimetype":{
                 "description":"Mimetype of the video",
                 "type":"string",
                 "enum":[
