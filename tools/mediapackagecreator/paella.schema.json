@@ -56,127 +56,145 @@
                 {
                     "sources":{
                         "description" : "The source of the video stream, can be a video or a set of images",
-                        "oneOf":[
-                            {
+                        "type":"object",
+                        "properties":
+                        {
+                            "mp4":{
+                                "oneOf":[
+                                    {
 
-                                "title":"mp4",
-                                "type":"object",
-                                "properties":
-                                {
-                                    "mp4":{
+                                        "title":"mp4",
                                         "$ref":"videostream.schema.json"
+                                    },
+                                    {
+                                        "type":"null"
                                     }
-                                }
+                                ]
                             },
-                            {
-                                "title":"ogg",
-                                "type":"object",
-                                "properties":
-                                {
-                                    "ogg":{
+                            "ogg":{
+                                "oneOf":[
+                                    {
+
+                                        "title":"ogg",
                                         "$ref":"videostream.schema.json"
+                                    },
+                                    {
+                                        "type":"null"
                                     }
-                                }
+                                ]
                             },
-                            {
-                                "title":"webm",
-                                "type":"object",
-                                "properties":
-                                {
-                                    "webm":{
+                            "webm":{
+                                "oneOf":[
+                                    {
+
+                                        "title":"webm",
                                         "$ref":"videostream.schema.json"
+                                    },
+                                    {
+                                        "type":"null"
                                     }
-                                }
+                                ]
                             },
-                            {
-                                "title":"flv",
-                                "type":"object",
-                                "properties":
-                                {
-                                    "flv":{
+                            "flv":{
+                                "oneOf":[
+                                    {
+
+                                        "title":"flv",
                                         "$ref":"videostream.schema.json"
+                                    },
+                                    {
+                                        "type":"null"
                                     }
-                                }
+                                ]
                             },
-                            {
-                                "title":"rtmp",
-                                "type":"object",
-                                "properties":
-                                {
-                                    "rtmp":{
+                            "rtmp":{
+                                "oneOf":[
+                                    {
+
+                                        "title":"rtmp",
                                         "$ref":"videostream.schema.json"
+                                    },
+                                    {
+                                        "type":"null"
                                     }
-                                }
+                                ]
                             },
-                            {
-                                "description":"Group of images that will be represented as a video",
-                                "title":"image",
-                                "type":"array",
-                                "items":{
-                                    "type":"object",
-                                    "properties":{
-                                        "type":{
-                                            "type":"string",
-                                            "enum":[
-                                                "image/bmp",
-                                                "image/cis-cod",
-                                                "image/gif",
-                                                "image/ief",
-                                                "image/jpeg",
-                                                "image/pipeg",
-                                                "image/svg+xml",
-                                                "image/tiff",
-                                                "image/x-cmu-raster",
-                                                "image/x-cmx",
-                                                "image/x-icon",
-                                                "image/x-portable-anymap",
-                                                "image/x-portable-bitmap",
-                                                "image/x-portable-graymap",
-                                                "image/x-portable-pixmap",
-                                                "image/x-rgb",
-                                                "image/x-xbitmap",
-                                                "image/x-xwindowdump"
-                                            ]
-                                        },
-                                        "frames":{
+                            "image":{
+                                "oneOf":[
+                                        {
+                                            "description":"Group of images that will be represented as a video",
+                                            "title":"image",
                                             "type":"array",
                                             "items":{
                                                 "type":"object",
                                                 "properties":{
-                                                    "time":{
-                                                        "description":"Time of the slide appearance",
+                                                    "type":{
+                                                        "type":"string",
+                                                        "enum":[
+                                                            "image/bmp",
+                                                            "image/cis-cod",
+                                                            "image/gif",
+                                                            "image/ief",
+                                                            "image/jpeg",
+                                                            "image/pipeg",
+                                                            "image/svg+xml",
+                                                            "image/tiff",
+                                                            "image/x-cmu-raster",
+                                                            "image/x-cmx",
+                                                            "image/x-icon",
+                                                            "image/x-portable-anymap",
+                                                            "image/x-portable-bitmap",
+                                                            "image/x-portable-graymap",
+                                                            "image/x-portable-pixmap",
+                                                            "image/x-rgb",
+                                                            "image/x-xbitmap",
+                                                            "image/x-xwindowdump"
+                                                        ]
+                                                    },
+                                                    "frames":{
+                                                        "type":"array",
+                                                        "items":{
+                                                            "type":"object",
+                                                            "properties":{
+                                                                "time":{
+                                                                    "description":"Time of the slide appearance",
+                                                                    "type":"integer"
+                                                                },
+                                                                "src":{
+                                                                    "description":"Url of the slide",
+                                                                    "type":"string"
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "count":{
                                                         "type":"integer"
                                                     },
-                                                    "src":{
-                                                        "description":"Url of the slide",
-                                                        "type":"string"
+                                                    "duration":{
+                                                        "type":"integer"
+                                                    },
+                                                    "res":{
+                                                        "type":"object",
+                                                        "properties":{
+                                                            "w":{
+                                                                    "description":"video width",
+                                                                    "type":"integer"
+                                                                },
+                                                            "h":{
+                                                                    "description":"video height",
+                                                                    "type":"integer"
+                                                                }
+                                                            }
                                                     }
                                                 }
                                             }
-                                        },
-                                        "count":{
-                                            "type":"integer"
-                                        },
-                                        "duration":{
-                                            "type":"integer"
-                                        },
-                                        "res":{
-                                            "type":"object",
-                                            "properties":{
-                                                "w":{
-                                                        "description":"video width",
-                                                        "type":"integer"
-                                                    },
-                                                "h":{
-                                                        "description":"video height",
-                                                        "type":"integer"
-                                                    }
-                                                }
-                                        }
+                                    },
+                                    {
+                                        "type":"null"
                                     }
-                                }
+                                ]
                             }
-                        ]
+                        }
                     },
                     "preview":{
                         "description":"preview image for the stream",
