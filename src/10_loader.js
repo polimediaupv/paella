@@ -19,6 +19,8 @@ Class ("paella.DefaultAccessControl", paella.AccessControl, {
 // Default Video Loader
 //
 Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
+	_url:null,
+	
 	initialize: function (data) {
 		if (typeof(data)=="object") {
 			this._data = data;
@@ -39,7 +41,8 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 		}
 		else if (this._url) {
 			var This = this;
-			paella.ajax.get({ url:this._url + '/' + videoId + '/data.json' },
+			This._url = this._url + '/' + videoId + '/';
+			paella.ajax.get({ url:this._url + 'data.json' },
 				function(data,type,err) {
 					if (typeof(data)=="string") {
 						try {
@@ -51,7 +54,6 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 					This.loadVideoData(This._data,onSuccess);
 				},
 				function(data,type,err) {
-					console.log("mal rollo");
 				});
 		}
 	},
@@ -92,6 +94,7 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 	},
 
 	loadStream:function(stream) {
+		var This=this;
 		if (stream.sources.image) {
 			stream.sources.image.forEach(function(image) {
 				if (image.frames.forEach) {
@@ -109,6 +112,10 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 				if (type != 'image') {
 					var source = stream.sources[type];
 					source.forEach(function (sourceItem) {
+						var pattern = /^[a-zA-Z\:]+\:\/\//gi;
+						if(sourceItem.src.match(pattern) == null){
+							sourceItem.src = This._url;
+						}
 						sourceItem.type = sourceItem.mimetype;
 					});
 				}
