@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 4.0.14 (10-4-2015)
+
+  * Update VolumeRange when using KeyManager
+
 * Paella 4.0.13 (12-3-2015)
 
   * Flash video resize smooth
