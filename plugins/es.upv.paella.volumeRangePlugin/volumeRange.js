@@ -11,6 +11,9 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 	_showSlaveVolume: null,
 	_tempMasterVolume: 0,
 	_tempSlaveVolume: 0,
+	_inputMaster: null,
+	_inputSlave: null,
+	_control_NotMyselfEvent: true,
 
 	checkEnabled:function(onSuccess) {
 		var enabled = false;
@@ -32,6 +35,23 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 		paella.events.bind(paella.events.videoUnloaded,function(event,params) {self.storeVolume();});
 		//RECOVER VALUES
 		paella.events.bind(paella.events.singleVideoReady,function(event,params) {self.loadStoredVolume(params);});
+		
+		paella.events.bind(paella.events.setVolume, function(evt,par){ self.updateVolumeOnEvent(par);});
+	},
+	
+	updateVolumeOnEvent:function(volume){
+		var thisClass = this;
+		
+		if(thisClass._control_NotMyselfEvent){
+			if(thisClass._inputMaster){
+				thisClass._inputMaster.value = volume.master;
+			}
+		
+			if(thisClass._inputSlave){
+				thisClass._inputSlave.value = volume.slave;
+			}
+		}
+		else {thisClass._control_NotMyselfEvent = true;}			
 	},
 
 	storeVolume:function(){
@@ -64,6 +84,7 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 			var rangeImageMaster = document.createElement('div');
 			rangeImageMaster.className = "image master";
 			var rangeInputMaster = document.createElement('input');
+			thisClass._inputMaster = rangeInputMaster;
 			rangeInputMaster.type = "range";
 			rangeInputMaster.min = 0;
 			rangeInputMaster.max = 1;
@@ -75,7 +96,8 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 				var slaveVolume = 0;
 				if (slaveVideo) { slaveVolume = slaveVideo.volume(); }
 			
-				var masterVolume = $(rangeInputMaster).val(); 
+				var masterVolume = $(rangeInputMaster).val();
+				thisClass._control_NotMyselfEvent = false; 
 				paella.events.trigger(paella.events.setVolume, {master:masterVolume, slave:slaveVolume});				
 			};
 			$(rangeInputMaster).bind('input', function (e) { updateMasterVolume(); });
@@ -94,6 +116,7 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 			var rangeImageSlave = document.createElement('div');
 			rangeImageSlave.className = "image slave";
 			var rangeInputSlave = document.createElement('input');
+			thisClass._inputSlave = rangeInputSlave;
 			rangeInputSlave.type = "range";
 			rangeInputSlave.min = 0;
 			rangeInputSlave.max = 1;
@@ -106,6 +129,7 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 				if (masterVideo) { masterVolume = masterVideo.volume(); }
 				
 				var slaveVolume = $(rangeInputSlave).val(); 
+				thisClass._control_NotMyselfEvent = false;
 				paella.events.trigger(paella.events.setVolume,{master:masterVolume, slave:slaveVolume});
 			};
 			$(rangeInputSlave).bind('input', function (e) { updateSlaveVolume(); });
