@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+* Paella 4.0.15 (10-4-2015)
+
+  * Fixed bug with the volume when the video is reloaded
+  * Fixed bug with the "playing" when the video is reloaded
+
 * Paella 4.0.14 (10-4-2015)
 
   * Update VolumeRange when using KeyManager

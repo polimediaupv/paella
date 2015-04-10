@@ -597,11 +597,15 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		this.seekToTime(time);
 	},
 
-	reloadVideos:function(masterQuality,slaveQuality) {
+	reloadVideos:function(masterQuality,slaveQuality) {	
+		var isPaused = paella.player.videoContainer.paused();			
+	
 		this._showPosterFrame = false;
 		var memoizedCurrentTime = this.currentTime();
 		var masterVideo = this.masterVideo();
 		var slaveVideo = this.slaveVideo();
+		var masterVolume = masterVideo.volume();
+		var slaveVolume = slaveVideo && slaveVideo.volume();		
 		if (masterVideo) masterVideo.unload();
 		if (slaveVideo) slaveVideo.unload();
 		 
@@ -609,9 +613,18 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		this.setSlaveQuality(slaveQuality);
 		this._seekToOnLoad = memoizedCurrentTime;
 		this.setSources(this._videoSourceData.master,this._videoSourceData.slave);
+
+		masterVideo = this.masterVideo();
+		slaveVideo = this.slaveVideo();				
+		if (masterVideo) masterVideo.setVolume(masterVolume);
+		if (slaveVideo) slaveVideo.setVolume(slaveVolume);
+		
 		this.seekToTime(this._seekToOnLoad);
-		this.play();
-		this._playOnLoad = true;
+		this._playOnLoad = false;
+		if (!isPaused) {
+			$(document).trigger(paella.events.play);
+			this._playOnLoad = true;
+		}
 	},
 
 	/**
@@ -662,7 +675,8 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			//}
 			
 			if (this._playOnLoad) {
-				this.play();
+				//this.play();
+				$(document).trigger(paella.events.play);
 			}
 		}
 	},
