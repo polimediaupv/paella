@@ -41,7 +41,7 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 		}
 		else if (this._url) {
 			var This = this;
-			This._url = this._url + '/' + videoId + '/';
+			this._url = this._url + '/' + videoId + '/';
 			paella.ajax.get({ url:this._url + 'data.json' },
 				function(data,type,err) {
 					if (typeof(data)=="string") {
@@ -62,9 +62,7 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 		var This = this;
 		if (data.streams) {
 			data.streams.forEach(function(stream) {
-				data.streams.forEach(function(stream) {
-					This.loadStream(stream);
-				});
+				This.loadStream(stream);
 			});
 		}
 		if (data.frameList) {
@@ -88,6 +86,7 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 			data.frameList.forEach(function(frame) {
 				var id = frame.time;
 				newFrames[id] = frame;
+
 			});
 			data.frameList = newFrames;
 		}
@@ -95,11 +94,21 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 
 	loadStream:function(stream) {
 		var This=this;
+		if (stream.preview && ! /^[a-zA-Z]+:\/\//.test(stream.preview)) {
+			stream.preview = This._url + stream.preview;
+		}
+
 		if (stream.sources.image) {
 			stream.sources.image.forEach(function(image) {
 				if (image.frames.forEach) {
 					var newFrames = {};
 					image.frames.forEach(function(frame) {
+						if (! /^[a-zA-Z]+:\/\//.test(frame.url)) {
+							frame.url = This._url + frame.url;
+						}
+						if (! /^[a-zA-Z]+:\/\//.test(frame.thumb)) {
+							frame.thumb = This._url + frame.thumb;
+						}
 						var id = "frame_" + frame.time;
 						newFrames[id] = frame.src;
 					});
@@ -114,7 +123,7 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 					source.forEach(function (sourceItem) {
 						var pattern = /^[a-zA-Z\:]+\:\/\//gi;
 						if(sourceItem.src.match(pattern) == null){
-							sourceItem.src = This._url;
+							sourceItem.src = This._url + sourceItem.src;
 						}
 						sourceItem.type = sourceItem.mimetype;
 					});
@@ -132,7 +141,7 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 				var url = captions[i].url;
 
 				if (! /^[a-zA-Z]+:\/\//.test(url)) {
-					url = this.getRepository() + "/" + paella.initDelegate.getId() + "/" + url;
+					url = this._url + url;
 				}
 				var c = new paella.captions.Caption(i, captions[i].format, url, {code: captions[i].lang, txt: captions[i].text});
 				paella.captions.addCaptions(c);
@@ -141,6 +150,7 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 	},
 
 	loadBlackboard:function(stream, blackboard) {
+		var This = this;
 		if (!stream.sources.image) {
 			stream.sources.image = [];
 		}
@@ -154,6 +164,9 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 
 		blackboard.frames.forEach(function(frame) {
 			var id = "frame_" + Math.round(frame.time);
+			if (!/^[a-zA-Z]+:\/\//.test(frame.src)) {
+				frame.src = This._url + frame.src;
+			}
 			imageObject.frames[id] = frame.src;
 		});
 
