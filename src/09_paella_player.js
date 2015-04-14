@@ -312,7 +312,9 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 						{ data:slave, type:preferredMethodSlave }
 					);
 					
-					paella.events.trigger(paella.events.loadComplete,{masterVideo:master,slaveVideo:slave,frames:frames});
+					setTimeout(function(){
+						paella.events.trigger(paella.events.loadComplete,{masterVideo:master,slaveVideo:slave,frames:frames});
+					}, 10);					
 					if (paella.player.isLiveStream()) {
 						This.showPlaybackBar();
 					}
