@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 4.0.16 (15-4-2015)
+
+  * Fixed a bun in paella extended mode causing videos to be cropped in the video container (#94)
+
 * Paella 4.0.15 (10-4-2015)
 
   * Fixed bug with the volume when the video is reloaded
