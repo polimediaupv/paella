@@ -5,6 +5,9 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 	navButtons:null,
 	buttons: [],
 	contx:null,
+	_img:null,
+	_searchTimer: null,
+	_searchTimerTime: 250,
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "frameControl"; },
 	getIndex:function() { return 510; },
@@ -166,9 +169,12 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 	},
 
 	showHiResFrame:function(url) {
+		var thisClass = this;
+		
 		var frameRoot = document.createElement("div");
 		var frame = document.createElement("div");
 		var hiResImage = document.createElement('img');
+		thisClass._img = hiResImage;
         hiResImage.className = 'frameHiRes';
         hiResImage.setAttribute('src',url);
         hiResImage.setAttribute('style', 'width: 100%;');
@@ -192,11 +198,13 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 	},
 
 	removeHiResFrame:function() {
+		var thisClass = this;
 		overlayContainer = paella.player.videoContainer.overlayContainer;
 		if (this.hiResFrame) {
 			overlayContainer.removeElement(this.hiResFrame);
 		}
 		overlayContainer.disableBackgroundMode();
+		thisClass._img = null;
 	},
 
 	isFrameVisible:function(trimEnabled,trimStart,trimEnd) {
@@ -258,16 +266,29 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 	},
 
 	onMouseOver:function(event,frameData) {
+		var thisClass = this;
 		var frames = paella.initDelegate.initParams.videoLoader.frameList;
 		var frame = frames[frameData.time];
 		if (frame) {
 			var image = frame.url;
-			this.showHiResFrame(image);
+			if(thisClass._img){
+				thisClass._img.setAttribute('src',image);
+			}
+			else{
+				this.showHiResFrame(image);
+			}
+		}
+		
+		if(thisClass._searchTimer != null){
+			thisClass._searchTimer.cancel();
 		}
 	},
 
 	onMouseOut:function(event,frameData) {
-		//this.removeHiResFrame();
+		var thisClass = this;
+		thisClass._searchTimer = new base.Timer(function(timer) {
+									thisClass.removeHiResFrame();
+								}, thisClass._searchTimerTime);
 	},
 
 	onClick:function(event,frameData) {
