@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 4.0.17 (16-4-2015)
+
+  * Fix bug in frameControl Plugin (#132)
+
 * Paella 4.0.16 (15-4-2015)
 
   * Fixed a bun in paella extended mode causing videos to be cropped in the video container (#94)
