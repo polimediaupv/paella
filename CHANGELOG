@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 4.0.18 (20-4-2015)
+
+  * Fixed bug in MultiQuality Sort order in Safari (#135)
+
 * Paella 4.0.17 (16-4-2015)
 
   * Fix bug in frameControl Plugin (#132)
