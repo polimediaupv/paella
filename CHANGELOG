@@ -18,6 +18,10 @@ CHANGELOG
  * New built in video loader
  * Fixed bug with the volume when the video is reloaded
 
+* Paella 4.0.19 (04-05-2015)
+
+  * MultiQuality selection change with single video fails at volumeRangePlugin storeVolume() (#137)
+
 * Paella 4.0.18 (20-4-2015)
 
   * Fixed bug in MultiQuality Sort order in Safari (#135)
