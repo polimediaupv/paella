@@ -56,8 +56,12 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 
 	storeVolume:function(){
 		var self = this;
-		self._tempSlaveVolume = paella.player.videoContainer.slaveVideo().volume();
-		self._tempMasterVolume = paella.player.videoContainer.masterVideo().volume();
+		if(paella.player.videoContainer.slaveVideo()){
+			self._tempSlaveVolume = paella.player.videoContainer.slaveVideo().volume();
+		}
+		if(paella.player.videoContainer.masterVideo()){
+			self._tempMasterVolume = paella.player.videoContainer.masterVideo().volume();
+		}
 	},
 
 	loadStoredVolume:function(params){
