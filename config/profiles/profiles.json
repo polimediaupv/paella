@@ -1,4 +1,14 @@
 {
+	"s_p_blackboard":{
+		"name":{"es":"Pizarra"},
+		"icon":"slide_professor_icon.png",
+		"slaveVideo":{"content":"presenter","rect":[
+			{"aspectRatio":"16/9","left":"10","top":"70","width":"432","height":"243"}],"visible":"true","layer":"1"},
+		"masterVideo":{"content":"presentation","rect":[
+			{"aspectRatio":"16/9","left":"450","top":"135","width":"816","height":"459"}],"visible":"true","layer":"1"},
+		"background":{"content":"slide_professor_paella.jpg","zIndex":5,"rect":{"left":"0","top":"0","width":"1280","height":"720"},"visible":"true","layer":"0"},
+		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}}]
+	},
 	"slide_professor":{
 		"name":{"es":"Presentación y presentador"},
 		"icon":"slide_professor_icon.png",
