@@ -151,7 +151,6 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
        		paella.captions.setActiveCaptions(sel);
        		return;
        	} // BREAK IF NO ONE SELECTED
-		
 		paella.captions.setActiveCaptions(sel);
 		thisClass._activeCaptions = sel;
 		thisClass.buildBodyContent(paella.captions.getActiveCaptions()._captions,"list");
@@ -165,8 +164,10 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 			$(thisClass._body).empty();
 			if(obj==undefined){
 				thisClass._select.value = "";
+				$(thisClass._input).prop('disabled', true);
 			}
 			else{
+				$(thisClass._input).prop('disabled', false);
 				thisClass._select.value = obj; 
 				thisClass.buildBodyContent(paella.captions.getActiveCaptions()._captions,"list");
 			}
@@ -283,6 +284,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
     },
 
     selectDefaultBrowserLang:function(code){
+    	var thisClass = this;
 		var provider = null;
 		paella.captions.getAvailableLangs().forEach(function(l){
 			if(l.lang.code == code){ provider = l.id; }
@@ -291,6 +293,11 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 		if(provider){
 			paella.captions.setActiveCaptions(provider);
 		}
+		/*
+		else{
+			$(thisClass._input).prop("disabled",true);
+		}
+		*/
 
     },
 
