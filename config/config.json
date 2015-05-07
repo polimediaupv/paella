@@ -59,6 +59,9 @@
 	},
     "standalone" : {
         "reposiroty": "../repository/"
-    }
+    },
+	"auth":{
+		"authCallbackName":"authenticationUrl"
+	}
 }
 

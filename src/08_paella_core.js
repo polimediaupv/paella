@@ -19,19 +19,60 @@ Class ("paella.AccessControl", {
 	}
 });
 
+// Default Access Control
+//
 Class ("paella.DefaultAccessControl", paella.AccessControl,{
 	checkAccess:function(onSuccess) {
-		this.permissions.canRead = false;
-		this.permissions.canContribute = false;
-		this.permissions.canWrite = false;
-		this.permissions.loadError = false;
-		this.permissions.isAnonymous = true;
-		this.userData.username = 'anonymous';
-		this.userData.name = 'Anonymous';
-		this.userData.avatar = 'resources/images/default_avatar.png';
-		onSuccess(this.permissions);
+		var This = this;
+		this.getUserData(function(data) {
+			This.permissions = data.permissions;
+			This.userData = data.userData;
+			onSuccess(This.permissions);
+		});
+	},
+
+	getUserData:function(onSuccess) {
+		var status = false;
+		if (paella.player.config.auth) {
+			var callback = paella.player.config.auth.userDataCallbackName ? window[paella.player.config.auth.userDataCallbackName]:null;
+			if (typeof(callback)=="function") {
+				status = true;
+				callback(onSuccess);
+			}
+		}
+		if (!status) {
+			onSuccess({
+				permissions: {
+					canRead: true,
+					canContribute: false,
+					canWrite: false,
+					loadError: false,
+					isAnonymous: true
+				},
+				userData: {
+					username: 'anonymous',
+					name: 'Anonymous',
+					avatar: 'resources/images/default_avatar.png'
+				}
+			});
+		}
+	},
+
+	getAuthenticationUrl:function(onSuccess) {
+		var status = false;
+		if (paella.player.config.auth) {
+			var callback = paella.player.config.auth.authCallbackName ? window[paella.player.config.auth.authCallbackName]:null;
+			if (typeof(callback)=="function") {
+				status = true;
+				callback(onSuccess);
+			}
+		}
+		if (!status) {
+			onSuccess("");
+		}
 	}
 });
+
 
 Class ("paella.VideoLoader", {
 	streams:[],		// {sources:{mp4:{src:"videourl.mp4",type:"video/mp4"},
