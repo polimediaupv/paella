@@ -16,7 +16,9 @@ Class ("paella.AccessControl", {
 
 	checkAccess:function(onSuccess) {
 		onSuccess(this.permissions);
-	}
+	},
+
+	getAuthenticationUrl:function(callbackParam) { return ""; }
 });
 
 // Default Access Control
@@ -58,18 +60,14 @@ Class ("paella.DefaultAccessControl", paella.AccessControl,{
 		}
 	},
 
-	getAuthenticationUrl:function(onSuccess) {
-		var status = false;
+	getAuthenticationUrl:function(callbackParams) {
 		if (paella.player.config.auth) {
 			var callback = paella.player.config.auth.authCallbackName ? window[paella.player.config.auth.authCallbackName]:null;
 			if (typeof(callback)=="function") {
-				status = true;
-				callback(onSuccess);
+				return callback(callbackParams);
 			}
 		}
-		if (!status) {
-			onSuccess("");
-		}
+		return "";
 	}
 });
 
@@ -275,6 +273,24 @@ Class ("paella.PlayerBase", {
 
 	loadComplete:function(event,params) {
 
+	},
+
+	auth: {
+		login: function(redirect) {
+			redirect = redirect || window.location.href;
+			var url = paella.initDelegate.initParams.accessControl.getAuthenticationUrl(redirect);
+			if (url) {
+				window.location.href = url;
+			}
+		},
+
+		permissions:function() {
+			return paella.initDelegate.initParams.accessControl.permissions;
+		},
+
+		userData:function() {
+			return paella.initDelegate.initParams.accessControl.userData;
+		}
 	}
 });
 
