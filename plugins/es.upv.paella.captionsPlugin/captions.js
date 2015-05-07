@@ -277,7 +277,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 		        $(thisClass._editor).prop("disabled",true);
 		        $(thisClass._editor).click(function(){
 		        	var c = paella.captions.getActiveCaptions();
-		        	c.gotoEdit();
+		        	c.goToEdit();
 		        });
 
         domElement.appendChild(thisClass._parent);
