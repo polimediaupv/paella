@@ -8,7 +8,7 @@
 			"sources": {
 				"rtmp": [
 					{
-						"src": "rtmp://flash.oit.duke.edu/vod/MP4:test/brunswick.m4v",
+						"src": "rtmp://cp67126.edgefcs.net/ondemand/mp4:mediapm/ovp/content/test/video/spacealonehd_sounas_640_300.mp4",
 						"mimetype": "video/mp4",
 						"res": {
 							"w": 1280,
