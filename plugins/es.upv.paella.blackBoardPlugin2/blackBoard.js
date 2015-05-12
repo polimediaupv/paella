@@ -1,5 +1,5 @@
-Class ("paella.BlackBoard", paella.EventDrivenPlugin,{
-	_blackBoardProfile:"s_p_blackboard",
+Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
+	_blackBoardProfile:"s_p_blackboard2",
 	_overlayContainer:null,
 	_blackBoardDIV:null,
 	_active:false,
@@ -22,7 +22,7 @@ Class ("paella.BlackBoard", paella.EventDrivenPlugin,{
 	getAlignment:function(){
 		return 'right';
 	},
-	getSubclass:function() { return "blackBoardButton"; },
+	getSubclass:function() { return "blackBoardButton2"; },
 
 	getDefaultToolTip:function() { return base.dictionary.translate("BlackBoard");},
 
@@ -218,8 +218,8 @@ Class ("paella.BlackBoard", paella.EventDrivenPlugin,{
 	},
 
 	getName:function() { 
-		return "es.upv.paella.blackBoardPlugin";
+		return "es.upv.paella.blackBoardPlugin2";
 	}
 });
 
-paella.plugins.blackBoard = new paella.BlackBoard();
+paella.plugins.blackBoard2 = new paella.BlackBoard2();
