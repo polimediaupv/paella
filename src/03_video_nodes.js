@@ -584,6 +584,7 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 
 	addSourceStreaming:function(sourceData) {
 		var parameters = {};
+		var swfName = 'player.swf';
 		if (this._autoplay) {
         	parameters.autoplay = this._autoplay;
        	}
@@ -604,7 +605,10 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 			if (paella.player.config.player.rtmpSettings && paella.player.config.player.rtmpSettings.bufferTime!==undefined) {
 				parameters.bufferTime = paella.player.config.player.rtmpSettings.bufferTime;
 			}
-			this.flashVideo = this.createSwfObject("player.swf",parameters);
+			if (parameters.isLiveStream) {
+				swfName = 'player_streaming.swf';
+			}
+			this.flashVideo = this.createSwfObject(swfName,parameters);
 		}
 		else if (sourceData.type=='video/x-flv') {
 			if (/(rtmp:\/\/)([\w\d\.\-_]+[:+\d]*)\/([\w\d\-_]+\/)([\w\d\.\/\-_]+)(\.flv)?/.test(sourceData.src)) {
@@ -614,11 +618,14 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 			parameters.playerId = this.flashId;
 
 			parameters.isLiveStream = sourceData.isLiveStream!==undefined ? sourceData.isLiveStream:false;
+			if (parameters.isLiveStream) {
+				swfName = 'player_streaming.swf';
+			}
 
 			if (paella.player.config.player.rtmpSettings && paella.player.config.player.rtmpSettings.bufferTime!==undefined) {
 				parameters.bufferTime = paella.player.config.player.rtmpSettings.bufferTime;
 			}
-			this.flashVideo = this.createSwfObject("player.swf",parameters);
+			this.flashVideo = this.createSwfObject(swfName,parameters);
 		}
 	},
 
