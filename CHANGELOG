@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 4.0.20 (12-05-2015)
+
+  * RTMP live streaming bug fixed
+
 * Paella 4.0.19 (04-05-2015)
 
   * MultiQuality selection change with single video fails at volumeRangePlugin storeVolume() (#137)
