@@ -90,6 +90,8 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 			lens.className = "lensClass";
 			self._lensDIV = lens;
 
+			var p = $('.lensContainer').offset();
+
 			$(self._lensContainer).append(lens);
 			$(self._lensContainer).mousemove(function(event) {
 			if(event.pageX > (left+(self._lensWidth/2)) &&  
@@ -100,8 +102,8 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
         		self._lensDIV.style.top=event.pageY-(self._lensHeight/2)+"px";
 
         		var x = (event.pageX-left) * 100 / (width);
-        		var y = (event.pageY-top-100) * 100 / (height);
-        		//console.log(x +" %  "+ y +" %");
+        		var y = (event.pageY-p.top) * 100 / (height);
+        		console.log(x +" %  "+ y +" %");
         		self._blackBoardDIV.style.backgroundSize = 250+'%';
         		self._blackBoardDIV.style.backgroundPosition = x.toString() + '% ' + y.toString() + '%';
 
@@ -124,6 +126,7 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 		var blackBoardDiv = document.createElement("div");
 		blackBoardDiv.className = "blackBoardDiv";
 		self._blackBoardDIV = blackBoardDiv;
+		self._blackBoardDIV.style.opacity = 0;
 
 		var lensContainer = document.createElement("div");
 		lensContainer.className = "lensContainer";
@@ -132,11 +135,16 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 		var conImg = document.createElement("img");
 		conImg.className = "conImg";
 		self._conImg = conImg;
+
+		if(self._actualImage){
+			self._conImg.src = self._actualImage;
+			$(self._blackBoardDIV).css('background-image', 'url(' + self._actualImage + ')');
+		}
 		
 		var aux = paella.player.videoContainer.getMasterVideoRect();
 		lensContainer.style.top = 385+"px";
 		lensContainer.style.width = 432+"px";
-		lensContainer.style.height = 243+"px";
+		lensContainer.style.height = "auto";
 		lensContainer.style.left = 10+"px";
 		lensContainer.style.zIndex = 5000;
 		lensContainer.style.position = "absolute";
@@ -146,7 +154,7 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 
 		$(lensContainer).append(conImg);
 
-		$(self._lensContainer).mouseenter(function(){self.createLens(385, 10, 432, 243); self._blackBoardDIV.style.opacity = 1.0;});
+		$(self._lensContainer).mouseenter(function(){self.createLens(385, 10, 432, 324); self._blackBoardDIV.style.opacity = 1.0;});
 		$(self._lensContainer).mouseleave(function(){self.destroyLens();});
 
 		setTimeout(function(){ // TIMER FOR NICE VIEW
@@ -164,6 +172,9 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 
 		if(self._blackBoardDIV){
 			$(self._blackBoardDIV).remove();
+		}
+		if(self._lensContainer){
+			$(self._lensContainer).remove();
 		}
 	},
 
