@@ -57,7 +57,7 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 		// Sort the available resolutions
 		function sortfunc(a,b){
 			var ia = parseInt(a.res.h);
-			var ib = parseInt(a.res.h);
+			var ib = parseInt(b.res.h);
 			
 			return ((ia < ib) ? -1 : ((ia > ib) ? 1 : 0));
 		}
