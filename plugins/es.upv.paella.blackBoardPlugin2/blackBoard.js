@@ -16,6 +16,8 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 	_lensWidth:90,
 	_lensHeight:50,
 	_conImg:null,
+	_globalContainerHeight:null,
+	_globalContainerWidth:null,
 
 	getIndex:function(){return 10;},
 
@@ -57,7 +59,8 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 
 	setup:function() {
 		var self = this;
-		self._overlayContainer = $("#overlayContainer");
+		//self._overlayContainer = $("#overlayContainer");
+		self._overlayContainer = $("#playerContainer_videoContainer_container");
 		self._lensFrame = $("#playerContainer_videoContainer_1");		
 
 				//  BRING THE IMAGE ARRAY TO LOCAL
@@ -83,31 +86,34 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 		}
 	},
 
-	createLens:function(top,left,width,height){
+	createLens:function(){
 		var self = this;
-		
+
 			var lens = document.createElement("div");
 			lens.className = "lensClass";
 			self._lensDIV = lens;
 
-			var p = $('.lensContainer').offset();
+			var p = $('.conImg').offset();
+			var width = $('.conImg').width();
+			var height = $('.conImg').height();
 
 			$(self._lensContainer).append(lens);
 			$(self._lensContainer).mousemove(function(event) {
-			if(event.pageX > (left+(self._lensWidth/2)) &&  
-				event.pageX < (left+width)-(self._lensWidth/2) &&
-				event.pageY > (top+100) &&
-				event.pageY < (top+100+height)-(self._lensWidth/2) ){
+			//if(
+				/*event.pageX > (p.left+(self._lensWidth/2)) &&  
+				event.pageX < (p.left+width)-(self._lensWidth/2) &&
+				event.pageY > (p.top+self._lensHeight/2) && //top
+				event.pageY < (p.top+height-self._lensHeight/2)){ // bottom
         		self._lensDIV.style.left=event.pageX-(self._lensWidth/2)+"px";
         		self._lensDIV.style.top=event.pageY-(self._lensHeight/2)+"px";
-
-        		var x = (event.pageX-left) * 100 / (width);
+				*/
+        		var x = (event.pageX-p.left) * 100 / (width);
         		var y = (event.pageY-p.top) * 100 / (height);
         		console.log(x +" %  "+ y +" %");
         		self._blackBoardDIV.style.backgroundSize = 250+'%';
         		self._blackBoardDIV.style.backgroundPosition = x.toString() + '% ' + y.toString() + '%';
 
-        		}
+        	//	}
     		});
 		
 	},
@@ -140,26 +146,31 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 			self._conImg.src = self._actualImage;
 			$(self._blackBoardDIV).css('background-image', 'url(' + self._actualImage + ')');
 		}
+
+		self._globalContainerWidth = $('#playerContainer_videoContainer_container').width();
+		self._globalContainerHeight = $('#playerContainer_videoContainer_container').height();
 		
 		var aux = paella.player.videoContainer.getMasterVideoRect();
-		lensContainer.style.top = 385+"px";
-		lensContainer.style.width = 432+"px";
-		lensContainer.style.height = "auto";
-		lensContainer.style.left = 10+"px";
-		lensContainer.style.zIndex = 5000;
-		lensContainer.style.position = "absolute";
 
-		conImg.width = aux.width;
-		conImg.height = aux.height;
+		//conImg.width = aux.width;
+		//conImg.height = aux.height;
+		
+		var aux3 = paella.player.videoContainer.getSlaveVideoRect();
+		aux3.top = aux3.top + aux3.height + 20;
+		aux3.width = aux3.width;
+		aux3.height = aux3.width/1.333333333333333333; //4:3 photos
+		aux3.left = aux3.left;
 
 		$(lensContainer).append(conImg);
 
-		$(self._lensContainer).mouseenter(function(){self.createLens(385, 10, 432, 324); self._blackBoardDIV.style.opacity = 1.0;});
+		$(self._lensContainer).mouseenter(function(){self.createLens(); self._blackBoardDIV.style.opacity = 1.0;});
 		$(self._lensContainer).mouseleave(function(){self.destroyLens();});
 
 		setTimeout(function(){ // TIMER FOR NICE VIEW
-			$(self._overlayContainer).append(blackBoardDiv);
-			$(self._overlayContainer).append(lensContainer);
+			//$(self._overlayContainer).append(blackBoardDiv);
+			//$(self._overlayContainer).append(lensContainer);
+			overlayContainer.addElement(blackBoardDiv, overlayContainer.getMasterRect());
+			overlayContainer.addElement(lensContainer, aux3);
 		}, self._creationTimer);
 		
 
