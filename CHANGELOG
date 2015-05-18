@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 4.0.21 (18-05-2015)
+
+  * Fixed bug in Multi-Qualities sort (#141)
+
 * Paella 4.0.20 (12-05-2015)
 
   * RTMP live streaming bug fixed
