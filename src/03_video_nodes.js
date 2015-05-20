@@ -770,7 +770,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 			this.domElement.setAttribute("muted",true);
 		}
 		else {
-			this.domElement.setAttribute("muted",false);
+			this.domElement.removeAttribute("muted");
 		}
 		this.domElement.volume = volume;
 		return true;
