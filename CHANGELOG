@@ -19,6 +19,10 @@ CHANGELOG
  * Fixed bug with the volume when the video is reloaded
  * New plugin added: es.upv.paella.translectures.CaptionsPlugIn
 
+* Paella 4.0.22 (20-05-2015)
+
+  * Fixed bug causing video to mute when resolution switching (#142)
+
 * Paella 4.0.21 (18-05-2015)
 
   * Fixed bug in Multi-Qualities sort (#141)
