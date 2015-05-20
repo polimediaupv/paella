@@ -13,11 +13,12 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 	_lensFrame:null,
 	_lensDIV:null,
 	_lensContainer:null,
-	_lensWidth:90,
-	_lensHeight:50,
+	_lensWidth:null,
+	_lensHeight:null,
 	_conImg:null,
 	_globalContainerHeight:null,
 	_globalContainerWidth:null,
+	_zoom:250,
 
 	getIndex:function(){return 10;},
 
@@ -91,29 +92,38 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 
 			var lens = document.createElement("div");
 			lens.className = "lensClass";
+
 			self._lensDIV = lens;
 
 			var p = $('.conImg').offset();
 			var width = $('.conImg').width();
 			var height = $('.conImg').height();
-
+			lens.style.width = (width/(self._zoom/100))+"px";
+			lens.style.height = (height/(self._zoom/100))+"px";
+			self._lensWidth = parseInt(lens.style.width);
+			self._lensHeight = parseInt(lens.style.height);
 			$(self._lensContainer).append(lens);
-			$(self._lensContainer).mousemove(function(event) {
-			//if(
-				/*event.pageX > (p.left+(self._lensWidth/2)) &&  
-				event.pageX < (p.left+width)-(self._lensWidth/2) &&
-				event.pageY > (p.top+self._lensHeight/2) && //top
-				event.pageY < (p.top+height-self._lensHeight/2)){ // bottom
-        		self._lensDIV.style.left=event.pageX-(self._lensWidth/2)+"px";
-        		self._lensDIV.style.top=event.pageY-(self._lensHeight/2)+"px";
-				*/
-        		var x = (event.pageX-p.left) * 100 / (width);
-        		var y = (event.pageY-p.top) * 100 / (height);
-        		console.log(x +" %  "+ y +" %");
-        		self._blackBoardDIV.style.backgroundSize = 250+'%';
-        		self._blackBoardDIV.style.backgroundPosition = x.toString() + '% ' + y.toString() + '%';
+			
+			$(self._lensContainer).mousemove(function(event) {	
+				mouseX = (event.pageX-p.left);
+				mouseY = (event.pageY-p.top);
 
-        	//	}
+				lensTop = (mouseY - self._lensHeight/2);
+				lensTop = (lensTop < 0) ? 0 : lensTop;
+				lensTop = (lensTop > (height-self._lensHeight)) ? (height-self._lensHeight) : lensTop; 
+
+				lensLeft = (mouseX - self._lensWidth/2);
+				lensLeft = (lensLeft < 0) ? 0 : lensLeft;
+				lensLeft = (lensLeft > (width-self._lensWidth)) ? (width-self._lensWidth) : lensLeft; 
+
+				self._lensDIV.style.left = lensLeft + "px";
+				self._lensDIV.style.top = lensTop + "px";
+
+	        	x = (lensLeft) * 100 / (width-self._lensWidth);
+	        	y = (lensTop) * 100 / (height-self._lensHeight);
+	        		//console.log(x +" %  "+ y +" %");
+	        		self._blackBoardDIV.style.backgroundSize = self._zoom+'%';
+	        		self._blackBoardDIV.style.backgroundPosition = x.toString() + '% ' + y.toString() + '%';
     		});
 		
 	},
