@@ -19,6 +19,8 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 	_globalContainerHeight:null,
 	_globalContainerWidth:null,
 	_zoom:250,
+	_currentZoom:null,
+	_maxZoom:500,
 
 	getIndex:function(){return 10;},
 
@@ -89,7 +91,7 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 
 	createLens:function(){
 		var self = this;
-
+			self._currentZoom = self._zoom;
 			var lens = document.createElement("div");
 			lens.className = "lensClass";
 
@@ -122,11 +124,51 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 	        	x = (lensLeft) * 100 / (width-self._lensWidth);
 	        	y = (lensTop) * 100 / (height-self._lensHeight);
 	        		//console.log(x +" %  "+ y +" %");
-	        		self._blackBoardDIV.style.backgroundSize = self._zoom+'%';
+	        		self._blackBoardDIV.style.backgroundSize = self._currentZoom+'%';
 	        		self._blackBoardDIV.style.backgroundPosition = x.toString() + '% ' + y.toString() + '%';
     		});
+
+    		$(self._lensContainer).bind('wheel mousewheel', function(e){
+	        var delta;
+
+	        if (e.originalEvent.wheelDelta !== undefined)
+	            delta = e.originalEvent.wheelDelta;
+	        else
+	            delta = e.originalEvent.deltaY * -1;
+
+	            if(delta > 0 && self._currentZoom<self._maxZoom) {
+	            	self.updateZoom(10,e);
+	            }
+	            else if(self._currentZoom>100){
+	                self.updateZoom(-10,e);
+	            }
+	            self._blackBoardDIV.style.backgroundSize = (self._currentZoom)+"%";
+        	});
 		
 	},
+
+	updateZoom:function(value,event){
+		var self = this;
+		self._currentZoom += value;
+		var p = $('.conImg').offset();
+		var width = $('.conImg').width();
+		var height = $('.conImg').height();
+
+		self._lensDIV.style.width = (width/(self._currentZoom/100))+"px";
+		self._lensDIV.style.height = (height/(self._currentZoom/100))+"px";
+
+		self._lensWidth = parseInt(self._lensDIV.style.width);
+		self._lensHeight = parseInt(self._lensDIV.style.height);
+
+		//UPDATE LENS POS
+		mouseX = (event.originalEvent.clientX-p.left);
+		mouseY = (event.originalEvent.clientY-p.top);
+		self._lensDIV.style.left = (mouseX - self._lensWidth/2) + "px";
+		self._lensDIV.style.top = (mouseY - self._lensHeight/2) + "px";
+		console.log(mouseX +" "+mouseY);
+
+	},
+
 	destroyLens:function(){
 		var self=this;
 		if(self._lensDIV){
