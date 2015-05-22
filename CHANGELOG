@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 4.0.23 (22-05-2015)
+
+  * Fixed bug: Live stream volume control shows "muted" by default but audio is not muted (#143)
+
 * Paella 4.0.22 (20-05-2015)
 
   * Fixed bug causing video to mute when resolution switching (#142)
