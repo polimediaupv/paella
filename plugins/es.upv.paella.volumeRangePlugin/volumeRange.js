@@ -14,14 +14,14 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 	_inputMaster: null,
 	_inputSlave: null,
 	_control_NotMyselfEvent: true,
+	_storedValue: false,
 
 	checkEnabled:function(onSuccess) {
 		var enabled = false;
 		if (!base.userAgent.browser.IsMobileVersion) {
 			this._showMasterVolume = (this.config.showMasterVolume !== undefined) ? this.config.showMasterVolume : true;
 			this._showSlaveVolume = ((this.config.showSlaveVolume !== undefined) && (!paella.player.videoContainer.isMonostream)) ? this.config.showSlaveVolume : false;
-			
-			
+						
 			if (this._showMasterVolume || this._showSlaveVolume) {
 				enabled = true;
 			}
@@ -35,7 +35,7 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 		paella.events.bind(paella.events.videoUnloaded,function(event,params) {self.storeVolume();});
 		//RECOVER VALUES
 		paella.events.bind(paella.events.singleVideoReady,function(event,params) {self.loadStoredVolume(params);});
-		
+				
 		paella.events.bind(paella.events.setVolume, function(evt,par){ self.updateVolumeOnEvent(par);});
 	},
 	
@@ -55,20 +55,24 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 	},
 
 	storeVolume:function(){
-		var self = this;
+		this._storedValue = true;
 		if(paella.player.videoContainer.slaveVideo()){
-			self._tempSlaveVolume = paella.player.videoContainer.slaveVideo().volume();
+			this._tempSlaveVolume = paella.player.videoContainer.slaveVideo().volume();
 		}
 		if(paella.player.videoContainer.masterVideo()){
-			self._tempMasterVolume = paella.player.videoContainer.masterVideo().volume();
+			this._tempMasterVolume = paella.player.videoContainer.masterVideo().volume();
 		}
 	},
 
 	loadStoredVolume:function(params){
-		var self = this;
-		if((params.sender.identifier == "playerContainer_videoContainer_1") && self._tempSlaveVolume || self._tempMasterVolume){
-			paella.events.trigger(paella.events.setVolume,{master:self._tempMasterVolume, slave:self._tempSlaveVolume});
+		if (this._storedValue == false) {
+			this.storeVolume();
 		}
+		
+		if((params.sender.identifier == "playerContainer_videoContainer_1") && this._tempSlaveVolume || this._tempMasterVolume){
+			paella.events.trigger(paella.events.setVolume,{master:this._tempMasterVolume, slave:this._tempSlaveVolume});
+		}
+		this._storedValue = false;
 	},
 
 	buildContent:function(domElement) {
