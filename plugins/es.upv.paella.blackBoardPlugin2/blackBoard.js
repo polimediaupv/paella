@@ -21,6 +21,7 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 	_zoom:250,
 	_currentZoom:null,
 	_maxZoom:500,
+	_mousePos:null,
 
 	getIndex:function(){return 10;},
 
@@ -87,6 +88,12 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 			self.createOverlay();
 			self._active = true;
 		}
+
+		self._mousePos = {};
+	},
+
+	lensUpdate:function(){
+
 	},
 
 	createLens:function(){
@@ -109,6 +116,9 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 			$(self._lensContainer).mousemove(function(event) {	
 				mouseX = (event.pageX-p.left);
 				mouseY = (event.pageY-p.top);
+				
+				self._mousePos.x = mouseX;
+				self._mousePos.y = mouseY;
 
 				lensTop = (mouseY - self._lensHeight/2);
 				lensTop = (lensTop < 0) ? 0 : lensTop;
@@ -120,13 +130,21 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 
 				self._lensDIV.style.left = lensLeft + "px";
 				self._lensDIV.style.top = lensTop + "px";
-
-	        	x = (lensLeft) * 100 / (width-self._lensWidth);
-	        	y = (lensTop) * 100 / (height-self._lensHeight);
-	        		//console.log(x +" %  "+ y +" %");
-	        		self._blackBoardDIV.style.backgroundSize = self._currentZoom+'%';
+				if(self._currentZoom != 100){
+	        		x = (lensLeft) * 100 / (width-self._lensWidth);
+	        		y = (lensTop) * 100 / (height-self._lensHeight);
 	        		self._blackBoardDIV.style.backgroundPosition = x.toString() + '% ' + y.toString() + '%';
-    		});
+	        	}
+	        		
+	        	else if(self._currentZoom == 100){
+	        			var xRelative = mouseX * 100 / width;
+	        			var yRelative = mouseY * 100 / height;
+	        			self._blackBoardDIV.style.backgroundPosition = xRelative.toString() + '% ' + yRelative.toString() + '%';
+	        			console.log("X: "+xRelative+"  Y: "+yRelative);
+	        		}
+
+	        	self._blackBoardDIV.style.backgroundSize = self._currentZoom+'%';
+	        });
 
     		$(self._lensContainer).bind('wheel mousewheel', function(e){
 	        var delta;
@@ -142,6 +160,10 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 	            else if(self._currentZoom>100){
 	                self.updateZoom(-10,e);
 	            }
+	            else if(self._currentZoom==100){
+	            	self._lensDIV.style.left = 0+"px";
+	            	self._lensDIV.style.top = 0+"px";
+	            }
 	            self._blackBoardDIV.style.backgroundSize = (self._currentZoom)+"%";
         	});
 		
@@ -150,6 +172,7 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 	updateZoom:function(value,event){
 		var self = this;
 		self._currentZoom += value;
+		console.log(self._currentZoom);
 		var p = $('.conImg').offset();
 		var width = $('.conImg').width();
 		var height = $('.conImg').height();
@@ -165,7 +188,7 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 		mouseY = (event.originalEvent.clientY-p.top);
 		self._lensDIV.style.left = (mouseX - self._lensWidth/2) + "px";
 		self._lensDIV.style.top = (mouseY - self._lensHeight/2) + "px";
-		console.log(mouseX +" "+mouseY);
+		//console.log(mouseX +" "+mouseY);
 
 	},
 
@@ -201,17 +224,6 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 
 		self._globalContainerWidth = $('#playerContainer_videoContainer_container').width();
 		self._globalContainerHeight = $('#playerContainer_videoContainer_container').height();
-		
-		var aux = paella.player.videoContainer.getMasterVideoRect();
-
-		//conImg.width = aux.width;
-		//conImg.height = aux.height;
-		
-		var aux3 = paella.player.videoContainer.getSlaveVideoRect();
-		aux3.top = aux3.top + aux3.height + 20;
-		aux3.width = aux3.width;
-		aux3.height = aux3.width/1.333333333333333333; //4:3 photos
-		aux3.left = aux3.left;
 
 		$(lensContainer).append(conImg);
 
@@ -221,6 +233,13 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 		setTimeout(function(){ // TIMER FOR NICE VIEW
 			//$(self._overlayContainer).append(blackBoardDiv);
 			//$(self._overlayContainer).append(lensContainer);
+			var aux3 = paella.player.videoContainer.overlayContainer.getSlaveRect();
+			aux3.top = aux3.top + aux3.height + 20;
+			aux3.width = aux3.width;
+			aux3.height = aux3.width/1.333333333333333333; //4:3 photos
+			aux3.left = aux3.left;
+
+			overlayContainer = paella.player.videoContainer.overlayContainer;
 			overlayContainer.addElement(blackBoardDiv, overlayContainer.getMasterRect());
 			overlayContainer.addElement(lensContainer, aux3);
 		}, self._creationTimer);

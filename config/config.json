@@ -48,7 +48,7 @@
 			"es.upv.paella.footprintsPlugin": {"enabled":false},
 			"es.upv.paella.playbackRate": {"enabled":true},
             "es.upv.paella.helpPlugin": {"enabled":true, "langs":["en","es"]},
-            "es.upv.paella.ZoomPlugin": {"enabled": true, "maxZoom":500, "minZoom":100, "zoomIncr":10},
+            "es.upv.paella.ZoomPlugin": {"enabled": false, "maxZoom":500, "minZoom":100, "zoomIncr":10},
             "es.upv.paella.fullScreenButtonPlugin": {"enabled":true, "reloadOnFullscreen":{ "enabled":true, "keepUserSelection":true }},
             "es.upv.paella.extendedProfilesPlugin": {"enabled":true, "reloadOnFullscreen":"reload" },
             "es.upv.paella.themeChooserPlugin":  {"enabled":true},
