@@ -1,20 +1,5 @@
 
 
-// Default Access Control
-//
-Class ("paella.DefaultAccessControl", paella.AccessControl, {
-	checkAccess:function(onSuccess) {
-		this.permissions.canRead = true;
-		this.permissions.canWrite = true;
-		this.permissions.canContribute = true;
-		this.permissions.loadError = false;
-		this.permissions.isAnonymous = true;
-		this.userData.login = 'anonymous';
-		this.userData.name = 'Anonymous';
-		this.userData.avatar = 'resources/images/default_avatar.png';
-		onSuccess(this.permissions);
-	}
-});
 
 // Default Video Loader
 //
