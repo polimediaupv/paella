@@ -113,7 +113,7 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 
 	createLens:function(){
 		var self = this;
-			self._currentZoom = self._zoom;
+			if(self._currentZoom == null) { self._currentZoom = self._zoom; }
 			var lens = document.createElement("div");
 			lens.className = "lensClass";
 
@@ -122,8 +122,8 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 			var p = $('.conImg').offset();
 			var width = $('.conImg').width();
 			var height = $('.conImg').height();
-			lens.style.width = (width/(self._zoom/100))+"px";
-			lens.style.height = (height/(self._zoom/100))+"px";
+			lens.style.width = (width/(self._currentZoom/100))+"px";
+			lens.style.height = (height/(self._currentZoom/100))+"px";
 			self._lensWidth = parseInt(lens.style.width);
 			self._lensHeight = parseInt(lens.style.height);
 			$(self._lensContainer).append(lens);
@@ -222,7 +222,7 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 			self._blackBoardDIV.style.backgroundSize = 100+'%';
 			self._blackBoardDIV.style.opacity = 0;
 		}
-		self._currentZoom = self._zoom;
+		//self._currentZoom = self._zoom;
 	},
 
 	createOverlay:function(){
