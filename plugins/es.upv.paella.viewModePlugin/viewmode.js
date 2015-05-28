@@ -52,6 +52,10 @@ Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
 		this.buttonItems = {};
 		paella.Profiles.loadProfileList(function(profiles) {
 			for (var profile in profiles) {
+				// START - BLACKBOARD DEPENDENCY
+				var n = paella.player.videoContainer.sourceData[0].sources;
+				if(profile=="s_p_blackboard2" && n.hasOwnProperty("image")==false) { continue; }
+				// END - BLACKBOARD DEPENDENCY
 				var profileData = profiles[profile];
 				var buttonItem = thisClass.getProfileItemButton(profile,profileData);
 				thisClass.buttonItems[profile] = buttonItem;
