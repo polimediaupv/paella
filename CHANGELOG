@@ -18,6 +18,7 @@ CHANGELOG
  * New built in video loader
  * Fixed bug with the volume when the video is reloaded
  * New plugin added: es.upv.paella.translectures.CaptionsPlugIn
+ * New videoMode: blackboard + zoom images
 
 * Paella 4.0.23 (22-05-2015)
 
