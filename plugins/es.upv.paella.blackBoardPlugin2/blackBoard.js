@@ -1,6 +1,7 @@
 Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 	_blackBoardProfile:"s_p_blackboard2",
 	_blackBoardDIV:null,
+	_hasImages:null,
 	_active:false,
 	_creationTimer:500,
 	_zImages:null,
@@ -18,6 +19,7 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 	_currentZoom:null,
 	_maxZoom:500,
 	_mousePos:null,
+	_containerRect:null,
 
 	getIndex:function(){return 10;},
 
@@ -38,40 +40,59 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
     onEvent:function(event, params){
     	var self = this;
     	switch(event){
-    		case paella.events.setProfile: if(params.profileName==self._blackBoardProfile){
-    											self.createOverlay();
-    											self._active = true;
-    										} 
-    										else{
-    											self.destroyOverlay();
-    											self._active = false;
+    		case paella.events.setProfile:  if(params.profileName!=self._blackBoardProfile){
+    											if(self._active){
+    												self.destroyOverlay();
+	    											self._active = false;
+    											}
+    											break;
     										}
+    										else{ 
+
+	    										if(!self._hasImages){
+	    											paella.events.trigger(paella.events.setProfile,{profileName:"slide_professor"});
+	    										}
+	    										if(self._hasImages && !self._active){
+	    											self.createOverlay();
+	    											self._active = true;
+	    										}
+	    									}
     										break;
-    		case paella.events.timeUpdate: if(self._active){self.imageUpdate(event,params);} break;
+    		case paella.events.timeUpdate: if(self._active && self._hasImages){self.imageUpdate(event,params);} break;
     	}
     },
-	checkEnabled:function(onSuccess) {
-		var n = paella.player.videoContainer.sourceData[0].sources;
-
-		if(n.hasOwnProperty("image"))onSuccess(true);
-		else onSuccess(false);
+	checkEnabled:function(onSuccess) {		
+			onSuccess(true);
 	},
 
 	setup:function() {
 		var self = this;	
 
-		//  BRING THE IMAGE ARRAY TO LOCAL
-		self._zImages = {};
-		self._zImages = paella.player.videoContainer.sourceData[0].sources.image[0].frames; // COPY TO LOCAL
-		self._videoLength = paella.player.videoContainer.sourceData[0].sources.image[0].duration; // video duration in frames
+		var n = paella.player.videoContainer.sourceData[0].sources;
+		if(n.hasOwnProperty("image")){
+			self._hasImages = true;
+			//  BRING THE IMAGE ARRAY TO LOCAL
+			self._zImages = {};
+			self._zImages = paella.player.videoContainer.sourceData[0].sources.image[0].frames; // COPY TO LOCAL
+			self._videoLength = paella.player.videoContainer.sourceData[0].sources.image[0].duration; // video duration in frames
 
-		// SORT KEYS FOR SEARCH CLOSEST
-		self._keys = Object.keys(self._zImages);
-		self._keys = self._keys.sort(function(a, b){
-			a = a.slice(6);
-			b = b.slice(6);
-			return parseInt(a)-parseInt(b); 
-		});
+			// SORT KEYS FOR SEARCH CLOSEST
+			self._keys = Object.keys(self._zImages);
+			self._keys = self._keys.sort(function(a, b){
+				a = a.slice(6);
+				b = b.slice(6);
+				return parseInt(a)-parseInt(b); 
+			});
+		}
+		else{
+			self._hasImages = false;
+
+			if (paella.player.selectedProfile == self._blackBoardProfile) {
+				defaultprofile = paella.player.config.defaultProfile;
+				paella.events.trigger(paella.events.setProfile,{profileName:defaultprofile});
+			}
+		}
+
 
 		//NEXT
 		this._next = 0;
@@ -83,6 +104,11 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 		}
 
 		self._mousePos = {};
+
+
+		paella.Profiles.loadProfile(self._blackBoardProfile,function(profileData) {
+			self._containerRect = profileData.blackBoardImages;
+		});
 	},
 
 	createLens:function(){
@@ -196,6 +222,7 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 			self._blackBoardDIV.style.backgroundSize = 100+'%';
 			self._blackBoardDIV.style.opacity = 0;
 		}
+		self._currentZoom = self._zoom;
 	},
 
 	createOverlay:function(){
@@ -225,20 +252,10 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 		$(self._lensContainer).mouseleave(function(){self.destroyLens();});
 
 		setTimeout(function(){ // TIMER FOR NICE VIEW
-			var aux3 = paella.player.videoContainer.overlayContainer.getSlaveRect();
-			aux3.top = aux3.top + aux3.height + 20;
-			aux3.width = aux3.width;
-			aux3.height = aux3.width/1.333333333333333333; //4:3 photos
-			aux3.left = aux3.left;
-
 			overlayContainer = paella.player.videoContainer.overlayContainer;
 			overlayContainer.addElement(blackBoardDiv, overlayContainer.getMasterRect());
-			overlayContainer.addElement(lensContainer, aux3);
+			overlayContainer.addElement(lensContainer, self._containerRect);
 		}, self._creationTimer);
-		
-
-
-
 	},
 
 	destroyOverlay:function(){
