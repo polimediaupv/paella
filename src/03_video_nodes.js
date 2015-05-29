@@ -592,6 +592,12 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 				parameters.connect = RegExp.$1 + RegExp.$2 + '/' + RegExp.$3;
 				parameters.url = "mp4:" + RegExp.$4;
 			}
+
+			if (/(rtmp:\/\/)([\w\d\.\-_]+[:+\d]*)\/([\w\d\-_]+\/)([\w\d\.\/\-_]+@[\w\d\.\/\-_]+)/.test(sourceData.src)) {
+				parameters.connect = RegExp.$1 + RegExp.$2 + '/' + RegExp.$3;
+				parameters.url = RegExp.$4;
+			}
+
 			parameters.playerId = this.flashId;
 			parameters.isLiveStream = sourceData.isLiveStream!==undefined ? sourceData.isLiveStream:false;
 			if (paella.player.config.player.rtmpSettings && paella.player.config.player.rtmpSettings.bufferTime!==undefined) {
