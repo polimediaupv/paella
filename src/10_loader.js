@@ -26,7 +26,8 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 		}
 		else if (this._url) {
 			var This = this;
-			this._url = this._url + '/' + videoId + '/';
+			this._url = (/\/$/.test(this._url) ? this._url:this._url + '/')
+				 + videoId + '/';
 			paella.ajax.get({ url:this._url + 'data.json' },
 				function(data,type,err) {
 					if (typeof(data)=="string") {
@@ -66,9 +67,16 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 	},
 
 	loadFrameData:function(data) {
+		var This = this;
 		if (data.frameList && data.frameList.forEach) {
 			var newFrames = {};
 			data.frameList.forEach(function(frame) {
+				if (! /^[a-zA-Z]+:\/\//.test(frame.url)) {
+					frame.url = This._url + frame.url;
+				}
+				if (frame.thumb && ! /^[a-zA-Z]+:\/\//.test(frame.thumb)) {
+					frame.thumb = This._url + frame.thumb;
+				}
 				var id = frame.time;
 				newFrames[id] = frame;
 
@@ -88,10 +96,10 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 				if (image.frames.forEach) {
 					var newFrames = {};
 					image.frames.forEach(function(frame) {
-						if (! /^[a-zA-Z]+:\/\//.test(frame.url)) {
-							frame.url = This._url + frame.url;
+						if (frame.src && ! /^[a-zA-Z]+:\/\//.test(frame.src)) {
+							frame.src = This._url + frame.src;
 						}
-						if (! /^[a-zA-Z]+:\/\//.test(frame.thumb)) {
+						if (frame.thumb && ! /^[a-zA-Z]+:\/\//.test(frame.thumb)) {
 							frame.thumb = This._url + frame.thumb;
 						}
 						var id = "frame_" + frame.time;
