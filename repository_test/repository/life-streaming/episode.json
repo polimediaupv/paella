@@ -1,0 +1,32 @@
+{
+	"mediapackage": {
+		"metadata": {
+			"duration": "0",
+			"start": "2013-06-17T12:01:00Z",
+			"title": "UPV-TV",
+			"creators": [],
+			"license": ""
+		},
+		"media": {
+			"tracks": [
+				{
+					"id": "f32eff0f-a3e7-4562-858b-f390b5443c7f",
+					"mimetype": "video/mp4",
+					"url": "rtmp://cp49989.live.edgefcs.net/live/streamRM1@2564",
+					"mediainfo": {
+						"video": {
+							"resolution": "1280x720"
+						}
+					},
+					"preview": null,
+					"tags": [],
+					"type": "presenter/delivery",
+					"live": true
+				}
+			]
+		},
+		"slides": []
+
+	}
+}
+
