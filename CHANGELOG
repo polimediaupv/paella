@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 4.0.24 (29-05-2015)
+
+  * Fixed bug: Live stream with URLs containing a @ character doesn't work (#140)
+
 * Paella 4.0.23 (22-05-2015)
 
   * Fixed bug: Live stream volume control shows "muted" by default but audio is not muted (#143)
