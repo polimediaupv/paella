@@ -4,7 +4,7 @@ This plugins is able to swap between theme skins installed on paella player.
 
 ## Plugin Type:
 
-- paella.ButtonPlugin
+- [paella.ButtonPlugin](../plugin_type.md)
 
 ## Config Example:
 
