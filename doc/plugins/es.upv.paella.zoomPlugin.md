@@ -2,6 +2,9 @@
 
 This plugin was made for add the zoom functionality to paella player for be able to zoom blackboard photos. It creates new icons hover the MasterVideo to enter in the photo display mode.
 
+
+## Plugin Type:
+- paella.EventDrivenPlugin
 ## Configuration Parameters
 
 * ###maxZoom

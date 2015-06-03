@@ -2,6 +2,10 @@
 
 This plugin is responsible of control the volume pop-up plugin in the paella player. Can be configured for control all sources volume.
 
+
+## Plugin Type:
+- paella.ButtonPlugin
+
 ## Configuration Parameters
 
 
