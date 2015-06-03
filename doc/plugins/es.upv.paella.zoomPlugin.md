@@ -4,29 +4,17 @@ This plugin was made for add the zoom functionality to paella player for be able
 
 ## Configuration Parameters
 
-
-
 * ###maxZoom
-	```
-	default value: 500
-	```
-
 	Value for the maximum zoom the plugin can reach.
+	- default value: 500
 
 * ###minZoom
-	```
-	default value: 100
-	```
-	
 	Value for the minimium zoom the plugin can reach.
+	- default value: 100
 
 * ###zoomIncr: 
- 	```
-	default value: 10
-	```
- 
 	Value for the update on every zoom change.
-
+	- default value: 10
 
 ## Config Example:
 
