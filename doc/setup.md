@@ -1,4 +1,15 @@
-# Build and Install
+# Download Paella
+
+# Download a precompiled version
+
+You can download the precompiled paella player from [here](https://github.com/polimediaupv/bower-paella/releases)
+or download it using  `bower`.
+
+```shell
+bower install paella
+```
+
+# Build and install from source
 
 In this section we are going to explain how to build and install Paella Player.
 
