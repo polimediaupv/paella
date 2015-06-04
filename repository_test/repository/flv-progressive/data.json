@@ -1,0 +1,23 @@
+{
+	"metadata": {
+		"duration": 0,
+		"title": "UPV-TV"
+	},
+	"streams": [
+		{
+			"sources": {
+				"rtmp": [
+					{
+						"src": "http://www.mediacollege.com/video-gallery/testclips/20051210-w50s.flv",
+						"mimetype": "video/x-flv",
+						"res": {
+							"w": "360",
+							"h": "288"
+						}
+					}
+				]
+			},
+			"preview": null
+		}
+	]
+}
