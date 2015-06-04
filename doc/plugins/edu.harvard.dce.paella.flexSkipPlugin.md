@@ -3,7 +3,7 @@
 This plugin rewind or goes forward in the time line with 2 buttons. Its compound with two plugins.
 (**paella.plugins.FlexSkipPlugin**) and the (**paella.plugins.FlexSkipPluginForward**)
 
-![](/flexSkipPlugin.jpg)
+![](images/flexSkipPlugin.jpg)
 
 ## Plugin Type:
 (**paella.plugins.FlexSkipPlugin**)
