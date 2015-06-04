@@ -312,6 +312,11 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 			catch(e) {}
 			base.log.debug("Flash video event: " + eventName + ", progress: " + this.flashVideo.currentProgress());
 		}
+		else if (eventName=="ended") {
+			base.log.debug("Flash video event: " + eventName);
+			paella.events.trigger(paella.events.pause);
+			paella.player.controls.showControls();
+		}
 		else {
 			base.log.debug("Flash video event: " + eventName);
 		}
