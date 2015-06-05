@@ -44,7 +44,7 @@ Class ("paella.ShowEditorPlugin",paella.VideoOverlayButtonPlugin,{
 	},
 
 	getName:function() {
-		return "es.upv.paella.ShowEditorPlugin";
+		return "es.upv.paella.showEditorPlugin";
 	}
 });
 
