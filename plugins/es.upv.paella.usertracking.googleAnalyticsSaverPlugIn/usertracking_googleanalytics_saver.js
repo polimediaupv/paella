@@ -1,7 +1,7 @@
 
 
 new (Class (paella.userTracking.SaverPlugIn,{
-	getName:function() { return "es.upv.paella.usertracking.GoogleAnalyticsSaverPlugIn"; },
+	getName:function() { return "es.upv.paella.usertracking.GoogleAnalyticsSaverPlugin"; },
 		
 	checkEnabled:function(onSuccess) {
 		var trackingID = this.config.trackingID;
