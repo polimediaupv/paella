@@ -129,7 +129,7 @@ Class ("paella.plugins.CaptionsOnScreen",paella.EventDrivenPlugin,{
 	},
 
 	getName:function() {
-		return "es.upv.paella.captionsPlugin";
+		return "es.upv.paella.overlayCaptionsPlugin";
 	}
 });
 
