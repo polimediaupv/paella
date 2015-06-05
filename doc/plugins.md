@@ -51,6 +51,8 @@
 
 [translecture.captionsPlugin](plugins/es.upv.paella.translecture.captionsPlugin.md)
 
+[elasticsearchSaverPlugin](plugins/es.upv.paella.usertracking.elasticsearchSaverPlugin.md)
+
 [googleAnalyticsSaverPlugin](plugins/es.upv.paella.usertracking.googleAnalyticsSaverPlugin.md)
 
 [viewModePlugin](plugins/es.upv.paella.viewModePlugin.md)
