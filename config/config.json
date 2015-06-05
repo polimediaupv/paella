@@ -24,8 +24,7 @@
 		"dataDelegates":{
 			"default":"CookieDataDelegate",
 			"trimming":"CookieDataDelegate",
-			"userInfo": "UserDataDelegate",
-			"images":"ImageZoomDataDelegate"
+			"userInfo": "UserDataDelegate"
 		}
 	},
 	"plugins":{
@@ -34,10 +33,9 @@
 			"ch.ethz.paella.multipleQualitiesPlugin": {"enabled": false},
 			"edu.harvard.dce.paella.flexSkipPlugin": {"enabled":true, "direction": "Rewind", "seconds": 10},
 			"edu.harvard.dce.paella.flexSkipPluginForward": {"enabled":true, "direction": "Forward", "seconds": 30},
-			"es.upv.paella.ImageControlPlugin":{"enabled":false},
-			"es.upv.paella.ShowEditorPlugin":{"enabled":true,"alwaysVisible":true},
-			"es.upv.paella.TrimmingPlayerPlugin":{"enabled":true},
-			"es.upv.paella.editor.TrimmingTrackPlugin":{"enabled":true},
+			"es.upv.paella.showEditorPlugin":{"enabled":true,"alwaysVisible":true},
+			"es.upv.paella.trimmingPlayerPlugin":{"enabled":true},
+			"es.upv.paella.editor.trimmingTrackPlugin":{"enabled":true},
 			"es.upv.paella.playPauseButtonPlugin":{"enabled":true},
             "es.upv.paella.test.videoLoadPlugin":{"enabled":false},
 			"es.upv.paella.volumeRangePlugin":{"enabled":true, "showMasterVolume": true, "showSlaveVolume": false },
@@ -48,7 +46,7 @@
 			"es.upv.paella.footprintsPlugin": {"enabled":false},
 			"es.upv.paella.playbackRate": {"enabled":true},
             "es.upv.paella.helpPlugin": {"enabled":true, "langs":["en","es"]},
-            "es.upv.paella.ZoomPlugin": {"enabled": false, "maxZoom":500, "minZoom":100, "zoomIncr":10},
+            "es.upv.paella.zoomPlugin": {"enabled": false, "maxZoom":500, "minZoom":100, "zoomIncr":10},
             "es.upv.paella.fullScreenButtonPlugin": {"enabled":true, "reloadOnFullscreen":{ "enabled":true, "keepUserSelection":true }},
             "es.upv.paella.extendedProfilesPlugin": {"enabled":true, "reloadOnFullscreen":"reload" },
             "es.upv.paella.themeChooserPlugin":  {"enabled":true},
