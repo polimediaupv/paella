@@ -1,62 +1,33 @@
 # PAELLA PLAYER PLUGIN LIST
 
 ----------
-[flexSkipPlugin](plugins/edu.harvard.dce.paella.flexSkipPlugin.md)
 
-[flexSkipPluginForward](plugins/edu.harvard.dce.paella.flexSkipPluginForward.md)
-
-[annotationsPlayerPlugin](plugins/es.upv.paella.annotationsPlayerPlugin.md)
-
-[blackBoardPlugin2](plugins/es.upv.paella.blackBoardPlugin2.md)
-
-[breaksPlayerPlugin](plugins/es.upv.paella.breaksPlayerPlugin.md)
-
-[captionsButtonPlugin](plugins/es.upv.paella.captionsButtonPlugin.md)
-
-[captionsPlugin](plugins/es.upv.paella.captionsPlugin.md)
-
-[editor.snapShotsEditorPlugin](plugins/es.upv.paella.editor.snapShotsEditorPlugin.md)
-
-[editor.toolStatusPlugin](plugins/es.upv.paella.editor.toolStatusPlugin.md)
-
-[editor.trackAnnotations](plugins/es.upv.paella.editor.trackAnnotations.md)
-
-[editor.trackBreaks](plugins/es.upv.paella.editor.trackBreaks.md)
-
-[footprintsPlugin](plugins/es.upv.paella.footprintsPlugin.md)
-
-[frameControlPlugin](plugins/es.upv.paella.frameControlPlugin.md)
-
-[fullScreenButtonPlugin](plugins/es.upv.paella.fullScreenButtonPlugin.md)
-
-[helpPlugin](plugins/es.upv.paella.helpPlugin.md)
-
-[liveStramingIndicator](plugins/es.upv.paella.liveStramingIndicator.md)
-
-[multipleQualitiesPlugin](plugins/es.upv.paella.multipleQualitiesPlugin.md)
-
-[playPauseButtonPlugin](plugins/es.upv.paella.playPauseButtonPlugin.md)
-
-[playbackRate](plugins/es.upv.paella.playbackRate.md)
-
-[captionsSearchPlugin](plugins/es.upv.paella.search.captionsSearchPlugin.md)
-
-[searchPlugin](plugins/es.upv.paella.searchPlugin.md)
-
-[showEditorPlugin](plugins/es.upv.paella.showEditorPlugin.md)
-
-[socialPlugin](plugins/es.upv.paella.socialPlugin.md)
-
-[themeChooserPlugin](plugins/es.upv.paella.themeChooserPlugin.md)
-
-[translecture.captionsPlugin](plugins/es.upv.paella.translecture.captionsPlugin.md)
-
-[elasticsearchSaverPlugin](plugins/es.upv.paella.usertracking.elasticsearchSaverPlugin.md)
-
-[googleAnalyticsSaverPlugin](plugins/es.upv.paella.usertracking.googleAnalyticsSaverPlugin.md)
-
-[viewModePlugin](plugins/es.upv.paella.viewModePlugin.md)
-
-[volumeRangePlugin](plugins/es.upv.paella.volumeRangePlugin.md)
-
-[zoomPlugin](plugins/es.upv.paella.zoomPlugin.md)
+* [edu.harvard.dce.paella.flexSkipPlugin](plugins/edu.harvard.dce.paella.flexSkipPlugin.md)
+* [edu.harvard.dce.paella.flexSkipPluginForward](plugins/edu.harvard.dce.paella.flexSkipPluginForward.md)
+* [es.upv.paella.annotationsPlayerPlugin](plugins/es.upv.paella.annotationsPlayerPlugin.md)
+* [es.upv.paella.blackBoardPlugin2](plugins/es.upv.paella.blackBoardPlugin2.md)
+* [es.upv.paella.breaksPlayerPlugin](plugins/es.upv.paella.breaksPlayerPlugin.md)
+* [es.upv.paella.captionsButtonPlugin](plugins/es.upv.paella.captionsButtonPlugin.md)
+* [es.upv.paella.captionsPlugin](plugins/es.upv.paella.captionsPlugin.md)
+* [es.upv.paella.editor.snapShotsEditorPlugin](plugins/es.upv.paella.editor.snapShotsEditorPlugin.md)
+* [es.upv.paella.editor.toolStatusPlugin](plugins/es.upv.paella.editor.toolStatusPlugin.md)
+* [es.upv.paella.editor.trackAnnotations](plugins/es.upv.paella.editor.trackAnnotations.md)
+* [es.upv.paella.editor.trackBreaks](plugins/es.upv.paella.editor.trackBreaks.md)
+* [es.upv.paella.footprintsPlugin](plugins/es.upv.paella.footprintsPlugin.md)
+* [es.upv.paella.frameControlPlugin](plugins/es.upv.paella.frameControlPlugin.md)
+* [es.upv.paella.fullScreenButtonPlugin](plugins/es.upv.paella.fullScreenButtonPlugin.md)
+* [es.upv.paella.helpPlugin](plugins/es.upv.paella.helpPlugin.md)
+* [es.upv.paella.liveStramingIndicator](plugins/es.upv.paella.liveStramingIndicator.md)
+* [es.upv.paella.multipleQualitiesPlugin](plugins/es.upv.paella.multipleQualitiesPlugin.md)
+* [es.upv.paella.playPauseButtonPlugin](plugins/es.upv.paella.playPauseButtonPlugin.md)
+* [es.upv.paella.playbackRate](plugins/es.upv.paella.playbackRate.md)
+* [es.upv.paella.search.captionsSearchPlugin](plugins/es.upv.paella.search.captionsSearchPlugin.md)
+* [es.upv.paella.searchPlugin](plugins/es.upv.paella.searchPlugin.md))
+* [es.upv.paella.showEditorPlugin](plugins/es.upv.paella.showEditorPlugin.md)
+* [es.upv.paella.socialPlugin](plugins/es.upv.paella.socialPlugin.md)
+* [es.upv.paella.themeChooserPlugin](plugins/es.upv.paella.themeChooserPlugin.md)
+* [es.upv.paella.translecture.captionsPlugin](plugins/es.upv.paella.translecture.captionsPlugin.md)
+* [es.upv.paella.usertracking.googleAnalyticsSaverPlugin](plugins/es.upv.paella.usertracking.googleAnalyticsSaverPlugin.md)
+* [es.upv.paella.viewModePlugin](plugins/es.upv.paella.viewModePlugin.md)
+* [es.upv.paella.volumeRangePlugin](plugins/es.upv.paella.volumeRangePlugin.md)
+* [es.upv.paella.zoomPlugin](plugins/es.upv.paella.zoomPlugin.md)
