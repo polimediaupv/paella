@@ -13,5 +13,5 @@ Welcome to the The Paella Player documentation page, this documentation is made 
     - [Basic.](integrate.md#--basic)
     - [Advanced.](integrate.md#--advanced)
     - [Paella & Matterhorn.](http://github.com/polimediaupv/paella-matterhorn)
-- [Developer Documentation.](developer.md)
+- [Developer Documentation.](developer/developer.md)
 - [FAQ](faq.md)
