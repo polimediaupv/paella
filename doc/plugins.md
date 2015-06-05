@@ -22,7 +22,7 @@
 * [es.upv.paella.playPauseButtonPlugin](plugins/es.upv.paella.playPauseButtonPlugin.md)
 * [es.upv.paella.playbackRate](plugins/es.upv.paella.playbackRate.md)
 * [es.upv.paella.search.captionsSearchPlugin](plugins/es.upv.paella.search.captionsSearchPlugin.md)
-* [es.upv.paella.searchPlugin](plugins/es.upv.paella.searchPlugin.md))
+* [es.upv.paella.searchPlugin](plugins/es.upv.paella.searchPlugin.md)
 * [es.upv.paella.showEditorPlugin](plugins/es.upv.paella.showEditorPlugin.md)
 * [es.upv.paella.socialPlugin](plugins/es.upv.paella.socialPlugin.md)
 * [es.upv.paella.themeChooserPlugin](plugins/es.upv.paella.themeChooserPlugin.md)
