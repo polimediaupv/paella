@@ -6,11 +6,12 @@ This plugin rewind or goes forward in the time line with 2 buttons. Its compound
 ![](images/flexSkipPlugin.jpg)
 
 ## Plugin Type:
-(**paella.plugins.FlexSkipPlugin**)
+(**edu.harvard.dce.paella.flexSkipPlugin**)
 - [paella.ButtonPlugin](../plugin_type.md)
 
-(**paella.plugins.FlexSkipPluginForward**)
-- [paella.ButtonPlugin](../plugin_type.md)
+## Related Plugins 
+
+[**edu.harvard.dce.paella.flexSkipPluginForward**](edu.harvard.dce.paella.flexSkipPluginForward.md)
 
 ## Configuration Parameters
 
@@ -36,13 +37,6 @@ Here's are the config  lines for this plugin:
 		"enabled":true, 
 		"direction": "Rewind", 
 		"seconds": 10
-	},
-
-	"edu.harvard.dce.paella.flexSkipPluginForward": 
-	{
-		"enabled":true, 
-		"direction": "Forward",
-		"seconds": 30
 	},
 }
 ```

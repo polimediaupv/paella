@@ -1,4 +1,4 @@
-# es.upv.paella.themeChooser
+# es.upv.paella.themeChooserPlugin
 
 This plugins is able to swap between theme skins installed on paella player.
 

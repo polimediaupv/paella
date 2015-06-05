@@ -1,4 +1,4 @@
-# es.upv.paella.editor.SnapShotsEditorPlugin
+# es.upv.paella.editor.snapShotsEditorPlugin
 
 This is an editor plugin for show the slides pictures in the editor timeline.
 

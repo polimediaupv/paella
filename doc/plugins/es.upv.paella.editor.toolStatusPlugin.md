@@ -1,4 +1,4 @@
-# es.upv.paella.editor.basicPlugins
+# es.upv.paella.editor.toolStatusPlugin
 
 This editor plugin defines the primary tools in the right bar of the editor.
 

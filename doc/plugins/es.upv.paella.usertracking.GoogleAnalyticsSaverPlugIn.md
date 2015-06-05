@@ -1,4 +1,4 @@
-# es.upv.paella.usertracking.GoogleAnalyticsSaverPlugIn
+# es.upv.paella.usertracking.googleAnalyticsSaverPlugin
 
 This plugin saves the usertracking events to the [Google Analitycs](https://www.google.es/intl/es/analytics/) service
 

@@ -1,1 +1,62 @@
-Working on it...
+# PAELLA PLAYER PLUGIN LIST
+
+----------
+
+- [flexSkipPlugin](edu.harvard.dce.paella.flexSkipPlugin.md)
+- 
+- [flexSkipPluginForward](edu.harvard.dce.paella.flexSkipPluginForward.md)
+- 
+- [annotationsPlayerPlugin](es.upv.paella.annotationsPlayerPlugin.md)
+- 
+- [blackBoardPlugin2](es.upv.paella.blackBoardPlugin2.md)
+- 
+- [breaksPlayerPlugin](es.upv.paella.breaksPlayerPlugin.md)
+- 
+- [captionsButtonPlugin](es.upv.paella.captionsButtonPlugin.md)
+- 
+- [captionsPlugin](es.upv.paella.captionsPlugin.md)
+- 
+- [editor.snapShotsEditorPlugin](es.upv.paella.editor.snapShotsEditorPlugin.md)
+- 
+- [editor.toolStatusPlugin](es.upv.paella.editor.toolStatusPlugin.md)
+- 
+- [editor.trackAnnotations](es.upv.paella.editor.trackAnnotations.md)
+- 
+- [editor.trackBreaks](es.upv.paella.editor.trackBreaks.md)
+- 
+- [footprintsPlugin](es.upv.paella.footprintsPlugin.md)
+- 
+- [frameControlPlugin](es.upv.paella.frameControlPlugin.md)
+- 
+- [fullScreenButtonPlugin](es.upv.paella.fullScreenButtonPlugin.md)
+- 
+- [helpPlugin](es.upv.paella.helpPlugin.md)
+- 
+- [liveStramingIndicator](es.upv.paella.liveStramingIndicator.md)
+- 
+- [multipleQualitiesPlugin](es.upv.paella.multipleQualitiesPlugin.md)
+- 
+- [playPauseButtonPlugin](es.upv.paella.playPauseButtonPlugin.md)
+- 
+- [playbackRate](es.upv.paella.playbackRate.md)
+- 
+- [captionsSearchPlugin](es.upv.paella.search.captionsSearchPlugin.md)
+- 
+- [searchPlugin](es.upv.paella.searchPlugin.md))
+- 
+- [showEditorPlugin](es.upv.paella.showEditorPlugin.md)
+- 
+- [socialPlugin](es.upv.paella.socialPlugin.md)
+- 
+- [themeChooserPlugin](es.upv.paella.themeChooserPlugin.md)
+- 
+- [translecture.captionsPlugin](es.upv.paella.translecture.captionsPlugin.md)
+- 
+- [googleAnalyticsSaverPlugin](es.upv.paella.usertracking.googleAnalyticsSaverPlugin.md)
+- 
+- [viewModePlugin](es.upv.paella.viewModePlugin.md)
+- 
+- [volumeRangePlugin](es.upv.paella.volumeRangePlugin.md)
+- 
+- [zoomPlugin](es.upv.paella.zoomPlugin.md)
+- 

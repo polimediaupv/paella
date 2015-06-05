@@ -1,14 +1,16 @@
-# es.upv.paella.captionsPlugin
+# es.upv.paella.captionsButtonPlugin
 
-This plugin is divided in two plugins, one is which controls the button and the user interface (**paella.plugins.CaptionsPlugin**) and the other is in charge of show the captions below the video (**paella.plugins.CaptionsOnScreen**).
+This plugin is divided in two plugins, one is which controls the button and the user interface (**es.upv.paella.captionsButtonPlugin**) and the other is in charge of show the captions below the video (**es.upv.paella.captionsPlugin**).
 
 
 ## Plugin Type:
-(**paella.plugins.CaptionsPlugin**)
+(**es.upv.paella.captionsButtonPlugin**)
 - [paella.ButtonPlugin](../plugin_type.md)
 
-(**paella.plugins.CaptionsOnScreen**)
-- [paella.EventDrivenPlugin](../plugin_type.md)
+## Related Plugins
+
+[**es.upv.paella.captionsPlugin**](es.upv.paella.captionsPlugin.md)
+
 ## Configuration Parameters
 
 * ###searchOnCaptions

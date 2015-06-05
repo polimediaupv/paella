@@ -1,4 +1,4 @@
-# es.upv.paella.translecture.CaptionsPlugIn
+# es.upv.paella.translecture.captionsPlugin
 
 This plugin loads the video captions from the [translectures project](https://www.translectures.eu/)
 

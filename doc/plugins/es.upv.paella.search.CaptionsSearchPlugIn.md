@@ -1,4 +1,4 @@
-# es.upv.paella.search.CaptionsSearchPlugIn
+# es.upv.paella.search.captionsSearchPlugin
 
 This plugin it is a service used by [es.upv.paella.searchPlugin](es.upv.paella.searchPlugin.md)
 
