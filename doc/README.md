@@ -14,6 +14,6 @@ Welcome to the The Paella Player documentation page, this documentation is made 
 - Customize Paella.
     - [Configure Paella.](configure.md)
     - [Define a new skin.](customize_newskin.md)
-- [Paella plugins list.](pligins.md)
+- [Paella plugins list.](plugins.md)
 - [Developer Documentation.](developer/developer.md)
 - [FAQ](faq.md)
