@@ -1,6 +1,6 @@
 # Developer Documentation
 In this section we are going to introduce the main concepts about Paella Player for administrators and developers, for understand and develop features for Paella Player.
-___
+
 
 1. **Object-Oriented Programming (OOP)**.
 
