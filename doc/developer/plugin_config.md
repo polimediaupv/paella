@@ -1,9 +1,11 @@
-#Configuration File in Paella Player
+# Plugin Configuration
+
+Paella plugins can be configured throught the [paella configuration file](../configure.md).
 
 The core file for configure Paella Player is under the /config directory and its called "config.json". 
-In this file we have all the setups concerning plugins.. streams.. compositions.. skins.. 
+In this file we have all the setups concerning plugins, streams, compositions, skins... 
 
-look the code below related to the plugins, used for enable or disable plugins, or for set constant variables... etc.
+Look the code below related to the plugins, used for enable or disable plugins, or for set constant variables... etc.
 
 ```javascript
 "plugins":{
