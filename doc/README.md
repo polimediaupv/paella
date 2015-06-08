@@ -11,7 +11,9 @@ Welcome to the The Paella Player documentation page, this documentation is made 
     - [Basic.](integrate.md#--basic)
     - [Advanced.](integrate.md#--advanced)
     - [Paella & Matterhorn.](http://github.com/polimediaupv/paella-matterhorn)
-- [Configure Paella.](configure.md)
-- [Customization: Define a new skin.](customize_newskin.md)
+- Customize Paella.
+    - [Configure Paella.](configure.md)
+    - [Define a new skin.](customize_newskin.md)
+- [Paella plugins list.](pligins.md)
 - [Developer Documentation.](developer/developer.md)
 - [FAQ](faq.md)
