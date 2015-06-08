@@ -1,41 +1,70 @@
-# PLUGIN TYPES
+# Plugin System
 
-In Paella Player we have 2 main kinds of plugins:
+Paella player can be extended using plugins. There are diferent types of plugins depending
+what functionality you want to add.
 
-    - The Button Plugins
-    - The EventDriven Plugins
-    - The VideoOverlayButton Plugin
+## Interact with the user
+There are 3 main plugins types to interact with the user giving him control over
+the plugin and its funcionalities.
 
-In Paella Editor we have 3 main kinds of plugins:
+- Button Plugin
+  
+  A button plugin allow you to add a button to the paella bar.
+  
+  Plugin examples: [playPauseButtonPlugin](../plugins/es.upv.paella.playPauseButtonPlugin.md),
+  [multipleQualitiesPlugin](../plugins/es.upv.paella.multipleQualitiesPlugin.md),
+  [helpPlugin](../plugins/es.upv.paella.helpPlugin.md)
+  
+  
+  
+  
+- Video Overlay Button Plugin
 
-	- The EditorTrack Plugin
-	- The EditorRightBar Plugin
-	- The EditorToolbar Plugin
+  This plugin type is like a button plugin, but it is located at the top-right part over the paella player.
+  
+  Plugin example: [liveStramingIndicatorPlugin](../plugins/es.upv.paella.liveStramingIndicatorPlugin.md)
 
-# PAELLA PLAYER PLUGINS
+- TabBar Plugin
 
-### ButtonPlugin
+  The tabbar plugin is an old plugin type. This plugin was use in the extint paella-extended version.
+  From Paella 4.1 paella-extended is extinted, but we build a new button plugin that allow old TabBar
+  plugins to countinue working.
+  
+##  Interact with the player
 
-The button plugins are created for interact with the user giving him control over the plugin and its funcionalities.
+- Event Driven Plugins
 
-Plugin Examples: help, footprints, fullscreen, quialities, playbutton... etc.
+  The event driven plugins was made for listening events from Paella and triggering actions to catch these events.
 
-### EventDrivenPlugin
+  Plugin example: [breaksPlayerPlugin](../plugins/es.upv.paella.breaksPlayerPlugin.md)
 
-The event driven plugins was made for listening events from Paella and triggering actions to catch these events.
+- Captions Parser Plugin
 
-Plugin Examples: annotations, zoom, videoload... etc.
+  This plugin type is used to add new captions parser to the player. For dafault paella comes with a dfxp caption
+  parser. You can create a new captions parser by creating a new caption parser plugin.
+  
+- Search Service Plugins
 
-### VideoOverlayButtonPlugin
+  Paella comes with a search service that can be extended with plugins. By default Paella comes with a search
+  service plugin that allow the user to search in the captions. Bat any institution can add a new search provider.
+  
+- User Tracking Saver Plugin
 
-This plugin type its located at the top-right part over the paella player.
+  Paella comes with a user tracking service. This is useful for capturing user events and learning how visitros
+  uses the player. By default paella does nothing with those user events, but any institution can write a user
+  tracking saver plugin to save those events.
+  
+  Paella comes with 2 user tracking saver plugins that institutions can enable to save the events to
+  Google Analitycs or an ElasticSearch server.
+  
+  Plugin examples: [googleAnalyticsSaverPlugin](../plugins/es.upv.paella.usertracking.googleAnalyticsSaverPlugin.md),
+  [elasticsearchSaverPlugin](../plugins/es.upv.paella.usertracking.elasticsearchSaverPlugin.md)
 
-Plugin Example: liveStramingIndicator.
 
-# PAELLA EDITOR PLUGINS
+## Paella Editor Plugins
 
-### EditorTrackPlugin
+- EditorTrackPlugin
 
-### EditorRightBarPlugin
+- EditorRightBarPlugin
 
-### EditorToolbarPlugin
+- EditorToolbarPlugin
