@@ -1,4 +1,4 @@
-# <span style="color: orange">Paella Player</span> API
+# Developer Documentation
 In this section we are going to introduce the main concepts about Paella Player for administrators and developers, for understand and develop features for Paella Player.
 ___
 
@@ -12,12 +12,6 @@ ___
 2. **Plugins**.
 
     How they works, and how to make a new one.
-    - [Creation.](plugin_creation.md)
-    - [Types.](plugin_type.md)
-
-3. **Configuration**.
-    
-    About how to change the configuration of Paella.
-    - [Configuration File.](config.md)
-
-    
+    - [Plugin Types.](plugin_type.md)
+    - [Plugin Creation.](plugin_creation.md)
+    - [Plugin Configuration.](plugin_config.md)
