@@ -57,6 +57,6 @@ You can test Paella by running the command:
 
 	$ grunt server.release
 
-This command will build paella and launch a local server to with paella. You can open a browser and navigate to [http://localhost:8000](http://localhost:8000).
+This command will build paella and launch a local server with paella. You can open a browser and navigate to [http://localhost:8000](http://localhost:8000).
 
 This command also is watching for changes in paella sorce code and if any file changes, rebuild paella itself. It's very usefull while developing paella or any plugin.
