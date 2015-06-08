@@ -1,6 +1,6 @@
 # Download Paella
 
-# Download a precompiled version
+## Download a precompiled version
 
 You can download the precompiled paella player from [here](https://github.com/polimediaupv/bower-paella/releases)
 or download it using  `bower`.
@@ -9,11 +9,11 @@ or download it using  `bower`.
 bower install paella
 ```
 
-# Build and install from source
+## Build and install from source
 
 In this section we are going to explain how to build and install Paella Player.
 
-## Dependencies
+### Dependencies
 
 Paella Player uses [Grunt](http://gruntjs.com/) as a task runner. so we need to install some dependencies:
 
@@ -42,7 +42,7 @@ Congratulations, you have all the dependencies installed.
 
 
 
-## Build Paella Player
+### Build Paella Player
 
 To build baella player you need to open a terminal and go to the paella folder, and run:
 
@@ -51,7 +51,7 @@ To build baella player you need to open a terminal and go to the paella folder, 
 A new folder (called 'build') will be created	with the player and a test repository. You will find paella at 'build/player'.
 
 
-## Test Paella
+### Test Paella
 
 You can test Paella by running the command:
 
