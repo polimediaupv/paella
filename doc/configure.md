@@ -7,21 +7,21 @@ In this file we have all the setups concerning plugins.. streams.. compositions.
 ```javascript
 {
 	"player":{
-        "profileFrameStrategy":"paella.ProfileFrameStrategy",
+		"profileFrameStrategy":"paella.ProfileFrameStrategy",
 		"methods":[{"name":"streaming","enabled":true},
-			   {"name":"html","enabled":true},
-		   	   {"name":"flash","enabled":true},
-                   	   {"name":"image","enabled":true}],
-	"audio": {
-            "master": 1.0,
-            "slave": 0.0
-        },
-        "rtmpSettings":{
-            "bufferTime":5
-        }
+				{"name":"html","enabled":true},
+				{"name":"flash","enabled":true},
+				{"name":"image","enabled":true}],
+		"audio": {
+			"master": 1.0,
+			"slave": 0.0
+		},
+		"rtmpSettings":{
+			"bufferTime":5
+		}
 	},
 	"editor":{
-			"enabled":true
+		"enabled":true
 	},
 	"defaultProfile":"slide_professor",
 	"data":{
@@ -29,8 +29,7 @@ In this file we have all the setups concerning plugins.. streams.. compositions.
 		"dataDelegates":{
 			"default":"CookieDataDelegate",
 			"trimming":"CookieDataDelegate",
-			"userInfo": "UserDataDelegate",
-			"images":"ImageZoomDataDelegate"
+			"userInfo": "UserDataDelegate"
 		}
 	},
 	"plugins":{
@@ -56,7 +55,7 @@ In this file we have all the setups concerning plugins.. streams.. compositions.
             "es.upv.paella.extendedProfilesPlugin": {"enabled":true, "reloadOnFullscreen":"reload" },
             "es.upv.paella.themeChooserPlugin":  {"enabled":true}
 		}
-	},
+	}
 }
 ```
 
@@ -86,7 +85,7 @@ Take a look to the [Integrate Paella section](integrate.md)
 
 Inside config file at plugins section you can set the mode for show the plugin using:
 ```javascript
-"es.upv.paella.xxx":{"enabled":true,......,"visibleOn":['standard', 'fullscreen', 'extended', 'embed']},
+"es.upv.paella.xxx":{"enabled":true,......,"visibleOn":['standard', 'fullscreen', 'embed']},
 ```
 Remember that this only works, with ButtonPlugins.
 	
