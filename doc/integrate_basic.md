@@ -1,131 +1,35 @@
 # Integrate Paella in your portal: the basic way
 
-## How to integrate paella
+To add Paella Player to your portal, you need to do some easy steps:
 
-In your html page:
+1. Copy paella to your portal page
 
-``` HTML
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8;">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Paella Engage Example</title>
-  </head>
-  <body>
-  </body>
-</html>
-```
+  You need to copy the `player` folder to your portal webserver and make it visible at any URL.
 
-Add the paella css and js dependecies:
-
-``` HTML
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8;">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Paella Engage Example</title>
-
-    <link rel="stylesheet" href="resources/style/controls.css" type="text/css" media="screen" charset="utf-8">
-    <link rel="stylesheet" href="resources/style/editor.css" type="text/css" media="screen" charset="utf-8">
-    <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.slate.min.css" type="text/css" media="screen" charset="utf-8">
-
-    <script type="text/javascript" src="javascript/base.js"></script>
-    <script type="text/javascript" src="javascript/jquery.js"></script>
-    <script type="text/javascript" src="javascript/paella_player.js"></script>
-    <script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="example.js"></script>
-  </head>
-  <body>
-  </body>
-</html>
-````
-
-Then add the container where paella is going to load:
-
-``` HTML
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8;">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Paella Engage Example</title>
-
-    <link rel="stylesheet" href="resources/style/controls.css" type="text/css" media="screen" charset="utf-8">
-    <link rel="stylesheet" href="resources/style/editor.css" type="text/css" media="screen" charset="utf-8">
-    <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.slate.min.css" type="text/css" media="screen" charset="utf-8">
-
-    <script type="text/javascript" src="javascript/base.js"></script>
-    <script type="text/javascript" src="javascript/jquery.js"></script>
-    <script type="text/javascript" src="javascript/paella_player.js"></script>
-    <script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="example.js"></script>
-  </head>
-  <body>
-    <div id="playerContainer" style="display:block;width:100%"></div>
-  </body>
-</html>
-```
-
-Finally load Paella using that container:
-
-``` HTML
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8;">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Paella Engage Example</title>
-
-    <link rel="stylesheet" href="resources/style/controls.css" type="text/css" media="screen" charset="utf-8">
-    <link rel="stylesheet" href="resources/style/editor.css" type="text/css" media="screen" charset="utf-8">
-    <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.slate.min.css" type="text/css" media="screen" charset="utf-8">
-
-    <script type="text/javascript" src="javascript/base.js"></script>
-    <script type="text/javascript" src="javascript/jquery.js"></script>
-    <script type="text/javascript" src="javascript/paella_player.js"></script>
-    <script type="text/javascript" src="resources/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="example.js"></script>
-  </head>
-  <body>
-    [<div id="playerContainer" style="display:block;width:100%"></div>]
-    <script>
-      [loadPaella('playerContainer');]
-    </script>
-  </body>
-</html>
-```
-
-## The loadPaella function
-
-The loadPaella function can be called with different parameters:
-
-1. loadPaella(containerId)
-
-  The basic call. this loads paella in a div width id = {containerId} and loads the default config file located at config/config.json
+2. Configure Paella
   
+  To configure paella you need to edit the ´config/config.json´ file. You can read how to configure paella
+  in the [configuration page](configure.md)
 
-  ``` js
-  loadPaella(containerId)
+  In the `config/config.jsonfile` you need to modify the `standalone.reposiroty` parameter to point to your
+  repository folder. This value can be a relative URL or an absolute URL.
+  
+  ```js
+    "standalone": {
+        "reposiroty": "../repository/"
+    }  
   ```
 
-2. loadPaella(containerId, repository)
+3. Add some videos to your repository
 
-  This loads paella in a div width id = {containerId} and loads the default config file located at config/config.json, but you can specify the {repository} path.
+  In the repository folder you need to create as many folders as videos you want to play. Note that the folder
+  name will be the video identifier.
   
-  Example:
-
-  ``` js
-  loadPaella('playercontainer', 'http://my.server.com/paella/repository')
-  ````
-
-3. loadPaella(containerId, config, repository)
-
-  This loads paella in a div width id = {containerId}, but instead of loading the the default config file you can provide the config inline. You can  also specify the {repository} path.
+  In each video folder you need to create a `data.json` file with the video information. To know more about
+  the `data.json` format, please read the [data.json format page](integrate_basic_datajson.md)
   
-  Example:
+4. Test your video
 
-  ``` js
-  loadPaella('playercontainer', {...config...}, 'http://my.server.com/paella/repository')
-  ```
+  Open a browser and point to your `http://server.org/player?id=videoID`. Remember that the `videoID` parameter
+  must be the video folder name in the repository.
+  
