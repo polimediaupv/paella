@@ -40,7 +40,7 @@ In this file we have all the setups concerning plugins.. streams.. compositions.
 			"light",
 			"light_small"
 		]
-	}	
+	},
 	"plugins":{
 		"defaultConfig":{"enabled":true},
 		"list":{
