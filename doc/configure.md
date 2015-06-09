@@ -32,6 +32,15 @@ In this file we have all the setups concerning plugins.. streams.. compositions.
 			"userInfo": "UserDataDelegate"
 		}
 	},
+	"skin": {
+		"default": "dark",
+		"available": [
+			"dark",
+			"dark_small",
+			"light",
+			"light_small"
+		]
+	}	
 	"plugins":{
 		"defaultConfig":{"enabled":true},
 		"list":{
