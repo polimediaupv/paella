@@ -26,10 +26,14 @@ To add Paella Player to your portal, you need to do some easy steps:
   name will be the video identifier.
   
   In each video folder you need to create a `data.json` file with the video information. To know more about
-  the `data.json` format, please read the [data.json format page](integrate_basic_datajson.md)
+  the `data.json` format, please read the data.json format section.
   
 4. Test your video
 
   Open a browser and point to your `http://server.org/player?id=videoID`. Remember that the `videoID` parameter
   must be the video folder name in the repository.
   
+
+# data.json format
+
+TODO
