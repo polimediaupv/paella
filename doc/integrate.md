@@ -8,7 +8,7 @@ Paella needs to know certain information to play your videos.
 - Preview pictures
 - etc...
 
-So, You need to pass all that information to paella. Paella provides you two ways to pass that.
+So, You need to pass all that information to paella. Paella provides you three ways to pass that information.
 
 ## The basic way
 
@@ -36,6 +36,17 @@ information needed.
 To know more about this, please read [How to integrate paella in your portal: the advanced way](integrate_advanced.md)
 
 
+# Some adapters to use Paella in other portals.
+
+There are some implementation to integrate Paella in third party portals:
+
 ## Paella & Opencast
 
 If you want to use Paella as a engage player for [opencast](http://opencast.org/), please go to the [paella-matterhorn](http://github.com/polimediaupv/paella-matterhorn) project to read how to build the paella engage bundle.
+
+
+## Paella & OpenEDX
+
+Paella can be integrated into [edX](https://open.edx.org/) with an XBlock.  Please go to the [Paella Xblock](https://github.com/polimediaupv/paellaXBlock) project to read how to use it.
+
+There is a [demo server](http://demo.edx.upv.es/courses/demo/Tests/2014-002/about) where you can view it working.
