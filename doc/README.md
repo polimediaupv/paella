@@ -8,9 +8,6 @@ Welcome to the The Paella Player documentation page, this documentation is made 
 - [Usage and Features Guide.](usage_guide.md)
 - [Download Paella.](download_paella.md)
 - [Integrate Paella in your portal.](integrate.md)
-    - [Basic.](integrate_basic.md)
-    - [Advanced.](integrate_advanced.md)
-    - [Paella & Opencast.](http://github.com/polimediaupv/paella-matterhorn)
 - Customize Paella.
     - [Configure Paella.](configure.md)
     - [Define a new skin.](customize_newskin.md)
