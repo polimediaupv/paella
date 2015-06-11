@@ -15,7 +15,7 @@ JavaScript for Paella Player in depth.
 ## Plugins.
 
 How they works, and how to make a new one.
-- [Plugin Types.](plugin_type.md)
+- [Plugin Types.](plugin_types.md)
 - [Plugin Creation.](plugin_creation.md)
 - [Plugin Configuration.](plugin_config.md)
 - [Paella plugins list.](../plugins.md)
