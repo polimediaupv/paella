@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="jquery.js"></script>
+    <script src="flash-test.js"></script>
+</head>
+<body onload="onLoad();">
+    <div id="streamingPlayerContainer">
+
+    </div>
+    <form id="streamingForm">
+        <div class="inputGroup">
+            <label for="server">Server</label>
+            <input type="text" style="width: 640px;" value="" id="server"/>
+        </div>
+        <div class="inputGroup">
+            <label for="stream">Stream</label>
+            <input type="text" style="width: 640px;" value="" id="stream"/>
+        </div>
+
+        <div class="inputGroup">
+            <input type="checkbox" id="subscribe"/>
+            <label for="subscribe">The server requires subscription</label>
+        </div>
+
+        <div class="inputGroup">
+            <button type="submit">Update</button>
+        </div>
+    </form>
+
+    <a href="?server=rtmp://cp49989.live.edgefcs.net/live&stream=streamRM1@2564&subscribe=true">Test URL 1</a>
+    <a href="?server=rtmp://fml.1777A.mucdn.net/201777A/live&stream=test&subscribe=true">Test URL 2</a>
+</body>
+</html>
