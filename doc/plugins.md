@@ -46,7 +46,9 @@ To know more about this, you can read the [Plugin types](developer/plugin_types.
 
 ## User Tracking Saver Plugins
 
+* [es.upv.paella.usertracking.elasticsearchSaverPlugin](plugins/es.upv.paella.usertracking.elasticsearchSaverPlugin.md)
 * [es.upv.paella.usertracking.googleAnalyticsSaverPlugin](plugins/es.upv.paella.usertracking.googleAnalyticsSaverPlugin.md)
+
 
 ## Editor Plugins
 
