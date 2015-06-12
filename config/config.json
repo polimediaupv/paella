@@ -12,7 +12,8 @@
             "slave": 0.0
         },
         "rtmpSettings":{
-            "bufferTime":5
+            "bufferTime":5,
+			"requiresSubscription": false
         }
 	},
 	"editor":{
