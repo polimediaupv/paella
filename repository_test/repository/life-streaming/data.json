@@ -8,7 +8,11 @@
 			"sources": {
 				"rtmp": [
 					{
-						"src": "rtmp://cp49989.live.edgefcs.net/live/streamRM1@2564",
+						"src":{
+							"server": "rtmp://fml.1777A.mucdn.net/201777A/live",
+							"stream": "test",
+							"requiresSubscription": true
+						},
 						"mimetype": "video/mp4",
 						"res": {
 							"w": "1280",
