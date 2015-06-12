@@ -297,10 +297,12 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 	},
 	
 	processEvent:function(eventName,params) {
-		if (eventName!="loadedmetadata" && eventName!="pause" && params.duration!=0 && !this._isReady) {
-			this._isReady = true;
-			this._duration = params.duration;
-			this.callReadyEvent();
+		if (eventName!="loadedmetadata" && eventName!="pause" && !this._isReady) {
+                        if (paella.player.isLiveStream() || params.duration != 0) {
+			    this._isReady = true;
+			    this._duration = params.duration;
+			    this.callReadyEvent();
+                        }
 		}
 		if (eventName=="progress") {
 			try { this.flashVideo.setVolume(this._volume); }
