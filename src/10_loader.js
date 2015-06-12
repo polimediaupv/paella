@@ -115,8 +115,10 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 					var source = stream.sources[type];
 					source.forEach(function (sourceItem) {
 						var pattern = /^[a-zA-Z\:]+\:\/\//gi;
-						if(sourceItem.src.match(pattern) == null){
-							sourceItem.src = This._url + sourceItem.src;
+						if (typeof(sourceItem.src)=="string") {
+							if(sourceItem.src.match(pattern) == null){
+								sourceItem.src = This._url + sourceItem.src;
+							}
 						}
 						sourceItem.type = sourceItem.mimetype;
 					});

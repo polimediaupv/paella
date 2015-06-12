@@ -588,56 +588,46 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 	},
 
 	addSourceStreaming:function(sourceData) {
+		var subscription = false;
+		if (!sourceData || !sourceData.src) {
+			console.log("Invalid source data: expecting src");
+			return;
+		}
+		if (typeof(sourceData.src)=="string") {
+			console.log("Invalid RTMP source format, expecting an object with the format: { server:'rtmp://server', stream:'video-stream' }");
+			return;
+		}
+		if (!sourceData.src.server || !sourceData.src.stream) {
+			console.log("Invalid RTMP source configuration: expecting { server:'rtmp://server', stream:'video-stream' }");
+			return;
+		}
+
+		if (sourceData.src.requiresSubscription===undefined &&
+			paella.player.config.player.rtmpSettings
+		) {
+			subscription = paella.player.config.player.rtmpSettings.requiresSubscription || false;
+		}
+		else if (sourceData.src.requiresSubscription) {
+			subscription = sourceData.src.requiresSubscription;
+		}
 		var parameters = {};
-		var swfName = 'player.swf';
+		var swfName = 'player_streaming.swf';
 		if (this._autoplay) {
         	parameters.autoplay = this._autoplay;
        	}
 		if (base.parameters.get('debug')=="true") {
 			parameters.debugMode = true;
 		}
-		if (sourceData.type=='video/mp4') {
-			if (/(rtmp:\/\/[\w\d\.\-_]+[:+\d]*\/[\w\d\-_]+\/)(mp4:)([\w\d\.\/\-_]+)/i.test(sourceData.src)) {
-				sourceData.src = RegExp.$1 + RegExp.$3;
-			}
 
-			if (/(rtmp:\/\/)([\w\d\.\-_]+[:+\d]*)\/([\w\d\-_]+\/)([\w\d\.\/\-_]+)/.test(sourceData.src)) {
-				parameters.connect = RegExp.$1 + RegExp.$2 + '/' + RegExp.$3;
-				parameters.url = "mp4:" + RegExp.$4;
-			}
-
-			if (/(rtmp:\/\/)([\w\d\.\-_]+[:+\d]*)\/([\w\d\-_]+\/)([\w\d\.\/\-_]+@[\w\d\.\/\-_]+)/.test(sourceData.src)) {
-				parameters.connect = RegExp.$1 + RegExp.$2 + '/' + RegExp.$3;
-				parameters.url = RegExp.$4;
-			}
-
-			parameters.playerId = this.flashId;
-			parameters.isLiveStream = sourceData.isLiveStream!==undefined ? sourceData.isLiveStream:false;
-			if (paella.player.config.player.rtmpSettings && paella.player.config.player.rtmpSettings.bufferTime!==undefined) {
-				parameters.bufferTime = paella.player.config.player.rtmpSettings.bufferTime;
-			}
-			if (parameters.isLiveStream) {
-				swfName = 'player_streaming.swf';
-			}
-			this.flashVideo = this.createSwfObject(swfName,parameters);
+		parameters.playerId = this.flashId;
+		parameters.isLiveStream = sourceData.isLiveStream!==undefined ? sourceData.isLiveStream:false;
+		parameters.server = sourceData.src.server;
+		parameters.stream = sourceData.src.stream;
+		parameters.subscribe = subscription;
+		if (paella.player.config.player.rtmpSettings && paella.player.config.player.rtmpSettings.bufferTime!==undefined) {
+			parameters.bufferTime = paella.player.config.player.rtmpSettings.bufferTime;
 		}
-		else if (sourceData.type=='video/x-flv') {
-			if (/(rtmp:\/\/)([\w\d\.\-_]+[:+\d]*)\/([\w\d\-_]+\/)([\w\d\.\/\-_]+)(\.flv)?/.test(sourceData.src)) {
-				parameters.connect = RegExp.$1 + RegExp.$2 + '/' + RegExp.$3;
-				parameters.url = RegExp.$4;
-			}
-			parameters.playerId = this.flashId;
-
-			parameters.isLiveStream = sourceData.isLiveStream!==undefined ? sourceData.isLiveStream:false;
-			if (parameters.isLiveStream) {
-				swfName = 'player_streaming.swf';
-			}
-
-			if (paella.player.config.player.rtmpSettings && paella.player.config.player.rtmpSettings.bufferTime!==undefined) {
-				parameters.bufferTime = paella.player.config.player.rtmpSettings.bufferTime;
-			}
-			this.flashVideo = this.createSwfObject(swfName,parameters);
-		}
+		this.flashVideo = this.createSwfObject(swfName,parameters);
 	},
 
 	addSource:function(sourceData) {

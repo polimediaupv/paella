@@ -8,7 +8,8 @@
 			"sources": {
 				"rtmp": [
 					{
-						"src": "rtmp://antena3fms35livefs.fplive.net/antena3fms35live-live/stream-antena3_1",
+						"server": "rtmp://antena3fms35livefs.fplive.net/antena3fms35live-live/stream-antena3_1",
+						"stream": "",
 						"mimetype": "video/x-flv",
 						"res": {
 							"w": "1280",
