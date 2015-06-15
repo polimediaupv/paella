@@ -5,14 +5,20 @@ This plugin was made for introduce the functionality of search text in any kind 
 
 ## Plugin Type:
 - [paella.ButtonPlugin](../plugin_type.md)
+
+## Related plugins:
+[es.upv.paella.search.captionsSearchPlugin](es.upv.paella.search.captionsSearchPlugin.md)
+
 ## Configuration Parameters
 
-* ###sortType
+* **sortType**
+
 	Sort by option.
 	- default value: "time"
 	- range: "score" || "time"
 
-* ###colorSearch
+* **colorSearch**
+
 	This option paint results of the sort operation depending on the score achieved.
 	- default value: false
 	- range: true | false
@@ -20,7 +26,7 @@ This plugin was made for introduce the functionality of search text in any kind 
 
 ## Config Example:
 
-Here's are the config  lines for this plugin:
+Here's are the config lines for this plugin:
 
 ```json
 {
