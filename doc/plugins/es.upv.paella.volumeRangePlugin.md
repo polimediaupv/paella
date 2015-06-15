@@ -9,19 +9,21 @@ This plugin is responsible of control the volume pop-up plugin in the paella pla
 ## Configuration Parameters
 
 
-* ###showMasterVolume
+* **showMasterVolume**
+
 	Option to control and show Master volume slider volume controller.
 	- default value: true
 	- range: true | false
 
-* ###showSlaveVolume
+* **showSlaveVolume**
+
 	Option to control and show Slave volume slider volume controller.
 	- default value: false
 	- range: true | false
 
 ## Config Example:
 
-Here's are the config  lines for this plugin:
+Here's are the config lines for this plugin:
 
 ```json
 "es.upv.paella.volumeRangePlugin":
