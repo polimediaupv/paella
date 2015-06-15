@@ -7,17 +7,20 @@ This plugin saves the usertracking events to the [Google Analitycs](https://www.
 
 ## Configuration Parameters
 
-* ###trackingID
+* **trackingID**
+
 	the google tracking ID.
 	- required
 
-* ###domain
+* **domain**
+
 	domain to use the google analytics
 	- default: "auto"
 
-* ###category
+* **category**
+
 	category to use to save the user events
-  - default: "PaellaPlayer"
+	- default: "PaellaPlayer"
 
 
 ## Config Example:
