@@ -34,11 +34,11 @@ To know more about this, you can read the [Plugin types](developer/plugin_types.
 * [es.upv.paella.blackBoardPlugin2](plugins/es.upv.paella.blackBoardPlugin2.md)
 * [es.upv.paella.breaksPlayerPlugin](plugins/es.upv.paella.breaksPlayerPlugin.md)
 * [es.upv.paella.captionsPlugin](plugins/es.upv.paella.captionsPlugin.md)
+* [es.upv.paella.translecture.captionsPlugin](plugins/es.upv.paella.translecture.captionsPlugin.md)
 * [es.upv.paella.zoomPlugin](plugins/es.upv.paella.zoomPlugin.md)
 
 ## Captions Parser Plugins
 
-* [es.upv.paella.translecture.captionsPlugin](plugins/es.upv.paella.translecture.captionsPlugin.md)
 
 ## Search Service Plugins
 
