@@ -7,17 +7,20 @@ This plugin saves the usertracking events to a [elasticsearch](https://www.elast
 
 ## Configuration Parameters
 
-* ###url
+* **url**
+
 	URL to the elasticsearch server.
 	- required
 
-* ###index
+* **index**
+
 	index to use to log the event.
 	- default: "paellaplayer"
 
-* ###type
+* **type**
+
 	type to use to log the event.
-  - default: "usertracking"
+	- default: "usertracking"
 
 
 ## Config Example:
