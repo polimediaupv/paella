@@ -5,16 +5,18 @@ This plugin was made for add the zoom functionality to paella player for be able
 
 ## Plugin Type:
 - [paella.VideoOverlayButtonPlugin](../plugin_type.md)
+
 ## Configuration Parameters
 
-* ###alwaysVisible
+* **alwaysVisible**
+
 	Option for show allways the editor button, although the users dont have permission to edit.
 	- default value: true
 	- range: true | false
 
 ## Config Example:
 
-Here's are the config  lines for this plugin:
+Here's are the config lines for this plugin:
 
 ```json
 {
