@@ -10,9 +10,21 @@ This plugin add the functionality to swap between video resolutions.
 
 * **showWidthRes**
 
-	Shows the resolutions available to swap.
+	Shows the full resolution (*width*x*height*) or only the height value.
 	- default value: true
 	- range: true || false
+
+* **minVerticalRes**
+	
+	Minimum vertical resolution to show in the UI.
+	- optional
+	- range: Integer
+
+* **maxVerticalRes**
+
+	Maximum vertical resolution to show in the UI.
+	- optional
+	- range: Integer
 
 ## Config Example:
 
