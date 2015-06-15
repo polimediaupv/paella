@@ -13,8 +13,8 @@ To know more about this, you can read the [Plugin types](developer/plugin_types.
 * [es.upv.paella.fullScreenButtonPlugin](plugins/es.upv.paella.fullScreenButtonPlugin.md)
 * [es.upv.paella.helpPlugin](plugins/es.upv.paella.helpPlugin.md)
 * [es.upv.paella.multipleQualitiesPlugin](plugins/es.upv.paella.multipleQualitiesPlugin.md)
-* [es.upv.paella.playPauseButtonPlugin](plugins/es.upv.paella.playPauseButtonPlugin.md)
 * [es.upv.paella.playbackRatePlugin](plugins/es.upv.paella.playbackRatePlugin.md)
+* [es.upv.paella.playPauseButtonPlugin](plugins/es.upv.paella.playPauseButtonPlugin.md)
 * [es.upv.paella.searchPlugin](plugins/es.upv.paella.searchPlugin.md)
 * [es.upv.paella.socialPlugin](plugins/es.upv.paella.socialPlugin.md)
 * [es.upv.paella.themeChooserPlugin](plugins/es.upv.paella.themeChooserPlugin.md)
@@ -27,6 +27,9 @@ To know more about this, you can read the [Plugin types](developer/plugin_types.
 * [es.upv.paella.showEditorPlugin](plugins/es.upv.paella.showEditorPlugin.md)
 
 ## TabBar Plugins
+
+* [es.upv.paella.commentsPlugin](plugins/es.upv.paella.commentsPlugin.md)
+* [es.upv.paella.test.tabBarExamplePlugin](plugins/es.upv.paella.test.tabBarExamplePlugin.md)
 
 ## Event Driven Plugins
 
