@@ -13,7 +13,7 @@ This plugin is divided in two plugins, one is which controls the button and the 
 
 ## Configuration Parameters
 
-* ###searchOnCaptions
+* searchOnCaptions
 	This option let the user search for captions on a pop-up interface above the plugin button.
 	- default value: false
 	- range: true | false
