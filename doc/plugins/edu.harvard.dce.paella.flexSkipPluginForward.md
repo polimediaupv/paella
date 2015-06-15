@@ -16,11 +16,13 @@ This plugin goes forward in the time line.
 ## Configuration Parameters
 
 * **direction**
+
 	Direction of timeline jump.
 	- default value: depends on plugin.
 	- range: "Rewind" || "Forward"
 
 * **seconds**
+
 	Seconds to jump.
 	- default value: depends on plugin
 	- range: Integer
