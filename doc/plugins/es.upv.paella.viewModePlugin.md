@@ -6,3 +6,7 @@ This plugin controls the visualization mode related to the Master and the Slave 
 
 ## Plugin Type:
 - [paella.ButtonPlugin](../developer/plugin_types.md)
+
+## Related Plugins
+
+[**es.upv.paella.blackBoardPlugin**](es.upv.paella.blackBoardPlugin.md)
