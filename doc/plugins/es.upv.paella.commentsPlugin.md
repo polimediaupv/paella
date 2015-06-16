@@ -1,6 +1,6 @@
 # es.upv.paella.commentsPlugin
 
-This plugin is a plugin from the paella player extended version, located within the TabBarPlugin, was made it for let the user add comments.
+This plugin allow users to add comments to the videos. It is **experimental** and should not be used.
 
 ## Plugin Type:
 - [paella.TabBarPlugin](../developer/plugin_types.md)
