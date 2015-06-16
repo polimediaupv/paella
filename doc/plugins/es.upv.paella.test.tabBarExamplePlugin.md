@@ -1,6 +1,6 @@
-# es.upv.paella.tabBarExamplePlugin
+# es.upv.paella.test.tabBarExamplePlugin
 
-This plugin its a feature imported from the plugins of paella player extended, and refurbished for paella player.
+This plugin is a test plugin to check that `paella.TabBarPlugin` works.
 
 ![](images/tabBarExamplePlugin.jpg)
 
@@ -13,7 +13,7 @@ Here's are the config lines for this plugin:
 
 ```json
 {
-	"es.upv.paella.tabBarExamplePlugin":
+	"es.upv.paella.test.tabBarExamplePlugin":
 	{
 		"enabled":true
 	}
