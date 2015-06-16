@@ -2,6 +2,7 @@
 
 This plugin is responsible of control the volume pop-up plugin in the paella player. Can be configured for control all sources volume.
 
+![](images/volumeRangePlugin.jpg)
 
 ## Plugin Type:
 - [paella.ButtonPlugin](../plugin_type.md)
