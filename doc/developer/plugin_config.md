@@ -39,4 +39,4 @@ when we are inside a plugin we can acces this variables using:
 this.config.<variable>
 ```
 
-###More about [Plugin Creation](plugin_creation.md) and [Plugin Types](plugin_type.md)
+###More about [Plugin Creation](plugin_creation.md) and [Plugin Types](plugin_types.md)

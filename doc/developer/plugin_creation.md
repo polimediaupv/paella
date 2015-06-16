@@ -2,16 +2,16 @@
 
 You can create plugin for your purposes at local installation using the **'vendor/'** directory, but if you want to create a new plugin and integrate it with paella make the new plugin under **'plugins/'** directory and send us a pull request when its done for integrate your functionality with our system.
 
-###CREATION
+##CREATION
 
 For explain better the plugin creation steps we are going to use the current "helpPlugin" as an example. This plugin shows a popup window with help to the final user.
 
-##Step #1 
+###Step #1 
 - Create a folder under Paella-Project/Plugin.
 
 All files/directories under the new folder will be inserted in Paella for his use.
 
-##Step #2
+###Step #2
 - Create files and direcories inside our new directory with this structure.
 
     - /localization
@@ -39,8 +39,8 @@ example: /localizacion/<b>es</b>.json
 
 <b>myPluginName.less</b>This will be our plugin main style file.
 
-## Step #3
-- Select your plugin [TYPE](plugin_type.md)
+### Step #3
+- Select your plugin [TYPE](plugin_types.md)
 - Create your plugin class.
 
 example: helpPlugin.js (buttonPlugin)
@@ -55,7 +55,7 @@ Class ("paella.ZoomPlugin", paella.EventDrivenPlugin,{...});
 
 ```
 
-## Step #4
+### Step #4
 Using the main methods:
 
 example: helpPlugin.js (buttonPlugin)
@@ -119,7 +119,7 @@ example: zoomPlugin.js (EventDrivenPlugin)
 
 ```
 
-## Step #5
+### Step #5
 
 - Define a style using myPluginName.less
 
