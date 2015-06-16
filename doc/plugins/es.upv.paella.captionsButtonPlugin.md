@@ -1,10 +1,10 @@
 # es.upv.paella.captionsButtonPlugin
 
-This plugin is divided in two plugins, one is which controls the button and the user interface (**es.upv.paella.captionsButtonPlugin**) and the other is in charge of show the captions below the video (**es.upv.paella.captionsPlugin**).
+This plugins activates the subtitles bar below the video with the default browser language, and displays a popup for if you want to change the language instead of using the browser default.
 
+![](images/captionsButtonPlugin.jpg)
 
 ## Plugin Type:
-(**es.upv.paella.captionsButtonPlugin**)
 - [paella.ButtonPlugin](../plugin_type.md)
 
 ## Related Plugins
