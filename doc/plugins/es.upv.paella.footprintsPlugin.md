@@ -2,6 +2,7 @@
 
 This plugin shows a statistics bar above the timeline, for give the info about which point of the timeline is the most viewed.
 
+![](images/footprintsPlugin.jpg)
 
 ## Plugin Type:
 - [paella.ButtonPlugin](../plugin_type.md)
