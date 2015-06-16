@@ -302,7 +302,7 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 	},
 	
 	processEvent:function(eventName,params) {
-		if (eventName!="loadedmetadata" && eventName!="pause" && params.duration!=0 && !this._isReady) {
+		if (eventName!="loadedmetadata" && eventName!="pause" && !this._isReady) {
 			this._isReady = true;
 			this._duration = params.duration;
 			this.callReadyEvent();
