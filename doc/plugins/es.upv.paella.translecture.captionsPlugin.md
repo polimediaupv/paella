@@ -31,10 +31,12 @@ This plugin loads the video captions from the [translectures project](https://ww
 ## Config Example:
 
 ```json
-  "es.upv.paella.translecture.CaptionsPlugIn": {
-    "enabled": true,
-    "tLServer": "https://www.translectures.eu/tl",
-    "tLdb": "db",
-    "tLEdit": "/rest/plugins/translectures/redirectToEditor/${videoId}?lang=${tl.lang.code}"
-  }
+{
+	"es.upv.paella.translecture.CaptionsPlugIn": {
+		"enabled": true,
+		"tLServer": "https://www.translectures.eu/tl",
+		"tLdb": "db",
+		"tLEdit": "/rest/plugins/translectures/redirectToEditor/${videoId}?lang=${tl.lang.code}"
+	}
+}
 ```
