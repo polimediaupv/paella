@@ -1,7 +1,7 @@
 # es.upv.paella.fullScreenButtonPlugin
 
 This plugin was made for let the user enter/exit in fullscreen mode.
-
+![](images/fullScreenButtonPlugin.jpg)
 
 ## Plugin Type:
 - [paella.ButtonPlugin](../plugin_type.md)
