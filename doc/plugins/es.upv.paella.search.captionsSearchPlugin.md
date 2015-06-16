@@ -4,4 +4,4 @@ This plugin it is a service used by [es.upv.paella.searchPlugin](es.upv.paella.s
 
 
 ## Plugin Type:
-- [paella.SearchServicePlugIn](../plugin_type.md)
+- [paella.SearchServicePlugIn](../developer/plugin_types.md)

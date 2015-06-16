@@ -5,7 +5,7 @@ This plugin is used to rewind the timeline back in time 10 seconds by default.
 ![](images/flexSkipPlugin.jpg)
 
 ## Plugin Type:
-- [paella.ButtonPlugin](../plugin_type.md)
+- [paella.ButtonPlugin](../developer/plugin_types.md)
 
 ## Related Plugins 
 

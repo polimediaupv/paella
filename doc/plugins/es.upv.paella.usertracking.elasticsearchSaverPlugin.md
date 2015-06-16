@@ -3,7 +3,7 @@
 This plugin saves the usertracking events to a [elasticsearch](https://www.elastic.co/) server
 
 ## Plugin Type:
-- [paella.userTracking.SaverPlugIn](../plugin_type.md)
+- [paella.userTracking.SaverPlugIn](../developer/plugin_types.md)
 
 ## Configuration Parameters
 

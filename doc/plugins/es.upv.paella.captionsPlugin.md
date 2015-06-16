@@ -5,7 +5,7 @@ This plugin is divided in two plugins, one is which controls the button and the 
 
 ## Plugin Type:
 (**es.upv.paella.captionsButtonPlugin**)
-- [paella.ButtonPlugin](../plugin_type.md)
+- [paella.ButtonPlugin](../developer/plugin_types.md)
 
 ## Related Plugins
 

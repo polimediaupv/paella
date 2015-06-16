@@ -5,7 +5,7 @@ This plugin was made for introduce the functionality of search text in any kind 
 ![](images/searchPlugin.jpg)
 
 ## Plugin Type:
-- [paella.ButtonPlugin](../plugin_type.md)
+- [paella.ButtonPlugin](../developer/plugin_types.md)
 
 ## Related plugins:
 [es.upv.paella.search.captionsSearchPlugin](es.upv.paella.search.captionsSearchPlugin.md)

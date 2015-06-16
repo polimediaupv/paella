@@ -5,4 +5,4 @@ This plugin adds the functionability of jump to any time in the timeline where t
 ![](images/frameControlPlugin.jpg)
 
 ## Plugin Type:
-- [paella.ButtonPlugin](../plugin_type.md)
+- [paella.ButtonPlugin](../developer/plugin_types.md)

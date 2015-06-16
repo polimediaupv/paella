@@ -7,7 +7,7 @@ This plugin goes forward in the time line.
 ## Plugin Type:
 (**edu.harvard.dce.paella.flexSkipPluginForward**)
 
-- [paella.ButtonPlugin](../plugin_type.md)
+- [paella.ButtonPlugin](../developer/plugin_types.md)
 
 ## Related Plugins 
 

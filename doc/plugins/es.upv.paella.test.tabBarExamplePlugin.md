@@ -5,7 +5,7 @@ This plugin its a feature imported from the plugins of paella player extended, a
 ![](images/tabBarExamplePlugin.jpg)
 
 ## Plugin Type:
-- [paella.TabBarPlugin](../plugin_type.md)
+- [paella.TabBarPlugin](../developer/plugin_types.md)
 
 ## Config Example:
 

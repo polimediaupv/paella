@@ -3,7 +3,7 @@
 This plugin saves the usertracking events to the [Google Analitycs](https://www.google.es/intl/es/analytics/) service
 
 ## Plugin Type:
-- [paella.userTracking.SaverPlugIn](../plugin_type.md)
+- [paella.userTracking.SaverPlugIn](../developer/plugin_types.md)
 
 ## Configuration Parameters
 

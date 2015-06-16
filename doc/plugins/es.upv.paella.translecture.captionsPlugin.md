@@ -4,7 +4,7 @@ This plugin loads the video captions from the [translectures project](https://ww
 
 
 ## Plugin Type:
-- [paella.EventDrivenPlugin](../plugin_type.md)
+- [paella.EventDrivenPlugin](../developer/plugin_types.md)
 
 ## Configuration Parameters
 

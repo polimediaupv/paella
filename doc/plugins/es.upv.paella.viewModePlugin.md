@@ -5,4 +5,4 @@ This plugin controls the visualization mode related to the Master and the Slave 
 ![](images/viewModePlugin.jpg)
 
 ## Plugin Type:
-- [paella.ButtonPlugin](../plugin_type.md)
+- [paella.ButtonPlugin](../developer/plugin_types.md)

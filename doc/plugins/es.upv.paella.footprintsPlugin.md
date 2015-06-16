@@ -5,7 +5,7 @@ This plugin shows a statistics bar above the timeline, for give the info about w
 ![](images/footprintsPlugin.jpg)
 
 ## Plugin Type:
-- [paella.ButtonPlugin](../plugin_type.md)
+- [paella.ButtonPlugin](../developer/plugin_types.md)
 
 ## Configuration Parameters
 
