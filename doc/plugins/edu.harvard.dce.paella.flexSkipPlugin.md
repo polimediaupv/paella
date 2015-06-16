@@ -1,12 +1,10 @@
 # edu.harvard.dce.paella.flexSkipPlugin
 
-This plugin rewind or goes forward in the time line with 2 buttons. Its compound with two plugins.
-(**paella.plugins.FlexSkipPlugin**) and the (**paella.plugins.FlexSkipPluginForward**)
+This plugin is used to rewind the timeline back in time 10 seconds by default.
 
 ![](images/flexSkipPlugin.jpg)
 
 ## Plugin Type:
-(**edu.harvard.dce.paella.flexSkipPlugin**)
 - [paella.ButtonPlugin](../plugin_type.md)
 
 ## Related Plugins 

@@ -2,6 +2,7 @@
 
 This plugin was made for introduce the functionality of search text in any kind of source available (subtitles, slides through OCR ... etc).
 
+![](images/searchPlugin.jpg)
 
 ## Plugin Type:
 - [paella.ButtonPlugin](../plugin_type.md)
