@@ -10,3 +10,14 @@ This plugin is divided in two plugins, one is which controls the button and the 
 ## Related Plugins
 
 [**es.upv.paella.captionsButtonPlugin**](es.upv.paella.captionsButtonPlugin.md)
+
+## Config Example:
+
+```json
+{
+	"es.upv.paella.captionsPlugin": 
+	{
+		"enabled": true
+	},
+}
+```
