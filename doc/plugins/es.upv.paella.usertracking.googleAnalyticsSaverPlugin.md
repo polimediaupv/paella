@@ -26,8 +26,10 @@ This plugin saves the usertracking events to the [Google Analitycs](https://www.
 ## Config Example:
 
 ```json
-  "es.upv.paella.usertracking.GoogleAnalyticsSaverPlugIn": {
-    "enabled": true,
-    "trackingID": "UA-XXXXXXXX-Y"
-  }
+{
+	"es.upv.paella.usertracking.GoogleAnalyticsSaverPlugIn": {
+		"enabled": true,
+		"trackingID": "UA-XXXXXXXX-Y"
+	}
+}
 ```
