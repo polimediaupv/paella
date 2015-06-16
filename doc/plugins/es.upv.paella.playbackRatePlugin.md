@@ -2,6 +2,7 @@
 
 Button Plugin in charge set the speed of the source.
 
+![](images/playbackRate.jpg)
 
 ## Plugin Type:
 - [paella.ButtonPlugin](../plugin_type.md)
