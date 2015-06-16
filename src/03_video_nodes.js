@@ -236,6 +236,7 @@ Class ("paella.VideoElementBase", paella.DomNode,{
 	}
 });
 
+
 //function paella_flash_video_ready(streamId) {
 //	var videoPlayer = paella_flash_VideoContainers[streamId];
 //	videoPlayer._isReady = true;
