@@ -1,4 +1,4 @@
-# es.upv.paella.blackBoardPlugin2
+# es.upv.paella.blackBoardPlugin
 
 This plugin was made for add the zoom functionality to paella player for be able to zoom blackboard photos through a new profile accesible from the profile change button.
 
