@@ -14,6 +14,7 @@ This plugins activates the subtitles bar below the video with the default browse
 ## Configuration Parameters
 
 * searchOnCaptions
+
 	This option let the user search for captions on a pop-up interface above the plugin button.
 	- default value: false
 	- range: true | false
