@@ -46,7 +46,7 @@ the plugin and its funcionalities.
 - Search Service Plugins
 
   Paella comes with a search service that can be extended with plugins. By default Paella comes with a search
-  service plugin that allow the user to search in the captions. Bat any institution can add a new search provider.
+  service plugin that allow the user to search in the captions. But any institution can add a new search provider.
   
 - User Tracking Saver Plugin
 
