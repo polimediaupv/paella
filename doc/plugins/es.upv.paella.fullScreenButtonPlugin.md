@@ -10,10 +10,12 @@ This plugin was made for let the user enter/exit in fullscreen mode.
 
 ## Configuration Parameters
 
-* ###reloadOnFullscreen
+* **reloadOnFullscreen**
+
 	Reload the videos for apply the better resolution.
 
-* ###keepUserSelection
+* **keepUserSelection**
+
 	Keep the user resolution selected.
 	- default value: true
 	- range: true | false

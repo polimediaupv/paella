@@ -8,15 +8,18 @@ This plugin loads the video captions from the [translectures project](https://ww
 
 ## Configuration Parameters
 
-* ###tLServer
+* **tLServer**
+
 	URL to translectures server.
 	- required
 
-* ###tLdb
+* **tLdb**
+
 	translectures DB
 	- required
 
-* ###tLEdit
+* **tLEdit**
+
 	URL to edit the captions
 	- optional. If defined, the player lets you to edit the captions.
 
