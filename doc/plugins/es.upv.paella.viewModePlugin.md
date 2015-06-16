@@ -10,3 +10,14 @@ This plugin controls the visualization mode related to the Master and the Slave 
 ## Related Plugins
 
 [**es.upv.paella.blackBoardPlugin**](es.upv.paella.blackBoardPlugin.md)
+
+## Config Example:
+
+```json
+{
+	"es.upv.paella.viewModePlugin": 
+	{
+		"enabled": true
+	},
+}
+```
