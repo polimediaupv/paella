@@ -26,8 +26,10 @@ This plugin saves the usertracking events to a [elasticsearch](https://www.elast
 ## Config Example:
 
 ```json
-  "es.upv.paella.usertracking.elasticsearchSaverPlugin": {
-    "enabled": true,
-    "url": "http://my.elastic.server"
-  }
+{
+	"es.upv.paella.usertracking.elasticsearchSaverPlugin": {
+		"enabled": true,
+		"url": "http://my.elastic.server"
+	}
+}
 ```
