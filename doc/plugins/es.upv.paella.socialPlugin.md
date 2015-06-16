@@ -6,3 +6,14 @@ This plugin show a pop-up for share the video content in different social networ
 
 ## Plugin Type:
 - [paella.ButtonPlugin](../developer/plugin_types.md)
+
+## Config Example:
+
+```json
+{
+	"es.upv.paella.socialPlugin": 
+	{
+		"enabled": true
+	},
+}
+```
