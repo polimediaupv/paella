@@ -8,3 +8,14 @@ This plugin allow users to add comments to the videos. It is **experimental** an
 ## Related Plugins 
 
 [**es.upv.paella.test.tabBarExamplePlugin**](es.upv.paella.test.tabBarExamplePlugin.md)
+
+## Config Example:
+
+```json
+{
+	"es.upv.paella.commentsPlugin": 
+	{
+		"enabled": true
+	},
+}
+```
