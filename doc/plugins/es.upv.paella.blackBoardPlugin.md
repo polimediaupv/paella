@@ -5,6 +5,16 @@ This plugin was made for add the zoom functionality to paella player for be able
 ![](images/blackBoardPlugin.jpg)
 
 
-
 ## Plugin Type:
 - [paella.EventDrivenPlugin](../developer/plugin_types.md)
+
+## Config Example:
+
+```json
+{
+	"es.upv.paella.blackBoardPlugin": 
+	{
+		"enabled": true
+	},
+}
+```
