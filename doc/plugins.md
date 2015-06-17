@@ -6,7 +6,7 @@ To know more about this, you can read the [Plugin types](developer/plugin_types.
 ## Button Plugins
 
 * [edu.harvard.dce.paella.flexSkipPlugin](plugins/edu.harvard.dce.paella.flexSkipPlugin.md)
-* [edu.harvard.dce.paella.flexSkipPluginForward](plugins/edu.harvard.dce.paella.flexSkipPluginForward.md)
+* [edu.harvard.dce.paella.flexSkipForwardPlugin](plugins/edu.harvard.dce.paella.flexSkipForwardPlugin.md)
 * [es.upv.paella.captionsButtonPlugin](plugins/es.upv.paella.captionsButtonPlugin.md)
 * [es.upv.paella.footprintsPlugin](plugins/es.upv.paella.footprintsPlugin.md)
 * [es.upv.paella.frameControlPlugin](plugins/es.upv.paella.frameControlPlugin.md)
