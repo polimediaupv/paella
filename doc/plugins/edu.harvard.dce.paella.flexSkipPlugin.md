@@ -9,7 +9,7 @@ This plugin is used to rewind the timeline back in time 10 seconds by default.
 
 ## Related Plugins 
 
-[**edu.harvard.dce.paella.flexSkipPluginForward**](edu.harvard.dce.paella.flexSkipPluginForward.md)
+[**edu.harvard.dce.paella.flexSkipForwardPlugin**](edu.harvard.dce.paella.flexSkipForwardPlugin.md)
 
 ## Configuration Parameters
 
