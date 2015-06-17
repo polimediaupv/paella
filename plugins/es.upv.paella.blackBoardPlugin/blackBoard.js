@@ -24,7 +24,7 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 	getName:function() { 
 		return "es.upv.paella.blackBoardPlugin";
 	},
-	
+
 	getIndex:function() {return 10;},
 
 	getAlignment:function(){

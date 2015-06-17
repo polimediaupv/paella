@@ -309,12 +309,18 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 				if (loader.loadStatus) {
 					var preferredMethodMaster = loader.getPreferredMethod(0);
 					var preferredMethodSlave  = loader.getPreferredMethod(1);
-					
+
+					if (!preferredMethodMaster) {
+						message = "This video is not compatible with any codec installed in your system";
+						paella.messageBox.showError(base.dictionary.translate(message));
+						return false;
+					}
+
 					var h264WarningMessage = true;
 					if ((master.sources.ogv || master.sources.webm) && (slave.sources.ogv || slave.sources.webm)) {
 						h264WarningMessage = false;
 					}
-					
+
 					if (h264WarningMessage) {
 						var minFirefoxVersion = base.userAgent.system.MacOS ? 35:(base.userAgent.system.Windows) ? 25:26;
 						if (base.userAgent.browser.Firefox && base.userAgent.browser.Version.major<minFirefoxVersion) {
