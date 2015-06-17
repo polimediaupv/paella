@@ -19,6 +19,7 @@ CHANGELOG
  * Fixed bug with the volume when the video is reloaded
  * New plugin added: es.upv.paella.translectures.CaptionsPlugIn
  * New videoMode: blackboard + zoom images
+ * HLS support for iOS devices
 
 * Paella 4.0.24 (29-05-2015)
 
