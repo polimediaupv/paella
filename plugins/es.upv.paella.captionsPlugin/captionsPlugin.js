@@ -38,9 +38,9 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 		var self = this;
 
 		// HIDE UI IF NO Captions
-			if(!paella.captions.getAvailableLangs().length){
-				paella.plugins.captionsPlugin.hideUI();
-			}
+		if(!paella.captions.getAvailableLangs().length){
+			paella.plugins.captionsPlugin.hideUI();
+		}
 
 		//BINDS
 		paella.events.bind(paella.events.captionsEnabled,function(event,params){
@@ -191,16 +191,18 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 		self._autoScroll = true;
 
 		switch(self._open){
-			case 0: if(self._browserLang && paella.captions.getActiveCaptions()==undefined){
-						self.selectDefaultBrowserLang(self._browserLang);
-					}
-					self._open = 1;
-					paella.keyManager.enabled = false;
-					break;
-			
-			case 1: paella.keyManager.enabled = true;
-					self._open = 0;
-					break;
+			case 0:
+				if(self._browserLang && paella.captions.getActiveCaptions()==undefined){
+					self.selectDefaultBrowserLang(self._browserLang);
+				}
+				self._open = 1;
+				paella.keyManager.enabled = false;
+				break;
+		
+			case 1: 
+				paella.keyManager.enabled = true;
+				self._open = 0;
+				break;
 		}
 
 	},
@@ -211,86 +213,85 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 		//captions CONTAINER
 		thisClass._parent = document.createElement('div');
         thisClass._parent.className = 'captionsPluginContainer';
-	        
-	        //captions BODY
-	        if(thisClass._searchOnCaptions){
-		        thisClass._body = document.createElement('div');
-		        thisClass._body.className = 'captionsBody';
-		        thisClass._parent.appendChild(thisClass._body);
-		         //BODY JQUERY
-		        $(thisClass._body).scroll(function(){
-		        	thisClass._autoScroll = false;
-		        });
-
-		        //INPUT
-		        thisClass._input = document.createElement("input");
-		        thisClass._input.className = "captionsBarInput";
-		        thisClass._input.type = "text";
-		        thisClass._input.id ="captionsBarInput";
-		        thisClass._input.name = "captionsString";
-		        thisClass._input.placeholder = base.dictionary.translate("Search captions");
-		        thisClass._bar.appendChild(thisClass._input);
-
-		        //INPUT jQuery
-		         $(thisClass._input).change(function(){
-		        	var text = $(thisClass._input).val();
-		        	thisClass.doSearch(text);
-				});
-
-				$(thisClass._input).keyup(function(){
-					var text = $(thisClass._input).val();
-					if(thisClass._searchTimer != null){
-						thisClass._searchTimer.cancel();
-					}
-					thisClass._searchTimer = new base.Timer(function(timer) {
-						thisClass.doSearch(text);
-					}, thisClass._searchTimerTime);			
-				});
-		    }
-
+	    
 	    //captions BAR
 	    thisClass._bar = document.createElement('div');
         thisClass._bar.className = 'captionsBar';
-        thisClass._parent.appendChild( thisClass._bar);
+        thisClass._parent.appendChild( thisClass._bar);	    
+	    
+        //captions BODY
+        if(thisClass._searchOnCaptions){
+	        thisClass._body = document.createElement('div');
+	        thisClass._body.className = 'captionsBody';
+	        thisClass._parent.appendChild(thisClass._body);
+	         //BODY JQUERY
+	        $(thisClass._body).scroll(function(){
+	        	thisClass._autoScroll = false;
+	        });
+
+	        //INPUT
+	        thisClass._input = document.createElement("input");
+	        thisClass._input.className = "captionsBarInput";
+	        thisClass._input.type = "text";
+	        thisClass._input.id ="captionsBarInput";
+	        thisClass._input.name = "captionsString";
+	        thisClass._input.placeholder = base.dictionary.translate("Search captions");
+	        thisClass._bar.appendChild(thisClass._input);
+
+	        //INPUT jQuery
+	         $(thisClass._input).change(function(){
+	        	var text = $(thisClass._input).val();
+	        	thisClass.doSearch(text);
+			});
+
+			$(thisClass._input).keyup(function(){
+				var text = $(thisClass._input).val();
+				if(thisClass._searchTimer != null){
+					thisClass._searchTimer.cancel();
+				}
+				thisClass._searchTimer = new base.Timer(function(timer) {
+					thisClass.doSearch(text);
+				}, thisClass._searchTimerTime);			
+			});
+	    }
 
 	        
 
-	        //SELECT
-	        thisClass._select = document.createElement("select");
-	        thisClass._select.className = "captionsSelector";
-	        
-	        var defOption = document.createElement("option"); // NO ONE SELECT
-	        defOption.text = base.dictionary.translate("None");
-	        defOption.value = "";
-	        thisClass._select.add(defOption);
+        //SELECT
+        thisClass._select = document.createElement("select");
+        thisClass._select.className = "captionsSelector";
+        
+        var defOption = document.createElement("option"); // NO ONE SELECT
+        defOption.text = base.dictionary.translate("None");
+        defOption.value = "";
+        thisClass._select.add(defOption);
 
-	        paella.captions.getAvailableLangs().forEach(function(l){
-	        	var option = document.createElement("option");
-	        	option.text = l.lang.txt;
-	        	option.value = l.id;
-	        	thisClass._select.add(option);
-	        });
+        paella.captions.getAvailableLangs().forEach(function(l){
+        	var option = document.createElement("option");
+        	option.text = l.lang.txt;
+        	option.value = l.id;
+        	thisClass._select.add(option);
+        });
 
-	         thisClass._bar.appendChild(thisClass._select);
+         thisClass._bar.appendChild(thisClass._select);
 
-	        //jQuery SELECT
-	        $(thisClass._select).change(function(){
-		       thisClass.changeSelection();
-	        });
+        //jQuery SELECT
+        $(thisClass._select).change(function(){
+	       thisClass.changeSelection();
+        });
 
-	        //BUTTON EDITOR
-	        thisClass._editor = document.createElement("button");
-	        thisClass._editor.className = "editorButton";
-	        thisClass._editor.innerHTML = "";
-	        thisClass._bar.appendChild(thisClass._editor);
+        //BUTTON EDITOR
+        thisClass._editor = document.createElement("button");
+        thisClass._editor.className = "editorButton";
+        thisClass._editor.innerHTML = "";
+        thisClass._bar.appendChild(thisClass._editor);
 
-
-		        //BUTTON jQuery
-		        $(thisClass._editor).prop("disabled",true);
-		        $(thisClass._editor).click(function(){
-		        	var c = paella.captions.getActiveCaptions();
-		        	c.goToEdit();
-		        });
+        //BUTTON jQuery
+        $(thisClass._editor).prop("disabled",true);
+        $(thisClass._editor).click(function(){
+        	var c = paella.captions.getActiveCaptions();
+        	c.goToEdit();
+        });
 
         domElement.appendChild(thisClass._parent);
     },
@@ -378,18 +379,18 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
         	thisClass._body.appendChild(thisClass._inner);
 
         	//JQUERY
-	        	$(thisClass._inner).hover(
-	        		function(){ 
-	        			$(this).css('background-color','rgba(250, 161, 102, 0.5)');	           		
-	        		},
-	        		function(){ 
-	        			$(this).removeAttr('style');
-	        		}
-		        );
-		        $(thisClass._inner).click(function(){ 
-		        		var secBegin = $(this).attr("sec-begin");
-		        		paella.player.videoContainer.seekToTime(parseInt(secBegin));
-		        });
+        	$(thisClass._inner).hover(
+        		function(){ 
+        			$(this).css('background-color','rgba(250, 161, 102, 0.5)');	           		
+        		},
+        		function(){ 
+        			$(this).removeAttr('style');
+        		}
+	        );
+	        $(thisClass._inner).click(function(){ 
+	        		var secBegin = $(this).attr("sec-begin");
+	        		paella.player.videoContainer.seekToTime(parseInt(secBegin));
+	        });
     	});
     }
 });
