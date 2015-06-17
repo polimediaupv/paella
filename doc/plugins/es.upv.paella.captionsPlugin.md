@@ -8,8 +8,8 @@ This plugin is divided in two plugins, one is which controls the button and the 
 - [paella.ButtonPlugin](../developer/plugin_types.md)
 
 ## Related Plugins
-
-[**es.upv.paella.captionsButtonPlugin**](es.upv.paella.captionsButtonPlugin.md)
+- [**es.upv.paella.captionsButtonPlugin**](es.upv.paella.captionsButtonPlugin.md)
+- [**es.upv.paella.captions.DFXPParserPlugin**](es.upv.paella.captions.DFXPParserPlugin.md)
 
 ## Config Example:
 
@@ -18,6 +18,6 @@ This plugin is divided in two plugins, one is which controls the button and the 
 	"es.upv.paella.captionsPlugin": 
 	{
 		"enabled": true
-	},
+	}
 }
 ```
