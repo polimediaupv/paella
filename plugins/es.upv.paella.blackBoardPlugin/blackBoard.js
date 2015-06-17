@@ -21,14 +21,20 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 	_mousePos:null,
 	_containerRect:null,
 
-	getIndex:function(){return 10;},
+	getName:function() { 
+		return "es.upv.paella.blackBoardPlugin";
+	}
+	getIndex:function() {return 10;},
 
 	getAlignment:function(){
 		return 'right';
 	},
 	getSubclass:function() { return "blackBoardButton2"; },
-
 	getDefaultToolTip:function() { return base.dictionary.translate("BlackBoard");},
+
+	checkEnabled:function(onSuccess) {		
+			onSuccess(true);
+	},
 
 	getEvents:function() {
 		return[
@@ -40,30 +46,32 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
     onEvent:function(event, params){
     	var self = this;
     	switch(event){
-    		case paella.events.setProfile:  if(params.profileName!=self._blackBoardProfile){
-    											if(self._active){
-    												self.destroyOverlay();
-	    											self._active = false;
-    											}
-    											break;
-    										}
-    										else{ 
-
-	    										if(!self._hasImages){
-	    											paella.events.trigger(paella.events.setProfile,{profileName:"slide_professor"});
-	    										}
-	    										if(self._hasImages && !self._active){
-	    											self.createOverlay();
-	    											self._active = true;
-	    										}
-	    									}
-    										break;
-    		case paella.events.timeUpdate: if(self._active && self._hasImages){self.imageUpdate(event,params);} break;
+    		case paella.events.setProfile:
+				if(params.profileName!=self._blackBoardProfile){
+					if(self._active){
+						self.destroyOverlay();
+						self._active = false;
+					}
+					break;
+				}
+				else{ 
+				
+					if(!self._hasImages){
+						paella.events.trigger(paella.events.setProfile,{profileName:"slide_professor"});
+					}
+					if(self._hasImages && !self._active){
+						self.createOverlay();
+						self._active = true;
+					}
+				}
+				break;
+    		case paella.events.timeUpdate:
+    			if(self._active && self._hasImages) {
+	    			self.imageUpdate(event,params);
+	    		}
+	    		break;
     	}
     },
-	checkEnabled:function(onSuccess) {		
-			onSuccess(true);
-	},
 
 	setup:function() {
 		var self = this;	
@@ -315,12 +323,8 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 					self._ant = lastId;
 					return self._zImages["frame_"+ant]; 
 			}
-				else ant = id;
+			else ant = id;
 		}
-	},
-
-	getName:function() { 
-		return "es.upv.paella.blackBoardPlugin2";
 	}
 });
 
