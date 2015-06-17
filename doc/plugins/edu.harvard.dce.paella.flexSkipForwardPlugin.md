@@ -1,11 +1,10 @@
-# edu.harvard.dce.paella.flexSkipPluginForward
+# edu.harvard.dce.paella.flexSkipForwardPlugin
 
 This plugin goes forward in the time line.
 
 ![](images/flexSkipPlugin.jpg)
 
 ## Plugin Type:
-(**edu.harvard.dce.paella.flexSkipPluginForward**)
 
 - [paella.ButtonPlugin](../developer/plugin_types.md)
 
@@ -34,7 +33,7 @@ Here's are the config lines for this plugin:
 
 ```json
 {
-	"edu.harvard.dce.paella.flexSkipPluginForward": 
+	"edu.harvard.dce.paella.flexSkipForwardPlugin": 
 	{
 		"enabled":true, 
 		"direction": "Forward",
