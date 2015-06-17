@@ -40,16 +40,15 @@ Class("paella.plugins.FlexSkipPlugin", paella.ButtonPlugin, {
 
 paella.plugins.flexSkipPlugin = new paella.plugins.FlexSkipPlugin();
 
-Class("paella.plugins.FlexSkipPluginForward", paella.plugins.FlexSkipPlugin, {
+
+
+Class("paella.plugins.FlexSkipForwardPlugin", paella.plugins.FlexSkipPlugin, {
 	getIndex: function() {
 		return 122;
 	},
-	getMinWindowSize: function() {
-		return 510;
-	},
 	getName: function() {
-		return "edu.harvard.dce.paella.flexSkipPluginForward";
+		return "edu.harvard.dce.paella.flexSkipForwardPlugin";
 	}
 });
 
-paella.plugins.flexSkipPluginForward = new paella.plugins.FlexSkipPluginForward();
+paella.plugins.flexSkipForwardPlugin = new paella.plugins.FlexSkipForwardPlugin();

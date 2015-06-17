@@ -33,7 +33,7 @@
 		"list":{
 			"ch.ethz.paella.multipleQualitiesPlugin": {"enabled": false},
 			"edu.harvard.dce.paella.flexSkipPlugin": {"enabled":true, "direction": "Rewind", "seconds": 10},
-			"edu.harvard.dce.paella.flexSkipPluginForward": {"enabled":true, "direction": "Forward", "seconds": 30},
+			"edu.harvard.dce.paella.flexSkipForwardPlugin": {"enabled":true, "direction": "Forward", "seconds": 30},
 			"es.upv.paella.showEditorPlugin":{"enabled":true,"alwaysVisible":true},
 			"es.upv.paella.trimmingPlayerPlugin":{"enabled":true},
 			"es.upv.paella.editor.trimmingTrackPlugin":{"enabled":true},
