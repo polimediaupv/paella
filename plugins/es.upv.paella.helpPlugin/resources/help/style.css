@@ -37,12 +37,12 @@ iframe {
 	box-shadow: 1px 1px 4px 0px black
 }
 
-h1 {
+h2 {
 	color: #909090;
 }
 
-h2 {
-	color: #707070;
+h1 {
+	color: #fa8528;
 }
 
 .alignCenter {
@@ -218,6 +218,26 @@ a:active {
 
 .menuItemLink.current {
 	color: gray;
+}
+
+.element{
+  margin-left: auto;
+  display: block;
+  margin-right: auto;
+  width: 65%;
+}
+
+.imgen{
+	margin-left: auto;
+  margin-left: auto;
+  width: 100%;
+}
+
+.txtblock{
+  color: #B57A4B;
+  font-size: large;
+  font-family: monospace;
+  font-style: oblique;
 }
 
 
