@@ -1,4 +1,4 @@
-# es.upv.paella.captionsButtonPlugin
+# es.upv.paella.captionsPlugin
 
 This plugins activates the subtitles bar below the video with the default browser language, and displays a popup for if you want to change the language instead of using the browser default.
 
@@ -9,7 +9,7 @@ This plugins activates the subtitles bar below the video with the default browse
 
 ## Related Plugins
 
-- [**es.upv.paella.captionsPlugin**](es.upv.paella.captionsPlugin.md)
+- [**paella.plugins.CaptionsOnScreen**](paella.plugins.CaptionsOnScreen.md)
 - [**es.upv.paella.captions.DFXPParserPlugin**](es.upv.paella.captions.DFXPParserPlugin.md)
 
 ## Configuration Parameters
