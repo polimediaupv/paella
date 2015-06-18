@@ -7,7 +7,7 @@ To know more about this, you can read the [Plugin types](developer/plugin_types.
 
 * [edu.harvard.dce.paella.flexSkipPlugin](plugins/edu.harvard.dce.paella.flexSkipPlugin.md)
 * [edu.harvard.dce.paella.flexSkipForwardPlugin](plugins/edu.harvard.dce.paella.flexSkipForwardPlugin.md)
-* [es.upv.paella.captionsButtonPlugin](plugins/es.upv.paella.captionsButtonPlugin.md)
+* [es.upv.paella.captionsPlugin](plugins/es.upv.paella.captionsButtonPlugin.md)
 * [es.upv.paella.footprintsPlugin](plugins/es.upv.paella.footprintsPlugin.md)
 * [es.upv.paella.frameControlPlugin](plugins/es.upv.paella.frameControlPlugin.md)
 * [es.upv.paella.fullScreenButtonPlugin](plugins/es.upv.paella.fullScreenButtonPlugin.md)
@@ -36,7 +36,7 @@ To know more about this, you can read the [Plugin types](developer/plugin_types.
 * [es.upv.paella.annotationsPlayerPlugin](plugins/es.upv.paella.annotationsPlayerPlugin.md)
 * [es.upv.paella.blackBoardPlugin](plugins/es.upv.paella.blackBoardPlugin.md)
 * [es.upv.paella.breaksPlayerPlugin](plugins/es.upv.paella.breaksPlayerPlugin.md)
-* [es.upv.paella.captionsPlugin](plugins/es.upv.paella.captionsPlugin.md)
+* [**paella.plugins.CaptionsOnScreen**](paella.plugins.CaptionsOnScreen.md)
 * [es.upv.paella.translecture.captionsPlugin](plugins/es.upv.paella.translecture.captionsPlugin.md)
 
 ## Captions Parser Plugins
