@@ -9,7 +9,7 @@ This plugins activates the subtitles bar below the video with the default browse
 
 ## Related Plugins
 
-- [**paella.plugins.CaptionsOnScreen**](paella.plugins.CaptionsOnScreen.md)
+- [**es.upv.paella.overlayCaptionsPlugin**](es.upv.paella.overlayCaptionsPlugin.md)
 - [**es.upv.paella.captions.DFXPParserPlugin**](es.upv.paella.captions.DFXPParserPlugin.md)
 
 ## Configuration Parameters
