@@ -52,7 +52,7 @@
             "es.upv.paella.extendedProfilesPlugin": {"enabled":true, "reloadOnFullscreen":"reload" },
             "es.upv.paella.themeChooserPlugin":  {"enabled":true},
             "es.upv.paella.multipleQualitiesPlugin":  {"showWidthRes":true},
-            "es.upv.paella.captionsPlugin":{"enabled":true,"searchOnCaptions":false},
+            "es.upv.paella.captionsPlugin":{"enabled":true,"searchOnCaptions":true},
             "es.upv.paella.searchPlugin":{"enabled":true, "sortType":"time", "colorSearch":false}
         }
 	},

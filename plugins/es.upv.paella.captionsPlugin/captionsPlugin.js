@@ -212,12 +212,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 
 		//captions CONTAINER
 		thisClass._parent = document.createElement('div');
-        thisClass._parent.className = 'captionsPluginContainer';
-	    
-	    //captions BAR
-	    thisClass._bar = document.createElement('div');
-        thisClass._bar.className = 'captionsBar';
-        thisClass._parent.appendChild( thisClass._bar);	    
+        thisClass._parent.className = 'captionsPluginContainer';  
 	    
         //captions BODY
         if(thisClass._searchOnCaptions){
@@ -228,6 +223,11 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 	        $(thisClass._body).scroll(function(){
 	        	thisClass._autoScroll = false;
 	        });
+
+	    //captions BAR
+	    thisClass._bar = document.createElement('div');
+        thisClass._bar.className = 'captionsBar';
+        thisClass._parent.appendChild( thisClass._bar);	
 
 	        //INPUT
 	        thisClass._input = document.createElement("input");
