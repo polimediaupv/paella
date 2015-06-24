@@ -2,17 +2,17 @@ Class("paella.plugins.FlexSkipPlugin", paella.ButtonPlugin, {
 	getAlignment: function() {
 		return 'left';
 	},
-	getSubclass: function() {
-		return 'flexSkip_' + this.config.direction + '_' + this.config.seconds;
-	},
 	getName: function() {
 		return "edu.harvard.dce.paella.flexSkipPlugin";
 	},
 	getIndex: function() {
 		return 121;
 	},
+	getSubclass: function() {
+		return 'flexSkip_Rewind_10';
+	},
 	formatMessage: function() {
-		return this.config.direction + ' ' + this.config.seconds + ' seconds';
+		return 'Rewind 10 seconds';
 	},
 	getDefaultToolTip: function() {
 		return base.dictionary.translate(this.formatMessage());
@@ -24,14 +24,9 @@ Class("paella.plugins.FlexSkipPlugin", paella.ButtonPlugin, {
 	checkEnabled: function(onSuccess) {
 		onSuccess(!paella.player.isLiveStream());
 	},
-
+	
 	action: function(button) {
-		var newTime;
-		if (this.config.direction == 'Rewind') {
-			newTime = paella.player.videoContainer.currentTime() - this.config.seconds;
-		} else {
-			newTime = paella.player.videoContainer.currentTime() + this.config.seconds;
-		}
+		var newTime = paella.player.videoContainer.currentTime() - 10;
 		paella.events.trigger(paella.events.seekToTime, {
 			time: newTime
 		});
@@ -48,7 +43,21 @@ Class("paella.plugins.FlexSkipForwardPlugin", paella.plugins.FlexSkipPlugin, {
 	},
 	getName: function() {
 		return "edu.harvard.dce.paella.flexSkipForwardPlugin";
-	}
+	},
+	
+	getSubclass: function() {
+		return 'flexSkip_Forward_30';
+	},
+	formatMessage: function() {
+		return 'Forward 30 seconds';
+	},
+	
+	action: function(button) {
+		var newTime = paella.player.videoContainer.currentTime() + 30;
+		paella.events.trigger(paella.events.seekToTime, {
+			time: newTime
+		});
+	}		
 });
 
 paella.plugins.flexSkipForwardPlugin = new paella.plugins.FlexSkipForwardPlugin();
