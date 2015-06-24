@@ -23,7 +23,7 @@ This plugins activates the subtitles bar below the video with the default browse
 
 ## Config Example:
 
-Here's are the config  lines for this plugin:
+Here's are the config lines for this plugin:
 
 ```json
 {

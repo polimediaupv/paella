@@ -23,7 +23,7 @@ This plugin was made for let the user enter/exit in fullscreen mode.
 
 ## Config Example:
 
-Here's are the config  lines for this plugin:
+Here's are the config lines for this plugin:
 
 ```json
 {

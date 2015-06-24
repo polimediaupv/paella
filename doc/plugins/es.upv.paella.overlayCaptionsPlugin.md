@@ -15,7 +15,7 @@ This plugins listens the "captionsPlugin" that throws the events for activate or
 
 ## Config Example:
 
-Here's are the config  lines for this plugin:
+Here's are the config lines for this plugin:
 
 ```json
 {

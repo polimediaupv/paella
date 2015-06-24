@@ -10,7 +10,7 @@ This plugins is able to swap between theme skins installed on paella player.
 
 ## Config Example:
 
-Here's are the config  lines for this plugin:
+Here's are the config lines for this plugin:
 
 ```json
 {
