@@ -4,6 +4,7 @@ Class ("paella.plugins.PlaybackRate",paella.ButtonPlugin,{
 	selected_button: null,
 	defaultRate:null,
 	_domElement:null,
+	available_rates: null,
 
 	getAlignment:function() { return 'left'; },
 	getSubclass:function() { return "showPlaybackRateButton"; },
@@ -17,19 +18,17 @@ Class ("paella.plugins.PlaybackRate",paella.ButtonPlugin,{
 	},
 
 	setup:function() {
-		var thisClass = this;
-		thisClass.defaultRate = 1.0;
+		this.defaultRate = 1.0;
+		this.available_rates = this.config.availableRates || [0.75, 1, 1.25, 1.5];
     },
 
 	buildContent:function(domElement) {
 		var This = this;
 		This._domElement = domElement;
 		this.buttonItems = {};
-		//domElement.appendChild(This.getItemButton("0.5x",0.5));
-		domElement.appendChild(This.getItemButton("0.75x",0.75));
-		domElement.appendChild(This.getItemButton("1x",1.0));
-		domElement.appendChild(This.getItemButton("1.25x",1.25));
-		domElement.appendChild(This.getItemButton("1.5x",1.5));
+		this.available_rates.forEach(function(rate){
+			domElement.appendChild(This.getItemButton(rate+"x", rate));	
+		});
 	},
 	
 	getItemButton:function(label,rate) {
