@@ -1,39 +1,3 @@
-Class ("paella.plugins.TrimmingLoaderPlugin",paella.EventDrivenPlugin,{
-	
-	getName:function() { return "es.upv.paella.TrimmingPlayerPlugin"; },
-	//checkEnabled:function(onSuccess) { onSuccess(paella.player.config.trimming && paella.player.config.trimming.enabled); },
-		
-	getEvents:function() { return [paella.events.controlBarLoaded,paella.events.showEditor,paella.events.hideEditor]; },
-
-	onEvent:function(eventType,params) {
-		switch (eventType) {
-			case paella.events.controlBarLoaded:
-				this.loadTrimming();
-				break;
-			case paella.events.showEditor:
-				paella.player.videoContainer.disableTrimming();
-				break;
-			case paella.events.hideEditor:
-				if (paella.player.config.trimming && paella.player.config.trimming.enabled) {
-					paella.player.videoContainer.enableTrimming();
-				}
-				break;
-		}
-	},
-	
-	loadTrimming:function() {
-		var videoId = paella.initDelegate.getId();
-		paella.data.read('trimming',{id:videoId},function(data,status) {
-			if (data && status && data.end>0) {
-				paella.player.videoContainer.enableTrimming();
-				paella.player.videoContainer.setTrimming(data.start, data.end);
-			}
-		});
-	}
-});
-
-paella.plugins.trimmingLoaderPlugin = new paella.plugins.TrimmingLoaderPlugin();
-
 paella.plugins.TrimmingTrackPlugin = Class.create(paella.editor.MainTrackPlugin,{
 	trimmingTrack:null,
 	trimmingData:{s:0,e:0},
@@ -51,7 +15,7 @@ paella.plugins.TrimmingTrackPlugin = Class.create(paella.editor.MainTrackPlugin,
 		return tracks;
 	},
 		
-	getName:function() { return "es.upv.paella.editor.TrimmingTrackPlugin"; },
+	getName:function() { return "es.upv.paella.editor.trimmingTrackPlugin"; },
 	
 	getTrackName:function() {
 		return base.dictionary.translate("Trimming");
