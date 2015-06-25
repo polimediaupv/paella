@@ -591,15 +591,15 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 	addSourceStreaming:function(sourceData) {
 		var subscription = false;
 		if (!sourceData || !sourceData.src) {
-			console.log("Invalid source data: expecting src");
+			base.log.debug("Invalid source data: expecting src");
 			return;
 		}
 		if (typeof(sourceData.src)=="string") {
-			console.log("Invalid RTMP source format, expecting an object with the format: { server:'rtmp://server', stream:'video-stream' }");
+			base.log.debug("Invalid RTMP source format, expecting an object with the format: { server:'rtmp://server', stream:'video-stream' }");
 			return;
 		}
 		if (!sourceData.src.server || !sourceData.src.stream) {
-			console.log("Invalid RTMP source configuration: expecting { server:'rtmp://server', stream:'video-stream' }");
+			base.log.debug("Invalid RTMP source configuration: expecting { server:'rtmp://server', stream:'video-stream' }");
 			return;
 		}
 
