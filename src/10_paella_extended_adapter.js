@@ -91,7 +91,6 @@ Class ("paella.ExtendedAdapter", {
 	},
 
 	initPlugins:function() {
-		console.log("initPlugins");
 		paella.pluginManager.setTarget('rightBarPlugin', this);
 		paella.pluginManager.setTarget('tabBarPlugin', this);
 	},
