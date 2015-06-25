@@ -36,20 +36,20 @@
 			"//****": "Button Plugins",
 			"edu.harvard.dce.paella.flexSkipPlugin": {"enabled":true, "direction": "Rewind", "seconds": 10},
 			"edu.harvard.dce.paella.flexSkipForwardPlugin": {"enabled":true, "direction": "Forward", "seconds": 30},
-            "es.upv.paella.captionsPlugin": {"enabled":true, "searchOnCaptions":true},
+			"es.upv.paella.captionsPlugin": {"enabled":true, "searchOnCaptions":true},
 			"es.upv.paella.footprintsPlugin": {"enabled":false},
 			"es.upv.paella.frameControlPlugin":  {"enabled": true},
-            "es.upv.paella.fullScreenButtonPlugin": {"enabled":true, "reloadOnFullscreen":{ "enabled":true, "keepUserSelection":true }},
-            "es.upv.paella.helpPlugin": {"enabled":true, "langs":["en","es"]},
-            "es.upv.paella.multipleQualitiesPlugin": {"showWidthRes":true},
+			"es.upv.paella.fullScreenButtonPlugin": {"enabled":true, "reloadOnFullscreen":{ "enabled":true, "keepUserSelection":true }},
+			"es.upv.paella.helpPlugin": {"enabled":true, "langs":["en","es"]},
+			"es.upv.paella.multipleQualitiesPlugin": {"showWidthRes":true},
 			"es.upv.paella.playbackRatePlugin": {"enabled":true, "availableRates": [0.75, 1, 1.25, 1.5]},			
 			"es.upv.paella.playPauseButtonPlugin": {"enabled":true},
-            "es.upv.paella.searchPlugin": {"enabled":true, "sortType":"time", "colorSearch":false},
-            "es.upv.paella.socialPlugin": {"enabled":true},
-            "es.upv.paella.themeChooserPlugin":  {"enabled":true},
+			"es.upv.paella.searchPlugin": {"enabled":true, "sortType":"time", "colorSearch":false},
+			"es.upv.paella.socialPlugin": {"enabled":true},
+			"es.upv.paella.themeChooserPlugin":  {"enabled":true},
 			"es.upv.paella.viewModePlugin": { "enabled": true },
 			"es.upv.paella.volumeRangePlugin":{"enabled":true, "showMasterVolume": true, "showSlaveVolume": false },
-
+			
 			"//****": "Video Overlay Button Plugins",
 			"es.upv.paella.liveStramingIndicator":  { "enabled": true },
 			"es.upv.paella.showEditorPlugin":{"enabled":true,"alwaysVisible":true},
@@ -84,7 +84,7 @@
 			"es.upv.paella.editor.trackAnnotationsPlugin": {"enabled":true},
 			"es.upv.paella.editor.trackBreaksPlugin": {"enabled":true},
 			"es.upv.paella.editor.trimmingTrackPlugin": {"enabled":true}
-        }
+		}
 	},
     "standalone" : {
         "reposiroty": "../repository/"
