@@ -14,7 +14,8 @@ Class ("paella.plugins.PlaybackRate",paella.ButtonPlugin,{
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
 	getDefaultToolTip:function() { return base.dictionary.translate("Set playback rate"); },		
 	checkEnabled:function(onSuccess) {
-		onSuccess(dynamic_cast("paella.Html5Video",paella.player.videoContainer.masterVideo())!=null);
+		var enabled = (!base.userAgent.browser.IsMobileVersion && dynamic_cast("paella.Html5Video",paella.player.videoContainer.masterVideo())!=null);		
+		onSuccess(enabled);
 	},
 
 	setup:function() {
