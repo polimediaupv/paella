@@ -94,7 +94,7 @@ In this file we have all the setups concerning plugins.. streams.. compositions.
         }
 	},
     "standalone" : {
-        "reposiroty": "../repository/"
+        "repository": "../repository/"
     }
 }
 
