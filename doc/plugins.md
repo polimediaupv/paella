@@ -36,9 +36,11 @@ To know more about this, you can read the [Plugin types](developer/plugin_types.
 * [es.upv.paella.annotationsPlayerPlugin](plugins/es.upv.paella.annotationsPlayerPlugin.md)
 * [es.upv.paella.blackBoardPlugin](plugins/es.upv.paella.blackBoardPlugin.md)
 * [es.upv.paella.breaksPlayerPlugin](plugins/es.upv.paella.breaksPlayerPlugin.md)
-* [es.upv.paella.overlayCaptionsPlugin](es.upv.paella.overlayCaptionsPlugin.md)
-* [es.upv.paella.playButtonOnScreenPlugin](es.upv.paella.playButtonOnScreenPlugin.md)
+* [es.upv.paella.overlayCaptionsPlugin](plugins/es.upv.paella.overlayCaptionsPlugin.md)
+* [es.upv.paella.playButtonOnScreenPlugin](plugins/es.upv.paella.playButtonOnScreenPlugin.md)
+* [es.upv.paella.test.videoLoadPlugin](plugins/es.upv.paella.test.videoLoadPlugin.md)
 * [es.upv.paella.translecture.captionsPlugin](plugins/es.upv.paella.translecture.captionsPlugin.md)
+* [es.upv.paella.trimmingPlayerPlugin](plugins/es.upv.paella.trimmingPlayerPlugin.md)
 
 ## Captions Parser Plugins
 * [es.upv.paella.captions.DFXPParserPlugin](plugins/es.upv.paella.captions.DFXPParserPlugin.md)
@@ -59,3 +61,4 @@ To know more about this, you can read the [Plugin types](developer/plugin_types.
 * [es.upv.paella.editor.toolStatusPlugin](plugins/es.upv.paella.editor.toolStatusPlugin.md)
 * [es.upv.paella.editor.trackAnnotationsPlugin](plugins/es.upv.paella.editor.trackAnnotationsPlugin.md)
 * [es.upv.paella.editor.trackBreaksPlugin](plugins/es.upv.paella.editor.trackBreaksPlugin.md)
+* [es.upv.paella.editor.trimmingTrackPlugin](plugins/es.upv.paella.editor.trimmingTrackPlugin.md)
