@@ -8,6 +8,7 @@ To know more about this, you can read the [Plugin types](developer/plugin_types.
 * [edu.harvard.dce.paella.flexSkipPlugin](plugins/edu.harvard.dce.paella.flexSkipPlugin.md)
 * [edu.harvard.dce.paella.flexSkipForwardPlugin](plugins/edu.harvard.dce.paella.flexSkipForwardPlugin.md)
 * [es.upv.paella.captionsPlugin](plugins/es.upv.paella.captionsPlugin.md)
+* [es.upv.paella.extendedTabAdapterPlugin](plugins/es.upv.paella.extendedTabAdapterPlugin.md)
 * [es.upv.paella.footprintsPlugin](plugins/es.upv.paella.footprintsPlugin.md)
 * [es.upv.paella.frameControlPlugin](plugins/es.upv.paella.frameControlPlugin.md)
 * [es.upv.paella.fullScreenButtonPlugin](plugins/es.upv.paella.fullScreenButtonPlugin.md)
