@@ -602,13 +602,14 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 			}
 		}
 
-		paella.events.trigger(paella.events.controlBarWillHide);		
-		if (!base.userAgent.browser.IsMobileVersion && !base.userAgent.browser.Explorer) {			
-			$(this.domElement).animate({opacity:0.0},{duration:300, complete: hideIfNotCanceled});
-		}
-		else {
-			paella.events.trigger(paella.events.controlBarWillHide);
-			hideIfNotCanceled();
+		paella.events.trigger(paella.events.controlBarWillHide);
+		if (This._doHide) {
+			if (!base.userAgent.browser.IsMobileVersion && !base.userAgent.browser.Explorer) {			
+				$(this.domElement).animate({opacity:0.0},{duration:300, complete: hideIfNotCanceled});
+			}
+			else {
+				hideIfNotCanceled();
+			}		
 		}
 	},
 
@@ -667,7 +668,10 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 	},
 
 	restartTimerEvent:function() {
-		this.showControls();
+		if (this.isHidden()){
+			this.showControls();
+		}
+		this._doHide = false;
 		var paused = paella.player.videoContainer.paused();
 		if (!paused) {
 			this.restartHideTimer();
