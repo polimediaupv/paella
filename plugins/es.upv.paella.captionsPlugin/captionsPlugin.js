@@ -287,7 +287,8 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
         //BUTTON jQuery
         $(thisClass._editor).prop("disabled",true);
         $(thisClass._editor).click(function(){
-        	var c = paella.captions.getActiveCaptions();
+        	var c = paella.captions.getActiveCaptions();        	
+	        paella.userTracking.log("paella:caption:edit", {id: c._captionsProvider + ':' + c._id, lang: c._lang});
         	c.goToEdit();
         });
 
