@@ -12,7 +12,7 @@ This is an editor plugin for show the slides pictures in the editor timeline.
 {
 	"es.upv.paella.editor.snapShotsEditorPlugin": 
 	{
-		"enabled": false
+		"enabled": true
 	},
 }
 ```
