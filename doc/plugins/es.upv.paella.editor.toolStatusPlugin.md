@@ -12,7 +12,7 @@ This editor plugin defines the primary tools in the right bar of the editor.
 {
 	"es.upv.paella.editor.toolStatusPlugin": 
 	{
-		"enabled": false
+		"enabled": true
 	},
 }
 ```
