@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 4.1.1 (30-06-2015)
+
+  * Fix typo in config.json file
+
 * Paella 4.1.0 (30-06-2015)
 
  * Don't ignore vendor directories to make collaboration easier.
