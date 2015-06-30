@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-* Paella 4.x.x (Work In Progress)
+* Paella 4.1.0 (30-06-2015)
 
  * Don't ignore vendor directories to make collaboration easier.
  * Improvements to tools/layout_calculator.
@@ -19,6 +19,7 @@ CHANGELOG
  * Fixed bug with the volume when the video is reloaded
  * New plugin added: es.upv.paella.translectures.CaptionsPlugIn
  * New videoMode: blackboard + zoom images
+ * HLS support for iOS devices
 
 * Paella 4.0.24 (29-05-2015)
 

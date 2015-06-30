@@ -312,7 +312,7 @@ Class ("paella.InitDelegate", {
 	},
 
 	getId:function() {
-		return base.parameters.get('id');
+		return base.parameters.get('id') || "noid";
 	},
 
 	loadDictionary:function(onSuccess) {

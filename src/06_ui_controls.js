@@ -590,24 +590,26 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 
 	hide:function() {
 		var This = this;
-		if (!base.userAgent.browser.IsMobileVersion && !base.userAgent.browser.Explorer) {
-			this._doHide = true;
-			$(this.domElement).animate({opacity:0.0},{duration:300, complete:function(){
-				if (This._doHide) {
-					This.domElement.setAttribute('aria-hidden', 'true');
-					$(This.domElement).hide();
-					This._hidden = true;
-					paella.events.trigger(paella.events.controlBarDidHide);
-				}
-			}});
-			paella.events.trigger(paella.events.controlBarWillHide);
+		this._doHide = true;
+		
+		function hideIfNotCanceled() {
+			if (This._doHide) {
+				$(This.domElement).css({opacity:0.0});
+				$(This.domElement).hide();
+				This.domElement.setAttribute('aria-hidden', 'true');
+				This._hidden = true;
+				paella.events.trigger(paella.events.controlBarDidHide);
+			}
 		}
-		else {
-			$(this.domElement).css({opacity:0.0});
-			$(this.domElement).hide();
-			this.domElement.setAttribute('aria-hidden','true');
-			this._hidden = true;
-			paella.events.trigger(paella.events.controlBarDidHide);
+
+		paella.events.trigger(paella.events.controlBarWillHide);
+		if (This._doHide) {
+			if (!base.userAgent.browser.IsMobileVersion && !base.userAgent.browser.Explorer) {			
+				$(this.domElement).animate({opacity:0.0},{duration:300, complete: hideIfNotCanceled});
+			}
+			else {
+				hideIfNotCanceled();
+			}		
 		}
 	},
 
@@ -666,7 +668,10 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 	},
 
 	restartTimerEvent:function() {
-		this.showControls();
+		if (this.isHidden()){
+			this.showControls();
+		}
+		this._doHide = false;
 		var paused = paella.player.videoContainer.paused();
 		if (!paused) {
 			this.restartHideTimer();

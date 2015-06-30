@@ -85,51 +85,26 @@ Class ("paella.PluginManager", {
 	},	
 	
 	foreach:function(callback) {
-		var pluginConfig = paella.player.config.plugins;
-		if (!pluginConfig) {
-			pluginConfig = { defaultConfig:{enabled:true}, list:{}};
+		var enablePluginsByDefault = false;
+		var pluginsConfig = {};
+		try {
+			enablePluginsByDefault = paella.player.config.plugins.enablePluginsByDefault;
 		}
-		for (var i=0; i<this.pluginList.length; ++i) {
-			var plugin = this.pluginList[i];
+		catch(e){}
+		try {
+			pluginsConfig = paella.player.config.plugins.list;
+		}
+		catch(e){}
+				
+		this.pluginList.forEach(function(plugin){			
 			var name = plugin.getName();
-			var config = pluginConfig.list[name];
+			var config = pluginsConfig[name];
 			if (!config) {
-				config = pluginConfig.defaultConfig;
+				config = {enabled: enablePluginsByDefault};
 			}
-			else {
-				for (var key in pluginConfig.defaultConfig) {
-					if (config[key]===undefined) config[key] = pluginConfig.defaultConfig[key];
-				}
-			}
-			callback(this.pluginList[i],config);
-		}
+			callback(plugin, config);
+		});
 	},
-
-/*	loadPlugins:function() {
-		var pluginConfig = paella.player.config.plugins;
-		if (!pluginConfig) {
-			pluginConfig = {defaultConfig:{enabled:true},list:{}};
-		}
-		for (var i=0; i<this.pluginList.length; ++i) {
-			var plugin = this.pluginList[i];
-			var name = plugin.getName();
-			var config = pluginConfig.list[name];
-			if (!config) {
-				config = pluginConfig.defaultConfig;
-			}
-			else {
-				for (var key in pluginConfig.defaultConfig) {
-					if (config[key]===undefined) config[key] = pluginConfig.defaultConfig[key];
-				}
-			}
-			if ((config && config.enabled) || !config) {
-				base.log.debug("loading plugin " + name);
-				plugin.config = config;
-				plugin.load(this);
-			}
-		}
-	},
-*/
 
 	addPlugin:function(plugin) {
 		var thisClass = this;

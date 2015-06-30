@@ -104,7 +104,7 @@ Class ("paella.captions.translectures.Caption", paella.captions.Caption, {
 
 Class ("paella.plugins.translectures.CaptionsPlugIn", paella.EventDrivenPlugin, {
 		
-	getName:function() { return "es.upv.paella.translecture.CaptionsPlugIn"; },
+	getName:function() { return "es.upv.paella.translecture.captionsPlugin"; },
 	getEvents:function() { return []; },
 	onEvent:function(eventType,params) {},
 

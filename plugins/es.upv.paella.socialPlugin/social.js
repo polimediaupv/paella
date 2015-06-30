@@ -118,12 +118,13 @@ Class ("paella.plugins.SocialPlugin",paella.ButtonPlugin,{
         //var paused = paella.player.videoContainer.paused();
         //$(document).trigger(paella.events.pause);
 
+
         var divSelectSize="<div style='display:inline-block;'> " +
-            "    <input class='embedSizeButton' style='width:110px; height:73px;' value='620x349' />" +
-            "    <input class='embedSizeButton' style='width:100px; height:65px;' value='540x304' />" +
-            "    <input class='embedSizeButton' style='width:90px;  height:58px;' value='460x259' />" +
-            "    <input class='embedSizeButton' style='width:80px;  height:50px;' value='380x214' />" +
-            "    <input class='embedSizeButton' style='width:70px;  height:42px;' value='300x169' />" +
+            "    <div class='embedSizeButton' style='width:110px; height:73px;'> <span style='display:flex; align-items:center; justify-content:center; width:100%; height:100%;'> 620x349 </span></div>" +
+            "    <div class='embedSizeButton' style='width:100px; height:65px;'> <span style='display:flex; align-items:center; justify-content:center; width:100%; height:100%;'> 540x304 </span></div>" +
+            "    <div class='embedSizeButton' style='width:90px;  height:58px;'> <span style='display:flex; align-items:center; justify-content:center; width:100%; height:100%;'> 460x259 </span></div>" +
+            "    <div class='embedSizeButton' style='width:80px;  height:50px;'> <span style='display:flex; align-items:center; justify-content:center; width:100%; height:100%;'> 380x214 </span></div>" +
+            "    <div class='embedSizeButton' style='width:70px;  height:42px;'> <span style='display:flex; align-items:center; justify-content:center; width:100%; height:100%;'> 300x169 </span></div>" +
             "</div><div style='display:inline-block; vertical-align:bottom; margin-left:10px;'>"+
             "    <div>"+base.dictionary.translate("Custom size:")+"</div>" +
             "    <div>"+base.dictionary.translate("Width:")+" <input id='social_embed_width-input' class='embedSizeInput' maxlength='4' type='text' name='Costum width min 300px' alt='Costum width min 300px' title='Costum width min 300px' value=''></div>" +
@@ -167,7 +168,7 @@ Class ("paella.plugins.SocialPlugin",paella.ButtonPlugin,{
         for (var i=0; i< embs.length; i=i+1){
             var e = embs[i];
             e.onclick=function(event){
-                var value = event.target? event.target.value: event.toElement.value;
+                var value = event.target? event.target.textContent: event.toElement.textContent;
                 if (value) {
                     var size = value.split("x");
 

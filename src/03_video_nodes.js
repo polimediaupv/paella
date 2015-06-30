@@ -1,48 +1,51 @@
 
 paella.Profiles = {
+	profileList: null,
+	
 	loadProfile:function(profileName,onSuccessFunction) {
 		var defaultProfile;
 		if (paella.player && paella.player.config && paella.player.config.defaultProfile) {
 				defaultProfile = paella.player.config.defaultProfile;
 		}
-		var params = { url:"config/profiles/profiles.json" };
-
-		base.ajax.get(params,function(data,mimetype,code) {
-				if (typeof(data)=="string") {
-					data = JSON.parse(data);
-				}
-				var profileData;
-				if(data[profileName] ){
-				    // Successful mapping
-				    profileData = data[profileName];
-				} else if (data[defaultProfile]) {
-				    // Fallback to default profile
-				    profileData = data[defaultProfile];
-				    base.cookies.set("lastProfile",defaultProfile);
-				} else {
-				    // Unable to find or map defaultProfile in profiles.json
-				    base.log.debug("Error loading the default profile. Check your Paella Player configuration");
-				    return false;
-				}
-				onSuccessFunction(profileData);
-			},
-			function(data,mimetype,code) {
-				base.log.debug("Error loading video profiles. Check your Paella Player configuration");
-			});
+		
+		this.loadProfileList(function(data){		
+			var profileData;
+			if(data[profileName] ){
+			    // Successful mapping
+			    profileData = data[profileName];
+			} else if (data[defaultProfile]) {
+			    // Fallback to default profile
+			    profileData = data[defaultProfile];
+			    base.cookies.set("lastProfile", defaultProfile);
+			} else {
+			    // Unable to find or map defaultProfile in profiles.json
+			    base.log.debug("Error loading the default profile. Check your Paella Player configuration");
+			    return false;
+			}
+			onSuccessFunction(profileData);
+		});
 	},
 
 	loadProfileList:function(onSuccessFunction) {
-		var params = { url:"config/profiles/profiles.json" };
-
-		base.ajax.get(params,function(data,mimetype,code) {
-				if (typeof(data)=="string") {
-					data = JSON.parse(data);
+		var thisClass = this;
+		if (this.profileList == null) {
+			var params = { url:"config/profiles/profiles.json" };
+	
+			base.ajax.get(params,function(data,mimetype,code) {
+					if (typeof(data)=="string") {
+						data = JSON.parse(data);
+					}
+					thisClass.profileList = data;
+					onSuccessFunction(thisClass.profileList);
+				},
+				function(data,mimetype,code) {
+					base.log.debug("Error loading video profiles. Check your Paella Player configuration");
 				}
-				onSuccessFunction(data);
-			},
-			function(data,mimetype,code) {
-				base.log.debug("Error loading video profiles. Check your Paella Player configuration");
-			});
+			);
+		}
+		else {
+			onSuccessFunction(thisClass.profileList);
+		}
 	}
 };
 
@@ -236,6 +239,7 @@ Class ("paella.VideoElementBase", paella.DomNode,{
 	}
 });
 
+
 //function paella_flash_video_ready(streamId) {
 //	var videoPlayer = paella_flash_VideoContainers[streamId];
 //	videoPlayer._isReady = true;
@@ -302,7 +306,7 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 	},
 	
 	processEvent:function(eventName,params) {
-		if (eventName!="loadedmetadata" && eventName!="pause" && params.duration!=0 && !this._isReady) {
+		if (eventName!="loadedmetadata" && eventName!="pause" && !this._isReady) {
 			this._isReady = true;
 			this._duration = params.duration;
 			this.callReadyEvent();
@@ -311,6 +315,11 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 			try { this.flashVideo.setVolume(this._volume); }
 			catch(e) {}
 			base.log.debug("Flash video event: " + eventName + ", progress: " + this.flashVideo.currentProgress());
+		}
+		else if (eventName=="ended") {
+			base.log.debug("Flash video event: " + eventName);
+			paella.events.trigger(paella.events.pause);
+			paella.player.controls.showControls();
 		}
 		else {
 			base.log.debug("Flash video event: " + eventName);
@@ -583,56 +592,46 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 	},
 
 	addSourceStreaming:function(sourceData) {
+		var subscription = false;
+		if (!sourceData || !sourceData.src) {
+			base.log.debug("Invalid source data: expecting src");
+			return;
+		}
+		if (typeof(sourceData.src)=="string") {
+			base.log.debug("Invalid RTMP source format, expecting an object with the format: { server:'rtmp://server', stream:'video-stream' }");
+			return;
+		}
+		if (!sourceData.src.server || !sourceData.src.stream) {
+			base.log.debug("Invalid RTMP source configuration: expecting { server:'rtmp://server', stream:'video-stream' }");
+			return;
+		}
+
+		if (sourceData.src.requiresSubscription===undefined &&
+			paella.player.config.player.rtmpSettings
+		) {
+			subscription = paella.player.config.player.rtmpSettings.requiresSubscription || false;
+		}
+		else if (sourceData.src.requiresSubscription) {
+			subscription = sourceData.src.requiresSubscription;
+		}
 		var parameters = {};
-		var swfName = 'player.swf';
+		var swfName = 'player_streaming.swf';
 		if (this._autoplay) {
         	parameters.autoplay = this._autoplay;
        	}
 		if (base.parameters.get('debug')=="true") {
 			parameters.debugMode = true;
 		}
-		if (sourceData.type=='video/mp4') {
-			if (/(rtmp:\/\/[\w\d\.\-_]+[:+\d]*\/[\w\d\-_]+\/)(mp4:)([\w\d\.\/\-_]+)/i.test(sourceData.src)) {
-				sourceData.src = RegExp.$1 + RegExp.$3;
-			}
 
-			if (/(rtmp:\/\/)([\w\d\.\-_]+[:+\d]*)\/([\w\d\-_]+\/)([\w\d\.\/\-_]+)/.test(sourceData.src)) {
-				parameters.connect = RegExp.$1 + RegExp.$2 + '/' + RegExp.$3;
-				parameters.url = "mp4:" + RegExp.$4;
-			}
-
-			if (/(rtmp:\/\/)([\w\d\.\-_]+[:+\d]*)\/([\w\d\-_]+\/)([\w\d\.\/\-_]+@[\w\d\.\/\-_]+)/.test(sourceData.src)) {
-				parameters.connect = RegExp.$1 + RegExp.$2 + '/' + RegExp.$3;
-				parameters.url = RegExp.$4;
-			}
-
-			parameters.playerId = this.flashId;
-			parameters.isLiveStream = sourceData.isLiveStream!==undefined ? sourceData.isLiveStream:false;
-			if (paella.player.config.player.rtmpSettings && paella.player.config.player.rtmpSettings.bufferTime!==undefined) {
-				parameters.bufferTime = paella.player.config.player.rtmpSettings.bufferTime;
-			}
-			if (parameters.isLiveStream) {
-				swfName = 'player_streaming.swf';
-			}
-			this.flashVideo = this.createSwfObject(swfName,parameters);
+		parameters.playerId = this.flashId;
+		parameters.isLiveStream = sourceData.isLiveStream!==undefined ? sourceData.isLiveStream:false;
+		parameters.server = sourceData.src.server;
+		parameters.stream = sourceData.src.stream;
+		parameters.subscribe = subscription;
+		if (paella.player.config.player.rtmpSettings && paella.player.config.player.rtmpSettings.bufferTime!==undefined) {
+			parameters.bufferTime = paella.player.config.player.rtmpSettings.bufferTime;
 		}
-		else if (sourceData.type=='video/x-flv') {
-			if (/(rtmp:\/\/)([\w\d\.\-_]+[:+\d]*)\/([\w\d\-_]+\/)([\w\d\.\/\-_]+)(\.flv)?/.test(sourceData.src)) {
-				parameters.connect = RegExp.$1 + RegExp.$2 + '/' + RegExp.$3;
-				parameters.url = RegExp.$4;
-			}
-			parameters.playerId = this.flashId;
-
-			parameters.isLiveStream = sourceData.isLiveStream!==undefined ? sourceData.isLiveStream:false;
-			if (parameters.isLiveStream) {
-				swfName = 'player_streaming.swf';
-			}
-
-			if (paella.player.config.player.rtmpSettings && paella.player.config.player.rtmpSettings.bufferTime!==undefined) {
-				parameters.bufferTime = paella.player.config.player.rtmpSettings.bufferTime;
-			}
-			this.flashVideo = this.createSwfObject(swfName,parameters);
-		}
+		this.flashVideo = this.createSwfObject(swfName,parameters);
 	},
 
 	addSource:function(sourceData) {
