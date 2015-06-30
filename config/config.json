@@ -61,13 +61,14 @@
 			
 			"//****": "Event Driven Plugins",
 			"es.upv.paella.annotationsPlayerPlugin": {"enabled":false},
-			"es.upv.paella.blackBoardPlugin": {"enable": true},
-			"es.upv.paella.breaksPlayerPlugin": {"enable": true},
-			"es.upv.paella.overlayCaptionsPlugin": {"enable": true},
+			"es.upv.paella.blackBoardPlugin": {"enabled": true},
+			"es.upv.paella.breaksPlayerPlugin": {"enabled": true},
+			"es.upv.paella.overlayCaptionsPlugin": {"enabled": true},
 			"es.upv.paella.playButtonOnScreenPlugin": {"enabled":true},
 			"es.upv.paella.test.videoLoadPlugin": {"enabled":false},
 			"es.upv.paella.translecture.captionsPlugin": {"enabled":true},
 			"es.upv.paella.trimmingPlayerPlugin": {"enabled":true},
+			"es.upv.paella.zoomPlugin": {"enabled": false},
 									
 			"//****": "Captions Parser Plugins",
 			"es.upv.paella.captions.DFXPParserPlugin": {"enabled":true},
