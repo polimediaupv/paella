@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-* Paella 4.1.0 (Work In Progress)
+* Paella 4.1.0 (30-06-2015)
 
  * Don't ignore vendor directories to make collaboration easier.
  * Improvements to tools/layout_calculator.
