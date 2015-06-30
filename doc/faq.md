@@ -12,7 +12,7 @@ We test Paella in Chrome, Safari, Internet Explorer and Firefox.
 
 ###**- How works the XXX plugin?**
 
-It should be written on the [Paella Player usage and features guide](help.md).
+It should be written on the [Paella Player Plugin Documentation](plugins.md).
 
 ###**- I have a RTMP streaming server. Will Paella work?**
 
@@ -28,9 +28,9 @@ If your users can have those problems you should think on a streaming server.
 
 Yes, but with some limitations. HTML5 multistream video playing is restricted on mobile devices. So, Paella player shows a images slideview instead a video for the slides video, and the original video for the presenter video.
 
-When embedding some tools disappear
+###**- When embedding some tools disappear**
 
-This is not a bug, is a feature ;-). Try to embed on a larger space or tune up what icons should disappear. Please refer to the developer's guides
+This is not a bug, is a feature ;-). Try to embed on a larger space or tune up what icons should disappear. Please refer to the developer's guides.
 
 ###**- I Serve my recordings through RTMP and progressive download. Can I choose the preference order?**
 

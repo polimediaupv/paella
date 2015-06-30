@@ -111,7 +111,7 @@ Class ("paella.plugins.SnapShotsEditorPlugin",paella.editor.TrackPlugin,{
 	},
 
 	getName:function() {
-		return "es.upv.paella.editor.SnapShotsEditorPlugin";
+		return "es.upv.paella.editor.snapShotsEditorPlugin";
 	},
 
 	getTrackName:function() {

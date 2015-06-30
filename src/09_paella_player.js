@@ -16,9 +16,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		else if (window.self !== window.top) {
 			return paella.PaellaPlayer.mode.embed;
 		}
-		else if (paella.extended) {
-			return paella.PaellaPlayer.mode.extended;			
-		}
 
 		return paella.PaellaPlayer.mode.standard;
 	},
@@ -167,11 +164,24 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		if (this.videoIdentifier) {
 			if (this.mainContainer) {
 				this.videoContainer = new paella.VideoContainer(this.playerId + "_videoContainer");
+				var videoQualityStrategy = new paella.BestFitVideoQualityStrategy();
+				try {
+					var StrategyClass = this.config.player.videoQualityStrategy;
+					var ClassObject = Class.fromString(StrategyClass);
+					videoQualityStrategy = new ClassObject();
+				}
+				catch(e) {
+					base.log.warning("Error selecting video quality strategy: strategy not found");
+				}
+				this.videoContainer.setVideoQualityStrategy(videoQualityStrategy);
+				
 				this.mainContainer.appendChild(this.videoContainer.domElement);
 			}
 			$(window).resize(function(event) { paella.player.onresize(); });
 			this.onload();
 		}
+		
+		paella.pluginManager.loadPlugins("paella.FastLoadPlugin");
 	},
 
 	onload:function() {
@@ -239,7 +249,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			this.setProfile(this.config.defaultProfile,false);
 		}
 		
-		paella.events.trigger(paella.events.resize,{width:$(this.mainContainer).width(), height:$(this.mainContainer).height()});
+		paella.events.trigger(paella.events.resize,{width:$(this.videoContainer.domElement).width(), height:$(this.videoContainer.domElement).height()});
 	},
 
 	unloadAll:function(message) {
@@ -269,19 +279,29 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			var loader = paella.initDelegate.initParams.videoLoader;
 			this.onresize();
 			loader.loadVideo(this.videoIdentifier,function() {
+				var playOnLoad = false;
+				if (base.parameters.get('autoplay')=="true" &&
+						paella.player.config.experimental &&
+						paella.player.config.experimental.autoplay &&
+						!base.userAgent.browser.IsMobileVersion)
+				{
+					paella.player.videoContainer.setAutoplay();
+					playOnLoad = true;
+				}
+
 				paella.player.videoContainer.setMasterQuality(base.parameters.list['resmaster']);
 				paella.player.videoContainer.setSlaveQuality(base.parameters.list['resslave']);
 
 				var master = loader.streams[0];
 				var slave = loader.streams[1];
 				var playerConfig = paella.player.config.player;
-				if (playerConfig.stream0Audio===false && master) {
-					paella.player.videoContainer.setDefaultMasterVolume(0);
-				}
-				if (playerConfig.stream1Audio===false && slave) {
-					paella.player.videoContainer.setDefaultSlaveVolume(0);
-				}
+				// SET DEFAULT AUDIO VOLUME
+				if(playerConfig && playerConfig.audio && playerConfig.audio.master !== undefined)
+					paella.player.videoContainer.setDefaultMasterVolume(playerConfig.audio.master);
+				if(playerConfig && playerConfig.audio && playerConfig.audio.slave !== undefined)
+					paella.player.videoContainer.setDefaultSlaveVolume(playerConfig.audio.slave);
 				
+
 				if (slave && slave.data && Object.keys(slave.data.sources).length==0) slave = null;
 				var frames = loader.frameList;
 				var errorMessage;
@@ -289,12 +309,18 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 				if (loader.loadStatus) {
 					var preferredMethodMaster = loader.getPreferredMethod(0);
 					var preferredMethodSlave  = loader.getPreferredMethod(1);
-					
+
+					if (!preferredMethodMaster) {
+						message = "This video is not compatible with any codec installed in your system";
+						paella.messageBox.showError(base.dictionary.translate(message));
+						return false;
+					}
+
 					var h264WarningMessage = true;
 					if ((master.sources.ogv || master.sources.webm) && (slave.sources.ogv || slave.sources.webm)) {
 						h264WarningMessage = false;
 					}
-					
+
 					if (h264WarningMessage) {
 						var minFirefoxVersion = base.userAgent.system.MacOS ? 35:(base.userAgent.system.Windows) ? 25:26;
 						if (base.userAgent.browser.Firefox && base.userAgent.browser.Version.major<minFirefoxVersion) {
@@ -318,12 +344,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 					if (paella.player.isLiveStream()) {
 						This.showPlaybackBar();
 					}
-					else if (base.parameters.get('autoplay')=="true" &&
-							paella.player.config.experimental &&
-							paella.player.config.experimental.autoplay &&
-							!base.userAgent.browser.IsMobileVersion)
-					{
-						paella.player.videoContainer.setAutoplay();
+					else if (playOnLoad) {
 						This.play();
 					}
 					
@@ -422,7 +443,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			this.setProfile(this.config.defaultProfile, false);
 		}
 
-		paella.pluginManager.loadEventDrivenPlugins();
+		paella.pluginManager.loadPlugins("paella.EarlyLoadPlugin");
 	},
 
 	play:function() {
@@ -461,7 +482,6 @@ var PaellaPlayer = paella.PaellaPlayer;
 paella.PaellaPlayer.mode = {
 	standard: 'standard',
 	fullscreen: 'fullscreen',
-	extended: 'extended',
 	embed: 'embed'
 };
 

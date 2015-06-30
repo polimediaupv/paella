@@ -6,7 +6,7 @@ Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 	getSubclass:function() { return "showFullScreenButton"; },
 	getName:function() { return "es.upv.paella.fullScreenButtonPlugin"; },
 	checkEnabled:function(onSuccess) {
-		var enabled = (!paella.extended) && (paella.player.checkFullScreenCapability());
+		var enabled = paella.player.checkFullScreenCapability();
 		if (base.userAgent.browser.IsMobileVersion) {
 			enabled = paella.player.videoContainer.isMonostream && (enabled);
 		}

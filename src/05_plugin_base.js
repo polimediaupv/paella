@@ -29,7 +29,7 @@ Class ("paella.PluginManager", {
 		this.targets = {};
 		var thisClass = this;
 		paella.events.bind(paella.events.loadPlugins,function(event) {
-			thisClass.loadPlugins();
+			thisClass.loadPlugins("paella.DeferredLoadPlugin");
 		});
 	},
 
@@ -52,85 +52,59 @@ Class ("paella.PluginManager", {
 
 	registerPlugin:function(plugin) {
 		// Registra los plugins en una lista y los ordena
+		this.importLibraries(plugin);
 		this.pluginList.push(plugin);
 		this.pluginList.sort(function(a,b) {
 			return a.getIndex() - b.getIndex();
 		});
 	},
+
+	importLibraries:function(plugin) {
+		plugin.getDependencies().forEach(function(lib) {
+			var script = document.createElement('script');
+			script.type = "text/javascript";
+			script.src = 'javascript/' + lib + '.js';
+			document.head.appendChild(script);
+		});
+	},
 	
 	// callback => function(plugin,pluginConfig)
-	loadEventDrivenPlugins:function() {
-		var This = this;
-		this.foreach(function(plugin,config) {
-			if (config.enabled) {
-				base.log.debug("load plugin " + name);
-				plugin.config = config;
-				if (plugin.type=="eventDriven") {
-					plugin.load(This);
-				}				
-			}
-		});
-	},
-	
-	loadPlugins:function() {
-		var This = this;
-		this.foreach(function(plugin,config) {
-			if (config.enabled) {
-				base.log.debug("load plugin " + name);
-				plugin.config = config;							
-				if (plugin.type!="eventDriven") {
-					plugin.load(This);
-				}			
-			}
-		});
-	},
+	loadPlugins:function(pluginBaseClass) {
+		if (pluginBaseClass != undefined) {
+			var This = this;
+			this.foreach(function(plugin,config) {
+				if (dynamic_cast(pluginBaseClass, plugin) != null) {
+					if (config.enabled) {
+						base.log.debug("Load plugin (" + pluginBaseClass + "): " + plugin.getName());
+						plugin.config = config;							
+						plugin.load(This);
+					}				
+				}
+			});
+		}
+	},	
 	
 	foreach:function(callback) {
-		var pluginConfig = paella.player.config.plugins;
-		if (!pluginConfig) {
-			pluginConfig = { defaultConfig:{enabled:true}, list:{}};
+		var enablePluginsByDefault = false;
+		var pluginsConfig = {};
+		try {
+			enablePluginsByDefault = paella.player.config.plugins.enablePluginsByDefault;
 		}
-		for (var i=0; i<this.pluginList.length; ++i) {
-			var plugin = this.pluginList[i];
+		catch(e){}
+		try {
+			pluginsConfig = paella.player.config.plugins.list;
+		}
+		catch(e){}
+				
+		this.pluginList.forEach(function(plugin){			
 			var name = plugin.getName();
-			var config = pluginConfig.list[name];
+			var config = pluginsConfig[name];
 			if (!config) {
-				config = pluginConfig.defaultConfig;
+				config = {enabled: enablePluginsByDefault};
 			}
-			else {
-				for (var key in pluginConfig.defaultConfig) {
-					if (config[key]===undefined) config[key] = pluginConfig.defaultConfig[key];
-				}
-			}
-			callback(this.pluginList[i],config);
-		}
+			callback(plugin, config);
+		});
 	},
-
-/*	loadPlugins:function() {
-		var pluginConfig = paella.player.config.plugins;
-		if (!pluginConfig) {
-			pluginConfig = {defaultConfig:{enabled:true},list:{}};
-		}
-		for (var i=0; i<this.pluginList.length; ++i) {
-			var plugin = this.pluginList[i];
-			var name = plugin.getName();
-			var config = pluginConfig.list[name];
-			if (!config) {
-				config = pluginConfig.defaultConfig;
-			}
-			else {
-				for (var key in pluginConfig.defaultConfig) {
-					if (config[key]===undefined) config[key] = pluginConfig.defaultConfig[key];
-				}
-			}
-			if ((config && config.enabled) || !config) {
-				base.log.debug("loading plugin " + name);
-				plugin.config = config;
-				plugin.load(this);
-			}
-		}
-	},
-*/
 
 	addPlugin:function(plugin) {
 		var thisClass = this;
@@ -169,6 +143,10 @@ Class ("paella.Plugin", {
 		paella.pluginManager.registerPlugin(this);
 	},
 
+	getDependencies:function() {
+		return [];
+	},
+
 	load:function(pluginManager) {
 		var target = pluginManager.getTarget(this.type);
 		if (target && target.addPlugin) {
@@ -197,6 +175,14 @@ Class ("paella.Plugin", {
 	}
 });
 
+
+
+Class ("paella.FastLoadPlugin", paella.Plugin, {});
+Class ("paella.EarlyLoadPlugin", paella.Plugin, {});
+Class ("paella.DeferredLoadPlugin", paella.Plugin, {});
+
+
+
 Class ("paella.PopUpContainer", paella.DomNode,{
 	containers:null,
 	currentContainerId:-1,
@@ -224,40 +210,46 @@ Class ("paella.PopUpContainer", paella.DomNode,{
 		}
 	},
 
-	showContainer:function(identifier,button) {
+	showContainer:function(identifier, button) {
+		var thisClass = this;
 		var width = 0;
-		var container = this.containers[identifier];
-		var right = $(button.parentElement).width() - $(button).position().left - $(button).width();
-		if (container && this.currentContainerId!=identifier && this.currentContainerId!=-1) {
-			var prevContainer = this.containers[this.currentContainerId];
-			prevContainer.plugin.willHideContent();
-			prevContainer.button.className = prevContainer.button.className.replace(' selected','');
-			container.button.className = container.button.className + ' selected';
-			$(prevContainer.element).hide();
-			prevContainer.plugin.didHideContent();
-			container.plugin.willShowContent();
-			$(container.element).show();
-			width = $(container.element).width();
-			$(this.domElement).css({width:width + 'px',right:right + 'px'});
-			this.currentContainerId = identifier;
-			container.plugin.didShowContent();
-		}
-		else if (container && this.currentContainerId==identifier) {
+		
+		function hideContainer(container) {
 			container.plugin.willHideContent();
 			$(container.element).hide();
-			$(this.domElement).css({width:'0px'});
+			$(thisClass.domElement).css({width:'0px'});
 			container.button.className = container.button.className.replace(' selected','');
-			this.currentContainerId = -1;
-			container.plugin.didHideContent();
+			thisClass.currentContainerId = -1;
+			container.plugin.didHideContent();			
+		}
+		function showContainer(container) {			
+			container.plugin.willShowContent();
+			container.button.className = container.button.className + ' selected';
+			$(container.element).show();
+			width = $(container.element).width();			
+			if (container.plugin.getAlignment() == 'right') {
+				var right = $(button.parentElement).width() - $(button).position().left - $(button).width();
+				$(thisClass.domElement).css({width:width + 'px', right:right + 'px', left:''});				
+			}
+			else {
+				var left = $(button).position().left;
+				$(thisClass.domElement).css({width:width + 'px', left:left + 'px', right:''});						
+			}			
+			thisClass.currentContainerId = identifier;
+			container.plugin.didShowContent();			
+		}
+		
+		var container = this.containers[identifier];
+		if (container && this.currentContainerId!=identifier && this.currentContainerId!=-1) {
+			var prevContainer = this.containers[this.currentContainerId];
+			hideContainer(prevContainer);
+			showContainer(container);
+		}
+		else if (container && this.currentContainerId==identifier) {
+			hideContainer(container);
 		}
 		else if (container) {
-			container.button.className = container.button.className + ' selected';
-			container.plugin.willShowContent();
-			$(container.element).show();
-			width = $(container.element).width();
-			$(this.domElement).css({width:width + 'px',right:right + 'px'});
-			this.currentContainerId = identifier;
-			container.plugin.didShowContent();
+			showContainer(container);
 		}
 	},
 
@@ -273,7 +265,12 @@ Class ("paella.PopUpContainer", paella.DomNode,{
 		button.popUpIdentifier = identifier;
 		button.sourcePlugin = plugin;
 		$(button).click(function(event) {
-			paella.events.trigger(paella.events.showPopUp,{identifier:this.popUpIdentifier,button:this});
+			if (!this.plugin.isPopUpOpen()) {
+				paella.events.trigger(paella.events.showPopUp,{identifier:this.popUpIdentifier,button:this});
+			}
+			else {
+				paella.events.trigger(paella.events.hidePopUp,{identifier:this.popUpIdentifier,button:this});				
+			}
 		});
 		$(button).keyup(function(event) {
 			if ( (event.keyCode == 13) && (!this.plugin.isPopUpOpen()) ){
@@ -339,13 +336,12 @@ Class ("paella.TimelineContainer", paella.PopUpContainer,{
 
 
 	
-Class ("paella.UIPlugin", paella.Plugin, {
+Class ("paella.UIPlugin", paella.DeferredLoadPlugin, {
 	ui: null,
 	
 	checkVisibility: function() {
 		var modes = this.config.visibleOn || [	paella.PaellaPlayer.mode.standard, 
 												paella.PaellaPlayer.mode.fullscreen, 
-												paella.PaellaPlayer.mode.extended, 
 												paella.PaellaPlayer.mode.embed ];
 		
 		var visible = false;
@@ -522,12 +518,19 @@ paella.ButtonPlugin.buildPluginButton = function(plugin,id) {
 	plugin.container = elem;
 	plugin.ui = elem;
 	plugin.setToolTip(plugin.getDefaultToolTip());
+	
+		
+	function onAction(self) {
+		paella.userTracking.log("paella:button:action", self.plugin.getName());
+		self.plugin.action(self);
+	}
+	
 	$(elem).click(function(event) {
-		this.plugin.action(this);
+		onAction(this);
 	});
 	$(elem).keyup(function(event) {
 		if (event.keyCode == 13) {
-			this.plugin.action(this);
+			onAction(this);
 		}
 	});
 	return elem;
@@ -562,7 +565,7 @@ Class ("paella.VideoOverlayButtonPlugin", paella.ButtonPlugin,{
 });
 
 
-Class ("paella.EventDrivenPlugin", paella.Plugin,{
+Class ("paella.EventDrivenPlugin", paella.EarlyLoadPlugin,{
 	type:'eventDriven',
 
 	initialize:function() {

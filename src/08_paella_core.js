@@ -16,22 +16,61 @@ Class ("paella.AccessControl", {
 
 	checkAccess:function(onSuccess) {
 		onSuccess(this.permissions);
+	},
+
+	getAuthenticationUrl:function(callbackParam) { return ""; }
+});
+
+// Default Access Control
+//
+Class ("paella.DefaultAccessControl", paella.AccessControl,{
+	checkAccess:function(onSuccess) {
+		var This = this;
+		this.getUserData(function(data) {
+			This.permissions = data.permissions;
+			This.userData = data.userData;
+			onSuccess(This.permissions);
+		});
+	},
+
+	getUserData:function(onSuccess) {
+		var status = false;
+		if (paella.player.config.auth) {
+			var callback = paella.player.config.auth.userDataCallbackName ? window[paella.player.config.auth.userDataCallbackName]:null;
+			if (typeof(callback)=="function") {
+				status = true;
+				callback(onSuccess);
+			}
+		}
+		if (!status) {
+			onSuccess({
+				permissions: {
+					canRead: true,
+					canContribute: false,
+					canWrite: false,
+					loadError: false,
+					isAnonymous: true
+				},
+				userData: {
+					username: 'anonymous',
+					name: 'Anonymous',
+					avatar: 'resources/images/default_avatar.png'
+				}
+			});
+		}
+	},
+
+	getAuthenticationUrl:function(callbackParams) {
+		if (paella.player.config.auth) {
+			var callback = paella.player.config.auth.authCallbackName ? window[paella.player.config.auth.authCallbackName]:null;
+			if (typeof(callback)=="function") {
+				return callback(callbackParams);
+			}
+		}
+		return "";
 	}
 });
 
-Class ("paella.DefaultAccessControl", paella.AccessControl,{
-	checkAccess:function(onSuccess) {
-		this.permissions.canRead = false;
-		this.permissions.canContribute = false;
-		this.permissions.canWrite = false;
-		this.permissions.loadError = false;
-		this.permissions.isAnonymous = true;
-		this.userData.username = 'anonymous';
-		this.userData.name = 'Anonymous';
-		this.userData.avatar = 'resources/images/default_avatar.png';
-		onSuccess(this.permissions);
-	}
-});
 
 Class ("paella.VideoLoader", {
 	streams:[],		// {sources:{mp4:{src:"videourl.mp4",type:"video/mp4"},
@@ -127,11 +166,12 @@ Class ("paella.VideoLoader", {
 		if (this.streams.length>streamIndex) {
 			var stream = this.streams[streamIndex];
 
-			if (stream.sources.rtmp) status = true;
+			if (base.userAgent.browser.IsMobileVersion && stream.sources.hls) status = true;
+			else if (!base.userAgent.browser.IsMobileVersion && stream.sources.rtmp) status = true;
 			else status = false;
 		}
 
-		return status && !base.userAgent.browser.IsMobileVersion;
+		return status;
 	},
 
 	isStreamCompatible:function(streamIndex,method) {
@@ -233,6 +273,24 @@ Class ("paella.PlayerBase", {
 
 	loadComplete:function(event,params) {
 
+	},
+
+	auth: {
+		login: function(redirect) {
+			redirect = redirect || window.location.href;
+			var url = paella.initDelegate.initParams.accessControl.getAuthenticationUrl(redirect);
+			if (url) {
+				window.location.href = url;
+			}
+		},
+
+		permissions:function() {
+			return paella.initDelegate.initParams.accessControl.permissions;
+		},
+
+		userData:function() {
+			return paella.initDelegate.initParams.accessControl.userData;
+		}
 	}
 });
 
@@ -254,7 +312,7 @@ Class ("paella.InitDelegate", {
 	},
 
 	getId:function() {
-		return base.parameters.get('id');
+		return base.parameters.get('id') || "noid";
 	},
 
 	loadDictionary:function(onSuccess) {

@@ -49,5 +49,6 @@
 	"No recordings found: \"{0}\"": "No se han encontrado videos para: \"{0}\"",
 	"There are unsaved changes":"Hay cambios sin guardar",
 	"Live streaming mode: This is a live video, so, some capabilities of the player are disabled":"<h2>Vídeo en directo</h2><br/>Esto es un vídeo en directo, así que algunas de las funciones del reproductor están deshabilitadas",
-	"You are using Firefox version, and some required video playback capabilities are not available until Firefox min_version. Please, update your browser and try again.":"Estás utilizando Firefox version, y algunas capacidades de vídeo necesarias no están disponibles hasta Firefox min_version. Por favor, actualiza tu navegador y prueba otra vez."
+	"You are using Firefox version, and some required video playback capabilities are not available until Firefox min_version. Please, update your browser and try again.":"Estás utilizando Firefox version, y algunas capacidades de vídeo necesarias no están disponibles hasta Firefox min_version. Por favor, actualiza tu navegador y prueba otra vez.",
+	"This video is not compatible with any codec installed in your system":"Este vídeo no es compatible con ningún codec instalado en su sistema"
 }

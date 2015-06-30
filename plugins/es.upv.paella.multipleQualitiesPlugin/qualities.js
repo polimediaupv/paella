@@ -5,6 +5,7 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 	availableMasters:[],
 	availableSlaves:[],
 	showWidthRes:null,
+	_domElement:null,
 
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "showMultipleQualitiesPlugin"; },
@@ -93,6 +94,7 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 	
 	buildContent:function(domElement) {
 		var self = this;
+		self._domElement = domElement;
 		var w, h,d,e,b=0;
 		var percen1, percen2, reso2, act_percen;
 		percen1=100/this.availableMasters.length;
@@ -146,11 +148,18 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 					domElement.appendChild(this.getItemButton(h+"p",w+"x"+h, reso2));
 			}
 		}
+		
 	},
 
 	getItemButton:function(label,reso, reso2) {
 		var elem = document.createElement('div');
-		elem.className = this.getButtonItemClass(label,false);
+		var current = paella.player.videoContainer.currentMasterVideoData.res.w+"x"+paella.player.videoContainer.currentMasterVideoData.res.h;
+		if(label == current){
+			elem.className = this.getButtonItemClass(label,true);
+		}
+		else {
+			elem.className = this.getButtonItemClass(label,false);
+		}
 		elem.id = label + '_button';
 		elem.innerHTML = label;
 		elem.data = {
@@ -166,10 +175,16 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 	},
 
 	onItemClick:function(button,label,reso, reso2) {
+		var self=this;
 		paella.events.trigger(paella.events.hidePopUp,{identifier:this.getName()});
 		paella.player.reloadVideos(reso, reso2);
-
 		this.setQualityLabel();
+
+		var arr = self._domElement.children;
+		for(var i=0; i < arr.length; i++){
+			arr[i].className = self.getButtonItemClass(i,false);
+		}
+		button.className = self.getButtonItemClass(i,true);
 	},
 	
 	setQualityLabel:function() {
@@ -178,7 +193,7 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 	},
 
 	getButtonItemClass:function(profileName,selected) {
-		return 'playbackRateItem ' + profileName  + ((selected) ? ' selected':'');
+		return 'multipleQualityItem ' + profileName  + ((selected) ? ' selected':'');
 	}
 });
 

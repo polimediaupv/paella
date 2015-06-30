@@ -1,0 +1,26 @@
+{
+	"metadata": {
+		"duration": 0,
+		"title": "UPV-TV"
+	},
+	"streams": [
+		{
+			"sources": {
+				"rtmp": [
+					{
+						"src": {
+							"server":"rtmp://flash.oit.duke.edu/vod",
+							"stream":"test/Wildlife2.flv"
+						},
+						"mimetype": "video/x-flv",
+						"res": {
+							"w": "1280",
+							"h": "720"
+						}
+					}
+				]
+			},
+			"preview": null
+		}
+	]
+}

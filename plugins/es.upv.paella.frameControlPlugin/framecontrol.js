@@ -12,7 +12,7 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 	getSubclass:function() { return "frameControl"; },
 	getIndex:function() { return 510; },
 	getMinWindowSize:function() { return 200; },
-	getName:function() { return "es.upv.paella.FrameControlPlugin"; },
+	getName:function() { return "es.upv.paella.frameControlPlugin"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.timeLineButton; },
 	getDefaultToolTip:function() { return base.dictionary.translate("Navigate by slides"); },
 	checkEnabled:function(onSuccess) {

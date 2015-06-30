@@ -1,0 +1,27 @@
+{
+	"metadata": {
+		"duration": 0,
+		"title": "UPV-TV"
+	},
+	"streams": [
+		{
+			"sources": {
+				"rtmp": [
+					{
+						"src": {
+							"server": "rtmp://antena3fms35livefs.fplive.net/antena3fms35live-live",
+							"stream": "stream-antena3_1"
+						},
+						"mimetype": "video/x-flv",
+						"res": {
+							"w": "1280",
+							"h": "720"
+						},
+						"isLiveStream": true
+					}
+				]
+			},
+			"preview": null
+		}
+	]
+}

@@ -1,6 +1,6 @@
 # Paella Player #
 
-Paella (pronounced 'paeja') Player is the new HTML 5 multistream player, developed by the Universitat Politècnica de València. It is specially designed for lecture recordings, like Matterhorn Lectures or Polimedia pills.
+Paella (pronounced 'paeja') Player is the new HTML 5 multistream player, developed by the Universitat Politècnica de València. It is specially designed for lecture recordings, like Opencast Lectures or Polimedia pills.
 
 Paella Player is capable of playing multiple audio & video streams synchronously and can be integrated into almost any video platform using it's powerfull and easy to use plugin's architecture.
 

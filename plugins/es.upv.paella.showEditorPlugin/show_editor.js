@@ -27,7 +27,7 @@ Class ("paella.ShowEditorPlugin",paella.VideoOverlayButtonPlugin,{
 
 	action:function(button) {
 		var editorPage = this.config.editorPage ? this.config.editorPage: '';
-		if ((paella.extended) || (window!=window.top)){
+		if (window!=window.top){
 			window.open(editorPage + "?id=" + paella.player.videoIdentifier, '_top');
 		}
 		else {
@@ -44,7 +44,7 @@ Class ("paella.ShowEditorPlugin",paella.VideoOverlayButtonPlugin,{
 	},
 
 	getName:function() {
-		return "es.upv.paella.ShowEditorPlugin";
+		return "es.upv.paella.showEditorPlugin";
 	}
 });
 

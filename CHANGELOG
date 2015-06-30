@@ -1,6 +1,26 @@
 CHANGELOG
 =========
 
+* Paella 4.1.0 (30-06-2015)
+
+ * Don't ignore vendor directories to make collaboration easier.
+ * Improvements to tools/layout_calculator.
+ * Changes in default audio configuration.
+ * Video resolution refactoring: class VideoQualityStrategy extracted, to create custom video resolution selection strategies.
+ * New plugin loading system implemented.
+ * Fixed bug in the image Preview (#98).
+ * Captions functionality moved into the paella core.
+ * The parameters of paella:resize event are now generated correctly (#102).
+ * Search service added to the core.
+ * New Plugin: es.upv.paella.searchPlugin
+ * userTracking logger added to the core.
+ * New DefaultVideoLoader added to Paella core
+ * New built in video loader
+ * Fixed bug with the volume when the video is reloaded
+ * New plugin added: es.upv.paella.translectures.CaptionsPlugIn
+ * New videoMode: blackboard + zoom images
+ * HLS support for iOS devices
+
 * Paella 4.0.24 (29-05-2015)
 
   * Fixed bug: Live stream with URLs containing a @ character doesn't work (#140)

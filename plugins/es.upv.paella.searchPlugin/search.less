@@ -1,0 +1,115 @@
+.buttonPlugin.searchButton {
+	background-size: 2000% 1000%;
+	background-position: -900% -100%;
+	display: block;
+}
+
+.buttonPluginPopUp.searchButton {
+	position: absolute;
+}
+
+
+.searchPluginContainer {	
+	width: 400px;
+	overflow: hidden;
+}
+
+.searchBar input {
+	color: @popup_text_color;
+	background-color: @backgroundColor;
+	border-color: @mainColor;
+	width: 96%;
+	margin-bottom: 0px;
+	margin-left: 1px;
+}
+
+.searchBar input:hover{
+	border-color:@hoverBackgroundColor;
+}
+
+.searchBar input:focus{
+	border-color: @hoverBackgroundColor;
+}
+
+.searchBody {
+	max-height: 280px;	
+	overflow-y: scroll;
+	border: 1px solid black;
+}
+
+.sBodyInnerContainer {
+	display: block;
+	margin-left: 3px;
+	min-height: 70px;
+	border: 1px solid @backgroundColor;
+}
+
+.hover {
+	background-color: @hoverBackgroundColor;
+}
+
+.redScore {
+	background-color: rgba(255, 0, 0, 0.2);
+}
+
+.greenScore {
+	background-color: rgba(0, 255, 0, 0.2);
+}
+
+.sBodyPicture {
+}
+
+.sBodyText {
+	width: 100%;
+	display: block;
+	text-align: left;
+}
+
+.timeSpan {
+color: @mainColor;
+margin-right: 5px;
+}
+
+.TimePicContainer {
+	float: left;
+	width: 24%;
+	text-align: center;
+	margin-right: 5px;
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+}
+::-webkit-scrollbar-button {
+	width: 8px;
+	height:5px;
+}
+::-webkit-scrollbar-track {
+	background:#eee;
+	border: thin solid lightgray;
+	box-shadow: 0px 0px 3px #dfdfdf inset;
+	border-radius:10px;
+}
+::-webkit-scrollbar-thumb {
+	background:@mainColor;
+	border: thin solid gray;
+	border-radius:10px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background:@hoverBackgroundColor;
+}			
+
+svg path,
+svg rect{
+  fill: #FF6700;
+}
+
+.loader{
+  float: left;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.noResults {
+	margin: 5px;
+}

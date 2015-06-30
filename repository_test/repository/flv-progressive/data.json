@@ -1,0 +1,24 @@
+{
+	"metadata": {
+		"duration": 0,
+		"title": "UPV-TV"
+	},
+	"streams": [
+		{
+			"sources": {
+				"flv": [
+					{
+						"src":"http://paellaplayer.upv.es/demo/repository/demo-single-flv/8ed4d8ee-4cd5-431e-a0c3-a9e7cbf82d80/video.flv",
+						"src_": "http://www.mediacollege.com/video-gallery/testclips/20051210-w50s.flv",
+						"mimetype": "video/x-flv",
+						"res": {
+							"w": "360",
+							"h": "288"
+						}
+					}
+				]
+			},
+			"preview": null
+		}
+	]
+}

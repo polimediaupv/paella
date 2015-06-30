@@ -1,0 +1,42 @@
+{
+    "description":"Array of videos that corresponds to the differents resolutions/qualities of a video stream",
+    "id":"videostream",
+    "type":"array",
+    "items":{
+        "type":"object",
+        "properties":{
+            "src":{
+                "description":"Url of the video stream",
+                "type":"string"
+            },
+            "mimetype":{
+                "description":"Mimetype of the video",
+                "type":"string",
+                "enum":[
+                    "video/mp4",
+                    "video/x-flv",
+                    "application/x-mpegURL",
+                    "video/MP2T",
+                    "video/3gpp",
+                    "video/quicktime",
+                    "video/x-msvideo",
+                    "video/x-ms-wmv"
+                ],
+                "default":"video/mp4"
+            },
+            "res":{
+                "type":"object",
+                "properties":{
+                    "w":{
+                        "description":"Video width",
+                        "type":"integer"
+                    },
+                    "h":{
+                        "description":"Video height",
+                        "type":"integer"
+                    }
+                }
+            }
+        }
+    }
+}

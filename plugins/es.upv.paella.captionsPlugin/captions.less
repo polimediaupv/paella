@@ -1,0 +1,128 @@
+.buttonPlugin.captionsPluginButton{
+	background-position: 0% -100%;
+}
+
+.captionsPluginContainer {	
+	width: 400px;
+	overflow: hidden;
+}
+
+.captionsBar input {
+	color: @popup_text_color;
+	background-color: @backgroundColor;
+	border-color: #fa8533;
+	width: 49%;
+	margin-bottom: 0px;
+	margin-left: 1px;
+	float: left;
+}
+
+.captionsBar select{
+	width: 39%;
+	display: inline;
+	background-color: #F98534;
+	border: 1px solid #ccc;
+	color: white;
+    margin-bottom: 0px;
+    height: 31px;
+}
+
+.captionsBar button{
+	float: right;
+	width: 7%;
+	min-height: 30px;
+	min-width: 30px;
+	margin-right: 2px;
+	background: @paella_icons_image;
+	background-position: -400% -100%;
+	background-size: @paella_icons_bkg_size;
+}
+
+.captionsBar button:hover{
+	background-color: #faa166;
+}
+
+
+.bodyInnerContainer {
+	margin-bottom: 5px;
+	display: block;
+	margin-left: 3px;
+	height: auto;
+}
+
+.captionsBar input:hover{
+	border-color: #faa166;
+}
+
+.captionsBar input:focus{
+	border-color: #faa166;
+}
+
+.captionsBody {
+	max-height: 280px;	
+	overflow-y: scroll;
+	border: 1px solid black;
+}
+
+
+
+.captionsBar input:hover{
+	border-color: #faa166;
+}
+
+.captionsBar input:focus{
+	border-color: #faa166;
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+}
+::-webkit-scrollbar-button {
+	width: 8px;
+	height:5px;
+}
+::-webkit-scrollbar-track {
+	background:#eee;
+	border: thin solid lightgray;
+	box-shadow: 0px 0px 3px #dfdfdf inset;
+	border-radius:10px;
+}
+::-webkit-scrollbar-thumb {
+	background:#fa8533;
+	border: thin solid gray;
+	border-radius:10px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background:#faa166;
+}
+
+/* CSS OVERLAY */
+
+.CaptionsOnScreen {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	top: 0;
+	left: 0;
+	z-index: 99;
+}
+
+.CaptionsOnScreenInner {
+	background-color: rgba(0,0,0,0.6);
+	position: relative;
+	text-align: center;
+	color: white;
+	font-size: 17px;
+	width: 70%;
+	min-height: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 8px;
+	border-radius: 12px;
+}
+
+.Highlight{
+	color: rgb(255, 157, 97);
+	font-weight: bold;
+}			

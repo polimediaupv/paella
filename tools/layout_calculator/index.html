@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8;">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Paella layout calculator</title>
+  <script type="text/javascript" src="javascript/jquery.js"></script>
+  <script type="text/javascript" src="javascript/layoutCalculator.js"></script>
+  <style type="text/css">
+    #controls{
+      border: 1px solid black;
+      margin-bottom: 2em;
+    }
+
+    #preview{
+      margin: 0px auto;
+      width: 1282px;
+      height: 722px;
+      border: 1px solid #ccc;
+      position: absolute;
+    }
+
+    #presenter, #presentation{
+      position: absolute;
+    }
+
+    #presenter{
+      background: #e4e4e4;
+    }
+
+    #presentation{
+      background: #cccccc;
+    }
+    .info {
+      font-size: smaller;
+      color: #ccc;
+    }
+  </style>
+
+  <body>
+    <div id="controls">
+      <strong>Presenter:</strong>
+      Width: <input id="presenter_width" data-vid-type="presenter" data-dimension-type="width" type="number" value="816" step="16" />
+      Height: <input id="presenter_height" data-vid-type="presenter" data-dimension-type="height" type="number" value="459" step="9" />
+      Top: <input id="presenter_top" data-vid-type="presenter" type="number" value="140" />
+      Left: <input id="presenter_left" data-vid-type="presenter" type="number" value="11" /><br/>
+      <strong>Presentation:</strong>
+      Width: <input  id="presentation_width" data-vid-type="presentation" data-dimension-type="width" type="number" value="416" step="16" />
+      Height: <input id="presentation_height" data-vid-type="presentation" data-dimension-type="height" type="number" value="234" step="9" />
+      Top: <input    id="presentation_top" data-vid-type"presentation" type="number" value="236" />
+      Left: <input   id="presentation_left" data-vid-type"presentation" type="number" value="850" /><br/>
+      <strong>Aspect Ratio</strong>
+      <select id="aspect_ratio">
+        <option>4:3</option>
+        <option>5:3</option>
+        <option>5:4</option>
+        <option>16:9</option>
+        <option>16:10</option>
+      </select> <span class="info"> Make a height or width modification to see the new aspect ratio take effect</span>
+    </div>
+
+    <div id="preview">
+      <div id="presenter">Presenter</div>
+      <div id="presentation">Presentation</div>
+    </div>
+  </body>
+</html>
