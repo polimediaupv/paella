@@ -48,6 +48,12 @@ Class ("paella.plugins.CaptionsOnScreen",paella.EventDrivenPlugin,{
 			case paella.events.captionsEnabled:
 				thisClass.buildContent(params);
 				thisClass.captions = true;
+				if(paella.player.controls.isHidden()){
+					thisClass.moveCaptionsOverlay("down");
+				}
+				else {
+					thisClass.moveCaptionsOverlay("top");
+				}
 				break;
 			case paella.events.captionsDisabled:
 				thisClass.hideContent();
