@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+* Paella 4.1.2 (02-07-2015)
+
+  * Fix bug in config.json file (es.upv.paella.multipleQualitiesPlugin was not enabled)
+  * Fixed bug in captions overlay showing captions on top
+
 * Paella 4.1.1 (30-06-2015)
 
   * Fix typo in config.json file
