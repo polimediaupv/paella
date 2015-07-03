@@ -189,7 +189,7 @@ Class ("paella.captions.Caption", {
 		.fail(function(error){
 			base.log.debug("Error loading captions: " + self._url);
 				if (next) { next(true); }
-		})
+		});
 	},
 	
 	getCaptions: function() {
