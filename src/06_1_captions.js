@@ -156,35 +156,40 @@ Class ("paella.captions.Caption", {
 	
 	reloadCaptions: function(next) {
 		var self = this;
-			
-		base.ajax.get({url: self._url},
-			function(data, contentType, returnCode, dataRaw) {
-				var parser = captionParserManager._formats[self._format];			
-				if (parser == undefined) {
-					base.log.debug("Error adding captions: Format not supported!");
-					if (next) { next(true); }
-				}
-				else {
-					parser.parse(dataRaw, self._lang.code, function(err, c) {
-						if (!err) {
-							self._captions = c;
-							
-							self._captions.forEach(function(cap){
-								self._index.add({
-									id: cap.id,
-									content: cap.content,
-								});				
-							});							
-						}
-						if (next) { next(err); }						
-					});
-				}
-			},						
-			function(data, contentType, returnCode) {
-				base.log.debug("Error loading captions: " + url);
+	
+	
+		jQuery.ajax({
+			url: self._url,
+			cache:false,
+			type: 'get',
+			dataType: "text",
+		})
+		.done(function(dataRaw){
+			var parser = captionParserManager._formats[self._format];			
+			if (parser == undefined) {
+				base.log.debug("Error adding captions: Format not supported!");
 				if (next) { next(true); }
 			}
-		);
+			else {
+				parser.parse(dataRaw, self._lang.code, function(err, c) {
+					if (!err) {
+						self._captions = c;
+						
+						self._captions.forEach(function(cap){
+							self._index.add({
+								id: cap.id,
+								content: cap.content,
+							});				
+						});							
+					}
+					if (next) { next(err); }						
+				});
+			}			
+		})
+		.fail(function(error){
+			base.log.debug("Error loading captions: " + self._url);
+				if (next) { next(true); }
+		})
 	},
 	
 	getCaptions: function() {
