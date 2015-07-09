@@ -797,7 +797,8 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 
 	addSource:function(sourceData) {
 		var source = document.createElement('source');
-		source.src = sourceData.src + '?caches=' + Math.random();
+		var separator = sourceData.src.indexOf('?') == -1 ? '?' : '&';
+		source.src = sourceData.src + separator + 'caches=' + Math.random();
 		source.type = sourceData.type;
 		this.domElement.appendChild(source);
 	},
