@@ -102,6 +102,12 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		if (paella.player.isLiveStream()) {
 			$(this.domElement).hide();
 		}
+		setTimeout(function(){
+			self.drawTimeMarks();
+			//self.drawTimeMark(200);
+			//self.drawTimeMark(300);
+		}, 2000);
+
 	},
 
 	mouseOut:function(event){
@@ -110,6 +116,36 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 			$("#divTimeImageOverlay").remove();
 		else
 			$("#divTimeOverlay").remove();
+	},
+
+	drawTimeMarks:function(){
+		var self = this;
+
+		self._keys.forEach(function(l){
+			var aux = (parseInt(l) * 300) / self._videoLength; // conversion to canvas
+			//aux = Math.round(aux);
+			self.drawTimeMark(parseInt(aux));
+		});
+		
+	},
+
+	drawTimeMark:function(sec){
+		var canvas = document.getElementById("playerContainer_controls_playback_playbackBar_canvas");
+		if(!canvas){
+			var parent = $("#playerContainer_controls_playback_playbackBar");
+			var div = document.createElement("canvas");
+			div.className = "playerContainer_controls_playback_playbackBar_canvas";
+			div.id = ("playerContainer_controls_playback_playbackBar_canvas");
+			parent.prepend(div);
+			canvas = document.getElementById("playerContainer_controls_playback_playbackBar_canvas");
+		}
+		var ctx = canvas.getContext("2d");
+		ctx.fillStyle = "#FF0000";
+		ctx.fillRect(sec,0,1,200);
+	//	ctx.moveTo(sec,0);
+		//ctx.lineTo(sec,12);
+		//ctx.stroke();
+		
 	},
 
 	movePassive:function(event){
