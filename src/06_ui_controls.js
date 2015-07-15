@@ -47,6 +47,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	_aspectRatio:1.777777778, // 16:9
 	_hasSlides:null,
 	_imgNode:null,
+	_canvas:null,
 
 	initialize:function(id) {
 		var self = this;
@@ -102,11 +103,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		if (paella.player.isLiveStream()) {
 			$(this.domElement).hide();
 		}
-		setTimeout(function(){
-			self.drawTimeMarks();
-			//self.drawTimeMark(200);
-			//self.drawTimeMark(300);
-		}, 2000);
+
 
 	},
 
@@ -120,32 +117,46 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 
 	drawTimeMarks:function(){
 		var self = this;
-
+		var parent = $("#playerContainer_controls_playback_playbackBar");
 		self._keys.forEach(function(l){
-			var aux = (parseInt(l) * 300) / self._videoLength; // conversion to canvas
-			//aux = Math.round(aux);
+			var aux = (parseInt(l) * parent.width()) / self._videoLength; // conversion to canvas
 			self.drawTimeMark(parseInt(aux));
 		});
 		
 	},
 
 	drawTimeMark:function(sec){
+		var ht = 12; //default height value
 		var canvas = document.getElementById("playerContainer_controls_playback_playbackBar_canvas");
 		if(!canvas){
 			var parent = $("#playerContainer_controls_playback_playbackBar");
 			var div = document.createElement("canvas");
 			div.className = "playerContainer_controls_playback_playbackBar_canvas";
 			div.id = ("playerContainer_controls_playback_playbackBar_canvas");
+			div.width = parent.width();
+			ht = div.height = parent.height();
 			parent.prepend(div);
 			canvas = document.getElementById("playerContainer_controls_playback_playbackBar_canvas");
 		}
 		var ctx = canvas.getContext("2d");
-		ctx.fillStyle = "#FF0000";
-		ctx.fillRect(sec,0,1,200);
-	//	ctx.moveTo(sec,0);
-		//ctx.lineTo(sec,12);
-		//ctx.stroke();
-		
+		ctx.fillStyle = "#000000";
+		ctx.fillRect(sec,0,1,ht);	
+	},
+	getCanvas:function(){
+		if (!this._canvas) {
+			var parent = $("#playerContainer_controls_playback_playbackBar");
+			var div = document.createElement("canvas");
+			div.className = "playerContainer_controls_playback_playbackBar_canvas";
+			div.id = ("playerContainer_controls_playback_playbackBar_canvas");
+			div.width = parent.width();
+			ht = div.height = parent.height();
+			parent.prepend(div);
+			this._canvas = document.getElementById("playerContainer_controls_playback_playbackBar_canvas");
+		}
+		return this._canvas;
+	},
+	getCanvasContext:function(){
+		return this.getCanvas().getContext("2d");
 	},
 
 	movePassive:function(event){
