@@ -5,17 +5,24 @@ Class ("paella.DrawPlayBackBarCanvas", paella.EventDrivenPlugin,{
 	_shape:null,
 	_keys:null,
 	_videoLength:null,
+	_mustDraw:true,
 
 	getEvents:function() {
 		return[
-			paella.events.singleVideoReady,
+			paella.events.loadPlugins,
 		];
     },
 
     onEvent:function(event, params){
     	var self = this;
     	switch(event){
-    		case paella.events.singleVideoReady: this.imageUpdate(event,params); break;
+    		case paella.events.loadPlugins: 
+    			if(self._mustDraw){
+    				setTimeout(function(){
+						self.drawSlideTime();
+    				}, 1000);
+    				self._mustDraw=false;
+    			} break;
     	}
     },
 	checkEnabled:function(onSuccess) {
@@ -35,6 +42,7 @@ Class ("paella.DrawPlayBackBarCanvas", paella.EventDrivenPlugin,{
 	},
 
 	init:function(){
+		var self = this;
 		self._canvas = paella.player.controls.playbackControlInstance.playbackBarInstance.getCanvas();
 		self._context = paella.player.controls.playbackControlInstance.playbackBarInstance.getCanvasContext();
 	},
@@ -49,8 +57,8 @@ Class ("paella.DrawPlayBackBarCanvas", paella.EventDrivenPlugin,{
 				var time = (parseInt(l) * parent.width()) / self._videoLength; // conversion to canvas
 				
 				if(self._shape == "rect"){
-					ctx.fillStyle = self._color;
-					ctx.fillRect(time,0,1,parent.height());
+					self._context.fillStyle = self._color;
+					self._context.fillRect(time,0,1,parent.height());
 				}
 				
 			});
