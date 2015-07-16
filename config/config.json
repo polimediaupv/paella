@@ -69,7 +69,6 @@
 			"es.upv.paella.translecture.captionsPlugin": {"enabled":true},
 			"es.upv.paella.trimmingPlayerPlugin": {"enabled":true},
 			"es.upv.paella.zoomPlugin": {"enabled": false},
-			"es.upv.paella.drawPlayBackBarCanvas": {"enabled": true},
 									
 			"//****": "Captions Parser Plugins",
 			"es.upv.paella.captions.DFXPParserPlugin": {"enabled":true},

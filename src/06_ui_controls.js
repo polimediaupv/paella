@@ -103,6 +103,9 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		if (paella.player.isLiveStream()) {
 			$(this.domElement).hide();
 		}
+		setTimeout(function(){
+			self.drawTimeMarks();
+		},200);
 
 
 	},
