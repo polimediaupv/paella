@@ -804,6 +804,16 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	},
 	
 	unload:function() {
+		//START_CANVAS
+		var video = document.querySelector('video');
+		var canv = document.createElement("canvas");			//create element
+		canv.style.cssText = this.domElement.style.cssText;		//copy style
+		canv.style.position = "absolute";						//style absolute
+		this.domElement.parentElement.appendChild(canv);		//append
+		var ctx = canv.getContext("2d");
+		ctx.fillRect(0,0,this.domElement.width,this.domElement.height);						//get Context
+		ctx.drawImage(video, 0, 0, this.domElement.width, this.domElement.height);//Draw image
+		//END_CANVAS
 		this.ready = false;
 		var sources = $(this.domElement).find('source');
 		for (var i=0; i<sources.length; ++i) {
