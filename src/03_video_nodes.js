@@ -803,16 +803,25 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		this.domElement.appendChild(source);
 	},
 	
+	drawCanvas:function(parent, video, canvas){
+		canvas.style.position = "absolute";
+		canvas.style.width = $(video).width()+"px";
+		canvas.style.height = $(video).height()+"px";
+		canvas.style.top = $(video).offset().top+"px";
+		canvas.style.left = $(video).offset().left+"px";
+
+		var ctx = canvas.getContext("2d");
+		ctx.drawImage(video, 0, 0, canvas.style.width, canvas.style.height);//Draw image
+
+		parent.appendChild(canvas);
+	},
+
 	unload:function() {
 		//START_CANVAS
+		var self = this;
 		var video = document.querySelector('video');
-		var canv = document.createElement("canvas");			//create element
-		canv.style.cssText = this.domElement.style.cssText;		//copy style
-		canv.style.position = "absolute";						//style absolute
-		this.domElement.parentElement.appendChild(canv);		//append
-		var ctx = canv.getContext("2d");
-		ctx.fillRect(0,0,this.domElement.width,this.domElement.height);						//get Context
-		ctx.drawImage(video, 0, 0, this.domElement.width, this.domElement.height);//Draw image
+		var canv = document.createElement("canvas");							
+		self.drawCanvas(this.domElement.parentElement,video,canv);
 		//END_CANVAS
 		this.ready = false;
 		var sources = $(this.domElement).find('source');
