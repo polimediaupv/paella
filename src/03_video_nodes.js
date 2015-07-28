@@ -236,7 +236,15 @@ Class ("paella.VideoElementBase", paella.DomNode,{
 
 	setLayer:function(layer) {
 		this.domElement.style.zIndex = layer;
+	},
+
+	freeze:function(){
+
+	},
+	unFreeze:function(){
+
 	}
+
 });
 
 
@@ -805,17 +813,17 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		this.domElement.appendChild(source);
 	},
 
-	deleteCanvas:function(){
+	unFreeze:function(){
 		var self = this;
-		self._canvasPile.forEach(function(l){
-			$(l).remove();
-		});
+		var c = document.getElementById(this.domElement.className + "canvas");
+		$(c).remove();
 	},
 	
-	drawCanvas:function(pos){
+	freeze:function(){
 		var self = this;
 		var canvas = document.createElement("canvas");
-		canvas.id = "swapVideoCanvas";
+		var pos = this._rect;
+		canvas.id = this.domElement.className + "canvas";
 		canvas.width = this.domElement.videoWidth;
 		canvas.height = this.domElement.videoHeight;
 		canvas.style.position = "absolute";
@@ -834,7 +842,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	unload:function() {
 		//START_CANVAS
 		var self = this;							
-		self.drawCanvas(this._rect);	
+		//self.drawCanvas(this._rect);	
 
 		//END_CANVAS
 		this.ready = false;
@@ -846,10 +854,6 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		this.domElement.src = '';
 		this.domElement.load();
 		this.parent();
-		setTimeout(function(){
-
-			self.deleteCanvas();
-		}, 3000);
 	},
 
 	getDimensions:function() {

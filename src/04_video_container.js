@@ -664,11 +664,12 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 
 	reloadVideos:function(masterQuality,slaveQuality) {	
 		var isPaused = paella.player.videoContainer.paused();			
-	
 		this._showPosterFrame = false;
 		var memoizedCurrentTime = this.currentTime();
 		var masterVideo = this.masterVideo();
+		if(masterVideo) masterVideo.freeze();
 		var slaveVideo = this.slaveVideo();
+		if(slaveVideo) slaveVideo.freeze();
 		var masterVolume = masterVideo.volume();
 		var slaveVolume = slaveVideo && slaveVideo.volume();
 		 		
@@ -703,6 +704,12 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 				$(document).trigger(paella.events.play);
 				this._playOnLoad = true;
 			}
+			masterVideo.domElement.onseeked = function() {
+    			masterVideo.unFreeze();
+			};
+			slaveVideo.domElement.onseeked = function() {
+    			slaveVideo.unFreeze();
+			};
 		}
 	},
 
