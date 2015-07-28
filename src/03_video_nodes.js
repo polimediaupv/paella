@@ -816,8 +816,8 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		var self = this;
 		var canvas = document.createElement("canvas");
 		canvas.id = "swapVideoCanvas";
-		canvas.width = pos.width;
-		canvas.height = pos.height;
+		canvas.width = this.domElement.videoWidth;
+		canvas.height = this.domElement.videoHeight;
 		canvas.style.position = "absolute";
 		canvas.style.width = pos.width + "px";
 		canvas.style.height = pos.height + "px";
@@ -826,7 +826,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		canvas.style.zIndex = 2;
 
 		var ctx = canvas.getContext("2d");
-		ctx.drawImage(this.domElement, 0, 0, canvas.width, canvas.height);//Draw image
+		ctx.drawImage(this.domElement, 0, 0, Math.ceil(canvas.width/16)*16, Math.ceil(canvas.height/16)*16);//Draw image
 		this.domElement.parentElement.appendChild(canvas);
 		self._canvasPile.push(canvas);
 	},
@@ -847,8 +847,9 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		this.domElement.load();
 		this.parent();
 		setTimeout(function(){
+
 			self.deleteCanvas();
-		}, 2000);
+		}, 3000);
 	},
 
 	getDimensions:function() {
@@ -975,7 +976,7 @@ Class ("paella.SlideshowVideo", paella.VideoElementBase,{
 			this._currentTime = time;
 			this.checkFrame();
 		}
-		console.log("XXX");
+		//console.log("XXX");
 	},
 
 	currentTime:function() {
