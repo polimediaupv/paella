@@ -677,6 +677,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	
 	_initialCurrentTime:0,
 	_posterFrame:null,
+	_canvasPile:null,
 
 	initialize:function(id,left,top,width,height) {
 		this.parent(id,'video',left,top,width,height);
@@ -694,6 +695,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		$(this.domElement).bind('canplay',function(event) {
 			thisClass.onVideoProgress(event);
 		});
+		if(thisClass._canvasPile == null){ thisClass._canvasPile = []; }
 	},
 	
 	onVideoProgress:function(event) {
@@ -802,26 +804,38 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		source.type = sourceData.type;
 		this.domElement.appendChild(source);
 	},
+
+	deleteCanvas:function(){
+		var self = this;
+		self._canvasPile.forEach(function(l){
+			$(l).remove();
+		});
+	},
 	
-	drawCanvas:function(parent, video, canvas){
+	drawCanvas:function(pos){
+		var self = this;
+		var canvas = document.createElement("canvas");
+		canvas.id = "swapVideoCanvas";
+		canvas.width = pos.width;
+		canvas.height = pos.height;
 		canvas.style.position = "absolute";
-		canvas.style.width = $(video).width()+"px";
-		canvas.style.height = $(video).height()+"px";
-		canvas.style.top = $(video).offset().top+"px";
-		canvas.style.left = $(video).offset().left+"px";
+		canvas.style.width = pos.width + "px";
+		canvas.style.height = pos.height + "px";
+		canvas.style.top = pos.top + "px";
+		canvas.style.left = pos.left + "px";
+		canvas.style.zIndex = 2;
 
 		var ctx = canvas.getContext("2d");
-		ctx.drawImage(video, 0, 0, canvas.style.width, canvas.style.height);//Draw image
-
-		parent.appendChild(canvas);
+		ctx.drawImage(this.domElement, 0, 0, canvas.width, canvas.height);//Draw image
+		this.domElement.parentElement.appendChild(canvas);
+		self._canvasPile.push(canvas);
 	},
 
 	unload:function() {
 		//START_CANVAS
-		var self = this;
-		var video = document.querySelector('video');
-		var canv = document.createElement("canvas");							
-		self.drawCanvas(this.domElement.parentElement,video,canv);
+		var self = this;							
+		self.drawCanvas(this._rect);	
+
 		//END_CANVAS
 		this.ready = false;
 		var sources = $(this.domElement).find('source');
@@ -832,6 +846,9 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		this.domElement.src = '';
 		this.domElement.load();
 		this.parent();
+		setTimeout(function(){
+			self.deleteCanvas();
+		}, 2000);
 	},
 
 	getDimensions:function() {
@@ -958,6 +975,7 @@ Class ("paella.SlideshowVideo", paella.VideoElementBase,{
 			this._currentTime = time;
 			this.checkFrame();
 		}
+		console.log("XXX");
 	},
 
 	currentTime:function() {
