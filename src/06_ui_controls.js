@@ -142,7 +142,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 			canvas = document.getElementById("playerContainer_controls_playback_playbackBar_canvas");
 		}
 		var ctx = canvas.getContext("2d");
-		ctx.fillStyle = "#000000";
+		ctx.fillStyle = "#FFFFFF";
 		ctx.fillRect(sec,0,1,ht);	
 	},
 	getCanvas:function(){
