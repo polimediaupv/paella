@@ -236,7 +236,15 @@ Class ("paella.VideoElementBase", paella.DomNode,{
 
 	setLayer:function(layer) {
 		this.domElement.style.zIndex = layer;
+	},
+
+	freeze:function(){
+
+	},
+	unFreeze:function(){
+
 	}
+
 });
 
 
@@ -677,6 +685,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	
 	_initialCurrentTime:0,
 	_posterFrame:null,
+	_canvasPile:null,
 
 	initialize:function(id,left,top,width,height) {
 		this.parent(id,'video',left,top,width,height);
@@ -694,6 +703,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		$(this.domElement).bind('canplay',function(event) {
 			thisClass.onVideoProgress(event);
 		});
+		if(thisClass._canvasPile == null){ thisClass._canvasPile = []; }
 	},
 	
 	onVideoProgress:function(event) {
@@ -802,8 +812,39 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		source.type = sourceData.type;
 		this.domElement.appendChild(source);
 	},
+
+	unFreeze:function(){
+		var self = this;
+		var c = document.getElementById(this.domElement.className + "canvas");
+		$(c).remove();
+	},
 	
+	freeze:function(){
+		var self = this;
+		var canvas = document.createElement("canvas");
+		var pos = this._rect;
+		canvas.id = this.domElement.className + "canvas";
+		canvas.width = this.domElement.videoWidth;
+		canvas.height = this.domElement.videoHeight;
+		canvas.style.position = "absolute";
+		canvas.style.width = pos.width + "px";
+		canvas.style.height = pos.height + "px";
+		canvas.style.top = pos.top + "px";
+		canvas.style.left = pos.left + "px";
+		canvas.style.zIndex = 2;
+
+		var ctx = canvas.getContext("2d");
+		ctx.drawImage(this.domElement, 0, 0, Math.ceil(canvas.width/16)*16, Math.ceil(canvas.height/16)*16);//Draw image
+		this.domElement.parentElement.appendChild(canvas);
+		self._canvasPile.push(canvas);
+	},
+
 	unload:function() {
+		//START_CANVAS
+		var self = this;							
+		//self.drawCanvas(this._rect);	
+
+		//END_CANVAS
 		this.ready = false;
 		var sources = $(this.domElement).find('source');
 		for (var i=0; i<sources.length; ++i) {
@@ -939,6 +980,7 @@ Class ("paella.SlideshowVideo", paella.VideoElementBase,{
 			this._currentTime = time;
 			this.checkFrame();
 		}
+		//console.log("XXX");
 	},
 
 	currentTime:function() {
