@@ -1,0 +1,7 @@
+CHANGELOG
+=========
+
+* Paella WIP (Work In Progress)
+
+  * Add segment lines to the timeline
+  * Fix a bug when reload a video causing black screen blinks
