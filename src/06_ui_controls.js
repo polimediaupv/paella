@@ -114,7 +114,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 
 	movePassive:function(event){
 		var self = this;
-		
+		var time = 0;
 		// CONTROLS_BAR POSITON
 		var p = $("#playerContainer_controls_playback_playbackBar");
 		var pos = p.offset();
@@ -123,18 +123,28 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		var left = (event.clientX-pos.left);
 		left = (left < 0) ? 0 : left;
 		var position = left * 100 / width; // GET % OF THE STREAM
-		var time = paella.player.videoContainer.duration("");
+		if(paella.player.videoContainer.trimEnabled()){
+		 	time = paella.player.videoContainer.trimEnd()-paella.player.videoContainer.trimStart();
+			time = ( position * time / 100 );
+			time += paella.player.videoContainer.trimStart();
+		}
+		else{
+			time = paella.player.videoContainer.duration("");
+			time = ( position * time / 100 );
+		}
 
-		time = ( position * time / 100 );
+		
+		var timex = time;
+		if(paella.player.videoContainer.trimEnabled())
+			timex -= paella.player.videoContainer.trimStart();
 
-
-		var hou = Math.floor(time / 3600)%24;
+		var hou = Math.floor(timex / 3600)%24;
 		hou = ("00"+hou).slice(hou.toString().length);
 
-		var min = Math.floor(time / 60)%60;
+		var min = Math.floor(timex / 60)%60;
 		min = ("00"+min).slice(min.toString().length);
 
-		var sec = Math.floor(time%60);
+		var sec = Math.floor(timex%60);
 		sec = ("00"+sec).slice(sec.toString().length);
 
 
