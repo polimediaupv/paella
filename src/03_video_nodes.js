@@ -824,13 +824,13 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		var canvas = document.createElement("canvas");
 		var pos = this._rect;
 		canvas.id = this.domElement.className + "canvas";
-		canvas.width = this.domElement.videoWidth;
-		canvas.height = this.domElement.videoHeight;
+		canvas.width = $(this.domElement).width();
+		canvas.height = $(this.domElement).height();
 		canvas.style.position = "absolute";
-		canvas.style.width = pos.width + "px";
-		canvas.style.height = pos.height + "px";
-		canvas.style.top = pos.top + "px";
-		canvas.style.left = pos.left + "px";
+		canvas.style.width = canvas.width + "px";
+		canvas.style.height = canvas.height + "px";
+		canvas.style.top = $(this.domElement).position().top + "px";
+		canvas.style.left = $(this.domElement).position().left + "px";
 		canvas.style.zIndex = 2;
 
 		var ctx = canvas.getContext("2d");
