@@ -665,7 +665,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	reloadVideos:function(masterQuality,slaveQuality) {	
 		var isPaused = paella.player.videoContainer.paused();			
 		this._showPosterFrame = false;
-		var memoizedCurrentTime = this.currentTime();
+		var memorizedCurrentTime = this.currentTime();
 		var masterVideo = this.masterVideo();
 		if(masterVideo) masterVideo.freeze();
 		var slaveVideo = this.slaveVideo();
@@ -692,7 +692,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			currentMastr.res.w!=newMasterSrc.res.w || currentMastr.res.h!=newMasterSrc.res.h) {
 			if (masterVideo) masterVideo.unload();
 			if (slaveVideo) slaveVideo.unload();
-			this._seekToOnLoad = memoizedCurrentTime;
+			this._seekToOnLoad = memorizedCurrentTime;
 			this.setSources(this._videoSourceData.master,this._videoSourceData.slave);
 			masterVideo = this.masterVideo();
 			slaveVideo = this.slaveVideo();			
