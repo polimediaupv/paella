@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 4.1.7 (26-08-2015)
+
+    * Fixed Bug on RTMP buffer time.
+
 * Paella 4.1.6 (29-07-2015)
 
   * Fixed Bug on Trimming Video using Slides preview on playbackbar.
