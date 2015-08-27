@@ -332,6 +332,9 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 		else {
 			base.log.debug("Flash video event: " + eventName);
 		}
+		if (this._isLiveStream && this._posterFrameElement) {
+			$(this._posterFrameElement).hide();
+		}
 	},
 	
 	setPosterFrame:function(url) {
@@ -633,6 +636,7 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 
 		parameters.playerId = this.flashId;
 		parameters.isLiveStream = sourceData.isLiveStream!==undefined ? sourceData.isLiveStream:false;
+		this._isLiveStream = sourceData.isLiveStream!==undefined ? sourceData.isLiveStream:false;
 		parameters.server = sourceData.src.server;
 		parameters.stream = sourceData.src.stream;
 		parameters.subscribe = subscription;

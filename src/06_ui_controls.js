@@ -121,11 +121,12 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	drawTimeMarks:function(){
 		var self = this;
 		var parent = $("#playerContainer_controls_playback_playbackBar");
-		self._keys.forEach(function(l){
-			var aux = (parseInt(l) * parent.width()) / self._videoLength; // conversion to canvas
-			self.drawTimeMark(parseInt(aux));
-		});
-		
+		if (this._keys) {
+			this._keys.forEach(function (l) {
+				var aux = (parseInt(l) * parent.width()) / self._videoLength; // conversion to canvas
+				self.drawTimeMark(parseInt(aux));
+			});
+		}
 	},
 
 	drawTimeMark:function(sec){
