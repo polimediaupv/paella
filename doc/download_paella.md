@@ -44,7 +44,7 @@ Congratulations, you have all the dependencies installed.
 
 ### Build Paella Player
 
-To build baella player you need to open a terminal and go to the paella folder, and run:
+To build paella player you need to open a terminal and go to the paella folder, and run:
 
 	$ grunt build.release
 	
