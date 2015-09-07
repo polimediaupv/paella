@@ -255,8 +255,8 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	},
 
 	unloadAll:function(message) {
-		$('#playerContainer')[0].innerHTML = "";
 		var loaderContainer = $('#paellaPlayer_loader')[0];
+		this.mainContainer.innerHTML = "";
 		paella.messageBox.showError(message);
 	},
 
