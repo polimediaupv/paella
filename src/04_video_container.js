@@ -667,9 +667,9 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		this._showPosterFrame = false;
 		var memorizedCurrentTime = this.currentTime();
 		var masterVideo = this.masterVideo();
-		if(masterVideo) masterVideo.freeze();
+		//if(masterVideo) masterVideo.freeze();
 		var slaveVideo = this.slaveVideo();
-		if(slaveVideo) slaveVideo.freeze();
+		//if(slaveVideo) slaveVideo.freeze();
 		var masterVolume = masterVideo.volume();
 		var slaveVolume = slaveVideo && slaveVideo.volume();
 		 		
@@ -704,12 +704,17 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 				$(document).trigger(paella.events.play);
 				this._playOnLoad = true;
 			}
-			masterVideo.domElement.onseeked = function() {
-    			masterVideo.unFreeze();
-			};
-			slaveVideo.domElement.onseeked = function() {
-    			slaveVideo.unFreeze();
-			};
+/*			if (masterVideo) {
+				$(masterVideo.domElement).bind('timeupdate', function(evt) {
+					masterVideo.unFreeze();
+				});
+			}
+			if (slaveVideo) {
+				$(slaveVideo.domElement).bind('timeupdate', function(evt) {
+					slaveVideo.unFreeze();
+				});
+			}
+			*/
 		}
 	},
 
