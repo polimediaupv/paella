@@ -245,9 +245,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 			$("#divTimeOverlay").css("left",pos.left + width - ancho2-2);
 
 		if(self._hasSlides) {
-			//TOP ADJUSTO TO IMAGE RES
-			p = $("#divTimeImageOverlay").height();
-			$("#divTimeImageOverlay").css("top",pos.top-p);
+			$("#divTimeImageOverlay").css("bottom",$('.playbackControls').height());
 		}
 
 	},
