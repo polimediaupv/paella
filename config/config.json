@@ -89,7 +89,7 @@
 		}
 	},
     "standalone" : {
-        "reposiroty": "../repository/"
+        "repository": "../repository/"
     }
 }
 
