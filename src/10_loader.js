@@ -46,6 +46,10 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 
 	loadVideoData:function(data,onSuccess) {
 		var This = this;
+		if (data.metadata) {
+			this.metadata = data.metadata;
+		}
+
 		if (data.streams) {
 			data.streams.forEach(function(stream) {
 				This.loadStream(stream);

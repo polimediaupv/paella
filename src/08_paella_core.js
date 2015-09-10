@@ -73,6 +73,10 @@ Class ("paella.DefaultAccessControl", paella.AccessControl,{
 
 
 Class ("paella.VideoLoader", {
+	metadata:{		// Video metadata
+		title:"",
+		duration:0
+	},
 	streams:[],		// {sources:{mp4:{src:"videourl.mp4",type:"video/mp4"},
 					//			 ogg:{src:"videourl.ogv",type:"video/ogg"},
 					//			 webm:{src:"videourl.webm",type:"video/webm"},
@@ -84,6 +88,10 @@ Class ("paella.VideoLoader", {
 
 	loadStatus:false,
 	codecStatus:false,
+
+	getMetadata:function() {
+		return this.metadata;
+	},
 
 	isH264Capable:function() {
 		var videoElement = document.createElement('video');
