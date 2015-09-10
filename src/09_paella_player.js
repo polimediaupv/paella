@@ -279,6 +279,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			this.initVideoEvents();
 			var This = this;
 			var loader = paella.initDelegate.initParams.videoLoader;
+			paella.player.videoLoader = loader;
 			this.onresize();
 			loader.loadVideo(this.videoIdentifier,function() {
 				var playOnLoad = false;
