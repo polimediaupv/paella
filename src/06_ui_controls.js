@@ -164,10 +164,10 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		var self = this;
 		var time = 0;
 		// CONTROLS_BAR POSITON
-		var p = $("#playerContainer_controls_playback_playbackBar");
+		var p = $(this.domElement);
 		var pos = p.offset();
 
-		var width = $("#playerContainer_controls_playback_playbackBar").width();
+		var width = p.width();
 		var left = (event.clientX-pos.left);
 		left = (left < 0) ? 0 : left;
 		var position = left * 100 / width; // GET % OF THE STREAM
@@ -358,9 +358,8 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 
 		div.appendChild(div2);
 
-		var controlBar = document.getElementById('playerContainer_controls_playback');
-		controlBar.appendChild(div); //CHILD OF CONTROLS_BAR
-
+		//CHILD OF CONTROLS_BAR
+		$(this.domElement).parent().append(div);
 	},
 	
 	setupTimeOnly:function(time_str,top,width){
@@ -370,8 +369,8 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		div2.id = ("divTimeOverlay");
 		div2.innerHTML = time_str;
 
-		var controlBar = document.getElementById('playerContainer_controls_playback');
-		controlBar.appendChild(div2); //CHILD OF CONTROLS_BAR
+		//CHILD OF CONTROLS_BAR
+		$(this.domElement).parent().append(div2);
 	},
 
 	playbackFull:function() {
