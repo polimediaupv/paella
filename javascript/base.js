@@ -716,6 +716,8 @@ base.parameters = {
 	parse:function() {
 		if (!this.list) {
 			var url = window.location.href;
+			this.list = {};
+			
 			if (/https?:\/\/([a-z0-9.\-_\/\~:]*\?)([a-z0-9.\/\-_\%\=\&]*)\#*/i.test(url)) {
 				var params = RegExp.$2;
 				var paramArray = params.split('&');
@@ -726,9 +728,6 @@ base.parameters = {
 					var value = keyValue.length==2 ? keyValue[1]:'';
 					this.list[key] = value;
 				}
-			}
-			else {
-				this.list = [];
 			}
 		}
 	},
