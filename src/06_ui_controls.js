@@ -106,8 +106,6 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		setTimeout(function(){
 			self.drawTimeMarks();
 		},200);
-
-
 	},
 
 	mouseOut:function(event){
@@ -121,6 +119,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	drawTimeMarks:function(){
 		var self = this;
 		var parent = $("#playerContainer_controls_playback_playbackBar");
+		this.clearCanvas();
 		if (this._keys) {
 			this._keys.forEach(function (l) {
 				var aux = (parseInt(l) * parent.width()) / self._videoLength; // conversion to canvas
@@ -131,34 +130,32 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 
 	drawTimeMark:function(sec){
 		var ht = 12; //default height value
-		var canvas = document.getElementById("playerContainer_controls_playback_playbackBar_canvas");
-		if(!canvas){
-			var parent = $("#playerContainer_controls_playback_playbackBar");
-			var div = document.createElement("canvas");
-			div.className = "playerContainer_controls_playback_playbackBar_canvas";
-			div.id = ("playerContainer_controls_playback_playbackBar_canvas");
-			div.width = parent.width();
-			ht = div.height = parent.height();
-			parent.prepend(div);
-			canvas = document.getElementById("playerContainer_controls_playback_playbackBar_canvas");
-		}
-		var ctx = canvas.getContext("2d");
+		var ctx = this.getCanvasContext();
 		ctx.fillStyle = "#FFFFFF";
 		ctx.fillRect(sec,0,1,ht);	
 	},
+
+	clearCanvas:function() {
+		if (this._canvas) {
+			this._canvas.parentNode.removeChild(this._canvas);
+			this._canvas = null;
+		}
+	},
+
 	getCanvas:function(){
 		if (!this._canvas) {
 			var parent = $("#playerContainer_controls_playback_playbackBar");
-			var div = document.createElement("canvas");
-			div.className = "playerContainer_controls_playback_playbackBar_canvas";
-			div.id = ("playerContainer_controls_playback_playbackBar_canvas");
-			div.width = parent.width();
-			ht = div.height = parent.height();
-			parent.prepend(div);
+			var canvas = document.createElement("canvas");
+			canvas.className = "playerContainer_controls_playback_playbackBar_canvas";
+			canvas.id = ("playerContainer_controls_playback_playbackBar_canvas");
+			canvas.width = parent.width();
+			ht = canvas.height = parent.height();
+			parent.prepend(canvas);
 			this._canvas = document.getElementById("playerContainer_controls_playback_playbackBar_canvas");
 		}
 		return this._canvas;
 	},
+
 	getCanvasContext:function(){
 		return this.getCanvas().getContext("2d");
 	},
@@ -167,10 +164,10 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		var self = this;
 		var time = 0;
 		// CONTROLS_BAR POSITON
-		var p = $("#playerContainer_controls_playback_playbackBar");
+		var p = $(this.domElement);
 		var pos = p.offset();
 
-		var width = $("#playerContainer_controls_playback_playbackBar").width();
+		var width = p.width();
 		var left = (event.clientX-pos.left);
 		left = (left < 0) ? 0 : left;
 		var position = left * 100 / width; // GET % OF THE STREAM
@@ -361,9 +358,8 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 
 		div.appendChild(div2);
 
-		var controlBar = document.getElementById('playerContainer_controls_playback');
-		controlBar.appendChild(div); //CHILD OF CONTROLS_BAR
-
+		//CHILD OF CONTROLS_BAR
+		$(this.domElement).parent().append(div);
 	},
 	
 	setupTimeOnly:function(time_str,top,width){
@@ -373,8 +369,8 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		div2.id = ("divTimeOverlay");
 		div2.innerHTML = time_str;
 
-		var controlBar = document.getElementById('playerContainer_controls_playback');
-		controlBar.appendChild(div2); //CHILD OF CONTROLS_BAR
+		//CHILD OF CONTROLS_BAR
+		$(this.domElement).parent().append(div2);
 	},
 
 	playbackFull:function() {
@@ -438,6 +434,10 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		}
 		paella.events.trigger(paella.events.seekTo,{ newPositionPercent:selectedPosition });
 		this.updatePlayBar = true;
+	},
+
+	onresize:function() {
+		this.drawTimeMarks();
 	}
 });
 
@@ -524,13 +524,15 @@ Class ("paella.PlaybackControl",paella.DomNode,{
 		for (var i=0;i<this.buttonPlugins.length;++i) {
 			var plugin = this.buttonPlugins[i];
 			var minSize = plugin.getMinWindowSize();
-			if (minSize>0 && windowSize<minSize) {
+			if (minSize > 0 && windowSize < minSize) {
 				plugin.hideUI();
 			}
 			else {
 				plugin.checkVisibility();
 			}
 		}
+
+		this.getNode(this.playbackBarId).onresize();
 	}
 });
 

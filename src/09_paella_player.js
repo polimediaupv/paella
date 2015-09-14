@@ -257,8 +257,8 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	},
 
 	unloadAll:function(message) {
-		$('#playerContainer')[0].innerHTML = "";
 		var loaderContainer = $('#paellaPlayer_loader')[0];
+		this.mainContainer.innerHTML = "";
 		paella.messageBox.showError(message);
 	},
 
@@ -281,6 +281,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			this.initVideoEvents();
 			var This = this;
 			var loader = paella.initDelegate.initParams.videoLoader;
+			paella.player.videoLoader = loader;
 			this.onresize();
 			loader.loadVideo(this.videoIdentifier,function() {
 				var playOnLoad = false;
