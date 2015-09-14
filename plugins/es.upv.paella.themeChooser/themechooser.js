@@ -13,7 +13,15 @@ Class ("paella.plugins.ThemeChooserPlugin", paella.ButtonPlugin,{
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
 
 	checkEnabled:function(onSuccess) { 
-		onSuccess(paella.player.config.skin.available); 
+		if ( paella.player.config.skin && paella.player.config.skin.available
+			&& (paella.player.config.skin.available instanceof Array) 
+			&& (paella.player.config.skin.available.length >0)) {
+			
+			onSuccess(true);			
+		}
+		else {
+			onSuccess(false);
+		}
 	},
 	
 	buildContent:function(domElement) {
