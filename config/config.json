@@ -27,6 +27,11 @@
 			"userInfo": "UserDataDelegate"
 		}
 	},
+	"folders": {
+		"profiles": "config/profiles",
+		"resources": "resources",
+		"skins": "resources/style"
+	},
 	"plugins":{
 		"enablePluginsByDefault": false,		
 

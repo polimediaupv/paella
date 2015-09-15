@@ -388,7 +388,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		//this.overlayContainer.addText("Loading",{left:0,top:0,width:1280,height:720},true);
 		paella.events.bind(paella.events.loadComplete,function() { thisClass.overlayContainer.removeElement(overlayLoader); });
 
-		this.container.addNode(new paella.BackgroundContainer(this.backgroundId,'config/profiles/resources/default_background_paella.jpg'));
+		this.container.addNode(new paella.BackgroundContainer(this.backgroundId, paella.utils.folders.profiles() + '/resources/default_background_paella.jpg'));
 
 		paella.events.bind(paella.events.timeupdate,function(event) { thisClass.checkVideoTrimming(); } );
 		
@@ -984,8 +984,8 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			if (!logoNode) {
 				style = {};
 				logoNode = this.container.addNode(new paella.DomNode('img',logoId,style));
-				logoNode.domElement.setAttribute('src','config/profiles/resources/' + logoId);
-				logoNode.domElement.setAttribute('src','config/profiles/resources/' + logoId);
+				logoNode.domElement.setAttribute('src', paella.utils.folders.profiles() + '/resources/' + logoId);
+				logoNode.domElement.setAttribute('src', paella.utils.folders.profiles() + '/resources/' + logoId);
 			}
 			else {
 				$(logoNode.domElement).show();
@@ -1084,7 +1084,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			video2.setLayer(profileData.slaveVideo.layer);
 		}
 		video1.setLayer(profileData.masterVideo.layer);
-		background.setImage('config/profiles/resources/' + profileData.background.content);
+		background.setImage(paella.utils.folders.profiles() + '/resources/' + profileData.background.content);
 	},
 
 	resizePortrail:function() {

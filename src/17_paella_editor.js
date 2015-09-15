@@ -26,7 +26,7 @@ Class ("paella.editor.Editor", {
 		this.editorContainer.className = 'editorContainer';
 		this.editorContainer.id = "editorContainer";
 		this.editorContainer.appendChild(paella.player.mainContainer);
-		$('body')[0].style.backgroundImage = "url(resources/images/editor_video_bkg.png)";
+		$('body')[0].style.backgroundImage = "url("+paella.utils.folders.resources()+"images/editor_video_bkg.png)";
 
 		this.loader = new paella.AsyncLoader();
 		this.bottomBar = this.loader.addCallback(new paella.editor.BottomBar());

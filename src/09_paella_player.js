@@ -148,11 +148,11 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 		paella.initDelegate.loadDictionary(function() {
 			paella.initDelegate.loadConfig(function(config) {
+				thisClass.onLoadConfig(config);
 				if (config.skin) {
 					var skin = config.skin.default || 'dark';
 					paella.utils.skin.restore(skin);
-				}
-				thisClass.onLoadConfig(config);
+				}				
 			});
 		});
 	},
@@ -250,7 +250,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			this.setProfile(cookieProfile,false);
 		}
 		else {
-			this.setProfile(this.config.defaultProfile,false);
+			this.setProfile(paella.Profiles.getDefaultProfile(), false);
 		}
 		
 		paella.events.trigger(paella.events.resize,{width:$(this.videoContainer.domElement).width(), height:$(this.videoContainer.domElement).height()});
@@ -445,7 +445,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			this.setProfile(cookieProfile, false);
 		}
 		else {
-			this.setProfile(this.config.defaultProfile, false);
+			this.setProfile(paella.Profiles.getDefaultProfile(), false);
 		}
 
 		paella.pluginManager.loadPlugins("paella.EarlyLoadPlugin");

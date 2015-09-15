@@ -5,3 +5,4 @@ CHANGELOG
 
   * Add segment lines to the timeline
   * Fix a bug when reload a video causing black screen blinks
+  * Resource pathes can be changed in config.json file (#168)

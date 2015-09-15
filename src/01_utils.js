@@ -60,6 +60,27 @@ Class ("paella.MouseManager", {
 paella.utils = {	
 	mouseManager: new paella.MouseManager(),
 	
+	folders: {
+		get: function(folder) {
+			if (paella.player && paella.player.config && paella.player.config.folders && paella.player.config.folders[folder]) {
+				return paella.player.config.folders[folder];	
+			}
+			return undefined;			
+		},
+		
+		profiles: function() {
+			return paella.utils.folders.get("profiles") || "config/profiles";			
+		},
+		
+		resources: function() {
+			return paella.utils.folders.get("resources") || "resources";			
+		},
+		
+		skins: function() {
+			return paella.utils.folders.get("skins") || paella.utils.folders.get("resources") + "/style";			
+		}
+	},
+	
 	styleSheet: {
 		removeById:function(id) {
 			var outStyleSheet = $(document.head).find('#' + id)[0];
@@ -99,7 +120,7 @@ paella.utils = {
 		set:function(skinName) {
 			var skinId = 'paellaSkin';
 			paella.utils.styleSheet.removeById(skinId);
-			paella.utils.styleSheet.add('resources/style/style_' + skinName + '.css');
+			paella.utils.styleSheet.add(paella.utils.folders.skins() + '/style_' + skinName + '.css');
 			base.cookies.set("skin",skinName);
 		},
 		

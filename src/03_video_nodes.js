@@ -2,12 +2,16 @@
 paella.Profiles = {
 	profileList: null,
 	
-	loadProfile:function(profileName,onSuccessFunction) {
-		var defaultProfile;
+	getDefaultProfile: function() {
 		if (paella.player && paella.player.config && paella.player.config.defaultProfile) {
-				defaultProfile = paella.player.config.defaultProfile;
+				return paella.player.config.defaultProfile;
 		}
-		
+		return undefined;		
+	},
+	
+	loadProfile:function(profileName,onSuccessFunction) {
+	
+		var defaultProfile  = this.getDefaultProfile();		
 		this.loadProfileList(function(data){		
 			var profileData;
 			if(data[profileName] ){
@@ -29,7 +33,7 @@ paella.Profiles = {
 	loadProfileList:function(onSuccessFunction) {
 		var thisClass = this;
 		if (this.profileList == null) {
-			var params = { url:"config/profiles/profiles.json" };
+			var params = { url: paella.utils.folders.profiles() + "/profiles.json" };
 	
 			base.ajax.get(params,function(data,mimetype,code) {
 					if (typeof(data)=="string") {
