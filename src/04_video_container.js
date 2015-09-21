@@ -821,7 +821,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			videoNode.setDefaultVolume(this._defaultSlaveVolume);
 			this.slaveVideoData = data;
 		}
-		if (this._showPosterFrame) {
+		if (this._showPosterFrame && data.preview) {
 			videoNode.setPosterFrame(data.preview);
 		}
 		videoNode.setClassName(this.videoClasses[target]);
