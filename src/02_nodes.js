@@ -75,7 +75,7 @@ Class ("paella.Button", paella.DomNode,{
 
 	isToggled:function() {
 		if (this.isToggle) {
-			var element = $('#' + this.identifier)[0];
+			var element = this.domElement;
 			return /([a-zA-Z0-9_]+)_active/.test(element.className);
 		}
 		else {
@@ -88,7 +88,7 @@ Class ("paella.Button", paella.DomNode,{
 	},
 
 	toggleIcon:function() {
-		var element = $('#' + this.identifier)[0];
+		var element = this.domElement;
 		if (/([a-zA-Z0-9_]+)_active/.test(element.className)) {
 			element.className = RegExp.$1;
 		}
