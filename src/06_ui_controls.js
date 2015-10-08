@@ -10,7 +10,6 @@ Class ("paella.TimeControl", paella.DomNode,{
 
 	onTimeUpdate:function(memo) {
 		var videoContainer = memo.videoContainer;
-		var real = { start:0, end:videoContainer.duration };
 		var trimmed = { start:videoContainer.trimStart(), end:videoContainer.trimEnd() };
 		var currentTime = memo.currentTime - trimmed.start;
 		var duration = trimmed.end - trimmed.start;
@@ -392,7 +391,6 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	onTimeUpdate:function(memo) {
 		if (this.updatePlayBar) {
 			var videoContainer = memo.videoContainer;
-			var real = { start:0, end:videoContainer.duration };
 			var trimmed = { start:videoContainer.trimStart(), end:videoContainer.trimEnd() };
 			var currentTime = memo.currentTime - trimmed.start;
 			var duration = trimmed.end - trimmed.start;
