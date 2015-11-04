@@ -201,8 +201,9 @@ Class ("paella.DefaultInitDelegate", paella.InitDelegate, {
  *	params.url				Repository URL
  */
 paella.load = function(playerContainer, params) {
+	var auth = (params && params.auth) || {};
 	var initObjects = {
-		accessControl: new paella.DefaultAccessControl(),
+		accessControl: new paella.DefaultAccessControl(auth),
 		videoLoader: new paella.DefaultVideoLoader(params.data || params.url)
 	};
 

@@ -202,7 +202,12 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 					thisClass.videoContainer.publishVideo();
 				}
 				else {
-					thisClass.unloadAll(base.dictionary.translate("You are not authorized to view this resource"));
+					var redirectUrl = paella.initDelegate.initParams.accessControl.getAuthenticationUrl("player/?id=" + paella.player.videoIdentifier);
+					var message = '<div>' + base.dictionary.translate("You are not authorized to view this resource") + '</div>';
+					if (redirectUrl) {
+						message += '<div class="login-link"><a href="' + redirectUrl + '">' + base.dictionary.translate("Login") + '</a></div>';
+					}
+					thisClass.unloadAll(message);
 				}
 			}
 			else if (permissions.isAnonymous) {

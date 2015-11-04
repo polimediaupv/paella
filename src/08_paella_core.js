@@ -24,6 +24,12 @@ Class ("paella.AccessControl", {
 // Default Access Control
 //
 Class ("paella.DefaultAccessControl", paella.AccessControl,{
+	_authParams:null,
+
+	initialize:function(authParams) {
+		this._authParams = authParams || {};
+	},
+
 	checkAccess:function(onSuccess) {
 		var This = this;
 		this.getUserData(function(data) {
@@ -61,11 +67,13 @@ Class ("paella.DefaultAccessControl", paella.AccessControl,{
 	},
 
 	getAuthenticationUrl:function(callbackParams) {
-		if (paella.player.config.auth) {
-			var callback = paella.player.config.auth.authCallbackName ? window[paella.player.config.auth.authCallbackName]:null;
-			if (typeof(callback)=="function") {
-				return callback(callbackParams);
-			}
+		var authCallback = this._authParams.authCallbackName && window[this._authParams.authCallbackName];
+		if (!authCallback && paella.player.config.auth) {
+			authCallback = paella.player.config.auth.authCallbackName && window[paella.player.config.auth.authCallbackName];
+		}
+
+		if (typeof(authCallback)=="function") {
+			return authCallback(callbackParams);
 		}
 		return "";
 	}
