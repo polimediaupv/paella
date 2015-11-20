@@ -96,10 +96,10 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		$(this.domElement).click(function(evt) {
 			if (self.firstClick && base.userAgent.browser.IsMobileVersion) return;
 			if (paella.player.videoContainer.paused()) {
-				$(document).trigger(paella.events.play);
+				paella.player.play();
 			}
 			else {
-				$(document).trigger(paella.events.pause);
+				paella.player.pause();
 			}
 			self.firstClick = true;
 		});
@@ -134,10 +134,12 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	},
 
 	play:function() {
+		paella.events.trigger(paella.events.play);
 		this.startTimeupdate();
 	},
 
 	pause:function() {
+		paella.events.trigger(paella.events.pause);
 		this.stopTimeupdate();
 	},
 
@@ -146,6 +148,8 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		this.setCurrentPercent(newPositionPercent);
 		thisClass._force = true;
 		this.triggerTimeupdate();
+		paella.events.trigger(paella.events.seekTo,{ newPositionPercent:newPositionPercent });
+
 	},
 
 	seekToTime:function(time) {

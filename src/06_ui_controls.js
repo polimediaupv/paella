@@ -71,12 +71,12 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 				case 37: //Left
 					curr = 100*paella.player.videoContainer.currentTime()/paella.player.videoContainer.duration();
 					selectedPosition = curr - 5;
-					paella.events.trigger(paella.events.seekTo,{ newPositionPercent:selectedPosition });
+					paella.player.videoContainer.seekTo(selectedPosition);
 					break;
 				case 39: //Right
 					curr = 100*paella.player.videoContainer.currentTime()/paella.player.videoContainer.duration();
 					selectedPosition = curr + 5;
-					paella.events.trigger(paella.events.seekTo,{ newPositionPercent:selectedPosition });
+					paella.player.videoContainer.seekTo(selectedPosition);
 					break;
 			}
 		});
@@ -430,7 +430,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		else {
 			selectedPosition = selectedPosition * 100 / width; // percent
 		}
-		paella.events.trigger(paella.events.seekTo,{ newPositionPercent:selectedPosition });
+		paella.player.videoContainer.seekTo(selectedPosition);
 		this.updatePlayBar = true;
 	},
 
