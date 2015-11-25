@@ -27,9 +27,7 @@ Class("paella.plugins.FlexSkipPlugin", paella.ButtonPlugin, {
 	
 	action: function(button) {
 		var newTime = paella.player.videoContainer.currentTime() - 10;
-		paella.events.trigger(paella.events.seekToTime, {
-			time: newTime
-		});
+		paella.player.videoContainer.seekToTime(newTime);
 	}
 });
 
@@ -54,10 +52,8 @@ Class("paella.plugins.FlexSkipForwardPlugin", paella.plugins.FlexSkipPlugin, {
 	
 	action: function(button) {
 		var newTime = paella.player.videoContainer.currentTime() + 30;
-		paella.events.trigger(paella.events.seekToTime, {
-			time: newTime
-		});
-	}		
+		paella.player.videoContainer.seekToTime(newTime);
+	}
 });
 
 paella.plugins.flexSkipForwardPlugin = new paella.plugins.FlexSkipForwardPlugin();
