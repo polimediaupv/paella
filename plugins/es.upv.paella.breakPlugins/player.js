@@ -63,7 +63,7 @@ Class ("paella.plugins.BreaksPlayerPlugin",paella.EventDrivenPlugin,{
 
 	avoidBreak:function(br){
 		var newTime = br.e;
-		paella.events.trigger(paella.events.seekToTime,{time:newTime});
+		paella.player.videoContainer.seekToTime(newTime);
 	}
 });
 

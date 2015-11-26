@@ -176,7 +176,7 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 
 	onItemClick:function(button,label,reso, reso2) {
 		var self=this;
-		paella.events.trigger(paella.events.hidePopUp,{identifier:this.getName()});
+		paella.player.controls.hidePopUp(this.getName());
 		paella.player.reloadVideos(reso, reso2);
 		this.setQualityLabel();
 

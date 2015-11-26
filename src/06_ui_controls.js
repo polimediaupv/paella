@@ -706,6 +706,14 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 		}
 	},
 
+	showPopUp:function(identifier) {
+		this.playbackControl().showPopUp(identifier);
+	},
+
+	hidePopUp:function(identifier) {
+		this.playbackControl().hidePopUp(identifier);
+	},
+
 	show:function() {
 		if (this.isEnabled) {
 			$(this.domElement).stop();

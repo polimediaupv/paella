@@ -110,7 +110,7 @@ Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
 			ButtonItem.className = thisClass.getButtonItemClass(profile,true);
 			paella.player.setProfile(profile);
 		}
-		paella.events.trigger(paella.events.hidePopUp,{identifier:this.getName()});
+		paella.player.controls.hidePopUp(this.getName());
 	},
 
 	getButtonItemClass:function(profileName,selected) {

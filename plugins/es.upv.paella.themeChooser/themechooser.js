@@ -32,7 +32,7 @@ Class ("paella.plugins.ThemeChooserPlugin", paella.ButtonPlugin,{
 			elem.innerHTML = item.replace('-',' ').replace('_',' ');
 			$(elem).click(function(event) {
 				paella.utils.skin.set(item);
-				paella.events.trigger(paella.events.hidePopUp,{identifier:This.getName()});
+				paella.player.controls.hidePopUp(This.getName());
 			});
 			
 			domElement.appendChild(elem);			

@@ -760,19 +760,16 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 	
 	onVideoLoaded:function(sender) {
-		var This = this;
 		if ((this.isMonostream && this.masterVideo() && this.masterVideo().isReady()) ||
 			(this.masterVideo() && this.masterVideo().isReady() &&
 			 this.slaveVideo() && this.slaveVideo().isReady())) {
-			//this.play();
-			
-			//if (!this._playOnLoad) {
-			//	this.pause();
-			//}
 			
 			if (this._playOnLoad) {
-				//this.play();
-				$(document).trigger(paella.events.play);
+				paella.player.play();
+			}
+
+			if (this._seekToOnLoad) {
+				paella.player.videoContainer.seekToTime(this._seekToOnLoad);
 			}
 		}
 	},
