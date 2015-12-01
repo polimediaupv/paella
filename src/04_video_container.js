@@ -587,6 +587,8 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			slaveVideo.setVolume(slaveVolume);
 		}
 
+		paella.events.trigger(paella.events.setVolume,{ master:masterVolume, slave:slaveVolume });
+
 		this.parent();
 	},
 
