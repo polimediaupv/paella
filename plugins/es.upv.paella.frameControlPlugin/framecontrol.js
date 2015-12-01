@@ -292,7 +292,7 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 	},
 
 	onClick:function(event,frameData) {
-		paella.events.trigger(paella.events.seekToTime,{time:frameData.time + 1});
+		paella.player.videoContainer.seekToTime(frameData.time + 1);
 	},
 
 	onTimeUpdate:function(currentTime) {

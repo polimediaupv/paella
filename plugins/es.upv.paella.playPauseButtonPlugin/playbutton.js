@@ -24,10 +24,10 @@ Class ("paella.plugins.PlayPauseButtonPlugin",paella.ButtonPlugin, {
 
 	action:function(button) {
 		if (paella.player.videoContainer.paused()) {
-			paella.events.trigger(paella.events.play);
+			paella.player.play();
 		}
 		else {
-			paella.events.trigger(paella.events.pause);
+			paella.player.pause();
 		}
 	}
 });

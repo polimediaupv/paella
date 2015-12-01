@@ -86,15 +86,15 @@ Class ("paella.KeyManager", {
 
 	togglePlayPause:function() {
 		if (this.isPlaying) {
-			paella.events.trigger(paella.events.pause);
+			paella.player.pause();
 		}
 		else {
-			paella.events.trigger(paella.events.play);
+			paella.player.play();
 		}
 	},
 
 	pause:function() {
-		paella.events.trigger(paella.events.pause);
+		paella.player.pause();
 	},
 
 	mute:function() {

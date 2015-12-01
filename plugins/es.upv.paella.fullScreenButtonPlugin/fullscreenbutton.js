@@ -33,7 +33,7 @@ Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 				var url = window.location.href;
 
 				//PAUSE IFRAME
-				paella.events.trigger(paella.events.pause);
+				paella.player.pause();
 				var sec = paella.player.videoContainer.currentTime();
 				var obj = self.secondsToHours(sec);
 				window.open(url+"&time="+obj.h+"h"+obj.m+"m"+obj.s+"s&autoplay=true");

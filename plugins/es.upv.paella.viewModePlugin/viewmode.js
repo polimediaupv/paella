@@ -108,9 +108,9 @@ Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
 
 		if (ButtonItem) {
 			ButtonItem.className = thisClass.getButtonItemClass(profile,true);
-			paella.events.trigger(paella.events.setProfile,{profileName:profile});
+			paella.player.setProfile(profile);
 		}
-		paella.events.trigger(paella.events.hidePopUp,{identifier:this.getName()});
+		paella.player.controls.hidePopUp(this.getName());
 	},
 
 	getButtonItemClass:function(profileName,selected) {

@@ -58,7 +58,8 @@ Class ("paella.plugins.PlaybackRate",paella.ButtonPlugin,{
 		//paella.player.videoContainer.setPlaybackRate(rate);
 		paella.events.trigger(paella.events.setPlaybackRate, rate);
 		this.setText(label);
-		paella.events.trigger(paella.events.hidePopUp,{identifier:this.getName()});
+		paella.player.controls.hidePopUp(this.getName());
+
 
 		var arr = self._domElement.children;
 		for(var i=0; i < arr.length; i++){
