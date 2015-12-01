@@ -70,7 +70,7 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 		}
 		
 		if((params.sender.identifier == "playerContainer_videoContainer_1") && this._tempSlaveVolume || this._tempMasterVolume){
-			paella.events.trigger(paella.events.setVolume,{master:this._tempMasterVolume, slave:this._tempSlaveVolume});
+			paella.player.videoContainer.setVolume({ master:this._tempMasterVolume, slave:this._tempSlaveVolume });
 		}
 		this._storedValue = false;
 	},
@@ -101,8 +101,8 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 				if (slaveVideo) { slaveVolume = slaveVideo.volume(); }
 			
 				var masterVolume = $(rangeInputMaster).val();
-				thisClass._control_NotMyselfEvent = false; 
-				paella.events.trigger(paella.events.setVolume, {master:masterVolume, slave:slaveVolume});				
+				thisClass._control_NotMyselfEvent = false;
+				paella.player.videoContainer.setVolume({ master:masterVolume, slave:slaveVolume });
 			};
 			$(rangeInputMaster).bind('input', function (e) { updateMasterVolume(); });
 			$(rangeInputMaster).change(function() { updateMasterVolume(); });
@@ -134,7 +134,7 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 				
 				var slaveVolume = $(rangeInputSlave).val(); 
 				thisClass._control_NotMyselfEvent = false;
-				paella.events.trigger(paella.events.setVolume,{master:masterVolume, slave:slaveVolume});
+				paella.player.videoContainer.setVolume({ master:masterVolume, slave:slaveVolume });
 			};
 			$(rangeInputSlave).bind('input', function (e) { updateSlaveVolume(); });
 			$(rangeInputSlave).change(function() { updateSlaveVolume(); });

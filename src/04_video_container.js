@@ -569,18 +569,24 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	setVolume:function(params) {
 		var masterVideo = this.masterVideo();
 		var slaveVideo = this.slaveVideo();
-		if (masterVideo && params.master) {
-			masterVideo.setVolume(params.master);
+		var masterVolume = masterVideo && masterVideo.volume();
+		var slaveVolume = slaveVideo && slaveVideo.volume();
+		if (typeof(params)=='object') {
+			masterVolume = params.master!==undefined ? params.master:masterVolume;
+			slaveVolume = params.slave!==undefined ? params.slave:slaveVolume;
 		}
-		else if (masterVideo) {
-			masterVideo.setVolume(0);
+		else {
+			masterVolume = params;
+			slaveVolume = 0;
 		}
-		if (slaveVideo && params.slave) {
-			slaveVideo.setVolume(params.slave);
+
+		if (masterVideo) {
+			masterVideo.setVolume(masterVolume);
 		}
-		else if (slaveVideo) {
-			slaveVideo.setVolume(0);
+		if (slaveVideo) {
+			slaveVideo.setVolume(slaveVolume);
 		}
+
 		this.parent();
 	},
 
