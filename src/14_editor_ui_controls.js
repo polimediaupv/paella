@@ -328,7 +328,7 @@ Class ("paella.editor.Timeline", {
 
 	rebuildAllTracks: function() {
 		this.trackItemList.forEach(function(track) {
-			track.rebuild()
+			track.rebuild();
 		});		
 	},
 	

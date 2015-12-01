@@ -101,7 +101,7 @@ Class ("paella.KeyManager", {
 		var videoContainer = paella.player.videoContainer;
 		var newVolume = 0;
 		if (videoContainer.volume()==0) newVolume = 1.0;
-		paella.events.trigger(paella.events.setVolume,{master:newVolume,slave:0});
+		paella.player.videoContainer.setVolume({ master:newVolume, slave: 0});
 	},
 
 	volumeUp:function() {
@@ -109,7 +109,7 @@ Class ("paella.KeyManager", {
 		var volume = videoContainer.volume();
 		volume += 0.1;
 		volume = (volume>1) ? 1.0:volume;
-		paella.events.trigger(paella.events.setVolume,{master:volume,slave:0});
+		paella.player.videoContainer.setVolume({ master:volume, slave: 0});
 	},
 
 	volumeDown:function() {
@@ -117,7 +117,7 @@ Class ("paella.KeyManager", {
 		var volume = videoContainer.volume();
 		volume -= 0.1;
 		volume = (volume<0) ? 0.0:volume;
-		paella.events.trigger(paella.events.setVolume,{master:volume,slave:0});
+		paella.player.videoContainer.setVolume({ master:volume, slave: 0});
 	}
 });
 
