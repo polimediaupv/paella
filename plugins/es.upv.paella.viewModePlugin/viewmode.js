@@ -53,6 +53,7 @@ Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
 		this.buttonItems = {};
 		paella.Profiles.loadProfileList(function(profiles) {
 			Object.keys(profiles).forEach(function(profile) {
+				if (profiles[profile].hidden) return;
 				if (thisClass.active_profiles) {
 					var active = false;
 					thisClass.active_profiles.forEach(function(ap) {
