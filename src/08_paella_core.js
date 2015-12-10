@@ -259,8 +259,13 @@ Class ("paella.PlayerBase", {
 			return true;
 		}
 		if (base.userAgent.browser.IsMobileVersion) return true;
-		if (base.userAgent.browser.Chrome || base.userAgent.browser.Safari || base.userAgent.browser.Firefox || base.userAgent.browser.Opera ||
-				(base.userAgent.browser.Explorer && base.userAgent.browser.Version.major>=9)) {
+		var isCompatible =	base.userAgent.browser.Chrome ||
+							base.userAgent.browser.Safari ||
+							base.userAgent.browser.Firefox ||
+							base.userAgent.browser.Opera ||
+							base.userAgent.browser.Edge ||
+							(base.userAgent.browser.Explorer && base.userAgent.browser.Version.major>=9);
+		if (isCompatible) {
 			return true;
 		}
 		else {
