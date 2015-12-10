@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 4.1.11 (10-12-2015)
+
+    * Microsoft Edge compatibility
+ 
 * Paella 4.1.10 (21-09-2015)
 
     * Fixed bug when there isn't a poster frame (#172)
