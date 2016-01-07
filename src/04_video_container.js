@@ -278,58 +278,6 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 	}
 });
 
-Class ("paella.VideoQualityStrategy", {
-	getStream:function(source,stream,userSelection) {
-		if (source.length>0) {
-			return source[0];
-		}
-		else {
-			return source;
-		}
-	}
-});
-
-Class ("paella.BestFitVideoQualityStrategy",paella.VideoQualityStrategy,{
-	getStream:function(source,stream,userSelection) {
-		if (source.length>0) {
-			var selected = source[0];
-			var win_w = $(window).width();
-			var win_h = $(window).height();
-			var win_res = (win_w * win_h);
-			var selected_res = parseInt(selected.res.w) * parseInt(selected.res.h);
-			var selected_diff = Math.abs(win_res - selected_res);
-
-			for (var i=0; i<source.length; ++i) {
-				var res = source[i].res;
-				if (res) {
-					if (userSelection != undefined) {
-						res = res.w + "x" + res.h;
-						if (res==userSelection) {
-							 selected = source[i];
-							break;
-						}
-					}
-					else{
-						var m_res = parseInt(source[i].res.w) * parseInt(source[i].res.h);
-						var m_diff = Math.abs(win_res - m_res);
-
-						if (m_diff < selected_diff){
-							selected_diff = m_diff;
-							selected = source[i];
-						}
-
-
-					}
-				}
-			}
-			return selected;
-		}
-		else {
-			return source;
-		}
-	}
-});
-
 Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	containerId:'',
 	video1Id:'',
@@ -356,8 +304,6 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	currentMasterVideoRect:{},
 	currentSlaveVideoRect:{},
 
-	_masterQuality:null,
-	_slaveQuality:null,
 	
 	_firstLoad:false,
 	_playOnLoad:false,
@@ -377,7 +323,6 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		this.video2Id = id + '_2';
 		this.backgroundId = id + '_bkg';
 		this.logos = [];
-		this._videoQualityStrategy = new paella.VideoQualityStrategy();
 
 		this.container = new paella.DomNode('div',this.containerId,{position:'relative',display:'block',marginLeft:'auto',marginRight:'auto',width:'1024px',height:'567px'});
 		this.container.domElement.setAttribute('role','main');
@@ -437,16 +382,6 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 
 	getSlaveVideoRect:function() {
 		return this.currentSlaveVideoRect;
-	},
-
-	createVideoPlayers:function() {
-		var masterVideo = new paella.FlashVideo(this.video1Id,850,140,360,550);
-		masterVideo.setClassName(this.video1ClassName);
-		this.container.addNode(masterVideo);
-
-		var slaveVideo = new paella.FlashVideo(this.video2Id,10,40,800,600);
-		slaveVideo.setClassName(this.video2ClassName);
-		this.container.addNode(slaveVideo);
 	},
 
 	setHidden:function(hidden) {
@@ -674,87 +609,68 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		this.seekToTime(time);
 	},
 
-	reloadVideos:function(masterQuality,slaveQuality) {	
-		var isPaused = paella.player.videoContainer.paused();			
-		this._showPosterFrame = false;
-		var memorizedCurrentTime = this.currentTime();
-		var masterVideo = this.masterVideo();
-		//if(masterVideo) masterVideo.freeze();
-		var slaveVideo = this.slaveVideo();
-		//if(slaveVideo) slaveVideo.freeze();
-		var masterVolume = masterVideo.volume();
-		var slaveVolume = slaveVideo && slaveVideo.volume();
-		 		
-		this.setMasterQuality(masterQuality);
-		this.setSlaveQuality(slaveQuality);
-		
-		var currentMastr = this.currentMasterVideoData;
-		var currentSlave = this.currentSlaveVideoData;
-		
-		var newMasterSrc = this._videoSourceData.master ? this.selectSource(this._videoSourceData.master.data,this._videoSourceData.master.type.name):null;
-		var newSlaveSrc = this._videoSourceData.slave ? this.selectSource(this._videoSourceData.slave.data,this._videoSourceData.slave.type.name):null;
-		if (newMasterSrc) {
-			newMasterSrc = this.getVideoQuality(newMasterSrc,'master');
-		}
-		if (newSlaveSrc) {
-			newSlaveSrc = this.getVideoQuality(newSlaveSrc,'slave');
-		}
-		
-		if (currentMastr.res.w!=newMasterSrc.res.w || currentMastr.res.h!=newMasterSrc.res.h ||
-			currentMastr.res.w!=newMasterSrc.res.w || currentMastr.res.h!=newMasterSrc.res.h) {
-			if (masterVideo) masterVideo.unload();
-			if (slaveVideo) slaveVideo.unload();
-			this._seekToOnLoad = memorizedCurrentTime;
-			this.setSources(this._videoSourceData.master,this._videoSourceData.slave);
-			masterVideo = this.masterVideo();
-			slaveVideo = this.slaveVideo();			
-			if (masterVideo) masterVideo.setVolume(masterVolume);
-			if (slaveVideo) slaveVideo.setVolume(slaveVolume);
-			this.seekToTime(this._seekToOnLoad);
-			this._playOnLoad = false;
-			if (!isPaused) {
-				$(document).trigger(paella.events.play);
-				this._playOnLoad = true;
-			}
-/*			if (masterVideo) {
-				$(masterVideo.domElement).bind('timeupdate', function(evt) {
-					masterVideo.unFreeze();
-				});
-			}
-			if (slaveVideo) {
-				$(slaveVideo.domElement).bind('timeupdate', function(evt) {
-					slaveVideo.unFreeze();
-				});
-			}
-			*/
-		}
-	},
-
-	/**
-	  *	master: { data, type }
-	  * slave: { data, type } | null
-	  */
-	setSources:function(master,slave) {
-		var masterRect = {x:850,y:140,w:360,h:550};
+	setStreamData:function(videoData) {
+		var masterRect = videoData.length>1 ? {x:850,y:140,w:360,h:550}:{x:0,y:0,w:1280,h:720};
 		var slaveRect = {x:10,y:40,w:800,h:600};
-		
-		this._unloadVideos();
+		var masterVideoData = videoData.length>0 ? videoData[0]:{ sources:[] };
+		var slaveVideoData = videoData.length>1 ? videoData[1]:{ sources:[] };
+		var masterVideo = paella.videoFactory.getVideoObject('masterVideo',masterVideoData, masterRect);
+		var slaveVideo = paella.videoFactory.getVideoObject('slaveVideo',slaveVideoData, slaveRect);
 
-		if (!master || !master.data || !master.type || !master.type.name) {
-			throw new Error("Error in video configuration. Master video data not found");
+		var autoplay = base.parameters.get('autoplay')=='true' &&
+			paella.player.config.experimental &&
+			paella.player.config.experimental.autoplay &&
+			!base.userAgent.browser.IsMobileVersion;
+		masterVideo.setAutoplay(autoplay);
+		slaveVideo.setAutoplay(autoplay);
+
+
+		return masterVideo.load()
+			.done(function() {
+				return slaveVideo.load();
+			});
+
+//		return paella_DeferredNotImplemented();
+/*
+
+
+		 var masterRect = {x:850,y:140,w:360,h:550};
+		 var slaveRect = {x:10,y:40,w:800,h:600};
+
+		// TODO: Configure video data
+		var masterStream = null;	// get masterStream from videoData
+		var slaveStream = null;		// get slaveStream from videoData
+
+		if (!masterVideo) {
+			throw Error("Master video data not specified");
 		}
 
-		this._setSource(master.data, this.video1Id, master.type, 'master', masterRect);
-		this._videoSourceData = {
-			master:master
-		};
-		if (slave && slave.data  && slave.type) {
-			this._setSource(slave.data, this.video2Id, slave.type, 'slave', slaveRect);
-			this._videoSourceData.slave = slave;
+		// TODO: Use paella.videoFactory to create the video component
+		var masterVideo = paella.videoFactory.getVideoObject(masterStream);
+		var slaveVideo = paella.videoFactory.getVideoObject(slaveStream);
+		if (!masterVideo) {
+			throw Error("Could not find a decoder for the master video");
 		}
-		else {
-			this.setMonoStreamMode(true);
+*/
+
+		// TODO: Handle autoplay
+		/*
+		if (base.parameters.get('autoplay')=="true" &&
+			paella.player.config.experimental &&
+			paella.player.config.experimental.autoplay &&
+			!base.userAgent.browser.IsMobileVersion)
+		{
+			paella.player.videoContainer.setAutoplay();
+			playOnLoad = true;
 		}
+		*/
+
+		// TODO: Monostream/multistream. Refactor functions to get the stream mode from the masterVideo and slaveVideo
+
+		// TODO: handle quality. The video components must return the quality array
+		//var qualities = video;
+
+		// TODO: throw errors to the caller, who should display the error to the user
 	},
 	
 	setAutoplay:function() {
@@ -764,167 +680,6 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		}
 		if (this.slaveVideo()) {
 			this.slaveVideo().setAutoplay(true);
-		}
-	},
-	
-	onVideoLoaded:function(sender) {
-		if ((this.isMonostream && this.masterVideo() && this.masterVideo().isReady()) ||
-			(this.masterVideo() && this.masterVideo().isReady() &&
-			 this.slaveVideo() && this.slaveVideo().isReady())) {
-			
-			if (this._playOnLoad) {
-				paella.player.play();
-			}
-
-			if (this._seekToOnLoad) {
-				paella.player.videoContainer.seekToTime(this._seekToOnLoad);
-			}
-		}
-	},
-	
-	onVideoUnloaded:function(sender) {
-		if (this.isMonostream) {
-			paella.events.trigger(paella.events.videoUnloaded);
-		}
-		else if (this.masterVideo() && !this.masterVideo().isReady() &&
-				this.slaveVideo() && !this.slaveVideo().isReady()){
-			paella.events.trigger(paella.events.videoUnloaded);
-		}
-	},
-	
-	_unloadVideos:function() {
-		var master = this.masterVideo();
-		var slave = this.slaveVideo();
-		if (master) {
-			this.container.removeNode(master);
-		}
-		if (slave) {
-			this.container.removeNode(slave);
-		}
-		this.isMasterReady = false;
-		this.isSlaveReady = false;
-		this.masterVideoData = null;
-		this.slaveVideoData = null;
-		this.sourceData = [];
-	},
-
-	_setSource:function(data,videoNodeId,type,target,rect) {
-		var videoNode = null;
-		switch (type.name) {
-			case 'html':
-				videoNode = new paella.Html5Video(videoNodeId,rect.x,rect.y,rect.w,rect.h);
-				break;
-			case 'flash':
-				videoNode = new paella.FlashVideo(videoNodeId,rect.x,rect.y,rect.w,rect.h);
-				videoNode.streamingMode = false;
-				break;
-			case 'streaming':
-				if (this.supportHLS() && data.sources.hls) {
-					videoNode = new paella.Html5Video(videoNodeId,rect.x,rect.y,rect.w,rect.h);
-				}
-				else {
-					videoNode = new paella.FlashVideo(videoNodeId, rect.x, rect.y, rect.w, rect.h);
-				}
-				videoNode.streamingMode = true;
-				break;
-			case 'image':
-				videoNode = new paella.SlideshowVideo(videoNodeId,rect.x,rect.y,rect.w,rect.h);
-				break;
-		}
-		if (this._autoplay) {
-			videoNode.setAutoplay(true);
-		}
-		if (target=='master') {
-			videoNode.setDefaultVolume(this._defaultMasterVolume);
-			this.masterVideoData = data;
-		}
-		else {
-			videoNode.setDefaultVolume(this._defaultSlaveVolume);
-			this.slaveVideoData = data;
-		}
-		if (this._showPosterFrame && data.preview) {
-			videoNode.setPosterFrame(data.preview);
-		}
-		videoNode.setClassName(this.videoClasses[target]);
-		this.container.addNode(videoNode);
-		this.sourceData.push(data);
-		this.setupVideo(videoNode,data,type.name,target);
-		
-		return true;
-	},
-	
-	selectSource:function(videoData,type) {
-		var mp4Source = videoData.sources.mp4;
-		var oggSource = videoData.sources.ogg;
-		var webmSource = videoData.sources.webm;
-		var flvSource = videoData.sources.flv;
-		var rtmpSource = videoData.sources.rtmp;
-		var hlsSource = videoData.sources.hls;
-		var imageSource = videoData.sources.image;
-
-		var selectedSource = null;
-
-		if (type=="html") {
-			if (mp4Source) {
-				selectedSource = mp4Source;
-			}
-			if (oggSource) {
-				selectedSource = oggSource;
-			}
-			if (webmSource) {
-				selectedSource = webmSource;
-			}
-		}
-		else if (flvSource && type=="flash") {
-			selectedSource = flvSource;
-		}
-		else if (mp4Source && type=="flash") {
-			selectedSource = mp4Source;
-		}
-		else if (rtmpSource && !this.supportHLS() && type=="streaming"){
-			selectedSource = rtmpSource;
-		}
-		else if (hlsSource && this.supportHLS() && type=="streaming") {
-			selectedSource = hlsSource;
-		}
-		else if (imageSource && type=="image") {
-			selectedSource = imageSource;
-		}
-		
-		return selectedSource;
-	},
-
-	supportHLS:function() {
-		return base.userAgent.system.iOS;
-	},
-
-	setMonoStreamMode:function() {
-		this.isMonostream = true;
-		this.isSlaveReady = true;
-	},
-
-	getVideoQuality:function(source,stream) {
-		var userSelection = null;
-		if (stream=="master") {
-			userSelection = this._masterQuality;
-		}
-		else if (stream=="slave") {
-			userSelection = this._slaveQuality;
-		}
-		return this._videoQualityStrategy.getStream(source,stream,userSelection);
-	},
-
-	setupVideo:function(videoNode,videoData,type,stream) {
-		if (videoNode && videoData) {
-			var selectedSource = this.selectSource(videoData,type);
-
-			selectedSource = this.getVideoQuality(selectedSource, stream);
-			if (stream=='master') this.currentMasterVideoData = selectedSource;
-			else if (stream=='slave') this.currentSlaveVideoData = selectedSource;
-			videoNode.addSource(selectedSource);
-			videoNode.setMetadata(selectedSource);
-			
-			paella.userTracking.log("paella:VideoContainer:setupVideo:" + stream, selectedSource);
 		}
 	},
 

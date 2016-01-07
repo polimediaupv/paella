@@ -166,7 +166,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		if (this.videoIdentifier) {
 			if (this.mainContainer) {
 				this.videoContainer = new paella.VideoContainer(this.playerId + "_videoContainer");
-				var videoQualityStrategy = new paella.BestFitVideoQualityStrategy();
+				/*var videoQualityStrategy = new paella.BestFitVideoQualityStrategy();
 				try {
 					var StrategyClass = this.config.player.videoQualityStrategy;
 					var ClassObject = Class.fromString(StrategyClass);
@@ -176,6 +176,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 					base.log.warning("Error selecting video quality strategy: strategy not found");
 				}
 				this.videoContainer.setVideoQualityStrategy(videoQualityStrategy);
+				*/
 				
 				this.mainContainer.appendChild(this.videoContainer.domElement);
 			}
@@ -270,6 +271,14 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			this.onresize();
 			loader.loadVideo(this.videoIdentifier,function() {
 				var playOnLoad = false;
+				This.videoContainer.setStreamData(loader.streams)
+					.done(function() {
+						This.onresize();
+					})
+					.fail(function(error) {
+						console.log(error);
+					});
+				/*
 				if (base.parameters.get('autoplay')=="true" &&
 						paella.player.config.experimental &&
 						paella.player.config.experimental.autoplay &&
@@ -334,18 +343,14 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 					if (paella.player.isLiveStream()) {
 						This.showPlaybackBar();
 					}
-					/* We need to autoplay after plugin loads
-					else if (playOnLoad) {
-						This.play();
-					}
-					*/
+
 					This.onresize();
 				}
 				else {
 					errorMessage = base.dictionary.translate("Error loading video data");
 					paella.messageBox.showError(errorMessage);
 					paella.events.trigger(paella.events.error,{error:errorMessage});
-				}
+				}*/
 			});
 		}
 	},

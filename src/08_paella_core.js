@@ -97,6 +97,7 @@ Class ("paella.VideoLoader", {
 	loadStatus:false,
 	codecStatus:false,
 
+	/*
 	getMetadata:function() {
 		return this.metadata;
 	},
@@ -232,7 +233,7 @@ Class ("paella.VideoLoader", {
 		}
 
 		return preferredMethod;
-	},
+	},*/
 
 	loadVideo:function(videoId,onSuccess) {
 		// This function must to:
