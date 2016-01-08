@@ -298,13 +298,15 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	isMasterReady:false,
 	isSlaveReady:false,
 	isMonostream:false,
-	sourceData:null,
+
 	overlayContainer:null,
 	videoSyncTimeMillis:5000,
 	currentMasterVideoRect:{},
 	currentSlaveVideoRect:{},
 
-	
+
+	_sourceData:null,
+
 	_firstLoad:false,
 	_playOnLoad:false,
 	_seekToOnLoad:0,
@@ -313,11 +315,12 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	_defaultSlaveVolume:1,
 	
 	_showPosterFrame:true,
+	_currentProfile:null,
 
 	initialize:function(id) {
 		this.parent(id);
 		var thisClass = this;
-		this.sourceData = [];
+		this._sourceData = [];
 		this.containerId = id + '_container';
 		this.video1Id = id + '_1';
 		this.video2Id = id + '_2';
@@ -597,6 +600,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 
 	setStreamData:function(videoData) {
 		var This = this;
+		this._sourceData = videoData;
 		var overlayLoader = document.createElement("div");
 		overlayLoader.className = "videoLoaderOverlay";
 		this.overlayContainer.addElement(overlayLoader,{left:0,top:0,width:1280,height:720});
@@ -626,24 +630,18 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			})
 			.done(function() {
 				This.overlayContainer.removeElement(overlayLoader);
-				var defer = $.Deferred();
 
 				var getProfile = base.parameters.get('profile');
 				var cookieProfile = base.cookies.get('lastProfile');
 				if (getProfile) {
-					this.setProfile(getProfile, false);
+					return This.setProfile(getProfile, false);
 				}
 				else if (cookieProfile) {
-					this.setProfile(cookieProfile, false);
+					return This.setProfile(cookieProfile, false);
 				}
 				else {
-					this.setProfile(paella.Profiles.getDefaultProfile(), false);
+					return This.setProfile(paella.Profiles.getDefaultProfile(), false);
 				}
-
-				This.setProfile('profile',function() {
-					defer.resolve();
-				}, false);
-				return defer;
 			});
 
 //		return paella_DeferredNotImplemented();
@@ -700,7 +698,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	numberOfStreams:function() {
-		return this.sourceData.length;
+		return this._sourceData.length;
 	},
 
 	getMonostreamMasterProfile:function() {
@@ -728,21 +726,25 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	getCurrentProfileName:function() {
-
+		return this._currentProfile;
 	},
 
-	setProfile:function(profileName,onSuccess,animate) {
-		var thisClass = this;
-		var Animate = base.userAgent.browser.Explorer ? false:animate;
+	setProfile:function(profileName,animate) {
+		var defer = $.Deferred();
+		var This = this;
+		animate = base.userAgent.browser.Explorer ? false:animate;
 		paella.Profiles.loadProfile(profileName,function(profileData) {
-			if (thisClass.numberOfStreams()==1) {
-				profileData.masterVideo = thisClass.getMonostreamMasterProfile();
-				profileData.slaveVideo = thisClass.getMonostreamSlaveProfile();
+			This._currentProfile = profileName;
+			if (This.numberOfStreams()==1) {
+				profileData.masterVideo = This.getMonostreamMasterProfile();
+				profileData.slaveVideo = This.getMonostreamSlaveProfile();
 			}
-			thisClass.applyProfileWithJson(profileData,Animate);
-			onSuccess(profileName);
+			This.applyProfileWithJson(profileData,animate);
 			base.cookies.set("lastProfile",profileName);
+			defer.resolve(profileName);
 		});
+
+		return defer;
 	},
 
 	isReady:function() {
