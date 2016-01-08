@@ -351,10 +351,10 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 
 		function evtCallback(event) { onProgress.apply(This,event); }
 
-		$(this.domElement).bind('progress', evtCallback);
-		$(this.domElement).bind('loadstart',evtCallback);
-		$(this.domElement).bind('loadedmetadata',evtCallback);
-		$(this.domElement).bind('canplay',evtCallback);
+		$(this.video).bind('progress', evtCallback);
+		$(this.video).bind('loadstart',evtCallback);
+		$(this.video).bind('loadedmetadata',evtCallback);
+		$(this.video).bind('canplay',evtCallback);
 	},
 
 	// Initialization functions
@@ -374,6 +374,30 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		// TODO: Cargar vídeo de:
 		// this._stream;
 		return paella_DeferredNotImplemented();
+	},
+
+	getQualities:function() {
+		var defer = $.Deferred();
+		var This = this;
+
+		function qualities() {
+			var result = [];
+			This._streams.forEach(function(s) {
+				result.push({ res: s.res, src: s.src });
+			});
+			return result;
+		}
+
+		if (this.ready) {
+			defer.resolve(qualities());
+		}
+		else {
+			$(this.video).bind('canplay',function(evt) {
+				defer.resolve(qualities());
+			});
+		}
+
+		return defer;
 	},
 
 	play:function() {
