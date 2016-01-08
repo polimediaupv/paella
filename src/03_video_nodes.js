@@ -259,6 +259,10 @@ Class ("paella.VideoElementBase", paella.VideoRect,{
 	getQualities:function() {
 		return paella_DeferredNotImplemented();
 	},
+
+	setQuality:function(index) {
+		return paella_DeferredNotImplemented();
+	},
 	
 	unload:function() {
 		this._callUnloadEvent();
@@ -329,6 +333,7 @@ Class ("paella.videoFactories.EmptyVideoFactory", paella.VideoFactory, {
 
 Class ("paella.Html5Video", paella.VideoElementBase,{
 	_posterFrame:null,
+	_currentQuality:0,
 
 	initialize:function(id,stream,left,top,width,height) {
 		this.parent(id,stream,'video',left,top,width,height);
@@ -339,13 +344,13 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		});
 
 		function onProgress(event) {
-			if (!this._ready && this.video.readyState==4) {
-				this._ready = true;
-				if (this._initialCurrentTipe!=0) {
-					this.video.currentTime = this._initialCurrentTime;
-					delete this._initialCurrentTime;
+			if (!This._ready && This.video.readyState==4) {
+				This._ready = true;
+				if (This._initialCurrentTipe!==undefined) {
+					This.video.currentTime = This._initialCurrentTime;
+					delete This._initialCurrentTime;
 				}
-				this._callReadyEvent();
+				This._callReadyEvent();
 			}
 		}
 
@@ -355,6 +360,25 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		$(this.video).bind('loadstart',evtCallback);
 		$(this.video).bind('loadedmetadata',evtCallback);
 		$(this.video).bind('canplay',evtCallback);
+	},
+
+
+	_deferredAction:function(action) {
+		var defer = $.Deferred();
+		var This = this;
+
+		if (this.ready) {
+			setTimeout(function() {
+				defer.resolve(action.apply(This));
+			},10);
+		}
+		else {
+			$(this.video).bind('canplay',function(evt) {
+				defer.resolve(action.apply(This));
+			});
+		}
+
+		return defer;
 	},
 
 	// Initialization functions
@@ -371,43 +395,61 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	},
 
 	load:function() {
-		// TODO: Cargar vídeo de:
-		// this._stream;
-		return paella_DeferredNotImplemented();
+		var sources = this._stream.sources.mp4;
+		var stream = this._currentQuality<sources.length ? sources[this._currentQuality]:null;
+		if (stream) {
+			var sourceElem = this.video.querySelector('source');
+			if (!sourceElem) {
+				sourceElem = document.createElement('source');
+				this.video.appendChild(sourceElem);
+			}
+
+			sourceElem.src = stream.src;
+			sourceElem.type = stream.type;
+			this.video.load();
+
+			return this._deferredAction(function() {
+				return stream;
+			});
+		}
+		else {
+			return paella_DeferredRejected(new Error("Could not load video: invalid quality stream index"));
+		}
 	},
 
 	getQualities:function() {
-		var defer = $.Deferred();
 		var This = this;
-
-		function qualities() {
-			var result = [];
-			This._streams.forEach(function(s) {
-				result.push({ res: s.res, src: s.src });
+		var defer = $.Deferred();
+		setTimeout(function() {
+			defer.resolve(function() {
+				var result = [];
+				var sources = This._stream.sources.mp4;
+				sources.forEach(function(s) {
+					result.push({ res: s.res, src: s.src });
+				});
+				return result;
 			});
-			return result;
-		}
-
-		if (this.ready) {
-			defer.resolve(qualities());
-		}
-		else {
-			$(this.video).bind('canplay',function(evt) {
-				defer.resolve(qualities());
-			});
-		}
-
+		},10);
 		return defer;
 	},
 
+	setQuality:function(index) {
+		var sources = this._stream.sources.mp4;
+		this._currentQuality = index<sources.length ? index:0;
+		this._ready = false;
+		return this.load();
+	},
+
 	play:function() {
-		this.video.play();
-		return paella_DeferredNotImplemented();
+		return this._deferredAction(function() {
+			this.video.play();
+		});
 	},
 
 	pause:function() {
-		this.video.pause();
-		return paella_DeferredNotImplemented();
+		return this._deferredAction(function() {
+			this.video.pause();
+		});
 	},
 
 	isPaused:function() {

@@ -426,18 +426,8 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	loadComplete:function(event,params) {
 		var thisClass = this;
 
-		var master = paella.player.videoContainer.masterVideo();
-		var getProfile = base.parameters.get('profile');
-		var cookieProfile = base.cookies.get('lastProfile');
-		if (getProfile) {
-			this.setProfile(getProfile, false);
-		}
-		else if (cookieProfile) {
-			this.setProfile(cookieProfile, false);
-		}
-		else {
-			this.setProfile(paella.Profiles.getDefaultProfile(), false);
-		}
+		//var master = paella.player.videoContainer.masterVideo();
+
 
 		paella.pluginManager.loadPlugins("paella.EarlyLoadPlugin");
 		if (paella.player.videoContainer._autoplay){
