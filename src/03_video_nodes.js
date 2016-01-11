@@ -256,6 +256,11 @@ Class ("paella.VideoElementBase", paella.VideoRect,{
 		return paella_DeferredNotImplemented();
 	},
 
+	playbackRate: function() {
+		base.log.debug("TODO: implement playbackRate() function in your VideoElementBase subclass");
+		return paella_DeferredNotImplemented();
+	},
+
 	getQualities:function() {
 		return paella_DeferredNotImplemented();
 	},
@@ -315,6 +320,7 @@ Class ("paella.EmptyVideo", paella.VideoElementBase,{
 	setVolume:function(volume) { return paella_DeferredRejected(new Error("no such compatible video player")); },
 	volume:function() { return paella_DeferredRejected(new Error("no such compatible video player")); },
 	setPlaybackRate:function(rate) { return paella_DeferredRejected(new Error("no such compatible video player")); },
+	playbackRate: function() { return paella_DeferredRejected(new Error("no such compatible video player")); },
 	unFreeze:function() { return paella_DeferredRejected(new Error("no such compatible video player")); },
 	freeze:function() { return paella_DeferredRejected(new Error("no such compatible video player")); },
 	unload:function() { return paella_DeferredRejected(new Error("no such compatible video player")); },
@@ -453,31 +459,51 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	},
 
 	isPaused:function() {
-		return paella_DeferredNotImplemented();
+		return this._deferredAction(function() {
+			return this.video.paused;
+		});
 	},
 
 	duration:function() {
-		return paella_DeferredNotImplemented();
+		return this._deferredAction(function() {
+			return this.video.duration;
+		});
 	},
 
 	setCurrentTime:function(time) {
-		return paella_DeferredNotImplemented();
+		return this._deferredAction(function() {
+			this.video.currentTime = time;
+		});
 	},
 
 	currentTime:function() {
-		return paella_DeferredNotImplemented();
+		return this._deferredAction(function() {
+			return this.video.currentTime;
+		});
 	},
 
 	setVolume:function(volume) {
-		return paella_DeferredNotImplemented();
+		return this._deferredAction(function() {
+			this.video.volume = volume;
+		});
 	},
 
 	volume:function() {
-		return paella_DeferredNotImplemented();
+		return this._deferredAction(function() {
+			return this.video.volume;
+		});
 	},
 
 	setPlaybackRate:function(rate) {
-		return paella_DeferredNotImplemented();
+		return this._deferredAction(function() {
+			this.video.playbackRate = rate;
+		});
+	},
+
+	playbackRate: function() {
+		return this._deferredAction(function() {
+			return this.video.playbackRate;
+		});
 	},
 
 

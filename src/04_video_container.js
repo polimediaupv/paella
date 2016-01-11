@@ -336,6 +336,10 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 
 		this.container.addNode(new paella.BackgroundContainer(this.backgroundId, paella.utils.folders.profiles() + '/resources/default_background_paella.jpg'));
 
+		Object.defineProperty(this,'sourceData',{
+			get: function() { return this._sourceData; }
+		});
+
 		paella.events.bind(paella.events.timeupdate,function(event) { thisClass.checkVideoTrimming(); } );
 
 		var timer = new base.Timer(function(timer) {
@@ -463,19 +467,12 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			if (time<this.trimming.start) time = this.trimming.start;
 			if (time>this.trimming.end) time = this.trimming.end;
 		}
-		var masterVideo = this.masterVideo();
-		var slaveVideo = this.slaveVideo();
-		if (masterVideo) masterVideo.setCurrentTime(time);
-		if (slaveVideo) slaveVideo.setCurrentTime(time);
+		masterVideo.setCurrentTime(time);
 		this.parent();
 	},
 
 	currentTime:function() {
-		var masterVideo = this.masterVideo();
-		var slaveVideo = this.slaveVideo();
-		if (masterVideo) return masterVideo.currentTime();
-		else if (slaveVideo) return slaveVideo.currentTime();
-		else return 0;
+		return this.masterVideo().currentTime();
 	},
 
 	setPlaybackRate:function(rate) {
@@ -517,7 +514,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	volume:function(video) {
-		if (!video && this.masterVideo()) {
+		if (!video) {
 			return this.masterVideo().volume();
 		}
 		else if (video=="master" && this.masterVideo()) {
@@ -525,9 +522,6 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		}
 		else if (video=="slave" && this.slaveVideo()) {
 			return this.slaveVideo().volume();
-		}
-		else {
-			return 0;
 		}
 	},
 	
@@ -548,19 +542,18 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	duration:function(ignoreTrimming) {
-		if (this.trimming.enabled && !ignoreTrimming) {
-			return this.trimming.end - this.trimming.start;
-		}
-		else {
-			if (!this.videoDuration) {
-				this.videoDuration = this.masterVideo().duration();
-			}
-			return this.videoDuration;
-		}
+		return this.masterVideo().duration()
+			.then(function(d) {
+				if (this.trimming.enabled && !ignoreTrimming) {
+					d = this.trimming.end - this.trimming.start;
+				}
+				return d;
+			});
 	},
 
 	paused:function() {
-		return this.masterVideo() ? this.masterVideo().isPaused():true;
+		// CAUTION: This function returns a promise
+		return this.masterVideo().isPaused();
 	},
 
 	trimEnabled:function() {
@@ -631,6 +624,8 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			.done(function() {
 				This.overlayContainer.removeElement(overlayLoader);
 
+				paella.events.trigger(paella.events.videoReady);
+
 				var getProfile = base.parameters.get('profile');
 				var cookieProfile = base.cookies.get('lastProfile');
 				if (getProfile) {
@@ -643,48 +638,6 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 					return This.setProfile(paella.Profiles.getDefaultProfile(), false);
 				}
 			});
-
-//		return paella_DeferredNotImplemented();
-/*
-
-
-		 var masterRect = {x:850,y:140,w:360,h:550};
-		 var slaveRect = {x:10,y:40,w:800,h:600};
-
-		// TODO: Configure video data
-		var masterStream = null;	// get masterStream from videoData
-		var slaveStream = null;		// get slaveStream from videoData
-
-		if (!masterVideo) {
-			throw Error("Master video data not specified");
-		}
-
-		// TODO: Use paella.videoFactory to create the video component
-		var masterVideo = paella.videoFactory.getVideoObject(masterStream);
-		var slaveVideo = paella.videoFactory.getVideoObject(slaveStream);
-		if (!masterVideo) {
-			throw Error("Could not find a decoder for the master video");
-		}
-*/
-
-		// TODO: Handle autoplay
-		/*
-		if (base.parameters.get('autoplay')=="true" &&
-			paella.player.config.experimental &&
-			paella.player.config.experimental.autoplay &&
-			!base.userAgent.browser.IsMobileVersion)
-		{
-			paella.player.videoContainer.setAutoplay();
-			playOnLoad = true;
-		}
-		*/
-
-		// TODO: Monostream/multistream. Refactor functions to get the stream mode from the masterVideo and slaveVideo
-
-		// TODO: handle quality. The video components must return the quality array
-		//var qualities = video;
-
-		// TODO: throw errors to the caller, who should display the error to the user
 	},
 	
 	setAutoplay:function() {

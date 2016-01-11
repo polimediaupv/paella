@@ -14,7 +14,11 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 	getName:function() { return "es.upv.paella.multipleQualitiesPlugin"; },
 	getDefaultToolTip:function() { return base.dictionary.translate("Change video quality"); },
 		
-	checkEnabled:function(onSuccess) { 	
+	checkEnabled:function(onSuccess) {
+		// TODO: Reimplement this plugin to use the new quality selector API
+		onSuccess(false);
+		return;
+/*
 		var key, j;
 		this.currentMaster = paella.player.videoContainer.currentMasterVideoData;
 		this.currentSlave = paella.player.videoContainer.currentSlaveVideoData;
@@ -67,6 +71,7 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 		
 		var isenabled = (this.availableMasters.length > 1 || this.availableSlaves.length > 1);
 		onSuccess(isenabled);
+		*/
 	},		
 		
 	setup:function() {

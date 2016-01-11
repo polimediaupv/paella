@@ -97,11 +97,13 @@ Class ("paella.VideoLoader", {
 	loadStatus:false,
 	codecStatus:false,
 
-	/*
+
 	getMetadata:function() {
 		return this.metadata;
 	},
 
+
+	/*
 	isH264Capable:function() {
 		var videoElement = document.createElement('video');
 		var h264 = videoElement.canPlayType('video/mp4; codecs="avc1.42E01E"');
