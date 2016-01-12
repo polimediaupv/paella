@@ -392,32 +392,60 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	syncVideos:function() {
 		var masterVideo = this.masterVideo();
 		var slaveVideo = this.slaveVideo();
-		if (!this.isMonostream && masterVideo && slaveVideo && masterVideo.currentTime && slaveVideo.currentTime) {
-			var diff = Math.abs(masterVideo.currentTime() - slaveVideo.currentTime());
+		var masterCurrent = 0;
+		var slaveCurrent = 0;
+		if (!this.isMonostream && masterVideo && slaveVideo) {
+			masterVideo.currentTime()
+				.done(function(m) {
+					masterCurrent = m;
+					return slaveVideo.currentTime();
+				})
 
-			if (diff>this.maxSyncDelay) {
-				base.log.debug("Sync videos performed, diff=" + diff);
-				slaveVideo.setCurrentTime(masterVideo.currentTime());
-			}
+				.done(function(s) {
+					slaveCurrent = s;
+					var diff = Math.abs(masterVideo.currentTime() - slaveVideo.currentTime());
+
+					if (diff>this.maxSyncDelay) {
+						base.log.debug("Sync videos performed, diff=" + diff);
+						slaveVideo.setCurrentTime(masterVideo.currentTime());
+					}
+				});
 		}
 	},
 
 	checkVideoTrimming:function() {
-		var current = this.currentTime();
-		var end = this.duration();
-		var start = 0;
-		if (this.trimming.enabled) {
-			end = this.trimming.end;
-			start = parseFloat(this.trimming.start);
-		}
-		if (current>=Math.floor(end) && !this.paused()) {
-			var thisClass = this;
-			paella.events.trigger(paella.events.endVideo,{videoContainer:thisClass});
-			this.pause();
-		}
-		else if (current<start) {
-			this.setCurrentTime(start + 1);
-		}
+		var This = this;
+		var current = 0;
+		var end = 0;
+		var paused = false;
+
+		this.paused().promise()
+			.then(function(p) {
+				paused = p;
+				return This.currentTime().promise();
+			})
+
+			.then(function(t) {
+				current = t;
+				return This.duration().promise();
+			})
+
+			.then(function(d) {
+				end = d;
+				var start = 0;
+				if (This.trimming.enabled) {
+					end = This.trimming.end;
+					start = parseFloat(This.trimming.start);
+				}
+				if (current>=Math.floor(end) && !paused) {
+					var thisClass = this;
+					paella.events.trigger(paella.events.endVideo,{videoContainer:This});
+					This.pause();
+				}
+				else if (current<start) {
+					This.setCurrentTime(start + 1);
+				}
+			});
 	},
 
 	play:function() {
@@ -542,17 +570,17 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	duration:function(ignoreTrimming) {
+		var This = this;
 		return this.masterVideo().duration()
-			.then(function(d) {
-				if (this.trimming.enabled && !ignoreTrimming) {
-					d = this.trimming.end - this.trimming.start;
+			.done(function(d) {
+				if (This.trimming.enabled && !ignoreTrimming) {
+					d = This.trimming.end - This.trimming.start;
 				}
 				return d;
 			});
 	},
 
 	paused:function() {
-		// CAUTION: This function returns a promise
 		return this.masterVideo().isPaused();
 	},
 
@@ -618,10 +646,18 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		}
 
 		return masterVideo.load()
-			.done(function() {
-				return slaveVideo.load();
+			.then(function() {
+				if (videoData.length>1) {
+					return slaveVideo.load();
+				}
+				else {
+					return paella_DeferredResolved(true);
+				}
 			})
-			.done(function() {
+			.then(function() {
+				$(masterVideo.video).bind('timeupdate', function(evt) {
+					paella.events.trigger(paella.events.timeupdate, { videoContainer:This });
+				});
 				This.overlayContainer.removeElement(overlayLoader);
 
 				paella.events.trigger(paella.events.videoReady);
@@ -683,8 +719,8 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	setProfile:function(profileName,animate) {
-		var defer = $.Deferred();
 		var This = this;
+		var defer = $.Deferred();
 		animate = base.userAgent.browser.Explorer ? false:animate;
 		paella.Profiles.loadProfile(profileName,function(profileData) {
 			This._currentProfile = profileName;
