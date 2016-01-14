@@ -10,14 +10,8 @@ Class ("paella.TimeControl", paella.DomNode,{
 
 	onTimeUpdate:function(memo) {
 		var videoContainer = memo.videoContainer;
-		var trimmed = { start:videoContainer.trimStart(), end:videoContainer.trimEnd() };
-		var currentTime = memo.currentTime - trimmed.start;
-		var duration = trimmed.end - trimmed.start;
-		var percent = currentTime * 100 / duration;
-		if (this.domElement.className=="timeControlOld") {	// Support for old style time control
-			this.domElement.style.left = percent + '%';
-		}
-		this.domElement.innerHTML = this.secondsToHours(parseInt(currentTime));
+		var percent = memo.currentTime * 100 / memo.duration;
+		this.domElement.innerHTML = this.secondsToHours(parseInt(memo.currentTime));
 	},
 
 	secondsToHours:function(sec_numb) {

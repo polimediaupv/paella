@@ -80,7 +80,7 @@ Class ("paella.VideoOverlay", paella.DomNode,{
 });
 
 Class ("paella.VideoContainerBase", paella.DomNode,{
-	trimming:{enabled:false,start:0,end:0},
+	_trimming:{enabled:false,start:0,end:0},
 	timeupdateEventTimer:null,
 	timeupdateInterval:250,
 	masterVideoData:null,
@@ -170,45 +170,74 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	},
 
 	trimStart:function() {
-		return 0;
+		var defer = $.Deferred();
+		defer.resolve(this._trimming.start);
+		return defer;
 	},
 
 	trimEnd:function() {
-		return this.duration();
+		var defer = $.Deferred();
+		defer.resolve(this._trimming.end);
+		return defer;
 	},
 
 	trimEnabled:function() {
-		return false;
+		var defer = $.Deferred();
+		defer.resolve(this._trimming.enabled);
+		return defer;
+	},
+
+	trimming:function() {
+		var defer = $.Deferred();
+		defer.resolve(this._trimming);
+		return defer;
 	},
 
 	enableTrimming:function() {
-		this.trimming.enabled = true;
-		paella.events.trigger(paella.events.setTrim,{trimEnabled:this.trimming.enabled,trimStart:this.trimming.start,trimEnd:this.trimming.end});
+		this._trimming.enabled = true;
+		paella.events.trigger(paella.events.setTrim,{trimEnabled:this._trimming.enabled,trimStart:this._trimming.start,trimEnd:this._trimming.end});
 	},
 
 	disableTrimming:function() {
-		this.trimming.enabled = false;
-		paella.events.trigger(paella.events.setTrim,{trimEnabled:this.trimming.enabled,trimStart:this.trimming.start,trimEnd:this.trimming.end});
+		this._trimming.enabled = false;
+		paella.events.trigger(paella.events.setTrim,{trimEnabled:this._trimming.enabled,trimStart:this._trimming.start,trimEnd:this._trimming.end});
 	},
 
 	setTrimming:function(start,end) {
-		this.trimming.start = start;
-		this.trimming.end = end;
-		if (this.currentTime()<this.trimming.start) {
-			this.setCurrentTime(this.trimming.start);
-		}
-		if (this.currentTime()>this.trimming.end) {
-			this.setCurrentTime(this.trimming.end);
-		}
-		paella.events.trigger(paella.events.setTrim,{trimEnabled:this.trimming.enabled,trimStart:this.trimming.start,trimEnd:this.trimming.end});
+		var This = this;
+		var defer = $.Deferred();
+		var currentTime = 0;
+		var duration = 0;
+
+		this.currentTime()
+			.then(function(c) {
+				currentTime = c;
+				return This.duration();
+			})
+
+			.then(function(d) {
+				duration = d;
+				This._trimming.start = start;
+				This._trimming.end = end;
+				if (currentTime<This._trimming.start) {
+					This.setCurrentTime(This._trimming.start);
+				}
+				if (currentTime>This._trimming.end) {
+					This.setCurrentTime(This._trimming.end);
+				}
+				paella.events.trigger(paella.events.setTrim,{trimEnabled:This._trimming.enabled,trimStart:This._trimming.start,trimEnd:This._trimming.end});
+				defer.resolve();
+			});
+
+		return defer;
 	},
 
 	setTrimmingStart:function(start) {
-		this.setTrimming(start,this.trimming.end);
+ 		return this.setTrimming(start,this._trimming.end);
 	},
 
 	setTrimmingEnd:function(end) {
-		this.setTrimming(this.trimming.start,end);
+		return this.setTrimming(this._trimming.start,end);
 	},
 
 	setCurrentPercent:function(percent) {
@@ -217,7 +246,7 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		var duration = end - start;
 		var trimedPosition = percent * duration / 100;
 		var realPosition = parseFloat(trimedPosition) + parseFloat(start);
-		this.setCurrentTime(realPosition);
+		return this.setCurrentTime(realPosition);
 	},
 
 	setCurrentTime:function(time) {
@@ -340,8 +369,6 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			get: function() { return this._sourceData; }
 		});
 
-		paella.events.bind(paella.events.timeupdate,function(event) { thisClass.checkVideoTrimming(); } );
-
 		var timer = new base.Timer(function(timer) {
 			thisClass.syncVideos();
 		},thisClass.videoSyncTimeMillis);
@@ -413,39 +440,20 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		}
 	},
 
-	checkVideoTrimming:function() {
+	checkVideoTrimming:function(trimming, current, paused) {
 		var This = this;
-		var current = 0;
-		var end = 0;
-		var paused = false;
+		var start = trimming.start;
+		var end = trimming.end;
+		var enabled = trimming.enabled;
+		if (!enabled) return;
 
-		this.paused().promise()
-			.then(function(p) {
-				paused = p;
-				return This.currentTime().promise();
-			})
-
-			.then(function(t) {
-				current = t;
-				return This.duration().promise();
-			})
-
-			.then(function(d) {
-				end = d;
-				var start = 0;
-				if (This.trimming.enabled) {
-					end = This.trimming.end;
-					start = parseFloat(This.trimming.start);
-				}
-				if (current>=Math.floor(end) && !paused) {
-					var thisClass = this;
-					paella.events.trigger(paella.events.endVideo,{videoContainer:This});
-					This.pause();
-				}
-				else if (current<start) {
-					This.setCurrentTime(start + 1);
-				}
-			});
+		if (current>=Math.floor(end) && !paused) {
+			paella.events.trigger(paella.events.endVideo, { videoContainer: this });
+			this.pause();
+		}
+		else if (current<start) {
+			this.setCurrentTime(start + 1);
+		}
 	},
 
 	play:function() {
@@ -475,8 +483,8 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	next:function() {
-		if (this.trimming.end!==0) {
-			this.setCurrentTime(this.trimming.end);
+		if (this._trimming.end!==0) {
+			this.setCurrentTime(this._trimming.end);
 		}
 		else {
 			this.setCurrentTime(this.duration(true));
@@ -485,22 +493,35 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	previous:function() {
-		this.setCurrentTime(this.trimming.start);
+		this.setCurrentTime(this._trimming.start);
 		this.parent();
 	},
 
 	setCurrentTime:function(time) {
 		if (time<=0) time = 1; 
-		if (this.trimming.enabled) {
-			if (time<this.trimming.start) time = this.trimming.start;
-			if (time>this.trimming.end) time = this.trimming.end;
+		if (this._trimming.enabled) {
+			if (time<this._trimming.start) time = this._trimming.start;
+			if (time>this._trimming.end) time = this._trimming.end;
 		}
-		masterVideo.setCurrentTime(time);
+		this.masterVideo().setCurrentTime(time);
 		this.parent();
 	},
 
 	currentTime:function() {
-		return this.masterVideo().currentTime();
+		if (this._trimming.enabled) {
+			var trimStart = this._trimming.start;
+			var defer = $.Deferred();
+
+			this.masterVideo().currentTime()
+				.then(function(t) {
+					defer.resolve(t - trimStart);
+				});
+
+			return defer;
+		}
+		else {
+			return this.masterVideo().currentTime();
+		}
 	},
 
 	setPlaybackRate:function(rate) {
@@ -573,8 +594,8 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		var This = this;
 		return this.masterVideo().duration()
 			.done(function(d) {
-				if (This.trimming.enabled && !ignoreTrimming) {
-					d = This.trimming.end - This.trimming.start;
+				if (This._trimming.enabled && !ignoreTrimming) {
+					d = This._trimming.end - This._trimming.start;
 				}
 				return d;
 			});
@@ -585,12 +606,12 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	trimEnabled:function() {
-		return this.trimming.enabled;
+		return this._trimming.enabled;
 	},
 
 	trimStart:function() {
-		if (this.trimming.enabled) {
-			return this.trimming.start;
+		if (this._trimming.enabled) {
+			return this._trimming.start;
 		}
 		else {
 			return 0;
@@ -598,8 +619,8 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	trimEnd:function() {
-		if (this.trimming.enabled) {
-			return this.trimming.end;
+		if (this._trimming.enabled) {
+			return this._trimming.end;
 		}
 		else {
 			return this.duration();
@@ -656,7 +677,16 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			})
 			.then(function() {
 				$(masterVideo.video).bind('timeupdate', function(evt) {
-					paella.events.trigger(paella.events.timeupdate, { videoContainer:This });
+					var trimming = This._trimming;
+					var current = evt.currentTarget.currentTime;
+					var duration = evt.currentTarget.duration;
+					if (trimming.enabled) {
+						current -= trimming.start;
+						duration = trimming.end - trimming.start;
+					}
+					paella.events.trigger(paella.events.timeupdate, { videoContainer:This, currentTime:current, duration:duration });
+					This.checkVideoTrimming(trimming,evt.currentTarget.currentTime,evt.currentTarget.paused);
+
 				});
 				This.overlayContainer.removeElement(overlayLoader);
 
