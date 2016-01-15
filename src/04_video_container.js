@@ -240,14 +240,27 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	},
 
 	setCurrentPercent:function(percent) {
-		this.trimming(function(trimming) {
-			var start = trimming.start;
-			var end = trimming.end;
-			var duration = end - start;
-			var trimedPosition = percent * duration / 100;
-			var realPosition = parseFloat(trimedPosition) + parseFloat(start);
-			return this.setCurrentTime(realPosition);
-		});
+		var This = this;
+		var duration = 0;
+		this.duration()
+			.then(function(d) {
+				duration = d;
+				return This.trimming();
+			})
+			.then(function(trimming) {
+				var position = 0;
+				if (trimming.enabled) {
+					var start = trimming.start;
+					var end = trimming.end;
+					duration = end - start;
+					var trimedPosition = percent * duration / 100;
+					position = parseFloat(trimedPosition) + parseFloat(start);
+				}
+				else {
+					position = percent * duration / 100;
+				}
+				return This.setCurrentTime(position);
+			});
 
 	},
 
