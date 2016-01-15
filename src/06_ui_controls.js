@@ -44,9 +44,12 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 
 	initialize:function(id) {
 		var self = this;
+
+		/*
 		//OVERLAY INITIALIZE
 		self.imageSetup();
 		//END OVERLAY INITIALIZE
+*/
 
 		var style = {};
 		this.parent('div',id,style);
@@ -60,19 +63,30 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		this.domElement.setAttribute("aria-valuenow", "0");
 		this.domElement.setAttribute("tabindex", "1100");
 		$(this.domElement).keyup(function(event){
-			var curr, selectedPosition;
-			switch(event.keyCode) {
-				case 37: //Left
-					curr = 100*paella.player.videoContainer.currentTime()/paella.player.videoContainer.duration();
-					selectedPosition = curr - 5;
-					paella.player.videoContainer.seekTo(selectedPosition);
-					break;
-				case 39: //Right
-					curr = 100*paella.player.videoContainer.currentTime()/paella.player.videoContainer.duration();
-					selectedPosition = curr + 5;
-					paella.player.videoContainer.seekTo(selectedPosition);
-					break;
-			}
+			var currentTime = 0;
+			var duration = 0;
+			paella.player.videoContainer.currentTime()
+				.then(function(t) {
+					currentTime = t;
+					return paella.player.videoContainer.duration();
+				})
+
+				.then(function(d) {
+					duration = d;
+					var curr, selectedPosition;
+					switch(event.keyCode) {
+						case 37: //Left
+							curr = 100*currentTime/duration;
+							selectedPosition = curr - 5;
+							paella.player.videoContainer.seekTo(selectedPosition);
+							break;
+						case 39: //Right
+							curr = 100*currentTime/duration;
+							selectedPosition = curr + 5;
+							paella.player.videoContainer.seekTo(selectedPosition);
+							break;
+					}
+				});
 		});
 
 		this.playbackFullId = id + "_full";
@@ -154,113 +168,110 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	},
 
 	movePassive:function(event){
-		var self = this;
-		var time = 0;
-		// CONTROLS_BAR POSITON
-		var p = $(this.domElement);
-		var pos = p.offset();
+		var This = this;
 
-		var width = p.width();
-		var left = (event.clientX-pos.left);
-		left = (left < 0) ? 0 : left;
-		var position = left * 100 / width; // GET % OF THE STREAM
-		if(paella.player.videoContainer.trimEnabled()){
-		 	time = paella.player.videoContainer.trimEnd()-paella.player.videoContainer.trimStart();
-			time = ( position * time / 100 );
-			time += paella.player.videoContainer.trimStart();
-		}
-		else{
-			time = paella.player.videoContainer.duration("");
-			time = ( position * time / 100 );
-		}
+		function updateTimePreview(duration) {
+			// CONTROLS_BAR POSITON
+			var p = $(This.domElement);
+			var pos = p.offset();
 
-		
-		var timex = time;
-		if(paella.player.videoContainer.trimEnabled())
-			timex -= paella.player.videoContainer.trimStart();
+			var width = p.width();
+			var left = (event.clientX-pos.left);
+			left = (left < 0) ? 0 : left;
+			var position = left * 100 / width; // GET % OF THE STREAM
 
-		var hou = Math.floor(timex / 3600)%24;
-		hou = ("00"+hou).slice(hou.toString().length);
+			var time = position * duration / 100;
 
-		var min = Math.floor(timex / 60)%60;
-		min = ("00"+min).slice(min.toString().length);
+			var hou = Math.floor(time / 3600)%24;
+			hou = ("00"+hou).slice(hou.toString().length);
 
-		var sec = Math.floor(timex%60);
-		sec = ("00"+sec).slice(sec.toString().length);
+			var min = Math.floor(time / 60)%60;
+			min = ("00"+min).slice(min.toString().length);
 
+			var sec = Math.floor(time%60);
+			sec = ("00"+sec).slice(sec.toString().length);
 
+			var timestr = (hou+":"+min+":"+sec);
 
-		var timestr = (hou+":"+min+":"+sec);
+			// CREATING THE OVERLAY
+			if(This._hasSlides) {
+				if($("#divTimeImageOverlay").length == 0)
+					This.setupTimeImageOverlay(timestr,pos.top,width);
+				else {
+					$("#divTimeOverlay")[0].innerHTML = timestr; //IF CREATED, UPDATE TIME AND IMAGE
+				}
 
-		// CREATING THE OVERLAY
-		if(self._hasSlides) {
-			if($("#divTimeImageOverlay").length == 0) 
-				self.setupTimeImageOverlay(timestr,pos.top,width);
+				// CALL IMAGEUPDATE
+				This.imageUpdate(time);
+			}
 			else {
-				$("#divTimeOverlay")[0].innerHTML = timestr; //IF CREATED, UPDATE TIME AND IMAGE
+				if($("#divTimeOverlay").length == 0) {
+					This.setupTimeOnly(timestr,pos.top,width);
+				}
+				else {
+					$("#divTimeOverlay")[0].innerHTML = timestr;
+				}
 			}
 
-			// CALL IMAGEUPDATE
-			self.imageUpdate(time);
-		}
-		else {
-			if($("#divTimeOverlay").length == 0) self.setupTimeOnly(timestr,pos.top,width);
-			else $("#divTimeOverlay")[0].innerHTML = timestr;
-		}
-		
-		// UPDATE POSITION IMAGE OVERLAY
+			// UPDATE POSITION IMAGE OVERLAY
+			if (This._hasSlides) {
+				var ancho = $("#divTimeImageOverlay").width();
+				var posx = event.clientX-(ancho/2);
+				if(event.clientX > (ancho/2 + pos.left)  &&  event.clientX < (pos.left+width - ancho/2) ) { // LEFT
+					$("#divTimeImageOverlay").css("left",posx); // CENTER THE DIV HOVER THE MOUSE
+				}
+				else if(event.clientX < width / 2)
+					$("#divTimeImageOverlay").css("left",pos.left);
+				else
+					$("#divTimeImageOverlay").css("left",pos.left + width - ancho);
+			}
 
-		if(self._hasSlides) {
-			var ancho = $("#divTimeImageOverlay").width();
-			var posx = event.clientX-(ancho/2);
-			if(event.clientX > (ancho/2 + pos.left)  &&  event.clientX < (pos.left+width - ancho/2) ) { // LEFT
-			$("#divTimeImageOverlay").css("left",posx); // CENTER THE DIV HOVER THE MOUSE
+			// UPDATE POSITION TIME OVERLAY
+			var ancho2 = $("#divTimeOverlay").width();
+			var posx2 = event.clientX-(ancho2/2);
+			if(event.clientX > ancho2/2 + pos.left  && event.clientX < (pos.left+width - ancho2/2) ){
+				$("#divTimeOverlay").css("left",posx2); // CENTER THE DIV HOVER THE MOUSE
 			}
 			else if(event.clientX < width / 2)
-				$("#divTimeImageOverlay").css("left",pos.left);
-			else 
-				$("#divTimeImageOverlay").css("left",pos.left + width - ancho);
+				$("#divTimeOverlay").css("left",pos.left);
+			else
+				$("#divTimeOverlay").css("left",pos.left + width - ancho2-2);
+
+			if(This._hasSlides) {
+				$("#divTimeImageOverlay").css("bottom",$('.playbackControls').height());
+			}
 		}
 
-		// UPDATE POSITION TIME OVERLAY
-
-		var ancho2 = $("#divTimeOverlay").width();
-		var posx2 = event.clientX-(ancho2/2);
-		if(event.clientX > ancho2/2 + pos.left  && event.clientX < (pos.left+width - ancho2/2) ){
-		$("#divTimeOverlay").css("left",posx2); // CENTER THE DIV HOVER THE MOUSE
-		}
-		else if(event.clientX < width / 2)
-			$("#divTimeOverlay").css("left",pos.left);
-		else 
-			$("#divTimeOverlay").css("left",pos.left + width - ancho2-2);
-
-		if(self._hasSlides) {
-			$("#divTimeImageOverlay").css("bottom",$('.playbackControls').height());
-		}
-
+		paella.player.videoContainer.duration()
+			.then(function(d) {
+				updateTimePreview(d);
+			});
 	},
 
 	imageSetup:function(){
-		var self = this;
-		
-		//  BRING THE IMAGE ARRAY TO LOCAL
-		this._images = {};
-		var n = paella.initDelegate.initParams.videoLoader.frameList;
+		var This = this;
 
-		if( !n || Object.keys(n).length === 0) { self._hasSlides = false; return;}
-		else self._hasSlides = true;
+		paella.player.videoContainer.duration()
+			.then(function(duration) {
+				//  BRING THE IMAGE ARRAY TO LOCAL
+				This._images = {};
+				var n = paella.initDelegate.initParams.videoLoader.frameList;
+
+				if( !n || Object.keys(n).length === 0) { This._hasSlides = false; return;}
+				else This._hasSlides = true;
 
 
-		this._images = n; // COPY TO LOCAL
-		this._videoLength = paella.player.videoContainer.duration(""); // video duration in frames
+				This._images = n; // COPY TO LOCAL
+				This._videoLength = duration;
 
-		// SORT KEYS FOR SEARCH CLOSEST
-		this._keys = Object.keys(this._images);
-		this._keys = this._keys.sort(function(a, b){return parseInt(a)-parseInt(b);}); // SORT FRAME NUMBERS STRINGS
+				// SORT KEYS FOR SEARCH CLOSEST
+				This._keys = Object.keys(This._images);
+				This._keys = This._keys.sort(function(a, b){return parseInt(a)-parseInt(b);}); // SORT FRAME NUMBERS STRINGS
 
-		//NEXT
-		this._next = 0;
-		this._ant = 0;
+				//NEXT
+				This._next = 0;
+				This._ant = 0;
+			});
 	},
 
 	imageUpdate:function(sec){
@@ -384,10 +395,8 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 
 	onTimeUpdate:function(memo) {
 		if (this.updatePlayBar) {
-			var videoContainer = memo.videoContainer;
-			var trimmed = { start:videoContainer.trimStart(), end:videoContainer.trimEnd() };
-			var currentTime = memo.currentTime - trimmed.start;
-			var duration = trimmed.end - trimmed.start;
+			var currentTime = memo.currentTime;
+			var duration = memo.duration;
 			this.setPlaybackPosition(currentTime * 100 / duration);
 		}
 	},
@@ -753,9 +762,12 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 
 	onKeyEvent:function() {
 		this.showControls();
-		if (paella.player.videoContainer.isReady() && !paella.player.videoContainer.paused()) {
-			paella.player.controls.restartHideTimer();
-		}
+		paella.player.videoContainer.paused()
+			.then(function(paused) {
+				if (!paused) {
+					paella.player.controls.restartHideTimer();
+				}
+			});
 	},
 
 	cancelHideBar:function() {
@@ -763,14 +775,16 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 	},
 
 	restartTimerEvent:function() {
+		var This = this;
 		if (this.isHidden()){
 			this.showControls();
 		}
 		this._doHide = false;
-		var paused = paella.player.videoContainer.paused();
-		if (!paused) {
-			this.restartHideTimer();
-		}
+		paella.player.videoContainer.paused(function(paused) {
+			if (!paused) {
+				This.restartHideTimer();
+			}
+		});
 	},
 
 	clearAutohideTimer:function() {
