@@ -111,11 +111,30 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	},
 
 	triggerTimeupdate:function() {
-		var thisClass = this;
-		if (!this.paused() || thisClass._force) {
-			paella.events.trigger(paella.events.timeupdate,{videoContainer:thisClass, currentTime:thisClass.currentTime() });
-			thisClass._force = false;
-		}
+		var This = this;
+		var paused = 0;
+		var duration = 0;
+		this.paused()
+			.then(function(p) {
+				paused = p;
+				return This.duration();
+			})
+
+			.then(function(d) {
+				duration = d;
+				return This.currentTime();
+			})
+
+			.then(function(currentTime) {
+				if (!paused || This._force) {
+					This._force = false;
+					paella.events.trigger(paella.events.timeupdate, {
+						videoContainer: This,
+						currentTime: currentTime,
+						duration: duration
+					});
+				}
+			});
 	},
 
 	startTimeupdate:function() {
