@@ -616,7 +616,7 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 		paella.events.bind(paella.events.play,function(event) { thisClass.onPlayEvent(); });
 		paella.events.bind(paella.events.pause,function(event) { thisClass.onPauseEvent(); });
 		$(document).mousemove(function(event) {
-			paella.player.controls.restartTimerEvent();
+			paella.player.controls.restartHideTimer();
 		});
 		paella.events.bind(paella.events.endVideo,function(event) { thisClass.onEndVideoEvent(); });
 		paella.events.bind('keydown',function(event) { thisClass.onKeyEvent(); });
@@ -740,7 +740,16 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 	},
 
 	hideControls:function() {
-		this.hide();
+		var This = this;
+		paella.player.videoContainer.paused()
+			.then(function(paused) {
+				if (!paused) {
+					This.hide();
+				}
+				else {
+					This.show();
+				}
+			});
 	},
 
 	showControls:function() {
@@ -761,7 +770,7 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 	},
 
 	onKeyEvent:function() {
-		this.showControls();
+		this.restartHideTimer();
 		paella.player.videoContainer.paused()
 			.then(function(paused) {
 				if (!paused) {
@@ -795,6 +804,7 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 	},
 
 	restartHideTimer:function() {
+		this.showControls();
 		this.clearAutohideTimer();
 		var thisClass = this;
 		this.autohideTimer = new base.Timer(function(timer) {
