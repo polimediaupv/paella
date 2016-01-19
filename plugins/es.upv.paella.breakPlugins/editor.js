@@ -5,10 +5,13 @@ Class ("paella.plugins.BreaksEditorPlugin",paella.editor.MainTrackPlugin, {
 	checkEnabled:function(onSuccess) {
 		var This = this;
 		this.tracks = [];
+		this.tracksData = [];
 		paella.data.read('breaks',{id:paella.initDelegate.getId()},function(data,status) {
 			if (data && typeof(data)=='object' && data.breaks && data.breaks.length>0) {
 				This.tracks = data.breaks;
 			}
+			//Copy this.tracks on this.tracksData as backup.
+			This.tracksData = JSON.parse(JSON.stringify(This.tracks));
 			onSuccess(true);
 		});
 	},
@@ -126,7 +129,14 @@ Class ("paella.plugins.BreaksEditorPlugin",paella.editor.MainTrackPlugin, {
 			paella.plugins.breaksPlayerPlugin.breaks = data.breaks;
 			success(status);
 		});
+		//Update this.tracksData backup tracks
+		this.tracksData = JSON.parse(JSON.stringify(this.tracks));
 
+	},
+
+	onDiscard:function(success) {
+		//Override discarded changes using this.tracksData backup
+		this.tracks = JSON.parse(JSON.stringify(this.tracksData));
 	}
 });
 
