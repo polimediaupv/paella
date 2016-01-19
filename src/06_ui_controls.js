@@ -33,7 +33,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	//OVERLAY VARIABLES
 	_images:null,
 	_keys:null,
-	_ant:null,
+	_prev:null,
 	_next:null,
 	_videoLength:null,
 	_lastSrc:null,
@@ -45,11 +45,11 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	initialize:function(id) {
 		var self = this;
 
-		/*
+
 		//OVERLAY INITIALIZE
 		self.imageSetup();
 		//END OVERLAY INITIALIZE
-*/
+
 
 		var style = {};
 		this.parent('div',id,style);
@@ -270,7 +270,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 
 				//NEXT
 				This._next = 0;
-				This._ant = 0;
+				This._prev = 0;
 			});
 	},
 
@@ -279,8 +279,8 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 
 		var src = $("#imgOverlay").attr('src');
 		$(self._imgNode).show();
-				if(sec > this._next || sec < this._ant) { 
-					src = self.returnSrc(sec);
+				if(sec > this._next || sec < this._prev) {
+					src = self.getPreviewImageSrc(sec);
 					if(src){
 						self._lastSrc = src;
 						$( "#imgOverlay" ).attr('src', src); // UPDATING IMAGE
@@ -302,9 +302,8 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		$(self._imgNode).hide();
 	},
 
-	returnSrc:function(sec){
-		var thisClass = this;
-		var keys = Object.keys(thisClass._images);
+	getPreviewImageSrc:function(sec){
+		var keys = Object.keys(this._images);
 
 		keys.push(sec);
 
@@ -318,17 +317,17 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		var i = keys[n];
 
 		var next = keys[n+2];
-		var ant = keys[n];
+		var prev = keys[n];
 
 		next = (next==undefined) ? keys.length-1 : parseInt(next);
-		thisClass._next = next;
+		this._next = next;
 
-		ant = (ant==undefined) ? 0 : parseInt(ant);
-		thisClass._ant = ant;
+		prev = (prev==undefined) ? 0 : parseInt(prev);
+		this._prev = prev;
 
 		i=parseInt(i);
-		if(thisClass._images[i]){
-			return thisClass._images[i].thumb;
+		if(this._images[i]){
+			return this._images[i].url || this._images[i].url;
 		}
 		else return false;
 	},
