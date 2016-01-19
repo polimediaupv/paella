@@ -137,6 +137,7 @@ Class ("paella.plugins.BreaksEditorPlugin",paella.editor.MainTrackPlugin, {
 	onDiscard:function(success) {
 		//Override discarded changes using this.tracksData backup
 		this.tracks = JSON.parse(JSON.stringify(this.tracksData));
+		success(true);
 	}
 });
 
