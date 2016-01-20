@@ -581,29 +581,40 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	setVolume:function(params) {
+		var defer = $.Deferred();
+		var This = this;
 		var masterVideo = this.masterVideo();
 		var slaveVideo = this.slaveVideo();
-		var masterVolume = masterVideo && masterVideo.volume();
-		var slaveVolume = slaveVideo && slaveVideo.volume();
-		if (typeof(params)=='object') {
-			masterVolume = params.master!==undefined ? params.master:masterVolume;
-			slaveVolume = params.slave!==undefined ? params.slave:slaveVolume;
-		}
-		else {
-			masterVolume = params;
-			slaveVolume = 0;
-		}
+		var masterVolume = 0;
+		var slaveVolume = 0;
 
-		if (masterVideo) {
+		function setVolumes() {
+			if (typeof(params)=='object') {
+				masterVolume = params.master!==undefined ? params.master:masterVolume;
+				slaveVolume = params.slave!==undefined ? params.slave:slaveVolume;
+			}
+			else {
+				masterVolume = params;
+				slaveVolume = 0;
+			}
 			masterVideo.setVolume(masterVolume);
-		}
-		if (slaveVideo) {
 			slaveVideo.setVolume(slaveVolume);
+			paella.events.trigger(paella.events.setVolume,{ master:masterVolume, slave:slaveVolume });
 		}
 
-		paella.events.trigger(paella.events.setVolume,{ master:masterVolume, slave:slaveVolume });
+		masterVideo.volume()
+			.then(function(v) {
+				masterVolume = v;
+				return slaveVideo.volume();
+			})
 
-		this.parent();
+			.then(function (v) {
+				slaveVolume = v;
+				setVolumes();
+				defer.resolve(params);
+			});
+
+		return defer;
 	},
 
 	volume:function(video) {

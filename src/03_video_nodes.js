@@ -433,23 +433,40 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		var This = this;
 		var defer = $.Deferred();
 		setTimeout(function() {
-			defer.resolve(function() {
-				var result = [];
-				var sources = This._stream.sources.mp4;
-				sources.forEach(function(s) {
-					result.push({ res: s.res, src: s.src });
+			var result = [];
+			var sources = This._stream.sources.mp4;
+			sources.forEach(function(s) {
+				result.push({
+					res: s.res,
+					src: s.src,
+					toString:function() { return this.res.w + "x" + this.res.h; }
 				});
-				return result;
 			});
+			result.sort(function(a,b) {
+				return a.res.h-b.res.h;
+			});
+			defer.resolve(result);
 		},10);
 		return defer;
 	},
 
 	setQuality:function(index) {
+		var defer = $.Deferred();
+		var This = this;
+		var paused = This.video.paused;
 		var sources = this._stream.sources.mp4;
 		this._currentQuality = index<sources.length ? index:0;
 		this._ready = false;
-		return this.load();
+		var currentTime = this.video.currentTime;
+		this.load()
+			.then(function() {
+				if (!paused) {
+					This.play();
+				}
+				This.video.currentTime = currentTime;
+				defer.resolve();
+			});
+		return defer;
 	},
 
 	play:function() {
