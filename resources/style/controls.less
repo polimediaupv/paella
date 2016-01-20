@@ -330,7 +330,7 @@ div {
 
 // TIMEOVERLAY STYLE
 .divTimeOverlay{
-	position: fixed;
+	position: absolute;
 	background-color: @backgroundColor;
 	color: white;
 	text-align: center;
@@ -343,13 +343,19 @@ div {
 
 // TIME_IMAGEOVERLAY STYLE
 .divTimeImageOverlay {
-	position: fixed;
+	position: absolute;
 	background-color: @backgroundColor;
 	z-index: 99;
 	-webkit-background-size: cover;
   	-moz-background-size: cover;
   	-o-background-size: cover;
  	 background-size: contain;
+}
+
+.divTimeImageOverlay .divTimeOverlay {
+	left: 0;
+	right: 0;
+	bottom: 0;
 }
 
 // IMG OVERLAY

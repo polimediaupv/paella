@@ -108,8 +108,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	},
 
 	mouseOut:function(event){
-		var self = this;
-		if(self._hasSlides)
+		if(this._hasSlides)
 			$("#divTimeImageOverlay").remove();
 		else
 			$("#divTimeOverlay").remove();
@@ -160,90 +159,92 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	},
 
 	movePassive:function(event){
-		var self = this;
-		var time = 0;
-		// CONTROLS_BAR POSITON
-		var p = $(this.domElement);
-		var pos = p.offset();
-
-		var width = p.width();
-		var left = (event.clientX-pos.left);
-		left = (left < 0) ? 0 : left;
-		var position = left * 100 / width; // GET % OF THE STREAM
-		if(paella.player.videoContainer.trimEnabled()){
-		 	time = paella.player.videoContainer.trimEnd()-paella.player.videoContainer.trimStart();
-			time = ( position * time / 100 );
-			time += paella.player.videoContainer.trimStart();
+		var playbackBar = $(this.domElement),
+			width = playbackBar.width(),
+			pos = playbackBar.offset(),
+			left = 0;
+		
+		// Fix position when window is scrolled
+		pos.left -= $(window).scrollLeft();
+		
+		left = event.clientX - pos.left;
+		
+		// Showtime, Imagetime
+		var time = this.calculateTime(left / width),
+			timeString = this.timeToTimestamp(time[0]),
+			timeImageOverlay = $("#divTimeImageOverlay"),
+			timeOverlay = $("#divTimeOverlay");
+		
+		if (this._hasSlides) {
+			if (timeImageOverlay.length === 0) {
+				this.setupTimeImageOverlay(timeString,width);
+				timeImageOverlay = $("#divTimeImageOverlay");
+			}
+			
+			this.imageUpdate(time[1]);
+		}
+		else if (timeOverlay.length === 0) {
+			this.setupTimeOnly(timeString,width);
+			timeOverlay = $("#divTimeOverlay");
+		}
+		
+		timeOverlay.text(timeString);
+		
+		if(this._hasSlides) {
+			var overlayWidth = timeImageOverlay.width();
+			var overlayLeft = event.clientX - pos.left - (overlayWidth / 2);
+			
+			if (overlayLeft < 0) {
+				overlayLeft = 0;
+			} else if (overlayLeft > (width - overlayWidth)) {
+				overlayLeft = width - overlayWidth;
+			}
+			
+			timeImageOverlay.css({
+				"left": overlayLeft,
+				"bottom": playbackBar.parent().height()
+			});
 		}
 		else{
-			time = paella.player.videoContainer.duration("");
-			time = ( position * time / 100 );
-		}
-
+			var timeWidth = timeOverlay.width();
+			var timeLeft = event.clientX - pos.left - (timeWidth / 2);
 		
-		var timex = time;
-		if(paella.player.videoContainer.trimEnabled())
-			timex -= paella.player.videoContainer.trimStart();
+			if (timeLeft < 0) {
+				timeLeft = 0;
+			} else if (timeLeft > (width - timeWidth)) {
+				timeLeft = width - timeWidth;
+			}
+		
+			timeOverlay.css({
+				"left": timeLeft,
+				"bottom": playbackBar.parent().height()
+			});
+		}
+	},
 
-		var hou = Math.floor(timex / 3600)%24;
-		hou = ("00"+hou).slice(hou.toString().length);
+	calculateTime:function(position){
+		if(paella.player.videoContainer.trimEnabled()){
+		 	time = paella.player.videoContainer.trimEnd()-paella.player.videoContainer.trimStart();
+			time *= position;
+			
+			return [time, time + paella.player.videoContainer.trimStart()];
+		}
+		else{
+			time = position * paella.player.videoContainer.duration("");
+			return [time, time];
+		}
+	},
+	
+	timeToTimestamp:function(time){
+		var hour = Math.floor(time / 3600) % 24,
+			min = Math.floor(time / 60) % 60,
+			sec = time % 60;
 
-		var min = Math.floor(timex / 60)%60;
+		hour = ("00"+hour).slice(hour.toString().length);
 		min = ("00"+min).slice(min.toString().length);
-
-		var sec = Math.floor(timex%60);
 		sec = ("00"+sec).slice(sec.toString().length);
 
-
-
-		var timestr = (hou+":"+min+":"+sec);
-
-		// CREATING THE OVERLAY
-		if(self._hasSlides) {
-			if($("#divTimeImageOverlay").length == 0) 
-				self.setupTimeImageOverlay(timestr,pos.top,width);
-			else {
-				$("#divTimeOverlay")[0].innerHTML = timestr; //IF CREATED, UPDATE TIME AND IMAGE
-			}
-
-			// CALL IMAGEUPDATE
-			self.imageUpdate(time);
-		}
-		else {
-			if($("#divTimeOverlay").length == 0) self.setupTimeOnly(timestr,pos.top,width);
-			else $("#divTimeOverlay")[0].innerHTML = timestr;
-		}
-		
-		// UPDATE POSITION IMAGE OVERLAY
-
-		if(self._hasSlides) {
-			var ancho = $("#divTimeImageOverlay").width();
-			var posx = event.clientX-(ancho/2);
-			if(event.clientX > (ancho/2 + pos.left)  &&  event.clientX < (pos.left+width - ancho/2) ) { // LEFT
-			$("#divTimeImageOverlay").css("left",posx); // CENTER THE DIV HOVER THE MOUSE
-			}
-			else if(event.clientX < width / 2)
-				$("#divTimeImageOverlay").css("left",pos.left);
-			else 
-				$("#divTimeImageOverlay").css("left",pos.left + width - ancho);
-		}
-
-		// UPDATE POSITION TIME OVERLAY
-
-		var ancho2 = $("#divTimeOverlay").width();
-		var posx2 = event.clientX-(ancho2/2);
-		if(event.clientX > ancho2/2 + pos.left  && event.clientX < (pos.left+width - ancho2/2) ){
-		$("#divTimeOverlay").css("left",posx2); // CENTER THE DIV HOVER THE MOUSE
-		}
-		else if(event.clientX < width / 2)
-			$("#divTimeOverlay").css("left",pos.left);
-		else 
-			$("#divTimeOverlay").css("left",pos.left + width - ancho2-2);
-
-		if(self._hasSlides) {
-			$("#divTimeImageOverlay").css("bottom",$('.playbackControls').height());
-		}
-
+		return (hour+":"+min+":"+sec);
 	},
 
 	imageSetup:function(){
@@ -328,7 +329,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		else return false;
 	},
 
-	setupTimeImageOverlay:function(time_str,top,width){
+	setupTimeImageOverlay:function(time_str,width){
 		var self = this;
 
 		var div = document.createElement("div");
@@ -351,7 +352,6 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 
 		var div2 = document.createElement("div");
 		div2.className = "divTimeOverlay";
-		div2.style.top = (top-20)+"px"; 
 		div2.id = ("divTimeOverlay");
 		div2.innerHTML = time_str;
 
@@ -361,10 +361,9 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		$(this.domElement).parent().append(div);
 	},
 	
-	setupTimeOnly:function(time_str,top,width){
+	setupTimeOnly:function(time_str,width){
 		var div2 = document.createElement("div");
 		div2.className = "divTimeOverlay";
-		div2.style.top = (top-20)+"px"; 
 		div2.id = ("divTimeOverlay");
 		div2.innerHTML = time_str;
 
