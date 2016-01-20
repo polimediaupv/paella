@@ -428,10 +428,6 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			}
 		});
 	},
-	
-	setVideoQualityStrategy:function(strategy) {
-		this._videoQualityStrategy = strategy;
-	},
 
 	setProfileFrameStrategy:function(strategy) {
 		this.profileFrameStrategy = strategy;
@@ -682,13 +678,59 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		}
 	},
 
-	setMasterQuality:function(quality) {
-		this._masterQuality = quality;
+	getQualities:function() {
+		var qualities = [];
+		var defer = $.Deferred();
+
+		this.masterVideo().getQualities()
+			.then(function(q) {
+				defer.resolve(q);
+			});
+
+		return defer;
 	},
+
+	setQuality:function(index) {
+		var masterQualities = [];
+		var slaveQualities = [];
+		var defer = $.Deferred();
+		var This = this;
+
+		function doSetQuality() {
+			var masterIndex = index<masterQualities.length ? index:masterQualities.length - 1;
+			var slaveIndex = index<slaveQualities.length ? index:slaveQualities.length - 1;
+			This.masterVideo().setQuality(masterIndex)
+				.then(function() {
+					return This.slaveVideo().setQuality(slaveIndex);
+				})
+
+				.then(function() {
+					defer.resolve();
+				});
+		}
+
+		this.masterVideo().getQualities()
+			.then(function(q) {
+				masterQualities = q;
+				return This.slaveVideo().getQualities();
+			})
+
+			.then(function(q) {
+				slaveQualities = q;
+				doSetQuality();
+			});
+
+
+		return defer;
+	},
+
+	//setMasterQuality:function(quality) {
+	//	this._masterQuality = quality;
+	//},
 	
-	setSlaveQuality:function(quality) {
-		this._slaveQuality = quality;		
-	},
+	//setSlaveQuality:function(quality) {
+	//	this._slaveQuality = quality;
+	//},
 
 	setStartTime:function(time) {
 //		this._startTime = time;
