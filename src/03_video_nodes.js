@@ -268,6 +268,10 @@ Class ("paella.VideoElementBase", paella.VideoRect,{
 	setQuality:function(index) {
 		return paella_DeferredNotImplemented();
 	},
+
+	getCurrentQuality:function() {
+		return paella_DeferredNotImplemented();
+	},
 	
 	unload:function() {
 		this._callUnloadEvent();
@@ -345,6 +349,10 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		this.parent(id,stream,'video',left,top,width,height);
 		var This = this;
 
+		this._stream.sources.mp4.sort(function(a,b) {
+			return a.res.h-b.res.h;
+		});
+
 		Object.defineProperty(this, 'video', {
 			get:function() { return This.domElement; }
 		});
@@ -382,6 +390,17 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		}
 
 		return defer;
+	},
+
+	_getQualityObject:function(index, s) {
+		return {
+			index: index,
+			res: s.res,
+			src: s.src,
+			toString:function() { return this.res.w + "x" + this.res.h; },
+			shortLabel:function() { return this.res.h + "p"; },
+			compare:function(q2) { return this.res.w*this.res.h - q2.res.w*q2.res.h; }
+		};
 	},
 
 	// Initialization functions
@@ -435,15 +454,10 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		setTimeout(function() {
 			var result = [];
 			var sources = This._stream.sources.mp4;
+			var index = -1;
 			sources.forEach(function(s) {
-				result.push({
-					res: s.res,
-					src: s.src,
-					toString:function() { return this.res.w + "x" + this.res.h; }
-				});
-			});
-			result.sort(function(a,b) {
-				return a.res.h-b.res.h;
+				index++;
+				result.push(This._getQualityObject(index,s));
 			});
 			defer.resolve(result);
 		},10);
@@ -466,6 +480,12 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 				This.video.currentTime = currentTime;
 				defer.resolve();
 			});
+		return defer;
+	},
+
+	getCurrentQuality:function() {
+		var defer = $.Deferred();
+		defer.resolve(this._getQualityObject(this._currentQuality,this._stream.sources.mp4[this._currentQuality]));
 		return defer;
 	},
 

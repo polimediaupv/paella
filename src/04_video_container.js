@@ -724,6 +724,10 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		return defer;
 	},
 
+	getCurrentQuality:function() {
+		return this.masterVideo().getCurrentQuality();
+	},
+
 	//setMasterQuality:function(quality) {
 	//	this._masterQuality = quality;
 	//},
