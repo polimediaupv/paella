@@ -344,7 +344,7 @@ Class ("paella.videoFactories.EmptyVideoFactory", paella.VideoFactory, {
 
 Class ("paella.Html5Video", paella.VideoElementBase,{
 	_posterFrame:null,
-	_currentQuality:0,
+	_currentQuality:null,
 
 	initialize:function(id,stream,left,top,width,height) {
 		this.parent(id,stream,'video',left,top,width,height);
@@ -422,8 +422,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	load:function() {
 		var This = this;
 		var sources = this._stream.sources.mp4;
-		this._currentQuality = 0;
-		if (this._videoQualityStrategy) {
+		if (this._currentQuality===null && this._videoQualityStrategy) {
 			this._currentQuality = this._videoQualityStrategy.getQualityIndex(sources);
 		}
 
