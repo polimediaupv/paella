@@ -179,6 +179,7 @@ Class ("paella.VideoElementBase", paella.VideoRect,{
 	_ready:false,
 	_autoplay:false,
 	_stream:null,
+	_videoQualityStrategy:null,
 
 
 	initialize:function(id,stream,containerType,left,top,width,height) {
@@ -190,8 +191,8 @@ Class ("paella.VideoElementBase", paella.VideoRect,{
 	},
 
 	// Initialization functions
-	addSource:function(sourceData) {
-		base.log.debug("TODO: implement addSource() function in your VideoElementBase subclass");
+	setVideoQualityStrategy:function(strategy) {
+		this._videoQualityStrategy = strategy;
 	},
 
 	setPosterFrame:function(url) {
@@ -421,6 +422,11 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	load:function() {
 		var This = this;
 		var sources = this._stream.sources.mp4;
+		this._currentQuality = 0;
+		if (this._videoQualityStrategy) {
+			this._currentQuality = this._videoQualityStrategy.getQualityIndex(sources);
+		}
+
 		var stream = this._currentQuality<sources.length ? sources[this._currentQuality]:null;
 		if (stream) {
 			var sourceElem = this.video.querySelector('source');

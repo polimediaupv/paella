@@ -367,6 +367,8 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	_maxSyncDelay:0.5,
 	_isMonostream:false,
 
+	_videoQualityStrategy:null,
+
 	_sourceData:null,
 	_isMasterReady:false,
 	_isSlaveReady:false,
@@ -390,6 +392,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		this.video2Id = id + '_2';
 		this.backgroundId = id + '_bkg';
 		this.logos = [];
+		this._videoQualityStrategy = new paella.VideoQualityStrategy();
 
 		this.container = new paella.DomNode('div',this.containerId,{position:'relative',display:'block',marginLeft:'auto',marginRight:'auto',width:'1024px',height:'567px'});
 		this.container.domElement.setAttribute('role','main');
@@ -427,6 +430,12 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 				return this._isMasterReady && this._isSlaveReady;
 			}
 		});
+	},
+
+	setVideoQualityStrategy:function(strategy) {
+		this._videoQualityStrategy = strategy;
+		if (this.masterVideo()) this.masterVideo().setVideoQualityStrategy(this._videoQualityStrategy);
+		if (this.slaveVideo()) slaveVideo.setVideoQualityStrategy(this._videoQualityStrategy);
 	},
 
 	setProfileFrameStrategy:function(strategy) {
@@ -728,16 +737,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		return this.masterVideo().getCurrentQuality();
 	},
 
-	//setMasterQuality:function(quality) {
-	//	this._masterQuality = quality;
-	//},
-	
-	//setSlaveQuality:function(quality) {
-	//	this._slaveQuality = quality;
-	//},
-
 	setStartTime:function(time) {
-//		this._startTime = time;
 		this.seekToTime(time);
 	},
 
@@ -761,6 +761,9 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			!base.userAgent.browser.IsMobileVersion;
 		masterVideo.setAutoplay(autoplay);
 		slaveVideo.setAutoplay(autoplay);
+
+		masterVideo.setVideoQualityStrategy(this._videoQualityStrategy);
+		slaveVideo.setVideoQualityStrategy(this._videoQualityStrategy);
 
 		this.container.addNode(masterVideo);
 		if (videoData.length>1) {

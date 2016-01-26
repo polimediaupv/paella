@@ -4,9 +4,9 @@
 
 
 Class ("paella.VideoQualityStrategy", {
-	getStream:function(source,stream,userSelection) {
+	getQualityIndex:function(source) {
 		if (source.length>0) {
-			return source[0];
+			return source[source.length-1];
 		}
 		else {
 			return source;
@@ -14,49 +14,40 @@ Class ("paella.VideoQualityStrategy", {
 	}
 });
 
-// TODO: Paella currently does not use any quality strategy
-/*
+// TODO: Modify quality strategies
+
 Class ("paella.BestFitVideoQualityStrategy",paella.VideoQualityStrategy,{
-	getStream:function(source,stream,userSelection) {
+	getQualityIndex:function(source) {
+		var index = source.length - 1;
+
 		if (source.length>0) {
 			var selected = source[0];
 			var win_w = $(window).width();
 			var win_h = $(window).height();
 			var win_res = (win_w * win_h);
-			var selected_res = parseInt(selected.res.w) * parseInt(selected.res.h);
-			var selected_diff = Math.abs(win_res - selected_res);
 
-			for (var i=0; i<source.length; ++i) {
-				var res = source[i].res;
-				if (res) {
-					if (userSelection != undefined) {
-						res = res.w + "x" + res.h;
-						if (res==userSelection) {
-							selected = source[i];
-							break;
-						}
-					}
-					else{
+			if (selected.res && selected.res.w && selected.res.h) {
+				var selected_res = parseInt(selected.res.w) * parseInt(selected.res.h);
+				var selected_diff = Math.abs(win_res - selected_res);
+
+				for (var i=0; i<source.length; ++i) {
+					var res = source[i].res;
+					if (res) {
 						var m_res = parseInt(source[i].res.w) * parseInt(source[i].res.h);
 						var m_diff = Math.abs(win_res - m_res);
 
 						if (m_diff < selected_diff){
 							selected_diff = m_diff;
-							selected = source[i];
+							index = i;
 						}
-
-
 					}
 				}
 			}
-			return selected;
 		}
-		else {
-			return source;
-		}
+
+		return index;
 	}
 });
-*/
 
 
 Class ("paella.VideoFactory", {
