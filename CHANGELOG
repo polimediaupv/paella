@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+* Paella 4.1.12 (27-01-2016)
+
+    * Allow open the editor in an iframe using 'openEditorInIframe' parameter to true.
+    * Avoid negative trimming in  trimming plugins.
+    * Added enableResetButton option using 'enableResetButton' parameter.
+    * Added config value 'neverShow' to the breaksPlayer plugin.
+    * Fixed editor not discarding changes on Breaks plugin
+    * Fixed editor not displaying saved changes on trimming.
+
 * Paella 4.1.11 (10-12-2015)
 
     * Microsoft Edge compatibility

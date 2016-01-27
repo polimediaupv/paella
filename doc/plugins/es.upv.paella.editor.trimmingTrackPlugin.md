@@ -6,6 +6,14 @@ This plugin is a trimming editor control.
 
 - [paella.EventDrivenPlugin](../developer/plugin_types.md)
 
+## Configuration Parameters
+
+* **enableResetButton**
+
+	Keep the user resolution selected.
+	- default value: true
+	- range: true | false
+
 ## Related Plugins 
 
 [**es.upv.paella.trimmingPlayerPlugin**](es.upv.paella.trimmingPlayerPlugin.md)
@@ -17,7 +25,8 @@ This plugin is a trimming editor control.
 {
 	"es.upv.paella.editor.trimmingTrackPlugin": 
 	{
-		"enabled":true
+		"enabled":true,
+		"enableResetButton": true
 	}
 }
 ```

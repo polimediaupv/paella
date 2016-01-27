@@ -28,17 +28,21 @@ Class ("paella.plugins.BreaksPlayerPlugin",paella.EventDrivenPlugin,{
 			a = this.breaks[i];
 
 			if (a.s<params.currentTime && a.e>params.currentTime) {
-				this.showBreaks(a);
+                            if(this.config.neverShow)
+                                this.avoidBreak(a);
+                            else
+                                this.showBreaks(a);
 			} else if (a.s.toFixed(0) == params.currentTime.toFixed(0)){
 				this.avoidBreak(a);
 			}
 		}
-
-		for (var key in this.visibleBreaks) {
-			if (typeof(a)=='object') {
-				a = this.visibleBreaks[key];
-				if (a && (a.s>=params.currentTime || a.e<=params.currentTime)) {
-					this.removeBreak(a);
+		if(!this.config.neverShow) {
+			for (var key in this.visibleBreaks) {
+				if (typeof(a)=='object') {
+					a = this.visibleBreaks[key];
+					if (a && (a.s>=params.currentTime || a.e<=params.currentTime)) {
+						this.removeBreak(a);
+					}
 				}
 			}
 		}
@@ -62,7 +66,7 @@ Class ("paella.plugins.BreaksPlayerPlugin",paella.EventDrivenPlugin,{
 	},
 
 	avoidBreak:function(br){
-		var newTime = br.e;
+		var newTime = br.e + (this.config.neverShow?0.01:0);
 		paella.player.videoContainer.seekToTime(newTime);
 	}
 });
