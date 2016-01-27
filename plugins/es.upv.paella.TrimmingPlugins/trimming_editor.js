@@ -16,7 +16,26 @@ paella.plugins.TrimmingTrackPlugin = Class.create(paella.editor.MainTrackPlugin,
 	},
 		
 	getName:function() { return "es.upv.paella.editor.trimmingTrackPlugin"; },
-	
+
+	getTools:function() {
+		if(this.config.enableResetButton) {
+			return [
+				{name:'reset', label:base.dictionary.translate('Reset'), hint:base.dictionary.translate('Resets the trimming bar to the default length of the video.')}
+			];
+		}
+	},
+
+	onToolSelected:function(toolName) {
+		if(this.config.enableResetButton) {
+		    if(toolName=='reset') {
+			this.trimmingTrack = {id:1,s:0,e:0};
+			this.trimmingTrack.s = 0;
+			this.trimmingTrack.e = paella.player.videoContainer.duration(true);
+			return true;
+			}
+		}
+	},
+
 	getTrackName:function() {
 		return base.dictionary.translate("Trimming");
 	},
