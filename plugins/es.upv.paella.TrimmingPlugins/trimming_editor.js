@@ -34,6 +34,9 @@ paella.plugins.TrimmingTrackPlugin = Class.create(paella.editor.MainTrackPlugin,
 		paella.player.videoContainer.enableTrimming();
 		paella.player.videoContainer.setTrimmingStart(this.trimmingTrack.s);
 		paella.player.videoContainer.setTrimmingEnd(this.trimmingTrack.e);
+
+		this.trimmingData.s = this.trimmingTrack.s;
+		this.trimmingData.e = this.trimmingTrack.e;
 		
 		paella.data.write('trimming',{id:paella.initDelegate.getId()},{start:this.trimmingTrack.s,end:this.trimmingTrack.e},function(data,status) {
 			onDone(status);
