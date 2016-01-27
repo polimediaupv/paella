@@ -51,6 +51,10 @@ paella.plugins.TrimmingTrackPlugin = Class.create(paella.editor.MainTrackPlugin,
 	},
 	
 	onTrackChanged:function(id,start,end) {
+		//Checks if the trimming is valid (start >= 0 and end <= duration_of_the_video)
+		playerEnd = paella.player.videoContainer.trimEnd();
+		start = (start < 0)? 0 : start;
+		end = (end > playerEnd)? playerEnd : end;
 		this.trimmingTrack.s = start;
 		this.trimmingTrack.e = end;
 		this.parent(id,start,end);
