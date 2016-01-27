@@ -14,6 +14,12 @@ This plugin was made for add the zoom functionality to paella player for be able
 	- default value: true
 	- range: true | false
 
+* **openEditorInIframe**
+
+	Allow open the editor in an iframe
+	- default value: false
+	- range: true | false
+
 ## Config Example:
 
 Here's are the config lines for this plugin:
@@ -23,7 +29,8 @@ Here's are the config lines for this plugin:
 	"es.upv.paella.ShowEditorPlugin":
 	{
 		"enabled":true,
-		"alwaysVisible":true
+		"alwaysVisible":true,
+		openEditorInIframe: true
 	},
 }
 ```
