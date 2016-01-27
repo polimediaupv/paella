@@ -32,14 +32,17 @@ Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 			// Mobile version in monostream mode
 			paella.player.videoContainer.masterVideo().goFullScreen();
 		}
-		else if (!paella.player.checkFullScreenCapability() && window.location !== window.parent.location) {
+		else if ((!paella.player.checkFullScreenCapability() || base.userAgent.browser.Explorer) && window.location !== window.parent.location) {
 			// Iframe and no fullscreen support
 			var url = window.location.href;
 
 			paella.player.pause();
-			var sec = paella.player.videoContainer.currentTime();
-			var obj = self.secondsToHours(sec);
-			window.open(url+"&time="+obj.h+"h"+obj.m+"m"+obj.s+"s&autoplay=true");
+			paella.player.videoContainer.currentTime()
+                .then(function(currentTime) {
+					var obj = self.secondsToHours(currentTime);
+					window.open(url+"&time="+obj.h+"h"+obj.m+"m"+obj.s+"s&autoplay=true");
+                });
+			
 			return;
 		}
 		else {
