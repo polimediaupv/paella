@@ -29,8 +29,8 @@ paella.plugins.TrimmingTrackPlugin = Class.create(paella.editor.MainTrackPlugin,
 		if(this.config.enableResetButton) {
 		    if(toolName=='reset') {
 			this.trimmingTrack = {id:1,s:0,e:0};
-			this.trimmingTrack.s = paella.player.videoContainer.trimStart();
-			this.trimmingTrack.e = paella.player.videoContainer.trimEnd();
+			this.trimmingTrack.s = 0;
+			this.trimmingTrack.e = paella.player.videoContainer.duration();
 			return true;
 			}
 		}
