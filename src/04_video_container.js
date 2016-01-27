@@ -430,6 +430,12 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 				return this._isMasterReady && this._isSlaveReady;
 			}
 		});
+
+		Object.defineProperty(this,'isMonostream', {
+			get: function() {
+				return this._isMonostream;
+			}
+		});
 	},
 
 	setVideoQualityStrategy:function(strategy) {
@@ -710,10 +716,16 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			var slaveIndex = index<slaveQualities.length ? index:slaveQualities.length - 1;
 			This.masterVideo().setQuality(masterIndex)
 				.then(function() {
-					return This.slaveVideo().setQuality(slaveIndex);
+					if (This.slaveVideo()) {
+						return This.slaveVideo().setQuality(slaveIndex);
+					}
+					else {
+						return paella_DeferredResolved();
+					}
 				})
 
 				.then(function() {
+					paella.events.trigger(paella.events.qualityChanged);
 					defer.resolve();
 				});
 		}
@@ -721,11 +733,16 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		this.masterVideo().getQualities()
 			.then(function(q) {
 				masterQualities = q;
-				return This.slaveVideo().getQualities();
+				if (This.slaveVideo()) {
+					return This.slaveVideo().getQualities();
+				}
+				else {
+					return paella_DeferredResolved();
+				}
 			})
 
 			.then(function(q) {
-				slaveQualities = q;
+				slaveQualities = q || [];
 				doSetQuality();
 			});
 
@@ -750,6 +767,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 
 		var masterRect = videoData.length>1 ? {x:850,y:140,w:360,h:550}:{x:0,y:0,w:1280,h:720};
 		var slaveRect = {x:10,y:40,w:800,h:600};
+		this._isMonostream = videoData.length==1;
 		var masterVideoData = videoData.length>0 ? videoData[0]:{ sources:[] };
 		var slaveVideoData = videoData.length>1 ? videoData[1]:{ sources:[] };
 		var masterVideo = paella.videoFactory.getVideoObject(this.video1Id,masterVideoData, masterRect);

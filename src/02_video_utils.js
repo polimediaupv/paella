@@ -14,8 +14,6 @@ Class ("paella.VideoQualityStrategy", {
 	}
 });
 
-// TODO: Modify quality strategies
-
 Class ("paella.BestFitVideoQualityStrategy",paella.VideoQualityStrategy,{
 	getQualityIndex:function(source) {
 		var index = source.length - 1;
@@ -36,7 +34,7 @@ Class ("paella.BestFitVideoQualityStrategy",paella.VideoQualityStrategy,{
 						var m_res = parseInt(source[i].res.w) * parseInt(source[i].res.h);
 						var m_diff = Math.abs(win_res - m_res);
 
-						if (m_diff < selected_diff){
+						if (m_diff <= selected_diff){
 							selected_diff = m_diff;
 							index = i;
 						}

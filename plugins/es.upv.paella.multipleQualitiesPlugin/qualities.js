@@ -18,8 +18,9 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 	},		
 		
 	setup:function() {
-		var self = this;
+		var This = this;
 		this.setQualityLabel();
+		paella.events.bind(paella.events.qualityChanged, function(event) { This.setQualityLabel(); });
 	},
 
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },

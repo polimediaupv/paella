@@ -283,6 +283,10 @@ Class ("paella.VideoElementBase", paella.VideoRect,{
 		return paella_DeferredNotImplemented();	// { width:X, height:Y }
 	},
 
+	goFullScreen:function() {
+		return paella_DeferredNotImplemented();
+	},
+
 	freeze:function(){
 		return paella_DeferredNotImplemented();
 	},
@@ -358,6 +362,8 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 			get:function() { return This.domElement; }
 		});
 
+		this.video.preload = "auto";
+
 		function onProgress(event) {
 			if (!This._ready && This.video.readyState==4) {
 				This._ready = true;
@@ -386,10 +392,11 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 			defer.resolve(action());
 		}
 		else {
-			$(This.video).bind('canplay',function(evt) {
-                This._ready = true;
+			var resolve = function() {
+				This._ready = true;
 				defer.resolve(action());
-			});
+			};
+			$(This.video).bind('canplay',resolve);
 		}
 
 		return defer;
@@ -558,6 +565,24 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
         });
 	},
 
+	goFullScreen:function() {
+		var This = this;
+		return this._deferredAction(function() {
+			var elem = This.video;
+			if (elem.requestFullscreen) {
+				elem.requestFullscreen();
+			}
+			else if (elem.msRequestFullscreen) {
+				elem.msRequestFullscreen();
+			}
+			else if (elem.mozRequestFullScreen) {
+				elem.mozRequestFullScreen();
+			}
+			else if (elem.webkitEnterFullscreen) {
+				elem.webkitEnterFullscreen();
+			}
+		});
+	},
 
 
 	unFreeze:function(){

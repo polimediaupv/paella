@@ -60,7 +60,8 @@ paella.events = {
 	enterFullscreen:'paella:enterFullscreen',
 	exitFullscreen:'paella:exitFullscreen',
 	resize:'paella:resize',		// params: { width:paellaPlayerContainer width, height:paellaPlayerContainer height }
-	
+
+	qualityChanged:'paella:qualityChanged',
 	singleVideoReady:'paella:singleVideoReady',
 	singleVideoUnloaded:'paella:singleVideoUnloaded',
 	videoReady:'paella:videoReady',

@@ -6,9 +6,9 @@ Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 	getSubclass:function() { return "showFullScreenButton"; },
 	getName:function() { return "es.upv.paella.fullScreenButtonPlugin"; },
 	checkEnabled:function(onSuccess) {
-		var enabled = paella.player.checkFullScreenCapability();
+		var enabled = true;
 		if (base.userAgent.browser.IsMobileVersion) {
-			enabled = paella.player.videoContainer.isMonostream && (enabled);
+			enabled = paella.player.videoContainer.isMonostream;
 		}
 		onSuccess(enabled);
 	},
@@ -28,22 +28,30 @@ Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 		if (paella.player.isFullScreen()) {
 			paella.player.exitFullScreen();
 		}
-		else {
-			if( (base.userAgent.browser.IsMobileVersion || base.userAgent.browser.Explorer) && (window.location !== window.parent.location) ) {
-				var url = window.location.href;
-
-				//PAUSE IFRAME
-				paella.player.pause();
-				var sec = paella.player.videoContainer.currentTime();
-				var obj = self.secondsToHours(sec);
-				window.open(url+"&time="+obj.h+"h"+obj.m+"m"+obj.s+"s&autoplay=true");
-				return;
-			}
-			else paella.player.goFullScreen();
+		else if (base.userAgent.browser.IsMobileVersion && paella.player.videoContainer.isMonostream) {
+			// Mobile version in monostream mode
+			paella.player.videoContainer.masterVideo().goFullScreen();
 		}
+		else if (!paella.player.checkFullScreenCapability() && window.location !== window.parent.location) {
+			// Iframe and no fullscreen support
+			var url = window.location.href;
+
+			paella.player.pause();
+			var sec = paella.player.videoContainer.currentTime();
+			var obj = self.secondsToHours(sec);
+			window.open(url+"&time="+obj.h+"h"+obj.m+"m"+obj.s+"s&autoplay=true");
+			return;
+		}
+		else {
+			paella.player.goFullScreen();
+		}
+
 		setTimeout(function() {
 			if(self._reload) {
-				paella.player.reloadVideos();
+				paella.player.videoContainer.setQuality(null)
+					.then(function() {
+					});
+				//paella.player.reloadVideos();
 			}
 		}, 1000);
 	},
