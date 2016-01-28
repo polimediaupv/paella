@@ -95,13 +95,16 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		this.parent('div',id,style);
 		$(this.domElement).click(function(evt) {
 			if (self.firstClick && base.userAgent.browser.IsMobileVersion) return;
-			if (paella.player.videoContainer.paused()) {
-				paella.player.play();
-			}
-			else {
-				paella.player.pause();
-			}
-			self.firstClick = true;
+			paella.player.videoContainer.paused()
+				.then(function(paused) {
+					self.firstClick = true;
+					if (paused) {
+						paella.player.play();
+					}
+					else {
+						paella.player.pause();
+					}
+				});
 		});
 		this.domElement.addEventListener("touchstart",function(event) {
 			if (paella.player.controls) {

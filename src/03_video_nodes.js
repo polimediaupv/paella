@@ -476,15 +476,24 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		var paused = This.video.paused;
 		var sources = this._stream.sources.mp4;
 		this._currentQuality = index<sources.length ? index:0;
-		this._ready = false;
 		var currentTime = this.video.currentTime;
-		this.load()
+		this.freeze()
+
+			.then(function() {
+				This._ready = false;
+				return This.load();
+			})
+
 			.then(function() {
 				if (!paused) {
 					This.play();
 				}
+				$(This.video).on('seeked',function() {
+					This.unFreeze();
+					defer.resolve();
+					$(This.video).off('seeked');
+				});
 				This.video.currentTime = currentTime;
-				defer.resolve();
 			});
 		return defer;
 	},
@@ -586,35 +595,27 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 
 
 	unFreeze:function(){
-		return paella_DeferredNotImplemented();
-		/*
-		var self = this;
-		var c = document.getElementById(this.domElement.className + "canvas");
-		$(c).remove();
-		*/
+		var This = this;
+		return this._deferredAction(function() {
+			var c = document.getElementById(This.video.className + "canvas");
+			$(c).remove();
+		});
 	},
 	
 	freeze:function(){
-		return paella_DeferredNotImplemented();
-		/*
-		var self = this;
-		var canvas = document.createElement("canvas");
-		var pos = this._rect;
-		canvas.id = this.domElement.className + "canvas";
-		canvas.width = $(this.domElement).width();
-		canvas.height = $(this.domElement).height();
-		canvas.style.position = "absolute";
-		canvas.style.width = canvas.width + "px";
-		canvas.style.height = canvas.height + "px";
-		canvas.style.top = $(this.domElement).position().top + "px";
-		canvas.style.left = $(this.domElement).position().left + "px";
-		canvas.style.zIndex = 2;
+		var This = this;
+		return this._deferredAction(function() {
+			var canvas = document.createElement("canvas");
+			canvas.id = This.video.className + "canvas";
+			canvas.width = This.video.videoWidth;
+			canvas.height = This.video.videoHeight;
+			canvas.style.cssText = This.video.style.cssText;
+			canvas.style.zIndex = 2;
 
-		var ctx = canvas.getContext("2d");
-		ctx.drawImage(this.domElement, 0, 0, Math.ceil(canvas.width/16)*16, Math.ceil(canvas.height/16)*16);//Draw image
-		this.domElement.parentElement.appendChild(canvas);
-		self._canvasPile.push(canvas);
-		*/
+			var ctx = canvas.getContext("2d");
+			ctx.drawImage(This.video, 0, 0, Math.ceil(canvas.width/16)*16, Math.ceil(canvas.height/16)*16);//Draw image
+			This.video.parentElement.appendChild(canvas);
+		});
 	},
 
 	unload:function() {
@@ -672,7 +673,7 @@ Class ("paella.ImageVideo", paella.VideoElementBase,{
 		$(this.domElement).bind('loadstart',evtCallback);
 		$(this.domElement).bind('loadedmetadata',evtCallback);
         $(this.domElement).bind('canplay',evtCallback);
-		if(thisClass._canvasPile == null){ thisClass._canvasPile = []; }
+		//if(thisClass._canvasPile == null){ thisClass._canvasPile = []; }
 	},
 
 	// Initialization functions
@@ -797,7 +798,7 @@ Class ("paella.MpegDashVideo", paella.VideoElementBase,{
 		$(this.domElement).bind('loadstart',evtCallback);
 		$(this.domElement).bind('loadedmetadata',evtCallback);
 		$(this.domElement).bind('oncanplay',evtCallback);
-		if(thisClass._canvasPile == null){ thisClass._canvasPile = []; }
+		//if(thisClass._canvasPile == null){ thisClass._canvasPile = []; }
 	},
 
 	// Initialization functions
