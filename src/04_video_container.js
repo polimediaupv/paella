@@ -472,22 +472,23 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	syncVideos:function() {
+		var This = this;
 		var masterVideo = this.masterVideo();
 		var slaveVideo = this.slaveVideo();
 		var masterCurrent = 0;
 		var slaveCurrent = 0;
 		if (!this._isMonostream && masterVideo && slaveVideo) {
 			masterVideo.currentTime()
-				.done(function(m) {
+				.then(function(m) {
 					masterCurrent = m;
 					return slaveVideo.currentTime();
 				})
 
-				.done(function(s) {
+				.then(function(s) {
 					slaveCurrent = s;
 					var diff = Math.abs(masterCurrent - slaveCurrent);
 
-					if (diff>this._maxSyncDelay) {
+					if (diff>This._maxSyncDelay) {
 						base.log.debug("Sync videos performed, diff=" + diff);
 						slaveVideo.setCurrentTime(masterCurrent);
 					}
@@ -562,6 +563,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			if (time>this._trimming.end) time = this._trimming.end;
 		}
 		this.masterVideo().setCurrentTime(time);
+		if (this.slaveVideo()) this.slaveVideo().setCurrentTime(time);
 		this.parent();
 	},
 
@@ -928,91 +930,107 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	applyProfileWithJson:function(profileData,animate) {
-		if (animate==undefined) animate = true;
-		var video1 = this.container.getNode(this.video1Id);
-		var video2 = this.container.getNode(this.video2Id);
-		if (!video1) return;	// The video is not loaded
+		var doApply = function(masterData, slaveData) {
+			if (animate==undefined) animate = true;
+			var video1 = this.masterVideo();
+			var video2 = this.slaveVideo();
 
-		var background = this.container.getNode(this.backgroundId);
+			var background = this.container.getNode(this.backgroundId);
 
-		var rectMaster = profileData.masterVideo.rect[0];
-		var rectSlave = profileData.slaveVideo.rect[0];
-		var masterDimensions = video1.getDimensions();
-		var slaveDimensions = {width:360,height:240};
-		if (video2) slaveDimensions = video2.getDimensions();
-		var masterAspectRatio = (masterDimensions.height==0) ? 1.3333:masterDimensions.width / masterDimensions.height;
-		var slaveAspectRatio = (slaveDimensions.height==0) ? 1.3333:slaveDimensions.width / slaveDimensions.height;
-		var profileMasterAspectRatio = 1.333;
-		var profileSlaveAspectRatio = 1.333;
+			var rectMaster = profileData.masterVideo.rect[0];
+			var rectSlave = profileData.slaveVideo.rect[0];
+			var masterDimensions = masterData.res;
+			var slaveDimensions = slaveData.res;
+			var masterAspectRatio = (masterDimensions.h==0) ? 1.3333:masterDimensions.w / masterDimensions.h;
+			var slaveAspectRatio = (slaveDimensions.h==0) ? 1.3333:slaveDimensions.w / slaveDimensions.h;
+			var profileMasterAspectRatio = 1.333;
+			var profileSlaveAspectRatio = 1.333;
 
-		var minMasterDiff = 10;
-		for (var i = 0; i<profileData.masterVideo.rect.length;++i) {
-			var profileMaster = profileData.masterVideo.rect[i];
-			if (/([0-9]+)\/([0-9]+)/.test(profileMaster.aspectRatio)) {
-				profileMasterAspectRatio = Number(RegExp.$1) / Number(RegExp.$2);
+			var minMasterDiff = 10;
+			for (var i = 0; i<profileData.masterVideo.rect.length;++i) {
+				var profileMaster = profileData.masterVideo.rect[i];
+				if (/([0-9]+)\/([0-9]+)/.test(profileMaster.aspectRatio)) {
+					profileMasterAspectRatio = Number(RegExp.$1) / Number(RegExp.$2);
+				}
+				var masterDiff = Math.abs(profileMasterAspectRatio - masterAspectRatio);
+				if (minMasterDiff>masterDiff) {
+					minMasterDiff = masterDiff;
+					rectMaster = profileMaster;
+				}
+				//base.log.debug(profileMasterAspectRatio + ' - ' + masterAspectRatio + ' = ' + masterDiff);
 			}
-			var masterDiff = Math.abs(profileMasterAspectRatio - masterAspectRatio);
-			if (minMasterDiff>masterDiff) {
-				minMasterDiff = masterDiff;
-				rectMaster = profileMaster;
+
+			var minSlaveDiff = 10;
+			for (i = 0; i<profileData.slaveVideo.rect.length;++i) {
+				var profileSlave = profileData.slaveVideo.rect[i];
+				if (/([0-9]+)\/([0-9]+)/.test(profileSlave.aspectRatio)) {
+					profileSlaveAspectRatio = Number(RegExp.$1) / Number(RegExp.$2);
+				}
+				var slaveDiff = Math.abs(profileSlaveAspectRatio - slaveAspectRatio);
+				if (minSlaveDiff>slaveDiff) {
+					minSlaveDiff = slaveDiff;
+					rectSlave = profileSlave;
+				}
 			}
-			//base.log.debug(profileMasterAspectRatio + ' - ' + masterAspectRatio + ' = ' + masterDiff);
-		}
 
-		var minSlaveDiff = 10;
-		for (i = 0; i<profileData.slaveVideo.rect.length;++i) {
-			var profileSlave = profileData.slaveVideo.rect[i];
-			if (/([0-9]+)\/([0-9]+)/.test(profileSlave.aspectRatio)) {
-				profileSlaveAspectRatio = Number(RegExp.$1) / Number(RegExp.$2);
+			// Logos
+			// Hide previous logos
+			this.hideAllLogos();
+
+			// Create or show new logos
+			this.showLogos(profileData.logos);
+
+			if (dynamic_cast("paella.ProfileFrameStrategy",this.profileFrameStrategy)) {
+				var containerSize = { width:$(this.domElement).width(), height:$(this.domElement).height() };
+				var scaleFactor = rectMaster.width / containerSize.width;
+				var scaledMaster = { width:masterDimensions.w*scaleFactor, height:masterDimensions.h*scaleFactor };
+				rectMaster.left = Number(rectMaster.left);
+				rectMaster.top = Number(rectMaster.top);
+				rectMaster.width = Number(rectMaster.width);
+				rectMaster.height = Number(rectMaster.height);
+				rectMaster = this.profileFrameStrategy.adaptFrame(scaledMaster,rectMaster);
+				if (video2) {
+					var scaledSlave = { width:slaveDimensions.w * scaleFactor, height:slaveDimensions.h * scaleFactor };
+					rectSlave.left = Number(rectSlave.left);
+					rectSlave.top = Number(rectSlave.top);
+					rectSlave.width = Number(rectSlave.width);
+					rectSlave.height = Number(rectSlave.height);
+					rectSlave = this.profileFrameStrategy.adaptFrame(scaledSlave,rectSlave);
+				}
 			}
-			var slaveDiff = Math.abs(profileSlaveAspectRatio - slaveAspectRatio);
-			if (minSlaveDiff>slaveDiff) {
-				minSlaveDiff = slaveDiff;
-				rectSlave = profileSlave;
-			}
-		}
 
-		// Logos
-		// Hide previous logos
-		this.hideAllLogos();
-
-		// Create or show new logos
-		this.showLogos(profileData.logos);
-
-		if (dynamic_cast("paella.ProfileFrameStrategy",this.profileFrameStrategy)) {
-			var containerSize = { width:$(this.domElement).width(), height:$(this.domElement).height() };
-			var scaleFactor = rectMaster.width / containerSize.width;
-			var scaledMaster = { width:masterDimensions.width*scaleFactor, height:masterDimensions.height*scaleFactor };
-			rectMaster.left = Number(rectMaster.left);
-			rectMaster.top = Number(rectMaster.top);
-			rectMaster.width = Number(rectMaster.width);
-			rectMaster.height = Number(rectMaster.height);
-			rectMaster = this.profileFrameStrategy.adaptFrame(scaledMaster,rectMaster);
+			video1.setRect(rectMaster,animate);
+			this.currentMasterVideoRect = rectMaster;
+			video1.setVisible(profileData.masterVideo.visible,animate);
+			this.currentMasterVideoRect.visible = /true/i.test(profileData.masterVideo.visible) ? true:false;
+			this.currentMasterVideoRect.layer = parseInt(profileData.masterVideo.layer);
 			if (video2) {
-				var scaledSlave = { width:slaveDimensions.width * scaleFactor, height:slaveDimensions.height * scaleFactor };
-				rectSlave.left = Number(rectSlave.left);
-				rectSlave.top = Number(rectSlave.top);
-				rectSlave.width = Number(rectSlave.width);
-				rectSlave.height = Number(rectSlave.height);
-				rectSlave = this.profileFrameStrategy.adaptFrame(scaledSlave,rectSlave);
+				video2.setRect(rectSlave,animate);
+				this.currentSlaveVideoRect = rectSlave;
+				this.currentSlaveVideoRect.visible = /true/i.test(profileData.slaveVideo.visible) ? true:false;
+				this.currentSlaveVideoRect.layer = parseInt(profileData.slaveVideo.layer);
+				video2.setVisible(profileData.slaveVideo.visible,animate);
+				video2.setLayer(profileData.slaveVideo.layer);
 			}
+			video1.setLayer(profileData.masterVideo.layer);
+			background.setImage(paella.utils.folders.profiles() + '/resources/' + profileData.background.content);
+		};
+		
+		if (!this.masterVideo() || !this.slaveVideo()) {
+			return;
 		}
-
-		video1.setRect(rectMaster,animate);
-		this.currentMasterVideoRect = rectMaster;
-		video1.setVisible(profileData.masterVideo.visible,animate);
-		this.currentMasterVideoRect.visible = /true/i.test(profileData.masterVideo.visible) ? true:false;
-		this.currentMasterVideoRect.layer = parseInt(profileData.masterVideo.layer);
-		if (video2) {
-			video2.setRect(rectSlave,animate);
-			this.currentSlaveVideoRect = rectSlave;
-			this.currentSlaveVideoRect.visible = /true/i.test(profileData.slaveVideo.visible) ? true:false;
-			this.currentSlaveVideoRect.layer = parseInt(profileData.slaveVideo.layer);
-			video2.setVisible(profileData.slaveVideo.visible,animate);
-			video2.setLayer(profileData.slaveVideo.layer);
-		}
-		video1.setLayer(profileData.masterVideo.layer);
-		background.setImage(paella.utils.folders.profiles() + '/resources/' + profileData.background.content);
+		
+		var This = this;
+		var masterVideoData = {};		
+		this.masterVideo().getVideoData()
+			.then(function(data) {
+				masterVideoData = data;
+				return This.slaveVideo().getVideoData();
+			})
+			
+			.then(function(slaveVideoData) {
+				doApply.apply(This, [ masterVideoData, slaveVideoData ]);
+			});
 	},
 
 	resizePortrail:function() {

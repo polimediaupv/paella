@@ -212,6 +212,10 @@ Class ("paella.VideoElementBase", paella.VideoRect,{
 	},
 
 	// Playback functions
+	getVideoData:function() {
+		return paella_DeferredNotImplemented();
+	},
+	
 	play:function() {
 		base.log.debug("TODO: implement play() function in your VideoElementBase subclass");
 		return paella_DeferredNotImplemented();
@@ -414,6 +418,26 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	},
 
 	// Initialization functions
+	getVideoData:function() {
+		var defer = $.Deferred();
+		var This = this;
+		this._deferredAction(function() {
+			var videoData = {
+				duration: This.video.duration,
+				currentTime: This.video.currentTime,
+				volume: This.video.volume,
+				paused: This.video.paused,
+				ended: This.video.ended,
+				res: {
+					w: This.video.videoWidth,
+					h: This.video.videoHeight
+				}
+			};
+			defer.resolve(videoData);
+		});
+		return defer;
+	},
+	
 	setPosterFrame:function(url) {
 		this._posterFrame = url;
 		this.video.setAttribute("poster",url);
