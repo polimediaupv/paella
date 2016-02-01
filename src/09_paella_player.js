@@ -35,7 +35,10 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		var thisClass = this;
 		
 		var onFullScreenChangeEvent = function() {
-			paella.pluginManager.checkPluginsVisibility();
+			setTimeout(function() {
+				paella.pluginManager.checkPluginsVisibility();
+			}, 1000);
+
 			var fs = document.getElementById(paella.player.mainContainer.id);
 			
 			if (paella.player.isFullScreen()) {				
@@ -61,7 +64,8 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			document.addEventListener("webkitfullscreenchange", onFullScreenChangeEvent, false);
 			document.addEventListener("mozfullscreenchange", onFullScreenChangeEvent, false);	
 			document.addEventListener("MSFullscreenChange", onFullScreenChangeEvent, false);
-		}		
+			document.addEventListener("webkitendfullscreen", onFullScreenChangeEvent, false);
+		}
 	},
 
 	isFullScreen: function() {
@@ -74,13 +78,9 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 	},
 	goFullScreen: function() {
-		this.addFullScreenListeners();
 		if (!this.isFullScreen()) {
 			if (base.userAgent.browser.IsMobileVersion && paella.player.videoContainer.isMonostream) {
-				var video = paella.player.videoContainer.masterVideo().domElement;
-				if (video.webkitSupportsFullscreen) {					
-					video.webkitEnterFullscreen();
-				}
+				paella.player.videoContainer.masterVideo().goFullScreen();
 			}
 			else {			
 				var fs = document.getElementById(paella.player.mainContainer.id);		
@@ -101,7 +101,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	},
 	
 	exitFullScreen: function() {
-		this.addFullScreenListeners();	
 		if (this.isFullScreen()) {			
 			if (document.webkitCancelFullScreen) {
 				document.webkitCancelFullScreen();
@@ -275,6 +274,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 				This.videoContainer.setStreamData(loader.streams)
 					.done(function() {
 						paella.events.trigger(paella.events.loadComplete);
+						This.addFullScreenListeners();
 						This.onresize();
 					})
 					.fail(function(error) {

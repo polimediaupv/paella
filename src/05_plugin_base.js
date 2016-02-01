@@ -33,8 +33,8 @@ Class ("paella.PluginManager", {
 		});
 		
 		var timer = new base.Timer(function() {
-			paella.player.controls.onresize();
-		}, 2000);
+			if (paella.player && paella.player.controls) paella.player.controls.onresize();
+		}, 1000);
 		timer.repeat = true;
 	},
 
