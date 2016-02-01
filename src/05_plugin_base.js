@@ -27,10 +27,15 @@ Class ("paella.PluginManager", {
 
 	initialize:function() {
 		this.targets = {};
-		var thisClass = this;
+		var This = this;
 		paella.events.bind(paella.events.loadPlugins,function(event) {
-			thisClass.loadPlugins("paella.DeferredLoadPlugin");
+			This.loadPlugins("paella.DeferredLoadPlugin");
 		});
+		
+		var timer = new base.Timer(function() {
+			paella.player.controls.onresize();
+		}, 2000);
+		timer.repeat = true;
 	},
 
 	setTarget:function(pluginType,target) {
