@@ -9,9 +9,9 @@
                    {"name":"image","enabled":true}],
 
 		"methods":[
+			{ "factory":"ImageVideoFactory", "enabled":true },
 			{ "factory":"Html5VideoFactory", "enabled":true },
-			{ "factory":"MpegDashVideoFactory", "enabled":true },
-			{ "factory":"ImageVideoFactory", "enabled":true }
+			{ "factory":"MpegDashVideoFactory", "enabled":true }
 		],
         "audio": {
             "master": 1.0,
