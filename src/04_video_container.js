@@ -42,7 +42,7 @@ Class ("paella.VideoOverlay", paella.DomNode,{
 	},
 
 	addText:function(text,rect,isDebug) {
-		var textElem = document.createElement('div0');
+		var textElem = document.createElement('div');
 		textElem.innerHTML = text;
 		textElem.className = "videoOverlayText";
 		if (isDebug) textElem.style.backgroundColor = "red";
@@ -57,6 +57,13 @@ Class ("paella.VideoOverlay", paella.DomNode,{
 		element.style.width = this.getHSize(rect.width) + '%';
 		element.style.height = this.getVSize(rect.height) + '%';
 		return element;
+	},
+
+	addLayer:function(zindex) {
+		zindex = zindex || 10;
+		var element = document.createElement('div');
+		element.className = "row";
+		return this.addElement(element,{ left:0, top: 0, width:1280, height:720 });
 	},
 
 	removeElement:function(element) {
