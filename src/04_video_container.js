@@ -21,6 +21,10 @@ Class ("paella.VideoOverlay", paella.DomNode,{
 		this.domElement.setAttribute("role", "main");
 	},
 
+	_generateId:function() {
+		return Math.ceil(Date.now() * Math.random());
+	},
+
 	enableBackgroundMode:function() {
 		this.domElement.className = 'overlayContainer background';
 	},
@@ -59,11 +63,24 @@ Class ("paella.VideoOverlay", paella.DomNode,{
 		return element;
 	},
 
-	addLayer:function(zindex) {
+	getLayer:function(id,zindex) {
+		id = id || this._generateId();
+		return $(this.domElement).find("#" + id)[0] || this.addLayer(id,zindex);
+	},
+
+	addLayer:function(id,zindex) {
 		zindex = zindex || 10;
 		var element = document.createElement('div');
 		element.className = "row";
+		element.id = id || this._generateId();
 		return this.addElement(element,{ left:0, top: 0, width:1280, height:720 });
+	},
+
+	removeLayer:function(id) {
+		var elem = $(this.domElement).find("#" + id)[0];
+		if (elem) {
+			this.domElement.removeChild(elem);
+		}
 	},
 
 	removeElement:function(element) {
