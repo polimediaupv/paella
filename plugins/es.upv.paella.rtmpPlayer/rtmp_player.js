@@ -7,32 +7,93 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 	_playTimer:null,
 	_playbackRate:1,
 
-	_frameArray:null,
+	_flashId:null,
+	_swfContainer:null,
+	_flashVideo:null,
 
 
 	initialize:function(id,stream,left,top,width,height) {
-		this.parent(id,stream,'img',left,top,width,height);
+		this.parent(id,stream,'div',left,top,width,height);
+		this._flashId = id + 'Movie';
 		var This = this;
 
-		this._stream.sources.image.sort(function(a,b) {
+		this._stream.sources.rtmp.sort(function(a,b) {
 			return a.res.h - b.res.h;
 		});
 
-		Object.defineProperty(this, 'img', {
-			get:function() { return This.domElement; }
+		Object.defineProperty(this,'swfContainer',{
+			get:function() { return This._swfContainer; }
 		});
 
-		Object.defineProperty(this, 'imgStream', {
-			get:function() {
-				return this._stream.sources.image[this._currentQuality];
-			}
+		Object.defineProperty(this,'flashId', {
+			get:function() { return This._flashId; }
 		});
 
-		Object.defineProperty(this, '_paused', {
-			get:function() {
-				return this._playTimer==null;
-			}
+		Object.defineProperty(this,'flashVideo', {
+			get:function() { return This._flashVideo; }
 		});
+	},
+
+	_createSwfObject:function(swfFile,flashVars) {
+		var id = this.identifier;
+		var parameters = { wmode:'transparent' };
+
+		var domElement = document.createElement('div');
+		this.domElement.appendChild(domElement);
+		domElement.id = id + "Movie";
+		this._swfContainer = domElement;
+
+		if (swfobject.hasFlashPlayerVersion("9.0.0")) {
+			swfobject.embedSWF(swfFile,domElement.id,"100%","100%","9.0.0","",flashVars,parameters, null, function callbackFn(e){
+				if (e.success == false){
+					var message = document.createElement('div');
+
+					var header = document.createElement('h3');
+					header.innerHTML = base.dictionary.translate("Flash player problem");
+					var text = document.createElement('div');
+					text.innerHTML = base.dictionary.translate("A problem occurred trying to load flash player.") + "<br>" +
+						base.dictionary.translate("Please go to {0} and install it.")
+							.replace("{0}", "<a style='color: #800000; text-decoration: underline;' href='http://www.adobe.com/go/getflash'>http://www.adobe.com/go/getflash</a>") + '<br>' +
+
+						base.dictionary.translate("If the problem presist, contant us.");
+
+					var link = document.createElement('a');
+					link.setAttribute("href", "http://www.adobe.com/go/getflash");
+					link.innerHTML = '<img style="margin:5px;" src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Obtener Adobe Flash Player" />';
+
+					message.appendChild(header);
+					message.appendChild(text);
+					message.appendChild(link);
+
+					paella.messageBox.showError(message.innerHTML);
+				}
+			});
+		}
+		else {
+			var message = document.createElement('div');
+
+			var header = document.createElement('h3');
+			header.innerHTML = base.dictionary.translate("Flash player 9 nedded");
+
+			var text = document.createElement('div');
+
+			text.innerHTML = base.dictionary.translate("You need at least Flash player 9 installed.") + "<br>" +
+				base.dictionary.translate("Please go to {0} and install it.")
+					.replace("{0}", "<a style='color: #800000; text-decoration: underline;' href='http://www.adobe.com/go/getflash'>http://www.adobe.com/go/getflash</a>");
+
+			var link = document.createElement('a');
+			link.setAttribute("href", "http://www.adobe.com/go/getflash");
+			link.innerHTML = '<img style="margin:5px;" src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Obtener Adobe Flash Player" />';
+
+			message.appendChild(header);
+			message.appendChild(text);
+			message.appendChild(link);
+
+			paella.messageBox.showError(message.innerHTML);
+		}
+
+		var flashObj = $('#' + domElement.id)[0];
+		return flashObj;
 	},
 
 	_deferredAction:function(action) {
@@ -47,7 +108,7 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 				This._ready = true;
 				defer.resolve(action());
 			};
-			$(This.video).bind('paella:imagevideoready', resolve);
+			$(This.swfContainer).bind('paella:flashvideoready', resolve);
 		}
 
 		return defer;
@@ -62,22 +123,6 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 			shortLabel:function() { return this.res.h + "p"; },
 			compare:function(q2) { return this.res.w*this.res.h - q2.res.w*q2.res.h; }
 		};
-	},
-
-	_loadCurrentFrame:function() {
-		var This = this;
-		if (this._frameArray) {
-			var frame = this._frameArray[0];
-			this._frameArray.some(function(f) {
-				if (This._currentTime<f.time) {
-					return true;
-				}
-				else {
-					frame = f.src;
-				}
-			});
-			this.img.src = frame;
-		}
 	},
 
 	// Initialization functions
@@ -103,41 +148,69 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 
 	setPosterFrame:function(url) {
 		this._posterFrame = url;
-		this.video.setAttribute("poster",url);
+	//	this.video.setAttribute("poster",url);
 	},
 
 	setAutoplay:function(auto) {
 		this._autoplay = auto;
 		if (auto) {
-			this.video.setAttribute("autoplay",auto);
+	///		this.video.setAttribute("autoplay",auto);
 		}
 	},
 
 	load:function() {
 		var This = this;
-		var sources = this._stream.sources.image;
+		var sources = this._stream.sources.rtmp;
 		if (this._currentQuality===null && this._videoQualityStrategy) {
 			this._currentQuality = this._videoQualityStrategy.getQualityIndex(sources);
 		}
 
+		var isValid = function(stream) {
+			return stream.src && typeof(stream.src)=='object' && stream.src.server && stream.src.stream;
+		};
+
 		var stream = this._currentQuality<sources.length ? sources[this._currentQuality]:null;
 		if (stream) {
-			this._frameArray = [];
-			for (var key in stream.frames) {
-				var time = Math.floor(Number(key.replace("frame_","")));
-				this._frameArray.push({ src:stream.frames[key], time:time });
+			if (!isValid(stream)) {
+				return paella_DeferredRejected(new Error("Invalid video data"));
 			}
-			this._frameArray.sort(function(a,b) {
-				return a.time - b.time;
-			});
-			this._ready = true;
-			this._currentTime = 0;
-			this._duration = stream.duration;
-			this._loadCurrentFrame();
-			paella.events.trigger("paella:imagevideoready");
-			return this._deferredAction(function() {
-				return stream;
-			});
+			else {
+				var subscription = false;
+				if (stream.src.requiresSubscription===undefined && paella.player.config.player.rtmpSettings) {
+					subscription = paella.player.config.player.rtmpSettings.requiresSubscription || false;
+				}
+				else if (stream.src.requiresSubscription) {
+					subscription = stream.src.requiresSubscription;
+				}
+				var parameters = {};
+				var swfName = 'resources/deps/player_streaming.swf';
+				if (this._autoplay) {
+					parameters.autoplay = this._autoplay;
+				}
+				if (base.parameters.get('debug')=="true") {
+					parameters.debugMode = true;
+				}
+
+				parameters.playerId = this.flashId;
+				parameters.isLiveStream = stream.isLiveStream!==undefined ? stream.isLiveStream:false;
+				parameters.server = stream.src.server;
+				parameters.stream = stream.src.stream;
+				parameters.subscribe = subscription;
+				if (paella.player.config.player.rtmpSettings && paella.player.config.player.rtmpSettings.bufferTime!==undefined) {
+					parameters.bufferTime = paella.player.config.player.rtmpSettings.bufferTime;
+				}
+				this._flashVideo = this._createSwfObject(swfName,parameters);
+
+				// TODO: ready event must be set when the movie loads
+				this._ready = true;
+
+				$(this.swfContainer).trigger("paella:flashvideoready");
+
+				return this._deferredAction(function() {
+					return stream;
+				});
+			}
+
 		}
 		else {
 			return paella_DeferredRejected(new Error("Could not load video: invalid quality stream index"));
@@ -298,7 +371,7 @@ Class ("paella.videoFactories.RTMPVideoFactory", {
 	isStreamCompatible:function(streamData) {
 		try {
 			for (var key in streamData.sources) {
-				if (key=='image') return true;
+				if (key=='rtmp') return true;
 			}
 		}
 		catch (e) {}
