@@ -81,7 +81,9 @@ paella.events = {
 	
 	setupExternalListener:function() {
 		window.addEventListener("message", function(event) {
-			paella.events.trigger(event.data.event,event.data.params);
+			if (event.data && event.data.event) {
+				paella.events.trigger(event.data.event,event.data.params);
+			}
 		}, false);
 	}
 };
