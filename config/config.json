@@ -9,6 +9,7 @@
                    {"name":"image","enabled":true}],
 
 		"methods":[
+			{ "factory":"RTMPVideoFactory", "enabled":true },
 			{ "factory":"ImageVideoFactory", "enabled":true },
 			{ "factory":"Html5VideoFactory", "enabled":true },
 			{ "factory":"MpegDashVideoFactory", "enabled":true }
