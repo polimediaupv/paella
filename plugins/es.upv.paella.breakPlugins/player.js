@@ -28,7 +28,7 @@ Class ("paella.plugins.BreaksPlayerPlugin",paella.EventDrivenPlugin,{
 			a = this.breaks[i];
 
 			if (a.s<params.currentTime && a.e>params.currentTime) {
-                            if(this.config.neverShow)
+                            if(this.areBreaksClickable())
                                 this.avoidBreak(a);
                             else
                                 this.showBreaks(a);
@@ -36,7 +36,7 @@ Class ("paella.plugins.BreaksPlayerPlugin",paella.EventDrivenPlugin,{
 				this.avoidBreak(a);
 			}
 		}
-		if(!this.config.neverShow) {
+		if(!this.areBreaksClickable()) {
 			for (var key in this.visibleBreaks) {
 				if (typeof(a)=='object') {
 					a = this.visibleBreaks[key];
@@ -47,7 +47,10 @@ Class ("paella.plugins.BreaksPlayerPlugin",paella.EventDrivenPlugin,{
 			}
 		}
 	},
-
+	areBreaksClickable:function() {
+            //Returns true if the config value is set and if we are not on the editor.
+	    return this.config.neverShow && !(paella.editor.instance && paella.editor.instance.isLoaded);
+	},
 	showBreaks:function(br) {
 		if (!this.visibleBreaks[br.s]) {
 			var rect = {left:100,top:350,width:1080,height:20};
