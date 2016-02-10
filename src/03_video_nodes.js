@@ -188,6 +188,7 @@ Class ("paella.VideoElementBase", paella.VideoRect,{
 		Object.defineProperty(this,'ready',{
 			get:function() { return this._ready; }
 		});
+		if (this._stream.preview) this.setPosterFrame(this._stream.preview);
 	},
 
 	// Initialization functions
@@ -353,6 +354,7 @@ Class ("paella.videoFactories.EmptyVideoFactory", paella.VideoFactory, {
 Class ("paella.Html5Video", paella.VideoElementBase,{
 	_posterFrame:null,
 	_currentQuality:null,
+	_autoplay:false,
 
 	initialize:function(id,stream,left,top,width,height) {
 		this.parent(id,stream,'video',left,top,width,height);
@@ -440,12 +442,11 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	
 	setPosterFrame:function(url) {
 		this._posterFrame = url;
-		this.video.setAttribute("poster",url);
 	},
 
 	setAutoplay:function(auto) {
 		this._autoplay = auto;
-		if (auto) {
+		if (auto && this.video) {
 			this.video.setAttribute("autoplay",auto);
 		}
 	},
@@ -463,6 +464,9 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 			if (!sourceElem) {
 				sourceElem = document.createElement('source');
 				this.video.appendChild(sourceElem);
+			}
+			if (this._posterFrame) {
+				this.video.setAttribute("poster",this._posterFrame);
 			}
 
 			sourceElem.src = stream.src;
@@ -774,12 +778,11 @@ Class ("paella.ImageVideo", paella.VideoElementBase,{
 
 	setPosterFrame:function(url) {
 		this._posterFrame = url;
-		this.video.setAttribute("poster",url);
 	},
 
 	setAutoplay:function(auto) {
 		this._autoplay = auto;
-		if (auto) {
+		if (auto && this.video) {
 			this.video.setAttribute("autoplay",auto);
 		}
 	},
@@ -1015,12 +1018,11 @@ Class ("paella.MpegDashVideo", paella.VideoElementBase,{
 	// Initialization functions
 	setPosterFrame:function(url) {
 		this._posterFrame = url;
-		this.video.setAttribute("poster",url);
 	},
 
 	setAutoplay:function(auto) {
 		this._autoplay = auto;
-		if (auto) {
+		if (auto && this.video) {
 			this.video.setAttribute("autoplay",auto);
 		}
 	},

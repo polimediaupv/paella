@@ -195,7 +195,15 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 	},
 
 	setPosterFrame:function(url) {
-		this._posterFrame = url;
+		if (this._posterFrame==null) {
+			this._posterFrame = url;
+			var posterFrame = document.createElement('img');
+			posterFrame.src = url;
+			posterFrame.className = "videoPosterFrameImage";
+			posterFrame.alt = "poster frame";
+			this.domElement.appendChild(posterFrame);
+			this._posterFrameElement = posterFrame;
+		}
 	//	this.video.setAttribute("poster",url);
 	},
 
@@ -299,6 +307,9 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 	play:function() {
 		var This = this;
 		return this._deferredAction(function() {
+			if (This._posterFrameElement) {
+				This._posterFrameElement.parentNode.removeChild(This._posterFrameElement);
+			}
 			This._paused = false;
 			This.flashVideo.play();
 		});
@@ -370,22 +381,7 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 	},
 
 	goFullScreen:function() {
-		var This = this;
-		return this._deferredAction(function() {
-			var elem = This.img;
-			if (elem.requestFullscreen) {
-				elem.requestFullscreen();
-			}
-			else if (elem.msRequestFullscreen) {
-				elem.msRequestFullscreen();
-			}
-			else if (elem.mozRequestFullScreen) {
-				elem.mozRequestFullScreen();
-			}
-			else if (elem.webkitEnterFullscreen) {
-				elem.webkitEnterFullscreen();
-			}
-		});
+		return paella_DeferredNotImplemented();
 	},
 
 
