@@ -214,6 +214,7 @@ Class ("paella.editor.Track", {
 
 	onResizerUp:function(track,event) {
 		if (this.resizeTrack) {
+			this.resizeTrack = document.getElementById(this.resizeTrack.id); //Workaround. Fixes breaks resetting.
 			var duration = paella.player.videoContainer.duration(true);
 			var totalWidth = $(this.container).width();
 			var left = $(this.resizeTrack).position().left;
