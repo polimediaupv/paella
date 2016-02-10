@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+* Paella 4.1.13 (10-02-2016)
+
+	* Fix bug in breakPlugins. Even if the configuration value 'neverShow' is 'true', the behaviour on the editor should remain before.
+	* Fix bug in editor: paella.breakPlugins: After changing its name, selecting a break will reset it (#189)
+
 * Paella 4.1.12 (27-01-2016)
 
     * Allow open the editor in an iframe using 'openEditorInIframe' parameter to true.
