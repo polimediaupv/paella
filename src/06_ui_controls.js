@@ -612,7 +612,7 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 
 		paella.events.bind(paella.events.play,function(event) { thisClass.onPlayEvent(); });
 		paella.events.bind(paella.events.pause,function(event) { thisClass.onPauseEvent(); });
-		$(document).mousemove(function(event) {
+		$(paella.player.mainContainer).mousemove(function(event) {
 			paella.player.controls.restartTimerEvent();
 		});
 		paella.events.bind(paella.events.endVideo,function(event) { thisClass.onEndVideoEvent(); });
