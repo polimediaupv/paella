@@ -40,6 +40,9 @@
 		"resources": "resources",
 		"skins": "resources/style"
 	},
+	"experimental":{
+		"autoplay":true
+	},
 	"plugins":{
 		"enablePluginsByDefault": false,		
 

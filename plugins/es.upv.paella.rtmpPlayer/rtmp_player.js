@@ -1,11 +1,8 @@
 Class ("paella.RTMPVideo", paella.VideoElementBase,{
 	_posterFrame:null,
 	_currentQuality:null,
-	_currentTime:0,
-	_duration: 0,
-	_ended:false,
-	_playTimer:null,
-	_playbackRate:1,
+	_duration:0,
+	_paused:true,
 
 	_flashId:null,
 	_swfContainer:null,
@@ -19,6 +16,57 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 
 		this._stream.sources.rtmp.sort(function(a,b) {
 			return a.res.h - b.res.h;
+		});
+
+		var processEvent = function(eventName,params) {
+			if (eventName!="loadedmetadata" && eventName!="pause" && !This._isReady) {
+				This._isReady = true;
+				This._duration = params.duration;
+				$(This.swfContainer).trigger("paella:flashvideoready");
+			}
+			if (eventName=="progress") {
+				try { This.flashVideo.setVolume(this._volume); }
+				catch(e) {}
+				base.log.debug("Flash video event: " + eventName + ", progress: " + This.flashVideo.currentProgress());
+			}
+			else if (eventName=="ended") {
+				base.log.debug("Flash video event: " + eventName);
+				paella.events.trigger(paella.events.pause);
+				paella.player.controls.showControls();
+			}
+			else {
+				base.log.debug("Flash video event: " + eventName);
+			}
+		};
+
+		var eventReceived = function(eventName,params) {
+			params = params.split(",");
+			var processedParams = {};
+			for (var i=0; i<params.length; ++i) {
+				var splitted = params[i].split(":");
+				var key = splitted[0];
+				var value = splitted[1];
+				if (value=="NaN") {
+					value = NaN;
+				}
+				else if (/^true$/i.test(value)) {
+					value = true;
+				}
+				else if (/^false$/i.test(value)) {
+					value = false;
+				}
+				else if (!isNaN(parseFloat(value))) {
+					value = parseFloat(value);
+				}
+				processedParams[key] = value;
+			}
+			processEvent(eventName,processedParams);
+		};
+
+		paella.events.bind(paella.events.flashVideoEvent,function(event,params) {
+			if (This.flashId==params.source) {
+				eventReceived(params.eventName,params.values);
+			}
 		});
 
 		Object.defineProperty(this,'swfContainer',{
@@ -55,7 +103,7 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 						base.dictionary.translate("Please go to {0} and install it.")
 							.replace("{0}", "<a style='color: #800000; text-decoration: underline;' href='http://www.adobe.com/go/getflash'>http://www.adobe.com/go/getflash</a>") + '<br>' +
 
-						base.dictionary.translate("If the problem presist, contant us.");
+						base.dictionary.translate("If the problem presist, contact us.");
 
 					var link = document.createElement('a');
 					link.setAttribute("href", "http://www.adobe.com/go/getflash");
@@ -131,14 +179,14 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 		var This = this;
 		this._deferredAction(function() {
 			var videoData = {
-				duration: This._duration,
-				currentTime: This._currentTime,
-				volume: 0,
+				duration: This.flashVideo.duration(),
+				currentTime: This.flashVideo.getCurrentTime(),
+				volume: This.flashVideo.getVolume(),
 				paused: This._paused,
 				ended: This._ended,
 				res: {
-					w: This.imgStream.res.w,
-					h: This.imgStream.res.h
+					w: This.flashVideo.getWidth(),
+					h: This.flashVideo.getHeight()
 				}
 			};
 			defer.resolve(videoData);
@@ -153,9 +201,6 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 
 	setAutoplay:function(auto) {
 		this._autoplay = auto;
-		if (auto) {
-	///		this.video.setAttribute("autoplay",auto);
-		}
 	},
 
 	load:function() {
@@ -201,9 +246,6 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 				}
 				this._flashVideo = this._createSwfObject(swfName,parameters);
 
-				// TODO: ready event must be set when the movie loads
-				this._ready = true;
-
 				$(this.swfContainer).trigger("paella:flashvideoready");
 
 				return this._deferredAction(function() {
@@ -222,7 +264,7 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 		var defer = $.Deferred();
 		setTimeout(function() {
 			var result = [];
-			var sources = This._stream.sources.mp4;
+			var sources = This._stream.sources.rtmp;
 			var index = -1;
 			sources.forEach(function(s) {
 				index++;
@@ -237,7 +279,7 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 		var defer = $.Deferred();
 		var This = this;
 		var paused = this._paused;
-		var sources = this._stream.sources.image;
+		var sources = this._stream.sources.rtmp;
 		this._currentQuality = index<sources.length ? index:0;
 		var currentTime = this._currentTime;
 		This.load()
@@ -257,19 +299,16 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 	play:function() {
 		var This = this;
 		return this._deferredAction(function() {
-			This._playTimer = new base.Timer(function() {
-				This._currentTime += 0.25 * This._playbackRate;
-				This._loadCurrentFrame();
-			}, 250);
-			This._playTimer.repeat = true;
+			This._paused = false;
+			This.flashVideo.play();
 		});
 	},
 
 	pause:function() {
 		var This = this;
 		return this._deferredAction(function() {
-			This._playTimer.repeat = false;
-			This._playTimer = null;
+			This._paused = true;
+			This.flashVideo.pause();
 		});
 	},
 
@@ -283,34 +322,36 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 	duration:function() {
 		var This = this;
 		return this._deferredAction(function() {
-			return This._duration;
+			return This.flashVideo.duration();
 		});
 	},
 
 	setCurrentTime:function(time) {
 		var This = this;
 		return this._deferredAction(function() {
-			This._currentTime = time;
+			var duration = This.flashVideo.duration();
+			This.flashVideo.seekTo(time * 100 / duration);
 		});
 	},
 
 	currentTime:function() {
 		var This = this;
 		return this._deferredAction(function() {
-			return This._currentTime;
+			return This.flashVideo.getCurrentTime();
 		});
 	},
 
 	setVolume:function(volume) {
+		var This = this;
 		return this._deferredAction(function() {
-			// No audo sources in image video
+			This.flashVideo.setVolume(volume);
 		});
 	},
 
 	volume:function() {
+		var This = this;
 		return this._deferredAction(function() {
-			// No audo sources in image video
-			return 0;
+			return This.flashVideo.getVolume();
 		});
 	},
 

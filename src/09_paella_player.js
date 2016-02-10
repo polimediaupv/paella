@@ -276,6 +276,9 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 						paella.events.trigger(paella.events.loadComplete);
 						This.addFullScreenListeners();
 						This.onresize();
+						if (This.videoContainer.autoplay()) {
+							This.play();
+						}
 					})
 					.fail(function(error) {
 						console.log(error);

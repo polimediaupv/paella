@@ -802,10 +802,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		var masterVideo = paella.videoFactory.getVideoObject(this.video1Id,masterVideoData, masterRect);
 		var slaveVideo = paella.videoFactory.getVideoObject(this.video2Id,slaveVideoData, slaveRect);
 
-		var autoplay = base.parameters.get('autoplay')=='true' &&
-			paella.player.config.experimental &&
-			paella.player.config.experimental.autoplay &&
-			!base.userAgent.browser.IsMobileVersion;
+		var autoplay = this.autoplay();
 		masterVideo.setAutoplay(autoplay);
 		slaveVideo.setAutoplay(autoplay);
 
@@ -867,6 +864,13 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		if (this.slaveVideo()) {
 			this.slaveVideo().setAutoplay(true);
 		}
+	},
+
+	autoplay:function() {
+		return base.parameters.get('autoplay')=='true' &&
+			paella.player.config.experimental &&
+			paella.player.config.experimental.autoplay &&
+			!base.userAgent.browser.IsMobileVersion;
 	},
 
 	numberOfStreams:function() {
