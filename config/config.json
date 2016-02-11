@@ -21,7 +21,11 @@
         "rtmpSettings":{
             "bufferTime":5,
 			"requiresSubscription": false
-        }
+        },
+		"slidesMarks":{
+			"enabled":true,
+			"color":"gray"
+		}
 	},
 	"editor":{
 		"enabled":true

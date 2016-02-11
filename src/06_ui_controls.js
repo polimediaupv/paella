@@ -127,7 +127,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		var self = this;
 		var parent = $("#playerContainer_controls_playback_playbackBar");
 		this.clearCanvas();
-		if (this._keys) {
+		if (this._keys && paella.player.config.player.slidesMarks.enabled) {
 			this._keys.forEach(function (l) {
 				var aux = (parseInt(l) * parent.width()) / self._videoLength; // conversion to canvas
 				self.drawTimeMark(parseInt(aux));
@@ -138,14 +138,14 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	drawTimeMark:function(sec){
 		var ht = 12; //default height value
 		var ctx = this.getCanvasContext();
-		ctx.fillStyle = "#FFFFFF";
+		ctx.fillStyle = paella.player.config.player.slidesMarks.color;
 		ctx.fillRect(sec,0,1,ht);	
 	},
 
 	clearCanvas:function() {
 		if (this._canvas) {
-			this._canvas.parentNode.removeChild(this._canvas);
-			this._canvas = null;
+			var ctx = this.getCanvasContext();
+			ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
 		}
 	},
 
