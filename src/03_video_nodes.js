@@ -360,9 +360,11 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		this.parent(id,stream,'video',left,top,width,height);
 		var This = this;
 
-		this._stream.sources.mp4.sort(function(a,b) {
-			return a.res.h-b.res.h;
-		});
+		if (this._stream.sources.mp4) {
+			this._stream.sources.mp4.sort(function (a, b) {
+				return a.res.h - b.res.h;
+			});
+		}
 
 		Object.defineProperty(this, 'video', {
 			get:function() { return This.domElement; }
@@ -981,129 +983,5 @@ Class ("paella.videoFactories.ImageVideoFactory", {
 
 	getVideoObject:function(id, streamData, rect) {
 		return new paella.ImageVideo(id, streamData, rect.x, rect.y, rect.w, rect.h);
-	}
-});
-
-Class ("paella.MpegDashVideo", paella.VideoElementBase,{
-	_posterFrame:null,
-
-	initialize:function(id,stream,left,top,width,height) {
-		this.parent(id,stream,'video',left,top,width,height);
-		var This = this;
-
-		Object.defineProperty(this, 'video', {
-			get:function() { return This.domElement; }
-		});
-
-		function onProgress(event) {
-			if (!this._ready && this.video.readyState==4) {
-				this._ready = true;
-				if (this._initialCurrentTipe!=0) {
-					this.video.currentTime = this._initialCurrentTime;
-					delete this._initialCurrentTime;
-				}
-				this._callReadyEvent();
-			}
-		}
-
-		function evtCallback(event) { onProgress.apply(This,event); }
-
-		$(this.domElement).bind('progress', evtCallback);
-		$(this.domElement).bind('loadstart',evtCallback);
-		$(this.domElement).bind('loadedmetadata',evtCallback);
-		$(this.domElement).bind('oncanplay',evtCallback);
-		//if(thisClass._canvasPile == null){ thisClass._canvasPile = []; }
-	},
-
-	// Initialization functions
-	setPosterFrame:function(url) {
-		this._posterFrame = url;
-	},
-
-	setAutoplay:function(auto) {
-		this._autoplay = auto;
-		if (auto && this.video) {
-			this.video.setAttribute("autoplay",auto);
-		}
-	},
-
-	load:function() {
-		// TODO: Cargar vídeo de:
-		// this._stream;
-		return paella_DeferredNotImplemented();
-	},
-
-	play:function() {
-		this.video.play();
-		return paella_DeferredNotImplemented();
-	},
-
-	pause:function() {
-		this.video.pause();
-		return paella_DeferredNotImplemented();
-	},
-
-	isPaused:function() {
-		return paella_DeferredNotImplemented();
-	},
-
-	duration:function() {
-		return paella_DeferredNotImplemented();
-	},
-
-	setCurrentTime:function(time) {
-		return paella_DeferredNotImplemented();
-	},
-
-	currentTime:function() {
-		return paella_DeferredNotImplemented();
-	},
-
-	setVolume:function(volume) {
-		return paella_DeferredNotImplemented();
-	},
-
-	volume:function() {
-		return paella_DeferredNotImplemented();
-	},
-
-	setPlaybackRate:function(rate) {
-		return paella_DeferredNotImplemented();
-	},
-
-
-
-	unFreeze:function(){
-		return paella_DeferredNotImplemented();
-	},
-
-	freeze:function(){
-		return paella_DeferredNotImplemented();
-	},
-
-	unload:function() {
-		this._callUnloadEvent();
-		return paella_DeferredNotImplemented();
-	},
-
-	getDimensions:function() {
-		return paella_DeferredNotImplemented();
-	}
-});
-
-
-Class ("paella.videoFactories.MpegDashVideoFactory", {
-	isStreamCompatible:function(streamData) {
-		try {
-			for (var key in streamData.sources) {
-				if (key=='mpeg-dash') return true;
-			}
-		}
-		catch (e) {}
-		return false;
-	},
-
-	getVideoObject:function(id, streamData, rect) {
-		return new paella.MpegDashVideo(id, streamData, rect.x, rect.y, rect.w, rect.h);
 	}
 });

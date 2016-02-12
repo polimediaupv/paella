@@ -28,7 +28,7 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 	buildContent:function(domElement) {
 		var This = this;
 		this._available.forEach(function(q) {
-			var title = q.toString();
+			var title = q.shortLabel();
 			domElement.appendChild(This.getItemButton(q));
 		});
 	},
@@ -38,7 +38,7 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 		var This = this;
 		paella.player.videoContainer.getCurrentQuality()
 			.then(function(currentIndex,currentData) {
-				var label = quality.toString();
+				var label = quality.shortLabel();
 				elem.className = This.getButtonItemClass(label,quality.index==currentIndex);
 				elem.id = label;
 				elem.innerHTML = label;
