@@ -1,0 +1,29 @@
+{
+	"metadata": {
+		"duration": 0,
+		"title": "UPV-TV"
+	},
+	"streams": [
+		{
+			"sources": {
+				"mpd": [
+					{
+						"src":"http://wams.edgesuite.net/media/MPTExpressionData02/BigBuckBunny_1080p24_IYUV_2ch.ism/manifest(format=mpd-time-csf)",
+						"mimetype": "video/mp4"
+					}
+				],
+				"hls": [
+					{
+						"src": "http://playertest.longtailvideo.com/adaptive/bipbop/bipbop.m3u8",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1280",
+							"h": "720"
+						}
+					}
+				]
+			},
+			"preview": "490512.jpg"
+		}
+	]
+}
