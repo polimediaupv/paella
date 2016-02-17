@@ -305,7 +305,7 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 				break;
 			}
 		}
-		if (this.currentFrame!=frame) {
+		if (this.currentFrame!=frame && frame) {
 			//this.navButtons.left.scrollContainer.scrollLeft += 100;
 
 			if (this.currentFrame) this.currentFrame.className = 'frameControlItem';

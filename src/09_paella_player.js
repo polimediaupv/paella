@@ -1,7 +1,6 @@
 Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	player:null,
 
-	selectedProfile:'',
 	videoIdentifier:'',
 	editor:null,
 	loader:null,
@@ -36,7 +35,10 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		var thisClass = this;
 		
 		var onFullScreenChangeEvent = function() {
-			paella.pluginManager.checkPluginsVisibility();
+			setTimeout(function() {
+				paella.pluginManager.checkPluginsVisibility();
+			}, 1000);
+
 			var fs = document.getElementById(paella.player.mainContainer.id);
 			
 			if (paella.player.isFullScreen()) {				
@@ -62,7 +64,8 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			document.addEventListener("webkitfullscreenchange", onFullScreenChangeEvent, false);
 			document.addEventListener("mozfullscreenchange", onFullScreenChangeEvent, false);	
 			document.addEventListener("MSFullscreenChange", onFullScreenChangeEvent, false);
-		}		
+			document.addEventListener("webkitendfullscreen", onFullScreenChangeEvent, false);
+		}
 	},
 
 	isFullScreen: function() {
@@ -75,13 +78,9 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 	},
 	goFullScreen: function() {
-		this.addFullScreenListeners();
 		if (!this.isFullScreen()) {
 			if (base.userAgent.browser.IsMobileVersion && paella.player.videoContainer.isMonostream) {
-				var video = paella.player.videoContainer.masterVideo().domElement;
-				if (video.webkitSupportsFullscreen) {					
-					video.webkitEnterFullscreen();
-				}
+				paella.player.videoContainer.masterVideo().goFullScreen();
 			}
 			else {			
 				var fs = document.getElementById(paella.player.mainContainer.id);		
@@ -102,7 +101,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	},
 	
 	exitFullScreen: function() {
-		this.addFullScreenListeners();	
 		if (this.isFullScreen()) {			
 			if (document.webkitCancelFullScreen) {
 				document.webkitCancelFullScreen();
@@ -121,10 +119,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 
 	setProfile:function(profileName,animate) {
-		var thisClass = this;
-		this.videoContainer.setProfile(profileName,function(newProfileName) {
-			thisClass.selectedProfile = newProfileName;
-		},animate);
+		this.videoContainer.setProfile(profileName,animate);
 	},
 
 	initialize:function(playerId) {
@@ -138,6 +133,12 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 				thisClass.setProfile(params.profileName);
 			});
 		}
+
+		Object.defineProperty(this,'selectedProfile',{
+			get: function() {
+				return this.videoContainer.getCurrentProfileName();
+			}
+		});
 	},
 
 	loadPaellaPlayer:function() {
@@ -270,6 +271,19 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			this.onresize();
 			loader.loadVideo(this.videoIdentifier,function() {
 				var playOnLoad = false;
+				This.videoContainer.setStreamData(loader.streams)
+					.done(function() {
+						paella.events.trigger(paella.events.loadComplete);
+						This.addFullScreenListeners();
+						This.onresize();
+						if (This.videoContainer.autoplay()) {
+							This.play();
+						}
+					})
+					.fail(function(error) {
+						console.log(error);
+					});
+				/*
 				if (base.parameters.get('autoplay')=="true" &&
 						paella.player.config.experimental &&
 						paella.player.config.experimental.autoplay &&
@@ -334,18 +348,14 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 					if (paella.player.isLiveStream()) {
 						This.showPlaybackBar();
 					}
-					/* We need to autoplay after plugin loads
-					else if (playOnLoad) {
-						This.play();
-					}
-					*/
+
 					This.onresize();
 				}
 				else {
 					errorMessage = base.dictionary.translate("Error loading video data");
 					paella.messageBox.showError(errorMessage);
 					paella.events.trigger(paella.events.error,{error:errorMessage});
-				}
+				}*/
 			});
 		}
 	},
@@ -421,18 +431,8 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	loadComplete:function(event,params) {
 		var thisClass = this;
 
-		var master = paella.player.videoContainer.masterVideo();
-		var getProfile = base.parameters.get('profile');
-		var cookieProfile = base.cookies.get('lastProfile');
-		if (getProfile) {
-			this.setProfile(getProfile, false);
-		}
-		else if (cookieProfile) {
-			this.setProfile(cookieProfile, false);
-		}
-		else {
-			this.setProfile(paella.Profiles.getDefaultProfile(), false);
-		}
+		//var master = paella.player.videoContainer.masterVideo();
+
 
 		paella.pluginManager.loadPlugins("paella.EarlyLoadPlugin");
 		if (paella.player.videoContainer._autoplay){

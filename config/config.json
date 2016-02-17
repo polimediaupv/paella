@@ -2,10 +2,18 @@
 	"player":{
         "profileFrameStrategy": "paella.ProfileFrameStrategy",
 		"videoQualityStrategy": "paella.BestFitVideoQualityStrategy",
-		"methods":[{"name":"streaming","enabled":true},
+
+		"deprecated-methods":[{"name":"streaming","enabled":true},
 				   {"name":"html","enabled":true},
 				   {"name":"flash","enabled":true},
                    {"name":"image","enabled":true}],
+
+		"methods":[
+			{ "factory":"RTMPVideoFactory", "enabled":true },
+			{ "factory":"ImageVideoFactory", "enabled":true },
+			{ "factory":"Html5VideoFactory", "enabled":true },
+			{ "factory":"MpegDashVideoFactory", "enabled":true }
+		],
         "audio": {
             "master": 1.0,
             "slave": 0.0
@@ -13,7 +21,11 @@
         "rtmpSettings":{
             "bufferTime":5,
 			"requiresSubscription": false
-        }
+        },
+		"slidesMarks":{
+			"enabled":true,
+			"color":"gray"
+		}
 	},
 	"editor":{
 		"enabled":true
@@ -31,6 +43,9 @@
 		"profiles": "config/profiles",
 		"resources": "resources",
 		"skins": "resources/style"
+	},
+	"experimental":{
+		"autoplay":true
 	},
 	"plugins":{
 		"enablePluginsByDefault": false,		

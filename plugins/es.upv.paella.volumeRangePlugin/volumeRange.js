@@ -55,13 +55,17 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 	},
 
 	storeVolume:function(){
-		this._storedValue = true;
-		if(paella.player.videoContainer.slaveVideo()){
-			this._tempSlaveVolume = paella.player.videoContainer.slaveVideo().volume();
-		}
-		if(paella.player.videoContainer.masterVideo()){
-			this._tempMasterVolume = paella.player.videoContainer.masterVideo().volume();
-		}
+		var This = false;
+		paella.player.videoContainer.masterVideo().volume()
+			.then(function(v) {
+				This._tempMasterVolume = v;
+				return paella.player.videoContainer.slaveVideo().volume();
+			})
+
+			.then(function(v) {
+				This._tempSlaveVolume  = v;
+				This._storedValue = true;
+			});
 	},
 
 	loadStoredVolume:function(params){

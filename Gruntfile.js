@@ -20,13 +20,17 @@ module.exports = function(grunt) {
 				files: [
 					{expand: true, src: ['config/**', 'javascript/**', 'resources/bootstrap/**', 'resources/images/**', 'index.html', 'extended.html', 'paella-standalone.js'], dest: 'build/player/'},
  					{expand: true, src: ['vendor/images/**'], dest: 'build/player/resources/'},
-					{expand: true, cwd: 'src/flash_player/', src: "player.swf", dest: 'build/player/' },
-					{expand: true, cwd: 'src/flash_streaming/', src: "player_streaming.swf", dest: 'build/player/' },
 					{expand: true, cwd: 'repository_test/', src: '**', dest: 'build/'},
 					{expand: true, src:'plugins/*/resources/**', dest: 'build/player/resources/style/',
 						rename: function (dest, src) { return dest+src.split('/').splice(3).join('/'); }
 					},
+					{expand: true, src:'plugins/*/deps/**', dest: 'build/player/resources/deps/',
+						rename: function (dest, src) { return dest+src.split('/').splice(3).join('/'); }
+					},
 					{expand: true, src:'vendor/plugins/*/resources/**', dest: 'build/player/resources/style/',
+						rename: function (dest, src) { return dest+src.split('/').splice(4).join('/'); }
+					},
+					{expand: true, src:'vendor/plugins/*/deps/**', dest: 'build/player/resources/deps/',
 						rename: function (dest, src) { return dest+src.split('/').splice(4).join('/'); }
 					},
 					{src:['build/config_temp.json'],dest: 'build/player/config/config.json'},
