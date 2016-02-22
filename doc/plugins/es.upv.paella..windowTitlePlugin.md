@@ -1,4 +1,4 @@
-# paella.plugins.WindowTitlePlugin
+# es.upv.paella..windowTitlePlugin
 
 This plugin shows the video title over the player.
 
@@ -12,7 +12,7 @@ This plugin shows the video title over the player.
 Here's are the config lines for this plugin:
 
 ```json
-"paella.plugins.WindowTitlePlugin":
+"es.upv.paella..windowTitlePlugin":
 {
 	"enabled":true
 },
