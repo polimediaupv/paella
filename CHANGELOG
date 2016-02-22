@@ -1,6 +1,17 @@
 CHANGELOG
 =========
 
+* Paella 4.2.0 (Work In Progress)
+
+  * Add segment lines to the timeline
+  * Fix a bug when reload a video causing black screen blinks
+  * Resource pathes can be changed in config.json file (#168)
+  * Login functions implemented
+  * Microsoft Edge added to supported browser list
+  * Skins are now optional (#170)
+  * New Plugin: paella.plugins.WindowTitlePlugin
+  
+
 * Paella 4.1.13 (10-02-2016)
 
 	* Fix bug in breakPlugins. Even if the configuration value 'neverShow' is 'true', the behaviour on the editor should remain before.
