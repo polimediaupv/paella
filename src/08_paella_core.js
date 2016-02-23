@@ -279,6 +279,26 @@ Class ("paella.PlayerBase", {
 	},
 
 	initialize:function(playerId) {
+		if (base.parameters.get('log') != undefined) {
+			var log = 0;
+			switch(base.parameters.get('log')) {
+				case "error":
+					log = base.Log.kLevelError;
+					break;					
+				case "warn":
+					log = base.Log.kLevelWarning;
+					break;					
+				case "debug":
+					log = base.Log.kLevelDebug;
+					break;					
+				case "log":
+				case "true":
+					log = base.Log.kLevelLog;
+					break;
+			}
+			base.log.setLevel(log);
+		}		
+			
 		if (!this.checkCompatibility()) {
 			base.log.debug('It seems that your browser is not HTML 5 compatible');
 		}
