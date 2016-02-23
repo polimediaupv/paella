@@ -113,7 +113,7 @@ Class ("paella.plugins.translectures.CaptionsPlugIn", paella.EventDrivenPlugin, 
 		var video_id = paella.player.videoIdentifier;
 				
 		if ((this.config.tLServer == undefined) || (this.config.tLdb == undefined)){
-			base.log.debug("Error! " + this.getName() + " plugin not configured!");
+			base.log.warning(this.getName() + " plugin not configured!");
 			onSuccess(false);
 		}
 		else {

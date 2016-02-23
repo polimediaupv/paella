@@ -28,7 +28,7 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 			var This = this;
 			this._url = (/\/$/.test(this._url) ? this._url:this._url + '/')
 				 + videoId + '/';
-			paella.ajax.get({ url:this._url + 'data.json' },
+			base.ajax.get({ url:this._url + 'data.json' },
 				function(data,type,err) {
 					if (typeof(data)=="string") {
 						try {
