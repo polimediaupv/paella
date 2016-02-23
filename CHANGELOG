@@ -10,7 +10,8 @@ CHANGELOG
   * Microsoft Edge added to supported browser list
   * Skins are now optional (#170)
   * New Plugin: paella.plugins.WindowTitlePlugin
-  
+  * Fix bug in captions plugin on Firefox (#177)
+  * Option to pass trim start & stop values as location arguments (#179)
 
 * Paella 4.1.13 (10-02-2016)
 
