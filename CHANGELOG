@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-* Paella 4.2.0 (Work In Progress)
+* Paella 4.2.0 (26-02-2016)
 
   * Add segment lines to the timeline
   * Fix a bug when reload a video causing black screen blinks
