@@ -27,6 +27,15 @@ Class ("paella.plugins.TrimmingLoaderPlugin",paella.EventDrivenPlugin,{
 				paella.player.videoContainer.enableTrimming();
 				paella.player.videoContainer.setTrimming(data.start, data.end);
 			}
+			else {
+				// Check for optional trim 'start' and 'end', in seconds, in location args
+				var startTime =  base.parameters.get('start');
+				var endTime = base.parameters.get('end');
+				if (startTime && endTime) {
+					paella.player.videoContainer.enableTrimming();
+					paella.player.videoContainer.setTrimming(startTime, endTime);
+				}
+			}
 		});
 	}
 });

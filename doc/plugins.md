@@ -42,6 +42,7 @@ To know more about this, you can read the [Plugin types](developer/plugin_types.
 * [es.upv.paella.test.videoLoadPlugin](plugins/es.upv.paella.test.videoLoadPlugin.md)
 * [es.upv.paella.translecture.captionsPlugin](plugins/es.upv.paella.translecture.captionsPlugin.md)
 * [es.upv.paella.trimmingPlayerPlugin](plugins/es.upv.paella.trimmingPlayerPlugin.md)
+* [es.upv.paella.windowTitlePlugin](plugins/es.upv.paella.windowTitlePlugin.md)
 
 ## Captions Parser Plugins
 * [es.upv.paella.captions.DFXPParserPlugin](plugins/es.upv.paella.captions.DFXPParserPlugin.md)
