@@ -99,7 +99,7 @@ Class ("paella.plugins.SocialPlugin",paella.ButtonPlugin,{
 				this.embedPress();
 				break;
 		}
-		paella.events.trigger(paella.events.hidePopUp,{identifier:this.getName()});
+		paella.player.controls.hidePopUp(this.getName());
 	},
 
 	getVideoUrl:function() {

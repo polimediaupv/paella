@@ -70,7 +70,7 @@ Class ("paella.plugins.BreaksPlayerPlugin",paella.EventDrivenPlugin,{
 
 	avoidBreak:function(br){
 		var newTime = br.e + (this.config.neverShow?0.01:0);
-		paella.events.trigger(paella.events.seekToTime,{time:newTime});
+		paella.player.videoContainer.seekToTime(newTime);
 	}
 });
 

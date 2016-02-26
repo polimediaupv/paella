@@ -53,6 +53,7 @@ Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
 		this.buttonItems = {};
 		paella.Profiles.loadProfileList(function(profiles) {
 			Object.keys(profiles).forEach(function(profile) {
+				if (profiles[profile].hidden) return;
 				if (thisClass.active_profiles) {
 					var active = false;
 					thisClass.active_profiles.forEach(function(ap) {
@@ -108,9 +109,9 @@ Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
 
 		if (ButtonItem) {
 			ButtonItem.className = thisClass.getButtonItemClass(profile,true);
-			paella.events.trigger(paella.events.setProfile,{profileName:profile});
+			paella.player.setProfile(profile);
 		}
-		paella.events.trigger(paella.events.hidePopUp,{identifier:this.getName()});
+		paella.player.controls.hidePopUp(this.getName());
 	},
 
 	getButtonItemClass:function(profileName,selected) {

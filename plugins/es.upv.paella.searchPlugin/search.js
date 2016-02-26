@@ -189,7 +189,7 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 		        	$(sBodyInnerContainer).click(function(){ 
 		        		var sec = $(this).attr("sec");
 		        		paella.player.videoContainer.seekToTime(sec);
-		        		paella.events.trigger(paella.events.play);
+						paella.player.play();
 		        	});
 				}
 			}

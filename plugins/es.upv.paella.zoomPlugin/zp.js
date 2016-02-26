@@ -149,7 +149,7 @@ Class ("paella.ZoomPlugin", paella.EventDrivenPlugin,{
 		//ARROWS
 		$('.arrowsRight').show();
 		$('.arrowsLeft').show();
-		paella.events.trigger(paella.events.pause);
+		paella.player.pause();
 
 		//UPDATE ARROWS
 		if(self._imageNumber <= 1) $('.arrowsLeft').hide(); else if(this._isActivated) $('.arrowsLeft').show();
@@ -265,23 +265,18 @@ Class ("paella.ZoomPlugin", paella.EventDrivenPlugin,{
 	},
 	arrowCallLeft:function(){
 		var self=this;
-		var obj = {};
 		if(self._imageNumber-1 >= 0){
 			var frame = self._keys[self._imageNumber-1];
 			self._imageNumber -= 1;
-			obj.time = parseInt(frame.slice(6));
-			//paella.player.videoContainer.seekToTime(frame.slice(6));
-			paella.events.trigger(paella.events.seekToTime,obj);
+			paella.player.videoContainer.seekToTime(parseInt(frame.slice(6)));
 		}
 	},
 	arrowCallRight:function(){
 		var self=this;
-		var obj = {};
 		if(self._imageNumber+1 <= self._keys.length){
 			var frame = self._keys[self._imageNumber+1];
 			self._imageNumber += 1;
-			obj.time = parseInt(frame.slice(6));
-			paella.events.trigger(paella.events.seekToTime,obj);
+			paella.player.videoContainer.seekToTime(parseInt(frame.slice(6)));
 		}
 	},
 

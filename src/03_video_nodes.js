@@ -2,12 +2,16 @@
 paella.Profiles = {
 	profileList: null,
 	
-	loadProfile:function(profileName,onSuccessFunction) {
-		var defaultProfile;
+	getDefaultProfile: function() {
 		if (paella.player && paella.player.config && paella.player.config.defaultProfile) {
-				defaultProfile = paella.player.config.defaultProfile;
+				return paella.player.config.defaultProfile;
 		}
-		
+		return undefined;		
+	},
+	
+	loadProfile:function(profileName,onSuccessFunction) {
+	
+		var defaultProfile  = this.getDefaultProfile();		
 		this.loadProfileList(function(data){		
 			var profileData;
 			if(data[profileName] ){
@@ -29,7 +33,7 @@ paella.Profiles = {
 	loadProfileList:function(onSuccessFunction) {
 		var thisClass = this;
 		if (this.profileList == null) {
-			var params = { url:"config/profiles/profiles.json" };
+			var params = { url: paella.utils.folders.profiles() + "/profiles.json" };
 	
 			base.ajax.get(params,function(data,mimetype,code) {
 					if (typeof(data)=="string") {
@@ -236,7 +240,15 @@ Class ("paella.VideoElementBase", paella.DomNode,{
 
 	setLayer:function(layer) {
 		this.domElement.style.zIndex = layer;
+	},
+
+	freeze:function(){
+
+	},
+	unFreeze:function(){
+
 	}
+
 });
 
 
@@ -323,6 +335,9 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 		}
 		else {
 			base.log.debug("Flash video event: " + eventName);
+		}
+		if (this._isLiveStream && this._posterFrameElement) {
+			$(this._posterFrameElement).hide();
 		}
 	},
 	
@@ -625,6 +640,7 @@ Class ("paella.FlashVideo", paella.VideoElementBase,{
 
 		parameters.playerId = this.flashId;
 		parameters.isLiveStream = sourceData.isLiveStream!==undefined ? sourceData.isLiveStream:false;
+		this._isLiveStream = sourceData.isLiveStream!==undefined ? sourceData.isLiveStream:false;
 		parameters.server = sourceData.src.server;
 		parameters.stream = sourceData.src.stream;
 		parameters.subscribe = subscription;
@@ -677,6 +693,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	
 	_initialCurrentTime:0,
 	_posterFrame:null,
+	_canvasPile:null,
 
 	initialize:function(id,left,top,width,height) {
 		this.parent(id,'video',left,top,width,height);
@@ -694,6 +711,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		$(this.domElement).bind('canplay',function(event) {
 			thisClass.onVideoProgress(event);
 		});
+		if(thisClass._canvasPile == null){ thisClass._canvasPile = []; }
 	},
 	
 	onVideoProgress:function(event) {
@@ -802,8 +820,39 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		source.type = sourceData.type;
 		this.domElement.appendChild(source);
 	},
+
+	unFreeze:function(){
+		var self = this;
+		var c = document.getElementById(this.domElement.className + "canvas");
+		$(c).remove();
+	},
 	
+	freeze:function(){
+		var self = this;
+		var canvas = document.createElement("canvas");
+		var pos = this._rect;
+		canvas.id = this.domElement.className + "canvas";
+		canvas.width = $(this.domElement).width();
+		canvas.height = $(this.domElement).height();
+		canvas.style.position = "absolute";
+		canvas.style.width = canvas.width + "px";
+		canvas.style.height = canvas.height + "px";
+		canvas.style.top = $(this.domElement).position().top + "px";
+		canvas.style.left = $(this.domElement).position().left + "px";
+		canvas.style.zIndex = 2;
+
+		var ctx = canvas.getContext("2d");
+		ctx.drawImage(this.domElement, 0, 0, Math.ceil(canvas.width/16)*16, Math.ceil(canvas.height/16)*16);//Draw image
+		this.domElement.parentElement.appendChild(canvas);
+		self._canvasPile.push(canvas);
+	},
+
 	unload:function() {
+		//START_CANVAS
+		var self = this;							
+		//self.drawCanvas(this._rect);	
+
+		//END_CANVAS
 		this.ready = false;
 		var sources = $(this.domElement).find('source');
 		for (var i=0; i<sources.length; ++i) {
@@ -939,6 +988,7 @@ Class ("paella.SlideshowVideo", paella.VideoElementBase,{
 			this._currentTime = time;
 			this.checkFrame();
 		}
+		//console.log("XXX");
 	},
 
 	currentTime:function() {

@@ -24,6 +24,12 @@ Class ("paella.AccessControl", {
 // Default Access Control
 //
 Class ("paella.DefaultAccessControl", paella.AccessControl,{
+	_authParams:null,
+
+	initialize:function(authParams) {
+		this._authParams = authParams || {};
+	},
+
 	checkAccess:function(onSuccess) {
 		var This = this;
 		this.getUserData(function(data) {
@@ -54,18 +60,20 @@ Class ("paella.DefaultAccessControl", paella.AccessControl,{
 				userData: {
 					username: 'anonymous',
 					name: 'Anonymous',
-					avatar: 'resources/images/default_avatar.png'
+					avatar: paella.utils.folders.resources() + '/images/default_avatar.png'
 				}
 			});
 		}
 	},
 
 	getAuthenticationUrl:function(callbackParams) {
-		if (paella.player.config.auth) {
-			var callback = paella.player.config.auth.authCallbackName ? window[paella.player.config.auth.authCallbackName]:null;
-			if (typeof(callback)=="function") {
-				return callback(callbackParams);
-			}
+		var authCallback = this._authParams.authCallbackName && window[this._authParams.authCallbackName];
+		if (!authCallback && paella.player.config.auth) {
+			authCallback = paella.player.config.auth.authCallbackName && window[paella.player.config.auth.authCallbackName];
+		}
+
+		if (typeof(authCallback)=="function") {
+			return authCallback(callbackParams);
 		}
 		return "";
 	}
@@ -73,6 +81,10 @@ Class ("paella.DefaultAccessControl", paella.AccessControl,{
 
 
 Class ("paella.VideoLoader", {
+	metadata:{		// Video metadata
+		title:"",
+		duration:0
+	},
 	streams:[],		// {sources:{mp4:{src:"videourl.mp4",type:"video/mp4"},
 					//			 ogg:{src:"videourl.ogv",type:"video/ogg"},
 					//			 webm:{src:"videourl.webm",type:"video/webm"},
@@ -84,6 +96,10 @@ Class ("paella.VideoLoader", {
 
 	loadStatus:false,
 	codecStatus:false,
+
+	getMetadata:function() {
+		return this.metadata;
+	},
 
 	isH264Capable:function() {
 		var videoElement = document.createElement('video');
@@ -255,7 +271,7 @@ Class ("paella.PlayerBase", {
 		else {
 			var errorMessage = base.dictionary.translate("It seems that your browser is not HTML 5 compatible");
 			paella.events.trigger(paella.events.error,{error:errorMessage});
-			message = errorMessage + '<div style="display:block;width:470px;height:140px;margin-left:auto;margin-right:auto;font-family:Verdana,sans-sherif;font-size:12px;"><a href="http://www.google.es/chrome" style="color:#004488;float:left;margin-right:20px;"><img src="resources/images/chrome.png" style="width:80px;height:80px" alt="Google Chrome"></img><p>Google Chrome</p></a><a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home" style="color:#004488;float:left;margin-right:20px;"><img src="resources/images/explorer.png" style="width:80px;height:80px" alt="Internet Explorer 9"></img><p>Internet Explorer 9</p></a><a href="http://www.apple.com/safari/" style="float:left;margin-right:20px;color:#004488"><img src="resources/images/safari.png" style="width:80px;height:80px" alt="Safari"></img><p>Safari 5</p></a><a href="http://www.mozilla.org/firefox/" style="float:left;color:#004488"><img src="resources/images/firefox.png" style="width:80px;height:80px" alt="Firefox"></img><p>Firefox 12</p></a></div>';
+			message = errorMessage + '<div style="display:block;width:470px;height:140px;margin-left:auto;margin-right:auto;font-family:Verdana,sans-sherif;font-size:12px;"><a href="http://www.google.es/chrome" style="color:#004488;float:left;margin-right:20px;"><img src="'+paella.utils.folders.resources()+'images/chrome.png" style="width:80px;height:80px" alt="Google Chrome"></img><p>Google Chrome</p></a><a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home" style="color:#004488;float:left;margin-right:20px;"><img src="'+paella.utils.folders.resources()+'images/explorer.png" style="width:80px;height:80px" alt="Internet Explorer 9"></img><p>Internet Explorer 9</p></a><a href="http://www.apple.com/safari/" style="float:left;margin-right:20px;color:#004488"><img src="'+paella.utils.folders.resources()+'images/safari.png" style="width:80px;height:80px" alt="Safari"></img><p>Safari 5</p></a><a href="http://www.mozilla.org/firefox/" style="float:left;color:#004488"><img src="'+paella.utils.folders.resources()+'images/firefox.png" style="width:80px;height:80px" alt="Firefox"></img><p>Firefox 12</p></a></div>';
 			message += '<div style="margin-top:30px;"><a id="ignoreBrowserCheckLink" href="#" onclick="window.location = window.location + \'&ignoreBrowserCheck=true\'">' + base.dictionary.translate("Continue anyway") + '</a></div>';
 			paella.messageBox.showError(message,{height:'40%'});
 		}
@@ -263,6 +279,26 @@ Class ("paella.PlayerBase", {
 	},
 
 	initialize:function(playerId) {
+		if (base.parameters.get('log') != undefined) {
+			var log = 0;
+			switch(base.parameters.get('log')) {
+				case "error":
+					log = base.Log.kLevelError;
+					break;					
+				case "warn":
+					log = base.Log.kLevelWarning;
+					break;					
+				case "debug":
+					log = base.Log.kLevelDebug;
+					break;					
+				case "log":
+				case "true":
+					log = base.Log.kLevelLog;
+					break;
+			}
+			base.log.setLevel(log);
+		}		
+			
 		if (!this.checkCompatibility()) {
 			base.log.debug('It seems that your browser is not HTML 5 compatible');
 		}
@@ -357,7 +393,7 @@ Class ("paella.InitDelegate", {
 
 	loadEditorConfig:function(onSuccess) {
 		var data = {
-			cssPath:'resources/ui/jquery-ui.css'
+			cssPath: paella.utils.folders.resources() + '/ui/jquery-ui.css'
 		};
 		onSuccess(data);
 	}

@@ -98,7 +98,7 @@ paella.standalone.StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 		}
 		else {
 			try {
-				return paella.player.config.standalone.reposiroty;
+				return paella.player.config.standalone.repository;
 			}
 			catch(e) {
 				return "";
@@ -429,7 +429,7 @@ paella.dataDelegates.StandaloneCaptionsDataDelegate = Class.create(paella.DataDe
 				if (selectedCaption){
 					var url = selectedCaption.url;
 					if (! /^[a-zA-Z]+:\/\//.test(url)) {
-						url = paella.player.config.standalone.reposiroty + "/" + params.id + "/" + url;
+						url = paella.player.config.standalone.repository + "/" + params.id + "/" + url;
 					}
 					
 					if (onSuccess) { onSuccess({error: false, url: url, format: selectedCaption.format}, true); }	        

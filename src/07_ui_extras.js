@@ -5,7 +5,7 @@ Class ("paella.LoaderContainer", paella.DomNode,{
 
 	initialize:function(id) {
 		this.parent('div',id,{position:'fixed',backgroundColor:'white',opacity:'0.7',top:'0px',left:'0px',right:'0px',bottom:'0px',zIndex:10000});
-		this.loader = this.addNode(new paella.DomNode('div','',{position:'fixed',width:'128px',height:'128px',top:'50%',left:'50%',marginLeft:'-64px',marginTop:'-64px',backgroundImage:'url(resources/images/loader.png)'}));
+		this.loader = this.addNode(new paella.DomNode('div','',{position:'fixed',width:'128px',height:'128px',top:'50%',left:'50%',marginLeft:'-64px',marginTop:'-64px',backgroundImage:'url(' + paella.utils.folders.resources() + '/images/loader.png)'}));
 		var thisClass = this;
 		paella.events.bind(paella.events.loadComplete,function(event,params) { thisClass.loadComplete(params); });
 		this.timer = new base.Timer(function(timer) {
@@ -86,22 +86,22 @@ Class ("paella.KeyManager", {
 
 	togglePlayPause:function() {
 		if (this.isPlaying) {
-			paella.events.trigger(paella.events.pause);
+			paella.player.pause();
 		}
 		else {
-			paella.events.trigger(paella.events.play);
+			paella.player.play();
 		}
 	},
 
 	pause:function() {
-		paella.events.trigger(paella.events.pause);
+		paella.player.pause();
 	},
 
 	mute:function() {
 		var videoContainer = paella.player.videoContainer;
 		var newVolume = 0;
 		if (videoContainer.volume()==0) newVolume = 1.0;
-		paella.events.trigger(paella.events.setVolume,{master:newVolume,slave:0});
+		paella.player.videoContainer.setVolume({ master:newVolume, slave: 0});
 	},
 
 	volumeUp:function() {
@@ -109,7 +109,7 @@ Class ("paella.KeyManager", {
 		var volume = videoContainer.volume();
 		volume += 0.1;
 		volume = (volume>1) ? 1.0:volume;
-		paella.events.trigger(paella.events.setVolume,{master:volume,slave:0});
+		paella.player.videoContainer.setVolume({ master:volume, slave: 0});
 	},
 
 	volumeDown:function() {
@@ -117,7 +117,7 @@ Class ("paella.KeyManager", {
 		var volume = videoContainer.volume();
 		volume -= 0.1;
 		volume = (volume<0) ? 0.0:volume;
-		paella.events.trigger(paella.events.setVolume,{master:volume,slave:0});
+		paella.player.videoContainer.setVolume({ master:volume, slave: 0});
 	}
 });
 

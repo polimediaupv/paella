@@ -28,7 +28,7 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 			var This = this;
 			this._url = (/\/$/.test(this._url) ? this._url:this._url + '/')
 				 + videoId + '/';
-			paella.ajax.get({ url:this._url + 'data.json' },
+			base.ajax.get({ url:this._url + 'data.json' },
 				function(data,type,err) {
 					if (typeof(data)=="string") {
 						try {
@@ -46,6 +46,10 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 
 	loadVideoData:function(data,onSuccess) {
 		var This = this;
+		if (data.metadata) {
+			this.metadata = data.metadata;
+		}
+
 		if (data.streams) {
 			data.streams.forEach(function(stream) {
 				This.loadStream(stream);
@@ -197,8 +201,9 @@ Class ("paella.DefaultInitDelegate", paella.InitDelegate, {
  *	params.url				Repository URL
  */
 paella.load = function(playerContainer, params) {
+	var auth = (params && params.auth) || {};
 	var initObjects = {
-		accessControl: new paella.DefaultAccessControl(),
+		accessControl: new paella.DefaultAccessControl(auth),
 		videoLoader: new paella.DefaultVideoLoader(params.data || params.url)
 	};
 

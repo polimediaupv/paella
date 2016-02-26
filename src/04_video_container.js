@@ -96,10 +96,10 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		$(this.domElement).click(function(evt) {
 			if (self.firstClick && base.userAgent.browser.IsMobileVersion) return;
 			if (paella.player.videoContainer.paused()) {
-				$(document).trigger(paella.events.play);
+				paella.player.play();
 			}
 			else {
-				$(document).trigger(paella.events.pause);
+				paella.player.pause();
 			}
 			self.firstClick = true;
 		});
@@ -134,10 +134,12 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	},
 
 	play:function() {
+		paella.events.trigger(paella.events.play);
 		this.startTimeupdate();
 	},
 
 	pause:function() {
+		paella.events.trigger(paella.events.pause);
 		this.stopTimeupdate();
 	},
 
@@ -146,6 +148,8 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		this.setCurrentPercent(newPositionPercent);
 		thisClass._force = true;
 		this.triggerTimeupdate();
+		paella.events.trigger(paella.events.seekTo,{ newPositionPercent:newPositionPercent });
+
 	},
 
 	seekToTime:function(time) {
@@ -388,7 +392,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		//this.overlayContainer.addText("Loading",{left:0,top:0,width:1280,height:720},true);
 		paella.events.bind(paella.events.loadComplete,function() { thisClass.overlayContainer.removeElement(overlayLoader); });
 
-		this.container.addNode(new paella.BackgroundContainer(this.backgroundId,'config/profiles/resources/default_background_paella.jpg'));
+		this.container.addNode(new paella.BackgroundContainer(this.backgroundId, paella.utils.folders.profiles() + '/resources/default_background_paella.jpg'));
 
 		paella.events.bind(paella.events.timeupdate,function(event) { thisClass.checkVideoTrimming(); } );
 		
@@ -565,18 +569,26 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	setVolume:function(params) {
 		var masterVideo = this.masterVideo();
 		var slaveVideo = this.slaveVideo();
-		if (masterVideo && params.master) {
-			masterVideo.setVolume(params.master);
+		var masterVolume = masterVideo && masterVideo.volume();
+		var slaveVolume = slaveVideo && slaveVideo.volume();
+		if (typeof(params)=='object') {
+			masterVolume = params.master!==undefined ? params.master:masterVolume;
+			slaveVolume = params.slave!==undefined ? params.slave:slaveVolume;
 		}
-		else if (masterVideo) {
-			masterVideo.setVolume(0);
+		else {
+			masterVolume = params;
+			slaveVolume = 0;
 		}
-		if (slaveVideo && params.slave) {
-			slaveVideo.setVolume(params.slave);
+
+		if (masterVideo) {
+			masterVideo.setVolume(masterVolume);
 		}
-		else if (slaveVideo) {
-			slaveVideo.setVolume(0);
+		if (slaveVideo) {
+			slaveVideo.setVolume(slaveVolume);
 		}
+
+		paella.events.trigger(paella.events.setVolume,{ master:masterVolume, slave:slaveVolume });
+
 		this.parent();
 	},
 
@@ -664,11 +676,12 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 
 	reloadVideos:function(masterQuality,slaveQuality) {	
 		var isPaused = paella.player.videoContainer.paused();			
-	
 		this._showPosterFrame = false;
-		var memoizedCurrentTime = this.currentTime();
+		var memorizedCurrentTime = this.currentTime();
 		var masterVideo = this.masterVideo();
+		//if(masterVideo) masterVideo.freeze();
 		var slaveVideo = this.slaveVideo();
+		//if(slaveVideo) slaveVideo.freeze();
 		var masterVolume = masterVideo.volume();
 		var slaveVolume = slaveVideo && slaveVideo.volume();
 		 		
@@ -691,7 +704,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			currentMastr.res.w!=newMasterSrc.res.w || currentMastr.res.h!=newMasterSrc.res.h) {
 			if (masterVideo) masterVideo.unload();
 			if (slaveVideo) slaveVideo.unload();
-			this._seekToOnLoad = memoizedCurrentTime;
+			this._seekToOnLoad = memorizedCurrentTime;
 			this.setSources(this._videoSourceData.master,this._videoSourceData.slave);
 			masterVideo = this.masterVideo();
 			slaveVideo = this.slaveVideo();			
@@ -703,6 +716,17 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 				$(document).trigger(paella.events.play);
 				this._playOnLoad = true;
 			}
+/*			if (masterVideo) {
+				$(masterVideo.domElement).bind('timeupdate', function(evt) {
+					masterVideo.unFreeze();
+				});
+			}
+			if (slaveVideo) {
+				$(slaveVideo.domElement).bind('timeupdate', function(evt) {
+					slaveVideo.unFreeze();
+				});
+			}
+			*/
 		}
 	},
 
@@ -744,19 +768,16 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 	
 	onVideoLoaded:function(sender) {
-		var This = this;
 		if ((this.isMonostream && this.masterVideo() && this.masterVideo().isReady()) ||
 			(this.masterVideo() && this.masterVideo().isReady() &&
 			 this.slaveVideo() && this.slaveVideo().isReady())) {
-			//this.play();
-			
-			//if (!this._playOnLoad) {
-			//	this.pause();
-			//}
 			
 			if (this._playOnLoad) {
-				//this.play();
-				$(document).trigger(paella.events.play);
+				paella.player.play();
+			}
+
+			if (this._seekToOnLoad) {
+				paella.player.videoContainer.seekToTime(this._seekToOnLoad);
 			}
 		}
 	},
@@ -972,8 +993,8 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			if (!logoNode) {
 				style = {};
 				logoNode = this.container.addNode(new paella.DomNode('img',logoId,style));
-				logoNode.domElement.setAttribute('src','config/profiles/resources/' + logoId);
-				logoNode.domElement.setAttribute('src','config/profiles/resources/' + logoId);
+				logoNode.domElement.setAttribute('src', paella.utils.folders.profiles() + '/resources/' + logoId);
+				logoNode.domElement.setAttribute('src', paella.utils.folders.profiles() + '/resources/' + logoId);
 			}
 			else {
 				$(logoNode.domElement).show();
@@ -1072,7 +1093,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			video2.setLayer(profileData.slaveVideo.layer);
 		}
 		video1.setLayer(profileData.masterVideo.layer);
-		background.setImage('config/profiles/resources/' + profileData.background.content);
+		background.setImage(paella.utils.folders.profiles() + '/resources/' + profileData.background.content);
 	},
 
 	resizePortrail:function() {

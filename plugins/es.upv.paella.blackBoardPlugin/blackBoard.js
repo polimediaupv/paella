@@ -58,7 +58,7 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 				else{ 
 				
 					if(!self._hasImages){
-						paella.events.trigger(paella.events.setProfile,{profileName:"slide_professor"});
+						paella.player.setProfile("slide_professor");
 					}
 					if(self._hasImages && !self._active){
 						self.createOverlay();
@@ -98,7 +98,7 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 
 			if (paella.player.selectedProfile == self._blackBoardProfile) {
 				defaultprofile = paella.player.config.defaultProfile;
-				paella.events.trigger(paella.events.setProfile,{profileName:defaultprofile});
+				paella.player.setProfile(defaultprofile);
 			}
 		}
 

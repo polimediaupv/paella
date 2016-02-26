@@ -16,7 +16,7 @@ To add Paella Player to your portal, you need to do some easy steps:
   
   ```js
     "standalone": {
-        "reposiroty": "../repository/"
+        "repository": "../repository/"
     }  
   ```
 

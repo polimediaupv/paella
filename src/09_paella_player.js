@@ -148,9 +148,11 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 		paella.initDelegate.loadDictionary(function() {
 			paella.initDelegate.loadConfig(function(config) {
-				var skin = (config.skin && config.skin.default) ? config.skin.default:'dark';
-				paella.utils.skin.restore(skin);
 				thisClass.onLoadConfig(config);
+				if (config.skin) {
+					var skin = config.skin.default || 'dark';
+					paella.utils.skin.restore(skin);
+				}				
 			});
 		});
 	},
@@ -200,7 +202,12 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 					thisClass.videoContainer.publishVideo();
 				}
 				else {
-					thisClass.unloadAll(base.dictionary.translate("You are not authorized to view this resource"));
+					var redirectUrl = paella.initDelegate.initParams.accessControl.getAuthenticationUrl("player/?id=" + paella.player.videoIdentifier);
+					var message = '<div>' + base.dictionary.translate("You are not authorized to view this resource") + '</div>';
+					if (redirectUrl) {
+						message += '<div class="login-link"><a href="' + redirectUrl + '">' + base.dictionary.translate("Login") + '</a></div>';
+					}
+					thisClass.unloadAll(message);
 				}
 			}
 			else if (permissions.isAnonymous) {
@@ -216,25 +223,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		});
 	},
 
-	initVideoEvents:function() {
-		var thisClass = this;
-		paella.events.bind(paella.events.play,function(event) { thisClass.play(); });
-		paella.events.bind(paella.events.pause,function(event) { thisClass.pause(); });
-		paella.events.bind(paella.events.seekTo,function(event,params) { paella.player.videoContainer.seekTo(params.newPositionPercent); });
-		paella.events.bind(paella.events.seekToTime,function(event,params) { paella.player.videoContainer.seekToTime(params.time); });
-		paella.events.bind(paella.events.setPlaybackRate,function(event,params) { paella.player.videoContainer.setPlaybackRate(params); });
-		paella.events.bind(paella.events.setVolume,function(event,params) { paella.player.videoContainer.setVolume(params); });
-		/*
-		paella.events.bind(paella.events.setTrim,function(event,params) {
-			if (params.trimEnabled)
-				paella.player.videoContainer.enableTrimming();
-			else
-				paella.player.videoContainer.disableTrimming();
-			paella.player.videoContainer.setTrimming(params.trimStart, params.trimEnd);
-		});
-		*/
-	},
-
 	onresize:function() {		
 		this.videoContainer.onresize();
 		if (this.controls) this.controls.onresize();
@@ -248,15 +236,15 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			this.setProfile(cookieProfile,false);
 		}
 		else {
-			this.setProfile(this.config.defaultProfile,false);
+			this.setProfile(paella.Profiles.getDefaultProfile(), false);
 		}
 		
 		paella.events.trigger(paella.events.resize,{width:$(this.videoContainer.domElement).width(), height:$(this.videoContainer.domElement).height()});
 	},
 
 	unloadAll:function(message) {
-		$('#playerContainer')[0].innerHTML = "";
 		var loaderContainer = $('#paellaPlayer_loader')[0];
+		this.mainContainer.innerHTML = "";
 		paella.messageBox.showError(message);
 	},
 
@@ -276,9 +264,9 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 	loadVideo:function() {
 		if (this.videoIdentifier) {
-			this.initVideoEvents();
 			var This = this;
 			var loader = paella.initDelegate.initParams.videoLoader;
+			paella.player.videoLoader = loader;
 			this.onresize();
 			loader.loadVideo(this.videoIdentifier,function() {
 				var playOnLoad = false;
@@ -346,10 +334,11 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 					if (paella.player.isLiveStream()) {
 						This.showPlaybackBar();
 					}
+					/* We need to autoplay after plugin loads
 					else if (playOnLoad) {
 						This.play();
 					}
-					
+					*/
 					This.onresize();
 				}
 				else {
@@ -442,10 +431,13 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			this.setProfile(cookieProfile, false);
 		}
 		else {
-			this.setProfile(this.config.defaultProfile, false);
+			this.setProfile(paella.Profiles.getDefaultProfile(), false);
 		}
 
 		paella.pluginManager.loadPlugins("paella.EarlyLoadPlugin");
+		if (paella.player.videoContainer._autoplay){
+			this.play();
+		}		
 	},
 
 	play:function() {
@@ -459,7 +451,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 				paella.player.videoContainer.setStartTime(startTime);
 			}
 			paella.events.trigger(paella.events.controlBarLoaded);
-			paella.events.trigger(paella.events.play);
 			this.controls.onresize();
 		}
 
@@ -471,7 +462,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	},
 
 	playing:function() {
-		return this.paused();
+		return !this.paused();
 	},
 
 	paused:function() {
