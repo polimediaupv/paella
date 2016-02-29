@@ -4,6 +4,23 @@ module.exports = function(grunt) {
 	var initConfig = {
 		pkg: grunt.file.readJSON('package.json'),
 
+
+		if: {
+	        revision: {
+	            options: {
+	                test: function(){ return fs.statSync(".git").isDirectory(); }
+	            },
+	            ifTrue: [ 'revision' ]
+	        },
+	        'dist.js': {
+	            options: {
+	                test: function(){ return fs.statSync(".git").isDirectory(); }
+	            },
+	            ifTrue: [ 'concat:git.dist.js' ],
+	            ifFalse: [ 'concat:dist.js' ]
+	        }
+	    },
+
 		clean: {
 			build: ["build"],
 			less: ["build/style.less"]
@@ -50,9 +67,20 @@ module.exports = function(grunt) {
 					return '/*** File: ' + filepath + ' ***/\n' + src;
 				}
 			},
-			'dist.js': {
+			'git.dist.js': {
 				options: {
 					footer: 'paella.version = "<%= pkg.version %> - build: <%= meta.revision %>";\n'
+				},
+				src: [
+					'src/*.js',
+					'plugins/*/*.js',
+					'vendor/plugins/*/*.js'
+				],
+				dest: 'build/player/javascript/paella_player.js'
+			},
+			'dist.js': {
+				options: {
+					footer: 'paella.version = "<%= pkg.version %>";\n'
 				},
 				src: [
 					'src/*.js',
@@ -248,12 +276,14 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-express');
 	grunt.loadNpmTasks('grunt-jsonlint');
 	grunt.loadNpmTasks('grunt-merge-json');
+	grunt.loadNpmTasks('grunt-if');
+
 
 
 	grunt.registerTask('default', ['dist']);
 	grunt.registerTask('checksyntax', ['concat:less','less:production','jshint', 'csslint', 'jsonlint']);
 
-	grunt.registerTask('build.common', ['revision', 'checksyntax', 'copy:paella', 'concat:dist.js', 'clean:less', 'merge-json:i18n']);
+	grunt.registerTask('build.common', ['if:revision', 'checksyntax', 'copy:paella', 'if:dist.js', 'clean:less', 'merge-json:i18n']);
 	grunt.registerTask('build.release', ['build.common', 'uglify:dist', 'cssmin:dist']);
 	grunt.registerTask('build.debug', ['build.common']);
 
