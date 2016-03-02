@@ -2,7 +2,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	player:null,
 
 	videoIdentifier:'',
-	editor:null,
 	loader:null,
 
 	// Video data:
@@ -192,12 +191,8 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		this.accessControl.checkAccess(function(permissions) {
 			var errorMessage;
 			if (!permissions.loadError) {
+				// TODO: implement permissions using promises
 				base.log.debug("read:" + permissions.canRead + ", contribute:" + permissions.canContribute + ", write:" + permissions.canWrite);
-				if (permissions.canWrite) {
-					//thisClass.setupEditor();
-					paella.events.bind(paella.events.showEditor,function(event) { thisClass.showEditor(); });
-					paella.events.bind(paella.events.hideEditor,function(event) { thisClass.hideEditor(); });
-				}
 				if (permissions.canRead) {
 					thisClass.loadVideo();
 					thisClass.videoContainer.publishVideo();
@@ -227,9 +222,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	onresize:function() {		
 		this.videoContainer.onresize();
 		if (this.controls) this.controls.onresize();
-		if (this.editor) {
-			this.editor.resize();
-		}
 
 		// Resize the layout profile
 		var cookieProfile = paella.utils.cookies.get('lastProfile');
@@ -247,13 +239,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		var loaderContainer = $('#paellaPlayer_loader')[0];
 		this.mainContainer.innerHTML = "";
 		paella.messageBox.showError(message);
-	},
-
-	showEditor:function() {
-		new paella.editor.Editor();
-	},
-
-	hideEditor:function() {
 	},
 
 	reloadVideos:function(masterQuality,slaveQuality) {
@@ -283,79 +268,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 					.fail(function(error) {
 						console.log(error);
 					});
-				/*
-				if (base.parameters.get('autoplay')=="true" &&
-						paella.player.config.experimental &&
-						paella.player.config.experimental.autoplay &&
-						!base.userAgent.browser.IsMobileVersion)
-				{
-					paella.player.videoContainer.setAutoplay();
-					playOnLoad = true;
-				}
-
-				paella.player.videoContainer.setMasterQuality(base.parameters.list['resmaster']);
-				paella.player.videoContainer.setSlaveQuality(base.parameters.list['resslave']);
-
-				var master = loader.streams[0];
-				var slave = loader.streams[1];
-				var playerConfig = paella.player.config.player;
-				// SET DEFAULT AUDIO VOLUME
-				if(playerConfig && playerConfig.audio && playerConfig.audio.master !== undefined)
-					paella.player.videoContainer.setDefaultMasterVolume(playerConfig.audio.master);
-				if(playerConfig && playerConfig.audio && playerConfig.audio.slave !== undefined)
-					paella.player.videoContainer.setDefaultSlaveVolume(playerConfig.audio.slave);
-				
-
-				if (slave && slave.data && Object.keys(slave.data.sources).length==0) slave = null;
-				var frames = loader.frameList;
-				var errorMessage;
-
-				if (loader.loadStatus) {
-					var preferredMethodMaster = loader.getPreferredMethod(0);
-					var preferredMethodSlave  = loader.getPreferredMethod(1);
-
-					if (!preferredMethodMaster) {
-						message = "This video is not compatible with any codec installed in your system";
-						paella.messageBox.showError(base.dictionary.translate(message));
-						return false;
-					}
-
-					var h264WarningMessage = true;
-					if ((master.sources.ogv || master.sources.webm) && (slave.sources.ogv || slave.sources.webm)) {
-						h264WarningMessage = false;
-					}
-
-					if (h264WarningMessage) {
-						var minFirefoxVersion = base.userAgent.system.MacOS ? 35:(base.userAgent.system.Windows) ? 25:26;
-						if (base.userAgent.browser.Firefox && base.userAgent.browser.Version.major<minFirefoxVersion) {
-							message = "You are using Firefox version, and some required video playback capabilities are not available until Firefox min_version. Please, update your browser and try again.";
-							message = base.dictionary.translate(message);
-							message = message.replace("version",base.userAgent.browser.Version.major);
-							message = message.replace("min_version",minFirefoxVersion);
-							paella.messageBox.showError(message);
-							return false;
-						}
-					}
-
-					paella.player.videoContainer.setSources(
-						{ data:master, type:preferredMethodMaster },
-						{ data:slave, type:preferredMethodSlave }
-					);
-					
-					setTimeout(function(){
-						paella.events.trigger(paella.events.loadComplete,{masterVideo:master,slaveVideo:slave,frames:frames});
-					}, 10);					
-					if (paella.player.isLiveStream()) {
-						This.showPlaybackBar();
-					}
-
-					This.onresize();
-				}
-				else {
-					errorMessage = base.dictionary.translate("Error loading video data");
-					paella.messageBox.showError(errorMessage);
-					paella.events.trigger(paella.events.error,{error:errorMessage});
-				}*/
 			});
 		}
 	},

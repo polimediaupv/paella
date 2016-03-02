@@ -257,13 +257,6 @@ Class ("paella.InitDelegate", {
 				paella.messageBox.showError(base.dictionary.translate("Error! Config file not found. Please configure paella!"));
 				//onSuccess({});
 			});
-	},
-
-	loadEditorConfig:function(onSuccess) {
-		var data = {
-			cssPath: paella.utils.folders.resources() + '/ui/jquery-ui.css'
-		};
-		onSuccess(data);
 	}
 });
 

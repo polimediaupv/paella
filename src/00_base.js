@@ -38,8 +38,6 @@ paella.events = {
 	seekToFrame:"paella:seektotime",	// deprecated, use seekToTime instead
 	seekToTime:"paella:seektotime",
 	setTrim:"paella:settrim",
-	showEditor:"paella:showeditor",
-	hideEditor:"paella:hideeditor",
 	setPlaybackRate:"paella:setplaybackrate",
 	setVolume:'paella:setVolume',
 	setComposition:'paella:setComposition',
