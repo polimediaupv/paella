@@ -1,3 +1,4 @@
+/*
 Class ("paella.AccessControl", {
 	permissions:{
 		canRead:false,
@@ -78,7 +79,7 @@ Class ("paella.DefaultAccessControl", paella.AccessControl,{
 		return "";
 	}
 });
-
+*/
 
 Class ("paella.VideoLoader", {
 	metadata:{		// Video metadata
@@ -110,6 +111,37 @@ Class ("paella.VideoLoader", {
 		//	- Set this.codecStatus = true if the browser can reproduce all streams
 		//	- Call onSuccess()
 		onSuccess();
+	}
+});
+
+Class ("paella.AccessControl", {
+	canRead:function() {
+		return paella_DeferredResolved(true);
+	},
+
+	canWrite:function() {
+		return paella_DeferredResolved(false);
+	},
+
+	userData:function() {
+		return paella_DeferredResolved({
+			username: 'anonymous',
+			name: 'Anonymous',
+			avatar: paella.utils.folders.resources() + '/images/default_avatar.png',
+			isAnonymous: true
+		});
+	},
+
+	getAuthenticationUrl:function(callbackParams) {
+		var authCallback = this._authParams.authCallbackName && window[this._authParams.authCallbackName];
+		if (!authCallback && paella.player.config.auth) {
+			authCallback = paella.player.config.auth.authCallbackName && window[paella.player.config.auth.authCallbackName];
+		}
+
+		if (typeof(authCallback)=="function") {
+			return authCallback(callbackParams);
+		}
+		return "";
 	}
 });
 
@@ -174,7 +206,6 @@ Class ("paella.PlayerBase", {
 			paella.player = this;
 			this.playerId = playerId;
 			this.mainContainer = $('#' + this.playerId)[0];
-			this.accessControl = paella.initDelegate.initParams.accessControl;
 			var thisClass = this;
 			paella.events.bind(paella.events.loadComplete,function(event,params) { thisClass.loadComplete(event,params); });
 		}
@@ -193,12 +224,17 @@ Class ("paella.PlayerBase", {
 			}
 		},
 
-		permissions:function() {
-			return paella.initDelegate.initParams.accessControl.permissions;
+		// The following functions returns promises
+		canRead:function() {
+			return paella.initDelegate.initParams.accessControl.canRead();
+		},
+
+		canWrite:function() {
+			return paella.initDelegate.initParams.accessControl.canWrite();
 		},
 
 		userData:function() {
-			return paella.initDelegate.initParams.accessControl.userData;
+			return paella.initDelegate.initParams.accessControl.userData();
 		}
 	}
 });
@@ -208,8 +244,8 @@ Class ("paella.InitDelegate", {
 		configUrl:'config/config.json',
 		dictionaryUrl:'localization/paella',
 		//editorDictionaryUrl:'config/editor_dictionary',
-		accessControl:new paella.DefaultAccessControl(),
-		videoLoader:new paella.VideoLoader()
+		accessControl:null,
+		videoLoader:null
 	},
 
 	initialize:function(params) {
@@ -224,20 +260,31 @@ Class ("paella.InitDelegate", {
 		return base.parameters.get('id') || "noid";
 	},
 
-	loadDictionary:function(onSuccess) {
-		var asyncLoader = new base.AsyncLoader();
+	loadDictionary:function() {
+		var defer = new $.Deferred();
+/*		var asyncLoader = new base.AsyncLoader();
 		asyncLoader.addCallback(new base.DictionaryCallback(this.initParams.dictionaryUrl));
 		//asyncLoader.addCallback(new base.DictionaryCallback(this.initParams.editorDictionaryUrl));
 		asyncLoader.load(function() {
-				onSuccess();
+				defer.resolve();
 			},
 			function() {
-				onSuccess();
+				defer.reject();
 			}
-		);
+		);*/
+		base.ajax.get({ url:this.initParams.dictionaryUrl + "_" + base.dictionary.currentLanguage() + '.json' }, function(data,type,returnCode) {
+				base.dictionary.addDictionary(data);
+				defer.resolve(data);
+			},
+			function(data,type,returnCode) {
+				defer.reject();
+			});
+		return defer;
 	},
 
-	loadConfig:function(onSuccess) {
+	loadConfig:function() {
+		var This = this;
+		var defer = new $.Deferred();
 		var configUrl = this.initParams.configUrl;
 		var params = {};
 		params.url = configUrl;
@@ -247,16 +294,21 @@ Class ("paella.InitDelegate", {
 						data = JSON.parse(data);
 					}
 					catch (e) {
-						onSuccess({});
+						defer.reject();
+						return;
 					}
 				}
 				base.dictionary.addDictionary(data);
-				onSuccess(data);
+				var AccessControlClass = Class.fromString(data.player.accessControlClass || "paella.AccessControl");
+				This.initParams.accessControl = new AccessControlClass();
+				defer.resolve(data);
 			},
 			function(data,type,returnCode) {
 				paella.messageBox.showError(base.dictionary.translate("Error! Config file not found. Please configure paella!"));
 				//onSuccess({});
 			});
+
+		return defer;
 	}
 });
 

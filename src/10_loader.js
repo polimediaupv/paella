@@ -184,12 +184,14 @@ Class ("paella.DefaultInitDelegate", paella.InitDelegate, {
 		}
 	},
 
-	loadConfig: function(onSuccess) {
+	loadConfig: function() {
 		if (this._config) {
-			onSuccess(this._config);
+			var defer = new $.Deferred();
+			defer.resolve(this._config);
+			return defer;
 		}
 		else {
-			this.parent(onSuccess);
+			return this.parent();
 		}
 	}
 });
@@ -203,7 +205,6 @@ Class ("paella.DefaultInitDelegate", paella.InitDelegate, {
 paella.load = function(playerContainer, params) {
 	var auth = (params && params.auth) || {};
 	var initObjects = {
-		accessControl: new paella.DefaultAccessControl(auth),
 		videoLoader: new paella.DefaultVideoLoader(params.data || params.url)
 	};
 

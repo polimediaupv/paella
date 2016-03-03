@@ -141,20 +141,24 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	},
 
 	loadPaellaPlayer:function() {
-		var thisClass = this;
+		var This = this;
 		this.loader = new paella.LoaderContainer('paellaPlayer_loader');
 		$('body')[0].appendChild(this.loader.domElement);
 		paella.events.trigger(paella.events.loadStarted);
 
-		paella.initDelegate.loadDictionary(function() {
-			paella.initDelegate.loadConfig(function(config) {
-				thisClass.onLoadConfig(config);
+		paella.initDelegate.loadDictionary()
+			.then(function() {
+				return paella.initDelegate.loadConfig();
+			})
+
+			.then(function(config) {
+				This.accessControl = paella.initDelegate.initParams.accessControl;
+				This.onLoadConfig(config);
 				if (config.skin) {
 					var skin = config.skin.default || 'dark';
 					paella.utils.skin.restore(skin);
-				}				
+				}
 			});
-		});
 	},
 
 	onLoadConfig:function(configData) {
@@ -188,6 +192,42 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 	onload:function() {
 		var thisClass = this;
+		var ac = this.accessControl;
+		var canRead = false;
+		var userData = {};
+		this.accessControl.canRead()
+			.then(function(c) {
+				canRead = c;
+				return thisClass.accessControl.userData();
+			})
+
+			.then(function(d) {
+				userData = d;
+				if (canRead) {
+					thisClass.loadVideo();
+					thisClass.videoContainer.publishVideo();
+				}
+				else if (userData.isAnonymous) {
+					var redirectUrl = paella.initDelegate.initParams.accessControl.getAuthenticationUrl("player/?id=" + paella.player.videoIdentifier);
+					var message = '<div>' + base.dictionary.translate("You are not authorized to view this resource") + '</div>';
+					if (redirectUrl) {
+						message += '<div class="login-link"><a href="' + redirectUrl + '">' + base.dictionary.translate("Login") + '</a></div>';
+					}
+					thisClass.unloadAll(message);
+				}
+				else {
+					errorMessage = base.dictionary.translate("You are not authorized to view this resource");
+					thisClass.unloadAll(errorMessage);
+					paella.events.trigger(paella.events.error,{error:errorMessage});
+				}
+			})
+
+			.fail(function() {
+				errorMessage = base.dictionary.translate("Error loading video");
+				thisClass.unloadAll(errorMessage);
+				paella.events.trigger(paella.events.error,{error:errorMessage});
+			});
+		/*
 		this.accessControl.checkAccess(function(permissions) {
 			var errorMessage;
 			if (!permissions.loadError) {
@@ -217,6 +257,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 				paella.events.trigger(paella.events.error,{error:errorMessage});
 			}
 		});
+		*/
 	},
 
 	onresize:function() {		
