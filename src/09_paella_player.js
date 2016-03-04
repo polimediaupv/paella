@@ -1,3 +1,22 @@
+/*
+ Paella HTML 5 Multistream Player
+ Copyright (C) 2013  Universitat Politècnica de València
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
 Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	player:null,
 
@@ -227,37 +246,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 				thisClass.unloadAll(errorMessage);
 				paella.events.trigger(paella.events.error,{error:errorMessage});
 			});
-		/*
-		this.accessControl.checkAccess(function(permissions) {
-			var errorMessage;
-			if (!permissions.loadError) {
-				// TODO: implement permissions using promises
-				base.log.debug("read:" + permissions.canRead + ", contribute:" + permissions.canContribute + ", write:" + permissions.canWrite);
-				if (permissions.canRead) {
-					thisClass.loadVideo();
-					thisClass.videoContainer.publishVideo();
-				}
-				else {
-					var redirectUrl = paella.initDelegate.initParams.accessControl.getAuthenticationUrl("player/?id=" + paella.player.videoIdentifier);
-					var message = '<div>' + base.dictionary.translate("You are not authorized to view this resource") + '</div>';
-					if (redirectUrl) {
-						message += '<div class="login-link"><a href="' + redirectUrl + '">' + base.dictionary.translate("Login") + '</a></div>';
-					}
-					thisClass.unloadAll(message);
-				}
-			}
-			else if (permissions.isAnonymous) {
-				errorMessage = base.dictionary.translate("You are not logged in");
-				thisClass.unloadAll(errorMessage);
-				paella.events.trigger(paella.events.error,{error:errorMessage});
-			}
-			else {
-				errorMessage = base.dictionary.translate("You are not authorized to view this resource");
-				thisClass.unloadAll(errorMessage);
-				paella.events.trigger(paella.events.error,{error:errorMessage});
-			}
-		});
-		*/
 	},
 
 	onresize:function() {		

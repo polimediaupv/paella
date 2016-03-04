@@ -35,7 +35,6 @@ paella.events = {
 	timeUpdate:"paella:timeupdate",
 	seekTo:"paella:setseek",
 	endVideo:"paella:endvideo",
-	seekToFrame:"paella:seektotime",	// deprecated, use seekToTime instead
 	seekToTime:"paella:seektotime",
 	setTrim:"paella:settrim",
 	setPlaybackRate:"paella:setplaybackrate",
@@ -51,10 +50,8 @@ paella.events = {
 	controlBarWillHide:'paella:controlbarwillhide',
 	controlBarDidHide:'paella:controlbardidhide',
 	controlBarDidShow:'paella:controlbardidshow',
-	///beforeUnload:'paella:beforeUnload',		This event has been removed because it not work properly in any browser
 	hidePopUp:'paella:hidePopUp',
 	showPopUp:'paella:showPopUp',
-	//userTracking:'paella:userTracking',		Event replaced by the new paella.userTracking service
 	enterFullscreen:'paella:enterFullscreen',
 	exitFullscreen:'paella:exitFullscreen',
 	resize:'paella:resize',		// params: { width:paellaPlayerContainer width, height:paellaPlayerContainer height }

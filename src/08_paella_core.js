@@ -1,85 +1,21 @@
 /*
-Class ("paella.AccessControl", {
-	permissions:{
-		canRead:false,
-		canContribute:false,
-		canWrite:false,
-		loadError:true,
-		isAnonymous:false
-	},
+ Paella HTML 5 Multistream Player
+ Copyright (C) 2013  Universitat Politècnica de València
 
-	userData:{
-		username:'',
-		name:'',
-		lastname: '',
-		avatar:'',
-	},
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-	checkAccess:function(onSuccess) {
-		onSuccess(this.permissions);
-	},
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-	getAuthenticationUrl:function(callbackParam) { return ""; }
-});
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-// Default Access Control
-//
-Class ("paella.DefaultAccessControl", paella.AccessControl,{
-	_authParams:null,
-
-	initialize:function(authParams) {
-		this._authParams = authParams || {};
-	},
-
-	checkAccess:function(onSuccess) {
-		var This = this;
-		this.getUserData(function(data) {
-			This.permissions = data.permissions;
-			This.userData = data.userData;
-			onSuccess(This.permissions);
-		});
-	},
-
-	getUserData:function(onSuccess) {
-		var status = false;
-		if (paella.player.config.auth) {
-			var callback = paella.player.config.auth.userDataCallbackName ? window[paella.player.config.auth.userDataCallbackName]:null;
-			if (typeof(callback)=="function") {
-				status = true;
-				callback(onSuccess);
-			}
-		}
-		if (!status) {
-			onSuccess({
-				permissions: {
-					canRead: true,
-					canContribute: false,
-					canWrite: false,
-					loadError: false,
-					isAnonymous: true
-				},
-				userData: {
-					username: 'anonymous',
-					name: 'Anonymous',
-					avatar: paella.utils.folders.resources() + '/images/default_avatar.png'
-				}
-			});
-		}
-	},
-
-	getAuthenticationUrl:function(callbackParams) {
-		var authCallback = this._authParams.authCallbackName && window[this._authParams.authCallbackName];
-		if (!authCallback && paella.player.config.auth) {
-			authCallback = paella.player.config.auth.authCallbackName && window[paella.player.config.auth.authCallbackName];
-		}
-
-		if (typeof(authCallback)=="function") {
-			return authCallback(callbackParams);
-		}
-		return "";
-	}
-});
-*/
 
 Class ("paella.VideoLoader", {
 	metadata:{		// Video metadata
@@ -243,7 +179,6 @@ Class ("paella.InitDelegate", {
 	initParams:{
 		configUrl:'config/config.json',
 		dictionaryUrl:'localization/paella',
-		//editorDictionaryUrl:'config/editor_dictionary',
 		accessControl:null,
 		videoLoader:null
 	},
@@ -262,16 +197,6 @@ Class ("paella.InitDelegate", {
 
 	loadDictionary:function() {
 		var defer = new $.Deferred();
-/*		var asyncLoader = new base.AsyncLoader();
-		asyncLoader.addCallback(new base.DictionaryCallback(this.initParams.dictionaryUrl));
-		//asyncLoader.addCallback(new base.DictionaryCallback(this.initParams.editorDictionaryUrl));
-		asyncLoader.load(function() {
-				defer.resolve();
-			},
-			function() {
-				defer.reject();
-			}
-		);*/
 		base.ajax.get({ url:this.initParams.dictionaryUrl + "_" + base.dictionary.currentLanguage() + '.json' }, function(data,type,returnCode) {
 				base.dictionary.addDictionary(data);
 				defer.resolve(data);
