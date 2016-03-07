@@ -600,7 +600,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	setCurrentTime:function(time) {
-		if (time<=0) time = 1; 
+		// if (time<=0) time = 1;  Fix #176
 		if (this._trimming.enabled) {
 			if (time<this._trimming.start) time = this._trimming.start;
 			if (time>this._trimming.end) time = this._trimming.end;
