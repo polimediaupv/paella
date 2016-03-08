@@ -10,4 +10,4 @@
 4. [Subtitles. Add subtitles to your videos]()
 5. [Encoding. Info about compatible video formats]()
 6. [Plugins. Info about plugins provided by paella]()
-7. [Browser compatibility issues]()
+7. [Browser compatibility issues](browser_compability.md)
