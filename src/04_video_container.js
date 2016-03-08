@@ -539,19 +539,25 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		}
 	},
 
-	checkVideoTrimming:function(trimming, current, paused) {
+	checkVideoBounds:function(trimming, current, paused, actualDuration) {
 		var This = this;
 		var start = trimming.start;
 		var end = trimming.end;
 		var enabled = trimming.enabled;
-		if (!enabled) return;
-
-		if (current>=Math.floor(end) && !paused) {
-			paella.events.trigger(paella.events.endVideo, { videoContainer: this });
-			this.pause();
+		if (!enabled) {
+			if (current>=actualDuration) {
+				paella.events.trigger(paella.events.endVideo, { videoContainer: this });
+				this.pause();
+			}
 		}
-		else if (current<start) {
-			this.setCurrentTime(start + 1);
+		else {
+			if (current>=Math.floor(end) && !paused) {
+				paella.events.trigger(paella.events.endVideo, { videoContainer: this });
+				this.pause();
+			}
+			else if (current<start) {
+				this.setCurrentTime(start + 1);
+			}
 		}
 	},
 
@@ -852,7 +858,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 						duration = trimming.end - trimming.start;
 					}
 					paella.events.trigger(paella.events.timeupdate, { videoContainer:This, currentTime:current, duration:duration });
-					This.checkVideoTrimming(trimming,evt.currentTarget.currentTime,evt.currentTarget.paused);
+					This.checkVideoBounds(trimming,evt.currentTarget.currentTime,evt.currentTarget.paused,duration);
 
 				});
 				This.overlayContainer.removeElement(overlayLoader);
