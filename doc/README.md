@@ -1,11 +1,20 @@
 # Documentation
 
-Welcome to the The Paella Player documentation page, this documentation is made for developers and its structured as a tree, the more deep, the more complex and specific.
-
-## Structure
+Welcome to the The Paella Player documentation page.
 
 - [Introduction.](introduction.md)
 - [Usage and Features Guide.](usage_guide.md)
+
+
+- [Users documentation](users_doc/users_doc.md)
+- [Adopter documentation](adopter_doc/adopter_doc.md)
+- [Developer documentation](devel_doc/devel_doc.md)
+
+
+- [FAQ](faq.md)
+
+
+
 - [Download Paella.](download_paella.md)
 - [Integrate Paella in your portal.](integrate.md)
 - Customize Paella.
@@ -13,4 +22,3 @@ Welcome to the The Paella Player documentation page, this documentation is made 
     - [Define a new skin.](customize_newskin.md)
 - [Paella plugins list.](plugins.md)
 - [Developer Documentation.](developer/developer.md)
-- [FAQ](faq.md)
