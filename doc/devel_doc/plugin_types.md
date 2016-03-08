@@ -60,11 +60,3 @@ the plugin and its funcionalities.
   Plugin examples: [googleAnalyticsSaverPlugin](../plugins/es.upv.paella.usertracking.googleAnalyticsSaverPlugin.md),
   [elasticsearchSaverPlugin](../plugins/es.upv.paella.usertracking.elasticsearchSaverPlugin.md)
 
-
-## Paella Editor Plugins
-
-- EditorTrackPlugin
-
-- EditorRightBarPlugin
-
-- EditorToolbarPlugin
