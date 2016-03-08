@@ -181,7 +181,7 @@ Class ("paella.captions.Caption", {
 			url: self._url,
 			cache:false,
 			type: 'get',
-			dataType: "text",
+			dataType: "text"
 		})
 		.done(function(dataRaw){
 			var parser = captionParserManager._formats[self._format];			

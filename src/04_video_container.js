@@ -707,7 +707,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	duration:function(ignoreTrimming) {
 		var This = this;
 		return this.masterVideo().duration()
-			.done(function(d) {
+			.then(function(d) {
 				if (This._trimming.enabled && !ignoreTrimming) {
 					d = This._trimming.end - This._trimming.start;
 				}
