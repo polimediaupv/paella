@@ -7,6 +7,10 @@ Welcome to the The Paella Player documentation page.
 - [Adopter documentation](adopter_doc/adopter_doc.md)
 - [Developer documentation](devel_doc/devel_doc.md)
 - [FAQ](faq.md)
+
+
+
+
 - [Download Paella.](download_paella.md)
 - [Integrate Paella in your portal.](integrate.md)
 - Customize Paella.
