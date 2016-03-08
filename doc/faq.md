@@ -47,7 +47,7 @@ Yes, and if you need info about how, read the [adopters's guides](adopter_doc/RE
 ###**- Can I change the visual aspect of Paella Player?**
 
 Yes, you can change all visual details since css, images, icons.. etc. 
-Read More about how to do it in [skining documentation.](adopter_doc/skining.md)
+Read more about how to do it in [skining documentation.](adopter_doc/skining.md)
 
 ###**- Can I change default configuration of Paella?**
 
