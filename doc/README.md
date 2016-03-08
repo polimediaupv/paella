@@ -3,8 +3,8 @@
 Welcome to the The Paella Player documentation page.
 
 - [Introduction.](introduction.md)
-- [Users documentation](users_doc/users_doc.md)
-- [Adopter documentation](adopter_doc/adopter_doc.md)
-- [Developer documentation](devel_doc/devel_doc.md)
+- [Users documentation](users_doc/README.md)
+- [Adopter documentation](adopter_doc/README.md)
+- [Developer documentation](devel_doc/README.md)
 - [FAQ](faq.md)
 
