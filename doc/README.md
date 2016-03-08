@@ -3,18 +3,11 @@
 Welcome to the The Paella Player documentation page.
 
 - [Introduction.](introduction.md)
-- [Usage and Features Guide.](usage_guide.md)
-
 
 - [Users documentation](users_doc/users_doc.md)
 - [Adopter documentation](adopter_doc/adopter_doc.md)
 - [Developer documentation](devel_doc/devel_doc.md)
-
-
 - [FAQ](faq.md)
-
-
-
 - [Download Paella.](download_paella.md)
 - [Integrate Paella in your portal.](integrate.md)
 - Customize Paella.
