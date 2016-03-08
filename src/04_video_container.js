@@ -779,6 +779,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			if (this._seekToOnLoad) {
 				paella.player.videoContainer.seekToTime(this._seekToOnLoad);
 			}
+			paella.events.trigger(paella.events.videoReady, { videoContainer: this });
 		}
 	},
 	
