@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+* Paella 4.2.1 (09-03-2016)
+
+  * The videoContainer triggers a videoReady event when the videos are ready to play. (Fix #193)
+  * Bug fixed caused when a user without write permissions tries to open the editor
+
 * Paella 4.2.0 (26-02-2016)
 
   * Add segment lines to the timeline
