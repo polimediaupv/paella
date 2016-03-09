@@ -10,7 +10,9 @@ Class ("paella.plugins.TrimmingLoaderPlugin",paella.EventDrivenPlugin,{
 				this.loadTrimming();
 				break;
 			case paella.events.showEditor:
-				paella.player.videoContainer.disableTrimming();
+				if (paella.player.accessControl.permissions.canWrite) {
+					paella.player.videoContainer.disableTrimming();
+				}
 				break;
 			case paella.events.hideEditor:
 				if (paella.player.config.trimming && paella.player.config.trimming.enabled) {
