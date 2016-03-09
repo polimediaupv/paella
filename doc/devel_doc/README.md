@@ -23,3 +23,6 @@ How they works, and how to make a new one.
 
 Paella provides a homogeneous mechanism to write and read persistent data.
 - [paella.Data](paella_data.md)
+
+## Code Examples Cookbook
+How to do usual modifications to paella
