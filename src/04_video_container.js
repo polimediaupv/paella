@@ -562,6 +562,8 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	play:function() {
+		var This = this;
+		var defer = $.Deferred();
 		if (!this._firstLoad) {
 			this._firstLoad = true;
 		}
@@ -570,21 +572,42 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		}
 		var masterVideo = this.masterVideo();
 		var slaveVideo = this.slaveVideo();
+
 		if (masterVideo) {
-			masterVideo.play();
+			masterVideo.play()
+				.then(function() {
+					if (slaveVideo) {
+						slaveVideo.play();
+					}
+					This.parent();
+					defer.resolve();
+				});
 		}
-		if (slaveVideo) {
-			slaveVideo.play();
+		else {
+			defer.reject(new Error("Invalid master video"));
 		}
-		this.parent();
+
+		return defer;
 	},
 
 	pause:function() {
+		var This = this;
+		var defer = $.Deferred();
 		var masterVideo = this.masterVideo();
 		var slaveVideo = this.slaveVideo();
-		if (masterVideo) masterVideo.pause();
-		if (slaveVideo) slaveVideo.pause();
-		this.parent();
+		if (masterVideo) {
+			masterVideo.pause()
+				.then(function() {
+					if (slaveVideo) slaveVideo.pause();
+					This.parent();
+					defer.resolve();
+				});
+		}
+		else {
+			defer.reject(new Error("invalid master video"));
+		}
+
+		return defer;
 	},
 
 	next:function() {
