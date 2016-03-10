@@ -4,13 +4,8 @@
 
 paella.dataDelegates.VisualAnnotationsDataDelegate = Class.create(paella.DataDelegate,{
    read: function(context, params, onSuccess) {
-	   
-   //params need videoid to get annotations from a video
-   /*console.log("pàtata");
-   data = [{"_id":"e28e0130-9824-11e5-88b4-a94245a618bnd","video":"7a85bac5-fcdf-4989-8e98-6166bef80bea","user":"3818f61e-b2c4-425c-bff7-b778cb2f9966","type":"BANNER","time":6,"duration":4,"content":"{\"data\":{\"en\":\"<p>Sometimes you will need more space than just a little Ad, to write what you want to write.</p><p>Or simply a bigger banner to include logos and publicity.</p>\"},        \"pauser\":false,             \"profile\":\"\", \"style\":\"#e28e0130-9824-11e5-88b4-a94245a618bnd {color:rgba(255,255,255,1);background-color: rgba(0,0,0,0.6);text-align: justify;-moz-border-radius: 15px;border-radius: 15px;line-height: 3vmin;font-size: 1.2vw;padding: 1vw;position: absolute;bottom:70px;left:30px;right:30px;} #e28e0130-9824-11e5-88b4-a94245a618ad0:hover { background-color: rgba(0,0,0,0.8);} #e28e0130-9824-11e5-88b4-a94245a618bnd a{color: rgb(255, 230, 45);} #e28e0130-9824-11e5-88b4-a94245a618bnd a:visited{color: rgba(255, 255, 150, 0.80);}\"}","__v":0},{"_id":"e28e0130-9824-11e5-88b4-a94245a618ful","video":"7a85bac5-fcdf-4989-8e98-6166bef80bea","user":"3818f61e-b2c4-425c-bff7-b778cb2f9966","type":"FULL","time":38,"duration":10,"content":"{\"data\":{\"en\":\"<iframe src=https://docs.google.com/document/d/1T5teHSw-UlhZFVhx1wXTGZ10ZaX_AOkNglauFY_-E2U/edit?usp=sharing class=annotationiframe frameborder=0></iframe>\"},        \"pauser\":true,             \"profile\":\"slide_over_professor\", \"style\":\"#e28e0130-9824-11e5-88b4-a94245a618ful {color:rgba(255,255,255,1);background-color: rgba(0,0,0,0.6);text-align: justify;-moz-border-radius: 15px;border-radius: 15px;line-height: 3vmin;font-size: 1.2vw;padding: 1vw;position: absolute;bottom:40px;top:20px;left:30px;right:30px;} #e28e0130-9824-11e5-88b4-a94245a618ful:hover { background-color: rgba(0,0,0,0.8);} #e28e0130-9824-11e5-88b4-a94245a618ful a{color: rgb(255, 230, 45);} #e28e0130-9824-11e5-88b4-a94245a618ful a:visited{color: rgba(255, 255, 150, 0.80);}\"}","__v":0},{"_id":"e28e0130-9824-11e5-88b4-a94245a618ad0","video":"7a85bac5-fcdf-4989-8e98-6166bef80bea","user":"3818f61e-b2c4-425c-bff7-b778cb2f9966","type":"AD","time":0,"duration":5,"content":"{\"data\":{\"es\":\"Visita nuestros cursos en UPV[X]<BR><a href=http://upvx.es/ target=_blank>UPV[X]</a>\",                    \"en\":\"Visit our courses at UPV[X]<a href=http://upvx.es/ target=_blank>UPV[X]</a>\"},             \"pauser\":false,             \"profile\":\"\",             \"format\":{\"left\":40, \"top\":585, \"width\":430, \"height\":80},\"style\":\"#e28e0130-9824-11e5-88b4-a94245a618ad0 .AdtextAnnotationLink {  left: 0;  top: 0;  position: absolute;  z-index: 1;  width: 18%;  height: 100%;  background-color: black;} #e28e0130-9824-11e5-88b4-a94245a618ad0 .AdtextAnnotationIMG{ position: relative;    left: 33%;    top: 33%;    width: 30%;    height: 30%; } #e28e0130-9824-11e5-88b4-a94245a618ad0 .AdtextAnnotationBody{    padding-left: 20%;    top: 30%;    position: absolute; } #e28e0130-9824-11e5-88b4-a94245a618ad0 {color:rgba(255,255,255,1);background-color: rgba(0,0,0,0.6);text-align: justify;-moz-border-radius: 15px;border-radius: 15px;line-height: 3vmin;font-size: 1.2vw;padding: 1vw;position: absolute;bottom:70px;left:30px;width:33%;height:16%;} #e28e0130-9824-11e5-88b4-a94245a618ad0:hover { background-color: rgba(0,0,0,0.8);} #e28e0130-9824-11e5-88b4-a94245a618ad0 a{color: rgb(255, 230, 45);} .ADtextAnnotation a:visited{color: rgba(255, 255, 150, 0.80);}\"}","__v":0},{"_id":"e28e0130-9824-11e5-88b4-a94245a618ban","video":"7a85bac5-fcdf-4989-8e98-6166bef80bea","user":"3818f61e-b2c4-425c-bff7-b778cb2f9966","type":"NOTE","time":12,"duration":9,"content":"{\"data\":{\"en\":\"<h3>Sometimes, we could like to add new content to our videos.</h3> <p>Even better show that new stuff instead of the default slides, just adding an annotation.</p><p><img src=http://t00.deviantart.net/c99uKXgboMR4J4tJaDsY7WMmQB8=/300x200/filters:fixed_height(100,100):origin()/pre08/03f4/th/pre/i/2010/143/6/2/swirl2_by_jsp7707.jpg></p>\"},             \"pauser\":false,             \"profile\":\"professor\",              \"style\":\"#e28e0130-9824-11e5-88b4-a94245a618ban {color:rgba(255,255,255,1);background-color: rgba(0,0,0,0.6);text-align: justify;-moz-border-radius: 15px;border-radius: 15px;line-height: 3vmin;font-size: 1.2vw;padding: 1vw;position: absolute;bottom:70px;left:30px;width:40%;} #e28e0130-9824-11e5-88b4-a94245a618ban:hover { background-color: rgba(0,0,0,0.8);} #e28e0130-9824-11e5-88b4-a94245a618ban a{color: rgb(255, 230, 45);} #e28e0130-9824-11e5-88b4-a94245a618ban a:visited{color: rgba(255, 255, 150, 0.80);}\"}","__v":0},{"_id":"e28e0130-9824-11e5-88b4-a94245a618pro","video":"7a85bac5-fcdf-4989-8e98-6166bef80bea","user":"3818f61e-b2c4-425c-bff7-b778cb2f9966","type":"MEMO","time":23,"duration":9,"content":"{\"data\":{\"en\":\"<h3>If we make the math, the result for both X and Y will be:</h3> <form action= > <input type=radio name=vehicle value=00>X = 0 & Y = 0<br> <input type=radio name=vehicle value=01>X = 0 & Y = 1<br> <input type=radio name=vehicle value=10>X = 1 & Y = 0<br> <input type=radio name=vehicle value=11>X = 1 & Y = 1<br> <input type=button class=bttn value=send onclick=self.closeAnnotation(element,true);> </form> <hr><p>Creating problems that coexists with the video is totally factible, and we could link this problems from/to another platforms.</p>\"}, \"pauser\":true,             \"profile\":\"problem\", \"style\":\"#e28e0130-9824-11e5-88b4-a94245a618pro {color:rgb(0,0,0);background-color: rgba(247,247,247,0.30);border-style:dashed;border-color: rgba(100,100,100,0.8);text-align: justify;-moz-border-radius: 15px;border-radius: 15px;line-height: 3vmin;font-size: 1.2vw;padding: 1vw;position: absolute;bottom:10px;top:10px;left:30px;width:50%;} #e28e0130-9824-11e5-88b4-a94245a618pro:hover { background-color: rgba(0,0,0,0.8);} #e28e0130-9824-11e5-88b4-a94245a618pro a{color: rgb(255, 230, 45);} #e28e0130-9824-11e5-88b4-a94245a618pro a:visited{color: rgba(255, 255, 150, 0.80);}\"           }","__v":0}];
-              if (typeof(onSuccess)=='function') { onSuccess(data, true); }*/
-    //params.id 
-       $.getJSON(params.url + "7a85bac5-fcdf-4989-8e98-6166bef80bea" + "/annotations",function(data){
+    // 
+       $.getJSON(params.url + params.id + "/annotations",function(data){
            if (typeof(onSuccess)=='function') { onSuccess(data, true); }
        });
 
@@ -122,12 +117,18 @@ Class ("paella.plugins.visualAnnotationPlugin", paella.EventDrivenPlugin,{
 	            //var annotation = JSON.parse(element.content);
 	            
                 if (annotation.pauser==true && self._paused!=element._id)
-                {   
-	              paella.player.pause().then(function(){self._paused=element._id;});
-		        }else
+                { 
+	              self._paused=element._id;
+                  paella.player.pause();
+	         	}else
                 {
-	            	self._paused=null;
-                    self.closeAnnotation(element,false);
+	                var paused = true;
+	                paella.player.paused().then(function(p){ paused=p; });
+	                if (!paused){
+		               self._paused=null;
+					   self.closeAnnotation(element,false); 
+	                }
+	            	
                 }
                 return true;
             }

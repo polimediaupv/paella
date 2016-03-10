@@ -37,7 +37,8 @@
 		"dataDelegates":{
 			"default":"CookieDataDelegate",
 			"trimming":"CookieDataDelegate",
-			"userInfo": "UserDataDelegate"
+			"userInfo": "UserDataDelegate",
+			"visualAnnotations": "VisualAnnotationsDataDelegate"
 		}
 	},
 	"folders": {
