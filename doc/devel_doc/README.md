@@ -26,3 +26,8 @@ Paella provides a homogeneous mechanism to write and read persistent data.
 
 ## Code Examples Cookbook
 How to do usual modifications to paella
+
+- [Button plugin.](examples/button_plugin.md)
+- [PopUp button plugin.](examples/popup_plugin.md)
+- [Time line button plugin.](examples/timeline_plugin.md)
+- [Video format extensions plugin](examples/video_plugin.md)
