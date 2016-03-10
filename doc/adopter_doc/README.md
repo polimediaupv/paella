@@ -1,7 +1,5 @@
 # Adopters documentation
 
-- [Getting Started. Get up and running in minutes](getting_started.md)
-
 1. [Setup. How to install and configure paella player](setup.md)
 2. [Skinning. Change the paella look and feel](skining.md)
 3. Analytics.
