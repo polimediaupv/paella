@@ -1,7 +1,7 @@
 # Skining. Change the paella look and feel
 
 
-Paella player uses the [main config file](config.md) for define the skin to use:
+Paella player uses the main [config file](configure.md) for define the skin to use:
 
 ````javascript
 "skin": {
