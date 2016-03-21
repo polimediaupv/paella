@@ -30,9 +30,6 @@ In this file we have all the setups concerning plugins.. streams.. compositions.
 			"color":"gray"
 		}
 	},
-	"editor":{
-		"enabled":true
-	},
 	"defaultProfile":"slide_professor",
 	"data":{
 		"enabled":true,
