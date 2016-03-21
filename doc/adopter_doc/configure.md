@@ -7,20 +7,28 @@ In this file we have all the setups concerning plugins.. streams.. compositions.
 ```javascript
 {
 	"player":{
-        "profileFrameStrategy": "paella.ProfileFrameStrategy",
+		"accessControlClass":"paella.AccessControl",
+		"profileFrameStrategy": "paella.ProfileFrameStrategy",
 		"videoQualityStrategy": "paella.BestFitVideoQualityStrategy",
-		"methods":[{"name":"streaming","enabled":true},
-				   {"name":"html","enabled":true},
-				   {"name":"flash","enabled":true},
-                   {"name":"image","enabled":true}],
-        "audio": {
-            "master": 1.0,
-            "slave": 0.0
-        },
-        "rtmpSettings":{
-            "bufferTime":5,
+
+		"methods":[
+			{ "factory":"RTMPVideoFactory", "enabled":true },
+			{ "factory":"Html5VideoFactory", "enabled":true },
+			{ "factory":"MpegDashVideoFactory", "enabled":true },
+			{ "factory":"ImageVideoFactory", "enabled":true }
+		],
+	        "audio": {
+	            "master": 1.0,
+	            "slave": 0.0
+	        },
+	        "rtmpSettings":{
+	        	"bufferTime":5,
 			"requiresSubscription": false
-        }
+	        },
+		"slidesMarks":{
+			"enabled":true,
+			"color":"gray"
+		}
 	},
 	"editor":{
 		"enabled":true
@@ -31,8 +39,17 @@ In this file we have all the setups concerning plugins.. streams.. compositions.
 		"dataDelegates":{
 			"default":"CookieDataDelegate",
 			"trimming":"CookieDataDelegate",
-			"userInfo": "UserDataDelegate"
+			"userInfo": "UserDataDelegate",
+			"visualAnnotations": "VisualAnnotationsDataDelegate"
 		}
+	},
+	"folders": {
+		"profiles": "config/profiles",
+		"resources": "resources",
+		"skins": "resources/style"
+	},
+	"experimental":{
+		"autoplay":true
 	},
 	"plugins":{
 		"enablePluginsByDefault": false,		
