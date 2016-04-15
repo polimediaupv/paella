@@ -1023,10 +1023,12 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			var profileSlaveAspectRatio = 1.333;
 
 			var minMasterDiff = 10;
+			var re = /([0-9]+)\/([0-9]+)/;
+			var reResult;
 			for (var i = 0; i<profileData.masterVideo.rect.length;++i) {
 				var profileMaster = profileData.masterVideo.rect[i];
-				if (/([0-9]+)\/([0-9]+)/.test(profileMaster.aspectRatio)) {
-					profileMasterAspectRatio = Number(RegExp.$1) / Number(RegExp.$2);
+				if ((reResult = re.exec(profileMaster.aspectRatio))) {
+					profileMasterAspectRatio = Number(reResult[1]) / Number(reResult[2]);
 				}
 				var masterDiff = Math.abs(profileMasterAspectRatio - masterAspectRatio);
 				if (minMasterDiff>masterDiff) {
@@ -1039,8 +1041,8 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			var minSlaveDiff = 10;
 			for (i = 0; i<profileData.slaveVideo.rect.length;++i) {
 				var profileSlave = profileData.slaveVideo.rect[i];
-				if (/([0-9]+)\/([0-9]+)/.test(profileSlave.aspectRatio)) {
-					profileSlaveAspectRatio = Number(RegExp.$1) / Number(RegExp.$2);
+				if ((reResult = re.exec(profileSlave.aspectRatio))) {
+					profileSlaveAspectRatio = Number(reResult[1]) / Number(reResult[2]);
 				}
 				var slaveDiff = Math.abs(profileSlaveAspectRatio - slaveAspectRatio);
 				if (minSlaveDiff>slaveDiff) {
