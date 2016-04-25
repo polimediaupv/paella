@@ -1,0 +1,9 @@
+{
+	"Annotation": "Anotación",
+	"Annotations": "Anotaciones",
+	"Create a new annotation in the current position": "Crear una nueva anotación en la posición actual",
+	"Delete selected annotation": "Borrar la anotación seleccionada",
+
+	"Use this tool to create, delete and edit video annotations. To create an annotation, select the time instant clicking the timeline's background and press 'create' button. Use this tab to edit the annotation text.": "Utiliza esta herramienta para crear, borrar y editar anotaciones. Para crear una anotación, selecciona el instante de tiempo haciendo clic en el fondo de la línea de tiempo, y pulsa el botón 'Crear'. Utiliza esta pestaña para editar el texto de las anotaciones"
+
+}

@@ -35,11 +35,8 @@ paella.events = {
 	timeUpdate:"paella:timeupdate",
 	seekTo:"paella:setseek",
 	endVideo:"paella:endvideo",
-	seekToFrame:"paella:seektotime",	// deprecated, use seekToTime instead
 	seekToTime:"paella:seektotime",
 	setTrim:"paella:settrim",
-	showEditor:"paella:showeditor",
-	hideEditor:"paella:hideeditor",
 	setPlaybackRate:"paella:setplaybackrate",
 	setVolume:'paella:setVolume',
 	setComposition:'paella:setComposition',
@@ -53,14 +50,13 @@ paella.events = {
 	controlBarWillHide:'paella:controlbarwillhide',
 	controlBarDidHide:'paella:controlbardidhide',
 	controlBarDidShow:'paella:controlbardidshow',
-	///beforeUnload:'paella:beforeUnload',		This event has been removed because it not work properly in any browser
 	hidePopUp:'paella:hidePopUp',
 	showPopUp:'paella:showPopUp',
-	//userTracking:'paella:userTracking',		Event replaced by the new paella.userTracking service
 	enterFullscreen:'paella:enterFullscreen',
 	exitFullscreen:'paella:exitFullscreen',
 	resize:'paella:resize',		// params: { width:paellaPlayerContainer width, height:paellaPlayerContainer height }
-	
+
+	qualityChanged:'paella:qualityChanged',
 	singleVideoReady:'paella:singleVideoReady',
 	singleVideoUnloaded:'paella:singleVideoUnloaded',
 	videoReady:'paella:videoReady',
@@ -80,7 +76,9 @@ paella.events = {
 	
 	setupExternalListener:function() {
 		window.addEventListener("message", function(event) {
-			paella.events.trigger(event.data.event,event.data.params);
+			if (event.data && event.data.event) {
+				paella.events.trigger(event.data.event,event.data.params);
+			}
 		}, false);
 	}
 };

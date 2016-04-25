@@ -23,12 +23,15 @@ Class ("paella.plugins.PlayPauseButtonPlugin",paella.ButtonPlugin, {
 	},
 
 	action:function(button) {
-		if (paella.player.videoContainer.paused()) {
-			paella.player.play();
-		}
-		else {
-			paella.player.pause();
-		}
+		paella.player.videoContainer.paused()
+			.done(function(paused) {
+				if (paused) {
+					paella.player.play();
+				}
+				else {
+					paella.player.pause();
+				}
+			});
 	}
 });
 

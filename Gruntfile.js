@@ -4,6 +4,23 @@ module.exports = function(grunt) {
 	var initConfig = {
 		pkg: grunt.file.readJSON('package.json'),
 
+
+		if: {
+	        revision: {
+	            options: {
+	                test: function(){ return fs.statSync(".git").isDirectory(); }
+	            },
+	            ifTrue: [ 'revision' ]
+	        },
+	        'dist.js': {
+	            options: {
+	                test: function(){ return fs.statSync(".git").isDirectory(); }
+	            },
+	            ifTrue: [ 'concat:git.dist.js' ],
+	            ifFalse: [ 'concat:dist.js' ]
+	        }
+	    },
+
 		clean: {
 			build: ["build"],
 			less: ["build/style.less"]
@@ -20,13 +37,17 @@ module.exports = function(grunt) {
 				files: [
 					{expand: true, src: ['config/**', 'javascript/**', 'resources/bootstrap/**', 'resources/images/**', 'index.html', 'extended.html', 'paella-standalone.js'], dest: 'build/player/'},
  					{expand: true, src: ['vendor/images/**'], dest: 'build/player/resources/'},
-					{expand: true, cwd: 'src/flash_player/', src: "player.swf", dest: 'build/player/' },
-					{expand: true, cwd: 'src/flash_streaming/', src: "player_streaming.swf", dest: 'build/player/' },
 					{expand: true, cwd: 'repository_test/', src: '**', dest: 'build/'},
 					{expand: true, src:'plugins/*/resources/**', dest: 'build/player/resources/style/',
 						rename: function (dest, src) { return dest+src.split('/').splice(3).join('/'); }
 					},
+					{expand: true, src:'plugins/*/deps/**', dest: 'build/player/resources/deps/',
+						rename: function (dest, src) { return dest+src.split('/').splice(3).join('/'); }
+					},
 					{expand: true, src:'vendor/plugins/*/resources/**', dest: 'build/player/resources/style/',
+						rename: function (dest, src) { return dest+src.split('/').splice(4).join('/'); }
+					},
+					{expand: true, src:'vendor/plugins/*/deps/**', dest: 'build/player/resources/deps/',
 						rename: function (dest, src) { return dest+src.split('/').splice(4).join('/'); }
 					},
 					{src:['build/config_temp.json'],dest: 'build/player/config/config.json'},
@@ -46,9 +67,20 @@ module.exports = function(grunt) {
 					return '/*** File: ' + filepath + ' ***/\n' + src;
 				}
 			},
-			'dist.js': {
+			'git.dist.js': {
 				options: {
 					footer: 'paella.version = "<%= pkg.version %> - build: <%= meta.revision %>";\n'
+				},
+				src: [
+					'src/*.js',
+					'plugins/*/*.js',
+					'vendor/plugins/*/*.js'
+				],
+				dest: 'build/player/javascript/paella_player.js'
+			},
+			'dist.js': {
+				options: {
+					footer: 'paella.version = "<%= pkg.version %>";\n'
 				},
 				src: [
 					'src/*.js',
@@ -244,12 +276,14 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-express');
 	grunt.loadNpmTasks('grunt-jsonlint');
 	grunt.loadNpmTasks('grunt-merge-json');
+	grunt.loadNpmTasks('grunt-if');
+
 
 
 	grunt.registerTask('default', ['dist']);
 	grunt.registerTask('checksyntax', ['concat:less','less:production','jshint', 'csslint', 'jsonlint']);
 
-	grunt.registerTask('build.common', ['revision', 'checksyntax', 'copy:paella', 'concat:dist.js', 'clean:less', 'merge-json:i18n']);
+	grunt.registerTask('build.common', ['if:revision', 'checksyntax', 'copy:paella', 'if:dist.js', 'clean:less', 'merge-json:i18n']);
 	grunt.registerTask('build.release', ['build.common', 'uglify:dist', 'cssmin:dist']);
 	grunt.registerTask('build.debug', ['build.common']);
 

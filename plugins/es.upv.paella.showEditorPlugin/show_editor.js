@@ -14,8 +14,15 @@ Class ("paella.ShowEditorPlugin",paella.VideoOverlayButtonPlugin,{
 	getDefaultToolTip:function() { return base.dictionary.translate("Enter editor mode"); },
 
 	checkEnabled:function(onSuccess) {
-		onSuccess(paella.editor && paella.player.config.editor && paella.player.config.editor.enabled && !base.userAgent.browser.IsMobileVersion &&
-			(paella.initDelegate.initParams.accessControl.permissions.canWrite || this.config.alwaysVisible) && !paella.player.isLiveStream());
+		var stat = paella.editor && paella.player.config.editor && paella.player.config.editor.enabled && !base.userAgent.browser.IsMobileVersion &&
+			(this.config.alwaysVisible) && !paella.player.isLiveStream();
+		if (stat) {
+			paella.initDelegate.initParams.accessControl.canWrite()
+				.then(onSuccess);
+		}
+		else {
+			onSuccess(false);
+		}
 	},
 
 	setup:function() {

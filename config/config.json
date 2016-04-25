@@ -1,11 +1,21 @@
 {
 	"player":{
+		"accessControlClass":"paella.AccessControl",
         "profileFrameStrategy": "paella.ProfileFrameStrategy",
 		"videoQualityStrategy": "paella.BestFitVideoQualityStrategy",
-		"methods":[{"name":"streaming","enabled":true},
+
+		"deprecated-methods":[{"name":"streaming","enabled":true},
 				   {"name":"html","enabled":true},
 				   {"name":"flash","enabled":true},
                    {"name":"image","enabled":true}],
+
+		"methods":[
+			{ "factory":"RTMPVideoFactory", "enabled":true },
+			{ "factory":"Html5VideoFactory", "enabled":true },
+			{ "factory":"MpegDashVideoFactory", "enabled":true },
+			{ "factory":"ImageVideoFactory", "enabled":true },
+			{ "factory":"YoutubeVideoFactory", "enabled":true }
+		],
         "audio": {
             "master": 1.0,
             "slave": 0.0
@@ -13,7 +23,11 @@
         "rtmpSettings":{
             "bufferTime":5,
 			"requiresSubscription": false
-        }
+        },
+		"slidesMarks":{
+			"enabled":true,
+			"color":"gray"
+		}
 	},
 	"editor":{
 		"enabled":true
@@ -24,13 +38,17 @@
 		"dataDelegates":{
 			"default":"CookieDataDelegate",
 			"trimming":"CookieDataDelegate",
-			"userInfo": "UserDataDelegate"
+			"userInfo": "UserDataDelegate",
+			"visualAnnotations": "VisualAnnotationsDataDelegate"
 		}
 	},
 	"folders": {
 		"profiles": "config/profiles",
 		"resources": "resources",
 		"skins": "resources/style"
+	},
+	"experimental":{
+		"autoplay":true
 	},
 	"plugins":{
 		"enablePluginsByDefault": false,		
@@ -55,6 +73,7 @@
 			"es.upv.paella.themeChooserPlugin":  {"enabled":true},
 			"es.upv.paella.viewModePlugin": { "enabled": true },
 			"es.upv.paella.volumeRangePlugin":{"enabled":true, "showMasterVolume": true, "showSlaveVolume": false },
+			"es.upv.paella.visualAnnotationPlugin": {"enabled":true,"url":"https://media.upv.es/rest/video/"},
 			
 			"//****": "Video Overlay Button Plugins",
 			"es.upv.paella.liveStramingIndicator":  { "enabled": true },

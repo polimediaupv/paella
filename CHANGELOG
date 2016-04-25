@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+* Paella 5.0.0
+
+  * Now the video query functions returns promises, and it isn't necessary to use events.
+  * New architecture implemented to provide a way to add new video type plugins.
+  * The RTMP video type has been moved to a plugin.
+  * New video plugin implemented to playback MPEG-DASH
+  * The editor has been moved to an external project (paella-editor)
+  * Refactoring on the video owner and permissions data APIs.
+
 * Paella 4.2.0 (26-02-2016)
 
   * Add segment lines to the timeline

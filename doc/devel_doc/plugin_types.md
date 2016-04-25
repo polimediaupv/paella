@@ -60,11 +60,8 @@ the plugin and its funcionalities.
   Plugin examples: [googleAnalyticsSaverPlugin](../plugins/es.upv.paella.usertracking.googleAnalyticsSaverPlugin.md),
   [elasticsearchSaverPlugin](../plugins/es.upv.paella.usertracking.elasticsearchSaverPlugin.md)
 
+## Video plugins
+A video plugin is the basic element that is able to manage (play, pause, stop, ...) a single video.
+A video plugin shoud inherit from a `paella.VideoElementBase` class or any other class that inherit from it.
 
-## Paella Editor Plugins
-
-- EditorTrackPlugin
-
-- EditorRightBarPlugin
-
-- EditorToolbarPlugin
+Plugin Examples: [es.upv.paella.rtmpPlayer](../../plugins/es.upv.paella.rtmpPlayer), [es.upv.paella.mpegDashPlayer](../../plugins/es.upv.paella.mpegDashPlayer)

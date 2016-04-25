@@ -7,9 +7,6 @@ Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 	getName:function() { return "es.upv.paella.fullScreenButtonPlugin"; },
 	checkEnabled:function(onSuccess) {
 		var enabled = paella.player.checkFullScreenCapability();
-		if (base.userAgent.browser.IsMobileVersion) {
-			enabled = paella.player.videoContainer.isMonostream && (enabled);
-		}
 		onSuccess(enabled);
 	},
 	getDefaultToolTip:function() { return base.dictionary.translate("Go Fullscreen"); },
@@ -28,22 +25,29 @@ Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 		if (paella.player.isFullScreen()) {
 			paella.player.exitFullScreen();
 		}
-		else {
-			if( (base.userAgent.browser.IsMobileVersion || base.userAgent.browser.Explorer) && (window.location !== window.parent.location) ) {
-				var url = window.location.href;
+		else if ((!paella.player.checkFullScreenCapability() || base.userAgent.browser.Explorer) && window.location !== window.parent.location) {
+			// Iframe and no fullscreen support
+			var url = window.location.href;
 
-				//PAUSE IFRAME
-				paella.player.pause();
-				var sec = paella.player.videoContainer.currentTime();
-				var obj = self.secondsToHours(sec);
-				window.open(url+"&time="+obj.h+"h"+obj.m+"m"+obj.s+"s&autoplay=true");
-				return;
-			}
-			else paella.player.goFullScreen();
+			paella.player.pause();
+			paella.player.videoContainer.currentTime()
+                .then(function(currentTime) {
+					var obj = self.secondsToHours(currentTime);
+					window.open(url+"&time="+obj.h+"h"+obj.m+"m"+obj.s+"s&autoplay=true");
+                });
+			
+			return;
 		}
+		else {
+			paella.player.goFullScreen();
+		}
+
 		setTimeout(function() {
 			if(self._reload) {
-				paella.player.reloadVideos();
+				paella.player.videoContainer.setQuality(null)
+					.then(function() {
+					});
+				//paella.player.reloadVideos();
 			}
 		}, 1000);
 	},
@@ -70,7 +74,10 @@ Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 	
 	onExitFullscreen: function() {
 		this.setToolTip(base.dictionary.translate("Go Fullscreen"));
-		this.button.className = this.getButtonItemClass(false);	
+		this.button.className = this.getButtonItemClass(false);
+		setTimeout(function() {
+			paella.player.onresize();
+		}, 100);
 	},
 
 	getButtonItemClass:function(selected) {

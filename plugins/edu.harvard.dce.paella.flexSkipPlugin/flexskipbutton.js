@@ -26,8 +26,10 @@ Class("paella.plugins.FlexSkipPlugin", paella.ButtonPlugin, {
 	},
 	
 	action: function(button) {
-		var newTime = paella.player.videoContainer.currentTime() - 10;
-		paella.player.videoContainer.seekToTime(newTime);
+		paella.player.videoContainer.currentTime()
+			.then(function(currentTime) {
+				paella.player.videoContainer.seekToTime(currentTime - 10);
+			});
 	}
 });
 
@@ -51,8 +53,10 @@ Class("paella.plugins.FlexSkipForwardPlugin", paella.plugins.FlexSkipPlugin, {
 	},
 	
 	action: function(button) {
-		var newTime = paella.player.videoContainer.currentTime() + 30;
-		paella.player.videoContainer.seekToTime(newTime);
+		paella.player.videoContainer.currentTime()
+			.then(function(currentTime) {
+				paella.player.videoContainer.seekToTime(currentTime + 30);
+			});
 	}
 });
 
