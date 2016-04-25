@@ -395,15 +395,20 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			this.controls.onresize();
 		}
 
-		this.videoContainer.play();
+		return this.videoContainer.play();
 	},
 
 	pause:function() {
-		this.videoContainer.pause();
+		return this.videoContainer.pause();
 	},
 
 	playing:function() {
-		return !this.paused();
+		var defer = $.Deferred();
+		this.paused()
+			.then(function(p) {
+				defer.resolve(!p);
+			});
+		return defer;
 	},
 
 	paused:function() {

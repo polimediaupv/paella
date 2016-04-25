@@ -1,7 +1,8 @@
 {
   "name": "PaellaPlayer",
-  "version": "4.2.0",
+  "version": "5.0.0",
   "description": "Paella Player",
+  "license": "GPL 3.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/polimediaupv/paella.git"

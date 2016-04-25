@@ -1,0 +1,36 @@
+{
+	"metadata": {
+		"duration": 0,
+		"title": "UPV-TV"
+	},
+	"streams": [
+		{
+			"sources": {
+				"youtube": [
+					{
+						"id":"YNqsYt6-iB4",
+						"res": {
+							"w": 1280,
+							"h": 720
+						}
+					}
+				]
+			},
+			"preview": "490512.jpg"
+		},
+		{
+			"sources": {
+				"youtube": [
+					{
+						"id":"LU4-fKcNVJk",
+						"res": {
+							"w": 1024,
+							"h": 768
+						}
+					}
+				]
+			},
+			"preview": ""
+		}
+	]
+}

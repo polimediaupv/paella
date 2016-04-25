@@ -13,7 +13,8 @@
 			{ "factory":"RTMPVideoFactory", "enabled":true },
 			{ "factory":"Html5VideoFactory", "enabled":true },
 			{ "factory":"MpegDashVideoFactory", "enabled":true },
-			{ "factory":"ImageVideoFactory", "enabled":true }
+			{ "factory":"ImageVideoFactory", "enabled":true },
+			{ "factory":"YoutubeVideoFactory", "enabled":true }
 		],
         "audio": {
             "master": 1.0,
@@ -37,7 +38,8 @@
 		"dataDelegates":{
 			"default":"CookieDataDelegate",
 			"trimming":"CookieDataDelegate",
-			"userInfo": "UserDataDelegate"
+			"userInfo": "UserDataDelegate",
+			"visualAnnotations": "VisualAnnotationsDataDelegate"
 		}
 	},
 	"folders": {
@@ -71,6 +73,7 @@
 			"es.upv.paella.themeChooserPlugin":  {"enabled":true},
 			"es.upv.paella.viewModePlugin": { "enabled": true },
 			"es.upv.paella.volumeRangePlugin":{"enabled":true, "showMasterVolume": true, "showSlaveVolume": false },
+			"es.upv.paella.visualAnnotationPlugin": {"enabled":true,"url":"https://media.upv.es/rest/video/"},
 			
 			"//****": "Video Overlay Button Plugins",
 			"es.upv.paella.liveStramingIndicator":  { "enabled": true },

@@ -539,23 +539,31 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		}
 	},
 
-	checkVideoTrimming:function(trimming, current, paused) {
+	checkVideoBounds:function(trimming, current, paused, actualDuration) {
 		var This = this;
 		var start = trimming.start;
 		var end = trimming.end;
 		var enabled = trimming.enabled;
-		if (!enabled) return;
-
-		if (current>=Math.floor(end) && !paused) {
-			paella.events.trigger(paella.events.endVideo, { videoContainer: this });
-			this.pause();
+		if (!enabled) {
+			if (current>=actualDuration) {
+				paella.events.trigger(paella.events.endVideo, { videoContainer: this });
+				this.pause();
+			}
 		}
-		else if (current<start) {
-			this.setCurrentTime(start + 1);
+		else {
+			if (current>=Math.floor(end) && !paused) {
+				paella.events.trigger(paella.events.endVideo, { videoContainer: this });
+				this.pause();
+			}
+			else if (current<start) {
+				this.setCurrentTime(start + 1);
+			}
 		}
 	},
 
 	play:function() {
+		var This = this;
+		var defer = $.Deferred();
 		if (!this._firstLoad) {
 			this._firstLoad = true;
 		}
@@ -564,21 +572,42 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		}
 		var masterVideo = this.masterVideo();
 		var slaveVideo = this.slaveVideo();
+
 		if (masterVideo) {
-			masterVideo.play();
+			masterVideo.play()
+				.then(function() {
+					if (slaveVideo) {
+						slaveVideo.play();
+					}
+					This.parent();
+					defer.resolve();
+				});
 		}
-		if (slaveVideo) {
-			slaveVideo.play();
+		else {
+			defer.reject(new Error("Invalid master video"));
 		}
-		this.parent();
+
+		return defer;
 	},
 
 	pause:function() {
+		var This = this;
+		var defer = $.Deferred();
 		var masterVideo = this.masterVideo();
 		var slaveVideo = this.slaveVideo();
-		if (masterVideo) masterVideo.pause();
-		if (slaveVideo) slaveVideo.pause();
-		this.parent();
+		if (masterVideo) {
+			masterVideo.pause()
+				.then(function() {
+					if (slaveVideo) slaveVideo.pause();
+					This.parent();
+					defer.resolve();
+				});
+		}
+		else {
+			defer.reject(new Error("invalid master video"));
+		}
+
+		return defer;
 	},
 
 	next:function() {
@@ -600,7 +629,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	},
 
 	setCurrentTime:function(time) {
-		if (time<=0) time = 1; 
+		// if (time<=0) time = 1;  Fix #176
 		if (this._trimming.enabled) {
 			if (time<this._trimming.start) time = this._trimming.start;
 			if (time>this._trimming.end) time = this._trimming.end;
@@ -707,7 +736,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	duration:function(ignoreTrimming) {
 		var This = this;
 		return this.masterVideo().duration()
-			.done(function(d) {
+			.then(function(d) {
 				if (This._trimming.enabled && !ignoreTrimming) {
 					d = This._trimming.end - This._trimming.start;
 				}
@@ -852,7 +881,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 						duration = trimming.end - trimming.start;
 					}
 					paella.events.trigger(paella.events.timeupdate, { videoContainer:This, currentTime:current, duration:duration });
-					This.checkVideoTrimming(trimming,evt.currentTarget.currentTime,evt.currentTarget.paused);
+					This.checkVideoBounds(trimming,evt.currentTarget.currentTime,evt.currentTarget.paused,duration);
 
 				});
 				This.overlayContainer.removeElement(overlayLoader);
@@ -994,10 +1023,12 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			var profileSlaveAspectRatio = 1.333;
 
 			var minMasterDiff = 10;
+			var re = /([0-9]+)\/([0-9]+)/;
+			var reResult;
 			for (var i = 0; i<profileData.masterVideo.rect.length;++i) {
 				var profileMaster = profileData.masterVideo.rect[i];
-				if (/([0-9]+)\/([0-9]+)/.test(profileMaster.aspectRatio)) {
-					profileMasterAspectRatio = Number(RegExp.$1) / Number(RegExp.$2);
+				if ((reResult = re.exec(profileMaster.aspectRatio))) {
+					profileMasterAspectRatio = Number(reResult[1]) / Number(reResult[2]);
 				}
 				var masterDiff = Math.abs(profileMasterAspectRatio - masterAspectRatio);
 				if (minMasterDiff>masterDiff) {
@@ -1010,8 +1041,8 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			var minSlaveDiff = 10;
 			for (i = 0; i<profileData.slaveVideo.rect.length;++i) {
 				var profileSlave = profileData.slaveVideo.rect[i];
-				if (/([0-9]+)\/([0-9]+)/.test(profileSlave.aspectRatio)) {
-					profileSlaveAspectRatio = Number(RegExp.$1) / Number(RegExp.$2);
+				if ((reResult = re.exec(profileSlave.aspectRatio))) {
+					profileSlaveAspectRatio = Number(reResult[1]) / Number(reResult[2]);
 				}
 				var slaveDiff = Math.abs(profileSlaveAspectRatio - slaveAspectRatio);
 				if (minSlaveDiff>slaveDiff) {

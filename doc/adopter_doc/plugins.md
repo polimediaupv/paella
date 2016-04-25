@@ -43,6 +43,7 @@ To know more about this, you can read the [Plugin types](developer/plugin_types.
 * [es.upv.paella.translecture.captionsPlugin](plugins/es.upv.paella.translecture.captionsPlugin.md)
 * [es.upv.paella.trimmingPlayerPlugin](plugins/es.upv.paella.trimmingPlayerPlugin.md)
 * [es.upv.paella.windowTitlePlugin](plugins/es.upv.paella.windowTitlePlugin.md)
+* [es.upv.paella.visualAnnotationPlugin](plugins/es.upv.paella.visualAnnotationPlugin.md)
 
 ## Captions Parser Plugins
 * [es.upv.paella.captions.DFXPParserPlugin](plugins/es.upv.paella.captions.DFXPParserPlugin.md)
@@ -56,11 +57,7 @@ To know more about this, you can read the [Plugin types](developer/plugin_types.
 * [es.upv.paella.usertracking.elasticsearchSaverPlugin](plugins/es.upv.paella.usertracking.elasticsearchSaverPlugin.md)
 * [es.upv.paella.usertracking.googleAnalyticsSaverPlugin](plugins/es.upv.paella.usertracking.googleAnalyticsSaverPlugin.md)
 
+## Video Plugins
 
-## Editor Plugins
-
-* [es.upv.paella.editor.snapShotsEditorPlugin](plugins/es.upv.paella.editor.snapShotsEditorPlugin.md)
-* [es.upv.paella.editor.toolStatusPlugin](plugins/es.upv.paella.editor.toolStatusPlugin.md)
-* [es.upv.paella.editor.trackAnnotationsPlugin](plugins/es.upv.paella.editor.trackAnnotationsPlugin.md)
-* [es.upv.paella.editor.trackBreaksPlugin](plugins/es.upv.paella.editor.trackBreaksPlugin.md)
-* [es.upv.paella.editor.trimmingTrackPlugin](plugins/es.upv.paella.editor.trimmingTrackPlugin.md)
+* [es.upv.paella.rtmpPlayer](plugins/es.upv.paella.rtmpPlayer.md)
+* [es.upv.paella.mpegDashPlayer](plugins/es.upv.paella.mpegDashPlayer.md)

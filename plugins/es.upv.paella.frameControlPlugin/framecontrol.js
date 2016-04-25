@@ -149,7 +149,7 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 			var framesKeys = Object.keys(frames);
 			numFrames = framesKeys.length;
 
-			framesKeys.map(function(i){return parseInt(i, 10);})
+			framesKeys.map(function(i){return Number(i, 10);})
 			.sort(function(a, b){return a-b;})
 			.forEach(function(key){
 				var frameItem = thisClass.getFrame(frames[key]);
