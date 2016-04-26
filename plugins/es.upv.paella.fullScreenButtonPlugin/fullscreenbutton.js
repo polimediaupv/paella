@@ -31,15 +31,16 @@ Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 		else {
 			if( (base.userAgent.browser.IsMobileVersion || base.userAgent.browser.Explorer) && (window.location !== window.parent.location) ) {
 				var url = window.location.href;
-
 				//PAUSE IFRAME
 				paella.player.pause();
 				var sec = paella.player.videoContainer.currentTime();
 				var obj = self.secondsToHours(sec);
-				window.open(url+"&time="+obj.h+"h"+obj.m+"m"+obj.s+"s&autoplay=true");
+				url_new_params = "time="+obj.h+"h"+obj.m+"m"+obj.s+"s&autoplay=true";
+				url = url + (url.indexOf("?")?"&":"?") + url_new_params;
+				window.open(url);
 				return;
 			}
-			else paella.player.goFullScreen();
+			paella.player.goFullScreen();
 		}
 		setTimeout(function() {
 			if(self._reload) {
@@ -65,12 +66,12 @@ Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 
 	onEnterFullscreen: function() {
 		this.setToolTip(base.dictionary.translate("Exit Fullscreen"));
-		this.button.className = this.getButtonItemClass(true);				
+		this.button.className = this.getButtonItemClass(true);
 	},
-	
+
 	onExitFullscreen: function() {
 		this.setToolTip(base.dictionary.translate("Go Fullscreen"));
-		this.button.className = this.getButtonItemClass(false);	
+		this.button.className = this.getButtonItemClass(false);
 	},
 
 	getButtonItemClass:function(selected) {
