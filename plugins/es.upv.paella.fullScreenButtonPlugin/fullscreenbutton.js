@@ -36,7 +36,7 @@ Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 				var sec = paella.player.videoContainer.currentTime();
 				var obj = self.secondsToHours(sec);
 				url_new_params = "time="+obj.h+"h"+obj.m+"m"+obj.s+"s&autoplay=true";
-				url = url + (url.indexOf("?")?"&":"?") + url_new_params;
+				url = url + (url.indexOf("?") == -1 ?"?":"&") + url_new_params;
 				window.open(url);
 				return;
 			}
