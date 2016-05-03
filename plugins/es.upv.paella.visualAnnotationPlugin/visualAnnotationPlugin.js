@@ -37,8 +37,7 @@ Class ("paella.plugins.visualAnnotationPlugin", paella.EventDrivenPlugin,{
     setup:function(){
     	var self = this;
         paella.data.read('visualAnnotations',{id:paella.initDelegate.getId(),url:self.config.url},function(data,status) {
-	        
-            self._annotations = data;
+			self._annotations = Array.isArray(data) ? data:[];
         });
         self._prevProfile=null;
     },
