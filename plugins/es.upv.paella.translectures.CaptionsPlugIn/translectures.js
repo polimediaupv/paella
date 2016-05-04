@@ -14,14 +14,15 @@ Class ("paella.captions.translectures.Caption", paella.captions.Caption, {
 	},
 	
 	goToEdit: function() {		
-		var permissions = paella.player.auth.permissions();
-		
-		if (permissions.isAnonymous == true) {
-			this.askForAnonymousOrLoginEdit();
-		}
-		else {
-			this.doEdit();
-		}		
+		var self = this;
+		paella.player.auth.userData().then(function(userData){
+			if (userData.isAnonymous == true) {
+				self.askForAnonymousOrLoginEdit();
+			}
+			else {
+				self.doEdit();
+			}		
+		});	
 	},
 		
 	doEdit: function() {
