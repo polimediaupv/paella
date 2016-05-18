@@ -296,7 +296,7 @@ Class ("paella.BestFitVideoQualityStrategy",paella.VideoQualityStrategy,{
 			var win_w = $(window).width();
 			var win_h = $(window).height();
 			var win_res = (win_w * win_h);
-			var selected_res = parseInt(selected.res.w) * parseInt(selected.res.h);
+			var selected_res = selected.res ? parseInt(selected.res.w) * parseInt(selected.res.h):0;
 			var selected_diff = Math.abs(win_res - selected_res);
 
 			for (var i=0; i<source.length; ++i) {
