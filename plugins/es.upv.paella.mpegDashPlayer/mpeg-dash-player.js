@@ -52,7 +52,7 @@ Class ("paella.MpegDashVideo", paella.Html5Video,{
 					player.debug.setLogToBrowserConsole(false);
 					player.attachView(This.video);
 					player.setAutoPlay(false);
-					player.setAutoSwitchQuality(false);
+					player.setAutoSwitchQuality(true);
 					This._player = player;
 
 					player.addEventListener(MediaPlayer.events.STREAM_INITIALIZED,function(a,b) {
