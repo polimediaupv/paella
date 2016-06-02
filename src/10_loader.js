@@ -92,10 +92,10 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 		if (data.frameList && data.frameList.forEach) {
 			var newFrames = {};
 			data.frameList.forEach(function(frame) {
-				if (! /^[a-zA-Z]+:\/\//.test(frame.url)) {
+				if (! /^[a-zA-Z]+:\/\//.test(frame.url) && !/^data:/.test(frame.url)) {
 					frame.url = This._url + frame.url;
 				}
-				if (frame.thumb && ! /^[a-zA-Z]+:\/\//.test(frame.thumb)) {
+				if (frame.thumb && ! /^[a-zA-Z]+:\/\//.test(frame.thumb) && !/^data:/.test(frame.thumb)) {
 					frame.thumb = This._url + frame.thumb;
 				}
 				var id = frame.time;
@@ -108,7 +108,7 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 
 	loadStream:function(stream) {
 		var This=this;
-		if (stream.preview && ! /^[a-zA-Z]+:\/\//.test(stream.preview)) {
+		if (stream.preview && ! /^[a-zA-Z]+:\/\//.test(stream.preview) && !/^data:/.test(stream.preview)) {
 			stream.preview = This._url + stream.preview;
 		}
 
@@ -117,10 +117,10 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 				if (image.frames.forEach) {
 					var newFrames = {};
 					image.frames.forEach(function(frame) {
-						if (frame.src && ! /^[a-zA-Z]+:\/\//.test(frame.src)) {
+						if (frame.src && ! /^[a-zA-Z]+:\/\//.test(frame.src) && !/^data:/.test(frame.src)) {
 							frame.src = This._url + frame.src;
 						}
-						if (frame.thumb && ! /^[a-zA-Z]+:\/\//.test(frame.thumb)) {
+						if (frame.thumb && ! /^[a-zA-Z]+:\/\//.test(frame.thumb) && !/^data:/.test(frame.thumb)) {
 							frame.thumb = This._url + frame.thumb;
 						}
 						var id = "frame_" + frame.time;
