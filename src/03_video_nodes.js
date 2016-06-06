@@ -373,13 +373,15 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	_posterFrame:null,
 	_currentQuality:null,
 	_autoplay:false,
+	_streamName:null,
 
-	initialize:function(id,stream,left,top,width,height) {
+	initialize:function(id,stream,left,top,width,height,streamName) {
 		this.parent(id,stream,'video',left,top,width,height);
+		this._streamName = streamName || 'mp4';
 		var This = this;
 
-		if (this._stream.sources.mp4) {
-			this._stream.sources.mp4.sort(function (a, b) {
+		if (this._stream.sources[this._streamName]) {
+			this._stream.sources[this._streamName].sort(function (a, b) {
 				return a.res.h - b.res.h;
 			});
 		}
@@ -473,7 +475,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 
 	load:function() {
 		var This = this;
-		var sources = this._stream.sources.mp4;
+		var sources = this._stream.sources[this._streamName];
 		if (this._currentQuality===null && this._videoQualityStrategy) {
 			this._currentQuality = this._videoQualityStrategy.getQualityIndex(sources);
 		}
@@ -507,7 +509,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		var defer = $.Deferred();
 		setTimeout(function() {
 			var result = [];
-			var sources = This._stream.sources.mp4;
+			var sources = This._stream.sources[This._streamName];
 			var index = -1;
 			sources.forEach(function(s) {
 				index++;
@@ -522,7 +524,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		var defer = $.Deferred();
 		var This = this;
 		var paused = This.video.paused;
-		var sources = this._stream.sources.mp4;
+		var sources = this._stream.sources[this._streamName];
 		this._currentQuality = index<sources.length ? index:0;
 		var currentTime = this.video.currentTime;
 		this.freeze()
@@ -548,7 +550,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 
 	getCurrentQuality:function() {
 		var defer = $.Deferred();
-		defer.resolve(this._getQualityObject(this._currentQuality,this._stream.sources.mp4[this._currentQuality]));
+		defer.resolve(this._getQualityObject(this._currentQuality,this._stream.sources[this._streamName][this._currentQuality]));
 		return defer;
 	},
 
@@ -843,7 +845,7 @@ Class ("paella.ImageVideo", paella.VideoElementBase,{
 		var defer = $.Deferred();
 		setTimeout(function() {
 			var result = [];
-			var sources = This._stream.sources.mp4;
+			var sources = This._stream.sources[This._streamName];
 			var index = -1;
 			sources.forEach(function(s) {
 				index++;
