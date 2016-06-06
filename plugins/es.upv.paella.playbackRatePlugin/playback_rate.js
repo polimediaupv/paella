@@ -12,9 +12,9 @@ Class ("paella.plugins.PlaybackRate",paella.ButtonPlugin,{
 	getMinWindowSize:function() { return 200; },
 	getName:function() { return "es.upv.paella.playbackRatePlugin"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
-	getDefaultToolTip:function() { return base.dictionary.translate("Set playback rate"); },		
+	getDefaultToolTip:function() { return base.dictionary.translate("Set playback rate"); },
 	checkEnabled:function(onSuccess) {
-		var enabled = (!base.userAgent.browser.IsMobileVersion && dynamic_cast("paella.Html5Video",paella.player.videoContainer.masterVideo())!=null);		
+		var enabled = (!base.userAgent.browser.IsMobileVersion && dynamic_cast("paella.Html5Video",paella.player.videoContainer.masterVideo())!=null);
 		onSuccess(enabled);
 	},
 
@@ -28,10 +28,10 @@ Class ("paella.plugins.PlaybackRate",paella.ButtonPlugin,{
 		This._domElement = domElement;
 		this.buttonItems = {};
 		this.available_rates.forEach(function(rate){
-			domElement.appendChild(This.getItemButton(rate+"x", rate));	
+			domElement.appendChild(This.getItemButton(rate+"x", rate));
 		});
 	},
-	
+
 	getItemButton:function(label,rate) {
 		var elem = document.createElement('div');
 		if(rate == 1.0){
@@ -52,11 +52,10 @@ Class ("paella.plugins.PlaybackRate",paella.ButtonPlugin,{
 		});
 		return elem;
 	},
-	
+
 	onItemClick:function(button,label,rate) {
 		var self = this;
-		//paella.player.videoContainer.setPlaybackRate(rate);
-		paella.events.trigger(paella.events.setPlaybackRate, rate);
+	        paella.player.videoContainer.setPlaybackRate(rate);
 		this.setText(label);
 		paella.player.controls.hidePopUp(this.getName());
 
@@ -67,7 +66,7 @@ Class ("paella.plugins.PlaybackRate",paella.ButtonPlugin,{
 		}
 		button.className = self.getButtonItemClass(i,true);
 	},
-	
+
 	getText:function() {
 		return "1x";
 	},
@@ -76,7 +75,7 @@ Class ("paella.plugins.PlaybackRate",paella.ButtonPlugin,{
 		var elem = document.createElement('div');
 		elem.className = this.getButtonItemClass(profile,false);
 		elem.id = profile + '_button';
-		
+
 		elem.data = {
 			profile:profile,
 			profileData:profileData,
