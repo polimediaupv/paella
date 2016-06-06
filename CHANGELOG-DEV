@@ -4,3 +4,4 @@ CHANGELOG
 * Paella 5.0.4
 
   * New automatic quality mode added to mpeg-dash video sources
+  * HLS support implemented for iOS devices
