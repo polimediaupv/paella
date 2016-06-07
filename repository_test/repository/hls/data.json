@@ -1,0 +1,23 @@
+{
+	"metadata": {
+		"duration": 0,
+		"title": "UPV-TV"
+	},
+	"streams": [
+		{
+			"sources": {
+				"hls": [
+					{
+						"src": "http://moneres.cc.upv.es/hls-vod/sample1_1500kbps.f4v.m3u8",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1280",
+							"h": "720"
+						}
+					}
+				]
+			},
+			"preview": "490512.jpg"
+		}
+	]
+}

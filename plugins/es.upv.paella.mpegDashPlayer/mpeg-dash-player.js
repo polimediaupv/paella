@@ -52,7 +52,7 @@ Class ("paella.MpegDashVideo", paella.Html5Video,{
 					player.debug.setLogToBrowserConsole(false);
 					player.attachView(This.video);
 					player.setAutoPlay(false);
-					player.setAutoSwitchQuality(false);
+					player.setAutoSwitchQuality(true);
 					This._player = player;
 
 					player.addEventListener(MediaPlayer.events.STREAM_INITIALIZED,function(a,b) {
@@ -88,6 +88,18 @@ Class ("paella.MpegDashVideo", paella.Html5Video,{
 					.forEach(function(item,index) {
 						This._qualities.push(This._getQualityObject(item,index,bitrates));
 					});
+					
+				This.autoQualityIndex = This._qualities.length; 
+				This._qualities.push({
+					index: This.autoQualityIndex,
+					res: { w:null, h:null },
+					bitrate: -1,
+					src: null,
+					toString:function() { return "auto"; },
+					shortLabel:function() { return "auto"; },
+					compare:function(q2) { return this.bitrate - q2.bitrate; }
+				});
+				
 			}
 			defer.resolve(This._qualities);
 		});
@@ -99,7 +111,12 @@ Class ("paella.MpegDashVideo", paella.Html5Video,{
 		var This = this;
 
 		var currentQuality = this._player.getQualityFor("video");
-		if (index!=currentQuality) {
+		if (index==This.autoQualityIndex) {
+			this._player.setAutoSwitchQuality(true);
+			defer.resolve();
+		}
+		else if (index!=currentQuality) {
+			this._player.setAutoSwitchQuality(false);
 			this._player.removeEventListener(MediaPlayer.events.METRIC_CHANGED);
 			this._player.addEventListener(MediaPlayer.events.METRIC_CHANGED,function(a,b) {
 				if(a.type=="metricchanged" && a.data.stream=="video") {
@@ -120,8 +137,21 @@ Class ("paella.MpegDashVideo", paella.Html5Video,{
 
 	getCurrentQuality:function() {
 		var defer = $.Deferred();
-		var index = this._player.getQualityFor("video");
-		defer.resolve(this._getQualityObject(this._qualities[index],index,this._player.getBitrateInfoListFor("video")));
+		if (this._player.getAutoSwitchQuality()) {// auto quality
+			defer.resolve({
+					index: this.autoQualityIndex,
+					res: { w:null, h:null },
+					bitrate: -1,
+					src: null,
+					toString:function() { return "auto"; },
+					shortLabel:function() { return "auto"; },
+					compare:function(q2) { return this.bitrate - q2.bitrate; }
+				});
+		}
+		else {
+			var index = this._player.getQualityFor("video");
+			defer.resolve(this._getQualityObject(this._qualities[index],index,this._player.getBitrateInfoListFor("video")));
+		}	
 		return defer;
 	},
 
