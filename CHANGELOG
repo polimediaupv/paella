@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.0.4 (07-06-2016)
+
+  * Fixing PlayBackRate Plugin 
+
 * Paella 5.0.3 (04-05-2016)
 
   * Bug fixed in translectures plugin
