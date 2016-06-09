@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.0.7
+
+  * Fixed several bugs with video factories in iOS platform.
+
 * Paella 5.0.6
 
   * Fixed bug with dictionary loading.
