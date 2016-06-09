@@ -8,7 +8,9 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 
 Class ("paella.videoFactories.HLSVideoFactory", {
 	isStreamCompatible:function(streamData) {
-		if (base.userAgent.system.iOS) {
+		if (base.userAgent.system.iOS &&
+			paella.videoFactories.HLSVideoFactory.s_instances==0)
+		{
 			try {
 				for (var key in streamData.sources) {
 					if (key=='hls') return true;
@@ -21,6 +23,9 @@ Class ("paella.videoFactories.HLSVideoFactory", {
 	},
 
 	getVideoObject:function(id, streamData, rect) {
+		++paella.videoFactories.HLSVideoFactory.s_instances;
 		return new paella.HLSPlayer(id, streamData, rect.x, rect.y, rect.w, rect.h);
 	}
 });
+
+paella.videoFactories.HLSVideoFactory.s_instances = 0;

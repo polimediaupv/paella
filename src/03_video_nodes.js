@@ -681,6 +681,12 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 Class ("paella.videoFactories.Html5VideoFactory", {
 	isStreamCompatible:function(streamData) {
 		try {
+			if (paella.videoFactories.Html5VideoFactory.s_instances>0 && 
+				base.userAgent.system.iOS)
+			{
+				return false;
+			}
+			
 			for (var key in streamData.sources) {
 				if (key=='mp4') return true;
 			}
@@ -690,9 +696,11 @@ Class ("paella.videoFactories.Html5VideoFactory", {
 	},
 
 	getVideoObject:function(id, streamData, rect) {
+		++paella.videoFactories.Html5VideoFactory.s_instances;
 		return new paella.Html5Video(id, streamData, rect.x, rect.y, rect.w, rect.h);
 	}
 });
+paella.videoFactories.Html5VideoFactory.s_instances = 0;
 
 
 Class ("paella.ImageVideo", paella.VideoElementBase,{

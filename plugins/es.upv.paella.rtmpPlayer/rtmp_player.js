@@ -407,6 +407,9 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 Class ("paella.videoFactories.RTMPVideoFactory", {
 	isStreamCompatible:function(streamData) {
 		try {
+			if (base.userAgent.system.iOS || base.userAgent.system.Android) {
+				return false;
+			}
 			for (var key in streamData.sources) {
 				if (key=='rtmp') return true;
 			}
