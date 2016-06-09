@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.0.6
+
+  * Fixed bug with dictionary loading.
+
 * Paella 5.0.5
 
   * New automatic quality mode added to mpeg-dash video sources

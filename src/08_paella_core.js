@@ -202,7 +202,7 @@ Class ("paella.InitDelegate", {
 				defer.resolve(data);
 			},
 			function(data,type,returnCode) {
-				defer.reject();
+				defer.resolve();
 			});
 		return defer;
 	},
