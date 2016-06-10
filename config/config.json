@@ -77,7 +77,7 @@
 			"es.upv.paella.visualAnnotationPlugin": {"enabled":true,"url":"https://media.upv.es/rest/video/"},
 			
 			"//****": "Video Overlay Button Plugins",
-			"es.upv.paella.liveStramingIndicator":  { "enabled": true },
+			"es.upv.paella.liveStreamingIndicatorPlugin":  { "enabled": true },
 			"es.upv.paella.showEditorPlugin":{"enabled":true,"alwaysVisible":true},
 			
 			"//****": "TabBar Plugins",
