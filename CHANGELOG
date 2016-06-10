@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.0.9
+
+  * Bug fixed with multiple video load in iOS.
+
 * Paella 5.0.8
 
   * Fixed typo (Fix #207).
