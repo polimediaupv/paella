@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.0.8
+
+  * Fixed typo (Fix #207).
+
 * Paella 5.0.7
 
   * Fixed several bugs with video factories in iOS platform.

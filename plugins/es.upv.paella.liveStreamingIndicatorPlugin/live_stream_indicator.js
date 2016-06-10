@@ -26,7 +26,7 @@ Class ("paella.LiveStreamIndicator",paella.VideoOverlayButtonPlugin,{
     },
 
     getName:function() {
-        return "es.upv.paella.liveStramingIndicatorPlugin";
+        return "es.upv.paella.liveStreamingIndicatorPlugin";
     }
 });
 
