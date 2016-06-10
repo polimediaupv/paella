@@ -1,0 +1,19 @@
+{
+	"metadata": {
+		"duration": 0,
+		"title": "UPV-TV"
+	},
+	"streams": [
+		{
+			"sources": {
+				"mpd": [
+					{
+						"src":"video.mpd",
+						"mimetype": "video/mp4"
+					}
+				]
+			},
+			"preview": "490512.jpg"
+		}
+	]
+}
