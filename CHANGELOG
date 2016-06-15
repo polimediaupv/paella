@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.0.10
+
+  * Fixed some issues with the volume range plugin.
+
 * Paella 5.0.9
 
   * Bug fixed with multiple video load in iOS.
