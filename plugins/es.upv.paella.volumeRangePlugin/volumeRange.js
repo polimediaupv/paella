@@ -100,15 +100,21 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 			rangeInputMaster.value = this.getMasterVolume();
 
 			var updateMasterVolume = function() {
+				var masterVolume = $(rangeInputMaster).val();
 				var slaveVideo = paella.player.videoContainer.slaveVideo();
 				var slaveVolume = 0;
 				if (slaveVideo) {
-					slaveVolume = slaveVideo.volume();
+					slaveVideo.volume()
+						.then(function(volume) {
+							slaveVolume = volume;
+							thisClass._control_NotMyselfEvent = false;
+							paella.player.videoContainer.setVolume({ master:masterVolume, slave:slaveVolume });
+						});
 				}
-
-				var masterVolume = $(rangeInputMaster).val();
-				thisClass._control_NotMyselfEvent = false;
-				paella.player.videoContainer.setVolume({ master:masterVolume, slave:slaveVolume });
+				else {
+					thisClass._control_NotMyselfEvent = false;
+					paella.player.videoContainer.setVolume({ master:masterVolume, slave:slaveVolume });
+				}
 			};
 			$(rangeInputMaster).bind('input', function (e) { updateMasterVolume(); });
 			$(rangeInputMaster).change(function() { updateMasterVolume(); });
@@ -135,12 +141,19 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 
 			var updateSlaveVolume = function() {
 				var masterVideo = paella.player.videoContainer.masterVideo();
-				var masterVolume = 0;
-				if (masterVideo) { masterVolume = masterVideo.volume(); }
-
 				var slaveVolume = $(rangeInputSlave).val();
-				thisClass._control_NotMyselfEvent = false;
-				paella.player.videoContainer.setVolume({ master:masterVolume, slave:slaveVolume });
+				var masterVolume = 0;
+				if (masterVideo) { 
+					masterVideo.volume()
+						.then(function(volume) {
+							thisClass._control_NotMyselfEvent = false;
+							paella.player.videoContainer.setVolume({ master:volume, slave:slaveVolume });
+						});
+				}
+				else {
+					thisClass._control_NotMyselfEvent = false;
+					paella.player.videoContainer.setVolume({ master:masterVolume, slave:slaveVolume });
+				}
 			};
 			$(rangeInputSlave).bind('input', function (e) { updateSlaveVolume(); });
 			$(rangeInputSlave).change(function() { updateSlaveVolume(); });
