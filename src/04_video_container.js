@@ -686,14 +686,14 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 				slaveVolume = 0;
 			}
 			masterVideo.setVolume(masterVolume);
-			slaveVideo.setVolume(slaveVolume);
+			if (slaveVideo) slaveVideo.setVolume(slaveVolume);
 			paella.events.trigger(paella.events.setVolume,{ master:masterVolume, slave:slaveVolume });
 		}
 
 		masterVideo.volume()
 			.then(function(v) {
 				masterVolume = v;
-				return slaveVideo.volume();
+				return slaveVideo ? slaveVideo.volume():0;
 			})
 
 			.then(function (v) {
