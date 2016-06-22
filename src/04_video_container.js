@@ -373,7 +373,8 @@ Class ("paella.ProfileFrameStrategy",{
 
 Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 	adaptFrame:function(videoDimensions,frameRect) {
-		if (videoDimensions.width<frameRect.width || videoDimensions.height<frameRect.height) {
+		if (videoDimensions.width<frameRect.width|| videoDimensions.height<frameRect.height)
+		{
 			var frameRectCopy = JSON.parse(JSON.stringify(frameRect));
 			frameRectCopy.width = videoDimensions.width;
 			frameRectCopy.height = videoDimensions.height;
@@ -887,6 +888,16 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 				This.overlayContainer.removeElement(overlayLoader);
 				This._isMasterReady = true;
 				This._isSlaveReady = true;
+
+				var config = paella.player.config;
+				var masterVolume = (config.player.audio && config.player.audio.master!=undefined) ?
+											config.player.audio.master:1.0;
+				var slaveVolume =  (config.player.audio && config.player.audio.slave!=undefined) ?
+											config.player.audio.slave:0.0;
+				masterVideo.setVolume(masterVolume);
+				if (videoData.length>1) {
+					slaveVideo.setVolume(slaveVolume);
+				}
 
 				paella.events.trigger(paella.events.videoReady);
 
