@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.0.11
+
+  * Bug fix with volume initialization.
+
 * Paella 5.0.10
 
   * Fixed some issues with the volume range plugin.
