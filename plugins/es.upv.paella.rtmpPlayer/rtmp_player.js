@@ -284,18 +284,25 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 	},
 
 	setQuality:function(index) {
+		index = index!==undefined && index!==null ? index:0;
 		var defer = $.Deferred();
 		var This = this;
 		var paused = this._paused;
 		var sources = this._stream.sources.rtmp;
 		this._currentQuality = index<sources.length ? index:0;
-		var currentTime = this._currentTime;
-		This.load()
-			.then(function() {
-				This._loadCurrentFrame();
-				defer.resolve();
-			});
-		return defer;
+		var source = sources[index];
+		if (source.isLiveStream) {
+			return paella_DeferredResolved();
+		}
+		else {
+			var currentTime = this._currentTime;
+			This.load()
+				.then(function() {
+					//This._loadCurrentFrame();
+					defer.resolve();
+				});
+			return defer;
+		}
 	},
 
 	getCurrentQuality:function() {
