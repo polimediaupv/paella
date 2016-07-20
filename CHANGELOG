@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+* Paella 5.0.13
+
+  * Load error messages improved.
+  * Bug fix in captions plugin.
+
 * Paella 5.0.12
 
   * Bug fix in RTMPVideo.setQuality().
