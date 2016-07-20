@@ -241,7 +241,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 				}
 			})
 
-			.fail(function() {
+			.fail(function(error) {
 				errorMessage = base.dictionary.translate("Error loading video");
 				thisClass.unloadAll(errorMessage);
 				paella.events.trigger(paella.events.error,{error:errorMessage});
