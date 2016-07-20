@@ -1,11 +1,10 @@
 {
 	"Your browser is not compatible with the required video codec":"Tu navegador no dispone de los codecs de vídeo necesarios.",
 	"It seems that your browser is not HTML 5 compatible":"Parece que tu navegador no es compatible con HTML 5. Puedes utilizar cualquiera de los siguientes navegadores:",
-	"The specified video identifier does not exist":"El profesor no ha publicado este vídeo",
-	"This video is not published":"No estás autorizado a ver este recurso",
+	"The specified video identifier does not exist":"El vídeo solicitado no existe",
+	"This video is not published":"Este vídeo no está publicado",
 	"You are not authorized to view this resource":"No estás autorizado a ver este recurso",
-	"You are not authorized to view this resource":"No se ha podido mostrar el vídeo porque no estás identificado en el sistema",
-	"You are not logged in":"El vídeo no existe",
+	"You are not logged in":"No estás identificado en el sistema",
 	"Continue anyway":"Continuar de todos modos",
 	"1 second ago":"hace 1 segundo",
 	"1 minute ago":"hace 1 minuto",
@@ -50,5 +49,6 @@
 	"There are unsaved changes":"Hay cambios sin guardar",
 	"Live streaming mode: This is a live video, so, some capabilities of the player are disabled":"<h2>Vídeo en directo</h2><br/>Esto es un vídeo en directo, así que algunas de las funciones del reproductor están deshabilitadas",
 	"You are using Firefox version, and some required video playback capabilities are not available until Firefox min_version. Please, update your browser and try again.":"Estás utilizando Firefox version, y algunas capacidades de vídeo necesarias no están disponibles hasta Firefox min_version. Por favor, actualiza tu navegador y prueba otra vez.",
-	"This video is not compatible with any codec installed in your system":"Este vídeo no es compatible con ningún codec instalado en su sistema"
+	"This video is not compatible with any codec installed in your system":"Este vídeo no es compatible con ningún codec instalado en su sistema",
+	"Could not load the video":"No se ha podido cargar el vídeo"
 }

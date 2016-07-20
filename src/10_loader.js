@@ -57,6 +57,19 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 					This.loadVideoData(This._data,onSuccess);
 				},
 				function(data,type,err) {
+					switch (err) {
+					case 401:
+						paella.messageBox.showError(base.dictionary.translate("You are not logged in"));
+						break;
+					case 403:
+						paella.messageBox.showError(base.dictionary.translate("You are not authorized to view this resource"));
+						break;
+					case 404:
+						paella.messageBox.showError(base.dictionary.translate("The specified video identifier does not exist"));
+						break;
+					default:
+						paella.messageBox.showError(base.dictionary.translate("Could not load the video"));
+					}
 				});
 		}
 	},
