@@ -1015,6 +1015,25 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			$(logoNode.domElement).css(style);
 		}
 	},
+	
+	getClosestRect:function(profileData,videoDimensions) {
+		var minDiff = 10;
+		var re = /([0-9]+)\/([0-9]+)/;
+		var result = profileData.rect[0];
+		var videoAspectRatio = videoDimensions.h==0 ? 1.333333:videoDimensions.w / videoDimensions.h;
+		var profileAspectRatio = 1;
+		profileData.rect.forEach(function(rect) {
+			if ((reResult = re.exec(rect.aspectRatio))) {
+				profileAspectRatio = Number(reResult[1]) / Number(reResult[2]);
+			}
+			var diff = Math.abs(profileAspectRatio - videoAspectRatio);
+			if (minDiff>diff) {
+				minDiff = diff;
+				result = rect;
+			}
+		});
+		return result;
+	},
 
 	applyProfileWithJson:function(profileData,animate) {
 		var doApply = function(masterData, slaveData) {
@@ -1024,43 +1043,10 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 
 			var background = this.container.getNode(this.backgroundId);
 
-			var rectMaster = profileData.masterVideo.rect[0];
-			var rectSlave = profileData.slaveVideo.rect[0];
 			var masterDimensions = masterData.res;
-			var slaveDimensions = slaveData.res;
-			var masterAspectRatio = (masterDimensions.h==0) ? 1.3333:masterDimensions.w / masterDimensions.h;
-			var slaveAspectRatio = (slaveDimensions.h==0) ? 1.3333:slaveDimensions.w / slaveDimensions.h;
-			var profileMasterAspectRatio = 1.333;
-			var profileSlaveAspectRatio = 1.333;
-
-			var minMasterDiff = 10;
-			var re = /([0-9]+)\/([0-9]+)/;
-			var reResult;
-			for (var i = 0; i<profileData.masterVideo.rect.length;++i) {
-				var profileMaster = profileData.masterVideo.rect[i];
-				if ((reResult = re.exec(profileMaster.aspectRatio))) {
-					profileMasterAspectRatio = Number(reResult[1]) / Number(reResult[2]);
-				}
-				var masterDiff = Math.abs(profileMasterAspectRatio - masterAspectRatio);
-				if (minMasterDiff>masterDiff) {
-					minMasterDiff = masterDiff;
-					rectMaster = profileMaster;
-				}
-				//base.log.debug(profileMasterAspectRatio + ' - ' + masterAspectRatio + ' = ' + masterDiff);
-			}
-
-			var minSlaveDiff = 10;
-			for (i = 0; i<profileData.slaveVideo.rect.length;++i) {
-				var profileSlave = profileData.slaveVideo.rect[i];
-				if ((reResult = re.exec(profileSlave.aspectRatio))) {
-					profileSlaveAspectRatio = Number(reResult[1]) / Number(reResult[2]);
-				}
-				var slaveDiff = Math.abs(profileSlaveAspectRatio - slaveAspectRatio);
-				if (minSlaveDiff>slaveDiff) {
-					minSlaveDiff = slaveDiff;
-					rectSlave = profileSlave;
-				}
-			}
+			var slaveDimensions = slaveData && slaveData.res;
+			var rectMaster = this.getClosestRect(profileData.masterVideo,masterData.res);
+			var rectSlave = slaveData && this.getClosestRect(profileData.slaveVideo,slaveData.res);
 
 			// Logos
 			// Hide previous logos
@@ -1105,21 +1091,28 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			background.setImage(paella.utils.folders.profiles() + '/resources/' + profileData.background.content);
 		};
 		
-		if (!this.masterVideo() || !this.slaveVideo()) {
+		var This = this;
+		if (!this.masterVideo()) {
 			return;
 		}
-		
-		var This = this;
-		var masterVideoData = {};		
-		this.masterVideo().getVideoData()
-			.then(function(data) {
-				masterVideoData = data;
-				return This.slaveVideo().getVideoData();
-			})
-			
-			.then(function(slaveVideoData) {
-				doApply.apply(This, [ masterVideoData, slaveVideoData ]);
-			});
+		else if (!this.slaveVideo()) {		
+			this.masterVideo().getVideoData()
+				.then(function(data) {
+					doApply.apply(This, [ data ]);
+				});
+		}
+		else {
+			var masterVideoData = {};		
+			this.masterVideo().getVideoData()
+				.then(function(data) {
+					masterVideoData = data;
+					return This.slaveVideo().getVideoData();
+				})
+				
+				.then(function(slaveVideoData) {
+					doApply.apply(This, [ masterVideoData, slaveVideoData ]);
+				});
+		}
 	},
 
 	resizePortrail:function() {
