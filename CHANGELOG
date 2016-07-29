@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.0.14
+
+  * Bug fixed in video rectangle calculation, playing single stream videos
+  
 * Paella 5.0.13
 
   * Load error messages improved.
