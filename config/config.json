@@ -10,6 +10,7 @@
                    {"name":"image","enabled":true}],
 
 		"methods":[
+			{ "factory":"WebmVideoFactory", "enabled":true },
 			{ "factory":"Html5VideoFactory", "enabled":true },
 			{ "factory":"MpegDashVideoFactory", "enabled":true },
 			{ "factory":"RTMPVideoFactory", "enabled":true },
