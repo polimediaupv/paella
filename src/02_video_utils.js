@@ -24,7 +24,9 @@ Class ("paella.VideoQualityStrategy", {
 		else {
 			return source;
 		}
-	}
+	},
+
+	reloadOnFullscreen:false
 });
 
 Class ("paella.BestFitVideoQualityStrategy",paella.VideoQualityStrategy,{
@@ -57,7 +59,9 @@ Class ("paella.BestFitVideoQualityStrategy",paella.VideoQualityStrategy,{
 		}
 
 		return index;
-	}
+	},
+
+	reloadOnFullscreen:true
 });
 
 
