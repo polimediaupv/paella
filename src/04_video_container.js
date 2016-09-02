@@ -430,6 +430,23 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	_showPosterFrame:true,
 	_currentProfile:null,
 
+	_getQualityStrategyObject:function() {
+		var constructor = null;
+		paella.player.config.player
+			.videoQualityStrategy
+			.split('.')
+			.forEach(function(ns,index,array) {
+				if (index==0 && array.length>1) {
+					constructor = window[ns];
+				}
+				else {
+					constructor = constructor[ns];
+				}
+			});
+	
+		return constructor || new paella.VideoQualityStrategy();
+	},
+
 	initialize:function(id) {
 		this.parent(id);
 		var thisClass = this;
@@ -439,7 +456,8 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		this.video2Id = id + '_2';
 		this.backgroundId = id + '_bkg';
 		this.logos = [];
-		this._videoQualityStrategy = new paella.VideoQualityStrategy();
+		this._videoQualityStrategy = this._getQualityStrategyObject();
+
 
 		this.container = new paella.DomNode('div',this.containerId,{position:'relative',display:'block',marginLeft:'auto',marginRight:'auto',width:'1024px',height:'567px'});
 		this.container.domElement.setAttribute('role','main');
