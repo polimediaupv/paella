@@ -3,6 +3,7 @@
 		"accessControlClass":"paella.AccessControl",
         "profileFrameStrategy": "paella.ProfileFrameStrategy",
 		"videoQualityStrategy": "paella.BestFitVideoQualityStrategy",
+		"reloadOnFullscreen": true,
 
 		"deprecated-methods":[{"name":"streaming","enabled":true},
 				   {"name":"html","enabled":true},

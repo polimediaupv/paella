@@ -404,32 +404,12 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		}
 
 		function evtCallback(event) { onProgress.apply(This,event); }
-		function fullscreenCallback() {
-			if (This._videoQualityStrategy && This._videoQualityStrategy.reloadOnFullscreen) {
-				var time = This.video.currentTime;
-				var playing = !This.video.paused;
-				This.load()
-					.then(function() {
-						if (playing) {
-							return This.play();
-						}
-						else {
-							This.video.currenTime = time;
-						}
-					})
-					.then(function() {
-						This.video.currentTime = time;
-					});
-			}
-		}
 
 		$(this.video).bind('progress', evtCallback);
 		$(this.video).bind('loadstart',evtCallback);
 		$(this.video).bind('loadedmetadata',evtCallback);
         $(this.video).bind('canplay',evtCallback);
 		$(this.video).bind('oncanplay',evtCallback);
-		paella.events.bind(paella.events.enterFullscreen,fullscreenCallback);
-		paella.events.bind(paella.events.exitFullscreen,fullscreenCallback);
 	},
 
 

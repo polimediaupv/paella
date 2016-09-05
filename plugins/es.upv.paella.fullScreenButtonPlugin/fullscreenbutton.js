@@ -42,14 +42,16 @@ Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 			paella.player.goFullScreen();
 		}
 
-		setTimeout(function() {
-			if(self._reload) {
-				paella.player.videoContainer.setQuality(null)
-					.then(function() {
-					});
-				//paella.player.reloadVideos();
-			}
-		}, 1000);
+		if (paella.player.config.player.reloadOnFullscreen) {
+			setTimeout(function() {
+				if(self._reload) {
+					paella.player.videoContainer.setQuality(null)
+						.then(function() {
+						});
+					//paella.player.reloadVideos();
+				}
+			}, 1000);
+		}
 	},
 
 	secondsToHours:function(sec_numb) {

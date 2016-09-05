@@ -431,20 +431,21 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 	_currentProfile:null,
 
 	_getQualityStrategyObject:function() {
-		var constructor = null;
+		var Constructor = null;
 		paella.player.config.player
 			.videoQualityStrategy
 			.split('.')
 			.forEach(function(ns,index,array) {
 				if (index==0 && array.length>1) {
-					constructor = window[ns];
+					Constructor = window[ns];
 				}
 				else {
-					constructor = constructor[ns];
+					Constructor = Constructor[ns];
 				}
 			});
 	
-		return constructor || new paella.VideoQualityStrategy();
+		Constructor = Constructor || paella.VideoQualityStrategy();
+		return new Constructor();
 	},
 
 	initialize:function(id) {
