@@ -1,0 +1,118 @@
+{
+	"metadata": {
+		"duration": 909.13,
+		"title": "Belmar 15 minutes"
+	},
+	"streams": [
+		{
+			"sources": {
+				"mp4": [
+					{
+						"src": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/a5bf5ad2-1386-4229-a8d1-c0b59436a1b1/presenter_cut.mp4",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1280",
+							"h": "720"
+						}
+					}
+				]
+			},
+			"preview": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/attachment-2/presenter_cut.jpg"
+		},
+		{
+			"sources": {
+				"mp4": [
+					{
+						"src": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/6d5809a7-d3e6-46c3-b107-5503bf540a01/presentation_cut.mp4",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1024",
+							"h": "768"
+						}
+					}
+				],
+				"image": [
+					{
+						"mimetype": "image/jpeg",
+						"frames": [
+							{
+								"time": 854,
+								"src": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/3d90109c-9608-44c1-8660-fce3f216d716/presentation_cut.jpg"
+							},
+							{
+								"time": 751,
+								"src": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/598bd2ba-4fef-4886-884e-0ab82176f13d/presentation_cut.jpg"
+							},
+							{
+								"time": 0,
+								"src": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/7dc22bee-14f3-442c-8f0d-30d8b68c8604/presentation_cut.jpg"
+							},
+							{
+								"time": 363,
+								"src": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/d3194d9b-8f65-403b-a639-9de4311a283b/presentation_cut.jpg"
+							}
+						],
+						"count": 4,
+						"duration": 909,
+						"res": {
+							"w": 320,
+							"h": 180
+						}
+					},
+					{
+						"mimetype": "image/jpeg",
+						"frames": [
+							{
+								"time": 854
+							},
+							{
+								"time": 751
+							},
+							{
+								"time": 0
+							},
+							{
+								"time": 363,
+								"src": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/4505b6d9-8a0c-4809-ade3-840e743188ed/presentation_cut.jpg"
+							}
+						],
+						"count": 4,
+						"duration": 909,
+						"res": {
+							"w": 1280,
+							"h": 720
+						}
+					}
+				]
+			},
+			"preview": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/attachment-3/presentation_cut.jpg"
+		}
+	],
+	"frameList": [
+		{
+			"id": "frame_854",
+			"mimetype": "image/jpeg",
+			"time": 854,
+			"url": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/3d90109c-9608-44c1-8660-fce3f216d716/presentation_cut.jpg"
+		},
+		{
+			"id": "frame_751",
+			"mimetype": "image/jpeg",
+			"time": 751,
+			"url": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/598bd2ba-4fef-4886-884e-0ab82176f13d/presentation_cut.jpg"
+		},
+		{
+			"id": "frame_0",
+			"mimetype": "image/jpeg",
+			"time": 0,
+			"url": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/7dc22bee-14f3-442c-8f0d-30d8b68c8604/presentation_cut.jpg"
+		},
+		{
+			"id": "frame_363",
+			"mimetype": "image/jpeg",
+			"time": 363,
+			"url": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/d3194d9b-8f65-403b-a639-9de4311a283b/presentation_cut.jpg",
+			"thumb": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/4505b6d9-8a0c-4809-ade3-840e743188ed/presentation_cut.jpg"
+		}
+	]
+}

@@ -1,0 +1,870 @@
+{
+	"metadata": {
+		"duration": 4842.166,
+		"title": "MAD Impartida por CristinaJordán 2014-10-03 08:00"
+	},
+	"streams": [
+		{
+			"sources": {
+				"mp4": [
+					{
+						"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/cd608c08-cb10-4658-a71b-ecf763347dd2/PRESENTER.mp4",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1920",
+							"h": "1080"
+						}
+					}
+				]
+			},
+			"preview": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/attachment-172/PRESENTER.jpg"
+		},
+		{
+			"sources": {
+				"mp4": [
+					{
+						"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/3fb63b9c-8133-40a4-b71e-8a19e6df80b5/SCREEN.mp4",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1280",
+							"h": "720"
+						}
+					}
+				],
+				"image": [
+					{
+						"mimetype": "image/jpeg",
+						"frames": [
+							{
+								"time": 576,
+								"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/e881eb65-e000-4b9d-b3bc-4fa92dcf14db/SCREEN.jpg"
+							},
+							{
+								"time": 168,
+								"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/2b7165ff-0823-4225-8fda-61235c1e8a94/SCREEN.jpg"
+							},
+							{
+								"time": 2832,
+								"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/2fc78b41-9a34-4f27-87b8-f07cef647b04/SCREEN.jpg"
+							},
+							{
+								"time": 4368,
+								"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/a553415d-6f31-4933-8bbd-4e4fe55adab9/SCREEN.jpg"
+							},
+							{
+								"time": 0,
+								"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/9ec013b3-f5ab-497a-9458-5438ae967f77/SCREEN.jpg"
+							},
+							{
+								"time": 3192,
+								"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/2f753097-7bc8-42f9-9907-c4259db81c1d/SCREEN.jpg"
+							},
+							{
+								"time": 264,
+								"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/986c6b33-9bcd-4d22-b064-78d6323f8b8e/SCREEN.jpg"
+							},
+							{
+								"time": 336,
+								"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/4fc8fb0f-100e-4d34-912c-26d51dfc3ad8/SCREEN.jpg"
+							}
+						],
+						"count": 8,
+						"duration": 4842,
+						"res": {
+							"w": 320,
+							"h": 180
+						}
+					},
+					{
+						"mimetype": "image/jpeg",
+						"frames": [
+							{
+								"time": 576,
+								"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/9538b240-68c2-44c4-ab63-aae625f1d954/SCREEN.jpg"
+							},
+							{
+								"time": 168,
+								"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/860fb94d-73e9-4bd5-be99-c884ff44faf0/SCREEN.jpg"
+							},
+							{
+								"time": 2832,
+								"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/35ff2df5-64bd-48ae-9f18-9bbf39f74344/SCREEN.jpg"
+							},
+							{
+								"time": 4368,
+								"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/391fd67d-7787-4f8a-93d2-d74d63188efd/SCREEN.jpg"
+							},
+							{
+								"time": 0,
+								"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/7f944c6c-240b-40b2-8273-63cb57af74f1/SCREEN.jpg"
+							},
+							{
+								"time": 3192,
+								"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/eebd4921-9bb7-4e22-89ea-3c4303528fdf/SCREEN.jpg"
+							},
+							{
+								"time": 264,
+								"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/829d6333-5f79-4ba3-acd0-35b8a7007298/SCREEN.jpg"
+							},
+							{
+								"time": 336,
+								"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/75533c33-3696-46ca-bded-135df8e8a477/SCREEN.jpg"
+							}
+						],
+						"count": 8,
+						"duration": 4842,
+						"res": {
+							"w": 1280,
+							"h": 720
+						}
+					}
+				]
+			},
+			"preview": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/attachment-173/SCREEN.jpg"
+		}
+	],
+	"frameList": [
+		{
+			"id": "frame_576",
+			"mimetype": "image/jpeg",
+			"time": 576,
+			"url": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/e881eb65-e000-4b9d-b3bc-4fa92dcf14db/SCREEN.jpg",
+			"thumb": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/9538b240-68c2-44c4-ab63-aae625f1d954/SCREEN.jpg"
+		},
+		{
+			"id": "frame_168",
+			"mimetype": "image/jpeg",
+			"time": 168,
+			"url": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/2b7165ff-0823-4225-8fda-61235c1e8a94/SCREEN.jpg",
+			"thumb": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/860fb94d-73e9-4bd5-be99-c884ff44faf0/SCREEN.jpg"
+		},
+		{
+			"id": "frame_2832",
+			"mimetype": "image/jpeg",
+			"time": 2832,
+			"url": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/2fc78b41-9a34-4f27-87b8-f07cef647b04/SCREEN.jpg",
+			"thumb": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/35ff2df5-64bd-48ae-9f18-9bbf39f74344/SCREEN.jpg"
+		},
+		{
+			"id": "frame_4368",
+			"mimetype": "image/jpeg",
+			"time": 4368,
+			"url": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/a553415d-6f31-4933-8bbd-4e4fe55adab9/SCREEN.jpg",
+			"thumb": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/391fd67d-7787-4f8a-93d2-d74d63188efd/SCREEN.jpg"
+		},
+		{
+			"id": "frame_0",
+			"mimetype": "image/jpeg",
+			"time": 0,
+			"url": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/9ec013b3-f5ab-497a-9458-5438ae967f77/SCREEN.jpg",
+			"thumb": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/7f944c6c-240b-40b2-8273-63cb57af74f1/SCREEN.jpg"
+		},
+		{
+			"id": "frame_3192",
+			"mimetype": "image/jpeg",
+			"time": 3192,
+			"url": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/2f753097-7bc8-42f9-9907-c4259db81c1d/SCREEN.jpg",
+			"thumb": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/eebd4921-9bb7-4e22-89ea-3c4303528fdf/SCREEN.jpg"
+		},
+		{
+			"id": "frame_264",
+			"mimetype": "image/jpeg",
+			"time": 264,
+			"url": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/986c6b33-9bcd-4d22-b064-78d6323f8b8e/SCREEN.jpg",
+			"thumb": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/829d6333-5f79-4ba3-acd0-35b8a7007298/SCREEN.jpg"
+		},
+		{
+			"id": "frame_336",
+			"mimetype": "image/jpeg",
+			"time": 336,
+			"url": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/4fc8fb0f-100e-4d34-912c-26d51dfc3ad8/SCREEN.jpg",
+			"thumb": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/75533c33-3696-46ca-bded-135df8e8a477/SCREEN.jpg"
+		}
+	],
+	"blackboard": {
+		"frames": [
+			{
+				"time": 1110,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001110.png/001110.jpg"
+			},
+			{
+				"time": 4800,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004800.png/004800.jpg"
+			},
+			{
+				"time": 4110,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004110.png/004110.jpg"
+			},
+			{
+				"time": 4350,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004350.png/004350.jpg"
+			},
+			{
+				"time": 1380,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001380.png/001380.jpg"
+			},
+			{
+				"time": 3180,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003180.png/003180.jpg"
+			},
+			{
+				"time": 5040,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/005040.png/005040.jpg"
+			},
+			{
+				"time": 2010,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002010.png/002010.jpg"
+			},
+			{
+				"time": 4680,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004680.png/004680.jpg"
+			},
+			{
+				"time": 780,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000780.png/000780.jpg"
+			},
+			{
+				"time": 2070,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002070.png/002070.jpg"
+			},
+			{
+				"time": 2760,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002760.png/002760.jpg"
+			},
+			{
+				"time": 3300,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003300.png/003300.jpg"
+			},
+			{
+				"time": 2820,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002820.png/002820.jpg"
+			},
+			{
+				"time": 3060,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003060.png/003060.jpg"
+			},
+			{
+				"time": 4650,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004650.png/004650.jpg"
+			},
+			{
+				"time": 1830,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001830.png/001830.jpg"
+			},
+			{
+				"time": 1740,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001740.png/001740.jpg"
+			},
+			{
+				"time": 3210,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003210.png/003210.jpg"
+			},
+			{
+				"time": 2430,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002430.png/002430.jpg"
+			},
+			{
+				"time": 4290,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004290.png/004290.jpg"
+			},
+			{
+				"time": 2580,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002580.png/002580.jpg"
+			},
+			{
+				"time": 4500,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004500.png/004500.jpg"
+			},
+			{
+				"time": 3810,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003810.png/003810.jpg"
+			},
+			{
+				"time": 1800,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001800.png/001800.jpg"
+			},
+			{
+				"time": 1560,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001560.png/001560.jpg"
+			},
+			{
+				"time": 2460,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002460.png/002460.jpg"
+			},
+			{
+				"time": 930,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000930.png/000930.jpg"
+			},
+			{
+				"time": 4440,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004440.png/004440.jpg"
+			},
+			{
+				"time": 4230,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004230.png/004230.jpg"
+			},
+			{
+				"time": 900,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000900.png/000900.jpg"
+			},
+			{
+				"time": 90,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000090.png/000090.jpg"
+			},
+			{
+				"time": 1200,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001200.png/001200.jpg"
+			},
+			{
+				"time": 1890,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001890.png/001890.jpg"
+			},
+			{
+				"time": 1440,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001440.png/001440.jpg"
+			},
+			{
+				"time": 1020,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001020.png/001020.jpg"
+			},
+			{
+				"time": 4980,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004980.png/004980.jpg"
+			},
+			{
+				"time": 4590,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004590.png/004590.jpg"
+			},
+			{
+				"time": 360,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000360.png/000360.jpg"
+			},
+			{
+				"time": 4860,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004860.png/004860.jpg"
+			},
+			{
+				"time": 660,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000660.png/000660.jpg"
+			},
+			{
+				"time": 1950,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001950.png/001950.jpg"
+			},
+			{
+				"time": 3750,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003750.png/003750.jpg"
+			},
+			{
+				"time": 1530,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001530.png/001530.jpg"
+			},
+			{
+				"time": 2100,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002100.png/002100.jpg"
+			},
+			{
+				"time": 3330,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003330.png/003330.jpg"
+			},
+			{
+				"time": 870,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000870.png/000870.jpg"
+			},
+			{
+				"time": 3150,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003150.png/003150.jpg"
+			},
+			{
+				"time": 3900,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003900.png/003900.jpg"
+			},
+			{
+				"time": 2940,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002940.png/002940.jpg"
+			},
+			{
+				"time": 1980,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001980.png/001980.jpg"
+			},
+			{
+				"time": 2730,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002730.png/002730.jpg"
+			},
+			{
+				"time": 2220,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002220.png/002220.jpg"
+			},
+			{
+				"time": 3000,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003000.png/003000.jpg"
+			},
+			{
+				"time": 2880,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002880.png/002880.jpg"
+			},
+			{
+				"time": 1470,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001470.png/001470.jpg"
+			},
+			{
+				"time": 4830,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004830.png/004830.jpg"
+			},
+			{
+				"time": 450,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000450.png/000450.jpg"
+			},
+			{
+				"time": 2490,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002490.png/002490.jpg"
+			},
+			{
+				"time": 150,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000150.png/000150.jpg"
+			},
+			{
+				"time": 3240,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003240.png/003240.jpg"
+			},
+			{
+				"time": 2640,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002640.png/002640.jpg"
+			},
+			{
+				"time": 4470,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004470.png/004470.jpg"
+			},
+			{
+				"time": 3120,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003120.png/003120.jpg"
+			},
+			{
+				"time": 2280,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002280.png/002280.jpg"
+			},
+			{
+				"time": 0,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000000.png/000000.jpg"
+			},
+			{
+				"time": 2340,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002340.png/002340.jpg"
+			},
+			{
+				"time": 2520,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002520.png/002520.jpg"
+			},
+			{
+				"time": 810,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000810.png/000810.jpg"
+			},
+			{
+				"time": 3690,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003690.png/003690.jpg"
+			},
+			{
+				"time": 3390,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003390.png/003390.jpg"
+			},
+			{
+				"time": 840,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000840.png/000840.jpg"
+			},
+			{
+				"time": 3450,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003450.png/003450.jpg"
+			},
+			{
+				"time": 4950,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004950.png/004950.jpg"
+			},
+			{
+				"time": 2970,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002970.png/002970.jpg"
+			},
+			{
+				"time": 600,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000600.png/000600.jpg"
+			},
+			{
+				"time": 1590,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001590.png/001590.jpg"
+			},
+			{
+				"time": 4920,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004920.png/004920.jpg"
+			},
+			{
+				"time": 4710,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004710.png/004710.jpg"
+			},
+			{
+				"time": 960,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000960.png/000960.jpg"
+			},
+			{
+				"time": 1260,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001260.png/001260.jpg"
+			},
+			{
+				"time": 1770,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001770.png/001770.jpg"
+			},
+			{
+				"time": 1620,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001620.png/001620.jpg"
+			},
+			{
+				"time": 3270,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003270.png/003270.jpg"
+			},
+			{
+				"time": 720,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000720.png/000720.jpg"
+			},
+			{
+				"time": 4890,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004890.png/004890.jpg"
+			},
+			{
+				"time": 480,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000480.png/000480.jpg"
+			},
+			{
+				"time": 3780,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003780.png/003780.jpg"
+			},
+			{
+				"time": 240,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000240.png/000240.jpg"
+			},
+			{
+				"time": 4740,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004740.png/004740.jpg"
+			},
+			{
+				"time": 3990,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003990.png/003990.jpg"
+			},
+			{
+				"time": 1140,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001140.png/001140.jpg"
+			},
+			{
+				"time": 750,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000750.png/000750.jpg"
+			},
+			{
+				"time": 270,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000270.png/000270.jpg"
+			},
+			{
+				"time": 2160,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002160.png/002160.jpg"
+			},
+			{
+				"time": 120,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000120.png/000120.jpg"
+			},
+			{
+				"time": 4020,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004020.png/004020.jpg"
+			},
+			{
+				"time": 4620,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004620.png/004620.jpg"
+			},
+			{
+				"time": 1920,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001920.png/001920.jpg"
+			},
+			{
+				"time": 1050,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001050.png/001050.jpg"
+			},
+			{
+				"time": 3930,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003930.png/003930.jpg"
+			},
+			{
+				"time": 4140,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004140.png/004140.jpg"
+			},
+			{
+				"time": 570,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000570.png/000570.jpg"
+			},
+			{
+				"time": 2370,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002370.png/002370.jpg"
+			},
+			{
+				"time": 2190,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002190.png/002190.jpg"
+			},
+			{
+				"time": 330,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000330.png/000330.jpg"
+			},
+			{
+				"time": 1230,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001230.png/001230.jpg"
+			},
+			{
+				"time": 3570,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003570.png/003570.jpg"
+			},
+			{
+				"time": 1650,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001650.png/001650.jpg"
+			},
+			{
+				"time": 1710,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001710.png/001710.jpg"
+			},
+			{
+				"time": 3420,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003420.png/003420.jpg"
+			},
+			{
+				"time": 3540,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003540.png/003540.jpg"
+			},
+			{
+				"time": 990,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000990.png/000990.jpg"
+			},
+			{
+				"time": 3660,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003660.png/003660.jpg"
+			},
+			{
+				"time": 4770,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004770.png/004770.jpg"
+			},
+			{
+				"time": 2400,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002400.png/002400.jpg"
+			},
+			{
+				"time": 2790,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002790.png/002790.jpg"
+			},
+			{
+				"time": 2250,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002250.png/002250.jpg"
+			},
+			{
+				"time": 4530,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004530.png/004530.jpg"
+			},
+			{
+				"time": 3870,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003870.png/003870.jpg"
+			},
+			{
+				"time": 2040,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002040.png/002040.jpg"
+			},
+			{
+				"time": 3720,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003720.png/003720.jpg"
+			},
+			{
+				"time": 4380,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004380.png/004380.jpg"
+			},
+			{
+				"time": 4050,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004050.png/004050.jpg"
+			},
+			{
+				"time": 1500,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001500.png/001500.jpg"
+			},
+			{
+				"time": 1170,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001170.png/001170.jpg"
+			},
+			{
+				"time": 420,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000420.png/000420.jpg"
+			},
+			{
+				"time": 3510,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003510.png/003510.jpg"
+			},
+			{
+				"time": 4560,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004560.png/004560.jpg"
+			},
+			{
+				"time": 690,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000690.png/000690.jpg"
+			},
+			{
+				"time": 1410,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001410.png/001410.jpg"
+			},
+			{
+				"time": 1320,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001320.png/001320.jpg"
+			},
+			{
+				"time": 3960,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003960.png/003960.jpg"
+			},
+			{
+				"time": 4170,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004170.png/004170.jpg"
+			},
+			{
+				"time": 3600,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003600.png/003600.jpg"
+			},
+			{
+				"time": 2310,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002310.png/002310.jpg"
+			},
+			{
+				"time": 1350,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001350.png/001350.jpg"
+			},
+			{
+				"time": 2850,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002850.png/002850.jpg"
+			},
+			{
+				"time": 2700,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002700.png/002700.jpg"
+			},
+			{
+				"time": 2550,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002550.png/002550.jpg"
+			},
+			{
+				"time": 3840,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003840.png/003840.jpg"
+			},
+			{
+				"time": 30,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000030.png/000030.jpg"
+			},
+			{
+				"time": 2130,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002130.png/002130.jpg"
+			},
+			{
+				"time": 390,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000390.png/000390.jpg"
+			},
+			{
+				"time": 1080,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001080.png/001080.jpg"
+			},
+			{
+				"time": 1680,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001680.png/001680.jpg"
+			},
+			{
+				"time": 1290,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001290.png/001290.jpg"
+			},
+			{
+				"time": 2910,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002910.png/002910.jpg"
+			},
+			{
+				"time": 60,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000060.png/000060.jpg"
+			},
+			{
+				"time": 2670,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002670.png/002670.jpg"
+			},
+			{
+				"time": 3360,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003360.png/003360.jpg"
+			},
+			{
+				"time": 4320,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004320.png/004320.jpg"
+			},
+			{
+				"time": 180,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000180.png/000180.jpg"
+			},
+			{
+				"time": 3030,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003030.png/003030.jpg"
+			},
+			{
+				"time": 510,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000510.png/000510.jpg"
+			},
+			{
+				"time": 300,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000300.png/000300.jpg"
+			},
+			{
+				"time": 210,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000210.png/000210.jpg"
+			},
+			{
+				"time": 1860,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/001860.png/001860.jpg"
+			},
+			{
+				"time": 3630,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003630.png/003630.jpg"
+			},
+			{
+				"time": 2610,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/002610.png/002610.jpg"
+			},
+			{
+				"time": 3480,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003480.png/003480.jpg"
+			},
+			{
+				"time": 4200,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004200.png/004200.jpg"
+			},
+			{
+				"time": 630,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000630.png/000630.jpg"
+			},
+			{
+				"time": 4080,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004080.png/004080.jpg"
+			},
+			{
+				"time": 3090,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/003090.png/003090.jpg"
+			},
+			{
+				"time": 5010,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/005010.png/005010.jpg"
+			},
+			{
+				"time": 4260,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004260.png/004260.jpg"
+			},
+			{
+				"time": 540,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/000540.png/000540.jpg"
+			},
+			{
+				"time": 4410,
+				"src": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/004410.png/004410.jpg"
+			}
+		],
+		"duration": 4842.166,
+		"mimetype": "image/jpeg",
+		"res": {
+			"w": 0,
+			"h": 0
+		}
+	}
+}

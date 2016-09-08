@@ -1,0 +1,206 @@
+{
+    "mediapackage": {
+        "slides": [
+            {
+                "mimetype": "image/jpeg",
+                "slide": {
+                    "url": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/3d90109c-9608-44c1-8660-fce3f216d716/presentation_cut.jpg",
+                    "resolution": ""
+                },
+                "thumb": "00:14:14",
+                "time": "00:14:14"
+            },
+            {
+                "mimetype": "image/jpeg",
+                "slide": {
+                    "url": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/598bd2ba-4fef-4886-884e-0ab82176f13d/presentation_cut.jpg",
+                    "resolution": ""
+                },
+                "thumb": "00:12:31",
+                "time": "00:12:31"
+            },
+            {
+                "mimetype": "image/jpeg",
+                "slide": {
+                    "url": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/7dc22bee-14f3-442c-8f0d-30d8b68c8604/presentation_cut.jpg",
+                    "resolution": ""
+                },
+                "thumb": "00:00:00",
+                "time": "00:00:00"
+            },
+            {
+                "mimetype": "image/jpeg",
+                "slide": {
+                    "url": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/d3194d9b-8f65-403b-a639-9de4311a283b/presentation_cut.jpg",
+                    "resolution": ""
+                },
+                "thumb": {
+                    "url": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/4505b6d9-8a0c-4809-ade3-840e743188ed/presentation_cut.jpg",
+                    "resolution": ""
+                },
+                "time": "00:06:03"
+            }
+        ],
+        "media": {
+            "tracks": [
+                {
+                    "mimetype": "video/avi",
+                    "tags": [],
+                    "url": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/f3975193-bac1-4ade-a905-b0022fccd79f/presentation_cut.avi",
+                    "mediainfo": {
+                        "video": {
+                            "scantype": {
+                                "type": "Progressive"
+                            },
+                            "bitrate": 203979,
+                            "framerate": 25,
+                            "encoder": {
+                                "type": "MPEG-4 Visual"
+                            },
+                            "device": "",
+                            "resolution": "320x240",
+                            "id": "video-1"
+                        }
+                    },
+                    "preview": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/attachment-3/presentation_cut.jpg",
+                    "type": "presentation/delivery",
+                    "id": "da0a852d-dacc-4d02-8828-c3a024dda9ed"
+                },
+                {
+                    "mimetype": "video/mp4",
+                    "tags": [],
+                    "url": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/a5bf5ad2-1386-4229-a8d1-c0b59436a1b1/presenter_cut.mp4",
+                    "mediainfo": {
+                        "video": {
+                            "scantype": {
+                                "type": "Progressive"
+                            },
+                            "bitrate": 200000,
+                            "framerate": 25,
+                            "encoder": {
+                                "type": "AVC"
+                            },
+                            "device": "",
+                            "resolution": "1280x720",
+                            "id": "video-1"
+                        }
+                    },
+                    "preview": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/attachment-2/presenter_cut.jpg",
+                    "type": "presenter/delivery",
+                    "id": "22b89582-5baf-449c-a92e-71ef5fb437a4"
+                },
+                {
+                    "mimetype": "video/avi",
+                    "tags": [],
+                    "url": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/8d6c2bfd-685f-4c19-9317-976c3af0de78/presenter_cut.avi",
+                    "mediainfo": {
+                        "video": {
+                            "scantype": {
+                                "type": "Progressive"
+                            },
+                            "bitrate": 202940,
+                            "framerate": 25,
+                            "encoder": {
+                                "type": "MPEG-4 Visual"
+                            },
+                            "device": "",
+                            "resolution": "320x240",
+                            "id": "video-1"
+                        }
+                    },
+                    "preview": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/attachment-2/presenter_cut.jpg",
+                    "type": "presenter/delivery",
+                    "id": "6fbd70ca-a700-4b8f-b2c1-fbcd9c27e07d"
+                },
+                {
+                    "mimetype": "audio/mp3",
+                    "tags": [],
+                    "url": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/5067cfda-c687-4687-bbdb-4c96ad2ef955/presenter_cut.mp3",
+                    "mediainfo": {
+                        "audio": {
+                            "device": "",
+                            "channels": 2,
+                            "bitrate": 128000,
+                            "id": "audio-1",
+                            "encoder": {
+                                "type": "MPEG Audio"
+                            }
+                        }
+                    },
+                    "preview": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/attachment-2/presenter_cut.jpg",
+                    "type": "presenter/delivery",
+                    "id": "60185f97-4d19-4931-b397-31644862d20f"
+                },
+                {
+                    "mimetype": "video/mp4",
+                    "tags": [],
+                    "url": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/6d5809a7-d3e6-46c3-b107-5503bf540a01/presentation_cut.mp4",
+                    "mediainfo": {
+                        "video": {
+                            "scantype": {
+                                "type": "Progressive"
+                            },
+                            "bitrate": 200000,
+                            "framerate": 25,
+                            "encoder": {
+                                "type": "AVC"
+                            },
+                            "device": "",
+                            "resolution": "1024x768",
+                            "id": "video-1"
+                        }
+                    },
+                    "preview": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/attachment-3/presentation_cut.jpg",
+                    "type": "presentation/delivery",
+                    "id": "500f6b74-1557-4c87-8613-0ce5194b84ba"
+                },
+                {
+                    "mimetype": "audio/m4a",
+                    "tags": [],
+                    "url": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/adadbb32-1d31-42fb-a536-201a0f303f7c/presenter_cut.m4a",
+                    "mediainfo": {
+                        "audio": {
+                            "device": "",
+                            "channels": 2,
+                            "bitrate": 151962,
+                            "id": "audio-1",
+                            "encoder": {
+                                "type": "AAC"
+                            }
+                        }
+                    },
+                    "preview": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/attachment-2/presenter_cut.jpg",
+                    "type": "presenter/delivery",
+                    "id": "0ce41ee7-0d11-440b-8b0e-8ea1cd5fa2d1"
+                },
+                {
+                    "mimetype": "audio/m4a",
+                    "tags": [],
+                    "url": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/9c33d2c5-a72c-4afb-876f-fab24960f439/presentation_cut.m4a",
+                    "mediainfo": {
+                        "audio": {
+                            "device": "",
+                            "channels": 2,
+                            "bitrate": 151961,
+                            "id": "audio-1",
+                            "encoder": {
+                                "type": "AAC"
+                            }
+                        }
+                    },
+                    "preview": "http://matterhorn.cc.upv.es:8080/static/engage-player/5408a7c5-67a7-4e98-a973-b7cbed261a83/attachment-3/presentation_cut.jpg",
+                    "type": "presentation/delivery",
+                    "id": "bac6eb01-75bd-48cf-af97-931355203e7a"
+                }
+            ]
+        },
+        "metadata": {
+            "duration": "909130",
+            "start": "2013-06-21T06:39:00Z",
+            "creators": [],
+            "license": "Creative Commons 3.0: Attribution-NonCommercial-NoDerivs",
+            "title": "Belmar 15 minutes"
+        }
+    },
+    "version": "1.0.0"
+}

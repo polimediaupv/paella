@@ -1,0 +1,35 @@
+{
+	"metadata": {
+		"duration": 0,
+		"title": "UPV-TV"
+	},
+	"streams": [
+		{
+			"sources": {
+				"rtmp": [
+					{
+						"comment_src":{
+							"server": "rtmp://media.uni-koeln.de/matterhorn",
+							"stream": "mp4:engage-player/ceb202ec-67ca-4c56-ae94-32e28ec567a0/ed549cd5-9821-420b-8152-aba9ad550c4c/CAMERA_2",
+							"requiresSubscription": false
+						},
+
+						"src":{
+							"server": "rtmp://fml.1777A.mucdn.net/201777A/live",
+							"stream": "test",
+							"requiresSubscription": true
+						},
+
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1280",
+							"h": "720"
+						},
+						"isLiveStream": true
+					}
+				]
+			},
+			"preview": null
+		}
+	]
+}

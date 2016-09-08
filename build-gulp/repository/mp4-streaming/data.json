@@ -1,0 +1,37 @@
+{
+	"metadata": {
+		"duration": 0,
+		"title": "UPV-TV"
+	},
+	"streams": [
+		{
+			"sources": {
+				"rtmp": [
+					{
+						"_deprecated-src": "rtmp://media.uni-koeln.de/matterhorn/mp4:engage-player/ceb202ec-67ca-4c56-ae94-32e28ec567a0/ed549cd5-9821-420b-8152-aba9ad550c4c/CAMERA_2",
+						"src":{
+							"server":"rtmp://184.72.239.149/vod",
+							"stream":"BigBuckBunny_115k.mov"
+						},
+						"mimetype": "video/mp4",
+						"res": {
+							"w": 1280,
+							"h": 720
+						}
+					}
+				],
+				"hls": [
+					{
+						"src": "http://playertest.longtailvideo.com/adaptive/bipbop/bipbop.m3u8",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1280",
+							"h": "720"
+						}
+					}
+				]
+			},
+			"preview": "490512.jpg"
+		}
+	]
+}
