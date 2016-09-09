@@ -1041,6 +1041,7 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		var result = profileData.rect[0];
 		var videoAspectRatio = videoDimensions.h==0 ? 1.333333:videoDimensions.w / videoDimensions.h;
 		var profileAspectRatio = 1;
+		var reResult = false;
 		profileData.rect.forEach(function(rect) {
 			if ((reResult = re.exec(rect.aspectRatio))) {
 				profileAspectRatio = Number(reResult[1]) / Number(reResult[2]);

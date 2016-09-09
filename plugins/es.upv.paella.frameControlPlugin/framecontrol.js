@@ -29,7 +29,7 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 		var correctJump = 0;
 		var selectedItem = -1;
 		var jumpAtItem;
-    	Keys = {Tab:9,Return:13,Esc:27,End:35,Home:36,Left:37,Up:38,Right:39,Down:40};
+    	var Keys = {Tab:9,Return:13,Esc:27,End:35,Home:36,Left:37,Up:38,Right:39,Down:40};
 
         $(this.button).keyup(function(event) {
         	var visibleItems = Math.floor(thisClass.contx.offsetWidth/100);
@@ -51,7 +51,7 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 							--blockCounter;
 	            		}
 
-	            		if(this.hiResFrame)thisClass.removeHiResFrame();
+	            		if(this.hiResFrame) thisClass.removeHiResFrame();
 						if (!base.userAgent.browser.IsMobileVersion) {
 							thisClass.buttons[selectedItem].frameControl.onMouseOver(null,thisClass.buttons[selectedItem].frameData);
 						}
@@ -139,7 +139,7 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 			if ($(content).offset().top>event.pageY || !$(content).is(":visible") ||
 				($(content).offset().top + $(content).height())<event.pageY)
 			{
-				This.removeHiResFrame();
+				thisClass.removeHiResFrame();
 			}
 		});
 
@@ -184,7 +184,7 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 
         frameRoot.setAttribute('style', 'display: table;');
         frame.setAttribute('style', 'display: table-cell; vertical-align:middle;');
-		overlayContainer = paella.player.videoContainer.overlayContainer;
+		var overlayContainer = paella.player.videoContainer.overlayContainer;
 
 		var streams = paella.initDelegate.initParams.videoLoader.streams;
 		if (streams.length == 1){
@@ -199,7 +199,7 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 
 	removeHiResFrame:function() {
 		var thisClass = this;
-		overlayContainer = paella.player.videoContainer.overlayContainer;
+		var overlayContainer = paella.player.videoContainer.overlayContainer;
 		if (this.hiResFrame) {
 			overlayContainer.removeElement(this.hiResFrame);
 		}
@@ -246,7 +246,7 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 
 			frame.frameData = frameData;
 			frame.frameControl = this;
-			image = frameData.thumb ? frameData.thumb:frameData.url;
+			var image = frameData.thumb ? frameData.thumb:frameData.url;
 			var labelTime = paella.utils.timeParse.secondsToTime(frameData.time);
 			frame.innerHTML = '<img src="' + image + '" alt="" class="frameControlImage" title="'+labelTime+'" aria-label="'+labelTime+'"></img>';
 			if (!base.userAgent.browser.IsMobileVersion) {
