@@ -84,9 +84,12 @@ gulp.task("copy", function() {
 
 	fs.readdirSync('plugins').forEach((dir) => {
 		var fullDir = path.join('plugins',dir);
-		fullDir = path.join(fullDir,'resources/**');
-		gulp.src(fullDir)
+		var resourcesDir = path.join(fullDir,'resources/**');
+		var depsDir = path.join(fullDir,'deps/**');
+		gulp.src(resourcesDir)
 			.pipe(gulp.dest(`${config.outDir}player/resources/style`));
+		gulp.src(depsDir)
+			.pipe(gulp.dest(`${config.outDir}player/resources/deps`));
 	});
 	
 });
