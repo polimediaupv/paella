@@ -8,13 +8,13 @@
 			"sources": {
 				"mpd": [
 					{
-						"src":"http://wams.edgesuite.net/media/MPTExpressionData02/BigBuckBunny_1080p24_IYUV_2ch.ism/manifest(format=mpd-time-csf)",
+						"src":"http://158.42.9.94:1935/vod/mp4:sample.mp4/manifest.mpd",
 						"mimetype": "video/mp4"
 					}
 				],
 				"hls": [
 					{
-						"src": "http://playertest.longtailvideo.com/adaptive/bipbop/bipbop.m3u8",
+						"src": "http://158.42.9.94:1935/vod/mp4:sample.mp4/playlist.m3u8",
 						"mimetype": "video/mp4",
 						"res": {
 							"w": "1280",

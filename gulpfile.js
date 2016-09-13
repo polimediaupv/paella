@@ -75,23 +75,23 @@ gulp.task("copy", function() {
 	gulp.src('resources/images/**')
 		.pipe(gulp.dest(`${config.outDir}player/resources/images`));
 
-//	gulp.src('plugins/**/resources/**')
-//		.pipe(flatten())
-//		.pipe(gulp.dest(`${config.outDir}player/resources/style`));
-
 	gulp.src('index.html')
 		.pipe(gulp.dest(`${config.outDir}player/`));
 
-	fs.readdirSync('plugins').forEach((dir) => {
-		var fullDir = path.join('plugins',dir);
-		var resourcesDir = path.join(fullDir,'resources/**');
-		var depsDir = path.join(fullDir,'deps/**');
-		gulp.src(resourcesDir)
-			.pipe(gulp.dest(`${config.outDir}player/resources/style`));
-		gulp.src(depsDir)
-			.pipe(gulp.dest(`${config.outDir}player/resources/deps`));
-	});
-	
+	function addPlugins(pluginPath) {
+		fs.readdirSync(pluginPath).forEach((dir) => {
+			var fullDir = path.join('plugins',dir);
+			var resourcesDir = path.join(fullDir,'resources/**');
+			var depsDir = path.join(fullDir,'deps/**');
+			gulp.src(resourcesDir)
+				.pipe(gulp.dest(`${config.outDir}player/resources/style`));
+			gulp.src(depsDir)
+				.pipe(gulp.dest(`${config.outDir}player/resources/deps`));
+		});
+	}
+
+	addPlugins('plugins');
+	addPlugins('vendor/plugins');
 });
 
 gulp.task("dictionary", function() {
