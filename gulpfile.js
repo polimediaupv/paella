@@ -7,6 +7,8 @@ const	gulp = require('gulp'),
 		traceur = require('gulp-traceur'),
 		merge = require('gulp-merge-json'),
 		fs = require('fs'),
+		uglify = require('gulp-uglify'),
+		flatten = require('gulp-flatten'),
 		path = require('path'); 
 
 var config = {
@@ -21,6 +23,14 @@ gulp.task("compile", function() {
 	gulp.src(["src/*.js","plugins/*/*.js"])
 		.pipe(traceur())
 		.pipe(concat("paella_player.js"))
+		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
+});
+
+gulp.task("compileDebug", function() {
+	gulp.src(["src/*.js","plugins/*/*.js"])
+		.pipe(traceur())
+		.pipe(concat("paella_player.js"))
+		.pipe(uglify())
 		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
 });
 
@@ -65,8 +75,20 @@ gulp.task("copy", function() {
 	gulp.src('resources/images/**')
 		.pipe(gulp.dest(`${config.outDir}player/resources/images`));
 
+//	gulp.src('plugins/**/resources/**')
+//		.pipe(flatten())
+//		.pipe(gulp.dest(`${config.outDir}player/resources/style`));
+
 	gulp.src('index.html')
 		.pipe(gulp.dest(`${config.outDir}player/`));
+
+	fs.readdirSync('plugins').forEach((dir) => {
+		var fullDir = path.join('plugins',dir);
+		fullDir = path.join(fullDir,'resources/**');
+		gulp.src(fullDir)
+			.pipe(gulp.dest(`${config.outDir}player/resources/style`));
+	});
+	
 });
 
 gulp.task("dictionary", function() {
@@ -76,6 +98,7 @@ gulp.task("dictionary", function() {
 
 
 gulp.task("build", ["compile","styles","dictionary","copy"]);
+gulp.task("buildDebug", ["compileDebug","styles","dictionary","copy"]);
 
 gulp.task("watch", function() {
 	gulp.watch([
@@ -90,4 +113,10 @@ gulp.task("watch", function() {
 });
 
 gulp.task("default",["build"]);
-gulp.task("serve",["build","webserver","watch"]);
+gulp.task("serve",["buildDebug","webserver","watch"]);
+
+// Compatibility
+gulp.task("server.release",["build","webserver","watch"]);
+gulp.task("server.debug",["buildDebug","webserver","watch"]);
+gulp.task("build.debug",["buildDebug"]);
+gulp.task("build.release",["build"]);
