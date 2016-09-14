@@ -175,7 +175,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 			canvas.className = "playerContainer_controls_playback_playbackBar_canvas";
 			canvas.id = ("playerContainer_controls_playback_playbackBar_canvas");
 			canvas.width = parent.width();
-			ht = canvas.height = parent.height();
+			var ht = canvas.height = parent.height();
 			parent.prepend(canvas);
 			this._canvas = document.getElementById("playerContainer_controls_playback_playbackBar_canvas");
 		}

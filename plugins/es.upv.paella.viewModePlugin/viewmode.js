@@ -19,7 +19,7 @@ Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
 	setup:function() {
 		var thisClass = this;
 
-    	Keys = {Tab:9,Return:13,Esc:27,End:35,Home:36,Left:37,Up:38,Right:39,Down:40};
+    	var Keys = {Tab:9,Return:13,Esc:27,End:35,Home:36,Left:37,Up:38,Right:39,Down:40};
 
         $(this.button).keyup(function(event) {
         	if (thisClass.isPopUpOpen()){
@@ -101,8 +101,8 @@ Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
 		var thisClass = this;
 		var ButtonItem = this.buttonItems[profile];
 		
-		n = this.buttonItems;
-		arr = Object.keys(n);
+		var n = this.buttonItems;
+		var arr = Object.keys(n);
 		arr.forEach(function(i){
 			thisClass.buttonItems[i].className = thisClass.getButtonItemClass(i,false);
 		});

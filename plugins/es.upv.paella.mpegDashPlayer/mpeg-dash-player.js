@@ -46,8 +46,8 @@ Class ("paella.MpegDashVideo", paella.Html5Video,{
 			this._loadDeps()
 				.then(function() {
 					var context = new Dash.di.DashContext();
-					player = new MediaPlayer(context);
-					dashContext = context;
+					var player = new MediaPlayer(context);
+					var dashContext = context;
 					player.startup();
 					player.debug.setLogToBrowserConsole(false);
 					player.attachView(This.video);
@@ -56,7 +56,7 @@ Class ("paella.MpegDashVideo", paella.Html5Video,{
 					This._player = player;
 
 					player.addEventListener(MediaPlayer.events.STREAM_INITIALIZED,function(a,b) {
-						bitrates = player.getBitrateInfoListFor("video");
+						var bitrates = player.getBitrateInfoListFor("video");
 						This._deferredAction(function() {
 							defer.resolve();
 						});
@@ -173,9 +173,7 @@ Class ("paella.MpegDashVideo", paella.Html5Video,{
 Class ("paella.videoFactories.MpegDashVideoFactory", {
 	isStreamCompatible:function(streamData) {
 		try {
-			if (base.userAgent.system.iOS &&
-				paella.videoFactories.Html5VideoFactory.s_instances>0)
-			{
+			if (base.userAgent.system.iOS) {
 				return false;
 			}
 			for (var key in streamData.sources) {
