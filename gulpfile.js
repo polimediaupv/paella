@@ -16,7 +16,11 @@ var config = {
 };
 
 gulp.task("webserver", function() {
-	connect.server();
+	connect.server({
+		name: 'Paella Player',
+    	root: 'build',
+    	port: 8000,
+	});
 });
 
 gulp.task("compile", function() {
