@@ -21,6 +21,5 @@
     "gulp-uglify": "^2.0.0"
   },
   "scripts": {
-    "test": "grunt checksyntax"
   }
 }
