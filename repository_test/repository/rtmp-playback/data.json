@@ -1,7 +1,7 @@
 {
 	"metadata": {
-		"duration": 2087.758,
-		"title": "The new release of the Paella HTML5 Player for Matterhorn: Features and Comments"
+		"duration": 909.13,
+		"title": "Belmar 15 minutes"
 	},
 	"streams": [
 		{
@@ -9,31 +9,31 @@
 				"rtmp": [
 					{
 						"src": {
-							"server":"rtmp://media.uni-koeln.de/matterhorn",
-							"stream":"mp4:engage-player/ceb202ec-67ca-4c56-ae94-32e28ec567a0/ed549cd5-9821-420b-8152-aba9ad550c4c/CAMERA_2"
+							"server": "rtmp://moneres.cc.upv.es/vod",
+							"stream": "mp4:polimedia/test/belmar-presenter.mp4"
 						},
-						"mimetype": "video/x-flv",
+						"mimetype": "video/mp4",
 						"res": {
-							"w": "720",
-							"h": "576"
+							"w": 1280,
+							"h": 720
 						}
 					}
 				]
 			},
-			"preview": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/attachment-5/CAMERA.jpg"
+			"preview": "http://paellaplayer.upv.es/demo/repository/belmar-demo-rtmp/attachment-2/presenter_cut.jpg"
 		},
 		{
 			"sources": {
 				"rtmp": [
 					{
 						"src": {
-							"server":"rtmp://media.uni-koeln.de/matterhorn",
-							"stream":"mp4:engage-player/ceb202ec-67ca-4c56-ae94-32e28ec567a0/ed549cd5-9821-420b-8152-aba9ad550c4c/CAMERA_2"
+							"server": "rtmp://moneres.cc.upv.es/vod",
+							"stream": "mp4:polimedia/test/belmar-presentation.mp4"
 						},
-						"mimetype": "video/x-flv",
+						"mimetype": "video/mp4",
 						"res": {
-							"w": "1280",
-							"h": "720"
+							"w": 1024,
+							"h": 768
 						}
 					}
 				],
@@ -42,120 +42,24 @@
 						"mimetype": "image/jpeg",
 						"frames": [
 							{
-								"time": 173,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/edaaa3f6-c08c-4953-9a10-f70f6ea53ea7/SCREEN.jpg"
+								"time": 854,
+								"src": "http://paellaplayer.upv.es/demo/repository/belmar-demo-rtmp/3d90109c-9608-44c1-8660-fce3f216d716/presentation_cut.jpg"
 							},
 							{
-								"time": 184,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/547a5bde-ae30-4c10-a123-2ad02c6d992e/SCREEN.jpg"
-							},
-							{
-								"time": 1158,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/d817fffa-425f-49ce-8eb6-fda74537d0f5/SCREEN.jpg"
-							},
-							{
-								"time": 929,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/8da82564-f138-49ef-893e-da11b25dfe87/SCREEN.jpg"
-							},
-							{
-								"time": 1001,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/188406fd-b05a-4b6b-b84b-de7eb1b42c50/SCREEN.jpg"
-							},
-							{
-								"time": 1543,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/8342baa2-018b-46fb-8c71-648d1067d62f/SCREEN.jpg"
+								"time": 751,
+								"src": "http://paellaplayer.upv.es/demo/repository/belmar-demo-rtmp/598bd2ba-4fef-4886-884e-0ab82176f13d/presentation_cut.jpg"
 							},
 							{
 								"time": 0,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/9d9dd6fc-6938-4374-9b5e-792ba695e5f3/SCREEN.jpg"
+								"src": "http://paellaplayer.upv.es/demo/repository/belmar-demo-rtmp/7dc22bee-14f3-442c-8f0d-30d8b68c8604/presentation_cut.jpg"
 							},
 							{
-								"time": 417,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/ec7258b8-eedd-4864-b14a-991d31165884/SCREEN.jpg"
-							},
-							{
-								"time": 309,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/17877962-a6f5-41cb-9133-630906244234/SCREEN.jpg"
-							},
-							{
-								"time": 1521,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/13bd3a41-0f87-447b-8442-70d030990b23/SCREEN.jpg"
-							},
-							{
-								"time": 704,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/7fc83537-7c4c-4e81-acb9-dbe69efaf19d/SCREEN.jpg"
-							},
-							{
-								"time": 269,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/be47d78f-7c09-4193-88bb-2298b06f8b56/SCREEN.jpg"
-							},
-							{
-								"time": 818,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/b171d741-0b20-441e-931c-e803bc3fd7a9/SCREEN.jpg"
-							},
-							{
-								"time": 288,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/ef30fe49-7585-47be-8159-7ee298b4beb7/SCREEN.jpg"
-							},
-							{
-								"time": 1100,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/434848b3-4c11-4651-9bb3-db74b15e2edd/SCREEN.jpg"
-							},
-							{
-								"time": 143,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/f4f6a543-0e02-4051-8689-e20f5e1531cc/SCREEN.jpg"
-							},
-							{
-								"time": 166,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/67a25180-1a86-44a1-9ce7-d8872b911997/SCREEN.jpg"
-							},
-							{
-								"time": 437,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/559fdf06-eac1-4617-86b1-e1f3f005ec46/SCREEN.jpg"
-							},
-							{
-								"time": 2080,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/bfe16098-c754-4578-9b81-eb209cfa7ce8/SCREEN.jpg"
-							},
-							{
-								"time": 375,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/92ee0186-0126-4d0f-8fb9-86411c01f816/SCREEN.jpg"
-							},
-							{
-								"time": 262,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/eb3fdb8e-07d8-4a3c-bf88-1e0d1018379e/SCREEN.jpg"
-							},
-							{
-								"time": 898,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/ac20e514-3f5e-4c81-a694-03c9d282fe1c/SCREEN.jpg"
-							},
-							{
-								"time": 909,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/df1d45a5-3dd2-44af-bb83-4ed6b8378ab7/SCREEN.jpg"
-							},
-							{
-								"time": 1066,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/17378df0-46c8-4649-996f-9ce27a3d47eb/SCREEN.jpg"
-							},
-							{
-								"time": 588,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/d0b4214d-78e1-4a5b-b252-555cdfd8f442/SCREEN.jpg"
-							},
-							{
-								"time": 224,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/c0799106-a8b5-412f-aa22-b35da3a96e9a/SCREEN.jpg"
-							},
-							{
-								"time": 1607,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/11f7d6ef-3a8d-4b3c-ac6a-045572945b5b/SCREEN.jpg"
-							},
-							{
-								"time": 132,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/de2b2a22-5336-4176-a444-cfa64222f658/SCREEN.jpg"
+								"time": 363,
+								"src": "http://paellaplayer.upv.es/demo/repository/belmar-demo-rtmp/d3194d9b-8f65-403b-a639-9de4311a283b/presentation_cut.jpg"
 							}
 						],
-						"count": 28,
-						"duration": 2087,
+						"count": 4,
+						"duration": 909,
 						"res": {
 							"w": 320,
 							"h": 180
@@ -165,120 +69,24 @@
 						"mimetype": "image/jpeg",
 						"frames": [
 							{
-								"time": 173,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/edaaa3f6-c08c-4953-9a10-f70f6ea53ea7/SCREEN.jpg"
+								"time": 854,
+								"src": "http://paellaplayer.upv.es/demo/repository/belmar-demo-rtmp/403de1df-aa66-44c0-b600-7683acf249b8/presentation_cut.jpg"
 							},
 							{
-								"time": 184,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/547a5bde-ae30-4c10-a123-2ad02c6d992e/SCREEN.jpg"
-							},
-							{
-								"time": 1158,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/d817fffa-425f-49ce-8eb6-fda74537d0f5/SCREEN.jpg"
-							},
-							{
-								"time": 929,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/8da82564-f138-49ef-893e-da11b25dfe87/SCREEN.jpg"
-							},
-							{
-								"time": 1001,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/188406fd-b05a-4b6b-b84b-de7eb1b42c50/SCREEN.jpg"
-							},
-							{
-								"time": 1543,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/8342baa2-018b-46fb-8c71-648d1067d62f/SCREEN.jpg"
+								"time": 751,
+								"src": "http://paellaplayer.upv.es/demo/repository/belmar-demo-rtmp/73a6564c-b2d6-4896-b0f1-38129dde2c85/presentation_cut.jpg"
 							},
 							{
 								"time": 0,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/9d9dd6fc-6938-4374-9b5e-792ba695e5f3/SCREEN.jpg"
+								"src": "http://paellaplayer.upv.es/demo/repository/belmar-demo-rtmp/46561b90-85b3-4ad7-a986-cdd9b52ae02b/presentation_cut.jpg"
 							},
 							{
-								"time": 417,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/ec7258b8-eedd-4864-b14a-991d31165884/SCREEN.jpg"
-							},
-							{
-								"time": 309,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/17877962-a6f5-41cb-9133-630906244234/SCREEN.jpg"
-							},
-							{
-								"time": 1521,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/13bd3a41-0f87-447b-8442-70d030990b23/SCREEN.jpg"
-							},
-							{
-								"time": 704,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/7fc83537-7c4c-4e81-acb9-dbe69efaf19d/SCREEN.jpg"
-							},
-							{
-								"time": 269,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/be47d78f-7c09-4193-88bb-2298b06f8b56/SCREEN.jpg"
-							},
-							{
-								"time": 818,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/b171d741-0b20-441e-931c-e803bc3fd7a9/SCREEN.jpg"
-							},
-							{
-								"time": 288,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/ef30fe49-7585-47be-8159-7ee298b4beb7/SCREEN.jpg"
-							},
-							{
-								"time": 1100,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/434848b3-4c11-4651-9bb3-db74b15e2edd/SCREEN.jpg"
-							},
-							{
-								"time": 143,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/f4f6a543-0e02-4051-8689-e20f5e1531cc/SCREEN.jpg"
-							},
-							{
-								"time": 166,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/67a25180-1a86-44a1-9ce7-d8872b911997/SCREEN.jpg"
-							},
-							{
-								"time": 437,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/559fdf06-eac1-4617-86b1-e1f3f005ec46/SCREEN.jpg"
-							},
-							{
-								"time": 2080,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/bfe16098-c754-4578-9b81-eb209cfa7ce8/SCREEN.jpg"
-							},
-							{
-								"time": 375,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/92ee0186-0126-4d0f-8fb9-86411c01f816/SCREEN.jpg"
-							},
-							{
-								"time": 262,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/eb3fdb8e-07d8-4a3c-bf88-1e0d1018379e/SCREEN.jpg"
-							},
-							{
-								"time": 898,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/ac20e514-3f5e-4c81-a694-03c9d282fe1c/SCREEN.jpg"
-							},
-							{
-								"time": 909,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/df1d45a5-3dd2-44af-bb83-4ed6b8378ab7/SCREEN.jpg"
-							},
-							{
-								"time": 1066,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/17378df0-46c8-4649-996f-9ce27a3d47eb/SCREEN.jpg"
-							},
-							{
-								"time": 588,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/d0b4214d-78e1-4a5b-b252-555cdfd8f442/SCREEN.jpg"
-							},
-							{
-								"time": 224,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/c0799106-a8b5-412f-aa22-b35da3a96e9a/SCREEN.jpg"
-							},
-							{
-								"time": 1607,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/11f7d6ef-3a8d-4b3c-ac6a-045572945b5b/SCREEN.jpg"
-							},
-							{
-								"time": 132,
-								"src": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/de2b2a22-5336-4176-a444-cfa64222f658/SCREEN.jpg"
+								"time": 363,
+								"src": "http://paellaplayer.upv.es/demo/repository/belmar-demo-rtmp/4505b6d9-8a0c-4809-ade3-840e743188ed/presentation_cut.jpg"
 							}
 						],
-						"count": 28,
-						"duration": 2087,
+						"count": 4,
+						"duration": 909,
 						"res": {
 							"w": 1280,
 							"h": 720
@@ -286,208 +94,57 @@
 					}
 				]
 			},
-			"preview": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/attachment-4/SCREEN.jpg"
+			"preview": "http://paellaplayer.upv.es/demo/repository/belmar-demo-rtmp/attachment-3/presentation_cut.jpg"
 		}
 	],
 	"frameList": [
 		{
-			"id": "frame_173",
+			"id": "frame_854",
 			"mimetype": "image/jpeg",
-			"time": 173,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/edaaa3f6-c08c-4953-9a10-f70f6ea53ea7/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/edaaa3f6-c08c-4953-9a10-f70f6ea53ea7/SCREEN.jpg"
+			"time": 854,
+			"url": "http://paellaplayer.upv.es/demo/repository/belmar-demo-rtmp/3d90109c-9608-44c1-8660-fce3f216d716/presentation_cut.jpg",
+			"thumb": "http://paellaplayer.upv.es/demo/repository/belmar-demo-rtmp/403de1df-aa66-44c0-b600-7683acf249b8/presentation_cut.jpg"
 		},
 		{
-			"id": "frame_184",
+			"id": "frame_751",
 			"mimetype": "image/jpeg",
-			"time": 184,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/547a5bde-ae30-4c10-a123-2ad02c6d992e/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/547a5bde-ae30-4c10-a123-2ad02c6d992e/SCREEN.jpg"
-		},
-		{
-			"id": "frame_1158",
-			"mimetype": "image/jpeg",
-			"time": 1158,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/d817fffa-425f-49ce-8eb6-fda74537d0f5/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/d817fffa-425f-49ce-8eb6-fda74537d0f5/SCREEN.jpg"
-		},
-		{
-			"id": "frame_929",
-			"mimetype": "image/jpeg",
-			"time": 929,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/8da82564-f138-49ef-893e-da11b25dfe87/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/8da82564-f138-49ef-893e-da11b25dfe87/SCREEN.jpg"
-		},
-		{
-			"id": "frame_1001",
-			"mimetype": "image/jpeg",
-			"time": 1001,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/188406fd-b05a-4b6b-b84b-de7eb1b42c50/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/188406fd-b05a-4b6b-b84b-de7eb1b42c50/SCREEN.jpg"
-		},
-		{
-			"id": "frame_1543",
-			"mimetype": "image/jpeg",
-			"time": 1543,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/8342baa2-018b-46fb-8c71-648d1067d62f/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/8342baa2-018b-46fb-8c71-648d1067d62f/SCREEN.jpg"
+			"time": 751,
+			"url": "http://paellaplayer.upv.es/demo/repository/belmar-demo-rtmp/598bd2ba-4fef-4886-884e-0ab82176f13d/presentation_cut.jpg",
+			"thumb": "http://paellaplayer.upv.es/demo/repository/belmar-demo-rtmp/73a6564c-b2d6-4896-b0f1-38129dde2c85/presentation_cut.jpg"
 		},
 		{
 			"id": "frame_0",
 			"mimetype": "image/jpeg",
 			"time": 0,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/9d9dd6fc-6938-4374-9b5e-792ba695e5f3/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/9d9dd6fc-6938-4374-9b5e-792ba695e5f3/SCREEN.jpg"
+			"url": "http://paellaplayer.upv.es/demo/repository/belmar-demo-rtmp/7dc22bee-14f3-442c-8f0d-30d8b68c8604/presentation_cut.jpg",
+			"thumb": "http://paellaplayer.upv.es/demo/repository/belmar-demo-rtmp/46561b90-85b3-4ad7-a986-cdd9b52ae02b/presentation_cut.jpg"
 		},
 		{
-			"id": "frame_417",
+			"id": "frame_363",
 			"mimetype": "image/jpeg",
-			"time": 417,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/ec7258b8-eedd-4864-b14a-991d31165884/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/ec7258b8-eedd-4864-b14a-991d31165884/SCREEN.jpg"
-		},
-		{
-			"id": "frame_309",
-			"mimetype": "image/jpeg",
-			"time": 309,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/17877962-a6f5-41cb-9133-630906244234/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/17877962-a6f5-41cb-9133-630906244234/SCREEN.jpg"
-		},
-		{
-			"id": "frame_1521",
-			"mimetype": "image/jpeg",
-			"time": 1521,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/13bd3a41-0f87-447b-8442-70d030990b23/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/13bd3a41-0f87-447b-8442-70d030990b23/SCREEN.jpg"
-		},
-		{
-			"id": "frame_704",
-			"mimetype": "image/jpeg",
-			"time": 704,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/7fc83537-7c4c-4e81-acb9-dbe69efaf19d/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/7fc83537-7c4c-4e81-acb9-dbe69efaf19d/SCREEN.jpg"
-		},
-		{
-			"id": "frame_269",
-			"mimetype": "image/jpeg",
-			"time": 269,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/be47d78f-7c09-4193-88bb-2298b06f8b56/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/be47d78f-7c09-4193-88bb-2298b06f8b56/SCREEN.jpg"
-		},
-		{
-			"id": "frame_818",
-			"mimetype": "image/jpeg",
-			"time": 818,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/b171d741-0b20-441e-931c-e803bc3fd7a9/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/b171d741-0b20-441e-931c-e803bc3fd7a9/SCREEN.jpg"
-		},
-		{
-			"id": "frame_288",
-			"mimetype": "image/jpeg",
-			"time": 288,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/ef30fe49-7585-47be-8159-7ee298b4beb7/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/ef30fe49-7585-47be-8159-7ee298b4beb7/SCREEN.jpg"
-		},
-		{
-			"id": "frame_1100",
-			"mimetype": "image/jpeg",
-			"time": 1100,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/434848b3-4c11-4651-9bb3-db74b15e2edd/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/434848b3-4c11-4651-9bb3-db74b15e2edd/SCREEN.jpg"
-		},
-		{
-			"id": "frame_143",
-			"mimetype": "image/jpeg",
-			"time": 143,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/f4f6a543-0e02-4051-8689-e20f5e1531cc/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/f4f6a543-0e02-4051-8689-e20f5e1531cc/SCREEN.jpg"
-		},
-		{
-			"id": "frame_166",
-			"mimetype": "image/jpeg",
-			"time": 166,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/67a25180-1a86-44a1-9ce7-d8872b911997/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/67a25180-1a86-44a1-9ce7-d8872b911997/SCREEN.jpg"
-		},
-		{
-			"id": "frame_437",
-			"mimetype": "image/jpeg",
-			"time": 437,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/559fdf06-eac1-4617-86b1-e1f3f005ec46/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/559fdf06-eac1-4617-86b1-e1f3f005ec46/SCREEN.jpg"
-		},
-		{
-			"id": "frame_2080",
-			"mimetype": "image/jpeg",
-			"time": 2080,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/bfe16098-c754-4578-9b81-eb209cfa7ce8/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/bfe16098-c754-4578-9b81-eb209cfa7ce8/SCREEN.jpg"
-		},
-		{
-			"id": "frame_375",
-			"mimetype": "image/jpeg",
-			"time": 375,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/92ee0186-0126-4d0f-8fb9-86411c01f816/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/92ee0186-0126-4d0f-8fb9-86411c01f816/SCREEN.jpg"
-		},
-		{
-			"id": "frame_262",
-			"mimetype": "image/jpeg",
-			"time": 262,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/eb3fdb8e-07d8-4a3c-bf88-1e0d1018379e/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/eb3fdb8e-07d8-4a3c-bf88-1e0d1018379e/SCREEN.jpg"
-		},
-		{
-			"id": "frame_898",
-			"mimetype": "image/jpeg",
-			"time": 898,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/ac20e514-3f5e-4c81-a694-03c9d282fe1c/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/ac20e514-3f5e-4c81-a694-03c9d282fe1c/SCREEN.jpg"
-		},
-		{
-			"id": "frame_909",
-			"mimetype": "image/jpeg",
-			"time": 909,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/df1d45a5-3dd2-44af-bb83-4ed6b8378ab7/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/df1d45a5-3dd2-44af-bb83-4ed6b8378ab7/SCREEN.jpg"
-		},
-		{
-			"id": "frame_1066",
-			"mimetype": "image/jpeg",
-			"time": 1066,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/17378df0-46c8-4649-996f-9ce27a3d47eb/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/17378df0-46c8-4649-996f-9ce27a3d47eb/SCREEN.jpg"
-		},
-		{
-			"id": "frame_588",
-			"mimetype": "image/jpeg",
-			"time": 588,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/d0b4214d-78e1-4a5b-b252-555cdfd8f442/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/d0b4214d-78e1-4a5b-b252-555cdfd8f442/SCREEN.jpg"
-		},
-		{
-			"id": "frame_224",
-			"mimetype": "image/jpeg",
-			"time": 224,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/c0799106-a8b5-412f-aa22-b35da3a96e9a/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/c0799106-a8b5-412f-aa22-b35da3a96e9a/SCREEN.jpg"
-		},
-		{
-			"id": "frame_1607",
-			"mimetype": "image/jpeg",
-			"time": 1607,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/11f7d6ef-3a8d-4b3c-ac6a-045572945b5b/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/11f7d6ef-3a8d-4b3c-ac6a-045572945b5b/SCREEN.jpg"
-		},
-		{
-			"id": "frame_132",
-			"mimetype": "image/jpeg",
-			"time": 132,
-			"url": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/de2b2a22-5336-4176-a444-cfa64222f658/SCREEN.jpg",
-			"thumb": "http://mhopencast.ethz.ch/static/engage-player/6c642094-9b9a-4fa7-9b6c-47ab06439a38/de2b2a22-5336-4176-a444-cfa64222f658/SCREEN.jpg"
+			"time": 363,
+			"url": "http://paellaplayer.upv.es/demo/repository/belmar-demo-rtmp/d3194d9b-8f65-403b-a639-9de4311a283b/presentation_cut.jpg",
+			"thumb": "http://paellaplayer.upv.es/demo/repository/belmar-demo-rtmp/4505b6d9-8a0c-4809-ade3-840e743188ed/presentation_cut.jpg"
 		}
 	],
-	"blackboard": {
-		"frames": []
-	}
+	"captions": [
+		{
+			"lang": "es",
+			"text": "Español (traducción automática)",
+			"format": "dfxp",
+			"url": "https://fuster.cc.upv.es/tl-pm/dfxp?db=pm&format=1&pol=0&id=belmar-demo&lang=es"
+		},
+		{
+			"lang": "en",
+			"text": "English (automatic transciption)",
+			"format": "dfxp",
+			"url": "https://fuster.cc.upv.es/tl-pm/dfxp?db=pm&format=1&pol=0&id=belmar-demo&lang=en"
+		},
+		{
+			"lang": "ca",
+			"text": "Valencià/Català (traducció automàtica)",
+			"format": "dfxp",
+			"url": "https://fuster.cc.upv.es/tl-pm/dfxp?db=pm&format=1&pol=0&id=belmar-demo&lang=ca"
+		}
+	]
 }

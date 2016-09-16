@@ -7,6 +7,7 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 	_flashId:null,
 	_swfContainer:null,
 	_flashVideo:null,
+	_volume:1,
 
 
 	initialize:function(id,stream,left,top,width,height) {
@@ -25,7 +26,7 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 				$(This.swfContainer).trigger("paella:flashvideoready");
 			}
 			if (eventName=="progress") {
-				try { This.flashVideo.setVolume(this._volume); }
+				try { This.flashVideo.setVolume(This._volume); }
 				catch(e) {}
 				base.log.debug("Flash video event: " + eventName + ", progress: " + This.flashVideo.currentProgress());
 			}
@@ -316,6 +317,7 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 		return this._deferredAction(function() {
 			if (This._posterFrameElement) {
 				This._posterFrameElement.parentNode.removeChild(This._posterFrameElement);
+				This._posterFrameElement = null;
 			}
 			This._paused = false;
 			This.flashVideo.play();
@@ -361,6 +363,7 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 
 	setVolume:function(volume) {
 		var This = this;
+		this._volume = volume;
 		return this._deferredAction(function() {
 			This.flashVideo.setVolume(volume);
 		});
