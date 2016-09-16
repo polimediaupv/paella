@@ -27,6 +27,7 @@ gulp.task("compile", function() {
 	gulp.src(["src/*.js","plugins/*/*.js"])
 		.pipe(traceur())
 		.pipe(concat("paella_player.js"))
+		.pipe(uglify())
 		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
 });
 
@@ -34,7 +35,6 @@ gulp.task("compileDebug", function() {
 	gulp.src(["src/*.js","plugins/*/*.js"])
 		.pipe(traceur())
 		.pipe(concat("paella_player.js"))
-		.pipe(uglify())
 		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
 });
 
@@ -99,8 +99,17 @@ gulp.task("copy", function() {
 });
 
 gulp.task("dictionary", function() {
-	gulp.src('localization/*')
-		.pipe(gulp.dest(`${config.outDir}player/localization`));
+	fs.readdirSync('localization')
+		.forEach((dict) => {
+			let re = RegExp(".*_([a-z]+)\.json");
+			let result = re.exec(dict);
+			if (result) {
+				let lang = result[1];
+				gulp.src('localization/' + dict)
+					.pipe(concat(`paella_${lang}.json`))
+					.pipe(gulp.dest(`${config.outDir}player/localization`)); 
+			}
+		});
 });
 
 
@@ -119,11 +128,23 @@ gulp.task("watch", function() {
 	],["build"]);
 });
 
+gulp.task("watchDebug", function() {
+	gulp.watch([
+		'index.html',
+		'resources/**',
+		'repository_test/**',
+		'config/**',
+		'plugins/**',
+		'vendor/plugins/**',
+		'src/*.js'
+	],["buildDebug"]);
+});
+
 gulp.task("default",["build"]);
-gulp.task("serve",["buildDebug","webserver","watch"]);
+gulp.task("serve",["buildDebug","webserver","watchDebug"]);
 
 // Compatibility
 gulp.task("server.release",["build","webserver","watch"]);
-gulp.task("server.debug",["buildDebug","webserver","watch"]);
+gulp.task("server.debug",["buildDebug","webserver","watchDebug"]);
 gulp.task("build.debug",["buildDebug"]);
 gulp.task("build.release",["build"]);
