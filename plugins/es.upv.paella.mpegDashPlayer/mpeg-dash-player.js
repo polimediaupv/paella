@@ -85,7 +85,7 @@ Class ("paella.MpegDashVideo", paella.Html5Video,{
 						return a.bitrate - b.bitrate;
 					})
 
-					.forEach(function(item,index) {
+					.forEach(function(item,index,bitrates) {
 						This._qualities.push(This._getQualityObject(item,index,bitrates));
 					});
 					
