@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.0.15
+
+  * Several bugs fixed in RTMP playback
+
 * Paella 5.0.14
 
   * Bug fixed in video rectangle calculation, playing single stream videos
