@@ -45,24 +45,19 @@ Class ("paella.MpegDashVideo", paella.Html5Video,{
 			source = source[0];
 			this._loadDeps()
 				.then(function() {
-					var context = new Dash.di.DashContext();
-					var player = new MediaPlayer(context);
+					var context = dashContext;
+					var player = dashjs.MediaPlayer().create();
 					var dashContext = context;
-					player.startup();
-					player.debug.setLogToBrowserConsole(false);
-					player.attachView(This.video);
-					player.setAutoPlay(false);
-					player.setAutoSwitchQuality(true);
+					player.initialize(This.video,source.src,true);
+					player.getDebug().setLogToBrowserConsole(false);
 					This._player = player;
-
-					player.addEventListener(MediaPlayer.events.STREAM_INITIALIZED,function(a,b) {
+					player.on(dashjs.MediaPlayer.events.STREAM_INITIALIZED,function(a,b) {
 						var bitrates = player.getBitrateInfoListFor("video");
 						This._deferredAction(function() {
+							This._player.pause();
 							defer.resolve();
 						});
 					});
-
-					player.attachSource(source.src);
 				});
 		}
 		else {
@@ -117,9 +112,9 @@ Class ("paella.MpegDashVideo", paella.Html5Video,{
 		}
 		else if (index!=currentQuality) {
 			this._player.setAutoSwitchQuality(false);
-			this._player.removeEventListener(MediaPlayer.events.METRIC_CHANGED);
-			this._player.addEventListener(MediaPlayer.events.METRIC_CHANGED,function(a,b) {
-				if(a.type=="metricchanged" && a.data.stream=="video") {
+			this._player.off(dashjs.MediaPlayer.events.METRIC_CHANGED);
+			this._player.on(dashjs.MediaPlayer.events.METRIC_CHANGED,function(a,b) {
+				if(a.type=="metricchanged") {
 					if (currentQuality!=This._player.getQualityFor("video")) {
 						currentQuality = This._player.getQualityFor("video");
 						defer.resolve();
@@ -173,7 +168,7 @@ Class ("paella.MpegDashVideo", paella.Html5Video,{
 Class ("paella.videoFactories.MpegDashVideoFactory", {
 	isStreamCompatible:function(streamData) {
 		try {
-			if (base.userAgent.system.iOS) {
+			if (base.userAgent.system.iOS && paella.videoFactories.Html5VideoFactory.s_instances>0) {
 				return false;
 			}
 			for (var key in streamData.sources) {
