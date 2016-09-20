@@ -2,8 +2,8 @@
 function loadStreamingPlayer(server,stream,subscribe) {
 	var container = $('#streamingPlayerContainer')[0];
 
-	var objectData = '<object type="application/x-shockwave-flash" data="../../src/flash_streaming/player_streaming.swf" width="680" height="480">' +
-			'<param name="movie" value="../../src/flash_streaming/player_streaming.swf" />' +
+	var objectData = '<object type="application/x-shockwave-flash" data="player_streaming.swf" width="680" height="480">' +
+			'<param name="movie" value="player_streaming.swf" />' +
 			'<param name="quality" value="high"/> ' +
 			'<param name="flashvars" value="server=' + server +
 					'&amp;stream=' + stream +

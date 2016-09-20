@@ -140,11 +140,19 @@ gulp.task("watchDebug", function() {
 	],["buildDebug"]);
 });
 
+gulp.task("tools", function() {
+	gulp.src('tools/**')
+		.pipe(gulp.dest(`${config.outDir}tools`));
+
+	gulp.src('src/flash_streaming/*.swf')
+		.pipe(gulp.dest(`${config.outDir}tools/rtmp-test/`));
+});
+
 gulp.task("default",["build"]);
-gulp.task("serve",["buildDebug","webserver","watchDebug"]);
+gulp.task("serve",["buildDebug","webserver","tools","watchDebug"]);
 
 // Compatibility
-gulp.task("server.release",["build","webserver","watch"]);
-gulp.task("server.debug",["buildDebug","webserver","watchDebug"]);
+gulp.task("server.release",["build","webserver","tools","watch"]);
+gulp.task("server.debug",["buildDebug","webserver","tools","watchDebug"]);
 gulp.task("build.debug",["buildDebug"]);
 gulp.task("build.release",["build"]);
