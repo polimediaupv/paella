@@ -183,7 +183,7 @@ Class ("paella.captions.Caption", {
 			type: 'get',
 			dataType: "text"
 		})
-		.done(function(dataRaw){
+		.then(function(dataRaw){
 			var parser = captionParserManager._formats[self._format];			
 			if (parser == undefined) {
 				base.log.debug("Error adding captions: Format not supported!");

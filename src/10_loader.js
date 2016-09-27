@@ -216,9 +216,9 @@ Class ("paella.DefaultInitDelegate", paella.InitDelegate, {
 
 	loadConfig: function() {
 		if (this._config) {
-			var defer = new $.Deferred();
-			defer.resolve(this._config);
-			return defer;
+			return new Promise((resolve) => {
+				resolve(this._config);
+			});
 		}
 		else {
 			return this.parent();
