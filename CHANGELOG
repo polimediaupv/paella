@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.0.16
+
+  * Mute icon not showing on volume mute (Fix #219)
+
 * Paella 5.0.15
 
   * Several bugs fixed in RTMP playback

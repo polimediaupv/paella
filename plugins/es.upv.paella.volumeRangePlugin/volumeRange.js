@@ -197,28 +197,31 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 	},
 
 	updateClass: function() {
-		var volume;
 		var selected = '';
-
+		var self = this;
+		
 		if (this._showMasterVolume && this._showSlaveVolume) {
 			selected = "med";
+			this.button.className = ['buttonPlugin', this.getAlignment(), this.getSubclass(), selected].join(' ');
 		}
 		else {
+			var volumePromise;
 			if (this._showMasterVolume) {
-				volume = paella.player.videoContainer.masterVideo().volume();
+				volumePromise = paella.player.videoContainer.masterVideo().volume();
 			}
 			if (this._showSlaveVolume) {
-				volume = paella.player.videoContainer.slaveVideo().volume();
+				volumePromise = paella.player.videoContainer.slaveVideo().volume();
 			}
 
-			if (volume === undefined) { selected = 'med'; }
-			else if (volume == 0) { selected = 'mute'; }
-			else if (volume < 0.33) { selected = 'min'; }
-			else if (volume < 0.66) { selected = 'med'; }
-			else { selected = 'max'; }
+			volumePromise.then(function(volume){
+				if (volume === undefined) { selected = 'med'; }
+				else if (volume == 0) { selected = 'mute'; }
+				else if (volume < 0.33) { selected = 'min'; }
+				else if (volume < 0.66) { selected = 'med'; }
+				else { selected = 'max'; }
+				self.button.className = ['buttonPlugin', self.getAlignment(), self.getSubclass(), selected].join(' ');				
+			});
 		}
-
-		this.button.className = ['buttonPlugin', this.getAlignment(), this.getSubclass(), selected].join(' ');
 	}
 });
 

@@ -118,25 +118,29 @@ Class ("paella.KeyManager", {
 
 	mute:function() {
 		var videoContainer = paella.player.videoContainer;
-		var newVolume = 0;
-		if (videoContainer.volume()==0) newVolume = 1.0;
-		paella.player.videoContainer.setVolume({ master:newVolume, slave: 0});
+		videoContainer.volume().then(function(volume){
+			var newVolume = 0;
+			if (volume==0) { newVolume = 1.0; }
+			paella.player.videoContainer.setVolume({ master:newVolume, slave: 0});
+		});
 	},
 
 	volumeUp:function() {
 		var videoContainer = paella.player.videoContainer;
-		var volume = videoContainer.volume();
-		volume += 0.1;
-		volume = (volume>1) ? 1.0:volume;
-		paella.player.videoContainer.setVolume({ master:volume, slave: 0});
+		videoContainer.volume().then(function(volume){
+			volume += 0.1;
+			volume = (volume>1) ? 1.0:volume;
+			paella.player.videoContainer.setVolume({ master:volume, slave: 0});			
+		});
 	},
 
 	volumeDown:function() {
 		var videoContainer = paella.player.videoContainer;
-		var volume = videoContainer.volume();
-		volume -= 0.1;
-		volume = (volume<0) ? 0.0:volume;
-		paella.player.videoContainer.setVolume({ master:volume, slave: 0});
+		videoContainer.volume().then(function(volume){
+			volume -= 0.1;
+			volume = (volume<0) ? 0.0:volume;
+			paella.player.videoContainer.setVolume({ master:volume, slave: 0});
+		});
 	}
 });
 
