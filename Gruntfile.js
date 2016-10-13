@@ -281,7 +281,7 @@ module.exports = function(grunt) {
 
 
 	grunt.registerTask('default', ['dist']);
-	grunt.registerTask('checksyntax', ['concat:less','less:production','jshint', 'csslint', 'jsonlint']);
+	grunt.registerTask('checksyntax', ['concat:less','less:production',/*'jshint',*/ 'csslint', 'jsonlint']);
 
 	grunt.registerTask('build.common', ['if:revision', 'checksyntax', 'copy:paella', 'if:dist.js', 'clean:less', 'merge-json:i18n']);
 	grunt.registerTask('build.release', ['build.common', 'uglify:dist', 'cssmin:dist']);
