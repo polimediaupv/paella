@@ -29,7 +29,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 	},
 
 	showUI: function(){
-		if(paella.captions.getAvailableLangs().length>1){
+		if(paella.captions.getAvailableLangs().length>=1){
 			this.parent();
 		}
 	},
