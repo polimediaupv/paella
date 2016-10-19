@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.0.17
+
+  * Fix bug in captions plugin when there is only one caption
+
 * Paella 5.0.16
 
   * Mute icon not showing on volume mute (Fix #219)
