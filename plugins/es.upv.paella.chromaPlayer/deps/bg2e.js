@@ -1,3 +1,27 @@
+/*
+ *	bg2 engine
+ *	Copyright (c) 2016 Fernando Serrano <ferserc1@gmail.com>
+ *  http://www.bg2engine.com
+ *
+ *	Permission is hereby granted, free of charge, to any person obtaining a copy
+ *	of this software and associated documentation files (the "Software"), to deal
+ *	in the Software without restriction, including without limitation the rights
+ *	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+ *	of the Software, and to permit persons to whom the Software is furnished to do
+ *	so, subject to the following conditions:
+ *
+ *	The above copyright notice and this permission notice shall be included in all
+ *	copies or substantial portions of the Software.
+ *
+ *	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ *	INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+ *	PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ *	HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ *	OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ *	SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ */
+
 "use strict";
 var bg = {};
 bg.utils = {};
@@ -309,6 +333,7 @@ Reflect.defineProperty = Reflect.defineProperty || Object.defineProperty;
 "use strict";
 (function() {
   var s_preventImageDump = [];
+  var s_preventVideoDump = [];
   function getRequest(url, onSuccess, onFail) {
     var req = new XMLHttpRequest();
     req.open("GET", url, true);
@@ -343,6 +368,10 @@ Reflect.defineProperty = Reflect.defineProperty || Object.defineProperty;
         var binaryFormats = arguments[1] !== (void 0) ? arguments[1] : ["vwglb"];
         return Resource.IsFormat(url, binaryFormats);
       },
+      IsVideo: function(url) {
+        var videoFormats = arguments[1] !== (void 0) ? arguments[1] : ["mp4", "m4v", "ogg", "ogv", "m3u8", "webm"];
+        return Resource.IsFormat(url, videoFormats);
+      },
       LoadMultiple: function(urlArray) {
         var resources = [];
         urlArray.forEach(function(url) {
@@ -368,6 +397,9 @@ Reflect.defineProperty = Reflect.defineProperty || Object.defineProperty;
           case Resource.IsBinary(url):
             loader = Resource.LoadBinary;
             break;
+          case Resource.IsVideo(url):
+            loader = Resource.LoadVideo;
+            break;
           case Resource.GetExtension(url) == 'json':
             loader = Resource.LoadJson;
             break;
@@ -383,6 +415,29 @@ Reflect.defineProperty = Reflect.defineProperty || Object.defineProperty;
           }, function(error) {
             reject(error);
           }).send();
+        });
+      },
+      LoadVideo: function(url) {
+        return new Promise(function(resolve, reject) {
+          var video = document.createElement('video');
+          s_preventVideoDump.push(video);
+          video.crossOrigin = "";
+          video.autoplay = true;
+          video.addEventListener('canplay', function(evt) {
+            var videoIndex = s_preventVideoDump.indexOf(evt.target);
+            if (videoIndex != -1) {
+              s_preventVideoDump.splice(videoIndex, 1);
+            }
+            resolve(event.target);
+            bg.emitImageLoadEvent(event.target);
+          });
+          video.addEventListener("error", function(evt) {
+            reject(new Error(("Error loading video: " + url)));
+          });
+          video.addEventListener("abort", function(evt) {
+            reject(new Error(("Error loading video: " + url)));
+          });
+          video.src = url;
         });
       },
       LoadBinary: function(url) {
@@ -4026,6 +4081,31 @@ bg.bindImageLoadEvent = function(callback) {
     }, {}, $__super);
   }(bg.base.LoaderPlugin);
   bg.base.TextureLoaderPlugin = TextureLoaderPlugin;
+  var VideoTextureLoaderPlugin = function($__super) {
+    function VideoTextureLoaderPlugin() {
+      $traceurRuntime.superConstructor(VideoTextureLoaderPlugin).apply(this, arguments);
+    }
+    return ($traceurRuntime.createClass)(VideoTextureLoaderPlugin, {
+      acceptType: function(url, data) {
+        return bg.utils.Resource.IsVideo(url);
+      },
+      load: function(context, url, video) {
+        return new Promise(function(accept, reject) {
+          if (video) {
+            var texture = new bg.base.Texture(context);
+            texture.create();
+            texture.bind();
+            texture.setVideo(video);
+            texture.fileName = url;
+            accept(texture);
+          } else {
+            reject(new Error("Error loading video texture data"));
+          }
+        });
+      }
+    }, {}, $__super);
+  }(bg.base.LoaderPlugin);
+  bg.base.VideoTextureLoaderPlugin = VideoTextureLoaderPlugin;
 })();
 
 "use strict";
@@ -4118,6 +4198,12 @@ bg.bindImageLoadEvent = function(callback) {
       setImageRaw: function(context, target, minFilter, magFilter, texture, width, height, data) {
         console.log("TextureImpl: setImageRaw() method not implemented");
       },
+      setVideo: function(context, target, texture, video, flipY) {
+        console.log("TextureImpl: setVideo() method not implemented");
+      },
+      updateVideoData: function(context, target, texture, video) {
+        console.log("TextureImpl: updateVideoData() method not implemented");
+      },
       destroy: function(context, texture) {
         console.log("TextureImpl: destroy() method not implemented");
       }
@@ -4135,6 +4221,7 @@ bg.bindImageLoadEvent = function(callback) {
       this._magFilter = bg.base.TextureFilter.LINEAR;
       this._wrapX = bg.base.TextureWrap.REPEAT;
       this._wrapY = bg.base.TextureWrap.REPEAT;
+      this._video = null;
     }
     return ($traceurRuntime.createClass)(Texture, {
       get texture() {
@@ -4179,6 +4266,9 @@ bg.bindImageLoadEvent = function(callback) {
       get size() {
         return this._size;
       },
+      get video() {
+        return this._video;
+      },
       create: function() {
         if (this._texture !== null) {
           this.destroy();
@@ -4216,6 +4306,14 @@ bg.bindImageLoadEvent = function(callback) {
         bg.Engine.Get().texture.setTextureWrapY(this.context, this._target, this._texture, this._wrapY);
         bg.Engine.Get().texture.setImageRaw(this.context, this._target, this._minFilter, this._magFilter, this._texture, width, height, data, type, format);
       },
+      setVideo: function(video, flipY) {
+        if (flipY === undefined)
+          flipY = true;
+        this._size.width = video.videoWidth;
+        this._size.height = video.videoHeight;
+        bg.Engine.Get().texture.setVideo(this.context, this._target, this._texture, video, flipY);
+        this._video = video;
+      },
       destroy: function() {
         bg.Engine.Get().texture.destroy(this.context, this._texture);
         this._texture = null;
@@ -4225,6 +4323,9 @@ bg.bindImageLoadEvent = function(callback) {
       },
       valid: function() {
         return this._texture !== null;
+      },
+      update: function() {
+        bg.Engine.Get().texture.updateVideoData(this.context, this._target, this._texture, this._video);
       }
     }, {
       ColorTexture: function(context, color, size) {
@@ -9110,6 +9211,7 @@ bg.render = {};
     deferredRenderLayer._shadow = newPL(ctx, new bg.render.ShadowEffect(ctx), s.shadowSurface, bg.base.OpacityLayer.ALL);
     deferredRenderLayer._lighting = newPL(ctx, new bg.render.LightingEffect(ctx), s.lightingSurface);
     deferredRenderLayer._ssao = newPL(ctx, new bg.render.SSAOEffect(ctx), s.ssaoSurface);
+    deferredRenderLayer._ssao.clearColor = bg.Color.White();
     deferredRenderLayer._ssrt = newPL(ctx, new bg.render.SSRTEffect(ctx), s.ssrtSurface);
     var matrixState = deferredRenderLayer.matrixState;
     deferredRenderLayer.ubyteVisitor = new bg.scene.DrawVisitor(deferredRenderLayer._gbufferUbyte, matrixState);
@@ -10160,7 +10262,7 @@ bg.render = {};
             role: "in"
           }]);
           if (bg.Engine.Get().id == "webgl1") {
-            this._fragmentShaderSource.setMainBody(("\n\t\t\t\t\t\tvec3 normal = texture2D(inNormalMap,fsTexCoord).xyz * 2.0 - 1.0;\n\t\t\t\t\t\tvec4 vertexPos = texture2D(inPositionMap,fsTexCoord);\n\t\t\t\t\t\tvec3 cameraVector = vertexPos.xyz - inCameraPos;\n\t\t\t\t\t\tvec3 rayDirection = reflect(cameraVector,normal);\n\t\t\t\t\t\tvec4 lighting = texture2D(inLightingMap,fsTexCoord);\n\t\t\t\t\t\tvec4 material = texture2D(inMaterialMap,fsTexCoord);\n\t\t\t\t\t\t\n\t\t\t\t\t\tfloat increment = " + q.rayIncrement + ";\n\t\t\t\t\t\tvec4 result = vec4(0.0,0.0,0.0,0.0);\n\t\t\t\t\t\tif (material.b>0.0) {\t// material[2] is reflectionAmount\n\t\t\t\t\t\t\tresult = vec4(0.0,0.0,0.0,1.0);\n\t\t\t\t\t\t\tfor (int i=0; i<" + q.maxSamples + "; ++i) {\n\t\t\t\t\t\t\t\tif (i==" + q.maxSamples + ") {\n\t\t\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t\t\t}\n\n\t\t\t\t\t\t\t\tfloat radius = float(i) * increment;\n\t\t\t\t\t\t\t\tincrement *= 1.01;\n\t\t\t\t\t\t\t\tvec3 ray = vertexPos.xyz + rayDirection * radius;\n\n\t\t\t\t\t\t\t\tvec4 offset = inProjectionMatrix * vec4(ray, 1.0);\t// -w, w\n\t\t\t\t\t\t\t\toffset.xyz /= offset.w;\t// -1, 1\n\t\t\t\t\t\t\t\toffset.xyz = offset.xyz * 0.5 + 0.5;\t// 0, 1\n\n\t\t\t\t\t\t\t\tvec4 rayActualPos = texture2D(inSamplePosMap, offset.xy);\n\t\t\t\t\t\t\t\tfloat hitDistance = rayActualPos.z - ray.z;\n\t\t\t\t\t\t\t\tif (rayActualPos.w<0.6) {\n\t\t\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\tif (offset.x>1.0 || offset.y>1.0) {\n\t\t\t\t\t\t\t\t\tresult = vec4(0.0, 0.0, 0.0, 1.0);\n\t\t\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\telse if (hitDistance>0.02 && hitDistance<0.4) {\n\t\t\t\t\t\t\t\t\tresult = texture2D(inLightingMap,offset.xy);\n\t\t\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\tif (result.a==0.0) {\n\t\t\t\t\t\t\tdiscard;\n\t\t\t\t\t\t}\n\t\t\t\t\t\telse {\n\t\t\t\t\t\t\tgl_FragColor = result;\n\t\t\t\t\t\t}"));
+            this._fragmentShaderSource.setMainBody(("\n\t\t\t\t\t\tvec3 normal = texture2D(inNormalMap,fsTexCoord).xyz * 2.0 - 1.0;\n\t\t\t\t\t\tvec4 vertexPos = texture2D(inPositionMap,fsTexCoord);\n\t\t\t\t\t\tvec3 cameraVector = vertexPos.xyz - inCameraPos;\n\t\t\t\t\t\tvec3 rayDirection = reflect(cameraVector,normal);\n\t\t\t\t\t\tvec4 lighting = texture2D(inLightingMap,fsTexCoord);\n\t\t\t\t\t\tvec4 material = texture2D(inMaterialMap,fsTexCoord);\n\t\t\t\t\t\t\n\t\t\t\t\t\tfloat increment = " + q.rayIncrement + ";\n\t\t\t\t\t\tvec4 result = vec4(0.0,0.0,0.0,0.0);\n\t\t\t\t\t\tif (material.b>0.0) {\t// material[2] is reflectionAmount\n\t\t\t\t\t\t\tresult = vec4(0.0,0.0,0.0,1.0);\n\t\t\t\t\t\t\tfor (float i=0.0; i<" + q.maxSamples + "; ++i) {\n\t\t\t\t\t\t\t\tif (i==" + q.maxSamples + ") {\n\t\t\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t\t\t}\n\n\t\t\t\t\t\t\t\tfloat radius = i * increment;\n\t\t\t\t\t\t\t\tincrement *= 1.01;\n\t\t\t\t\t\t\t\tvec3 ray = vertexPos.xyz + rayDirection * radius;\n\n\t\t\t\t\t\t\t\tvec4 offset = inProjectionMatrix * vec4(ray, 1.0);\t// -w, w\n\t\t\t\t\t\t\t\toffset.xyz /= offset.w;\t// -1, 1\n\t\t\t\t\t\t\t\toffset.xyz = offset.xyz * 0.5 + 0.5;\t// 0, 1\n\n\t\t\t\t\t\t\t\tvec4 rayActualPos = texture2D(inSamplePosMap, offset.xy);\n\t\t\t\t\t\t\t\tfloat hitDistance = rayActualPos.z - ray.z;\n\t\t\t\t\t\t\t\tif (rayActualPos.w<0.6) {\n\t\t\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\tif (offset.x>1.0 || offset.y>1.0) {\n\t\t\t\t\t\t\t\t\tresult = vec4(0.0, 0.0, 0.0, 1.0);\n\t\t\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\telse if (hitDistance>0.02 && hitDistance<0.4) {\n\t\t\t\t\t\t\t\t\tresult = texture2D(inLightingMap,offset.xy);\n\t\t\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\tif (result.a==0.0) {\n\t\t\t\t\t\t\tdiscard;\n\t\t\t\t\t\t}\n\t\t\t\t\t\telse {\n\t\t\t\t\t\t\tgl_FragColor = result;\n\t\t\t\t\t\t}"));
           }
         }
         return this._fragmentShaderSource;
@@ -11437,6 +11539,20 @@ bg.webgl1 = {};
         if (this.requireMipmaps(minFilter, magFilter)) {
           context.generateMipmap(target);
         }
+      },
+      setVideo: function(context, target, texture, video, flipY) {
+        if (flipY)
+          context.pixelStorei(context.UNPACK_FLIP_Y_WEBGL, true);
+        context.texParameteri(target, context.TEXTURE_MAG_FILTER, context.LINEAR);
+        context.texParameteri(target, context.TEXTURE_MIN_FILTER, context.LINEAR);
+        context.texParameteri(target, context.TEXTURE_WRAP_S, context.CLAMP_TO_EDGE);
+        context.texParameteri(target, context.TEXTURE_WRAP_T, context.CLAMP_TO_EDGE);
+        context.texImage2D(target, 0, context.RGBA, context.RGBA, context.UNSIGNED_BYTE, video);
+      },
+      updateVideoData: function(context, target, texture, video) {
+        context.bindTexture(target, texture);
+        context.texImage2D(target, 0, context.RGBA, context.RGBA, context.UNSIGNED_BYTE, video);
+        context.bindTexture(target, null);
       },
       destroy: function(context, texture) {
         context.deleteTexture(this._texture);

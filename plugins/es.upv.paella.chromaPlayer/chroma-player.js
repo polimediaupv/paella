@@ -1,11 +1,42 @@
 
 
-function buildChromaVideoCanvas(video, canvas) {
+function buildChromaVideoCanvas(stream, canvas) {
 	class ChromaVideoCanvas extends bg.app.WindowController {
 
-		constructor(video) {
+		constructor(stream) {
 			super();
-			this.video = video;
+			this.stream = stream;
+			this._chroma = bg.Color.White();
+			this._crop = new bg.Vector4(0.3,0.01,0.3,0.01);
+			this._transform = bg.Matrix4.Identity().translate(0.6,-0.04,0);
+			this._bias = 0.01;
+		}
+
+		get chroma() { return this._chroma; }
+		get bias() { return this._bias; }
+		get crop() { return this._crop; }
+		get transform() { return this._transform; }
+		set chroma(c) { this._chroma = c; }
+		set bias(b) { this._bias = b; }
+		set crop(c) { this._crop = c; }
+		set transform(t) { this._transform = t; }
+
+		get video() {
+			return this.texture ? this.texture.video : null;
+		}
+
+		loaded() {
+			return new Promise((resolve) => {
+				let checkLoaded = () => {
+					if (this.video) {
+						resolve(this);
+					}
+					else {
+						setTimeout(checkLoaded,100);
+					}
+				}
+				checkLoaded();
+			});
 		}
 
 		buildShape() {
@@ -22,9 +53,10 @@ function buildChromaVideoCanvas(video, canvas) {
 			let vshader = `
 					attribute vec4 position;
 					attribute vec2 texCoord;
+					uniform mat4 inTransform;
 					varying vec2 vTexCoord;
 					void main() {
-						gl_Position = position;
+						gl_Position = inTransform * position;
 						vTexCoord = texCoord;
 					}
 				`;
@@ -33,12 +65,15 @@ function buildChromaVideoCanvas(video, canvas) {
 					varying vec2 vTexCoord;
 					uniform sampler2D inTexture;
 					uniform vec4 inChroma;
+					uniform float inBias;
+					uniform vec4 inCrop;
 					void main() {
 						vec4 result = texture2D(inTexture,vTexCoord);
-						float tolerance = 0.5;
-						if (result.r>=inChroma.r-tolerance && result.r<=inChroma.r+tolerance &&
-							result.g>=inChroma.g-tolerance && result.g<=inChroma.g+tolerance &&
-							result.b>=inChroma.b-tolerance && result.b<=inChroma.b+tolerance
+						
+						if ((result.r>=inChroma.r-inBias && result.r<=inChroma.r+inBias &&
+							result.g>=inChroma.g-inBias && result.g<=inChroma.g+inBias &&
+							result.b>=inChroma.b-inBias && result.b<=inChroma.b+inBias) ||
+							(vTexCoord.x<inCrop.x || vTexCoord.x>inCrop.z || vTexCoord.y<inCrop.w || vTexCoord.y>inCrop.y)
 						)
 						{
 							discard;
@@ -60,12 +95,14 @@ function buildChromaVideoCanvas(video, canvas) {
 				console.log(this.shader.linkError);
 			}
 			
-			this.shader.initVars(["position","texCoord"],["inTexture","inChroma"]);
+			this.shader.initVars(["position","texCoord"],["inTransform","inTexture","inChroma","inBias","inCrop"]);
 		}
 		
 		init() {
 			// Use WebGL V1 engine
 			bg.Engine.Set(new bg.webgl1.Engine(this.gl));
+
+			bg.base.Loader.RegisterPlugin(new bg.base.VideoTextureLoaderPlugin());
 			
 			this.buildShape();
 			this.buildShader();
@@ -74,59 +111,56 @@ function buildChromaVideoCanvas(video, canvas) {
 			bg.base.Pipeline.SetCurrent(this.pipeline);
 			this.pipeline.clearColor = bg.Color.Transparent();
 
-			let gl = this.gl;
-
-			this.video.texture = new bg.base.Texture(this.gl);
-			this.video.texture.create();
-			this.video.texture.bind();
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+			bg.base.Loader.Load(this.gl,this.stream.src)
+				.then((texture) => {
+					this.texture = texture;
+				});
 		}
 
-		updateTexture() {
-			let gl = this.gl;
-			this.video.texture.bind();
-			gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-			gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,this.video);
-		}
-		
 		frame(delta) {
-			this.updateTexture();
+			if (this.texture) {
+				this.texture.update();
+			}
 		}
 		
 		display() {
 			this.pipeline.clearBuffers(bg.base.ClearBuffers.COLOR | bg.base.ClearBuffers.DEPTH);
 			
-			this.shader.setActive();
-			this.shader.setInputBuffer("position",this.plist.vertexBuffer,3);
-			this.shader.setInputBuffer("texCoord",this.plist.texCoord0Buffer,2);
-			this.shader.setTexture("inTexture",this.video.texture || bg.base.TextureCache.WhiteTexture(this.gl),bg.base.TextureUnit.TEXTURE_0);
-			this.shader.setVector4("inChroma",new bg.Color(1,1,1,1));
-			
-			this.plist.draw();
-			
-			this.shader.disableInputBuffer("position");
-			this.shader.disableInputBuffer("texCoord");
-			this.shader.clearActive();
+			if (this.texture) {
+				this.shader.setActive();
+				this.shader.setInputBuffer("position",this.plist.vertexBuffer,3);
+				this.shader.setInputBuffer("texCoord",this.plist.texCoord0Buffer,2);
+				this.shader.setMatrix4("inTransform",this.transform);
+				this.shader.setTexture("inTexture",this.texture || bg.base.TextureCache.WhiteTexture(this.gl),bg.base.TextureUnit.TEXTURE_0);
+				this.shader.setVector4("inChroma",this.chroma);
+				this.shader.setValueFloat("inBias",this.bias);
+				this.shader.setVector4("inCrop",new bg.Vector4(this.crop.x, 1.0 - this.crop.y, 1.0 - this.crop.z, this.crop.w));
+				this.plist.draw();
+				
+				this.shader.disableInputBuffer("position");
+				this.shader.disableInputBuffer("texCoord");
+				this.shader.clearActive();
+			}
 		}
 		
 		reshape(width,height) {
+			let canvas = this.canvas.domElement;
+			canvas.width = width;
+			canvas.height = height;
 			this.pipeline.viewport = new bg.Viewport(0,0,width,height);
 		}
 		
 		mouseMove(evt) { this.postRedisplay(); }
 	}
 
-	let controller = new ChromaVideoCanvas(video);
+	let controller = new ChromaVideoCanvas(stream);
 	let mainLoop = bg.app.MainLoop.singleton;
 
 	mainLoop.updateMode = bg.app.FrameUpdate.AUTO;
 	mainLoop.canvas = canvas;
 	mainLoop.run(controller);
 
-	return controller;
+	return controller.loaded();
 }
 
 Class ("paella.ChromaVideo", paella.VideoElementBase,{
@@ -146,12 +180,7 @@ Class ("paella.ChromaVideo", paella.VideoElementBase,{
 			});
 		}
 
-		this.video = document.createElement('video');
-		this.video.width = 1280;
-		this.video.height = 720;
-		this.video.crossOrigin = "";
-
-		this.video.preload = "auto";
+		this.video = null;
 
 		function onProgress(event) {
 			if (!This._ready && This.video.readyState==4) {
@@ -166,6 +195,20 @@ Class ("paella.ChromaVideo", paella.VideoElementBase,{
 
 		function evtCallback(event) { onProgress.apply(This,event); }
 
+		function onUpdateSize() {
+			if (This.canvasController) {
+				let canvas = This.canvasController.canvas.domElement;
+				This.canvasController.reshape($(canvas).width(),$(canvas).height());
+			}
+		}
+
+		let timer = new paella.Timer(function(timer) {
+			onUpdateSize();
+		},500);
+		timer.repeat = true;
+	},
+
+	_setVideoElem:function(video) {
 		$(this.video).bind('progress', evtCallback);
 		$(this.video).bind('loadstart',evtCallback);
 		$(this.video).bind('loadedmetadata',evtCallback);
@@ -190,7 +233,7 @@ Class ("paella.ChromaVideo", paella.VideoElementBase,{
 
 	_deferredAction:function(action) {
 		return new Promise((resolve,reject) => {
-			if (this.ready) {
+			if (this.video) {
 				resolve(action());
 			}
 			else {
@@ -255,24 +298,31 @@ Class ("paella.ChromaVideo", paella.VideoElementBase,{
 					}
 
 					var stream = this._currentQuality<sources.length ? sources[this._currentQuality]:null;
-					this.video.innerHTML = "";
+					this.video = null;
 					if (stream) {
-						var sourceElem = this.video.querySelector('source');
-						if (!sourceElem) {
-							sourceElem = document.createElement('source');
-							this.video.appendChild(sourceElem);
-						}
-						if (this._posterFrame) {
-							this.video.setAttribute("poster",this._posterFrame);
-						}
-
-						sourceElem.src = stream.src;
-						sourceElem.type = stream.type;
-						this.video.load();
-
-						this.canvasController = buildChromaVideoCanvas(this.video,this.domElement);
-
-						resolve(stream);
+						this.canvasController = null;
+						buildChromaVideoCanvas(stream,this.domElement)
+							.then((canvasController) => {
+								this.canvasController = canvasController;
+								this.video = canvasController.video;
+								this.video.pause();
+								if (stream.crop) {
+									this.canvasController.crop = new bg.Vector4(stream.crop.left,stream.crop.top,stream.crop.right,stream.crop.bottom);
+								}
+								if (stream.displacement) {
+									this.canvasController.transform = bg.Matrix4.Translation(stream.displacement.x, stream.displacement.y, 0);
+								}
+								if (stream.chromaColor) {
+									this.canvasController.chroma = new bg.Color(stream.chromaColor[0],
+																					 stream.chromaColor[1],
+																					 stream.chromaColor[2],
+																					 stream.chromaColor[3])
+								}
+								if (stream.chromaBias) {
+									this.canvasController.bias = stream.chromaBias;
+								}
+								resolve(stream);
+							});
 					}
 					else {
 						reject(new Error("Could not load video: invalid quality stream index"));
@@ -331,12 +381,14 @@ Class ("paella.ChromaVideo", paella.VideoElementBase,{
 
 	play:function() {
         return this._deferredAction(() => {
+			bg.app.MainLoop.singleton.updateMode = bg.app.FrameUpdate.AUTO;
             this.video.play();
         });
 	},
 
 	pause:function() {
         return this._deferredAction(() => {
+			bg.app.MainLoop.singleton.updateMode = bg.app.FrameUpdate.MANUAL;
             this.video.pause();
         });
 	},
@@ -356,6 +408,10 @@ Class ("paella.ChromaVideo", paella.VideoElementBase,{
 	setCurrentTime:function(time) {
         return this._deferredAction(() => {
             this.video.currentTime = time;
+			$(this.video).on('seeked',() => {
+				this.canvasController.postRedisplay();
+				$(this.video).off('seeked');
+			});
         });
 	},
 
