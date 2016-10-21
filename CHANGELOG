@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.0.18
+
+  * Fix bug in RTMP plugin.
+
 * Paella 5.0.17
 
   * Fix bug in captions plugin when there is only one caption

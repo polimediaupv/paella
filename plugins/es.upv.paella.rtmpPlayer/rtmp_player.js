@@ -308,7 +308,7 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 
 	getCurrentQuality:function() {
 		var defer = $.Deferred();
-		defer.resolve(this._getQualityObject(this._currentQuality,this._stream.sources.image[this._currentQuality]));
+		defer.resolve(this._getQualityObject(this._currentQuality,this._stream.sources.rtmp[this._currentQuality]));
 		return defer;
 	},
 
