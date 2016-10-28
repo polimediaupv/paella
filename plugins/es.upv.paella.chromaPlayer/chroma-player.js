@@ -171,7 +171,7 @@ Class ("paella.ChromaVideo", paella.VideoElementBase,{
 
 	initialize:function(id,stream,left,top,width,height,streamName) {
 		this.parent(id,stream,'canvas',left,top,width,height);
-		this._streamName = streamName || 'mp4';
+		this._streamName = streamName || 'chroma';
 		var This = this;
 
 		if (this._stream.sources[this._streamName]) {
@@ -497,7 +497,7 @@ Class ("paella.videoFactories.ChromaVideoFactory", {
 				return false;
 			}
 			for (var key in streamData.sources) {
-				if (key=='mp4') return true;
+				if (key=='chroma') return true;
 			}
 		}
 		catch (e) {}

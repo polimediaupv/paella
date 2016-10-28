@@ -6,7 +6,7 @@
 	"streams": [
 		{
 			"sources": {
-				"mp4": [
+				"chroma": [
 					{
 						"src": "http://paellaplayer.upv.es/demo/repository/chroma/presenter.m4v",
 						"mimetype": "video/mp4",
