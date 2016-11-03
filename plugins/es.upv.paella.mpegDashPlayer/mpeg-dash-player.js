@@ -17,7 +17,7 @@ Class ("paella.MpegDashVideo", paella.Html5Video,{
 				});
 			}
 			else {
-				defer.resolve(window.$paella_mpd);
+				resolve(window.$paella_mpd);
 			}	
 		});
 	},
@@ -38,6 +38,7 @@ Class ("paella.MpegDashVideo", paella.Html5Video,{
 	},
 
 	load:function() {
+		let This = this;
 		return new Promise((resolve,reject) => {
 			var source = this._stream.sources.mpd;
 			if (source && source.length>0) {
@@ -47,13 +48,13 @@ Class ("paella.MpegDashVideo", paella.Html5Video,{
 						var context = dashContext;
 						var player = dashjs.MediaPlayer().create();
 						var dashContext = context;
-						player.initialize(this.video,source.src,true);
+						player.initialize(This.video,source.src,true);
 						player.getDebug().setLogToBrowserConsole(false);
-						this._player = player;
+						This._player = player;
 						player.on(dashjs.MediaPlayer.events.STREAM_INITIALIZED,function(a,b) {
 							var bitrates = player.getBitrateInfoListFor("video");
-							this._deferredAction(function() {
-								this._player.pause();
+							This._deferredAction(function() {
+								This._player.pause();
 								resolve();
 							});
 						});
