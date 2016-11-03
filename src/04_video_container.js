@@ -976,7 +976,6 @@ class VideoContainer extends paella.VideoContainerBase {
 					profileData.slaveVideo = this.getMonostreamSlaveProfile();
 				}
 				this.applyProfileWithJson(profileData,animate);
-				base.cookies.set("lastProfile",profileName);
 				resolve(profileName);
 			});
 		});

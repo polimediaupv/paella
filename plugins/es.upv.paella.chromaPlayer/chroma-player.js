@@ -208,6 +208,10 @@ Class ("paella.ChromaVideo", paella.VideoElementBase,{
 		timer.repeat = true;
 	},
 
+	defaultProfile:function() {
+		return 'chroma';
+	},
+
 	_setVideoElem:function(video) {
 		$(this.video).bind('progress', evtCallback);
 		$(this.video).bind('loadstart',evtCallback);

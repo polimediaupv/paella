@@ -170,7 +170,7 @@
 		"background":{"content":"slide_professor_paella.jpg","zIndex":5,"rect":{"left":"0","top":"0","width":"1280","height":"720"},"visible":"false","layer":"0"},
 		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}}]
 	},
-	"polimedia":{
+	"chroma":{
 		"name":{"es":"Polimedia"},
 		"hidden":false,
 		"icon":"slide_icon.png",

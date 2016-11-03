@@ -21,8 +21,11 @@ paella.Profiles = {
 	profileList: null,
 	
 	getDefaultProfile: function() {
+		if (paella.player.videoContainer.masterVideo() && paella.player.videoContainer.masterVideo().defaultProfile()) {
+			return paella.player.videoContainer.masterVideo().defaultProfile();
+		}
 		if (paella.player && paella.player.config && paella.player.config.defaultProfile) {
-				return paella.player.config.defaultProfile;
+			return paella.player.config.defaultProfile;
 		}
 		return undefined;		
 	},
@@ -38,7 +41,6 @@ paella.Profiles = {
 			} else if (data[defaultProfile]) {
 			    // Fallback to default profile
 			    profileData = data[defaultProfile];
-			    base.cookies.set("lastProfile", defaultProfile);
 			} else {
 			    // Unable to find or map defaultProfile in profiles.json
 			    base.log.debug("Error loading the default profile. Check your Paella Player configuration");
@@ -204,6 +206,10 @@ Class ("paella.VideoElementBase", paella.VideoRect,{
 			get:function() { return this._ready; }
 		});
 		if (this._stream.preview) this.setPosterFrame(this._stream.preview);
+	},
+
+	defaultProfile:function() {
+		return null;
 	},
 
 	// Initialization functions
