@@ -196,44 +196,42 @@ Class ("paella.InitDelegate", {
 	},
 
 	loadDictionary:function() {
-		var defer = new $.Deferred();
-		base.ajax.get({ url:this.initParams.dictionaryUrl + "_" + base.dictionary.currentLanguage() + '.json' }, function(data,type,returnCode) {
+		return new Promise((resolve) => {
+			base.ajax.get({ url:this.initParams.dictionaryUrl + "_" + base.dictionary.currentLanguage() + '.json' }, function(data,type,returnCode) {
 				base.dictionary.addDictionary(data);
-				defer.resolve(data);
+				resolve(data);
 			},
 			function(data,type,returnCode) {
-				defer.resolve();
+				resolve();
 			});
-		return defer;
+		});
 	},
 
 	loadConfig:function() {
-		var This = this;
-		var defer = new $.Deferred();
-		var configUrl = this.initParams.configUrl;
-		var params = {};
-		params.url = configUrl;
-		base.ajax.get(params,function(data,type,returnCode) {
-				if (typeof(data)=='string') {
-					try {
-						data = JSON.parse(data);
+		return new Promise((resolve,reject) => {
+			var configUrl = this.initParams.configUrl;
+			var params = {};
+			params.url = configUrl;
+			base.ajax.get(params,(data,type,returnCode) => {
+					if (typeof(data)=='string') {
+						try {
+							data = JSON.parse(data);
+						}
+						catch (e) {
+							reject();
+							return;
+						}
 					}
-					catch (e) {
-						defer.reject();
-						return;
-					}
-				}
-				base.dictionary.addDictionary(data);
-				var AccessControlClass = Class.fromString(data.player.accessControlClass || "paella.AccessControl");
-				This.initParams.accessControl = new AccessControlClass();
-				defer.resolve(data);
-			},
-			function(data,type,returnCode) {
-				paella.messageBox.showError(base.dictionary.translate("Error! Config file not found. Please configure paella!"));
-				//onSuccess({});
-			});
-
-		return defer;
+					base.dictionary.addDictionary(data);
+					var AccessControlClass = Class.fromString(data.player.accessControlClass || "paella.AccessControl");
+					this.initParams.accessControl = new AccessControlClass();
+					resolve(data);
+				},
+				function(data,type,returnCode) {
+					paella.messageBox.showError(base.dictionary.translate("Error! Config file not found. Please configure paella!"));
+					//onSuccess({});
+				});
+		});
 	}
 });
 

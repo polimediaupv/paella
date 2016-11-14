@@ -69,6 +69,11 @@ Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
 				var n = paella.player.videoContainer.sourceData[0].sources;
 				if(profile=="s_p_blackboard2" && n.hasOwnProperty("image")==false) { return; }
 				// END - BLACKBOARD DEPENDENCY
+
+				if (profile=="chroma" && !n.chroma) {
+					return;
+				}
+
 				var profileData = profiles[profile];
 				var buttonItem = thisClass.getProfileItemButton(profile, profileData);
 				thisClass.buttonItems[profile] = buttonItem;
@@ -110,6 +115,7 @@ Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
 		if (ButtonItem) {
 			ButtonItem.className = thisClass.getButtonItemClass(profile,true);
 			paella.player.setProfile(profile);
+			base.cookies.set("lastProfile", profile);
 		}
 		paella.player.controls.hidePopUp(this.getName());
 	},
