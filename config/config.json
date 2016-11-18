@@ -2,7 +2,8 @@
 	"player":{
 		"accessControlClass":"paella.AccessControl",
         "profileFrameStrategy": "paella.ProfileFrameStrategy",
-		"videoQualityStrategy": "paella.BestFitVideoQualityStrategy",
+		"videoQualityStrategy": "paella.LimitedBestFitVideoQualityStrategy",
+		"videoQualityStrategyParams":{ "maxAutoQualityRes":720 },
 		"reloadOnFullscreen": true,
 
 		"deprecated-methods":[{"name":"streaming","enabled":true},
