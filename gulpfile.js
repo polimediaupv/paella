@@ -119,8 +119,6 @@ gulp.task("buildDebug", ["compileDebug","styles","dictionary","copy"]);
 gulp.task("watch", function() {
 	gulp.watch([
 		'index.html',
-		'resources/**',
-		'repository_test/**',
 		'config/**',
 		'plugins/**',
 		'vendor/plugins/**',
