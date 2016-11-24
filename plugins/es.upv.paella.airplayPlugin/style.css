@@ -1,0 +1,7 @@
+.buttonPlugin.AirPlayButton {
+	background-position: -1100% -100%;
+}
+
+.buttonPlugin.AirPlayButton.not-available {
+	opacity: 0.4;
+}

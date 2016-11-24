@@ -27,10 +27,6 @@ Class ("paella.plugins.PIPModePlugin", paella.ButtonPlugin, {
         else {
             video.webkitSetPresentationMode("picture-in-picture");
         }
-	},
-
-	getButtonItemClass:function(selected) {
-		return 'buttonPlugin ' + this.getSubclass();
 	}
 });
 

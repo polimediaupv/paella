@@ -1,27 +1,3 @@
-/*
- *	bg2 engine
- *	Copyright (c) 2016 Fernando Serrano <ferserc1@gmail.com>
- *  http://www.bg2engine.com
- *
- *	Permission is hereby granted, free of charge, to any person obtaining a copy
- *	of this software and associated documentation files (the "Software"), to deal
- *	in the Software without restriction, including without limitation the rights
- *	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- *	of the Software, and to permit persons to whom the Software is furnished to do
- *	so, subject to the following conditions:
- *
- *	The above copyright notice and this permission notice shall be included in all
- *	copies or substantial portions of the Software.
- *
- *	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
- *	INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
- *	PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- *	HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- *	OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
- *	SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
- */
-
 "use strict";
 var bg = {};
 bg.utils = {};
@@ -1037,6 +1013,12 @@ bg.emitImageLoadEvent = function(img) {
 bg.bindImageLoadEvent = function(callback) {
   document.addEventListener("bg2e:image-load", callback);
 };
+bg.Axis = {
+  NONE: 0,
+  X: 1,
+  Y: 2,
+  Z: 3
+};
 
 "use strict";
 (function() {
@@ -1766,7 +1748,8 @@ bg.bindImageLoadEvent = function(callback) {
     LIGHT_EMISSION_MASK_INVERT: 1 << 23,
     REFLECTION_MASK: 1 << 24,
     REFLECTION_MASK_CHANNEL: 1 << 25,
-    REFLECTION_MASK_INVERT: 1 << 26
+    REFLECTION_MASK_INVERT: 1 << 26,
+    CULL_FACE: 1 << 27
   };
   function loadTexture(context, image, url) {
     var texture = null;
@@ -1816,6 +1799,7 @@ bg.bindImageLoadEvent = function(callback) {
       this._reflectionMask = null;
       this._reflectionMaskChannel = 0;
       this._reflectionMaskInvert = false;
+      this._cullFace = true;
       if (jsonData) {
         if (jsonData.diffuseR !== undefined && jsonData.diffuseG !== undefined && jsonData.diffuseB !== undefined) {
           this.diffuse = new bg.Color(jsonData.diffuseR, jsonData.diffuseG, jsonData.diffuseB, jsonData.diffuseA ? jsonData.diffuseA : 1.0);
@@ -1994,6 +1978,9 @@ bg.bindImageLoadEvent = function(callback) {
       get reflectionMaskInvert() {
         return this._reflectionMaskInvert;
       },
+      get cullFace() {
+        return this._cullFace;
+      },
       set diffuse(newVal) {
         this._diffuse = newVal;
         this.setEnabled(bg.base.MaterialFlag.DIFFUSE);
@@ -2112,6 +2099,10 @@ bg.bindImageLoadEvent = function(callback) {
         this._reflectionMaskInvert = newVal;
         this.setEnabled(bg.base.MaterialFlag.REFLECTION_MASK_INVERT);
       },
+      set cullFace(newVal) {
+        this._cullFace = newVal;
+        this.setEnabled(bg.base.MaterialFlag.CULL_FACE);
+      },
       clone: function() {
         var copy = new MaterialModifier();
         copy.assign(this);
@@ -2146,6 +2137,7 @@ bg.bindImageLoadEvent = function(callback) {
         this._reflectionMask = mod._reflectionMask;
         this._reflectionMaskChannel = mod._reflectionMaskChannel;
         this._reflectionMaskInvert = mod._reflectionMaskInvert;
+        this._cullFace = mod._cullFace;
       }
     }, {});
   }();
@@ -2216,6 +2208,7 @@ bg.bindImageLoadEvent = function(callback) {
       this._reflectionMask = null;
       this._reflectionMaskChannel = 0;
       this._reflectionMaskInvert = false;
+      this._cullFace = true;
     }
     return ($traceurRuntime.createClass)(Material, {
       clone: function() {
@@ -2251,6 +2244,7 @@ bg.bindImageLoadEvent = function(callback) {
         this._reflectionMask = other.reflectionMask;
         this._reflectionMaskChannel = other.reflectionMaskChannel;
         this._reflectionMaskInvert = other.reflectionMaskInvert;
+        this._cullFace = other.cullFace;
       },
       get isTransparent() {
         return this._diffuse.a < 1;
@@ -2336,6 +2330,9 @@ bg.bindImageLoadEvent = function(callback) {
       get reflectionMaskInvert() {
         return this._reflectionMaskInvert;
       },
+      get cullFace() {
+        return this._cullFace;
+      },
       set diffuse(newVal) {
         this._diffuse = newVal;
       },
@@ -2419,6 +2416,9 @@ bg.bindImageLoadEvent = function(callback) {
       },
       set reflectionMaskInvert(newVal) {
         this._reflectionMaskInvert = newVal;
+      },
+      set cullFace(newVal) {
+        this._cullFace = newVal;
       },
       get lightEmissionMaskChannelVector() {
         return channelVector(this.lightEmissionMaskChannel);
@@ -2511,6 +2511,9 @@ bg.bindImageLoadEvent = function(callback) {
         if (mask & bg.base.MaterialFlag.REFLECTION_MASK_INVERT) {
           mat.reflectionMaskInvert = this.reflectionMaskInvert;
         }
+        if (mask & bg.base.MaterialFlag.CULL_FACE) {
+          mat.cullFace = this.cullFace;
+        }
       },
       applyModifier: function(context, mod, resourcePath) {
         if (mod.isEnabled(bg.base.MaterialFlag.DIFFUSE)) {
@@ -2593,6 +2596,9 @@ bg.bindImageLoadEvent = function(callback) {
         }
         if (mod.isEnabled(bg.base.MaterialFlag.REFLECTION_MASK_INVERT)) {
           this.reflectionMaskInvert = mod.reflectionMaskInvert;
+        }
+        if (mod.isEnabled(bg.base.MaterialFlag.CULL_FACE)) {
+          this.cullFace = mod.cullFace;
         }
       },
       getModifierWithMask: function(modifierMask) {
@@ -2678,10 +2684,16 @@ bg.bindImageLoadEvent = function(callback) {
         if (mod.isEnabled(bg.base.MaterialFlag.REFLECTION_MASK_INVERT)) {
           mod.reflectionMaskInvert = this.reflectionMaskInvert;
         }
+        if (mod.isEnabled(bg.base.MaterialFlag.CULL_FACE)) {
+          mod.cullFace = this.cullFace;
+        }
         mod.setFlags(modifierMask);
       }
     }, {GetMaterialWithJson: function(context, data, path) {
         var material = new Material();
+        if (data.cullFace === undefined) {
+          data.cullFace = true;
+        }
         material.diffuse.set(data.diffuseR, data.diffuseG, data.diffuseB, data.diffuseA);
         material.specular.set(data.specularR, data.specularG, data.specularB, data.specularA);
         material.shininess = data.shininess;
@@ -2703,6 +2715,7 @@ bg.bindImageLoadEvent = function(callback) {
         material.lightEmissionMaskInvert = data.invertLightEmissionMask;
         material.reflectionMaskChannel = data.reflectionMaskChannel;
         material.reflectionMaskInvert = data.invertReflectionMask;
+        material.cullFace = data.cullFace;
         if (path && path[path.length - 1] != '/') {
           path += '/';
         }
@@ -2915,7 +2928,9 @@ bg.bindImageLoadEvent = function(callback) {
   bg.base.OpacityLayer = {
     TRANSPARENT: 1,
     OPAQUE: 2,
-    ALL: 3,
+    GIZMOS: 4,
+    SELECTION: 8,
+    ALL: 15,
     NONE: 0
   };
   var PipelineImpl = function() {
@@ -3013,9 +3028,14 @@ bg.bindImageLoadEvent = function(callback) {
       },
       draw: function(polyList) {
         if (this._effect && polyList && this.isCurrent) {
+          var cf = this.cullFace;
           this._effect.bindPolyList(polyList);
+          if (this._effect.material) {
+            this.cullFace = this._effect.material.cullFace;
+          }
           polyList.draw();
           this._effect.unbind();
+          this.cullFace = cf;
         }
       },
       drawTexture: function(texture) {
@@ -4402,6 +4422,7 @@ bg.bindImageLoadEvent = function(callback) {
     TWO_PI: 6.283185307179586,
     EPSILON: 0.0000001,
     Array: Float32Array,
+    FLOAT_MAX: 3.402823e38,
     checkZero: function(v) {
       return v > -this.EPSILON && v < this.EPSILON ? 0 : v;
     },
@@ -5252,9 +5273,49 @@ bg.bindImageLoadEvent = function(callback) {
         }
         return bg.Math.sqrt(v);
       }
-    }, {});
+    }, {
+      MinComponents: function(v1, v2) {
+        var length = Math.min(v1.length, v2.length);
+        var result = null;
+        switch (length) {
+          case 2:
+            result = new bg.Vector2();
+            break;
+          case 3:
+            result = new bg.Vector3();
+            break;
+          case 4:
+            result = new bg.Vector4();
+            break;
+        }
+        for (var i = 0; i < length; ++i) {
+          result._v[i] = v1._v[i] < v2._v[i] ? v1._v[i] : v2._v[i];
+        }
+        return result;
+      },
+      MaxComponents: function(v1, v2) {
+        var length = Math.min(v1.length, v2.length);
+        var result = null;
+        switch (length) {
+          case 2:
+            result = new bg.Vector2();
+            break;
+          case 3:
+            result = new bg.Vector3();
+            break;
+          case 4:
+            result = new bg.Vector4();
+            break;
+        }
+        for (var i = 0; i < length; ++i) {
+          result._v[i] = v1._v[i] > v2._v[i] ? v1._v[i] : v2._v[i];
+        }
+        return result;
+      }
+    });
   }();
   bg.VectorBase = Vector;
+  bg.Vector = Vector;
   var Vector2 = function($__super) {
     function Vector2() {
       var x = arguments[0] !== (void 0) ? arguments[0] : 0;
@@ -5710,7 +5771,7 @@ bg.bindImageLoadEvent = function(callback) {
       var d = arguments[3] !== (void 0) ? arguments[3] : 0;
       var e = arguments[4] !== (void 0) ? arguments[4] : 0;
       var f = arguments[5] !== (void 0) ? arguments[5] : 0;
-      $traceurRuntime.superConstructor(Bounds).call(this, new bg.Math.Vector(6));
+      $traceurRuntime.superConstructor(Bounds).call(this, new bg.Math.Array(6));
       this._v[0] = a;
       this._v[1] = b;
       this._v[2] = c;
@@ -6057,12 +6118,10 @@ bg.physics = {};
       if (a && !b) {
         this._normal = new bg.Vector3(a);
         this._origin = new bg.Vector3(0);
-      }
-      if (a && b && !c) {
+      } else if (a && b && !c) {
         this._normal = new bg.Vector3(a);
         this._origin = new bg.Vector3(b);
-      }
-      if (a && b && c) {
+      } else if (a && b && c) {
         var vec1 = new bg.Vector3(a);
         vec1.sub(b);
         var vec2 = new bg.Vector3(c);
@@ -6427,6 +6486,10 @@ bg.scene = {};
       },
       frame: function(delta) {
         this.forEachComponent(function(comp) {
+          if (!comp._initialized_) {
+            comp.init();
+            comp._initialized_ = true;
+          }
           comp.frame(delta);
         });
       },
@@ -7246,8 +7309,8 @@ bg.scene = {};
         var y = bg.Math.sin(-bg.Math.PI_2 + bg.Math.PI * r * R);
         var x = bg.Math.cos(2 * bg.Math.PI * s * S) * bg.Math.sin(bg.Math.PI * r * R);
         var z = bg.Math.sin(2 * bg.Math.PI * s * S) * bg.Math.sin(bg.Math.PI * r * R);
-        texCoord.push(r * R);
         texCoord.push(s * S);
+        texCoord.push(r * R);
         normal.push(x, y, z);
         vertex.push(x * radius, y * radius, z * radius);
       }
@@ -7312,6 +7375,8 @@ bg.scene = {};
     function Transform(matrix) {
       $traceurRuntime.superConstructor(Transform).call(this);
       this._matrix = matrix || bg.Matrix4.Identity();
+      this._globalMatrixValid = false;
+      this._transformVisitor = new bg.scene.TransformVisitor();
     }
     return ($traceurRuntime.createClass)(Transform, {
       clone: function() {
@@ -7324,6 +7389,14 @@ bg.scene = {};
       },
       set matrix(m) {
         this._matrix = m;
+      },
+      get globalMatrix() {
+        if (!this._globalMatrixValid) {
+          this._transformVisitor.clear();
+          this.node.acceptReverse(this._transformVisitor);
+          this._globalMatrix = this._transformVisitor.matrix;
+        }
+        return this._globalMatrix;
       },
       deserialize: function(sceneData) {
         if (sceneData.transformStrategy) {} else if (sceneData.transformMatrix) {}
@@ -7338,6 +7411,7 @@ bg.scene = {};
         if (this.node && this.node.enabled) {
           matrixState.modelMatrixStack.pop();
         }
+        this._globalMatrixValid = false;
       }
     }, {}, $__super);
   }(bg.scene.Component);
@@ -7395,6 +7469,9 @@ bg.scene = {};
     return ($traceurRuntime.createClass)(TransformVisitor, {
       get matrix() {
         return this._matrix;
+      },
+      clear: function() {
+        this._matrix = bg.Matrix4.Identity();
       },
       visit: function(node) {
         var trx = node.component("bg.scene.Transform");
@@ -7473,6 +7550,41 @@ bg.scene = {};
     }, {}, $__super);
   }(bg.scene.NodeVisitor);
   bg.scene.InputVisitor = InputVisitor;
+  var BoundingBoxVisitor = function($__super) {
+    function BoundingBoxVisitor() {
+      $traceurRuntime.superConstructor(BoundingBoxVisitor).call(this);
+      this.clear();
+    }
+    return ($traceurRuntime.createClass)(BoundingBoxVisitor, {
+      get min() {
+        return this._min;
+      },
+      get max() {
+        return this._max;
+      },
+      get size() {
+        return this._size;
+      },
+      clear: function() {
+        this._min = new bg.Vector3(bg.Math.FLOAT_MAX, bg.Math.FLOAT_MAX, bg.Math.FLOAT_MAX);
+        this._max = new bg.Vector3(-bg.Math.FLOAT_MAX, -bg.Math.FLOAT_MAX, -bg.Math.FLOAT_MAX);
+        this._size = new bg.Vector3(0, 0, 0);
+      },
+      visit: function(node) {
+        var trx = bg.Matrix4.Identity();
+        if (node.component("bg.scene.Transform")) {
+          trx = node.component("bg.scene.Transform").globalMatrix;
+        }
+        if (node.component("bg.scene.Drawable")) {
+          var bb = new bg.tools.BoundingBox(node.component("bg.scene.Drawable"), new bg.Matrix4(trx));
+          this._min = bg.Vector.MinComponents(this._min, bb.min);
+          this._max = bg.Vector.MaxComponents(this._max, bb.max);
+          this._size = bg.Vector3.Sub(this._max, this._min);
+        }
+      }
+    }, {}, $__super);
+  }(bg.scene.NodeVisitor);
+  bg.scene.BoundingBoxVisitor = BoundingBoxVisitor;
 })();
 
 "use strict";
@@ -8007,37 +8119,30 @@ bg.manipulation = {};
   bg.manipulation.GizmoCache = GizmoCache;
   function loadGizmo(context, gizmoUrl, gizmoNode) {
     return new Promise(function(accept, reject) {
-      var cache = GizmoCache.Get(context);
-      if (cache.find(gizmoUrl)) {
-        accept(cache.find(gizmoUrl));
-      } else {
-        bg.base.Loader.Load(context, gizmoUrl).then(function(node) {
-          var drw = node.component("bg.scene.Drawable");
-          var gizmoItems = [];
-          if (drw) {
-            drw.forEach(function(plist, material) {
-              gizmoItems.push({
-                id: bg.manipulation.Selectable.GetIdentifier(),
-                type: bg.manipulation.SelectableType.GIZMO,
-                plist: plist,
-                material: material,
-                action: getAction(plist),
-                node: gizmoNode
-              });
+      bg.base.Loader.Load(context, gizmoUrl).then(function(node) {
+        var drw = node.component("bg.scene.Drawable");
+        var gizmoItems = [];
+        if (drw) {
+          drw.forEach(function(plist, material) {
+            gizmoItems.push({
+              id: bg.manipulation.Selectable.GetIdentifier(),
+              type: bg.manipulation.SelectableType.GIZMO,
+              plist: plist,
+              material: material,
+              action: getAction(plist),
+              node: gizmoNode
             });
-          }
-          cache.register(gizmoUrl, gizmoItems);
-          accept(gizmoItems);
-        }).catch(function(err) {
-          reject(err);
-        });
-      }
+          });
+        }
+        accept(gizmoItems);
+      }).catch(function(err) {
+        reject(err);
+      });
     });
   }
-  function rotationBetweenPoints(p1, p2, origin, inc) {
+  function rotationBetweenPoints(axis, p1, p2, origin, inc) {
     if (!inc)
       inc = 0;
-    var axis = new bg.Vector3(0, 1, 0);
     var v1 = new bg.Vector3(p2);
     v1.sub(origin).normalize();
     var v2 = new bg.Vector3(p1);
@@ -8066,6 +8171,8 @@ bg.manipulation = {};
       this._gizmoPath = gizmoPath;
       this._offset = new bg.Vector3(0);
       this._visible = visible;
+      this._gizmoTransform = bg.Matrix4.Identity();
+      this._gizmoP = bg.Matrix4.Identity();
     }
     return ($traceurRuntime.createClass)(Gizmo, {
       clone: function() {
@@ -8086,6 +8193,9 @@ bg.manipulation = {};
       set visible(v) {
         this._visible = v;
       },
+      get gizmoTransform() {
+        return this._gizmoTransform;
+      },
       beginDrag: function(action, pos) {},
       drag: function(action, startPos, endPos, camera) {},
       endDrag: function(action) {},
@@ -8101,23 +8211,25 @@ bg.manipulation = {};
         }
         return result;
       },
-      frame: function(delta) {
+      init: function() {
         var $__1 = this;
-        if (!this._gizmoItems && !this._error) {
+        if (!this._error) {
           this._gizmoItems = [];
           loadGizmo(this.node.context, this._gizmoPath, this.node).then(function(gizmoItems) {
             $__1._gizmoItems = gizmoItems;
           }).catch(function(err) {
-            $__1._initialized = false;
             $__1._error = true;
             throw err;
           });
         }
       },
+      frame: function(delta) {},
       display: function(pipeline, matrixState) {
         if (!this._gizmoItems || !this.visible)
           return;
-        if (pipeline.effect instanceof bg.manipulation.ColorPickEffect) {
+        matrixState.modelMatrixStack.push();
+        matrixState.modelMatrixStack.set(this._gizmoP).mult(this.gizmoTransform);
+        if (pipeline.effect instanceof bg.manipulation.ColorPickEffect && pipeline.opacityLayer & bg.base.OpacityLayer.GIZMOS) {
           var dt = pipeline.depthTest;
           pipeline.depthTest = false;
           this._gizmoItems.forEach(function(item) {
@@ -8131,57 +8243,190 @@ bg.manipulation = {};
             pipeline.draw(item.plist);
           });
         }
+        matrixState.modelMatrixStack.pop();
       }
     }, {}, $__super);
   }(bg.scene.Component);
+  function translateMatrix(gizmo, intersection) {
+    var matrix = new bg.Matrix4(gizmo.transform.matrix);
+    var rotation = matrix.rotation;
+    var origin = matrix.position;
+    if (!gizmo._lastPickPoint) {
+      gizmo._lastPickPoint = intersection.ray.end;
+      gizmo._translateOffset = new bg.Vector3(origin);
+      gizmo._translateOffset.sub(intersection.ray.end);
+    }
+    switch (Math.abs(gizmo.plane)) {
+      case bg.Axis.X:
+        matrix = bg.Matrix4.Translation(origin.x, intersection.point.y + gizmo._translateOffset.y, intersection.point.z + gizmo._translateOffset.z);
+        break;
+      case bg.Axis.Y:
+        matrix = bg.Matrix4.Translation(intersection.point.x + gizmo._translateOffset.x, origin.y, intersection.point.z + gizmo._translateOffset.z);
+        break;
+      case bg.Axis.Z:
+        matrix = bg.Matrix4.Translation(intersection.point.x + gizmo._translateOffset.x, intersection.point.y + gizmo._translateOffset.y, origin.z);
+        break;
+    }
+    matrix.mult(rotation);
+    gizmo._lastPickPoint = intersection.point;
+    return matrix;
+  }
+  function rotateMatrix(gizmo, intersection, fine) {
+    var matrix = new bg.Matrix4(gizmo.transform.matrix);
+    var rotation = matrix.rotation;
+    var origin = matrix.position;
+    if (!gizmo._lastPickPoint) {
+      gizmo._lastPickPoint = intersection.ray.end;
+      gizmo._translateOffset = new bg.Vector3(origin);
+      gizmo._translateOffset.sub(intersection.ray.end);
+    }
+    if (!fine) {
+      var prevRotation = new bg.Matrix4(rotation);
+      rotation = rotationBetweenPoints(gizmo.planeAxis, gizmo._lastPickPoint, intersection.point, origin, bg.Math.degreesToRadians(22.5));
+      if (rotation.x != 0 || rotation.y != 0 || rotation.z != 0 || rotation.w != 1) {
+        matrix = bg.Matrix4.Translation(origin).mult(rotation.getMatrix4()).mult(prevRotation);
+        gizmo._lastPickPoint = intersection.point;
+      }
+    } else {
+      var prevRotation$__2 = new bg.Matrix4(rotation);
+      rotation = rotationBetweenPoints(gizmo.planeAxis, gizmo._lastPickPoint, intersection.point, origin);
+      if (rotation.x != 0 || rotation.y != 0 || rotation.z != 0 || rotation.w != 1) {
+        matrix = bg.Matrix4.Translation(origin).mult(rotation.getMatrix4()).mult(prevRotation$__2);
+        gizmo._lastPickPoint = intersection.point;
+      }
+    }
+    return matrix;
+  }
+  function calculateClosestPlane(gizmo, matrixState) {
+    var cameraForward = matrixState.viewMatrixStack.matrix.forwardVector;
+    var upVector = matrixState.viewMatrixStack.matrix.upVector;
+    var xVector = new bg.Vector3(1, 0, 0);
+    var yVector = new bg.Vector3(0, 1, 0);
+    var zVector = new bg.Vector3(0, 0, 1);
+    var xVectorInv = new bg.Vector3(-1, 0, 0);
+    var yVectorInv = new bg.Vector3(0, -1, 0);
+    var zVectorInv = new bg.Vector3(0, 0, -1);
+    var upAlpha = Math.acos(upVector.dot(yVector));
+    if (upAlpha > 0.9) {
+      gizmo.plane = bg.Axis.Y;
+    } else {
+      var angles = [Math.acos(cameraForward.dot(xVector)), Math.acos(cameraForward.dot(yVector)), Math.acos(cameraForward.dot(zVector)), Math.acos(cameraForward.dot(xVectorInv)), Math.acos(cameraForward.dot(yVectorInv)), Math.acos(cameraForward.dot(zVectorInv))];
+      var min = angles[0];
+      var planeIndex = 0;
+      angles.reduce(function(prev, v, index) {
+        if (v < min) {
+          planeIndex = index;
+          min = v;
+        }
+      });
+      switch (planeIndex) {
+        case 0:
+          gizmo.plane = -bg.Axis.X;
+          break;
+        case 1:
+          gizmo.plane = bg.Axis.Y;
+          break;
+        case 2:
+          gizmo.plane = bg.Axis.Z;
+          break;
+        case 3:
+          gizmo.plane = bg.Axis.X;
+          break;
+        case 4:
+          gizmo.plane = -bg.Axis.Y;
+          break;
+        case 5:
+          gizmo.plane = -bg.Axis.Z;
+          break;
+      }
+    }
+  }
   var PlaneGizmo = function($__super) {
     function PlaneGizmo(path) {
       var visible = arguments[1] !== (void 0) ? arguments[1] : true;
       $traceurRuntime.superConstructor(PlaneGizmo).call(this, path, visible);
+      this._plane = bg.Axis.Y;
+      this._autoPlaneMode = true;
     }
     return ($traceurRuntime.createClass)(PlaneGizmo, {
+      get plane() {
+        return this._plane;
+      },
+      set plane(a) {
+        this._plane = a;
+      },
+      get autoPlaneMode() {
+        return this._autoPlaneMode;
+      },
+      set autoPlaneMode(m) {
+        this._autoPlaneMode = m;
+      },
+      get planeAxis() {
+        switch (Math.abs(this.plane)) {
+          case bg.Axis.X:
+            return new bg.Vector3(1, 0, 0);
+          case bg.Axis.Y:
+            return new bg.Vector3(0, 1, 0);
+          case bg.Axis.Z:
+            return new bg.Vector3(0, 0, 1);
+        }
+      },
+      get gizmoTransform() {
+        var result = bg.Matrix4.Identity();
+        switch (this.plane) {
+          case bg.Axis.X:
+            return bg.Matrix4.Rotation(bg.Math.degreesToRadians(90), 0, 0, -1);
+          case bg.Axis.Y:
+            break;
+          case bg.Axis.Z:
+            return bg.Matrix4.Rotation(bg.Math.degreesToRadians(90), 1, 0, 0);
+          case -bg.Axis.X:
+            return bg.Matrix4.Rotation(bg.Math.degreesToRadians(90), 0, 0, 1);
+          case -bg.Axis.Y:
+            return bg.Matrix4.Rotation(bg.Math.degreesToRadians(180), 0, -1, 0);
+          case -bg.Axis.Z:
+            return bg.Matrix4.Rotation(bg.Math.degreesToRadians(90), -1, 0, 0);
+        }
+        return result;
+      },
       clone: function() {
         var newGizmo = new PlaneGizmo(this._gizmoPath);
         newGizmo.offset.assign(this._offset);
         newGizmo.visible = this._visible;
         return newGizmo;
       },
+      init: function() {
+        $traceurRuntime.superGet(this, PlaneGizmo.prototype, "init").call(this);
+        this._gizmoP = bg.Matrix4.Translation(this.transform.matrix.position);
+      },
+      display: function(pipeline, matrixState) {
+        if (!this._gizmoItems || !this.visible)
+          return;
+        if (this.autoPlaneMode) {
+          calculateClosestPlane(this, matrixState);
+        }
+        $traceurRuntime.superGet(this, PlaneGizmo.prototype, "display").call(this, pipeline, matrixState);
+      },
       beginDrag: function(action, pos) {
         this._lastPickPoint = null;
       },
       drag: function(action, startPos, endPos, camera) {
         if (this.transform) {
-          var plane = new bg.physics.Plane(new bg.Vector3(0, 1, 0));
+          var plane = new bg.physics.Plane(this.planeAxis);
           var ray = bg.physics.Ray.RayWithScreenPoint(endPos, camera.projection, camera.viewMatrix, camera.viewport);
           var intersection = bg.physics.Intersection.RayToPlane(ray, plane);
           if (intersection.intersects()) {
             var matrix = new bg.Matrix4(this.transform.matrix);
-            var rotation = matrix.rotation;
-            var origin = matrix.position;
-            if (!this._lastPickPoint) {
-              this._lastPickPoint = intersection.ray.end;
-              this._translateOffset = new bg.Vector3(origin);
-              this._translateOffset.sub(intersection.ray.end);
-            }
+            this._gizmoP = bg.Matrix4.Translation(this.transform.matrix.position);
             switch (action) {
               case bg.manipulation.GizmoAction.TRANSLATE:
-                matrix = bg.Matrix4.Translation(intersection.point.x + this._translateOffset.x, origin.y, intersection.point.z + this._translateOffset.z);
-                matrix.mult(rotation);
-                this._lastPickPoint = intersection.point;
+                matrix = translateMatrix(this, intersection);
                 break;
               case bg.manipulation.GizmoAction.ROTATE:
-                rotation = rotationBetweenPoints(this._lastPickPoint, intersection.point, origin, bg.Math.degreesToRadians(22.5));
-                if (rotation.x != 0 || rotation.y != 0 || rotation.z != 0 || rotation.w != 1) {
-                  matrix.mult(rotation.getMatrix4());
-                  this._lastPickPoint = intersection.point;
-                }
+                matrix = rotateMatrix(this, intersection, false);
                 break;
               case bg.manipulation.GizmoAction.ROTATE_FINE:
-                rotation = rotationBetweenPoints(this._lastPickPoint, intersection.point, origin);
-                if (rotation.x != 0 || rotation.y != 0 || rotation.z != 0 || rotation.w != 1) {
-                  matrix.mult(rotation.getMatrix4());
-                  this._lastPickPoint = intersection.point;
-                }
+                matrix = rotateMatrix(this, intersection, true);
                 break;
             }
             this.transform.matrix = matrix;
@@ -8270,6 +8515,9 @@ bg.manipulation = {};
       visit: function(node) {
         var selectable = node.component("bg.manipulation.Selectable");
         var gizmo = node.component("bg.manipulation.Gizmo");
+        if (gizmo && !gizmo.visible) {
+          gizmo = null;
+        }
         this._result = this._result || (selectable && selectable.findId(this.target)) || (gizmo && gizmo.findId(this.target));
       }
     }, {}, $__super);
@@ -8314,7 +8562,9 @@ bg.manipulation = {};
         this.matrixState.projectionMatrixStack.set(camera.projection);
         this.matrixState.viewMatrixStack.set(camera.viewMatrix);
         var opacityLayer = this.pipeline.opacityLayer;
-        this.pipeline.opacityLayer = bg.base.OpacityLayer.NONE;
+        this.pipeline.opacityLayer = bg.base.OpacityLayer.SELECTION;
+        sceneRoot.accept(this.drawVisitor);
+        this.pipeline.opacityLayer = bg.base.OpacityLayer.GIZMOS;
         sceneRoot.accept(this.drawVisitor);
         this.pipeline.opacityLayer = opacityLayer;
         var buffer = this.pipeline.renderSurface.readBuffer(new bg.Viewport(mousePosition.x, mousePosition.y, 1, 1));
@@ -8433,7 +8683,7 @@ bg.manipulation = {};
         }
       },
       display: function(pipeline, matrixState) {
-        if (pipeline.effect instanceof bg.manipulation.ColorPickEffect) {
+        if (pipeline.effect instanceof bg.manipulation.ColorPickEffect && pipeline.opacityLayer & bg.base.OpacityLayer.SELECTION) {
           this._selectablePlist.forEach(function(item) {
             pipeline.effect.pickId = new bg.Color(item.id.a / 255, item.id.b / 255, item.id.g / 255, item.id.r / 255);
             pipeline.draw(item.plist);
@@ -8652,7 +8902,7 @@ bg.manipulation = {};
           if (this._lastTouch.length == 1) {
             var last = this._lastTouch[0];
             var t = evt.touches[0];
-            var delta = new bg.Vector2(last.y - t.y, last.x - t.x);
+            var delta = new bg.Vector2((last.y - t.y) * -1.0, last.x - t.x);
             this._rotation.add(delta.scale(0.5));
           } else if (this._lastTouch.length == 2) {
             var l0 = this._lastTouch[0];
@@ -10262,7 +10512,7 @@ bg.render = {};
             role: "in"
           }]);
           if (bg.Engine.Get().id == "webgl1") {
-            this._fragmentShaderSource.setMainBody(("\n\t\t\t\t\t\tvec3 normal = texture2D(inNormalMap,fsTexCoord).xyz * 2.0 - 1.0;\n\t\t\t\t\t\tvec4 vertexPos = texture2D(inPositionMap,fsTexCoord);\n\t\t\t\t\t\tvec3 cameraVector = vertexPos.xyz - inCameraPos;\n\t\t\t\t\t\tvec3 rayDirection = reflect(cameraVector,normal);\n\t\t\t\t\t\tvec4 lighting = texture2D(inLightingMap,fsTexCoord);\n\t\t\t\t\t\tvec4 material = texture2D(inMaterialMap,fsTexCoord);\n\t\t\t\t\t\t\n\t\t\t\t\t\tfloat increment = " + q.rayIncrement + ";\n\t\t\t\t\t\tvec4 result = vec4(0.0,0.0,0.0,0.0);\n\t\t\t\t\t\tif (material.b>0.0) {\t// material[2] is reflectionAmount\n\t\t\t\t\t\t\tresult = vec4(0.0,0.0,0.0,1.0);\n\t\t\t\t\t\t\tfor (float i=0.0; i<" + q.maxSamples + "; ++i) {\n\t\t\t\t\t\t\t\tif (i==" + q.maxSamples + ") {\n\t\t\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t\t\t}\n\n\t\t\t\t\t\t\t\tfloat radius = i * increment;\n\t\t\t\t\t\t\t\tincrement *= 1.01;\n\t\t\t\t\t\t\t\tvec3 ray = vertexPos.xyz + rayDirection * radius;\n\n\t\t\t\t\t\t\t\tvec4 offset = inProjectionMatrix * vec4(ray, 1.0);\t// -w, w\n\t\t\t\t\t\t\t\toffset.xyz /= offset.w;\t// -1, 1\n\t\t\t\t\t\t\t\toffset.xyz = offset.xyz * 0.5 + 0.5;\t// 0, 1\n\n\t\t\t\t\t\t\t\tvec4 rayActualPos = texture2D(inSamplePosMap, offset.xy);\n\t\t\t\t\t\t\t\tfloat hitDistance = rayActualPos.z - ray.z;\n\t\t\t\t\t\t\t\tif (rayActualPos.w<0.6) {\n\t\t\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\tif (offset.x>1.0 || offset.y>1.0) {\n\t\t\t\t\t\t\t\t\tresult = vec4(0.0, 0.0, 0.0, 1.0);\n\t\t\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\telse if (hitDistance>0.02 && hitDistance<0.4) {\n\t\t\t\t\t\t\t\t\tresult = texture2D(inLightingMap,offset.xy);\n\t\t\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\tif (result.a==0.0) {\n\t\t\t\t\t\t\tdiscard;\n\t\t\t\t\t\t}\n\t\t\t\t\t\telse {\n\t\t\t\t\t\t\tgl_FragColor = result;\n\t\t\t\t\t\t}"));
+            this._fragmentShaderSource.setMainBody(("\n\t\t\t\t\t\tvec3 normal = texture2D(inNormalMap,fsTexCoord).xyz * 2.0 - 1.0;\n\t\t\t\t\t\tvec4 vertexPos = texture2D(inPositionMap,fsTexCoord);\n\t\t\t\t\t\tvec3 cameraVector = vertexPos.xyz - inCameraPos;\n\t\t\t\t\t\tvec3 rayDirection = reflect(cameraVector,normal);\n\t\t\t\t\t\tvec4 lighting = texture2D(inLightingMap,fsTexCoord);\n\t\t\t\t\t\tvec4 material = texture2D(inMaterialMap,fsTexCoord);\n\t\t\t\t\t\t\n\t\t\t\t\t\tfloat increment = " + q.rayIncrement + ";\n\t\t\t\t\t\tvec4 result = vec4(0.0,0.0,0.0,0.0);\n\t\t\t\t\t\tif (material.b>0.0) {\t// material[2] is reflectionAmount\n\t\t\t\t\t\t\tresult = vec4(0.0,0.0,0.0,1.0);\n\t\t\t\t\t\t\tfor (float i=0.0; i<" + q.maxSamples + ".0; ++i) {\n\t\t\t\t\t\t\t\tif (i==" + q.maxSamples + ".0) {\n\t\t\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t\t\t}\n\n\t\t\t\t\t\t\t\tfloat radius = i * increment;\n\t\t\t\t\t\t\t\tincrement *= 1.01;\n\t\t\t\t\t\t\t\tvec3 ray = vertexPos.xyz + rayDirection * radius;\n\n\t\t\t\t\t\t\t\tvec4 offset = inProjectionMatrix * vec4(ray, 1.0);\t// -w, w\n\t\t\t\t\t\t\t\toffset.xyz /= offset.w;\t// -1, 1\n\t\t\t\t\t\t\t\toffset.xyz = offset.xyz * 0.5 + 0.5;\t// 0, 1\n\n\t\t\t\t\t\t\t\tvec4 rayActualPos = texture2D(inSamplePosMap, offset.xy);\n\t\t\t\t\t\t\t\tfloat hitDistance = rayActualPos.z - ray.z;\n\t\t\t\t\t\t\t\tif (rayActualPos.w<0.6) {\n\t\t\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\tif (offset.x>1.0 || offset.y>1.0) {\n\t\t\t\t\t\t\t\t\tresult = vec4(0.0, 0.0, 0.0, 1.0);\n\t\t\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\telse if (hitDistance>0.02 && hitDistance<0.4) {\n\t\t\t\t\t\t\t\t\tresult = texture2D(inLightingMap,offset.xy);\n\t\t\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\tif (result.a==0.0) {\n\t\t\t\t\t\t\tdiscard;\n\t\t\t\t\t\t}\n\t\t\t\t\t\telse {\n\t\t\t\t\t\t\tgl_FragColor = result;\n\t\t\t\t\t\t}"));
           }
         }
         return this._fragmentShaderSource;
