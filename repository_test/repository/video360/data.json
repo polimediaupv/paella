@@ -1,0 +1,24 @@
+{
+	"metadata": {
+		"duration": 60,
+		"title": "Video 360 test"
+	},
+	"streams": [
+		{
+			"sources": {
+				"video360": [
+					{
+						"src": "http://paellaplayer.upv.es/demo/repository/video360/video360.mp4",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "4096",
+							"h": "2046"
+						}
+					}
+				]
+			},
+			"preview": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/preview/presenter_cut.jpg"
+		}
+	],
+	"frameList": []
+}
