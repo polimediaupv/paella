@@ -17,7 +17,8 @@
 					}
 				]
 			},
-			"preview": "http://paellaplayer.upv.es/demo/repository/dual-video-audio/preview/presenter_cut.jpg"
+			"preview": "http://paellaplayer.upv.es/demo/repository/dual-video-audio/preview/presenter_cut.jpg",
+			"type":"video"
 		},
 		{
 			"sources": {
@@ -61,7 +62,8 @@
 					}
 				]
 			},
-			"preview": "http://paellaplayer.upv.es/demo/repository/dual-video-audio/preview/presentation_cut.jpg"
+			"preview": "http://paellaplayer.upv.es/demo/repository/dual-video-audio/preview/presentation_cut.jpg",
+			"type":"video"
 		},
 		{
 			"sources": {
@@ -71,7 +73,8 @@
 					}
 				]
 			},
-			"preview":""
+			"preview":"",
+			"type":"audio"
 		}
 	],
 	"frameList": [

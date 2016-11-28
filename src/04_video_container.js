@@ -386,6 +386,67 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 	}
 });
 
+(function() {
+
+	class StreamProvider {
+		constructor(videoData) {
+			this._masterVideo = null;
+			this._slaveVideos = [];
+			this._videoStreams = [];
+			this._audioStreams = [];
+		}
+
+		init(videoData) {
+			if (videoData.length==0) throw Error("Empty video data.");
+			this._videoData = videoData;
+
+			if (!this._videoData.some((stream) => { return stream.role=="master"; })) {
+				this._videoData[0].role = "master";
+			}
+
+			this._videoData.forEach((stream, index) => {
+				stream.type = stream.type || 'video';
+				if (stream.role=='master') {
+					this._masterVideo = stream;
+				}
+				else if (stream.type=='video') {
+					this._slaveVideos.push(stream);
+				}
+
+				if (stream.type=='video') {
+					this._videoStreams.push(stream);
+				}
+				else if (stream.type=='audio') {
+					this._audioStreams.push(stream);
+				}
+			});
+
+			if (this._videoStreams.length==0) {
+				throw new Error("No video streams found. Paella Player requires at least one video stream.");
+			}
+		}
+
+		get masterVideo() {
+			return this._masterVideo;
+		}
+
+		get slaveVideos() {
+			return this._slaveVideos;
+		}
+
+		get mainSlaveVideo() {
+			return this._slaveVideos.length>0 ? this._slaveVideos[0]:null;
+		}
+
+		get audioStreams() {
+			return this._audioStreams;
+		}
+	}
+
+	paella.StreamProvider = StreamProvider;
+
+})();
+
 class VideoContainer extends paella.VideoContainerBase {
 	constructor(id) {
 		super(id);
@@ -468,6 +529,8 @@ class VideoContainer extends paella.VideoContainerBase {
 		catch (e) {
 
 		}
+
+		this._streamProvider = new paella.StreamProvider();
 
 		Object.defineProperty(this,'ready',{
 			get: function() {
@@ -845,11 +908,13 @@ class VideoContainer extends paella.VideoContainerBase {
 		overlayLoader.className = "videoLoaderOverlay";
 		this.overlayContainer.addElement(overlayLoader,{left:0,top:0,width:1280,height:720});
 
+		this._streamProvider.init(videoData);
+
 		var masterRect = videoData.length>1 ? {x:850,y:140,w:360,h:550}:{x:0,y:0,w:1280,h:720};
 		var slaveRect = {x:10,y:40,w:800,h:600};
-		this._isMonostream = videoData.length==1;
-		var masterVideoData = videoData.length>0 ? videoData[0]:{ sources:[] };
-		var slaveVideoData = videoData.length>1 ? videoData[1]:{ sources:[] };
+		this._isMonostream = this._streamProvider.slaveVideos.length==0;
+		var masterVideoData = this._streamProvider.masterVideo;
+		var slaveVideoData = this._streamProvider.mainSlaveVideo;
 		var masterVideo = paella.videoFactory.getVideoObject(this.video1Id,masterVideoData, masterRect);
 		var slaveVideo = paella.videoFactory.getVideoObject(this.video2Id,slaveVideoData, slaveRect);
 

@@ -34,5 +34,41 @@
     }
 
     paella.AudioFactory = AudioFactory;
+
+    paella.audioFactory = {
+        _factoryList:[],
+
+        initFactories:function() {
+            if (paella.audioFactories) {
+                var This = this;
+                paella.player.config.player.audioMethods.forEach(function(method) {
+                    if (method.enabled) {
+                        This.registerFactory(new paella.audioFactories[method.factory]());
+                    }
+                });
+            }
+        },
+
+        getAudioObject:function(id, streamData) {
+            if (this._factoryList.length==0) {
+                this.initFactories();
+            }
+            var selectedFactory = null;
+            if (this._factoryList.some(function(factory) {
+                if (factory.isStreamCompatible(streamData)) {
+                    selectedFactory = factory;
+                    return true;
+                }
+            })) {
+                return selectedFactory.getAudioObject(id, streamData);
+            }
+            return null;
+        },
+
+        registerFactory:function(factory) {
+            this._factoryList.push(factory);
+        }
+    };
+
 })();
 
