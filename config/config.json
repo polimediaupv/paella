@@ -90,6 +90,7 @@
 			"//****": "Video Overlay Button Plugins",
 			"es.upv.paella.liveStreamingIndicatorPlugin":  { "enabled": true },
 			"es.upv.paella.showEditorPlugin":{"enabled":true,"alwaysVisible":true},
+			"es.upv.paella.arrowSlidesNavigatorPlugin": {"enabled": true, "showArrowsIn": "slave"},
 			
 			"//****": "TabBar Plugins",
 			"es.upv.paella.commentsPlugin": {"enabled": false},
