@@ -2,6 +2,8 @@
 
 This plugin adds the functionability of jump to the next/privoius slide change.
 
+![](images/arrowSlidesNavigator.png)
+
 ## Plugin Type:
 - [paella.EventDrivenPlugin](../developer/plugin_types.md)
 
