@@ -11,7 +11,7 @@ This plugin adds the functionability of jump to any time in the timeline where t
 
 * **showFullPreview**
 
-	This option let the user to select where the previre image is shown or disable the feature.
+	This option let the user to select where the preview image is shown or disable the feature.
 	- default value: auto
 	- range: auto | master | slave | disabled
 
