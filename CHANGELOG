@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella WIP
+
+  * Changes in frameControl plugin. Show preview images over the player can be disabled and select the slides video(master/slave)
+
 * Paella 5.0.18
 
   * Fix bug in RTMP plugin.
