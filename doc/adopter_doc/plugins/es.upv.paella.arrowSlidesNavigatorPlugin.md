@@ -1,8 +1,6 @@
 # es.upv.paella.arrowSlidesNavigatorPlugin
 
-This plugin adds the functionability of jump to any time in the timeline where the slides are changed through a little images preview interface.
-
-![](images/frameControlPlugin.jpg)
+This plugin adds the functionability of jump to the next/privoius slide change.
 
 ## Plugin Type:
 - [paella.EventDrivenPlugin](../developer/plugin_types.md)
