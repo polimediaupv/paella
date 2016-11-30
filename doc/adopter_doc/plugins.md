@@ -35,6 +35,7 @@ To know more about this, you can read the [Plugin types](developer/plugin_types.
 ## Event Driven Plugins
 
 * [es.upv.paella.annotationsPlayerPlugin](plugins/es.upv.paella.annotationsPlayerPlugin.md)
+* [es.upv.paella.arrowSlidesNavigatorPlugin](plugins/es.upv.paella.arrowSlidesNavigatorPlugin.md)
 * [es.upv.paella.blackBoardPlugin](plugins/es.upv.paella.blackBoardPlugin.md)
 * [es.upv.paella.breaksPlayerPlugin](plugins/es.upv.paella.breaksPlayerPlugin.md)
 * [es.upv.paella.overlayCaptionsPlugin](plugins/es.upv.paella.overlayCaptionsPlugin.md)
