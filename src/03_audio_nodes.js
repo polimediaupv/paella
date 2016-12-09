@@ -2,10 +2,11 @@
 (function() {
     class AudioElementBase extends paella.DomNode {
         constructor(id,stream) {
-            super(id,'div');
+            super('div',id);
             this._stream = stream;
         }
 
+        setAutoplay() {return Promise.reject(new Error("no such compatible video player"));}
         load() {return Promise.reject(new Error("no such compatible video player")); }
         play() { return Promise.reject(new Error("no such compatible video player")); }
         pause() { return Promise.reject(new Error("no such compatible video player")); }
@@ -41,6 +42,9 @@
         initFactories:function() {
             if (paella.audioFactories) {
                 var This = this;
+                paella.player.config.player.audioMethods = paella.player.config.player.audioMethods || {
+
+                };
                 paella.player.config.player.audioMethods.forEach(function(method) {
                     if (method.enabled) {
                         This.registerFactory(new paella.audioFactories[method.factory]());
@@ -72,3 +76,143 @@
 
 })();
 
+(function() {
+
+function checkReady(cb) {
+    let This = this;
+    return new Promise((resolve,reject) => {
+        if (This._ready) {
+            resolve(typeof(cb)=='function' ? cb():true);
+        }
+        else {
+            function doCheck() {
+                if (This.audio.readyState>=This.audio.HAVE_CURRENT_DATA) {
+                    This._ready = true;
+                    resolve(typeof(cb)=='function' ? cb():true);
+                }
+                else {
+                    setTimeout(doCheck,50);
+                }
+            }
+            doCheck();
+        }
+    });
+}
+
+class MultiformatAudioElement extends paella.AudioElementBase {
+    constructor(id,stream) {
+        super(id,stream);
+        this._streamName = "audio";
+
+        this._audio = document.createElement('audio');
+        this.domElement.appendChild(this._audio);
+    }
+
+    get audio() { return this._audio; }
+
+    setAutoplay(ap) {
+        this.audio.autoplay = ap;
+    }
+
+    load() {
+        var This = this;
+		var sources = this._stream.sources[this._streamName];
+		var stream = sources.length>0 ? sources[0]:null;
+		this.audio.innerHTML = "";
+		if (stream) {
+			var sourceElem = this.audio.querySelector('source');
+			if (!sourceElem) {
+				sourceElem = document.createElement('source');
+				this.audio.appendChild(sourceElem);
+			}
+
+			sourceElem.src = stream.src;
+			if (stream.type) sourceElem.type = stream.type;
+			this.audio.load();
+
+            return checkReady.apply(this, [function() {
+                return stream;
+            }]);
+		}
+		else {
+			return Promise.reject(new Error("Could not load video: invalid quality stream index"));
+		}
+    }
+
+    play() {
+        return checkReady.apply(this, [() => {
+            this.audio.play();
+        }]);
+    }
+
+    pause() {
+        return checkReady.apply(this, [() => {
+            this.audio.pause();
+        }]);
+    }
+
+    isPaused() {
+        return checkReady.apply(this,[() => {
+            return this.audio.paused;
+        }]);
+    }
+
+    duration() {
+        return checkReady.apply(this,[() => {
+            return this.audio.duration;
+        }]);
+    }
+
+    setCurrentTime(time) {
+        return checkReady.apply(this,[() => {
+            this.audio.currentTime = time;
+        }]);
+    }
+
+    currentTime() {
+        return checkReady.apply(this,[() => {
+            return this.audio.currentTime;
+        }]);
+    }
+
+    setVolume(volume) {
+        return checkReady.apply(this,[() => {
+            return this.audio.volume = volume;
+        }]);
+    }
+
+    volume() {
+        return checkReady.apply(this,[() => {
+            return this.audio.volume;
+        }]);
+    }
+
+    setPlaybackRate(rate) { 
+        return checkReady.apply(this,[() => {
+            this.audio.playbackRate = rate;
+        }]);
+    }
+    playbackRate() {
+        return checkReady.apply(this,[() => {
+            return this.audio.playbackRate;
+        }]);
+    }
+
+    unload() { return Promise.resolve(); }
+};
+
+paella.MultiformatAudioElement = MultiformatAudioElement;
+
+class MultiformatAudioFactory {
+    isStreamCompatible(streamData) {
+        return true;
+    }
+
+    getAudioObject(id,streamData) {
+        return new paella.MultiformatAudioElement(id,streamData);
+    }
+}
+
+paella.audioFactories.MultiformatAudioFactory = MultiformatAudioFactory;
+
+})();
