@@ -115,7 +115,12 @@ Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
 		if (ButtonItem) {
 			ButtonItem.className = thisClass.getButtonItemClass(profile,true);
 			paella.player.setProfile(profile);
-			base.cookies.set("lastProfile", profile);
+			paella.player.getProfile(profile)
+				.then((profileData) => {
+					if (!profileData.isMonostream) {
+						base.cookies.set("lastProfile", profile);
+					}
+				});
 		}
 		paella.player.controls.hidePopUp(this.getName());
 	},

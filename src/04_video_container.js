@@ -981,6 +981,14 @@ class VideoContainer extends paella.VideoContainerBase {
 		});
 	}
 
+	getProfile(profileName) {
+		return new Promise((resolve,reject) => {
+			paella.Profiles.loadProfile(profileName,(profileData) => {
+				resolve(profileData);
+			});
+		});
+	}
+
 	hideAllLogos() {
 		for (var i=0;i<this.logos.length;++i) {
 			var logoId = this.logos[i];

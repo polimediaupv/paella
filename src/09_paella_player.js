@@ -140,6 +140,10 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		this.videoContainer.setProfile(profileName,animate);
 	},
 
+	getProfile:function(profileName) {
+		return this.videoContainer.getProfile(profileName);
+	},
+
 	initialize:function(playerId) {
 		this.parent(playerId);
 
