@@ -382,6 +382,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		this.parent(id,stream,'video',left,top,width,height);
 		this._streamName = streamName || 'mp4';
 		var This = this;
+		this._playbackRate = 1;
 
 		if (this._stream.sources[this._streamName]) {
 			this._stream.sources[this._streamName].sort(function (a, b) {
@@ -494,6 +495,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 			sourceElem.src = stream.src;
 			sourceElem.type = stream.type;
 			this.video.load();
+			this.video.playbackRate = this._playbackRate;
 
             return this._deferredAction(function() {
                 return stream;
@@ -602,6 +604,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 
 	setPlaybackRate:function(rate) {
 		return this._deferredAction(() => {
+			this._playbackRate = rate;
             this.video.playbackRate = rate;
         });
 	},
