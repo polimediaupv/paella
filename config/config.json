@@ -21,6 +21,9 @@
 			{ "factory":"ImageVideoFactory", "enabled":true },
 			{ "factory":"YoutubeVideoFactory", "enabled":true }
 		],
+		"audioMethods":[
+			{ "factory":"MultiformatAudioFactory", "enabled":true }
+		],
         "audio": {
             "master": 1.0,
             "slave": 0.0

@@ -386,12 +386,73 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 	}
 });
 
+(function() {
+
+	class StreamProvider {
+		constructor(videoData) {
+			this._masterVideo = null;
+			this._slaveVideos = [];
+			this._videoStreams = [];
+			this._audioStreams = [];
+		}
+
+		init(videoData) {
+			if (videoData.length==0) throw Error("Empty video data.");
+			this._videoData = videoData;
+
+			if (!this._videoData.some((stream) => { return stream.role=="master"; })) {
+				this._videoData[0].role = "master";
+			}
+
+			this._videoData.forEach((stream, index) => {
+				stream.type = stream.type || 'video';
+				if (stream.role=='master') {
+					this._masterVideo = stream;
+				}
+				else if (stream.type=='video') {
+					this._slaveVideos.push(stream);
+				}
+
+				if (stream.type=='video') {
+					this._videoStreams.push(stream);
+				}
+				else if (stream.type=='audio') {
+					this._audioStreams.push(stream);
+				}
+			});
+
+			if (this._videoStreams.length==0) {
+				throw new Error("No video streams found. Paella Player requires at least one video stream.");
+			}
+		}
+
+		get masterVideo() {
+			return this._masterVideo;
+		}
+
+		get slaveVideos() {
+			return this._slaveVideos;
+		}
+
+		get mainSlaveVideo() {
+			return this._slaveVideos.length>0 ? this._slaveVideos[0]:null;
+		}
+
+		get audioStreams() {
+			return this._audioStreams;
+		}
+	}
+
+	paella.StreamProvider = StreamProvider;
+
+})();
+
 class VideoContainer extends paella.VideoContainerBase {
 	constructor(id) {
 		super(id);
 		this.containerId = '';
 		this.video1Id = '';
-		this.video2Id = '';
+		this.videoSlaveId = '';
 		this.backgroundId = '';
 		this.container = null;
 		this.profileFrameStrategy = null;
@@ -431,8 +492,9 @@ class VideoContainer extends paella.VideoContainerBase {
 		var thisClass = this;
 		this._sourceData = [];
 		this.containerId = id + '_container';
-		this.video1Id = id + '_1';
-		this.video2Id = id + '_2';
+		this.video1Id = id + '_master';
+		this.videoSlaveId = id + '_slave_';
+		this.audioId = id + '_audio_';
 		this.backgroundId = id + '_bkg';
 		this.logos = [];
 		this._videoQualityStrategy = this._getQualityStrategyObject();
@@ -468,6 +530,8 @@ class VideoContainer extends paella.VideoContainerBase {
 		catch (e) {
 
 		}
+
+		this._streamProvider = new paella.StreamProvider();
 
 		Object.defineProperty(this,'ready',{
 			get: function() {
@@ -536,21 +600,44 @@ class VideoContainer extends paella.VideoContainerBase {
 		var slaveVideo = this.slaveVideo();
 		var masterCurrent = 0;
 		var slaveCurrent = 0;
-		if (!this._isMonostream && masterVideo && slaveVideo) {
+		if (!this._isMonostream && masterVideo) {
 			masterVideo.currentTime()
 				.then(function(m) {
 					masterCurrent = m;
-					return slaveVideo.currentTime();
+					if (slaveVideo) {
+						return slaveVideo.currentTime();
+					}
+					else {
+						return Promise.resolve(-1);
+					}
 				})
 
 				.then(function(s) {
-					slaveCurrent = s;
-					var diff = Math.abs(masterCurrent - slaveCurrent);
+					if (s>=-1) {
+						slaveCurrent = s;
+						var diff = Math.abs(masterCurrent - slaveCurrent);
 
-					if (diff>This._maxSyncDelay) {
-						base.log.debug("Sync videos performed, diff=" + diff);
-						slaveVideo.setCurrentTime(masterCurrent);
+						if (diff>This._maxSyncDelay) {
+							base.log.debug("Sync videos performed, diff=" + diff);
+							slaveVideo.setCurrentTime(masterCurrent);
+						}
 					}
+					let audioPromises = [];
+					This._audioPlayers.forEach((player) => {
+						audioPromises.push(player.currentTime());
+					});
+					return Promise.all(audioPromises);
+				})
+
+				.then(function(audioTime) {
+					audioTime.forEach(function(t,index) {
+						let player = This._audioPlayers[index];
+						let diff = Math.abs(masterCurrent - t);
+						if (diff>This._maxSyncDelay) {
+							base.log.debug("Sync audio performed, diff=" + diff);
+							player.setCurrentTime(t);
+						}
+					});
 				});
 		}
 	}
@@ -593,6 +680,9 @@ class VideoContainer extends paella.VideoContainerBase {
 						if (slaveVideo) {
 							slaveVideo.play();
 						}
+						this._audioPlayers.forEach((player) => {
+							player.play();
+						});
 						super.play();
 						resolve();
 					});
@@ -611,6 +701,9 @@ class VideoContainer extends paella.VideoContainerBase {
 				masterVideo.pause()
 					.then(() => {
 						if (slaveVideo) slaveVideo.pause();
+						this._audioPlayers.forEach((player) => {
+							player.pause();
+						});
 						super.pause();
 						resolve();
 					});
@@ -647,6 +740,7 @@ class VideoContainer extends paella.VideoContainerBase {
 		}
 		this.masterVideo().setCurrentTime(time);
 		if (this.slaveVideo()) this.slaveVideo().setCurrentTime(time);
+		this._audioPlayers.forEach((player) => { player.setCurrentTime(time); });
 		super.setCurrentTime(time);
 	}
 
@@ -738,7 +832,7 @@ class VideoContainer extends paella.VideoContainerBase {
 	}
 
 	slaveVideo() {
-		return this.container.getNode(this.video2Id);
+		return this.container.getNode(this.videoSlaveId + 1);
 	}
 
 	duration(ignoreTrimming) {
@@ -845,13 +939,26 @@ class VideoContainer extends paella.VideoContainerBase {
 		overlayLoader.className = "videoLoaderOverlay";
 		this.overlayContainer.addElement(overlayLoader,{left:0,top:0,width:1280,height:720});
 
+		this._streamProvider.init(videoData);
+
 		var masterRect = videoData.length>1 ? {x:850,y:140,w:360,h:550}:{x:0,y:0,w:1280,h:720};
 		var slaveRect = {x:10,y:40,w:800,h:600};
-		this._isMonostream = videoData.length==1;
-		var masterVideoData = videoData.length>0 ? videoData[0]:{ sources:[] };
-		var slaveVideoData = videoData.length>1 ? videoData[1]:{ sources:[] };
+		this._isMonostream = this._streamProvider.slaveVideos.length==0;
+		var masterVideoData = this._streamProvider.masterVideo;
+		var audioStreamsData = this._streamProvider.audioStreams;
+
+		var slaveVideoData = this._streamProvider.mainSlaveVideo;
 		var masterVideo = paella.videoFactory.getVideoObject(this.video1Id,masterVideoData, masterRect);
-		var slaveVideo = paella.videoFactory.getVideoObject(this.video2Id,slaveVideoData, slaveRect);
+		var slaveVideo = paella.videoFactory.getVideoObject(this.videoSlaveId + 1,slaveVideoData, slaveRect);
+		
+		this._audioPlayers = [];
+		audioStreamsData.forEach((streamData,index) => {
+			let audioPlayer = paella.audioFactory.getAudioObject(this.audioId + index,streamData);
+			if (audioPlayer) {
+				this._audioPlayers.push(audioPlayer);
+				this.container.addNode(audioPlayer);
+			}
+		});
 
 		var autoplay = this.autoplay();
 		masterVideo.setAutoplay(autoplay);
@@ -864,7 +971,6 @@ class VideoContainer extends paella.VideoContainerBase {
 		if (videoData.length>1) {
 			this.container.addNode(slaveVideo);
 		}
-
 		return masterVideo.load()
 			.then(function() {
 				if (videoData.length>1) {
@@ -874,6 +980,20 @@ class VideoContainer extends paella.VideoContainerBase {
 					return paella_DeferredResolved(true);
 				}
 			})
+
+			.then(function() {
+				if (This._audioPlayers.length>0) {
+					let audioLoadPromises = [];
+					This._audioPlayers.forEach(function(player) {
+						audioLoadPromises.push(player.load());
+					});
+					return Promise.all(audioLoadPromises);
+				}
+				else {
+					return paella_DeferredResolved(true);
+				}
+			})
+
 			.then(function() {
 				$(masterVideo.video).bind('timeupdate', function(evt) {
 					var trimming = This._trimming;
@@ -917,13 +1037,16 @@ class VideoContainer extends paella.VideoContainerBase {
 			});
 	}
 	
-	setAutoplay() {
-		this._autoplay = true;
+	setAutoplay(ap = true) {
+		this._autoplay = ap;
 		if (this.masterVideo()) {
-			this.masterVideo().setAutoplay(true);
+			this.masterVideo().setAutoplay(ap);
 		}
 		if (this.slaveVideo()) {
-			this.slaveVideo().setAutoplay(true);
+			this.slaveVideo().setAutoplay(ap);
+		}
+		if (this._audioPlayers.lenght>0) {
+			this._audioPlayers.forEach((p) => { p.setAutoplay(ap); });
 		}
 	}
 
