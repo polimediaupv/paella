@@ -1062,13 +1062,18 @@ class VideoContainer extends paella.VideoContainerBase {
 	}
 
 	getMonostreamMasterProfile() {
+		var mv = this.masterVideo();
+		mv.getVideoData().then(function(d) { console.log(d); })
 		return {
 			content:"presenter",
 			visible:true,
 			layer:1,
 			rect:[
-				{aspectRatio:"16/9",left:0,top:0,width:1280,height:720},
-				{aspectRatio:"4/3",left:160,top:0,width:960,height:720},
+				{ aspectRatio:"16/9",left:0,top:0,width:1280,height:720 },
+				{ aspectRatio:"16/10",left:64,top:0,width:1152,height:720 },
+				{ aspectRatio:"4/3",left:160,top:0,width:960,height:720 },
+				{ aspectRatio:"5/4",left:190,top:0,width:900,height:720 },
+				{ aspectRatio:"1/1",left:280,top:0,width:720,height:720 }
 			]
 		};
 	}
