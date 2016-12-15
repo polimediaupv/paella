@@ -949,7 +949,7 @@ class VideoContainer extends paella.VideoContainerBase {
 
 		var slaveVideoData = this._streamProvider.mainSlaveVideo;
 		var masterVideo = paella.videoFactory.getVideoObject(this.video1Id,masterVideoData, masterRect);
-		var slaveVideo = paella.videoFactory.getVideoObject(this.videoSlaveId + 1,slaveVideoData, slaveRect);
+		var slaveVideo = slaveVideoData ? paella.videoFactory.getVideoObject(this.videoSlaveId + 1,slaveVideoData, slaveRect) : null;
 		
 		this._audioPlayers = [];
 		audioStreamsData.forEach((streamData,index) => {
@@ -962,10 +962,10 @@ class VideoContainer extends paella.VideoContainerBase {
 
 		var autoplay = this.autoplay();
 		masterVideo.setAutoplay(autoplay);
-		slaveVideo.setAutoplay(autoplay);
+		if (slaveVideo) slaveVideo.setAutoplay(autoplay);
 
 		masterVideo.setVideoQualityStrategy(this._videoQualityStrategy);
-		slaveVideo.setVideoQualityStrategy(this._videoQualityStrategy);
+		if (slaveVideo) slaveVideo.setVideoQualityStrategy(this._videoQualityStrategy);
 
 		this.container.addNode(masterVideo);
 		if (videoData.length>1) {
