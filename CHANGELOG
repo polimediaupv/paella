@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+* Paella 5.1.0
+
+  * Now using ECMAScript 6, with Traceur compiler.
+  * jQuery deferred changed to ECMAScript promises.
+  * Now it's possible to add audio streams as slave stream.
+  * New aspect ratios supported for single video streams.
+  * Experimental support for new video stream types: chroma, video360.
+  * Refactoring, improvements and bug fixes.
+
 * Paella 5.0.18
 
   * Fix bug in RTMP plugin.
