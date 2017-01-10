@@ -9,11 +9,26 @@ const	gulp = require('gulp'),
 		fs = require('fs'),
 		uglify = require('gulp-uglify'),
 		flatten = require('gulp-flatten'),
-		path = require('path'); 
+		path = require('path'),
+
+		exec = require('child_process').execSync;
 
 var config = {
 	outDir:'build/'
 };
+
+function getVersion() {
+	let pkg = require('./package.json');
+	let rev = exec('git show --oneline -s');
+	let re = /([a-z0-9:]+)\s/i;
+	let reResult = re.exec(rev);
+	if (reResult && !/fatal/.test(reResult[1])) {
+		return pkg.version + ' - build: ' + reResult[1];
+	}
+	else {
+		return pkg.version;
+	}
+}
 
 gulp.task("webserver", function() {
 	connect.server({
@@ -27,6 +42,7 @@ gulp.task("compile", function() {
 	gulp.src(["src/*.js","plugins/*/*.js"])
 		.pipe(traceur())
 		.pipe(concat("paella_player.js"))
+		.pipe(replace(/@version@/,getVersion()))
 		.pipe(uglify())
 		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
 });
@@ -35,6 +51,7 @@ gulp.task("compileDebug", function() {
 	gulp.src(["src/*.js","plugins/*/*.js"])
 		.pipe(traceur())
 		.pipe(concat("paella_player.js"))
+		.pipe(replace(/\@version\@/,getVersion()))
 		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
 });
 

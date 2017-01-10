@@ -23,6 +23,7 @@ var GlobalParams = {
 
 var paella = {};
 paella.player = null;
+paella.version = "@version@";
 
 paella.events = {
 	play:"paella:play",
