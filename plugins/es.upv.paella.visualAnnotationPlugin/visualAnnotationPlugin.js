@@ -60,7 +60,7 @@ Class ("paella.plugins.visualAnnotationPlugin", paella.EventDrivenPlugin,{
     		paella.events.trigger(paella.events.play);
     	};
     	if (self._annotations) self._annotations.some(function(element, index, array){
-            currentTime = Math.round(params.currentTime);
+            var currentTime = Math.round(params.currentTime);
 			var annotation = JSON.parse(element.content);
 			//if we are on time and the annotation does not exist
     		if(currentTime >= element.time && currentTime < element.time+element.duration && $("#" + element._id).length==0){

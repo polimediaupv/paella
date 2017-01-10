@@ -273,12 +273,12 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 			let duration = 0;
 
 			this.currentTime()
-				.then(function(c) {
+				.then((c) => {
 					currentTime = c;
 					return this.duration();
 				})
 
-				.then(function(d) {
+				.then((d) => {
 					duration = d;
 					this._trimming.start = start;
 					this._trimming.end = end;
@@ -1063,7 +1063,6 @@ class VideoContainer extends paella.VideoContainerBase {
 
 	getMonostreamMasterProfile() {
 		var mv = this.masterVideo();
-		mv.getVideoData().then(function(d) { console.log(d); })
 		return {
 			content:"presenter",
 			visible:true,
