@@ -744,8 +744,8 @@ class VideoContainer extends paella.VideoContainerBase {
 		super.setCurrentTime(time);
 	}
 
-	currentTime() {
-		if (this._trimming.enabled) {
+	currentTime(ignoreTrimming = false) {
+		if (this._trimming.enabled && !ignoreTrimming) {
 			var trimStart = this._trimming.start;
 			return new Promise((resolve) => {
 				this.masterVideo().currentTime()

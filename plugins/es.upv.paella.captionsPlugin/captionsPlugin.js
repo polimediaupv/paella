@@ -102,8 +102,6 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 				}
 			}
 		}
-		
-
 	},
 
 	searchIntervaltoHighlight:function(time){
