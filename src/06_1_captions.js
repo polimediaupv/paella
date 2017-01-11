@@ -218,7 +218,7 @@ Class ("paella.captions.Caption", {
 	getCaptionAtTime: function(time) {
 		if (this._captions != undefined) {
 			for (var i=0; i<this._captions.length; ++i) {			
-				l_cap = this._captions[i];
+				var l_cap = this._captions[i];
 				if ((l_cap.begin <= time) && (l_cap.end >= time)) {
 					return l_cap;
 				}

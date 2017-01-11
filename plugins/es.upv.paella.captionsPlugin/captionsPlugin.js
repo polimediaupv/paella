@@ -111,7 +111,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 		var resul = null;
 
 		if(paella.captions.getActiveCaptions()){
-			n = paella.captions.getActiveCaptions()._captions;
+			var n = paella.captions.getActiveCaptions()._captions;
 			n.forEach(function(l){
 				if(l.begin < time.currentTime && time.currentTime < l.end) thisClass.resul = l.id;
 			});
