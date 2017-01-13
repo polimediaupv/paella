@@ -9,6 +9,8 @@ CHANGELOG
   * New aspect ratios supported for single video streams.
   * Experimental support for new video stream types: chroma, video360.
   * Refactoring, improvements and bug fixes.
+  * New Apple Air Play plugin.
+  * New plugin to use the picture-in-picture mode in Safari for macOS.
 
 * Paella 5.0.18
 
