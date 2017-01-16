@@ -140,6 +140,8 @@ Class ("paella.Video360", paella.VideoElementBase,{
 		this._streamName = streamName || 'video360';
 		var This = this;
 
+		paella.player.videoContainer.disablePlayOnClick();
+
 		if (this._stream.sources[this._streamName]) {
 			this._stream.sources[this._streamName].sort(function (a, b) {
 				return a.res.h - b.res.h;

@@ -19,7 +19,8 @@
 			{ "factory":"HLSVideoFactory", "enabled":true },
 			{ "factory":"RTMPVideoFactory", "enabled":true },
 			{ "factory":"ImageVideoFactory", "enabled":true },
-			{ "factory":"YoutubeVideoFactory", "enabled":true }
+			{ "factory":"YoutubeVideoFactory", "enabled":true },
+			{ "factory":"Video360Factory", "enabled":true }
 		],
 		"audioMethods":[
 			{ "factory":"MultiformatAudioFactory", "enabled":true }
