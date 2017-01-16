@@ -23,7 +23,7 @@ Class ("paella.plugins.BreaksPlayerPlugin",paella.EventDrivenPlugin,{
 
         params.videoContainer.currentTime(true)
             .then(function(currentTime) {
-		        thisClass.checkBreaks(params);
+		        thisClass.checkBreaks(currentTime);
             });
 	},
 
