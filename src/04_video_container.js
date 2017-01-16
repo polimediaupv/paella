@@ -579,6 +579,34 @@ class VideoContainer extends paella.VideoContainerBase {
 		return new Constructor();
 	}
 
+	getVideoData() {
+		return new Promise((resolve) => {
+			let result = { master:null, slaves:[] };
+			let promises = [];
+			if (this.masterVideo()) {
+				promises.push(this.masterVideo().getVideoData()
+					.then((masterVideoData) => {
+						result.master = masterVideoData;
+						return Promise.resolve(masterVideoData);
+					})
+				);
+			}
+			if (this.slaveVideo()) {
+				promises.push(this.slaveVideo().getVideoData()
+					.then((slaveVideoData) => {
+						result.slaves.push(slaveVideoData);
+						return Promise.resolve(slaveVideoData);
+					})
+				);
+			}
+
+			Promise.all(promises)
+				.then(() => {
+					resolve(result);
+				});
+		});
+	}
+
 	setVideoQualityStrategy(strategy) {
 		this._videoQualityStrategy = strategy;
 		if (this.masterVideo()) this.masterVideo().setVideoQualityStrategy(this._videoQualityStrategy);
