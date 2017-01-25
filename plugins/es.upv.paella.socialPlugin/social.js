@@ -13,6 +13,8 @@ Class ("paella.plugins.SocialPlugin",paella.ButtonPlugin,{
 	buttons: [],
 	selected_button: null,
 
+	closeOnMouseOut:function() { return true; },
+
 
     initialize:function() {
         this.parent();

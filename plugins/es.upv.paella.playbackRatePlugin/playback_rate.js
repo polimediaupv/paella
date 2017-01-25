@@ -18,6 +18,8 @@ Class ("paella.plugins.PlaybackRate",paella.ButtonPlugin,{
 		onSuccess(enabled);
 	},
 
+	closeOnMouseOut:function() { return true; },
+
 	setup:function() {
 		this.defaultRate = 1.0;
 		this.available_rates = this.config.availableRates || [0.75, 1, 1.25, 1.5];

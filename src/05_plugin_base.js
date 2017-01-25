@@ -286,6 +286,15 @@ Class ("paella.PopUpContainer", paella.DomNode,{
 			plugin:plugin
 		};
 		this.containers[identifier] = containerInfo;
+		if (plugin.closeOnMouseOut && plugin.closeOnMouseOut()) {
+			let popUpId = identifier;
+			let btn = button;
+			$(domElement).mouseleave(function(evt) {
+				paella.player.controls.playbackControl().hidePopUp(popUpId,btn);
+			});
+		}
+		
+
 		// this.domElement.appendChild(domElement);
 		$(domElement).hide();
 		button.popUpIdentifier = identifier;

@@ -16,6 +16,8 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 	_control_NotMyselfEvent: true,
 	_storedValue: false,
 
+	closeOnMouseOut:function() { return true; },
+	
 	checkEnabled:function(onSuccess) {
 		var enabled = false;
 		if (!base.userAgent.browser.IsMobileVersion) {

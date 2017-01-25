@@ -7,6 +7,8 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 	getMinWindowSize:function() { return 550; },
 	getName:function() { return "es.upv.paella.multipleQualitiesPlugin"; },
 	getDefaultToolTip:function() { return base.dictionary.translate("Change video quality"); },
+
+	closeOnMouseOut:function() { return true; },
 		
 	checkEnabled:function(onSuccess) {
 		var This = this;

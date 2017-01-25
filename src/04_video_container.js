@@ -624,7 +624,7 @@ class VideoContainer extends paella.VideoContainerBase {
 	getSlaveVideoRect() {
 		return this.currentSlaveVideoRect;
 	}
-
+ 
 	setHidden(hidden) {
 		this.isHidden = hidden;
 	}

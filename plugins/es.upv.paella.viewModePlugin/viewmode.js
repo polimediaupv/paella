@@ -16,6 +16,8 @@ Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
 		onSuccess(!paella.player.videoContainer.isMonostream);
 	},
 
+	closeOnMouseOut:function() { return true; },
+
 	setup:function() {
 		var thisClass = this;
 
