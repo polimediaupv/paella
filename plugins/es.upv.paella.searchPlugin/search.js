@@ -10,6 +10,7 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return 'searchButton'; },
+	getMinWindowSize:function() { return 550; },
 	getName:function() { return "es.upv.paella.searchPlugin"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },	
 	getDefaultToolTip:function() { return base.dictionary.translate("Search"); },

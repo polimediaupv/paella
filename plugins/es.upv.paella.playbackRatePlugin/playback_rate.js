@@ -9,7 +9,7 @@ Class ("paella.plugins.PlaybackRate",paella.ButtonPlugin,{
 	getAlignment:function() { return 'left'; },
 	getSubclass:function() { return "showPlaybackRateButton"; },
 	getIndex:function() { return 140; },
-	getMinWindowSize:function() { return 200; },
+	getMinWindowSize:function() { return 500; },
 	getName:function() { return "es.upv.paella.playbackRatePlugin"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
 	getDefaultToolTip:function() { return base.dictionary.translate("Set playback rate"); },

@@ -8,9 +8,12 @@ CHANGELOG
   * Now it's possible to add audio streams as slave stream.
   * New aspect ratios supported for single video streams.
   * Experimental support for new video stream types: chroma, video360.
-  * Refactoring, improvements and bug fixes.
+  * Now it's possible to hide pop up plugins on mouse out.
   * New Apple Air Play plugin.
   * New plugin to use the picture-in-picture mode in Safari for macOS.
+  * New plugin to rate videos.
+  * Default skin changed.
+  * Refactoring, improvements and bug fixes.
 
 * Paella 5.0.18
 

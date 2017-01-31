@@ -19,5 +19,8 @@
     "gulp-traceur": "^0.17.2",
     "gulp-uglify": "^2.0.0"
   },
-  "scripts": {}
+  "scripts": {},
+  "dependencies": {
+    "gulp-merge-json": "^0.3.0"
+  }
 }

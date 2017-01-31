@@ -15,7 +15,7 @@ Class ("paella.plugins.RatePlugin",paella.ButtonPlugin,{
 	getAlignment:function() { return 'right'; },
 	getSubclass:function() { return "rateButtonPlugin"; },
 	getIndex:function() { return 540; },
-	getMinWindowSize:function() { return 300; },
+	getMinWindowSize:function() { return 500; },
 	getName:function() { return "es.upv.paella.ratePlugin"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
 	getDefaultToolTip:function() { return base.dictionary.translate("Rate this video"); },		
@@ -115,7 +115,8 @@ Class ("paella.plugins.RatePlugin",paella.ButtonPlugin,{
 		let data = {
 			mean: this.score,
 			count: this.count,
-			myScore: score
+			myScore: score,
+			canVote: this.canVote
 		};
 		paella.data.write('rate',{id:paella.initDelegate.getId()}, data, (result) => {
 			paella.data.read('rate',{id:paella.initDelegate.getId()},(data,status) => {

@@ -122,8 +122,11 @@ gulp.task("dictionary", function() {
 			let result = re.exec(dict);
 			if (result) {
 				let lang = result[1];
-				gulp.src('localization/' + dict)
-					.pipe(concat(`paella_${lang}.json`))
+				gulp.src([
+					'localization/' + dict,
+					`plugins/**/localization/${lang}.json`
+					])
+					.pipe(merge(`paella_${lang}.json`))
 					.pipe(gulp.dest(`${config.outDir}player/localization`)); 
 			}
 		});
