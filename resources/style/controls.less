@@ -17,6 +17,7 @@ body {
 	width: 100%;
 	font-family: @fontFamily;
 	font-size: 12px;
+	background: @pageBackgroundColor;
 }
 
 
@@ -116,17 +117,19 @@ div {
 .playbackBarFull {
 	height: @playbackControlFullHeight;
 	background-color: @mainColor;
+	background: @playbackBarBackground;
 }
 
 .buttonPlugin {
-	width: @playbackBarButtonWidth;
-	height: @playbackBarButtonHeight;
+	width: unit(@playbackBarButtonWidthPx - @playbackBarButtonPadding * 2,px);
+	height: unit(@playbackBarButtonHeightPx - @playbackBarButtonPadding * 2, px);
 	cursor: pointer;
 	background-image: @paella_icons_image;
 	background-size: @paella_icons_bkg_size;
 	background-position: 0px 0px;
-	margin-left: 0px;
-	margin-right: 0px;
+	margin-left: @playbackBarButtonPadding;
+	margin-right: @playbackBarButtonPadding;
+	margin-top: @playbackBarButtonPadding;
 	color: @icon_text_color;
 }
 

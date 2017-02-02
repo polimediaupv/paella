@@ -20,8 +20,8 @@ html {
 
 body {
 	/*font-family: "ubuntu"; */
-	background-color: rgb(234, 234, 234);
 	margin: 0px;
+	background-color: @pageBackgroundColor;
 }
 
 pre {
