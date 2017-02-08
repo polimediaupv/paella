@@ -10,7 +10,7 @@
 .captionsBar input {
 	color: @popup_text_color;
 	background-color: @backgroundColor;
-	border-color: #fa8533;
+	border-color: @mainColor;
 	width: 49%;
 	margin-bottom: 0px;
 	margin-left: 1px;
@@ -20,7 +20,7 @@
 .captionsBar select{
 	width: 39%;
 	display: inline;
-	background-color: #F98534;
+	background-color: @mainColor;
 	border: 1px solid #ccc;
 	color: white;
     margin-bottom: 0px;
@@ -39,7 +39,7 @@
 }
 
 .captionsBar button:hover{
-	background-color: #faa166;
+	background-color: @mainColor;
 }
 
 
@@ -51,11 +51,11 @@
 }
 
 .captionsBar input:hover{
-	border-color: #faa166;
+	border-color: @hoverBackgroundColor;
 }
 
 .captionsBar input:focus{
-	border-color: #faa166;
+	border-color: @mainColor;
 }
 
 .captionsBody {
@@ -67,11 +67,11 @@
 
 
 .captionsBar input:hover{
-	border-color: #faa166;
+	border-color: @hoverBackgroundColor;
 }
 
 .captionsBar input:focus{
-	border-color: #faa166;
+	border-color: @hoverBackgroundColor;
 }
 
 ::-webkit-scrollbar {
@@ -88,12 +88,12 @@
 	border-radius:10px;
 }
 ::-webkit-scrollbar-thumb {
-	background:#fa8533;
+	background:@mainColor;
 	border: thin solid gray;
 	border-radius:10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-	background:#faa166;
+	background: @mainColor;
 }
 
 /* CSS OVERLAY */
@@ -123,6 +123,6 @@
 }
 
 .Highlight{
-	color: rgb(255, 157, 97);
+	color: @hoverBackgroundColor;
 	font-weight: bold;
 }			

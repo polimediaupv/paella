@@ -24,6 +24,8 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 	getDefaultToolTip:function() { return base.dictionary.translate("Subtitles"); },
 	getIndex:function() {return 509;},
 
+	closeOnMouseOut:function() { return true; },
+
 	checkEnabled:function(onSuccess) {
 		onSuccess(true);
 	},

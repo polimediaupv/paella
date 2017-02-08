@@ -16,6 +16,8 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 	getDefaultToolTip:function() { return base.dictionary.translate("Search"); },
 	getIndex:function() {return 510;},
 
+	closeOnMouseOut:function() { return true; },
+
 	checkEnabled:function(onSuccess) {
 		onSuccess(true);
 	},
