@@ -74,18 +74,20 @@ Class ("paella.YoutubeVideo", paella.VideoElementBase,{
 		var This = this;
 		return new Promise((resolve,reject) => {
 			var stream = this._stream.sources.youtube[0];
-			var videoData = {
-				duration: This.video.getDuration(),
-				currentTime: This.video.getCurrentTime(),
-				volume: This.video.getVolume(),
-				paused: !This._playing,
-				ended: This.video.ended,
-				res: {
-					w: stream.res.w,
-					h: stream.res.h
-				}
-			};
-			resolve(videoData);
+			this._deferredAction(() => {
+				var videoData = {
+					duration: This.video.getDuration(),
+					currentTime: This.video.getCurrentTime(),
+					volume: This.video.getVolume(),
+					paused: !This._playing,
+					ended: This.video.ended,
+					res: {
+						w: stream.res.w,
+						h: stream.res.h
+					}
+				};
+				resolve(videoData);
+			})
 		});
 	},
 
@@ -183,15 +185,16 @@ Class ("paella.YoutubeVideo", paella.VideoElementBase,{
 	},
 
 	getQualities:function() {
+		let This = this;
 		return new Promise((resolve,reject) => {
-			this._qualityListReadyPromise.then(function(q) {
+			This._qualityListReadyPromise.then(function(q) {
 				var result = [];
 				var index = -1;
-				this._qualities = {};
+				This._qualities = {};
 				q.forEach((item) => {
 					index++;
-					this._qualities[item] = this._getQualityObject(index,item);
-					result.push(this._qualities[item]);
+					This._qualities[item] = This._getQualityObject(index,item);
+					result.push(This._qualities[item]);
 				});
 				resolve(result);
 			});
@@ -222,6 +225,7 @@ Class ("paella.YoutubeVideo", paella.VideoElementBase,{
 	},
 
 	play:function() {
+		let This = this;
 		return new Promise((resolve,reject) => {
 			This._playing = true;
 			This.video.playVideo();
@@ -272,7 +276,7 @@ Class ("paella.YoutubeVideo", paella.VideoElementBase,{
 
 	setVolume:function(volume) {
 		return this._deferredAction(() => {
-			this.video.setVolume(volume * 100);
+			this.video.setVolume && this.video.setVolume(volume * 100);
 		});
 	},
 
