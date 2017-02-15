@@ -157,7 +157,8 @@
 			"mimetype": "image/jpeg",
 			"time": 0,
 			"url": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/9ec013b3-f5ab-497a-9458-5438ae967f77/SCREEN.jpg",
-			"thumb": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/7f944c6c-240b-40b2-8273-63cb57af74f1/SCREEN.jpg"
+			"thumb": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/7f944c6c-240b-40b2-8273-63cb57af74f1/SCREEN.jpg",
+			"caption":"Caption test"
 		},
 		{
 			"id": "frame_3192",

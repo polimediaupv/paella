@@ -96,7 +96,7 @@ gulp.task("copy", function() {
 	gulp.src('resources/images/**')
 		.pipe(gulp.dest(`${config.outDir}player/resources/images`));
 
-	gulp.src('index.html')
+	gulp.src(['index.html','test.html'])
 		.pipe(gulp.dest(`${config.outDir}player/`));
 
 	function addPlugins(pluginPath) {
