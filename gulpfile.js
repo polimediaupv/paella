@@ -39,7 +39,7 @@ gulp.task("webserver", function() {
 });
 
 gulp.task("compile", function() {
-	gulp.src(["src/*.js","plugins/*/*.js"])
+	return gulp.src(["src/*.js","plugins/*/*.js"])
 		.pipe(traceur())
 		.pipe(concat("paella_player.js"))
 		.pipe(replace(/@version@/,getVersion()))
@@ -48,7 +48,7 @@ gulp.task("compile", function() {
 });
 
 gulp.task("compileDebug", function() {
-	gulp.src(["src/*.js","plugins/*/*.js"])
+	return gulp.src(["src/*.js","plugins/*/*.js"])
 		.pipe(traceur())
 		.pipe(concat("paella_player.js"))
 		.pipe(replace(/\@version\@/,getVersion()))
@@ -56,6 +56,7 @@ gulp.task("compileDebug", function() {
 });
 
 gulp.task("styles", function() {
+	let p = [];
 	function genSkin(skinPath) {
 		var stat = fs.statSync(skinPath);
 		if (stat.isDirectory()) {
@@ -64,7 +65,7 @@ gulp.task("styles", function() {
 		fs.readdirSync(skinPath)
 			.forEach(function(pathItem) {
 				let fullPath = path.join(skinPath,pathItem);
-				gulp.src([fullPath,
+				p.push(gulp.src([fullPath,
 						'resources/style/*.less',
 						'resources/style/*.css',
 						'plugins/**/*.less',
@@ -73,63 +74,70 @@ gulp.task("styles", function() {
 						'vendor/plugins/**/*.css'])
 					.pipe(concat(`style_${pathItem}`))
 					.pipe(less())
-					.pipe(gulp.dest(`${config.outDir}player/resources/style`));
+					.pipe(gulp.dest(`${config.outDir}player/resources/style`)));
 			});
 	}
 	genSkin('resources/style/skins');
 	genSkin('vendor/skins');
+	return Promise.all(p);
 });
 
 gulp.task("copy", function() {
-	gulp.src('config/**')
-		.pipe(gulp.dest(`${config.outDir}player/config`));
+	let p = [
+		gulp.src('config/**')
+			.pipe(gulp.dest(`${config.outDir}player/config`)),
 
-	gulp.src('repository_test/**')
-		.pipe(gulp.dest(`${config.outDir}`));
+		gulp.src('repository_test/**')
+			.pipe(gulp.dest(`${config.outDir}`)),
 
-	gulp.src('javascript/*')
-		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
+		gulp.src('javascript/*')
+			.pipe(gulp.dest(`${config.outDir}player/javascript/`)),
 
-	gulp.src('resources/bootstrap/**')
-		.pipe(gulp.dest(`${config.outDir}player/resources/bootstrap`));
+		gulp.src('resources/bootstrap/**')
+			.pipe(gulp.dest(`${config.outDir}player/resources/bootstrap`)),
 
-	gulp.src('resources/images/**')
-		.pipe(gulp.dest(`${config.outDir}player/resources/images`));
+		gulp.src('resources/images/**')
+			.pipe(gulp.dest(`${config.outDir}player/resources/images`)),
 
-	gulp.src(['index.html','test.html'])
-		.pipe(gulp.dest(`${config.outDir}player/`));
+		gulp.src(['index.html','test.html'])
+			.pipe(gulp.dest(`${config.outDir}player/`))
+	];
 
 	function addPlugins(pluginPath) {
 		fs.readdirSync(pluginPath).forEach((dir) => {
 			var fullDir = path.join('plugins',dir);
 			var resourcesDir = path.join(fullDir,'resources/**');
 			var depsDir = path.join(fullDir,'deps/**');
-			gulp.src(resourcesDir)
-				.pipe(gulp.dest(`${config.outDir}player/resources/style`));
-			gulp.src(depsDir)
-				.pipe(gulp.dest(`${config.outDir}player/resources/deps`));
+			p.push(gulp.src(resourcesDir)
+				.pipe(gulp.dest(`${config.outDir}player/resources/style`)));
+			p.push(gulp.src(depsDir)
+				.pipe(gulp.dest(`${config.outDir}player/resources/deps`)));
 		});
 	}
 
 	addPlugins('plugins');
 	addPlugins('vendor/plugins');
+
+	return Promise.all(p);
 });
 
 gulp.task("dictionary", function() {
+	let p = [];
 	fs.readdirSync('localization')
 		.forEach((dict) => {
 			let re = RegExp(".*_([a-z]+)\.json");
 			let result = re.exec(dict);
 			if (result) {
 				let lang = result[1];
-				gulp.src([
+				p.push(gulp.src([
 					'localization/' + dict,
 					`plugins/**/localization/${lang}.json`
 					])
 					.pipe(merge(`paella_${lang}.json`))
-					.pipe(gulp.dest(`${config.outDir}player/localization`)); 
+					.pipe(gulp.dest(`${config.outDir}player/localization`)));
 			}
 		});
+	return Promise.all(p);
 });
 
 
@@ -137,7 +145,7 @@ gulp.task("build", ["compile","styles","dictionary","copy"]);
 gulp.task("buildDebug", ["compileDebug","styles","dictionary","copy"]);
 
 gulp.task("watch", function() {
-	gulp.watch([
+	return gulp.watch([
 		'index.html',
 		'config/**',
 		'plugins/**',
@@ -147,7 +155,7 @@ gulp.task("watch", function() {
 });
 
 gulp.task("watchDebug", function() {
-	gulp.watch([
+	return gulp.watch([
 		'index.html',
 		'resources/**',
 		'repository_test/**',
@@ -159,11 +167,14 @@ gulp.task("watchDebug", function() {
 });
 
 gulp.task("tools", function() {
-	gulp.src('tools/**')
-		.pipe(gulp.dest(`${config.outDir}tools`));
+	let p = [
+		gulp.src('tools/**')
+			.pipe(gulp.dest(`${config.outDir}tools`)),
 
-	gulp.src('src/flash_streaming/*.swf')
-		.pipe(gulp.dest(`${config.outDir}tools/rtmp-test/`));
+		gulp.src('src/flash_streaming/*.swf')
+			.pipe(gulp.dest(`${config.outDir}tools/rtmp-test/`))
+	];
+	return Promise.all(p);
 });
 
 gulp.task("default",["build"]);

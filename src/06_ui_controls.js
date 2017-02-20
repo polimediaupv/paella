@@ -136,10 +136,12 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 
 	mouseOut:function(event){
 		var self = this;
-		if(self._hasSlides)
+		if(self._hasSlides) {
 			$("#divTimeImageOverlay").remove();
-		else
+		}
+		else {
 			$("#divTimeOverlay").remove();
+		}
 	},
 
 	drawTimeMarks:function(){
