@@ -54,7 +54,10 @@ Class ("paella.MpegDashVideo", paella.Html5Video,{
 						player.on(dashjs.MediaPlayer.events.STREAM_INITIALIZED,function(a,b) {
 							var bitrates = player.getBitrateInfoListFor("video");
 							This._deferredAction(function() {
-								This._player.pause();
+								if (!This._firstPlay) {
+									This._player.pause();
+									This._firstPlay = true;	
+								}
 								resolve();
 							});
 						});
