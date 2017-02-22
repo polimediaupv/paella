@@ -72,7 +72,7 @@
 			"es.upv.paella.captionsPlugin": {"enabled":true, "searchOnCaptions":true},
 			"es.upv.paella.extendedTabAdapterPlugin": {"enabled":true}, 			
 			"es.upv.paella.footprintsPlugin": {"enabled":false},
-			"es.upv.paella.frameControlPlugin":  {"enabled": true},
+			"es.upv.paella.frameControlPlugin":  {"enabled": true, "showFullPreview": "auto"},
 			"es.upv.paella.fullScreenButtonPlugin": {"enabled":true, "reloadOnFullscreen":{ "enabled":true, "keepUserSelection":true }},
 			"es.upv.paella.helpPlugin": {"enabled":true, "langs":["en","es"]},
 			"es.upv.paella.multipleQualitiesPlugin": {"enabled":true, "showWidthRes":true},
@@ -90,6 +90,7 @@
 			"//****": "Video Overlay Button Plugins",
 			"es.upv.paella.liveStreamingIndicatorPlugin":  { "enabled": true },
 			"es.upv.paella.showEditorPlugin":{"enabled":true,"alwaysVisible":true},
+			"es.upv.paella.arrowSlidesNavigatorPlugin": {"enabled": true, "showArrowsIn": "slave"},
 			
 			"//****": "TabBar Plugins",
 			"es.upv.paella.commentsPlugin": {"enabled": false},
