@@ -32,18 +32,18 @@ Class ("paella.plugins.ArrowSlidesNavigator", paella.EventDrivenPlugin, {
 	createOverlay:function(){
 		var self = this;
 
-		overlayContainer = paella.player.videoContainer.overlayContainer;
+		let overlayContainer = paella.player.videoContainer.overlayContainer;
 		
 		if (!this.arrows) {
 			this.arrows = document.createElement('div');
 			this.arrows.id = "arrows";
 			this.arrows.style.marginTop = "25%";
 			
-			arrowNext = document.createElement('div');
+			let arrowNext = document.createElement('div');
 			arrowNext.className = "buttonPlugin arrowSlideNavidator nextButton right"
 			this.arrows.appendChild(arrowNext);
 	
-			arrowPrev = document.createElement('div');
+			let arrowPrev = document.createElement('div');
 			arrowPrev.className = "buttonPlugin arrowSlideNavidator prevButton left"
 			this.arrows.appendChild(arrowPrev);
 	
@@ -89,7 +89,7 @@ Class ("paella.plugins.ArrowSlidesNavigator", paella.EventDrivenPlugin, {
 		paella.player.videoContainer.currentTime()
 		.then(function(currentTime) {
 			if (self._frames.length>1) {		
-				for (i = 0; i < self._frames.length-1; i++) { 
+				for (let i = 0; i < self._frames.length-1; i++) { 
 					var f1 = self._frames[i];
 					var f2 = self._frames[i+1];
 					
