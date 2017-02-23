@@ -239,14 +239,14 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 					thisClass.unloadAll(message);
 				}
 				else {
-					errorMessage = base.dictionary.translate("You are not authorized to view this resource");
+					let errorMessage = base.dictionary.translate("You are not authorized to view this resource");
 					thisClass.unloadAll(errorMessage);
 					paella.events.trigger(paella.events.error,{error:errorMessage});
 				}
 			})
 
 			.catch((error) => {
-				errorMessage = base.dictionary.translate(error);
+				let errorMessage = base.dictionary.translate(error);
 				thisClass.unloadAll(errorMessage);
 				paella.events.trigger(paella.events.error,{error:errorMessage});
 			});
