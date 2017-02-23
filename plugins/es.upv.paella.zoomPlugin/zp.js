@@ -436,8 +436,10 @@ Class ("paella.ZoomPlugin", paella.EventDrivenPlugin,{
 			self.loadPlugin();
 			// IF IS PAUSED ON COMPOSITION CHANGED
 			if(paella.player.paused()){
-			var currentTime = paella.player.videoContainer.currentTime();
-			self.imageUpdateOnPause(currentTime);
+				paella.player.videoContainer.currentTime()
+                .then(function(currentTime) {
+					self.imageUpdateOnPause(currentTime);
+				});
 			}
 		}
 		self._compChanged = true;
