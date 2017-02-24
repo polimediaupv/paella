@@ -93,11 +93,11 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		var stdIsFullScreen = (document.fullScreenElement !== undefined && document.fullScreenElement !== null);
 		
 		return (webKitIsFullScreen || msIsFullScreen || mozIsFullScreen || stdIsFullScreen);
-
 	},
+
 	goFullScreen: function() {
 		if (!this.isFullScreen()) {
-			if (base.userAgent.browser.IsMobileVersion && paella.player.videoContainer.isMonostream) {
+			if (base.userAgent.system.iOS) {
 				paella.player.videoContainer.masterVideo().goFullScreen();
 			}
 			else {			
