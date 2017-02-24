@@ -220,7 +220,7 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 		this._caption = captionContainer;
 
 
-		overlayContainer = paella.player.videoContainer.overlayContainer;
+		let overlayContainer = paella.player.videoContainer.overlayContainer;
 		
 		switch(this._showFullPreview) {
 			case "auto":
