@@ -21,15 +21,19 @@ new (Class (paella.userTracking.SaverPlugIn, {
 		if (typeof(p) != "object") {
 			p = {value: p};
 		}
-		var log = {
-			date: new Date(),
-			video: paella.initDelegate.getId(),
-			playing: !paella.player.videoContainer.paused(),
-			time: parseInt(paella.player.videoContainer.currentTime() + paella.player.videoContainer.trimStart()),
-			event: event,
-			params: p
-		};		
 		
-		paella.ajax.post({url:this._url+ "/"+ this._index + "/" + this._type + "/", params:JSON.stringify(log) });
+		paella.player.videoContainer.currentTime()
+		.then(function(currentTime) {		
+			var log = {
+				date: new Date(),
+				video: paella.initDelegate.getId(),
+				playing: !paella.player.videoContainer.paused(),
+				time: parseInt(currentTime + paella.player.videoContainer.trimStart()),
+				event: event,
+				params: p
+			};		
+			
+			paella.ajax.post({url:this._url+ "/"+ this._index + "/" + this._type + "/", params:JSON.stringify(log) });
+		});
 	}
 }))();

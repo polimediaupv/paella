@@ -51,6 +51,8 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 	},
 
 	setup:function() {
+		this._showFullPreview = this.config.showFullPreview || "auto";
+		
 		var thisClass = this;
 		var oldClassName;
 		var blockCounter = 1;
@@ -210,25 +212,42 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 
         frameRoot.setAttribute('style', 'display: table;');
         frame.setAttribute('style', 'display: table-cell; vertical-align:middle;');
-		var overlayContainer = paella.player.videoContainer.overlayContainer;
 
-		var streams = paella.initDelegate.initParams.videoLoader.streams;
-		if (streams.length == 1){
-			overlayContainer.addElement(frameRoot, overlayContainer.getMasterRect());
-		}
-		else if (streams.length >= 2){
-			overlayContainer.addElement(frameRoot, overlayContainer.getSlaveRect());
-		}
-		overlayContainer.enableBackgroundMode();
-
-		
 		var captionContainer = document.createElement('p');
 		captionContainer.className = "frameCaption";
 		captionContainer.innerHTML = caption || "";
 		frameRoot.append(captionContainer);
 		this._caption = captionContainer;
+
+
+		let overlayContainer = paella.player.videoContainer.overlayContainer;
 		
-		this.hiResFrame = frameRoot;
+		switch(this._showFullPreview) {
+			case "auto":
+				var streams = paella.initDelegate.initParams.videoLoader.streams;
+				if (streams.length == 1){
+					overlayContainer.addElement(frameRoot, overlayContainer.getMasterRect());
+				}
+				else if (streams.length >= 2){
+					overlayContainer.addElement(frameRoot, overlayContainer.getSlaveRect());
+				}
+				overlayContainer.enableBackgroundMode();
+				this.hiResFrame = frameRoot;
+				break;
+			case "master":
+				overlayContainer.addElement(frameRoot, overlayContainer.getMasterRect());
+				overlayContainer.enableBackgroundMode();
+				this.hiResFrame = frameRoot;
+				break;
+			case "slave":
+				var streams = paella.initDelegate.initParams.videoLoader.streams;
+				if (streams.length >= 2){
+					overlayContainer.addElement(frameRoot, overlayContainer.getSlaveRect());
+					overlayContainer.enableBackgroundMode();
+					this.hiResFrame = frameRoot;
+				}
+				break;
+		}
 	},
 
 	removeHiResFrame:function() {

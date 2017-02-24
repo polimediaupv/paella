@@ -1,6 +1,7 @@
 CHANGELOG
 =========
 
+
 * Paella 5.1.0
 
   * Now using ECMAScript 6, with Traceur compiler.
@@ -15,9 +16,12 @@ CHANGELOG
   * New Apple Air Play plugin.
   * New plugin to use the picture-in-picture mode in Safari for macOS.
   * New plugin to rate videos.
+  * Improvements in mobile platforms.
   * Search plugin updated to look into the frame list captions.
   * Default skin changed.
   * Refactoring, improvements and bug fixes.
+  * Changes in frameControl plugin. Show preview images over the player can be disabled and select the slides video(master/slave)
+  * New plugin 'es.upv.paella.arrowSlidesNavigatorPlugin': Allows slide navigation with next/prev arrows over the slide.
 
 * Paella 5.0.18
 

@@ -60,19 +60,22 @@ Class ("paella.plugins.FootPrintsPlugin",paella.ButtonPlugin,{
 	},
 
     onTimeUpdate:function() {
-		var videoCurrentTime = Math.round(paella.player.videoContainer.currentTime() + paella.player.videoContainer.trimStart());
-		if (this.inPosition <= videoCurrentTime && videoCurrentTime <= this.inPosition + this.INTERVAL_LENGTH) {
-			this.outPosition = videoCurrentTime;
-			if (this.inPosition + this.INTERVAL_LENGTH === this.outPosition) {
-				this.trackFootPrint(this.inPosition, this.outPosition);
-				this.inPosition = this.outPosition;
+   		paella.player.videoContainer.currentTime()
+		.then(function(currentTime) {	
+			var videoCurrentTime = Math.round(currentTime + paella.player.videoContainer.trimStart());
+			if (this.inPosition <= videoCurrentTime && videoCurrentTime <= this.inPosition + this.INTERVAL_LENGTH) {
+				this.outPosition = videoCurrentTime;
+				if (this.inPosition + this.INTERVAL_LENGTH === this.outPosition) {
+					this.trackFootPrint(this.inPosition, this.outPosition);
+					this.inPosition = this.outPosition;
+				}
 			}
-		}
-		else {
-			this.trackFootPrint(this.inPosition, this.outPosition);
-			this.inPosition = videoCurrentTime;
-			this.outPosition = videoCurrentTime;
-		}
+			else {
+				this.trackFootPrint(this.inPosition, this.outPosition);
+				this.inPosition = videoCurrentTime;
+				this.outPosition = videoCurrentTime;
+			}
+		});
     },
 
     trackFootPrint:function(inPosition, outPosition) {
