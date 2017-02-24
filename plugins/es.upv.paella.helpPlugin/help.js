@@ -22,7 +22,13 @@ Class ("paella.plugins.HelpPlugin",paella.ButtonPlugin, {
 		if (idx < 0) { idx = 0; }
 						
 		//paella.messageBox.showFrame("http://paellaplayer.upv.es/?page=usage");
-		paella.messageBox.showFrame("resources/style/help/help_" + availableLangs[idx] + ".html");
+		let url = "resources/style/help/help_" + availableLangs[idx] + ".html";
+		if (base.userAgent.browser.IsMobileVersion) {
+			window.open(url);
+		}
+		else {
+			paella.messageBox.showFrame(url);
+		}
 	}
 	
 });
