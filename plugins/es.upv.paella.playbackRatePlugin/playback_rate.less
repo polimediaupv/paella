@@ -12,7 +12,7 @@
 
 .buttonPlugin.showPlaybackRateButton {
 	text-align: center;
-	line-height: @playbackBarButtonHeight;
+	line-height: unit(@playbackBarButtonWidthPx - @playbackBarButtonPadding * 2,px);
 	background-position: -600% -100%;
 	font-size: 1em;
 }

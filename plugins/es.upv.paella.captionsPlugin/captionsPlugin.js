@@ -24,6 +24,8 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 	getDefaultToolTip:function() { return base.dictionary.translate("Subtitles"); },
 	getIndex:function() {return 509;},
 
+	closeOnMouseOut:function() { return true; },
+
 	checkEnabled:function(onSuccess) {
 		onSuccess(true);
 	},
@@ -102,8 +104,6 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 				}
 			}
 		}
-		
-
 	},
 
 	searchIntervaltoHighlight:function(time){
@@ -111,7 +111,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 		var resul = null;
 
 		if(paella.captions.getActiveCaptions()){
-			n = paella.captions.getActiveCaptions()._captions;
+			var n = paella.captions.getActiveCaptions()._captions;
 			n.forEach(function(l){
 				if(l.begin < time.currentTime && time.currentTime < l.end) thisClass.resul = l.id;
 			});

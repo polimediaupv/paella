@@ -16,6 +16,8 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 	_control_NotMyselfEvent: true,
 	_storedValue: false,
 
+	closeOnMouseOut:function() { return true; },
+	
 	checkEnabled:function(onSuccess) {
 		var enabled = false;
 		if (!base.userAgent.browser.IsMobileVersion) {
@@ -55,7 +57,7 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 	},
 
 	storeVolume:function(){
-		var This = false;
+		var This = this;
 		paella.player.videoContainer.masterVideo().volume()
 			.then(function(v) {
 				This._tempMasterVolume = v;
@@ -132,7 +134,7 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 			var rangeImageSlave = document.createElement('div');
 			rangeImageSlave.className = "image slave";
 			var rangeInputSlave = document.createElement('input');
-			thisClass._inputSlave = rangeInputSlave;
+			this._inputSlave = rangeInputSlave;
 			rangeInputSlave.type = "range";
 			rangeInputSlave.min = 0;
 			rangeInputSlave.max = 1;
@@ -164,17 +166,15 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 		}
 
 
-		paella.events.bind(paella.events.setVolume, function(event,params) {
+		paella.events.bind(paella.events.setVolume, (event,params) => {
 			if (this._showMasterVolume) {
 				rangeInputMaster.value = params.master;
 			}
-			if (!paella.player.videoContainer.isMonostream && this._showMasterVolume) {
-				rangeInputSlave.value = params.slave;
+			if (!paella.player.videoContainer.isMonostream && this._showMasterVolume && this._inputSlave) {
+				this._inputSlave.value = params.slave;
 			}
-			thisClass.updateClass();
+			this.updateClass();
 		});
-
-
 
 		domElement.appendChild(videoRangeContainer);
 		thisClass.updateClass();

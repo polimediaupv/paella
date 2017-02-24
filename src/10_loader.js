@@ -216,9 +216,12 @@ Class ("paella.DefaultInitDelegate", paella.InitDelegate, {
 
 	loadConfig: function() {
 		if (this._config) {
-			var defer = new $.Deferred();
-			defer.resolve(this._config);
-			return defer;
+			return new Promise((resolve) => {
+				base.dictionary.addDictionary(this._config);
+				var AccessControlClass = Class.fromString(this._config.player.accessControlClass || "paella.AccessControl");
+				this.initParams.accessControl = new AccessControlClass();
+				resolve(this._config);
+			});
 		}
 		else {
 			return this.parent();

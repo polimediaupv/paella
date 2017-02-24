@@ -17,6 +17,11 @@
  */
 
 Class ("paella.VideoQualityStrategy", {
+	getParams:function() {
+		return paella.player.config.player.videoQualityStrategyParams || {};
+	},
+
+
 	getQualityIndex:function(source) {
 		if (source.length>0) {
 			return source[source.length-1];
@@ -56,6 +61,32 @@ Class ("paella.BestFitVideoQualityStrategy",paella.VideoQualityStrategy,{
 			}
 		}
 
+		return index;
+	}
+});
+
+Class ("paella.LimitedBestFitVideoQualityStrategy",paella.VideoQualityStrategy,{
+	getQualityIndex:function(source) {
+		var index = source.length - 1;
+		var params = this.getParams();
+
+		if (source.length>0) {
+			//var selected = source[0];
+			var selected = null;
+			var win_h = $(window).height();
+			var maxRes = params.maxAutoQualityRes || 720;
+			var diff = Number.MAX_VALUE;
+
+			source.forEach(function(item,i) { 
+				if (item.res && item.res.h<=maxRes ) {
+					var itemDiff = Math.abs(win_h - item.res.h);
+					if (itemDiff<diff) {
+						selected = item;
+						index = i;
+					}
+				}
+			});
+		}
 		return index;
 	}
 });

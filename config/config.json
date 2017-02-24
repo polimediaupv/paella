@@ -2,7 +2,9 @@
 	"player":{
 		"accessControlClass":"paella.AccessControl",
         "profileFrameStrategy": "paella.ProfileFrameStrategy",
-		"videoQualityStrategy": "paella.BestFitVideoQualityStrategy",
+		"videoQualityStrategy": "paella.LimitedBestFitVideoQualityStrategy",
+		"videoQualityStrategyParams":{ "maxAutoQualityRes":720 },
+		"reloadOnFullscreen": true,
 
 		"deprecated-methods":[{"name":"streaming","enabled":true},
 				   {"name":"html","enabled":true},
@@ -10,12 +12,19 @@
                    {"name":"image","enabled":true}],
 
 		"methods":[
+			{ "factory":"ChromaVideoFactory", "enabled":true },
+			{ "factory":"WebmVideoFactory", "enabled":true },
 			{ "factory":"Html5VideoFactory", "enabled":true },
 			{ "factory":"MpegDashVideoFactory", "enabled":true },
-			{ "factory":"RTMPVideoFactory", "enabled":true },
 			{ "factory":"HLSVideoFactory", "enabled":true },
+			{ "factory":"RTMPVideoFactory", "enabled":true },
 			{ "factory":"ImageVideoFactory", "enabled":true },
-			{ "factory":"YoutubeVideoFactory", "enabled":true }
+			{ "factory":"YoutubeVideoFactory", "enabled":true },
+			{ "factory":"Video360ThetaFactory", "enabled":true },
+			{ "factory":"Video360Factory", "enabled":true }
+		],
+		"audioMethods":[
+			{ "factory":"MultiformatAudioFactory", "enabled":true }
 		],
         "audio": {
             "master": 1.0,
@@ -63,7 +72,7 @@
 			"es.upv.paella.captionsPlugin": {"enabled":true, "searchOnCaptions":true},
 			"es.upv.paella.extendedTabAdapterPlugin": {"enabled":true}, 			
 			"es.upv.paella.footprintsPlugin": {"enabled":false},
-			"es.upv.paella.frameControlPlugin":  {"enabled": true},
+			"es.upv.paella.frameControlPlugin":  {"enabled": true, "showFullPreview": "auto"},
 			"es.upv.paella.fullScreenButtonPlugin": {"enabled":true, "reloadOnFullscreen":{ "enabled":true, "keepUserSelection":true }},
 			"es.upv.paella.helpPlugin": {"enabled":true, "langs":["en","es"]},
 			"es.upv.paella.multipleQualitiesPlugin": {"enabled":true, "showWidthRes":true},
@@ -75,10 +84,13 @@
 			"es.upv.paella.viewModePlugin": { "enabled": true },
 			"es.upv.paella.volumeRangePlugin":{"enabled":true, "showMasterVolume": true, "showSlaveVolume": false },
 			"es.upv.paella.visualAnnotationPlugin": {"enabled":true,"url":"https://media.upv.es/rest/video/"},
-			
+			"es.upv.paella.pipModePlugin": { "enabled":true },
+			"es.upv.paella.ratePlugin": { "enabled":true },
+
 			"//****": "Video Overlay Button Plugins",
 			"es.upv.paella.liveStreamingIndicatorPlugin":  { "enabled": true },
 			"es.upv.paella.showEditorPlugin":{"enabled":true,"alwaysVisible":true},
+			"es.upv.paella.arrowSlidesNavigatorPlugin": {"enabled": true, "showArrowsIn": "slave"},
 			
 			"//****": "TabBar Plugins",
 			"es.upv.paella.commentsPlugin": {"enabled": false},
@@ -101,6 +113,7 @@
 			
 			"//****": "Search Service Plugins",
 			"es.upv.paella.search.captionsSearchPlugin": {"enabled":true},
+			"es.upv.paella.frameCaptionsSearchPlugin": {"enabled":true},
 			
 			"//****": "User Tracking Saver Plugins",
 			"es.upv.paella.usertracking.elasticsearchSaverPlugin": { "enabled": false, "url": "http://my.elastic.server"},

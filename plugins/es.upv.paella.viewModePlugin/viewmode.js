@@ -16,10 +16,12 @@ Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
 		onSuccess(!paella.player.videoContainer.isMonostream);
 	},
 
+	closeOnMouseOut:function() { return true; },
+
 	setup:function() {
 		var thisClass = this;
 
-    	Keys = {Tab:9,Return:13,Esc:27,End:35,Home:36,Left:37,Up:38,Right:39,Down:40};
+    	var Keys = {Tab:9,Return:13,Esc:27,End:35,Home:36,Left:37,Up:38,Right:39,Down:40};
 
         $(this.button).keyup(function(event) {
         	if (thisClass.isPopUpOpen()){
@@ -69,6 +71,11 @@ Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
 				var n = paella.player.videoContainer.sourceData[0].sources;
 				if(profile=="s_p_blackboard2" && n.hasOwnProperty("image")==false) { return; }
 				// END - BLACKBOARD DEPENDENCY
+
+				if (profile=="chroma" && !n.chroma) {
+					return;
+				}
+
 				var profileData = profiles[profile];
 				var buttonItem = thisClass.getProfileItemButton(profile, profileData);
 				thisClass.buttonItems[profile] = buttonItem;
@@ -101,8 +108,8 @@ Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
 		var thisClass = this;
 		var ButtonItem = this.buttonItems[profile];
 		
-		n = this.buttonItems;
-		arr = Object.keys(n);
+		var n = this.buttonItems;
+		var arr = Object.keys(n);
 		arr.forEach(function(i){
 			thisClass.buttonItems[i].className = thisClass.getButtonItemClass(i,false);
 		});
@@ -110,6 +117,12 @@ Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
 		if (ButtonItem) {
 			ButtonItem.className = thisClass.getButtonItemClass(profile,true);
 			paella.player.setProfile(profile);
+			paella.player.getProfile(profile)
+				.then((profileData) => {
+					if (!profileData.isMonostream) {
+						base.cookies.set("lastProfile", profile);
+					}
+				});
 		}
 		paella.player.controls.hidePopUp(this.getName());
 	},

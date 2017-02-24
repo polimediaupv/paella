@@ -1,40 +1,23 @@
-/*
-@font-face {
-	font-family: "istok-web";
-	src: url("IstokWeb-Regular.ttf") format("truetype");
-}
 
-@font-face {
-	font-family: "ubuntu";
-	src: url("Ubuntu-Regular.ttf") format("truetype");
-}
-
-@font-face {
-	font-family: "varela-round";
-	src: url("VarelaRound-Regular.ttf") format("truetype");
-}
-*/
 html {
 	margin: 0px;
 }
 
 body {
-	/*font-family: "ubuntu"; */
-	background-color: rgb(234, 234, 234);
+	font-family: 'Ubuntu', sans-serif;
 	margin: 0px;
 }
 
 pre {
 	padding: 20px;
-	border-bottom: 2px solid #fa8528;
-	border-top: 2px solid #fa8528;
+	border-bottom: 2px solid #cc0000;
+	border-top: 2px solid #cc0000;
 }
 
 iframe {
 	margin-left: auto;
 	margin-right: auto;
 	display: block;
-	box-shadow: 1px 1px 4px 0px black
 }
 
 h2 {
@@ -42,7 +25,7 @@ h2 {
 }
 
 h1 {
-	color: #fa8528;
+	color: #cc0000;
 }
 
 .alignCenter {
@@ -67,12 +50,12 @@ h1 {
 .pageHeader {
 	background-color: white;
 	padding: 20px;
-	border-bottom: 1px solid #fa8528;
+	border-bottom: 1px solid #cc0000;
 	height: 170px;
 }
 
 .content {
-	width: 90%;
+	width: 100%;
 	background-color: white;
 	margin-left: auto;
 	margin-right: auto;
@@ -88,7 +71,7 @@ h1 {
 }
 
 #headerText {
-	font-family: "istok-web";
+	font-family: 'Varela Round', sans-serif;;
 	font-size: 60pt;
 	display: block;
 	width: 100%;
@@ -234,9 +217,9 @@ a:active {
 }
 
 .txtblock{
-  color: #B57A4B;
+  color: black;
   font-size: large;
-  font-family: monospace;
+  font-family: 'Istok Web', sans-serif;;
   font-style: oblique;
 }
 

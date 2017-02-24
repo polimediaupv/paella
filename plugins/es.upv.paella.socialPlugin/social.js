@@ -13,6 +13,8 @@ Class ("paella.plugins.SocialPlugin",paella.ButtonPlugin,{
 	buttons: [],
 	selected_button: null,
 
+	closeOnMouseOut:function() { return true; },
+
 
     initialize:function() {
         this.parent();
@@ -30,7 +32,7 @@ Class ("paella.plugins.SocialPlugin",paella.ButtonPlugin,{
 	setup:function() {
 		var thisClass = this;
 
-    	Keys = {Tab:9,Return:13,Esc:27,End:35,Home:36,Left:37,Up:38,Right:39,Down:40};
+    	var Keys = {Tab:9,Return:13,Esc:27,End:35,Home:36,Left:37,Up:38,Right:39,Down:40};
 
         $(this.button).keyup(function(event) {
         	if(thisClass.isPopUpOpen()) {
@@ -60,16 +62,15 @@ Class ("paella.plugins.SocialPlugin",paella.ButtonPlugin,{
     },
 
 	buildContent:function(domElement) {
-		var thisClass = this;
 		this.buttonItems = {};
-		socialMedia = ['facebook','twitter', 'embed'];
-		socialMedia.forEach(function(mediaData) {
-		  var buttonItem = thisClass.getSocialMediaItemButton(mediaData);
-		  thisClass.buttonItems[socialMedia.indexOf(mediaData)] = buttonItem;
+		this.socialMedia = ['facebook','twitter', 'embed'];
+		this.socialMedia.forEach((mediaData) => {
+		  var buttonItem = this.getSocialMediaItemButton(mediaData);
+		  this.buttonItems[this.socialMedia.indexOf(mediaData)] = buttonItem;
 		  domElement.appendChild(buttonItem);
-		  thisClass.buttons.push(buttonItem);
+		  this.buttons.push(buttonItem);
 		});
-		this.selected_button = thisClass.buttons.length;
+		this.selected_button = this.buttons.length;
 	},
 
 	getSocialMediaItemButton:function(mediaData) {

@@ -62,7 +62,8 @@
 		"slaveVideo":{"content":"presentation","rect":[
 			{"aspectRatio":"4/3","left":"0","top":"0","width":"300","height":"300"}],"visible":"false","layer":"1"},
 		"background":{"content":"default_background_paella.jpg","zIndex":5,"rect":{"left":"0","top":"0","width":"1280","height":"720"},"visible":"true","layer":"0"},
-		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}}]
+		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}}],
+		"isMonostream":true
 	},
 	"slide":{
 		"name":{"es":"Solo presentación"},
@@ -77,7 +78,8 @@
 			{"aspectRatio":"5/4","left":"190","top":"0","width":"900","height":"720"},
 			{"aspectRatio":"4/3","left":"160","top":"0","width":"960","height":"720"}],"visible":"true","layer":"1"},
 		"background":{"content":"default_background_paella.jpg","zIndex":5,"rect":{"left":"0","top":"0","width":"1280","height":"720"},"visible":"true","layer":"0"},
-		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}}]
+		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}}],
+		"isMonostream":true
 	},
 	"slide_over_professor":{
 		"name":{"es":"Presentación sobre profesor"},
@@ -168,6 +170,26 @@
 		"slaveVideo":{"content":"presentation","rect":[
 			{"aspectRatio":"4/3","left":"0","top":"0","width":"300","height":"300"}],"visible":"false","layer":"1"},
 		"background":{"content":"slide_professor_paella.jpg","zIndex":5,"rect":{"left":"0","top":"0","width":"1280","height":"720"},"visible":"false","layer":"0"},
+		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}}],
+		"isMonostream":true
+	},
+	"chroma":{
+		"name":{"es":"Polimedia"},
+		"hidden":false,
+		"icon":"slide_icon.png",
+		"masterVideo":{"content":"presenter","rect":[
+			{"aspectRatio":"16/9","left":"0","top":"0","width":"1280","height":"720"},
+			{"aspectRatio":"16/10","left":"64","top":"0","width":"1152","height":"720"},
+			{"aspectRatio":"5/3","left":"40","top":"0","width":"1200","height":"720"},
+			{"aspectRatio":"5/4","left":"190","top":"0","width":"900","height":"720"},
+			{"aspectRatio":"4/3","left":"160","top":"0","width":"960","height":"720"}],"visible":"true","layer":"1"},
+		"slaveVideo":{"content":"presentation","rect":[
+			{"aspectRatio":"16/9","left":"0","top":"0","width":"1280","height":"720"},
+			{"aspectRatio":"16/10","left":"64","top":"0","width":"1152","height":"720"},
+			{"aspectRatio":"5/3","left":"40","top":"0","width":"1200","height":"720"},
+			{"aspectRatio":"5/4","left":"190","top":"0","width":"900","height":"720"},
+			{"aspectRatio":"4/3","left":"160","top":"0","width":"960","height":"720"}],"visible":"true","layer":"0"},
+		"background":{"content":"default_background_paella.jpg","zIndex":5,"rect":{"left":"0","top":"0","width":"1280","height":"720"},"visible":"true","layer":"0"},
 		"logos":[{"content":"paella_logo.png","zIndex":5,"rect":{"top":"10","left":"10","width":"49","height":"42"}}]
-	}		
+	}
 }

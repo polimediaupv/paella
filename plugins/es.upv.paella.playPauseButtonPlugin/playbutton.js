@@ -24,7 +24,7 @@ Class ("paella.plugins.PlayPauseButtonPlugin",paella.ButtonPlugin, {
 
 	action:function(button) {
 		paella.player.videoContainer.paused()
-			.done(function(paused) {
+			.then(function(paused) {
 				if (paused) {
 					paella.player.play();
 				}

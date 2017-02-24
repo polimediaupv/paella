@@ -9,7 +9,7 @@ Class ("paella.plugins.PlaybackRate",paella.ButtonPlugin,{
 	getAlignment:function() { return 'left'; },
 	getSubclass:function() { return "showPlaybackRateButton"; },
 	getIndex:function() { return 140; },
-	getMinWindowSize:function() { return 200; },
+	getMinWindowSize:function() { return 500; },
 	getName:function() { return "es.upv.paella.playbackRatePlugin"; },
 	getButtonType:function() { return paella.ButtonPlugin.type.popUpButton; },
 	getDefaultToolTip:function() { return base.dictionary.translate("Set playback rate"); },
@@ -17,6 +17,8 @@ Class ("paella.plugins.PlaybackRate",paella.ButtonPlugin,{
 		var enabled = (!base.userAgent.browser.IsMobileVersion && dynamic_cast("paella.Html5Video",paella.player.videoContainer.masterVideo())!=null);
 		onSuccess(enabled);
 	},
+
+	closeOnMouseOut:function() { return true; },
 
 	setup:function() {
 		this.defaultRate = 1.0;

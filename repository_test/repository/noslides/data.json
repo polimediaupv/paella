@@ -1,23 +1,105 @@
 {
-	"metadata": {
-		"duration": 525.955,
-		"title": "Captions Test - Polimedia Excel course"
-	},
-	"streams": [
-		{
-			"sources": {
-				"mp4": [
-					{
-						"src": "http://matterhorn.cc.upv.es:8080/static/engage-player/6b237477-5a2e-4cfb-b30a-3685ea4dd2eb/88d7ab26-ca08-4953-81fb-2872d57650f7/polimedia_muxed.mp4",
-						"mimetype": "video/mp4",
-						"res": {
-							"w": "1280",
-							"h": "720"
-						}
-					}
-				]
-			},
-			"preview": "http://matterhorn.cc.upv.es:8080/static/engage-player/6b237477-5a2e-4cfb-b30a-3685ea4dd2eb/attachment-2/polimedia_muxed.jpg"
-		}
-	]
+    "metadata": {
+        "duration": 601.55,
+        "title": "Respuesta en Frecuencia: Diagrama de Bode"
+    },
+    "streams": [
+        {
+            "sources": {
+                "mp4": [
+                    {
+                        "src": "https://media.upv.es/resources/politube/videos/c6cbde80-b2f5-11e6-bd20-ef4f4830f0f5/polimedia/presenter.mp4",
+                        "mimetype": "video/mp4",
+                        "res": {
+                            "w": 1662,
+                            "h": 1080
+                        }
+                    },
+                    {
+                        "src": "https://media.upv.es/resources/politube/videos/c6cbde80-b2f5-11e6-bd20-ef4f4830f0f5/polimedia/presenter-720.mp4",
+                        "mimetype": "video/mp4",
+                        "res": {
+                            "w": 1108,
+                            "h": 720
+                        }
+                    },
+                    {
+                        "src": "https://media.upv.es/resources/politube/videos/c6cbde80-b2f5-11e6-bd20-ef4f4830f0f5/polimedia/presenter-480.mp4",
+                        "mimetype": "video/mp4",
+                        "res": {
+                            "w": 740,
+                            "h": 480
+                        }
+                    },
+                    {
+                        "src": "https://media.upv.es/resources/politube/videos/c6cbde80-b2f5-11e6-bd20-ef4f4830f0f5/polimedia/presenter-360.mp4",
+                        "mimetype": "video/mp4",
+                        "res": {
+                            "w": 554,
+                            "h": 360
+                        }
+                    }
+                ]
+            },
+            "preview": "https://media.upv.es/resources/politube/videos/c6cbde80-b2f5-11e6-bd20-ef4f4830f0f5/slides/frame.0.jpg"
+        }
+    ],
+    "frameList": [
+        {
+            "mimetype": "image/jpg",
+            "url": "https://media.upv.es/resources/politube/videos/c6cbde80-b2f5-11e6-bd20-ef4f4830f0f5/slides/frame.0.jpg",
+            "id": "frame_0",
+            "thumb": "https://media.upv.es/resources/politube/videos/c6cbde80-b2f5-11e6-bd20-ef4f4830f0f5/slides/thumb.0.jpg",
+            "time": 0
+        },
+        {
+            "mimetype": "image/jpg",
+            "url": "https://media.upv.es/resources/politube/videos/c6cbde80-b2f5-11e6-bd20-ef4f4830f0f5/slides/frame.36.jpg",
+            "id": "frame_36",
+            "thumb": "https://media.upv.es/resources/politube/videos/c6cbde80-b2f5-11e6-bd20-ef4f4830f0f5/slides/thumb.36.jpg",
+            "time": 36
+        },
+        {
+            "mimetype": "image/jpg",
+            "url": "https://media.upv.es/resources/politube/videos/c6cbde80-b2f5-11e6-bd20-ef4f4830f0f5/slides/frame.72.jpg",
+            "id": "frame_72",
+            "thumb": "https://media.upv.es/resources/politube/videos/c6cbde80-b2f5-11e6-bd20-ef4f4830f0f5/slides/thumb.72.jpg",
+            "time": 72
+        },
+        {
+            "mimetype": "image/jpg",
+            "url": "https://media.upv.es/resources/politube/videos/c6cbde80-b2f5-11e6-bd20-ef4f4830f0f5/slides/frame.144.jpg",
+            "id": "frame_144",
+            "thumb": "https://media.upv.es/resources/politube/videos/c6cbde80-b2f5-11e6-bd20-ef4f4830f0f5/slides/thumb.144.jpg",
+            "time": 144
+        },
+        {
+            "mimetype": "image/jpg",
+            "url": "https://media.upv.es/resources/politube/videos/c6cbde80-b2f5-11e6-bd20-ef4f4830f0f5/slides/frame.324.jpg",
+            "id": "frame_324",
+            "thumb": "https://media.upv.es/resources/politube/videos/c6cbde80-b2f5-11e6-bd20-ef4f4830f0f5/slides/thumb.324.jpg",
+            "time": 324
+        },
+        {
+            "mimetype": "image/jpg",
+            "url": "https://media.upv.es/resources/politube/videos/c6cbde80-b2f5-11e6-bd20-ef4f4830f0f5/slides/frame.396.jpg",
+            "id": "frame_396",
+            "thumb": "https://media.upv.es/resources/politube/videos/c6cbde80-b2f5-11e6-bd20-ef4f4830f0f5/slides/thumb.396.jpg",
+            "time": 396
+        },
+        {
+            "mimetype": "image/jpg",
+            "url": "https://media.upv.es/resources/politube/videos/c6cbde80-b2f5-11e6-bd20-ef4f4830f0f5/slides/frame.468.jpg",
+            "id": "frame_468",
+            "thumb": "https://media.upv.es/resources/politube/videos/c6cbde80-b2f5-11e6-bd20-ef4f4830f0f5/slides/thumb.468.jpg",
+            "time": 468
+        },
+        {
+            "mimetype": "image/jpg",
+            "url": "https://media.upv.es/resources/politube/videos/c6cbde80-b2f5-11e6-bd20-ef4f4830f0f5/slides/frame.540.jpg",
+            "id": "frame_540",
+            "thumb": "https://media.upv.es/resources/politube/videos/c6cbde80-b2f5-11e6-bd20-ef4f4830f0f5/slides/thumb.540.jpg",
+            "time": 540
+        }
+    ]
 }

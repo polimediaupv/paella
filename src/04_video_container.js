@@ -132,12 +132,15 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	currentSlaveVideoData:null,
 	_force:false,
 
+	_playOnClickEnabled: true,
+
 	initialize:function(id) {
 		var self = this;
 		var style = {position:'absolute',left:'0px',right:'0px',top:'0px',bottom:'0px',overflow:'hidden'};
 		this.parent('div',id,style);
 		$(this.domElement).click(function(evt) {
 			if (self.firstClick && base.userAgent.browser.IsMobileVersion) return;
+			if (self.firstClick && !self._playOnClickEnabled) return;
 			paella.player.videoContainer.paused()
 				.then(function(paused) {
 					self.firstClick = true;
@@ -198,6 +201,18 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		this.timeupdateEventTimer = null;
 	},
 
+	enablePlayOnClick:function() {
+		this._playOnClickEnabled = true;
+	},
+
+	disablePlayOnClick:function() {
+		this._playOnClickEnabled = false;
+	},
+
+	isPlayOnClickEnabled:function() {
+		return this._playOnClickEnabled;
+	},
+
 	play:function() {
 		paella.events.trigger(paella.events.play);
 		this.startTimeupdate();
@@ -234,27 +249,27 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	},
 
 	trimStart:function() {
-		var defer = $.Deferred();
-		defer.resolve(this._trimming.start);
-		return defer;
+		return new Promise((resolve) => {
+			resolve(this._trimming.start);
+		});
 	},
 
 	trimEnd:function() {
-		var defer = $.Deferred();
-		defer.resolve(this._trimming.end);
-		return defer;
+		return new Promise((resolve) => {
+			resolve(this._trimming.end);
+		});
 	},
 
 	trimEnabled:function() {
-		var defer = $.Deferred();
-		defer.resolve(this._trimming.enabled);
-		return defer;
+		return new Promise((resolve) => {
+			resolve(this._trimming.enabled);
+		});
 	},
 
 	trimming:function() {
-		var defer = $.Deferred();
-		defer.resolve(this._trimming);
-		return defer;
+		return new Promise((resolve) => {
+			resolve(this._trimming);
+		});
 	},
 
 	enableTrimming:function() {
@@ -268,32 +283,30 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	},
 
 	setTrimming:function(start,end) {
-		var This = this;
-		var defer = $.Deferred();
-		var currentTime = 0;
-		var duration = 0;
+		return new Promise((resolve) => {
+			let currentTime = 0;
+			let duration = 0;
 
-		this.currentTime()
-			.then(function(c) {
-				currentTime = c;
-				return This.duration();
-			})
+			this.currentTime()
+				.then((c) => {
+					currentTime = c;
+					return this.duration();
+				})
 
-			.then(function(d) {
-				duration = d;
-				This._trimming.start = start;
-				This._trimming.end = end;
-				if (currentTime<This._trimming.start) {
-					This.setCurrentTime(This._trimming.start);
-				}
-				if (currentTime>This._trimming.end) {
-					This.setCurrentTime(This._trimming.end);
-				}
-				paella.events.trigger(paella.events.setTrim,{trimEnabled:This._trimming.enabled,trimStart:This._trimming.start,trimEnd:This._trimming.end});
-				defer.resolve();
-			});
-
-		return defer;
+				.then((d) => {
+					duration = d;
+					this._trimming.start = start;
+					this._trimming.end = end;
+					if (currentTime<this._trimming.start) {
+						this.setCurrentTime(this._trimming.start);
+					}
+					if (currentTime>this._trimming.end) {
+						this.setCurrentTime(this._trimming.end);
+					}
+					paella.events.trigger(paella.events.setTrim,{trimEnabled:this._trimming.enabled,trimStart:this._trimming.start,trimEnd:this._trimming.end});
+					resolve();
+				});
+		});
 	},
 
 	setTrimmingStart:function(start) {
@@ -388,58 +401,119 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 	}
 });
 
-Class ("paella.VideoContainer", paella.VideoContainerBase,{
-	containerId:'',
-	video1Id:'',
-	video2Id:'',
-	backgroundId:'',
-	container:null,
-	profileFrameStrategy:null,
+(function() {
 
-	videoClasses:{
-		master:"video masterVideo",
-		slave:"video slaveVideo"
-	},
+	class StreamProvider {
+		constructor(videoData) {
+			this._masterVideo = null;
+			this._slaveVideos = [];
+			this._videoStreams = [];
+			this._audioStreams = [];
+		}
 
-	//fitHorizontal:false,
-	isHidden:false,
-	logos:null,
+		init(videoData) {
+			if (videoData.length==0) throw Error("Empty video data.");
+			this._videoData = videoData;
 
-	overlayContainer:null,
-	videoSyncTimeMillis:5000,
-	currentMasterVideoRect:{},
-	currentSlaveVideoRect:{},
+			if (!this._videoData.some((stream) => { return stream.role=="master"; })) {
+				this._videoData[0].role = "master";
+			}
 
+			this._videoData.forEach((stream, index) => {
+				stream.type = stream.type || 'video';
+				if (stream.role=='master') {
+					this._masterVideo = stream;
+				}
+				else if (stream.type=='video') {
+					this._slaveVideos.push(stream);
+				}
 
-	_maxSyncDelay:0.5,
-	_isMonostream:false,
+				if (stream.type=='video') {
+					this._videoStreams.push(stream);
+				}
+				else if (stream.type=='audio') {
+					this._audioStreams.push(stream);
+				}
+			});
 
-	_videoQualityStrategy:null,
+			if (this._videoStreams.length==0) {
+				throw new Error("No video streams found. Paella Player requires at least one video stream.");
+			}
+		}
 
-	_sourceData:null,
-	_isMasterReady:false,
-	_isSlaveReady:false,
+		get masterVideo() {
+			return this._masterVideo;
+		}
 
-	_firstLoad:false,
-	_playOnLoad:false,
-	_seekToOnLoad:0,
-	
-	_defaultMasterVolume:1,
-	_defaultSlaveVolume:1,
-	
-	_showPosterFrame:true,
-	_currentProfile:null,
+		get slaveVideos() {
+			return this._slaveVideos;
+		}
 
-	initialize:function(id) {
-		this.parent(id);
+		get mainSlaveVideo() {
+			return this._slaveVideos.length>0 ? this._slaveVideos[0]:null;
+		}
+
+		get audioStreams() {
+			return this._audioStreams;
+		}
+	}
+
+	paella.StreamProvider = StreamProvider;
+
+})();
+
+class VideoContainer extends paella.VideoContainerBase {
+	constructor(id) {
+		super(id);
+		this.containerId = '';
+		this.video1Id = '';
+		this.videoSlaveId = '';
+		this.backgroundId = '';
+		this.container = null;
+		this.profileFrameStrategy = null;
+
+		this.videoClasses = {
+			master:"video masterVideo",
+			slave:"video slaveVideo"
+		};
+
+		this.isHidden = false;
+		this.logos = null;
+
+		this.overlayContainer = null;
+		this.videoSyncTimeMillis = 5000;
+		this.currentMasterVideoRect = {};
+		this.currentSlaveVideoRect = {};
+
+		this._maxSyncDelay = 0.5;
+		this._isMonostream = false;
+
+		this._videoQualityStrategy = null;
+
+		this._sourceData = null;
+		this._isMasterReady = false;
+		this._isSlaveReady = false;
+
+		this._firstLoad = false;
+		this._playOnLoad = false;
+		this._seekToOnLoad = 0;
+		
+		this._defaultMasterVolume = 1;
+		this._defaultSlaveVolume = 1;
+		
+		this._showPosterFrame = true;
+		this._currentProfile = null;
+
 		var thisClass = this;
 		this._sourceData = [];
 		this.containerId = id + '_container';
-		this.video1Id = id + '_1';
-		this.video2Id = id + '_2';
+		this.video1Id = id + '_master';
+		this.videoSlaveId = id + '_slave_';
+		this.audioId = id + '_audio_';
 		this.backgroundId = id + '_bkg';
 		this.logos = [];
-		this._videoQualityStrategy = new paella.VideoQualityStrategy();
+		this._videoQualityStrategy = this._getQualityStrategyObject();
+
 
 		this.container = new paella.DomNode('div',this.containerId,{position:'relative',display:'block',marginLeft:'auto',marginRight:'auto',width:'1024px',height:'567px'});
 		this.container.domElement.setAttribute('role','main');
@@ -472,6 +546,8 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 
 		}
 
+		this._streamProvider = new paella.StreamProvider();
+
 		Object.defineProperty(this,'ready',{
 			get: function() {
 				return this._isMasterReady && this._isSlaveReady;
@@ -483,64 +559,133 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 				return this._isMonostream;
 			}
 		});
-	},
+	}
 
-	setVideoQualityStrategy:function(strategy) {
+	_getQualityStrategyObject() {
+		var Constructor = null;
+		paella.player.config.player
+			.videoQualityStrategy
+			.split('.')
+			.forEach(function(ns,index,array) {
+				if (index==0 && array.length>1) {
+					Constructor = window[ns];
+				}
+				else {
+					Constructor = Constructor[ns];
+				}
+			});
+	
+		Constructor = Constructor || paella.VideoQualityStrategy();
+		return new Constructor();
+	}
+
+	getVideoData() {
+		return new Promise((resolve) => {
+			let result = { master:null, slaves:[] };
+			let promises = [];
+			if (this.masterVideo()) {
+				promises.push(this.masterVideo().getVideoData()
+					.then((masterVideoData) => {
+						result.master = masterVideoData;
+						return Promise.resolve(masterVideoData);
+					})
+				);
+			}
+			if (this.slaveVideo()) {
+				promises.push(this.slaveVideo().getVideoData()
+					.then((slaveVideoData) => {
+						result.slaves.push(slaveVideoData);
+						return Promise.resolve(slaveVideoData);
+					})
+				);
+			}
+
+			Promise.all(promises)
+				.then(() => {
+					resolve(result);
+				});
+		});
+	}
+
+	setVideoQualityStrategy(strategy) {
 		this._videoQualityStrategy = strategy;
 		if (this.masterVideo()) this.masterVideo().setVideoQualityStrategy(this._videoQualityStrategy);
 		if (this.slaveVideo()) slaveVideo.setVideoQualityStrategy(this._videoQualityStrategy);
-	},
+	}
 
-	setProfileFrameStrategy:function(strategy) {
+	setProfileFrameStrategy(strategy) {
 		this.profileFrameStrategy = strategy;
-	},
+	}
 
-	getMasterVideoRect:function() {
+	getMasterVideoRect() {
 		return this.currentMasterVideoRect;
-	},
+	}
 
-	getSlaveVideoRect:function() {
+	getSlaveVideoRect() {
 		return this.currentSlaveVideoRect;
-	},
-
-	setHidden:function(hidden) {
+	}
+ 
+	setHidden(hidden) {
 		this.isHidden = hidden;
-	},
+	}
 
-	hideVideo:function() {
+	hideVideo() {
 		this.setHidden(true);
-	},
+	}
 
-	publishVideo:function() {
+	publishVideo() {
 		this.setHidden(false);
-	},
+	}
 
-	syncVideos:function() {
+	syncVideos() {
 		var This = this;
 		var masterVideo = this.masterVideo();
 		var slaveVideo = this.slaveVideo();
 		var masterCurrent = 0;
 		var slaveCurrent = 0;
-		if (!this._isMonostream && masterVideo && slaveVideo) {
+		if (!this._isMonostream && masterVideo) {
 			masterVideo.currentTime()
 				.then(function(m) {
 					masterCurrent = m;
-					return slaveVideo.currentTime();
+					if (slaveVideo) {
+						return slaveVideo.currentTime();
+					}
+					else {
+						return Promise.resolve(-1);
+					}
 				})
 
 				.then(function(s) {
-					slaveCurrent = s;
-					var diff = Math.abs(masterCurrent - slaveCurrent);
+					if (s>=-1) {
+						slaveCurrent = s;
+						var diff = Math.abs(masterCurrent - slaveCurrent);
 
-					if (diff>This._maxSyncDelay) {
-						base.log.debug("Sync videos performed, diff=" + diff);
-						slaveVideo.setCurrentTime(masterCurrent);
+						if (diff>This._maxSyncDelay) {
+							base.log.debug("Sync videos performed, diff=" + diff);
+							slaveVideo.setCurrentTime(masterCurrent);
+						}
 					}
+					let audioPromises = [];
+					This._audioPlayers.forEach((player) => {
+						audioPromises.push(player.currentTime());
+					});
+					return Promise.all(audioPromises);
+				})
+
+				.then(function(audioTime) {
+					audioTime.forEach(function(t,index) {
+						let player = This._audioPlayers[index];
+						let diff = Math.abs(masterCurrent - t);
+						if (diff>This._maxSyncDelay) {
+							base.log.debug("Sync audio performed, diff=" + diff);
+							player.setCurrentTime(t);
+						}
+					});
 				});
 		}
-	},
+	}
 
-	checkVideoBounds:function(trimming, current, paused, actualDuration) {
+	checkVideoBounds(trimming, current, paused, actualDuration) {
 		var This = this;
 		var start = trimming.start;
 		var end = trimming.end;
@@ -560,58 +705,59 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 				this.setCurrentTime(start + 1);
 			}
 		}
-	},
+	}
 
-	play:function() {
-		var This = this;
-		var defer = $.Deferred();
-		if (!this._firstLoad) {
-			this._firstLoad = true;
-		}
-		else {
-			this._playOnLoad = true;
-		}
-		var masterVideo = this.masterVideo();
-		var slaveVideo = this.slaveVideo();
+	play() {
+		return new Promise((resolve) => {
+			if (!this._firstLoad) {
+				this._firstLoad = true;
+			}
+			else {
+				this._playOnLoad = true;
+			}
+			let masterVideo = this.masterVideo();
+			let slaveVideo = this.slaveVideo();
+			if (masterVideo) {
+				masterVideo.play()
+					.then(() => {
+						if (slaveVideo) {
+							slaveVideo.play();
+						}
+						this._audioPlayers.forEach((player) => {
+							player.play();
+						});
+						super.play();
+						resolve();
+					});
+			}
+			else {
+				reject(new Error("Invalid master video"));
+			}
+		});
+	}
 
-		if (masterVideo) {
-			masterVideo.play()
-				.then(function() {
-					if (slaveVideo) {
-						slaveVideo.play();
-					}
-					This.parent();
-					defer.resolve();
-				});
-		}
-		else {
-			defer.reject(new Error("Invalid master video"));
-		}
+	pause() {
+		return new Promise((resolve,reject) => {
+			var masterVideo = this.masterVideo();
+			var slaveVideo = this.slaveVideo();
+			if (masterVideo) {
+				masterVideo.pause()
+					.then(() => {
+						if (slaveVideo) slaveVideo.pause();
+						this._audioPlayers.forEach((player) => {
+							player.pause();
+						});
+						super.pause();
+						resolve();
+					});
+			}
+			else {
+				reject(new Error("invalid master video"));
+			}
+		});
+	}
 
-		return defer;
-	},
-
-	pause:function() {
-		var This = this;
-		var defer = $.Deferred();
-		var masterVideo = this.masterVideo();
-		var slaveVideo = this.slaveVideo();
-		if (masterVideo) {
-			masterVideo.pause()
-				.then(function() {
-					if (slaveVideo) slaveVideo.pause();
-					This.parent();
-					defer.resolve();
-				});
-		}
-		else {
-			defer.reject(new Error("invalid master video"));
-		}
-
-		return defer;
-	},
-
-	next:function() {
+	next() {
 		if (this._trimming.end!==0) {
 			this.setCurrentTime(this._trimming.end);
 		}
@@ -621,15 +767,15 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 					this.setCurrentTime(d);
 				});
 		}
-		this.parent();
-	},
+		super.next();
+	}
 
-	previous:function() {
+	previous() {
 		this.setCurrentTime(this._trimming.start);
-		this.parent();
-	},
+		super.previous();
+	}
 
-	setCurrentTime:function(time) {
+	setCurrentTime(time) {
 		// if (time<=0) time = 1;  Fix #176
 		if (this._trimming.enabled) {
 			if (time<this._trimming.start) time = this._trimming.start;
@@ -637,27 +783,26 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		}
 		this.masterVideo().setCurrentTime(time);
 		if (this.slaveVideo()) this.slaveVideo().setCurrentTime(time);
-		this.parent();
-	},
+		this._audioPlayers.forEach((player) => { player.setCurrentTime(time); });
+		super.setCurrentTime(time);
+	}
 
-	currentTime:function() {
-		if (this._trimming.enabled) {
+	currentTime(ignoreTrimming = false) {
+		if (this._trimming.enabled && !ignoreTrimming) {
 			var trimStart = this._trimming.start;
-			var defer = $.Deferred();
-
-			this.masterVideo().currentTime()
-				.then(function(t) {
-					defer.resolve(t - trimStart);
-				});
-
-			return defer;
+			return new Promise((resolve) => {
+				this.masterVideo().currentTime()
+					.then(function(t) {
+						resolve(t - trimStart);
+					});
+			});
 		}
 		else {
 			return this.masterVideo().currentTime();
 		}
-	},
+	}
 
-	setPlaybackRate:function(rate) {
+	setPlaybackRate(rate) {
 		var masterVideo = this.masterVideo();
 		var slaveVideo = this.slaveVideo();
 		if (masterVideo) {
@@ -666,47 +811,46 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		if (slaveVideo) {
 			slaveVideo.setPlaybackRate(rate);
 		}
-		this.parent();
-	},
+		super.setPlaybackRate(rate);
+	}
 
-	setVolume:function(params) {
-		var defer = $.Deferred();
-		var This = this;
-		var masterVideo = this.masterVideo();
-		var slaveVideo = this.slaveVideo();
-		var masterVolume = 0;
-		var slaveVolume = 0;
+	setVolume(params) {
+		return new Promise((resolve) => {
+			var masterVideo = this.masterVideo();
+			var slaveVideo = this.slaveVideo();
+			var masterVolume = 0;
+			var slaveVolume = 0;
 
-		function setVolumes() {
-			if (typeof(params)=='object') {
-				masterVolume = params.master!==undefined ? params.master:masterVolume;
-				slaveVolume = params.slave!==undefined ? params.slave:slaveVolume;
+			function setVolumes() {
+				if (typeof(params)=='object') {
+					masterVolume = params.master!==undefined ? params.master:masterVolume;
+					slaveVolume = params.slave!==undefined ? params.slave:slaveVolume;
+				}
+				else {
+					masterVolume = params;
+					slaveVolume = 0;
+				}
+				masterVideo.setVolume(masterVolume);
+				if (slaveVideo) slaveVideo.setVolume(slaveVolume);
+				paella.events.trigger(paella.events.setVolume,{ master:masterVolume, slave:slaveVolume });
 			}
-			else {
-				masterVolume = params;
-				slaveVolume = 0;
-			}
-			masterVideo.setVolume(masterVolume);
-			if (slaveVideo) slaveVideo.setVolume(slaveVolume);
-			paella.events.trigger(paella.events.setVolume,{ master:masterVolume, slave:slaveVolume });
-		}
 
-		masterVideo.volume()
-			.then(function(v) {
-				masterVolume = v;
-				return slaveVideo ? slaveVideo.volume():0;
-			})
+			masterVideo.volume()
+				.then((v) => {
+					masterVolume = v;
+					return slaveVideo ? slaveVideo.volume():0;
+				})
 
-			.then(function (v) {
-				slaveVolume = v;
-				setVolumes();
-				defer.resolve(params);
-			});
+				.then((v) => {
+					slaveVolume = v;
+					setVolumes();
+					resolve(params);
+				});
 
-		return defer;
-	},
+		});
+	}
 
-	volume:function(video) {
+	volume(video) {
 		if (!video) {
 			return this.masterVideo().volume();
 		}
@@ -716,25 +860,25 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		else if (video=="slave" && this.slaveVideo()) {
 			return this.slaveVideo().volume();
 		}
-	},
+	}
 	
-	setDefaultMasterVolume:function(vol) {
+	setDefaultMasterVolume(vol) {
 		this._defaultMasterVolume = vol;
-	},
+	}
 	
-	setDefaultSlaveVolume:function(vol) {
+	setDefaultSlaveVolume(vol) {
 		this._defaultSlaveVolume = vol;
-	},
+	}
 
-	masterVideo:function() {
+	masterVideo() {
 		return this.container.getNode(this.video1Id);
-	},
+	}
 
-	slaveVideo:function() {
-		return this.container.getNode(this.video2Id);
-	},
+	slaveVideo() {
+		return this.container.getNode(this.videoSlaveId + 1);
+	}
 
-	duration:function(ignoreTrimming) {
+	duration(ignoreTrimming) {
 		var This = this;
 		return this.masterVideo().duration()
 			.then(function(d) {
@@ -743,126 +887,133 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 				}
 				return d;
 			});
-	},
+	}
 
-	paused:function() {
+	paused() {
 		return this.masterVideo().isPaused();
-	},
+	}
 
-	trimEnabled:function() {
+	trimEnabled() {
 		return this._trimming.enabled;
-	},
+	}
 
-	trimStart:function() {
+	trimStart() {
 		if (this._trimming.enabled) {
 			return this._trimming.start;
 		}
 		else {
 			return 0;
 		}
-	},
+	}
 
-	trimEnd:function() {
+	trimEnd() {
 		if (this._trimming.enabled) {
 			return this._trimming.end;
 		}
 		else {
 			return this.duration();
 		}
-	},
+	}
 
-	getQualities:function() {
+	getQualities() {
 		var qualities = [];
-		var defer = $.Deferred();
+		return new Promise((resolve) => {
+			this.masterVideo().getQualities()
+				.then(function(q) {
+					resolve(q);
+				});
+		});
+	}
 
-		this.masterVideo().getQualities()
-			.then(function(q) {
-				defer.resolve(q);
-			});
-
-		return defer;
-	},
-
-	setQuality:function(index) {
+	setQuality(index) {
 		var masterQualities = [];
 		var slaveQualities = [];
-		var defer = $.Deferred();
 		var This = this;
+		return new Promise((resolve) => {
+			function doSetQuality() {
+				var masterIndex = index<masterQualities.length ? index:masterQualities.length - 1;
+				var slaveIndex = index<slaveQualities.length ? index:slaveQualities.length - 1;
+				This.masterVideo().setQuality(masterIndex)
+					.then(() => {
+						if (This.slaveVideo()) {
+							return This.slaveVideo().setQuality(slaveIndex);
+						}
+						else {
+							return paella_DeferredResolved();
+						}
+					})
 
-		function doSetQuality() {
-			var masterIndex = index<masterQualities.length ? index:masterQualities.length - 1;
-			var slaveIndex = index<slaveQualities.length ? index:slaveQualities.length - 1;
-			This.masterVideo().setQuality(masterIndex)
-				.then(function() {
-					if (This.slaveVideo()) {
-						return This.slaveVideo().setQuality(slaveIndex);
+					.then(() => {
+						paella.events.trigger(paella.events.qualityChanged);
+						resolve();
+					});
+			}
+
+			this.masterVideo().getQualities()
+				.then((q) => {
+					masterQualities = q;
+					if (this.slaveVideo()) {
+						return this.slaveVideo().getQualities();
 					}
 					else {
 						return paella_DeferredResolved();
 					}
 				})
 
-				.then(function() {
-					paella.events.trigger(paella.events.qualityChanged);
-					defer.resolve();
+				.then((q) => {
+					slaveQualities = q || [];
+					doSetQuality();
 				});
-		}
+		});
+	}
 
-		this.masterVideo().getQualities()
-			.then(function(q) {
-				masterQualities = q;
-				if (This.slaveVideo()) {
-					return This.slaveVideo().getQualities();
-				}
-				else {
-					return paella_DeferredResolved();
-				}
-			})
-
-			.then(function(q) {
-				slaveQualities = q || [];
-				doSetQuality();
-			});
-
-
-		return defer;
-	},
-
-	getCurrentQuality:function() {
+	getCurrentQuality() {
 		return this.masterVideo().getCurrentQuality();
-	},
+	}
 
-	setStartTime:function(time) {
+	setStartTime(time) {
 		this.seekToTime(time);
-	},
+	}
 
-	setStreamData:function(videoData) {
+	setStreamData(videoData) {
 		var This = this;
 		this._sourceData = videoData;
 		var overlayLoader = document.createElement("div");
 		overlayLoader.className = "videoLoaderOverlay";
 		this.overlayContainer.addElement(overlayLoader,{left:0,top:0,width:1280,height:720});
 
+		this._streamProvider.init(videoData);
+
 		var masterRect = videoData.length>1 ? {x:850,y:140,w:360,h:550}:{x:0,y:0,w:1280,h:720};
 		var slaveRect = {x:10,y:40,w:800,h:600};
-		this._isMonostream = videoData.length==1;
-		var masterVideoData = videoData.length>0 ? videoData[0]:{ sources:[] };
-		var slaveVideoData = videoData.length>1 ? videoData[1]:{ sources:[] };
+		this._isMonostream = this._streamProvider.slaveVideos.length==0;
+		var masterVideoData = this._streamProvider.masterVideo;
+		var audioStreamsData = this._streamProvider.audioStreams;
+
+		var slaveVideoData = this._streamProvider.mainSlaveVideo;
 		var masterVideo = paella.videoFactory.getVideoObject(this.video1Id,masterVideoData, masterRect);
-		var slaveVideo = paella.videoFactory.getVideoObject(this.video2Id,slaveVideoData, slaveRect);
+		var slaveVideo = slaveVideoData ? paella.videoFactory.getVideoObject(this.videoSlaveId + 1,slaveVideoData, slaveRect) : null;
+		
+		this._audioPlayers = [];
+		audioStreamsData.forEach((streamData,index) => {
+			let audioPlayer = paella.audioFactory.getAudioObject(this.audioId + index,streamData);
+			if (audioPlayer) {
+				this._audioPlayers.push(audioPlayer);
+				this.container.addNode(audioPlayer);
+			}
+		});
 
 		var autoplay = this.autoplay();
 		masterVideo.setAutoplay(autoplay);
-		slaveVideo.setAutoplay(autoplay);
+		if (slaveVideo) slaveVideo.setAutoplay(autoplay);
 
 		masterVideo.setVideoQualityStrategy(this._videoQualityStrategy);
-		slaveVideo.setVideoQualityStrategy(this._videoQualityStrategy);
+		if (slaveVideo) slaveVideo.setVideoQualityStrategy(this._videoQualityStrategy);
 
 		this.container.addNode(masterVideo);
 		if (videoData.length>1) {
 			this.container.addNode(slaveVideo);
 		}
-
 		return masterVideo.load()
 			.then(function() {
 				if (videoData.length>1) {
@@ -872,6 +1023,20 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 					return paella_DeferredResolved(true);
 				}
 			})
+
+			.then(function() {
+				if (This._audioPlayers.length>0) {
+					let audioLoadPromises = [];
+					This._audioPlayers.forEach(function(player) {
+						audioLoadPromises.push(player.load());
+					});
+					return Promise.all(audioLoadPromises);
+				}
+				else {
+					return paella_DeferredResolved(true);
+				}
+			})
+
 			.then(function() {
 				$(masterVideo.video).bind('timeupdate', function(evt) {
 					var trimming = This._trimming;
@@ -913,42 +1078,59 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 					return This.setProfile(paella.Profiles.getDefaultProfile(), false);
 				}
 			});
-	},
+	}
 	
-	setAutoplay:function() {
-		this._autoplay = true;
+	setAutoplay(ap = true) {
+		this._autoplay = ap;
 		if (this.masterVideo()) {
-			this.masterVideo().setAutoplay(true);
+			this.masterVideo().setAutoplay(ap);
 		}
 		if (this.slaveVideo()) {
-			this.slaveVideo().setAutoplay(true);
+			this.slaveVideo().setAutoplay(ap);
 		}
-	},
+		if (this._audioPlayers.lenght>0) {
+			this._audioPlayers.forEach((p) => { p.setAutoplay(ap); });
+		}
+	}
 
-	autoplay:function() {
+	autoplay() {
 		return base.parameters.get('autoplay')=='true' &&
 			paella.player.config.experimental &&
 			paella.player.config.experimental.autoplay &&
 			!base.userAgent.browser.IsMobileVersion;
-	},
+	}
 
-	numberOfStreams:function() {
+	numberOfStreams() {
 		return this._sourceData.length;
-	},
+	}
 
-	getMonostreamMasterProfile:function() {
+	getMonostreamMasterProfile() {
+		var mv = this.masterVideo();
 		return {
 			content:"presenter",
 			visible:true,
 			layer:1,
 			rect:[
-				{aspectRatio:"16/9",left:0,top:0,width:1280,height:720},
-				{aspectRatio:"4/3",left:160,top:0,width:960,height:720},
+				{ aspectRatio:"1/1",left:280,top:0,width:720,height:720 },
+				{ aspectRatio:"6/5",left:208,top:0,width:864,height:720 },
+				{ aspectRatio:"5/4",left:190,top:0,width:900,height:720 },
+				{ aspectRatio:"4/3",left:160,top:0,width:960,height:720 },
+				{ aspectRatio:"11/8",left:145,top:0,width:990,height:720 },
+				{ aspectRatio:"1.41/1",left:132,top:0,width:1015,height:720 },
+				{ aspectRatio:"1.43/1",left:125,top:0,width:1029,height:720 },
+				{ aspectRatio:"3/2",left:100,top:0,width:1080,height:720 },
+				{ aspectRatio:"16/10",left:64,top:0,width:1152,height:720 },
+				{ aspectRatio:"5/3",left:40,top:0,width:1200,height:720 },
+				{ aspectRatio:"16/9",left:0,top:0,width:1280,height:720 },
+				{ aspectRatio:"1.85/1",left:0,top:14,width:1280,height:692 },
+				{ aspectRatio:"2.35/1",left:0,top:87,width:1280,height:544 },
+				{ aspectRatio:"2.41/1",left:0,top:94,width:1280,height:531 },
+				{ aspectRatio:"2.76/1",left:0,top:128,width:1280,height:463 }
 			]
 		};
-	},
+	}
 
-	getMonostreamSlaveProfile:function() {
+	getMonostreamSlaveProfile() {
 		return {
 			content:"slides",
 			visible:false,
@@ -958,39 +1140,44 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 				{aspectRatio:"4/3",left:0,top:0,width:0,height:0},
 			]
 		};
-	},
+	}
 
-	getCurrentProfileName:function() {
+	getCurrentProfileName() {
 		return this._currentProfile;
-	},
+	}
 
-	setProfile:function(profileName,animate) {
-		var This = this;
-		var defer = $.Deferred();
-		animate = base.userAgent.browser.Explorer ? false:animate;
-		paella.Profiles.loadProfile(profileName,function(profileData) {
-			This._currentProfile = profileName;
-			if (This.numberOfStreams()==1) {
-				profileData.masterVideo = This.getMonostreamMasterProfile();
-				profileData.slaveVideo = This.getMonostreamSlaveProfile();
-			}
-			This.applyProfileWithJson(profileData,animate);
-			base.cookies.set("lastProfile",profileName);
-			defer.resolve(profileName);
+	setProfile(profileName,animate) {
+		return new Promise((resolve) => {
+			animate = base.userAgent.browser.Explorer ? false:animate;
+			paella.Profiles.loadProfile(profileName,(profileData) => {
+				this._currentProfile = profileName;
+				if (this.numberOfStreams()==1) {
+					profileData.masterVideo = this.getMonostreamMasterProfile();
+					profileData.slaveVideo = this.getMonostreamSlaveProfile();
+				}
+				this.applyProfileWithJson(profileData,animate);
+				resolve(profileName);
+			});
 		});
+	}
 
-		return defer;
-	},
+	getProfile(profileName) {
+		return new Promise((resolve,reject) => {
+			paella.Profiles.loadProfile(profileName,(profileData) => {
+				resolve(profileData);
+			});
+		});
+	}
 
-	hideAllLogos:function() {
+	hideAllLogos() {
 		for (var i=0;i<this.logos.length;++i) {
 			var logoId = this.logos[i];
 			var logo = this.container.getNode(logoId);
 			$(logo.domElement).hide();
 		}
-	},
+	}
 
-	showLogos:function(logos) {
+	showLogos(logos) {
 		if (logos == undefined) return;
 		var relativeSize = new paella.RelativeVideoSize();
 		for (var i=0; i<logos.length;++i) {
@@ -1014,14 +1201,15 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			var style = {top:percentTop,left:percentLeft,width:percentWidth,height:percentHeight,position:'absolute',zIndex:logo.zIndex};
 			$(logoNode.domElement).css(style);
 		}
-	},
+	}
 	
-	getClosestRect:function(profileData,videoDimensions) {
+	getClosestRect(profileData,videoDimensions) {
 		var minDiff = 10;
-		var re = /([0-9]+)\/([0-9]+)/;
+		var re = /([0-9\.]+)\/([0-9\.]+)/;
 		var result = profileData.rect[0];
 		var videoAspectRatio = videoDimensions.h==0 ? 1.333333:videoDimensions.w / videoDimensions.h;
 		var profileAspectRatio = 1;
+		var reResult = false;
 		profileData.rect.forEach(function(rect) {
 			if ((reResult = re.exec(rect.aspectRatio))) {
 				profileAspectRatio = Number(reResult[1]) / Number(reResult[2]);
@@ -1033,9 +1221,9 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			}
 		});
 		return result;
-	},
+	}
 
-	applyProfileWithJson:function(profileData,animate) {
+	applyProfileWithJson(profileData,animate) {
 		var doApply = function(masterData, slaveData) {
 			if (animate==undefined) animate = true;
 			var video1 = this.masterVideo();
@@ -1113,9 +1301,9 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 					doApply.apply(This, [ masterVideoData, slaveVideoData ]);
 				});
 		}
-	},
+	}
 
-	resizePortrail:function() {
+	resizePortrail() {
 		var width = (paella.player.isFullScreen() == true) ? $(window).width() : $(this.domElement).width();
 		var relativeSize = new paella.RelativeVideoSize();
 		var height = relativeSize.proportionalHeight(width);
@@ -1125,19 +1313,19 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 		var containerHeight = (paella.player.isFullScreen() == true) ? $(window).height() : $(this.domElement).height();
 		var newTop = containerHeight / 2 - height / 2;
 		this.container.domElement.style.top = newTop + "px";
-	},
+	}
 
-	resizeLandscape:function() {
+	resizeLandscape() {
 		var height = (paella.player.isFullScreen() == true) ? $(window).height() : $(this.domElement).height();
 		var relativeSize = new paella.RelativeVideoSize();
 		var width = relativeSize.proportionalWidth(height);
 		this.container.domElement.style.width = width + 'px';
 		this.container.domElement.style.height = height + 'px';
 		this.container.domElement.style.top = '0px';
-	},
+	}
 
-	onresize:function() {
-		this.parent();
+	onresize() {
+		super.onresize();
 		var relativeSize = new paella.RelativeVideoSize();
 		var aspectRatio = relativeSize.aspectRatio();
 		var width = (paella.player.isFullScreen() == true) ? $(window).width() : $(this.domElement).width();
@@ -1151,4 +1339,6 @@ Class ("paella.VideoContainer", paella.VideoContainerBase,{
 			this.resizePortrail();
 		}
 	}
-});
+}
+
+paella.VideoContainer = VideoContainer;

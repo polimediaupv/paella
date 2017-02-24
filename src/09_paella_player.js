@@ -93,11 +93,11 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		var stdIsFullScreen = (document.fullScreenElement !== undefined && document.fullScreenElement !== null);
 		
 		return (webKitIsFullScreen || msIsFullScreen || mozIsFullScreen || stdIsFullScreen);
-
 	},
+
 	goFullScreen: function() {
 		if (!this.isFullScreen()) {
-			if (base.userAgent.browser.IsMobileVersion && paella.player.videoContainer.isMonostream) {
+			if (base.userAgent.system.iOS) {
 				paella.player.videoContainer.masterVideo().goFullScreen();
 			}
 			else {			
@@ -138,6 +138,10 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 	setProfile:function(profileName,animate) {
 		this.videoContainer.setProfile(profileName,animate);
+	},
+
+	getProfile:function(profileName) {
+		return this.videoContainer.getProfile(profileName);
 	},
 
 	initialize:function(playerId) {
@@ -235,14 +239,14 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 					thisClass.unloadAll(message);
 				}
 				else {
-					errorMessage = base.dictionary.translate("You are not authorized to view this resource");
+					let errorMessage = base.dictionary.translate("You are not authorized to view this resource");
 					thisClass.unloadAll(errorMessage);
 					paella.events.trigger(paella.events.error,{error:errorMessage});
 				}
 			})
 
-			.fail(function() {
-				errorMessage = base.dictionary.translate("Error loading video");
+			.catch((error) => {
+				let errorMessage = base.dictionary.translate(error);
 				thisClass.unloadAll(errorMessage);
 				paella.events.trigger(paella.events.error,{error:errorMessage});
 			});
@@ -283,10 +287,10 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			var loader = paella.initDelegate.initParams.videoLoader;
 			paella.player.videoLoader = loader;
 			this.onresize();
-			loader.loadVideo(this.videoIdentifier,function() {
+			loader.loadVideo(this.videoIdentifier,() => {
 				var playOnLoad = false;
 				This.videoContainer.setStreamData(loader.streams)
-					.done(function() {
+					.then(function() {
 						paella.events.trigger(paella.events.loadComplete);
 						This.addFullScreenListeners();
 						This.onresize();
@@ -294,7 +298,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 							This.play();
 						}
 					})
-					.fail(function(error) {
+					.catch((error) => {
 						console.log(error);
 					});
 			});
@@ -403,12 +407,12 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	},
 
 	playing:function() {
-		var defer = $.Deferred();
-		this.paused()
-			.then(function(p) {
-				defer.resolve(!p);
-			});
-		return defer;
+		return new Promise((resolve) => {
+			this.paused()
+				.then((p) => {
+					resolve(!p);
+				});
+		});
 	},
 
 	paused:function() {

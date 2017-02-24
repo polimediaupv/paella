@@ -20,17 +20,14 @@ Class ("paella.YoutubeVideo", paella.VideoElementBase,{
 
 
 	_deferredAction:function(action) {
-		var This = this;
-		var defer = new $.Deferred();
-
-		this._readyPromise.then(function() {
-				defer.resolve(action());
-			},
-			function() {
-				defer.reject();
-			});
-
-		return defer;
+		return new Promise((resolve,reject) => {
+			this._readyPromise.then(function() {
+					resolve(action());
+				},
+				function() {
+					reject();
+				});
+		});
 	},
 
 	_getQualityObject:function(index, s) {
@@ -74,24 +71,24 @@ Class ("paella.YoutubeVideo", paella.VideoElementBase,{
 
 	// Initialization functions
 	getVideoData:function() {
-		var defer = $.Deferred();
 		var This = this;
-		this._deferredAction(function() {
-			var stream = This._stream.sources.youtube[0];
-			var videoData = {
-				duration: This.video.getDuration(),
-				currentTime: This.video.getCurrentTime(),
-				volume: This.video.getVolume(),
-				paused: !This._playing,
-				ended: This.video.ended,
-				res: {
-					w: stream.res.w,
-					h: stream.res.h
-				}
-			};
-			defer.resolve(videoData);
+		return new Promise((resolve,reject) => {
+			var stream = this._stream.sources.youtube[0];
+			this._deferredAction(() => {
+				var videoData = {
+					duration: This.video.getDuration(),
+					currentTime: This.video.getCurrentTime(),
+					volume: This.video.getVolume(),
+					paused: !This._playing,
+					ended: This.video.ended,
+					res: {
+						w: stream.res.w,
+						h: stream.res.h
+					}
+				};
+				resolve(videoData);
+			})
 		});
-		return defer;
 	},
 
 	setPosterFrame:function(url) {
@@ -149,98 +146,95 @@ Class ("paella.YoutubeVideo", paella.VideoElementBase,{
 
 	load:function() {
 		var This = this;
+		return new Promise((resolve,reject) => {
+			this._qualityListReadyPromise = $.Deferred();
+			paella.youtubePlayerVars.apiReadyPromise.
+				then(() => {
+					var stream = this._stream.sources.youtube[0];
 
-		var defer = $.Deferred();
-		this._qualityListReadyPromise = $.Deferred();
-		paella.youtubePlayerVars.apiReadyPromise.
-			then(function() {
-				var stream = This._stream.sources.youtube[0];
-
-				if (stream) {
-					// TODO: poster frame
-					This._youtubePlayer = new YT.Player(This.identifier, {
-						height: '390',
-						width: '640',
-						videoId:stream.id,
-						playerVars: {
-							controls: 0,
-							disablekb: 1
-						},
-						events: {
-							onReady: function(e) {
-								This._readyPromise.resolve();
+					if (stream) {
+						// TODO: poster frame
+						this._youtubePlayer = new YT.Player(This.identifier, {
+							height: '390',
+							width: '640',
+							videoId:stream.id,
+							playerVars: {
+								controls: 0,
+								disablekb: 1
 							},
-							onStateChanged:function(e) {
-								console.log("state changed");
-							},
-							onPlayerStateChange:function(e) {
-								console.log("state changed");
+							events: {
+								onReady: function(e) {
+									This._readyPromise.resolve();
+								},
+								onStateChanged:function(e) {
+									console.log("state changed");
+								},
+								onPlayerStateChange:function(e) {
+									console.log("state changed");
+								}
 							}
-						}
-					});
+						});
 
-					defer.resolve();
-				}
-				else {
-					defer.reject(new Error("Could not load video: invalid quality stream index"));
-				}
-			});
-
-		return defer;
+						resolve();
+					}
+					else {
+						reject(new Error("Could not load video: invalid quality stream index"));
+					}
+				});
+		});
 	},
 
 	getQualities:function() {
-		var This = this;
-		var defer = $.Deferred();
-		this._qualityListReadyPromise.then(function(q) {
-			var result = [];
-			var index = -1;
-			This._qualities = {};
-			q.forEach(function(item) {
-				index++;
-				This._qualities[item] = This._getQualityObject(index,item);
-				result.push(This._qualities[item]);
+		let This = this;
+		return new Promise((resolve,reject) => {
+			This._qualityListReadyPromise.then(function(q) {
+				var result = [];
+				var index = -1;
+				This._qualities = {};
+				q.forEach((item) => {
+					index++;
+					This._qualities[item] = This._getQualityObject(index,item);
+					result.push(This._qualities[item]);
+				});
+				resolve(result);
 			});
-			defer.resolve(result);
 		});
-		return defer;
 	},
 
 	setQuality:function(index) {
-		var This = this;
-		var defer = $.Deferred();
-		this._qualityListReadyPromise.then(function(q) {
-			for (var key in This._qualities) {
-				var searchQ = This._qualities[key];
-				if (typeof(searchQ)=="object" && searchQ.index==index) {
-					This.video.setPlaybackQuality(searchQ.label);
-					break;
+		return new Promise((resolve,reject) => {
+			this._qualityListReadyPromise.then((q) => {
+				for (var key in this._qualities) {
+					var searchQ = this._qualities[key];
+					if (typeof(searchQ)=="object" && searchQ.index==index) {
+						this.video.setPlaybackQuality(searchQ.label);
+						break;
+					}
 				}
-			}
-			defer.resolve();
+				resolve();
+			});
 		});
-		return defer;
 	},
 
 	getCurrentQuality:function() {
-		var This = this;
-		var defer = $.Deferred();
-		this._qualityListReadyPromise.then(function(q) {
-			defer.resolve(This._qualities[This.video.getPlaybackQuality()]);
+		return new Promise((resolve,reject) => {
+			this._qualityListReadyPromise.then((q) => {
+				resolve(this._qualities[this.video.getPlaybackQuality()]);
+			});
 		});
-		return defer;
 	},
 
 	play:function() {
-		var This = this;
-		return this._deferredAction(function() {
+		let This = this;
+		return new Promise((resolve,reject) => {
 			This._playing = true;
 			This.video.playVideo();
-			new base.Timer(function(timer) {
-				var q = This.video.getAvailableQualityLevels();
+			new base.Timer((timer) => {
+				var q = this.video.getAvailableQualityLevels();
 				if (q.length) {
 					timer.repeat = false;
-					This._qualityListReadyPromise.resolve(q);
+					this._qualityListReadyPromise.resolve(q);
+					resolve();
 				}
 				else {
 					timer.repeat = true;
@@ -250,73 +244,63 @@ Class ("paella.YoutubeVideo", paella.VideoElementBase,{
 	},
 
 	pause:function() {
-		var This = this;
-		return this._deferredAction(function() {
-			This._playing = false;
-			This.video.pauseVideo();
+		return this._deferredAction(() => {
+			this._playing = false;
+			this.video.pauseVideo();
 		});
 	},
 
 	isPaused:function() {
-		var This = this;
-		return this._deferredAction(function() {
-			return !This._playing;
+		return this._deferredAction(() => {
+			return !this._playing;
 		});
 	},
 
 	duration:function() {
-		var This = this;
-		return this._deferredAction(function() {
-			return This.video.getDuration();
+		return this._deferredAction(() => {
+			return this.video.getDuration();
 		});
 	},
 
 	setCurrentTime:function(time) {
-		var This = this;
-		return this._deferredAction(function() {
-			This.video.seekTo(time);
+		return this._deferredAction(() => {
+			this.video.seekTo(time);
 		});
 	},
 
 	currentTime:function() {
-		var This = this;
-		return this._deferredAction(function() {
-			return This.video.getCurrentTime();
+		return this._deferredAction(() => {
+			return this.video.getCurrentTime();
 		});
 	},
 
 	setVolume:function(volume) {
-		var This = this;
-		return this._deferredAction(function() {
-			This.video.setVolume(volume * 100);
+		return this._deferredAction(() => {
+			this.video.setVolume && this.video.setVolume(volume * 100);
 		});
 	},
 
 	volume:function() {
-		var This = this;
-		return this._deferredAction(function() {
-			return This.video.getVolume() / 100;
+		return this._deferredAction(() => {
+			return this.video.getVolume() / 100;
 		});
 	},
 
 	setPlaybackRate:function(rate) {
-		var This = this;
-		return this._deferredAction(function() {
-			This.video.playbackRate = rate;
+		return this._deferredAction(() => {
+			this.video.playbackRate = rate;
 		});
 	},
 
 	playbackRate: function() {
-		var This = this;
-		return this._deferredAction(function() {
-			return This.video.playbackRate;
+		return this._deferredAction(() => {
+			return this.video.playbackRate;
 		});
 	},
 
 	goFullScreen:function() {
-		var This = this;
-		return this._deferredAction(function() {
-			var elem = This.video;
+		return this._deferredAction(() => {
+			var elem = this.video;
 			if (elem.requestFullscreen) {
 				elem.requestFullscreen();
 			}
@@ -334,26 +318,24 @@ Class ("paella.YoutubeVideo", paella.VideoElementBase,{
 
 
 	unFreeze:function(){
-		var This = this;
-		return this._deferredAction(function() {
-			var c = document.getElementById(This.video.className + "canvas");
+		return this._deferredAction(() => {
+			var c = document.getElementById(this.video.className + "canvas");
 			$(c).remove();
 		});
 	},
 
 	freeze:function(){
-		var This = this;
-		return this._deferredAction(function() {
+		return this._deferredAction(() => {
 			var canvas = document.createElement("canvas");
-			canvas.id = This.video.className + "canvas";
-			canvas.width = This.video.videoWidth;
-			canvas.height = This.video.videoHeight;
-			canvas.style.cssText = This.video.style.cssText;
+			canvas.id = this.video.className + "canvas";
+			canvas.width = this.video.videoWidth;
+			canvas.height = this.video.videoHeight;
+			canvas.style.cssText = this.video.style.cssText;
 			canvas.style.zIndex = 2;
 
 			var ctx = canvas.getContext("2d");
-			ctx.drawImage(This.video, 0, 0, Math.ceil(canvas.width/16)*16, Math.ceil(canvas.height/16)*16);//Draw image
-			This.video.parentElement.appendChild(canvas);
+			ctx.drawImage(this.video, 0, 0, Math.ceil(canvas.width/16)*16, Math.ceil(canvas.height/16)*16);//Draw image
+			this.video.parentElement.appendChild(canvas);
 		});
 	},
 
