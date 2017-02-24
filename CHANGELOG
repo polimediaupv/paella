@@ -16,6 +16,7 @@ CHANGELOG
   * New Apple Air Play plugin.
   * New plugin to use the picture-in-picture mode in Safari for macOS.
   * New plugin to rate videos.
+  * Improvements in mobile platforms.
   * Search plugin updated to look into the frame list captions.
   * Default skin changed.
   * Refactoring, improvements and bug fixes.
