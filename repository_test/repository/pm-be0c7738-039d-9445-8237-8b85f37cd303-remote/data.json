@@ -74,19 +74,19 @@
 			"lang": "es",
 			"text": "Español (traducción automática)",
 			"format": "dfxp",
-			"url": "https://fuster.cc.upv.es/tl-pm/dfxp?db=pm&id=be0c7738-039d-9445-8237-8b85f37cd303&lang=es&format=1&pol=0"
+			"url": "be0c7738-039d-9445-8237-8b85f37cd303.es.dfxp"
 		},
 		{
 			"lang": "en",
 			"text": "English (automatic transciption)",
 			"format": "dfxp",
-			"url": "https://fuster.cc.upv.es/tl-pm/dfxp?db=pm&id=be0c7738-039d-9445-8237-8b85f37cd303&lang=en&format=1&pol=0"
+			"url": "be0c7738-039d-9445-8237-8b85f37cd303.en.dfxp"
 		},
 		{
 			"lang": "ca",
 			"text": "Valencià/Català (traducció automàtica)",
 			"format": "dfxp",
-			"url": "https://fuster.cc.upv.es/tl-pm/dfxp?db=pm&id=be0c7738-039d-9445-8237-8b85f37cd303&lang=ca&format=1&pol=0"
+			"url": "be0c7738-039d-9445-8237-8b85f37cd303.ca.dfxp"
 		}
 	]
 }

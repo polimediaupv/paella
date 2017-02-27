@@ -3,23 +3,21 @@ Class ("paella.plugins.FrameCaptionsSearchPlugIn", paella.SearchServicePlugIn, {
 
 	search: function(text, next) {
 		let re = RegExp(text,"i");
-		let result = false;
+		let results = [];
 		for (var key in paella.player.videoLoader.frameList) {
 			var value = paella.player.videoLoader.frameList[key];
 			if (typeof(value)=="object") {
 				if (re.test(value.caption)) {
-					result = true;
-					next(false,{
+					results.push({
 						time: key,
 						content: value.caption,
 						score: 0
-					});
-					break;
+					});					
 				}
 			}
 		}
-		if (!result) {
-			next(true,"");
+		if (next) {
+			next(false, results);
 		}
 	}	
 });

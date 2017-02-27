@@ -230,7 +230,7 @@ Class ("paella.captions.Caption", {
 	getCaptionById: function(id) {
 		if (this._captions != undefined) {
 			for (var i=0; i<this._captions.length; ++i) {			
-				l_cap = this._captions[i];
+				let l_cap = this._captions[i];
 				if (l_cap.id == id) {
 					return l_cap;
 				}
