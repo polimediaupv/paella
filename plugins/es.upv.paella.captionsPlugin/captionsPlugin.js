@@ -314,7 +314,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
     },
 
     doSearch:function(text){
-    	thisClass = this;
+    	var thisClass = this;
 		var c = paella.captions.getActiveCaptions();
 		if(c){
 			if(text==""){thisClass.buildBodyContent(paella.captions.getActiveCaptions()._captions,"list");}
