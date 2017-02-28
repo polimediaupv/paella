@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.1.2
+
+  * Bug fix in es.upv.paella.arrowSlidesNavigatorPlugin
+  
 * Paella 5.1.1
 
   * Fix bugs in plugin: es.upv.paella.frameCaptionsSearchPlugin

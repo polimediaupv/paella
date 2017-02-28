@@ -1,7 +1,7 @@
 Class ("paella.plugins.ArrowSlidesNavigator", paella.EventDrivenPlugin, {	
 	getName:function() { return "es.upv.paella.arrowSlidesNavigatorPlugin"; },
 	checkEnabled:function(onSuccess) {
-		if (Object.keys(paella.initDelegate.initParams.videoLoader.frameList).length==0 && paella.player.videoContainer.isMonostream) {
+		if (!paella.initDelegate.initParams.videoLoader.frameList || Object.keys(paella.initDelegate.initParams.videoLoader.frameList).length==0 && paella.player.videoContainer.isMonostream) {
 			onSuccess(false);
 		}
 		else {
