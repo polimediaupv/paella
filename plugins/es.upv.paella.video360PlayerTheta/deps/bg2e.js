@@ -399,6 +399,7 @@ Reflect.defineProperty = Reflect.defineProperty || Object.defineProperty;
           s_preventVideoDump.push(video);
           video.crossOrigin = "";
           video.autoplay = true;
+          video.setAttribute("playsinline",null);
           video.addEventListener('canplay', function(evt) {
             var videoIndex = s_preventVideoDump.indexOf(evt.target);
             if (videoIndex != -1) {
