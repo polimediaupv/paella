@@ -450,7 +450,9 @@ Class ("paella.videoFactories.Video360Factory", {
 			if (paella.ChromaVideo._loaded) {
 				return false;
 			}
-			if (base.userAgent.system.iOS || base.userAgent.system.Android) {
+			if (paella.videoFactories.Html5VideoFactory.s_instances>0 && 
+				base.userAgent.system.iOS)
+			{
 				return false;
 			}
 			for (var key in streamData.sources) {
@@ -463,6 +465,7 @@ Class ("paella.videoFactories.Video360Factory", {
 
 	getVideoObject:function(id, streamData, rect) {
 		paella.ChromaVideo._loaded = true;
+		++paella.videoFactories.Html5VideoFactory.s_instances;
 		return new paella.Video360(id, streamData, rect.x, rect.y, rect.w, rect.h);
 	}
 });
