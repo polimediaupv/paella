@@ -140,9 +140,14 @@ gulp.task("dictionary", function() {
 	return Promise.all(p);
 });
 
+gulp.task("setupBower", function() {
+	config.outDir = "../bower-paella/";
+});
+
 
 gulp.task("build", ["compile","styles","dictionary","copy"]);
 gulp.task("buildDebug", ["compileDebug","styles","dictionary","copy"]);
+gulp.task("buildBower", ["setupBower","build"]);
 
 gulp.task("watch", function() {
 	return gulp.watch([
@@ -185,3 +190,5 @@ gulp.task("server.release",["build","webserver","tools","watch"]);
 gulp.task("server.debug",["buildDebug","webserver","tools","watchDebug"]);
 gulp.task("build.debug",["buildDebug"]);
 gulp.task("build.release",["build"]);
+
+gulp.task("build.bower",["buildBower"]);
