@@ -225,20 +225,28 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 
 	seekTo:function(newPositionPercent) {
 		var thisClass = this;
-		this.setCurrentPercent(newPositionPercent);
-		thisClass._force = true;
-		this.triggerTimeupdate();
-		paella.events.trigger(paella.events.seekTo,{ newPositionPercent:newPositionPercent });
-
+		this.setCurrentPercent(newPositionPercent)
+			.then((timeData) => {
+				thisClass._force = true;
+				this.triggerTimeupdate();
+				paella.events.trigger(paella.events.seekToTime,{ newPosition:timeData.time });
+				paella.events.trigger(paella.events.seekTo,{ newPositionPercent:newPositionPercent });
+			});
 	},
 
 	seekToTime:function(time) {
-		this.setCurrentTime(time);
-		this._force = true;
-		this.triggerTimeupdate();
+		this.setCurrentTime(time)
+			.then((timeData) => {
+				this._force = true;
+				this.triggerTimeupdate();
+				let percent = timeData.time * 100 / timeData.duration;
+				paella.events.trigger(paella.events.seekToTime,{ newPosition:timeData.time });
+				paella.events.trigger(paella.events.seekTo,{ newPositionPercent:percent });
+			});
 	},
 
 	setPlaybackRate:function(params) {
+		paella.events.trigger(paella.events.setPlaybackRate, { rate: params });
 	},
 
 	setVolume:function(params) {
@@ -320,26 +328,30 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	setCurrentPercent:function(percent) {
 		var This = this;
 		var duration = 0;
-		this.duration()
-			.then(function(d) {
-				duration = d;
-				return This.trimming();
-			})
-			.then(function(trimming) {
-				var position = 0;
-				if (trimming.enabled) {
-					var start = trimming.start;
-					var end = trimming.end;
-					duration = end - start;
-					var trimedPosition = percent * duration / 100;
-					position = parseFloat(trimedPosition) + parseFloat(start);
-				}
-				else {
-					position = percent * duration / 100;
-				}
-				return This.setCurrentTime(position);
-			});
-
+		return new Promise((resolve) => {
+			this.duration()
+				.then(function(d) {
+					duration = d;
+					return This.trimming();
+				})
+				.then(function(trimming) {
+					var position = 0;
+					if (trimming.enabled) {
+						var start = trimming.start;
+						var end = trimming.end;
+						duration = end - start;
+						var trimedPosition = percent * duration / 100;
+						position = parseFloat(trimedPosition) + parseFloat(start);
+					}
+					else {
+						position = percent * duration / 100;
+					}
+					return This.setCurrentTime(position);
+				})
+				.then(function(timeData) {
+					resolve(timeData);
+				});
+		});
 	},
 
 	setCurrentTime:function(time) {
@@ -777,14 +789,24 @@ class VideoContainer extends paella.VideoContainerBase {
 
 	setCurrentTime(time) {
 		// if (time<=0) time = 1;  Fix #176
-		if (this._trimming.enabled) {
-			if (time<this._trimming.start) time = this._trimming.start;
-			if (time>this._trimming.end) time = this._trimming.end;
-		}
-		this.masterVideo().setCurrentTime(time);
-		if (this.slaveVideo()) this.slaveVideo().setCurrentTime(time);
-		this._audioPlayers.forEach((player) => { player.setCurrentTime(time); });
-		super.setCurrentTime(time);
+		return new Promise((resolve) => {
+			let promises = [];
+			if (this._trimming.enabled) {
+				if (time<this._trimming.start) time = this._trimming.start;
+				if (time>this._trimming.end) time = this._trimming.end;
+			}
+			promises.push(this.masterVideo().setCurrentTime(time));
+			if (this.slaveVideo()) promises.push(this.slaveVideo().setCurrentTime(time));
+			this._audioPlayers.forEach((player) => { promises.push(player.setCurrentTime(time)); });
+
+			Promise.all(promises)
+				.then(() => {
+					return this.duration(false);
+				})
+				.then((duration) => {
+					resolve({ time:time, duration:duration});
+				});
+		});
 	}
 
 	currentTime(ignoreTrimming = false) {
