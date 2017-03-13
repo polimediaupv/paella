@@ -246,6 +246,7 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	},
 
 	setPlaybackRate:function(params) {
+		paella.events.trigger(paella.events.setPlaybackRate, { rate: params });
 	},
 
 	setVolume:function(params) {
