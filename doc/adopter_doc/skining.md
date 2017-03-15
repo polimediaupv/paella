@@ -34,7 +34,7 @@ paella.utils.skin.set("light")
 
 This is code from the themechoose plugin.
 
-###Colors
+### Colors
 
 Under [`/resources/style/skins`](../../resources/style/skins) you have all `*.less` files for change the colors of the current installed skins. 
 
