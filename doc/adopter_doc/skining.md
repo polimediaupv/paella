@@ -13,7 +13,7 @@ Paella player uses the main [config file](configure.md) for define the skin to u
             "light_small"
         ]
     }
-```
+````
 
 But for making new changes to your local project you must edit the config.json under `/build/player/config` directory.
 
