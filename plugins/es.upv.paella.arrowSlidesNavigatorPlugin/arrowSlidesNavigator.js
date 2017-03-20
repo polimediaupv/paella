@@ -118,8 +118,8 @@ Class ("paella.plugins.ArrowSlidesNavigator", paella.EventDrivenPlugin, {
 					paella.player.videoContainer.seekToTime(self._frames[self._frames.length-2].time);
 				}
 				// check midle frames
-				else {			
-					for (i = 1; i < self._frames.length-1; i++) { 
+				else {
+					for (let i = 1; i < self._frames.length-1; i++) { 
 						var f1 = self._frames[i];
 						var f2 = self._frames[i+1];
 						

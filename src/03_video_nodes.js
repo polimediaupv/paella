@@ -395,7 +395,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		});
 
 		this.video.preload = "auto";
-		this.video.setAttribute("playsinline",null);
+		this.video.setAttribute("playsinline","");
 
 		function onProgress(event) {
 			if (!This._ready && This.video.readyState==4) {
