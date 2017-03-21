@@ -13,11 +13,11 @@
 @playbackControlOuterHeight: unit(@playbackControlHeightPx + 2, px);
 
 body {
-	height: 100%;
-	width: 100%;
-	font-family: @fontFamily;
-	font-size: 12px;
-	background: @pageBackgroundColor;
+    height: 100%;
+    width: 100%;
+    font-family: @fontFamily;
+    font-size: 12px;
+    background: @pageBackgroundColor;
 }
 
 
@@ -25,38 +25,38 @@ h2 {
 }
 
 a {
-	color: #636363;
+    color: #636363;
 }
 
 a:hover {
-	color: #a4a4a4;
+    color: #a4a4a4;
 }
 
 a:active {
-	color: #3d3d3d;
+    color: #3d3d3d;
 }
 
 a:visited {
-	color: #636363;
+    color: #636363;
 }
 
-.video {
-	-moz-box-shadow: 2px 2px 6px #000;
-	-webkit-box-shadow: 2px 2px 6px #000;
-	box-shadow: 2px 2px 6px #000;
+video {
+    -moz-box-shadow: 2px 2px 6px #000;
+    -webkit-box-shadow: 2px 2px 6px #000;
+    box-shadow: 2px 2px 6px #000;
 }
 
 div {
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
-#playerContainer { 
-	background-color: white; 
+#playerContainer {
+    background-color: white;
 }
 
 #playerContainer:-webkit-full-screen	{ width: 100%; height: 100%; background-color: white; }
@@ -66,304 +66,304 @@ div {
 #playerContainer:full-screen			{ width: 100%; height: 100%; background-color: white; }
 
 #ignoreBrowserCheckLink {
-	color:black;
-	text-decoration: underline;
+    color:black;
+    text-decoration: underline;
 }
 
-.masterVideo {	
+.masterVideo {
 }
 
 .slaveVideo {
 }
 
 .playbackControls {
-	background-color: @backgroundColor;
-	background-image: @backgroundImage;
-	background-size: @backgroundImageSize;
-	position: absolute;
-	bottom: 0px;
-	left: 0px;
-	right: 0px;
-	height: @playbackBarHeight;
-	z-index: 100;
+    background-color: @backgroundColor;
+    background-image: @backgroundImage;
+    background-size: @backgroundImageSize;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: @playbackBarHeight;
+    z-index: 100;
 }
 
 .playbackBarPlugins {
-	position:absolute;
-	bottom: 0px;
-	left:0px;
-	right:0px;
-	height:@playbackBarButtonHeight;
-	font-size:@playbackBarFontSize;
-	overflow: hidden;
+    position:absolute;
+    bottom: 0px;
+    left:0px;
+    right:0px;
+    height:@playbackBarButtonHeight;
+    font-size:@playbackBarFontSize;
+    overflow: hidden;
 }
 
 .playbackBar {
-	position:absolute;
-	left:0px;
-	right:0px;
-	height: @playbackControlHeight;
-	background-color: rgba(125,125,125,0.5);
-	border-bottom: 1px solid rgba(90,90,90,0.6);
-	border-top: 1px solid rgba(90,90,90,0.6);
-	cursor: pointer;
+    position:absolute;
+    left:0px;
+    right:0px;
+    height: @playbackControlHeight;
+    background-color: rgba(125,125,125,0.5);
+    border-bottom: 1px solid rgba(90,90,90,0.6);
+    border-top: 1px solid rgba(90,90,90,0.6);
+    cursor: pointer;
 }
 
 .playbackBar:focus {
-	box-shadow: inset 0px 0px 5px 0px @hoverBackgroundColor;
-	outline: none;
+    box-shadow: inset 0px 0px 5px 0px @hoverBackgroundColor;
+    outline: none;
 }
 
 .playbackBarFull {
-	height: @playbackControlFullHeight;
-	background-color: @mainColor;
-	background: @playbackBarBackground;
+    height: @playbackControlFullHeight;
+    background-color: @mainColor;
+    background: @playbackBarBackground;
 }
 
 .buttonPlugin {
-	width: unit(@playbackBarButtonWidthPx - @playbackBarButtonPadding * 2,px);
-	height: unit(@playbackBarButtonHeightPx - @playbackBarButtonPadding * 2, px);
-	cursor: pointer;
-	background-image: @paella_icons_image;
-	background-size: @paella_icons_bkg_size;
-	background-position: 0px 0px;
-	margin-left: @playbackBarButtonPadding;
-	margin-right: @playbackBarButtonPadding;
-	margin-top: @playbackBarButtonPadding;
-	color: @icon_text_color;
+    width: unit(@playbackBarButtonWidthPx - @playbackBarButtonPadding * 2,px);
+    height: unit(@playbackBarButtonHeightPx - @playbackBarButtonPadding * 2, px);
+    cursor: pointer;
+    background-image: @paella_icons_image;
+    background-size: @paella_icons_bkg_size;
+    background-position: 0px 0px;
+    margin-left: @playbackBarButtonPadding;
+    margin-right: @playbackBarButtonPadding;
+    margin-top: @playbackBarButtonPadding;
+    color: @icon_text_color;
 }
 
 .buttonPlugin.left {
-	float: left;
+    float: left;
 }
 
 .buttonPlugin.right {
-	float:right;
+    float:right;
 }
 
 .buttonPlugin:hover {
-	background-color: @hoverBackgroundColor;
+    background-color: @hoverBackgroundColor;
 }
 
 .buttonPlugin:focus {
-	box-shadow: inset 0px 0px 5px 0px @hoverBackgroundColor;
-	outline: none;
+    box-shadow: inset 0px 0px 5px 0px @hoverBackgroundColor;
+    outline: none;
 }
 
 
 .buttonPlugin.selected {
-	background-color: @mainColor;
+    background-color: @mainColor;
 }
 
 .popUpPluginContainer {
-	position: absolute;
-	right: 0px;
-	z-index: 110;
-	color: @popup_text_color;
+    position: absolute;
+    right: 0px;
+    z-index: 110;
+    color: @popup_text_color;
 }
 
 .buttonPluginPopUp {
-	background-color: @backgroundColor;
-	position: absolute;
-	bottom: -@playbackControlOuterHeight;
+    background-color: @backgroundColor;
+    position: absolute;
+    bottom: -@playbackControlOuterHeight;
 }
 
 .timelinePluginContainer {
-	position: absolute;
-	left:0px;
-	width: 100%;
-	background-color: @backgroundColor;
-	bottom: @playbackBarHeight;
-	color: @popup_text_color;
+    position: absolute;
+    left:0px;
+    width: 100%;
+    background-color: @backgroundColor;
+    bottom: @playbackBarHeight;
+    color: @popup_text_color;
 }
 
 .buttonTimeLine {
-	position: absolute;
-	bottom: 0px;
-	left: 0px;
-	right: 0px;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
 }
 
 /* old style time control */
 .timeControlOld {
-	color:white;
-	display:block;
-	position:relative;
-	width:69px;
-	height:44px;
-	background-size: 100%;
-	background-image:url(../images/time_monitor.png);
-	font-size: 10px;
-	padding-top: 11px;
-	background-repeat: no-repeat;
-	bottom: 70px;
-	font-family: verdana;
-	text-align: center;
-	z-index:100;
+    color:white;
+    display:block;
+    position:relative;
+    width:69px;
+    height:44px;
+    background-size: 100%;
+    background-image:url(../images/time_monitor.png);
+    font-size: 10px;
+    padding-top: 11px;
+    background-repeat: no-repeat;
+    bottom: 70px;
+    font-family: verdana;
+    text-align: center;
+    z-index:100;
 }
 
 .timeControl {
-	color: white;
-	display: block;
-	position: relative;
-	width: 69px;
-	height: @playbackControlFullHeight;
-	font-size: 10px;
-	background-repeat: no-repeat;
-	padding-left: 5px;
-	font-family: verdana;
-	text-align: left;
-	z-index: 100;
-	line-height: @playbackControlFullHeight;
-	margin-top: -@playbackControlFullHeight;
-	cursor:pointer;
+    color: white;
+    display: block;
+    position: relative;
+    width: 69px;
+    height: @playbackControlFullHeight;
+    font-size: 10px;
+    background-repeat: no-repeat;
+    padding-left: 5px;
+    font-family: verdana;
+    text-align: left;
+    z-index: 100;
+    line-height: @playbackControlFullHeight;
+    margin-top: -@playbackControlFullHeight;
+    cursor:pointer;
 }
 
 .editControlContainer {
-	z-index: 20;
+    z-index: 20;
 }
 
 .paellaLoadErrorContainer {
-	width: 1000px;
-	margin: auto;
-	margin-top:200px;
-	text-align: center;
-	padding-top: 80px;
-	padding-bottom: 80px;
-	background-color: rgba(220,228,234,0.9);
-	border-radius: 22px;
-	box-shadow: 1px 1px 8px black;
-	font-family: sans-serif;
-	font-size: 20px;
+    width: 1000px;
+    margin: auto;
+    margin-top:200px;
+    text-align: center;
+    padding-top: 80px;
+    padding-bottom: 80px;
+    background-color: rgba(220,228,234,0.9);
+    border-radius: 22px;
+    box-shadow: 1px 1px 8px black;
+    font-family: sans-serif;
+    font-size: 20px;
 }
 
 .modalMessageContainer {
-	background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0,0,0,0.5);
 }
 
 .messageContainer {
-	margin: auto;
-	text-align: center;
-	vertical-align: middle;
-	font-family: sans-serif;
-	padding-left: 80px;
-	padding-right: 80px;
-	background-color: white;
-	border-radius: 22px;
-	box-shadow: 1px 1px 8px black;
-	font-size: 20px;
-	padding-top: 40px;
-	padding-bottom:40px;
+    margin: auto;
+    text-align: center;
+    vertical-align: middle;
+    font-family: sans-serif;
+    padding-left: 80px;
+    padding-right: 80px;
+    background-color: white;
+    border-radius: 22px;
+    box-shadow: 1px 1px 8px black;
+    font-size: 20px;
+    padding-top: 40px;
+    padding-bottom:40px;
 }
 
 .frameContainer {
-	margin: auto;
-	text-align: center;
-	/*vertical-align: middle;*/
-	font-family: sans-serif;
-	padding-left: 80px;
-	padding-right: 80px;
-	background-color: white;
-	border-radius: 22px;
-	box-shadow: 1px 1px 8px black;
-	font-size: 20px;
-	padding-top: 40px;
-	padding-bottom:40px;
-	display:block;
+    margin: auto;
+    text-align: center;
+    /*vertical-align: middle;*/
+    font-family: sans-serif;
+    padding-left: 80px;
+    padding-right: 80px;
+    background-color: white;
+    border-radius: 22px;
+    box-shadow: 1px 1px 8px black;
+    font-size: 20px;
+    padding-top: 40px;
+    padding-bottom:40px;
+    display:block;
 }
 
 .errorContainer {
-	margin: auto;
-	text-align: center;
-	vertical-align: middle;
-	padding-left: 120px;
-	padding-right: 60px;
-	background-color: white;
-	border-radius: 22px;
-	box-shadow: 1px 1px 8px black;
-	font-family: sans-serif;
-	font-size: 20px;
-	padding-top: 40px;
-	padding-bottom: 40px;
-	border: 7px solid maroon;
-	color: maroon;
-	font-weight: bold;
-	background-image: url(../images/error_icon.png);
-	background-size: 10%;
-	background-repeat: no-repeat;
-	background-position: 50px 40px;
+    margin: auto;
+    text-align: center;
+    vertical-align: middle;
+    padding-left: 120px;
+    padding-right: 60px;
+    background-color: white;
+    border-radius: 22px;
+    box-shadow: 1px 1px 8px black;
+    font-family: sans-serif;
+    font-size: 20px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    border: 7px solid maroon;
+    color: maroon;
+    font-weight: bold;
+    background-image: url(../images/error_icon.png);
+    background-size: 10%;
+    background-repeat: no-repeat;
+    background-position: 50px 40px;
 }
 
 .paella_messageContainer_closeButton {
-	background-image: url(../images/close_button.png);
-	width:20px;
-	height:20px;
-	position:absolute;
-	display:block;
-	top: 10px;
-	right: 10px;
-	z-index: 999999999;
-	background-size: 60px 20px;
+    background-image: url(../images/close_button.png);
+    width:20px;
+    height:20px;
+    position:absolute;
+    display:block;
+    top: 10px;
+    right: 10px;
+    z-index: 999999999;
+    background-size: 60px 20px;
 }
 
 .paella_messageContainer_closeButton:hover {
-	background-position: -20px;
+    background-position: -20px;
 }
 
 .paella_messageContainer_closeButton:active {
-	background-position: 20px;
+    background-position: 20px;
 }
 
 .overlayContainer {
-	
+
 }
 
 .overlayContainer.background {
-	background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0,0,0,0.5);
 }
 
 #overlayContainer {
-	pointer-events: none;
+    pointer-events: none;
 }
 
 #overlayContainer div {
-	pointer-events: none;
+    pointer-events: none;
 }
 
 .videoLoaderOverlay {
-	background-color: black;
+    background-color: black;
 }
 
 .videoOverlayButtonPlugins {
-	z-index: 100;
-	position: absolute;
-	right: 0px;
-	top: 0px;
+    z-index: 100;
+    position: absolute;
+    right: 0px;
+    top: 0px;
 }
 
 // TIMEOVERLAY STYLE
 .divTimeOverlay{
-	position: fixed;
-	background-color: @backgroundColor;
-	color: white;
-	text-align: center;
-	padding-right: 3px;
-	padding-left: 3px;
-	padding-top: 1px;
-	text-shadow: 1px 1px #888888;
-	z-index: 100;
+    position: fixed;
+    background-color: @backgroundColor;
+    color: white;
+    text-align: center;
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-top: 1px;
+    text-shadow: 1px 1px #888888;
+    z-index: 100;
 }
 
 // TIME_IMAGEOVERLAY STYLE
 .divTimeImageOverlay {
-	position: fixed;
-	background-color: @backgroundColor;
-	z-index: 99;
-	min-width: 256px;
-	-webkit-background-size: cover;
-  	-moz-background-size: cover;
-  	-o-background-size: cover;
- 	 background-size: contain;
+    position: fixed;
+    background-color: @backgroundColor;
+    z-index: 99;
+    min-width: 256px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+     background-size: contain;
 }
 
 // IMG OVERLAY
@@ -375,28 +375,28 @@ div {
 }
 
 .videoPosterFrameImage {
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	right: 0px;
-	bottom: 0px;
-	height: 100%;
-	width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    height: 100%;
+    width: 100%;
 }
 
 .playerContainer_controls_playback_playbackBar_canvas{
-  	overflow: hidden;
-  	position: absolute;
+    overflow: hidden;
+    position: absolute;
 }
 
 #playerContainer_controls_playback_playbackBar {
-	overflow: hidden;
-	background-color: @playbackBarBackgroundInactive;
+    overflow: hidden;
+    background-color: @playbackBarBackgroundInactive;
 }
 
 .login-link {
-	margin-top: 20px;
-	margin-bottom: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 video::-internal-media-controls-download-button {
