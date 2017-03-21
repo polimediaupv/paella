@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.1.7
+
+  * Added translations to German (thanks to @underscoreabandit)
+
 * Paella 5.1.6
 
   * Fixed bug setting attributes to video tag (iOS bug only)
