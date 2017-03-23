@@ -99,9 +99,12 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 			rangeInputMaster.min = 0;
 			rangeInputMaster.max = 1;
 			rangeInputMaster.step = 0.01;
-			rangeInputMaster.value = this.getMasterVolume();
+			paella.player.videoContainer.masterVideo().volume()
+				.then((vol) => {
+					rangeInputMaster.value = vol;
+				})
 
-			var updateMasterVolume = function() {
+			function updateMasterVolume() {
 				var masterVolume = $(rangeInputMaster).val();
 				var slaveVideo = paella.player.videoContainer.slaveVideo();
 				var slaveVolume = 0;
@@ -139,7 +142,10 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 			rangeInputSlave.min = 0;
 			rangeInputSlave.max = 1;
 			rangeInputSlave.step = 0.01;
-			rangeInputSlave.value = this.getSlaveVolume();
+			paella.player.videoContainer.slaveVideo() && paella.player.videoContainer.slaveVideo().volume()
+				.then((vol) => {
+					rangeInputSlave.value = vol;
+				});
 
 			var updateSlaveVolume = function() {
 				var masterVideo = paella.player.videoContainer.masterVideo();
@@ -178,15 +184,6 @@ Class ("paella.plugins.VolumeRangePlugin", paella.ButtonPlugin,{
 
 		domElement.appendChild(videoRangeContainer);
 		thisClass.updateClass();
-	},
-
-	getMasterVolume : function() {
-		var masterVideo = paella.player.videoContainer.masterVideo();
-
-		if (masterVideo) {
-			return masterVideo.volume();
-		}
-		return 0;
 	},
 
 	getSlaveVolume : function() {

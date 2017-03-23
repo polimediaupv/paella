@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.1.8
+
+  * Fixed bug in volume control plugin initialization.
+  
 * Paella 5.1.7
 
   * Added translations to German (thanks to @underscoreabandit)
