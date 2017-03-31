@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.1.9
+
+  * Fix #241: start-end params num protection in setTrimming (thanks to @karendolan)
+
 * Paella 5.1.8
 
   * Fixed bug in volume control plugin initialization.
