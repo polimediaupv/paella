@@ -11,11 +11,98 @@ const	gulp = require('gulp'),
 		flatten = require('gulp-flatten'),
 		path = require('path'),
 
-		exec = require('child_process').execSync;
+		exec = require('child_process').execSync,
+
+		Dockerode = require('dockerode'),
+		runSequence = require('run-sequence'),
+		nightwatch = require('gulp-nightwatch');
+		
+var docker = new Dockerode();
 
 var config = {
 	outDir:'build/'
 };
+
+var seleniumImage = "selenium/standalone-chrome:3.3.0"
+var nginxImage = "nginx:alpine"
+
+
+gulp.task("nightwatch:local:environment:start", function(cb){
+	docker.pull(seleniumImage)
+	.then(function(){ return docker.pull(nginxImage);})
+	
+	.then(function(){
+		return docker.createContainer({
+			Image: nginxImage,
+			name: 'paella-test-nginx',
+			//-v /some/content:
+			HostConfig: {
+				AutoRemove: true,
+				Binds: [
+                	"/Users/miesgre/UPV/paella/build:/usr/share/nginx/html:ro"
+                ],
+			}
+		}).then(function(c){return c.start();});
+	})	
+	.then(function(){
+		return docker.createContainer({
+			Image: seleniumImage,
+			name: 'paella-test-selenium',
+			ExposedPorts: {
+				'4444/tcp': {}
+			},
+			HostConfig: {
+				AutoRemove: true,
+				PortBindings: {
+					"4444/tcp": [{
+						"HostIP":"0.0.0.0",
+						"HostPort": "14444"
+					}]
+				},
+				Links: ["paella-test-nginx:paella"]
+			}
+		}).then(function(c){return c.start();});		
+	})
+	
+	.then(function(){
+		setTimeout(function(){
+			cb(null);
+		}, 10000);
+	})
+	.catch(function(err){
+		cb(err);
+	});	
+})
+
+gulp.task("nightwatch:local:environment:stop", function(cb){
+	docker.getContainer("paella-test-nginx").stop()
+	.then(function(){ return docker.getContainer("paella-test-selenium").stop(); })
+	.then(function(){ cb(null);})
+	.catch(function(err){
+		cb(err);
+	});	
+});
+
+
+gulp.task("test:nightwatch:local:run", function(){
+	return gulp.src('')
+	.pipe(nightwatch({
+		configFile: 'tests/nightwatch/nightwatch.js'
+	}));
+});
+
+gulp.task("test:nightwatch:local", function(cb){
+	runSequence('nightwatch:local:environment:start',
+		'test:nightwatch:local:run',
+		'nightwatch:local:environment:stop',
+		cb
+	);
+});
+
+gulp.task("test:local", ['build.debug'],function(cb){
+	runSequence('test:nightwatch:local', cb)
+});
+
 
 function getVersion() {
 	let pkg = require('./package.json');
