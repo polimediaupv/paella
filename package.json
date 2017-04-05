@@ -19,7 +19,6 @@
     "gulp-traceur": "^0.17.2",
     "gulp-uglify": "^2.0.0",
     "run-sequence": "^1.2.2",
-    "dockerode": "^2.4.3",
     "gulp-nightwatch": "^0.3.2",
     "nightwatch": "^0.9.14"
   },

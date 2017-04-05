@@ -11,7 +11,7 @@ module.exports = {
 		"default" : {
 			"launch_url" : "http://paella",
 			"selenium_host"  : "localhost",
-			"selenium_port"  : 14444,
+			"selenium_port"  : 4444,
 			"silent": true,
 			"screenshots" : {
 				"enabled" : false,
@@ -19,7 +19,7 @@ module.exports = {
 			},
 			"desiredCapabilities": {
 				"browserName": "chrome",
-				"marionette": true
+				"marionette": false
 			}
 		}
 	}
