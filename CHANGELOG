@@ -3,7 +3,8 @@ CHANGELOG
 
 * Paella 5.1.9
 
-  * Fix #241: start-end params num protection in setTrimming (thanks to @karendolan)
+  * Fix #241: start-end params num protection in setTrimming (thanks to @karendolan).
+  * Fix bug in blackboard plugin.
 
 * Paella 5.1.8
 
