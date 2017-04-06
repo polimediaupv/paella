@@ -303,8 +303,8 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 
 				.then((d) => {
 					duration = d;
-					this._trimming.start = start;
-					this._trimming.end = end;
+					this._trimming.start = Math.floor(start);
+					this._trimming.end = Math.floor(end);
 					if (currentTime<this._trimming.start) {
 						this.setCurrentTime(this._trimming.start);
 					}
