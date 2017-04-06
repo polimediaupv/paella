@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.1.10
+
+  * Fix compilation error in blackboard profile selection.
+
 * Paella 5.1.9
 
   * Fix #241: start-end params num protection in setTrimming (thanks to @karendolan).

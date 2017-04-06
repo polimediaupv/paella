@@ -97,7 +97,7 @@ Class ("paella.BlackBoard2", paella.EventDrivenPlugin,{
 			self._hasImages = false;
 
 			if (paella.player.selectedProfile == self._blackBoardProfile) {
-				defaultprofile = paella.player.config.defaultProfile;
+				let defaultprofile = paella.player.config.defaultProfile;
 				paella.player.setProfile(defaultprofile);
 			}
 		}
