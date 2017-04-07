@@ -16,6 +16,5 @@ install:
   - gulp 
   
 script:
-  - docker run -d --name paella-test-nginx -v `pwd`/build:/usr/share/nginx/html:ro nginx:alpine
-  - docker run -d --name paella-test-selenium --link paella-test-nginx:paella -p 4444:4444 selenium/standalone-chrome:3.3.0
+  - ./tests/start_selenium.sh
   - gulp test:local
