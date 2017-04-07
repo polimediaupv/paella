@@ -7,3 +7,4 @@ build
 node_modules
 repository_test/repository/local*
 .idea
+tests/nightwatch/reports/*
