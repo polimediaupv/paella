@@ -17,9 +17,13 @@
     "gulp-replace": "^0.5.4",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-traceur": "^0.17.2",
-    "gulp-uglify": "^2.0.0"
+    "gulp-uglify": "^2.0.0",
+    "run-sequence": "^1.2.2",
+    "gulp-nightwatch": "^0.3.2",
+    "nightwatch": "^0.9.14"
   },
-  "scripts": {},
-  "dependencies": {
+  "scripts": {
+	  "test": "gulp test:local"
   }
+  
 }
