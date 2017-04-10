@@ -161,9 +161,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		if (this.playerId==playerId) {
 			this.loadPaellaPlayer();
 			var thisClass = this;
-			paella.events.bind(paella.events.setProfile,function(event,params) {
-				thisClass.setProfile(params.profileName);
-			});
 		}
 
 		Object.defineProperty(this,'selectedProfile',{
