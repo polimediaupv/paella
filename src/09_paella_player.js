@@ -137,7 +137,15 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 
 	setProfile:function(profileName,animate) {
-		this.videoContainer.setProfile(profileName,animate);
+		  this.videoContainer.setProfile(profileName,animate)
+          .then((profileName) => {
+              return paella.player.getProfile(profileName);
+          })
+          .then((profileData) => {
+              if (!profileData.isMonostream) {
+                  base.cookies.set("lastProfile", profile);
+              }
+          });
 	},
 
 	getProfile:function(profileName) {
