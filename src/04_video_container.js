@@ -468,6 +468,10 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 		get audioStreams() {
 			return this._audioStreams;
 		}
+
+		get isLiveStreaming() {
+			return paella.player.isLiveStream();
+		}
 	}
 
 	paella.StreamProvider = StreamProvider;
@@ -1116,9 +1120,8 @@ class VideoContainer extends paella.VideoContainerBase {
 	}
 
 	autoplay() {
-		return base.parameters.get('autoplay')=='true' &&
-			paella.player.config.experimental &&
-			paella.player.config.experimental.autoplay &&
+		return (base.parameters.get('autoplay')=='true' ||
+				this._streamProvider.isLiveStreaming) &&
 			!base.userAgent.browser.IsMobileVersion;
 	}
 
