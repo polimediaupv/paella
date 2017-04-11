@@ -65,13 +65,13 @@ gulp.task("styles", function() {
 		fs.readdirSync(skinPath)
 			.forEach(function(pathItem) {
 				let fullPath = path.join(skinPath,pathItem);
-				p.push(gulp.src([fullPath,
-						'resources/style/*.less',
-						'resources/style/*.css',
-						'plugins/**/*.less',
-						'plugins/**/*.css',
-						'vendor/plugins/**/*.less',
-						'vendor/plugins/**/*.css'])
+				p.push(gulp.src(['resources/style/*.less',
+					'resources/style/*.css',
+					'plugins/**/*.less',
+					'plugins/**/*.css',
+					'vendor/plugins/**/*.less',
+					'vendor/plugins/**/*.css',
+					fullPath])
 					.pipe(concat(`style_${pathItem}`))
 					.pipe(less())
 					.pipe(gulp.dest(`${config.outDir}player/resources/style`)));
