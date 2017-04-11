@@ -137,7 +137,17 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 
 	setProfile:function(profileName,animate) {
-		this.videoContainer.setProfile(profileName,animate);
+		  this.videoContainer.setProfile(profileName,animate)
+          .then((profileName) => {
+              return paella.player.getProfile(profileName);
+          })
+          .then((profileData) => {
+              if (!profileData.isMonostream) {
+                  base.cookies.set("lastProfile", profileName);
+              }
+              
+              paella.events.trigger(paella.events.setProfile,{profileName:profileName});
+          });
 	},
 
 	getProfile:function(profileName) {
@@ -151,9 +161,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		if (this.playerId==playerId) {
 			this.loadPaellaPlayer();
 			var thisClass = this;
-			paella.events.bind(paella.events.setProfile,function(event,params) {
-				thisClass.setProfile(params.profileName);
-			});
 		}
 
 		Object.defineProperty(this,'selectedProfile',{
