@@ -142,7 +142,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
               return paella.player.getProfile(profileName);
           })
           .then((profileData) => {
-              if (!profileData.isMonostream) {
+              if (!paella.player.videoContainer.isMonostream) {
                   base.cookies.set("lastProfile", profileName);
               }
               
