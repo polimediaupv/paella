@@ -24,16 +24,19 @@ Class ("paella.plugins.TrimmingLoaderPlugin",paella.EventDrivenPlugin,{
 		var videoId = paella.initDelegate.getId();
 		paella.data.read('trimming',{id:videoId},function(data,status) {
 			if (data && status && data.end>0) {
-				paella.player.videoContainer.enableTrimming();
-				paella.player.videoContainer.setTrimming(data.start, data.end);
+				paella.player.videoContainer
+					.setTrimming(data.start, data.end)
+					.then(() => paella.player.videoContainer.enableTrimming() )
+				
 			}
 			else {
 				// Check for optional trim 'start' and 'end', in seconds, in location args
 				var startTime =  base.parameters.get('start');
 				var endTime = base.parameters.get('end');
 				if (startTime && endTime) {
-					paella.player.videoContainer.enableTrimming();
-					paella.player.videoContainer.setTrimming(startTime, endTime);
+					paella.player.videoContainer
+						.setTrimming(startTime, endTime)
+						.then(() => paella.player.videoContainer.enableTrimming() )
 				}
 			}
 		});
