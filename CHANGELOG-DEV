@@ -1,3 +1,6 @@
 CHANGELOG
 =========
 
+* Paella WIP
+
+  * Add support for HLS in non iOS devices (#223)
