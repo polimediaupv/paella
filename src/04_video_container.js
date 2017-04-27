@@ -706,6 +706,9 @@ class VideoContainer extends paella.VideoContainerBase {
 		var start = trimming.start;
 		var end = trimming.end;
 		var enabled = trimming.enabled;
+		paella.events.bind(paella.events.endVideo, () => {
+			this.setCurrentTime(0);
+		});
 		if (!enabled) {
 			if (current>=actualDuration) {
 				paella.events.trigger(paella.events.endVideo, { videoContainer: this });
