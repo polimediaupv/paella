@@ -86,38 +86,30 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 		var sel = null;
 		var id = null;
 		if(time){
-			id = thisClass.searchIntervaltoHighlight(time);
+			paella.player.videoContainer.trimming()
+				.then((trimming) => {
+					let offset = trimming.enabled ? trimming.start : 0;
+					let c = paella.captions.getActiveCaptions();
+					let caption = c && c.getCaptionAtTime(time.currentTime + offset);
+					let id = caption && caption.id;
 
-			if(id != null){
-				sel = $( ".bodyInnerContainer[sec-id='"+id+"']" );
+					if(id != null){
+						sel = $( ".bodyInnerContainer[sec-id='"+id+"']" );
 
-				if(sel != thisClass._lasSel){
-					$(thisClass._lasSel).removeClass("Highlight");
-				}
+						if(sel != thisClass._lasSel){
+							$(thisClass._lasSel).removeClass("Highlight");
+						}
 
-				if(sel){
-					$(sel).addClass("Highlight");
-					if(thisClass._autoScroll){
-						thisClass.updateScrollFocus(id);
+						if(sel){
+							$(sel).addClass("Highlight");
+							if(thisClass._autoScroll){
+								thisClass.updateScrollFocus(id);
+							}
+							thisClass._lasSel = sel;
+						}
 					}
-					thisClass._lasSel = sel;
-				}
-			}
+				});
 		}
-	},
-
-	searchIntervaltoHighlight:function(time){
-		var thisClass = this;
-		var resul = null;
-
-		if(paella.captions.getActiveCaptions()){
-			var n = paella.captions.getActiveCaptions()._captions;
-			n.forEach(function(l){
-				if(l.begin < time.currentTime && time.currentTime < l.end) thisClass.resul = l.id;
-			});
-		}
-		if(thisClass.resul != null) return thisClass.resul;
-		else return null;
 	},
 
 	updateScrollFocus:function(id){
@@ -388,7 +380,11 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 	        );
 	        $(thisClass._inner).click(function(){ 
 	        		var secBegin = $(this).attr("sec-begin");
-	        		paella.player.videoContainer.seekToTime(parseInt(secBegin));
+					paella.player.videoContainer.trimming()
+						.then((trimming) => {
+							let offset = trimming.enabled ? trimming.start : 0;
+							paella.player.videoContainer.seekToTime(parseInt(secBegin - offset));
+						});
 	        });
     	});
     }

@@ -97,7 +97,7 @@ Class ("paella.plugins.visualAnnotationPlugin", paella.EventDrivenPlugin,{
                     if (self._prevProfile == null){
                         self._prevProfile = paella.plugins.viewModePlugin.active_profiles||paella.Profiles.getDefaultProfile();
                     }
-                    paella.events.trigger(paella.events.setProfile,{profileName:annotation.profile});
+                    paella.player.setProfile(annotation.profile);
                 }
                 el.appendChild(button);
                 //let create the style
@@ -137,7 +137,7 @@ Class ("paella.plugins.visualAnnotationPlugin", paella.EventDrivenPlugin,{
 
     closeAnnotation:function(element, forced){
         //if (forced) this._closedIds.push(element._id);
-        paella.events.trigger(paella.events.setProfile,{profileName:this._prevProfile});
+        paella.player.setProfile(this._prevProfile);
         this._prevProfile=null;
         $('#'+element._id).remove();
     }

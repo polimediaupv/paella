@@ -93,18 +93,20 @@ Class ("paella.plugins.CaptionsOnScreen",paella.EventDrivenPlugin,{
 	},
 
 	updateCaptions:function(time){
-		var thisClass = this;
-
-		if(thisClass.captions){
-			var c = paella.captions.getActiveCaptions();
-			var caption = c.getCaptionAtTime(time.currentTime);
-			if(caption){
-				$(thisClass.container).show();
-				thisClass.innerContainer.innerHTML = caption.content;
-			}
-			else { 
-				thisClass.innerContainer.innerHTML = ""; 
-			}
+		if (this.captions) {
+			paella.player.videoContainer.trimming()
+				.then((trimming) => {
+					let offset = trimming.enabled ? trimming.start : 0;
+					var c = paella.captions.getActiveCaptions();
+					var caption = c.getCaptionAtTime(time.currentTime + offset);
+					if(caption){
+						$(this.container).show();
+						this.innerContainer.innerHTML = caption.content;
+					}
+					else { 
+						this.innerContainer.innerHTML = ""; 
+					}
+				});
 		}
 	},
 	
