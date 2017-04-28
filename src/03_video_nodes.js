@@ -871,19 +871,21 @@ Class ("paella.ImageVideo", paella.VideoElementBase,{
 	},
 
 	play:function() {
+		let This = this;
 		return this._deferredAction(() => {
-			this._playTimer = new base.Timer(function() {
-				this._currentTime += 0.25 * this._playbackRate;
-				this._loadCurrentFrame();
+			This._playTimer = new base.Timer(function() {
+				This._currentTime += 0.25 * This._playbackRate;
+				This._loadCurrentFrame();
 			}, 250);
-			this._playTimer.repeat = true;
+			This._playTimer.repeat = true;
 		});
 	},
 
 	pause:function() {
+		let This = this;
 		return this._deferredAction(() => {
-			this._playTimer.repeat = false;
-			this._playTimer = null;
+			This._playTimer.repeat = false;
+			This._playTimer = null;
 		});
 	},
 
@@ -902,6 +904,7 @@ Class ("paella.ImageVideo", paella.VideoElementBase,{
 	setCurrentTime:function(time) {
 		return this._deferredAction(() => {
 			this._currentTime = time;
+			this._loadCurrentFrame();
 		});
 	},
 

@@ -188,12 +188,16 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 
 		$(content).css({width:(numFrames * itemWidth) + 'px'});
 
-		var This = this;
-		paella.events.bind(paella.events.setTrim,function(event,params) {
-			This.isFrameVisible(params.trimEnabled,params.trimStart,params.trimEnd);
+		paella.events.bind(paella.events.setTrim,(event,params) => {
+			this.updateFrameVisibility(params.trimEnabled,params.trimStart,params.trimEnd);
 		});
+		paella.player.videoContainer.trimming()
+			.then((trimData) => {
+				this.updateFrameVisibility(trimData.enabled,trimData.start,trimData.end);
+			});
+		
 
-		paella.events.bind(paella.events.timeupdate,function(event,params) { This.onTimeUpdate(params.currentTime); });
+		paella.events.bind(paella.events.timeupdate,(event,params) => this.onTimeUpdate(params.currentTime) );
 	},
 
 	showHiResFrame:function(url,caption) {
@@ -258,7 +262,7 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 		thisClass._img = null;
 	},
 
-	isFrameVisible:function(trimEnabled,trimStart,trimEnd) {
+	updateFrameVisibility:function(trimEnabled,trimStart,trimEnd) {
 		var i;
 		if (!trimEnabled) {
 			for (i = 0; i<this.frames.length;++i) {

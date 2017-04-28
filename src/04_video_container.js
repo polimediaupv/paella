@@ -341,7 +341,7 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 						var end = trimming.end;
 						duration = end - start;
 						var trimedPosition = percent * duration / 100;
-						position = parseFloat(trimedPosition) + parseFloat(start);
+						position = parseFloat(trimedPosition);
 					}
 					else {
 						position = percent * duration / 100;
@@ -706,6 +706,9 @@ class VideoContainer extends paella.VideoContainerBase {
 		var start = trimming.start;
 		var end = trimming.end;
 		var enabled = trimming.enabled;
+		paella.events.bind(paella.events.endVideo, () => {
+			this.setCurrentTime(0);
+		});
 		if (!enabled) {
 			if (current>=actualDuration) {
 				paella.events.trigger(paella.events.endVideo, { videoContainer: this });
@@ -796,6 +799,7 @@ class VideoContainer extends paella.VideoContainerBase {
 		return new Promise((resolve) => {
 			let promises = [];
 			if (this._trimming.enabled) {
+				time += this._trimming.start;
 				if (time<this._trimming.start) time = this._trimming.start;
 				if (time>this._trimming.end) time = this._trimming.end;
 			}

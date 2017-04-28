@@ -23,6 +23,10 @@ Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
 
     	var Keys = {Tab:9,Return:13,Esc:27,End:35,Home:36,Left:37,Up:38,Right:39,Down:40};
 
+      paella.events.bind(paella.events.setProfile,function(event,params) {
+          thisClass.onProfileChange(params.profileName);
+      });
+
         $(this.button).keyup(function(event) {
         	if (thisClass.isPopUpOpen()){
 		    	if (event.keyCode == Keys.Up) {
@@ -51,7 +55,7 @@ Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
     },
 
 	buildContent:function(domElement) {
-		var thisClass = this;
+		  var thisClass = this;
 		this.buttonItems = {};
 		paella.Profiles.loadProfileList(function(profiles) {
 			Object.keys(profiles).forEach(function(profile) {
@@ -104,25 +108,27 @@ Class ("paella.plugins.ViewModePlugin",paella.ButtonPlugin,{
 		return elem;
 	},
 
+    onProfileChange:function(profileName) {
+	      var thisClass = this;
+		    var ButtonItem = this.buttonItems[profileName];
+
+		    var n = this.buttonItems;
+		    var arr = Object.keys(n);
+		    arr.forEach(function(i){
+			      thisClass.buttonItems[i].className = thisClass.getButtonItemClass(i,false);
+		    });
+
+        if(ButtonItem) {
+			      ButtonItem.className = thisClass.getButtonItemClass(profileName,true);
+        }
+    },
+
 	onItemClick:function(button,profile,profileData) {
 		var thisClass = this;
 		var ButtonItem = this.buttonItems[profile];
-		
-		var n = this.buttonItems;
-		var arr = Object.keys(n);
-		arr.forEach(function(i){
-			thisClass.buttonItems[i].className = thisClass.getButtonItemClass(i,false);
-		});
 
 		if (ButtonItem) {
-			ButtonItem.className = thisClass.getButtonItemClass(profile,true);
 			paella.player.setProfile(profile);
-			paella.player.getProfile(profile)
-				.then((profileData) => {
-					if (!profileData.isMonostream) {
-						base.cookies.set("lastProfile", profile);
-					}
-				});
 		}
 		paella.player.controls.hidePopUp(this.getName());
 	},

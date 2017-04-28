@@ -64,12 +64,6 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	initialize:function(id) {
 		var self = this;
 
-
-		//OVERLAY INITIALIZE
-		self.imageSetup();
-		//END OVERLAY INITIALIZE
-
-
 		var style = {};
 		this.parent('div',id,style);
 		this.domElement.className = "playbackBar";
@@ -145,15 +139,18 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	},
 
 	drawTimeMarks:function(){
-		var self = this;
-		var parent = $("#playerContainer_controls_playback_playbackBar");
-		this.clearCanvas();
-		if (this._keys && paella.player.config.player.slidesMarks.enabled) {
-			this._keys.forEach(function (l) {
-				var aux = (parseInt(l) * parent.width()) / self._videoLength; // conversion to canvas
-				self.drawTimeMark(parseInt(aux));
+		this.imageSetup()
+			.then(() => {
+				var self = this;
+				var parent = $("#playerContainer_controls_playback_playbackBar");
+				this.clearCanvas();
+				if (this._keys && paella.player.config.player.slidesMarks.enabled) {
+					this._keys.forEach(function (l) {
+						var aux = (parseInt(l) * parent.width()) / self._videoLength; // conversion to canvas
+						self.drawTimeMark(parseInt(aux));
+					});
+				}
 			});
-		}
 	},
 
 	drawTimeMark:function(sec){
@@ -271,28 +268,31 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 
 	imageSetup:function(){
 		var This = this;
+		return new Promise((resolve) => {
+			paella.player.videoContainer.duration()
+				.then(function(duration) {
+					//  BRING THE IMAGE ARRAY TO LOCAL
+					This._images = {};
+					var n = paella.initDelegate.initParams.videoLoader.frameList;
 
-		paella.player.videoContainer.duration()
-			.then(function(duration) {
-				//  BRING THE IMAGE ARRAY TO LOCAL
-				This._images = {};
-				var n = paella.initDelegate.initParams.videoLoader.frameList;
-
-				if( !n || Object.keys(n).length === 0) { This._hasSlides = false; return;}
-				else This._hasSlides = true;
+					if( !n || Object.keys(n).length === 0) { This._hasSlides = false; return;}
+					else This._hasSlides = true;
 
 
-				This._images = n; // COPY TO LOCAL
-				This._videoLength = duration;
+					This._images = n; // COPY TO LOCAL
+					This._videoLength = duration;
 
-				// SORT KEYS FOR SEARCH CLOSEST
-				This._keys = Object.keys(This._images);
-				This._keys = This._keys.sort(function(a, b){return parseInt(a)-parseInt(b);}); // SORT FRAME NUMBERS STRINGS
+					// SORT KEYS FOR SEARCH CLOSEST
+					This._keys = Object.keys(This._images);
+					This._keys = This._keys.sort(function(a, b){return parseInt(a)-parseInt(b);}); // SORT FRAME NUMBERS STRINGS
 
-				//NEXT
-				This._next = 0;
-				This._prev = 0;
-			});
+					//NEXT
+					This._next = 0;
+					This._prev = 0;
+
+					resolve();
+				});
+		})
 	},
 
 	imageUpdate:function(sec){
