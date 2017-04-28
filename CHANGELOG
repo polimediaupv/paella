@@ -6,6 +6,7 @@ CHANGELOG
   * Fix some issues when changing profile (#249)
   * Improvements in trimmed videos.
   * Fix some warning on build (#255)
+  * Fix caption issues in trimmed videos (#260)
 
 * Paella 5.1.11
 
