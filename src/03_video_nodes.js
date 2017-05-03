@@ -101,76 +101,15 @@ Class ("paella.VideoRect", paella.DomNode, {
 	_rect:null,
 
 	initialize:function(id, domType, left, top, width, height) {
-		var This = this;
-		this._rect = { left:left, top:top, width:width, height:height };
-		var relativeSize = new paella.RelativeVideoSize();
-		var percentTop = relativeSize.percentVSize(top) + '%';
-		var percentLeft = relativeSize.percentWSize(left) + '%';
-		var percentWidth = relativeSize.percentWSize(width) + '%';
-		var percentHeight = relativeSize.percentVSize(height) + '%';
-		var style = {top:percentTop,left:percentLeft,width:percentWidth,height:percentHeight,position:'absolute',zIndex:GlobalParams.video.zIndex};
-		this.parent(domType,id,style);
-	},
-
-	setRect:function(rect,animate) {
-		this._rect = JSON.parse(JSON.stringify(rect));
-		var relativeSize = new paella.RelativeVideoSize();
-		var percentTop = relativeSize.percentVSize(rect.top) + '%';
-		var percentLeft = relativeSize.percentWSize(rect.left) + '%';
-		var percentWidth = relativeSize.percentWSize(rect.width) + '%';
-		var percentHeight = relativeSize.percentVSize(rect.height) + '%';
-		var style = {top:percentTop,left:percentLeft,width:percentWidth,height:percentHeight,position:'absolute'};
-		if (animate) {
-			this.disableClassName();
-			var thisClass = this;
-
-			$(this.domElement).animate(style,400,function(){
-				thisClass.enableClassName();
-				paella.events.trigger(paella.events.setComposition, { video:thisClass });
-			});
-			this.enableClassNameAfter(400);
-		}
-		else {
-			$(this.domElement).css(style);
-			paella.events.trigger(paella.events.setComposition, { video:this });
-		}
-	},
-
-	getRect:function() {
-		return this._rect;
-	},
-
-	disableClassName:function() {
-		this.classNameBackup = this.domElement.className;
-		this.domElement.className = "";
-	},
-
-	enableClassName:function() {
-		this.domElement.className = this.classNameBackup;
-	},
-
-	enableClassNameAfter:function(millis) {
-		setTimeout("$('#" + this.domElement.id + "')[0].className = '" + this.classNameBackup + "'",millis);
-	},
-
-	setVisible:function(visible,animate) {
-		if (visible=="true" && animate) {
-			$(this.domElement).show();
-			$(this.domElement).animate({opacity:1.0},300);
-		}
-		else if (visible=="true" && !animate) {
-			$(this.domElement).show();
-		}
-		else if (visible=="false" && animate) {
-			$(this.domElement).animate({opacity:0.0},300);
-		}
-		else if (visible=="false" && !animate) {
-			$(this.domElement).hide();
-		}
-	},
-
-	setLayer:function(layer) {
-		this.domElement.style.zIndex = layer;
+		this._zoom = 100;
+		this.parent(domType,id,{width:this._zoom + '%',position:'absolute'});
+		
+		$(this.domElement).on('mousewheel',(evt) => {
+			this._zoom += evt.originalEvent.deltaY;
+			this._zoom = this._zoom < 100 ? 100 : this._zoom;
+			this._zoom = this._zoom > 400 ? 400 : this._zoom;
+			$(this.domElement).css({ width:this._zoom + '%'});
+		})
 	}
 });
 
