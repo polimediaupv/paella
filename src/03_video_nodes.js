@@ -16,7 +16,6 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 paella.Profiles = {
 	profileList: null,
 	
@@ -104,11 +103,100 @@ Class ("paella.VideoRect", paella.DomNode, {
 		this._zoom = 100;
 		this.parent(domType,id,{width:this._zoom + '%',position:'absolute'});
 		
-		$(this.domElement).on('mousewheel',(evt) => {
-			this._zoom += evt.originalEvent.deltaY;
+		$(this.domElement).on('mousewheel wheel',(evt) => {
+			let wheel = evt.originalEvent.deltaY * (paella.utils.userAgent.Firefox ? 2:1);
+			let maxWheel = 6;
+			wheel = Math.abs(wheel) < maxWheel ? wheel : maxWheel * Math.sign(wheel);
+			wheel *= -1;
+
+			let videoOffset = {
+				x: evt.target.offsetLeft,
+				y: evt.target.offsetTop
+			};
+			let videoSize = {
+				w: $(evt.target).width(),
+				h: $(evt.target).height()
+			};
+			let containerSize = {
+				w: $(evt.target.parentElement).width(),
+				h: $(evt.target.parentElement).height()
+			};
+			let offset = {
+				x: evt.originalEvent.offsetX + videoOffset.x,
+				y: evt.originalEvent.offsetY + videoOffset.y
+			};
+			this._zoom += wheel;
 			this._zoom = this._zoom < 100 ? 100 : this._zoom;
 			this._zoom = this._zoom > 400 ? 400 : this._zoom;
 			$(this.domElement).css({ width:this._zoom + '%'});
+
+			videoSize.w = videoSize.w * (this._zoom - 100);
+			videoSize.h = videoSize.h * (this._zoom - 100);
+
+			let zoomTarget = {
+				x: offset.x / containerSize.w * this._zoom,
+				y: offset.y / containerSize.h * this._zoom
+			};
+
+			let maxOffset = this._zoom - 100;
+			zoomTarget.x = zoomTarget.x<maxOffset ? zoomTarget.x : maxOffset;
+			zoomTarget.y = zoomTarget.y<maxOffset ? zoomTarget.y : maxOffset;
+
+			$(this.domElement).css({
+				left: "-" + zoomTarget.x + '%',
+				top: "-" + zoomTarget.y + "%"
+			});
+		});
+
+		this.drag = false;
+		$(this.domElement).on('mousemove',(evt) => {
+			if (evt.buttons>0) {
+				this.drag = true;
+				let videoOffset = {
+					x: evt.target.offsetLeft,
+					y: evt.target.offsetTop
+				};
+				let videoSize = {
+					w: $(evt.target).width(),
+					h: $(evt.target).height()
+				};
+				let containerSize = {
+					w: $(evt.target.parentElement).width(),
+					h: $(evt.target.parentElement).height()
+				};
+				let offset = {
+					x: evt.originalEvent.offsetX + videoOffset.x,
+					y: evt.originalEvent.offsetY + videoOffset.y
+				};
+
+				videoSize.w = videoSize.w * (this._zoom - 100);
+				videoSize.h = videoSize.h * (this._zoom - 100);
+
+				let zoomTarget = {
+					x: offset.x / containerSize.w * this._zoom,
+					y: offset.y / containerSize.h * this._zoom
+				};
+
+				let maxOffset = this._zoom - 100;
+				zoomTarget.x = zoomTarget.x<maxOffset ? zoomTarget.x : maxOffset;
+				zoomTarget.y = zoomTarget.y<maxOffset ? zoomTarget.y : maxOffset;
+
+				$(this.domElement).css({
+					left: "-" + zoomTarget.x + '%',
+					top: "-" + zoomTarget.y + "%"
+				});
+			}
+		});
+
+		$(this.domElement).on('mouseup',(evt) => {
+			if (this.drag) {
+				this.drag = false;
+				paella.player.videoContainer.paused()
+					.then((p) => {
+						return p ?  paella.player.videoContainer.play() :
+									paella.player.videoContainer.pause();
+					});
+			}
 		})
 	}
 });
