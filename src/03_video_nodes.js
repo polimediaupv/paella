@@ -102,12 +102,22 @@ Class ("paella.VideoRect", paella.DomNode, {
 	initialize:function(id, domType, left, top, width, height) {
 		this._zoom = 100;
 		this.parent(domType,id,{width:this._zoom + '%',position:'absolute'});
+		this._zoomTarget = {};
+		this._baseMouse = {};
+
+		function mousePos(evt) {
+			return {
+				x:evt.originalEvent.offsetX,
+				y:evt.originalEvent.offsetY
+			};
+		}
 		
 		$(this.domElement).on('mousewheel wheel',(evt) => {
 			let wheel = evt.originalEvent.deltaY * (paella.utils.userAgent.Firefox ? 2:1);
 			let maxWheel = 6;
 			wheel = Math.abs(wheel) < maxWheel ? wheel : maxWheel * Math.sign(wheel);
 			wheel *= -1;
+			let mouse = mousePos(evt);
 
 			let videoOffset = {
 				x: evt.target.offsetLeft,
@@ -122,8 +132,8 @@ Class ("paella.VideoRect", paella.DomNode, {
 				h: $(evt.target.parentElement).height()
 			};
 			let offset = {
-				x: evt.originalEvent.offsetX + videoOffset.x,
-				y: evt.originalEvent.offsetY + videoOffset.y
+				x: mouse.x + videoOffset.x,
+				y: mouse.y + videoOffset.y
 			};
 			this._zoom += wheel;
 			this._zoom = this._zoom < 100 ? 100 : this._zoom;
@@ -142,6 +152,11 @@ Class ("paella.VideoRect", paella.DomNode, {
 			zoomTarget.x = zoomTarget.x<maxOffset ? zoomTarget.x : maxOffset;
 			zoomTarget.y = zoomTarget.y<maxOffset ? zoomTarget.y : maxOffset;
 
+			this._zoomTarget = {
+				x: zoomTarget.x,
+				y: zoomTarget.y
+			};
+
 			$(this.domElement).css({
 				left: "-" + zoomTarget.x + '%',
 				top: "-" + zoomTarget.y + "%"
@@ -149,13 +164,14 @@ Class ("paella.VideoRect", paella.DomNode, {
 		});
 
 		this.drag = false;
+		$(this.domElement).on('mousedown',(evt) => {
+			this._baseMouse = mousePos(evt);
+		});
+
 		$(this.domElement).on('mousemove',(evt) => {
-			if (evt.buttons>0) {
-				this.drag = true;
-				let videoOffset = {
-					x: evt.target.offsetLeft,
-					y: evt.target.offsetTop
-				};
+			this.drag = evt.buttons>0;
+			if (evt.buttons>0 && this._zoomTarget.x) {
+				let mouse = mousePos(evt);
 				let videoSize = {
 					w: $(evt.target).width(),
 					h: $(evt.target).height()
@@ -165,25 +181,21 @@ Class ("paella.VideoRect", paella.DomNode, {
 					h: $(evt.target.parentElement).height()
 				};
 				let offset = {
-					x: evt.originalEvent.offsetX + videoOffset.x,
-					y: evt.originalEvent.offsetY + videoOffset.y
-				};
+					x: (mouse.x - this._baseMouse.x) * 150 / videoSize.w,
+					y: (mouse.y - this._baseMouse.y) * 150 / videoSize.h
+				}
+				this._baseMouse = mousePos(evt);
 
-				videoSize.w = videoSize.w * (this._zoom - 100);
-				videoSize.h = videoSize.h * (this._zoom - 100);
-
-				let zoomTarget = {
-					x: offset.x / containerSize.w * this._zoom,
-					y: offset.y / containerSize.h * this._zoom
-				};
-
+				this._zoomTarget.x -= offset.x;
+				this._zoomTarget.y -= offset.y;
+				
 				let maxOffset = this._zoom - 100;
-				zoomTarget.x = zoomTarget.x<maxOffset ? zoomTarget.x : maxOffset;
-				zoomTarget.y = zoomTarget.y<maxOffset ? zoomTarget.y : maxOffset;
+				this._zoomTarget.x = this._zoomTarget.x<maxOffset ? this._zoomTarget.x : maxOffset;
+				this._zoomTarget.y = this._zoomTarget.y<maxOffset ? this._zoomTarget.y : maxOffset;
 
 				$(this.domElement).css({
-					left: "-" + zoomTarget.x + '%',
-					top: "-" + zoomTarget.y + "%"
+					left: "-" + this._zoomTarget.x + '%',
+					top: "-" + this._zoomTarget.y + "%"
 				});
 			}
 		});
