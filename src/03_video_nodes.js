@@ -113,6 +113,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 		}
 		
 		$(this.domElement).on('mousewheel wheel',(evt) => {
+			if (!this.allowZoom()) return;
 			let wheel = evt.originalEvent.deltaY * (paella.utils.userAgent.Firefox ? 2:1);
 			let maxWheel = 6;
 			wheel = Math.abs(wheel) < maxWheel ? wheel : maxWheel * Math.sign(wheel);
@@ -165,10 +166,12 @@ Class ("paella.VideoRect", paella.DomNode, {
 
 		this.drag = false;
 		$(this.domElement).on('mousedown',(evt) => {
+			if (!this.allowZoom()) return;
 			this._baseMouse = mousePos(evt);
 		});
 
 		$(this.domElement).on('mousemove',(evt) => {
+			if (!this.allowZoom()) return;
 			this.drag = evt.buttons>0;
 			if (evt.buttons>0 && this._zoomTarget.x) {
 				let mouse = mousePos(evt);
@@ -201,6 +204,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 		});
 
 		$(this.domElement).on('mouseup',(evt) => {
+			if (!this.allowZoom()) return;
 			if (this.drag) {
 				this.drag = false;
 				paella.player.videoContainer.paused()
@@ -210,6 +214,10 @@ Class ("paella.VideoRect", paella.DomNode, {
 					});
 			}
 		})
+	},
+
+	allowZoom: function() {
+		return true;
 	}
 });
 
@@ -812,6 +820,11 @@ Class ("paella.ImageVideo", paella.VideoElementBase,{
 	},
 
 	// Initialization functions
+
+	allowZoom:function() {
+		return false;
+	},
+
 	getVideoData:function() {
 		let This = this;
 		return new Promise((resolve) => {
