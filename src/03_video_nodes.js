@@ -154,6 +154,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 			if (!this.allowZoom()) return;
 			this.drag = evt.buttons>0;
 			if (this.drag) {
+				paella.player.videoContainer.disablePlayOnClick();
 				let mouse = mousePos(evt);
 				let newVideoSize = {
 					w: $(this.domElement).width(),
@@ -179,6 +180,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 		$(this.domElement).on('mouseup',(evt) => {
 			if (!this.allowZoom()) return;
 			this.drag = false;
+			setTimeout(() => paella.player.videoContainer.enablePlayOnClick(), 10);
 		});
 	},
 
