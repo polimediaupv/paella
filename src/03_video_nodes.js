@@ -101,6 +101,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 
 	initialize:function(id, domType, left, top, width, height) {
 		this._zoom = 100;
+		this._maxZoom = 400;
 		this.parent(domType,id,{width:this._zoom + '%',position:'absolute'});
 		this._zoomTarget = {};
 		this._baseMouse = {};
@@ -111,109 +112,74 @@ Class ("paella.VideoRect", paella.DomNode, {
 				y:evt.originalEvent.offsetY
 			};
 		}
-		
-		$(this.domElement).on('mousewheel wheel',(evt) => {
-			if (!this.allowZoom()) return;
+
+		function wheelDelta(evt) {
 			let wheel = evt.originalEvent.deltaY * (paella.utils.userAgent.Firefox ? 2:1);
 			let maxWheel = 6;
-			wheel = Math.abs(wheel) < maxWheel ? wheel : maxWheel * Math.sign(wheel);
-			wheel *= -1;
-			let mouse = mousePos(evt);
+			return -Math.abs(wheel) < maxWheel ? wheel : maxWheel * Math.sign(wheel);
+		}
 
-			let videoOffset = {
-				x: evt.target.offsetLeft,
-				y: evt.target.offsetTop
-			};
-			let videoSize = {
-				w: $(evt.target).width(),
-				h: $(evt.target).height()
-			};
-			let containerSize = {
-				w: $(evt.target.parentElement).width(),
-				h: $(evt.target.parentElement).height()
-			};
-			let offset = {
-				x: mouse.x + videoOffset.x,
-				y: mouse.y + videoOffset.y
-			};
-			this._zoom += wheel;
-			this._zoom = this._zoom < 100 ? 100 : this._zoom;
-			this._zoom = this._zoom > 400 ? 400 : this._zoom;
-			$(this.domElement).css({ width:this._zoom + '%'});
-
-			videoSize.w = videoSize.w * (this._zoom - 100);
-			videoSize.h = videoSize.h * (this._zoom - 100);
-
-			let zoomTarget = {
-				x: offset.x / containerSize.w * this._zoom,
-				y: offset.y / containerSize.h * this._zoom
-			};
-
-			let maxOffset = this._zoom - 100;
-			zoomTarget.x = zoomTarget.x<maxOffset ? zoomTarget.x : maxOffset;
-			zoomTarget.y = zoomTarget.y<maxOffset ? zoomTarget.y : maxOffset;
-
-			this._zoomTarget = {
-				x: zoomTarget.x,
-				y: zoomTarget.y
-			};
-
-			$(this.domElement).css({
-				left: "-" + zoomTarget.x + '%',
-				top: "-" + zoomTarget.y + "%"
-			});
-		});
-
-		this.drag = false;
-		$(this.domElement).on('mousedown',(evt) => {
+		$(this.domElement).on('mousewheel wheel',(evt) => {
 			if (!this.allowZoom()) return;
-			this._baseMouse = mousePos(evt);
+			let mouse = mousePos(evt);
+			let wheel = wheelDelta(evt);
+			if (this._zoom>=this._maxZoom && wheel>0) return;
+			this._zoom += wheel;
+			this._zoom = this._zoom < 100 ? 100 : this._zoom;			
+			this._zoom = this._zoom > this._maxZoom ? this._maxZoom : this._zoom;
+			let newVideoSize = {
+				w: $(this.domElement).width(),
+				h: $(this.domElement).height()
+			};
+			$(this.domElement).css({
+				width:this._zoom + '%'
+			});
+			
+			let maxOffset = this._zoom - 100;
+			let offset = {
+				x: (mouse.x * maxOffset / newVideoSize.w),
+				y: (mouse.y * maxOffset / newVideoSize.h)
+			};
+			
+			offset.x = offset.x<maxOffset ? offset.x : maxOffset;
+			offset.y = offset.y<maxOffset ? offset.y : maxOffset;
+			
+			$(this.domElement).css({
+				left:"-" + offset.x + "%",
+				top: "-" + offset.y + "%"
+			});
 		});
 
 		$(this.domElement).on('mousemove',(evt) => {
 			if (!this.allowZoom()) return;
 			this.drag = evt.buttons>0;
-			if (evt.buttons>0 && this._zoomTarget.x) {
+			if (this.drag) {
 				let mouse = mousePos(evt);
-				let videoSize = {
-					w: $(evt.target).width(),
-					h: $(evt.target).height()
+				let newVideoSize = {
+					w: $(this.domElement).width(),
+					h: $(this.domElement).height()
 				};
-				let containerSize = {
-					w: $(evt.target.parentElement).width(),
-					h: $(evt.target.parentElement).height()
-				};
-				let offset = {
-					x: (mouse.x - this._baseMouse.x) * 150 / videoSize.w,
-					y: (mouse.y - this._baseMouse.y) * 150 / videoSize.h
-				}
-				this._baseMouse = mousePos(evt);
-
-				this._zoomTarget.x -= offset.x;
-				this._zoomTarget.y -= offset.y;
 				
 				let maxOffset = this._zoom - 100;
-				this._zoomTarget.x = this._zoomTarget.x<maxOffset ? this._zoomTarget.x : maxOffset;
-				this._zoomTarget.y = this._zoomTarget.y<maxOffset ? this._zoomTarget.y : maxOffset;
-
+				let offset = {
+					x: (mouse.x * maxOffset / newVideoSize.w),
+					y: (mouse.y * maxOffset / newVideoSize.h)
+				};
+				
+				offset.x = offset.x<maxOffset ? offset.x : maxOffset;
+				offset.y = offset.y<maxOffset ? offset.y : maxOffset;
+				
 				$(this.domElement).css({
-					left: "-" + this._zoomTarget.x + '%',
-					top: "-" + this._zoomTarget.y + "%"
+					left:"-" + offset.x + "%",
+					top: "-" + offset.y + "%"
 				});
 			}
 		});
 
 		$(this.domElement).on('mouseup',(evt) => {
 			if (!this.allowZoom()) return;
-			if (this.drag) {
-				this.drag = false;
-				paella.player.videoContainer.paused()
-					.then((p) => {
-						return p ?  paella.player.videoContainer.play() :
-									paella.player.videoContainer.pause();
-					});
-			}
-		})
+			this.drag = false;
+		});
 	},
 
 	allowZoom: function() {
