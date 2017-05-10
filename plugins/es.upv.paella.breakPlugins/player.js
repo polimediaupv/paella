@@ -74,7 +74,7 @@ Class ("paella.plugins.BreaksPlayerPlugin",paella.EventDrivenPlugin,{
 	},
 
 	avoidBreak:function(br){
-		var newTime = br.e + (this.config.neverShow?0.01:0);
+		var newTime = br.e + (this.config.neverShow?0.01:0) - paella.player.videoContainer.trimStart();
 		paella.player.videoContainer.seekToTime(newTime);
 	}
 });
