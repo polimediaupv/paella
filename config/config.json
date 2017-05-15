@@ -86,6 +86,7 @@
 			"es.upv.paella.visualAnnotationPlugin": {"enabled":true,"url":"https://media.upv.es/rest/video/"},
 			"es.upv.paella.pipModePlugin": { "enabled":true },
 			"es.upv.paella.ratePlugin": { "enabled":true },
+			"es.upv.paella.videoZoomPlugin": { "enabled":true },
 
 			"//****": "Video Overlay Button Plugins",
 			"es.upv.paella.liveStreamingIndicatorPlugin":  { "enabled": true },

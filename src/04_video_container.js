@@ -141,6 +141,7 @@ Class ("paella.VideoOverlay", paella.DomNode,{
 			};
 			super('div',id,style);
 			this._rect = { left:left, top:top, width:width, height:height };
+			this.domElement.className = "videoWrapper";
 		}
 
 		setRect(rect,animate) {
@@ -1000,6 +1001,24 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 
 		slaveVideo() {
 			return this.videoWrappers.length>1 ? this.videoWrappers[1].getNode(this.videoSlaveId + 1) : null;
+		}
+
+		videoPlayers() {
+			// TODO: multistream support for more than two videos
+			let This = this;
+			return new Promise((resolve) => {
+				function buildResult() {
+					if (!This.masterVideo()) {
+						setTimeout(() => buildResult(), 10);
+					}
+					else {
+						let result = [ This.masterVideo() ];
+						if (This.slaveVideo()) result.push(This.slaveVideo());
+						resolve(result);
+					}
+				}
+				buildResult();
+			});
 		}
 
 		duration(ignoreTrimming) {

@@ -105,6 +105,16 @@ Class ("paella.VideoRect", paella.DomNode, {
 		this.parent(domType,id,{width:this._zoom + '%',position:'absolute'});
 		this._zoomTarget = {};
 		this._baseMouse = {};
+		this._zoomOffset = { x:0, y: 0 };
+
+		Object.defineProperty(this,'zoom', {
+			get: function() { return this._zoom; }
+		});
+
+		Object.defineProperty(this,'zoomOffset',{
+			get: function() { return this._zoomOffset; }
+		});
+
 
 		function mousePos(evt) {
 			return {
@@ -148,6 +158,12 @@ Class ("paella.VideoRect", paella.DomNode, {
 				left:"-" + offset.x + "%",
 				top: "-" + offset.y + "%"
 			});
+
+			this._zoomOffset = {
+				x: offset.x,
+				y: offset.y
+			};
+			paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
 		});
 
 		$(this.domElement).on('mousemove',(evt) => {
@@ -174,6 +190,11 @@ Class ("paella.VideoRect", paella.DomNode, {
 					left:"-" + offset.x + "%",
 					top: "-" + offset.y + "%"
 				});
+				this._zoomOffset = {
+					x: offset.x,
+					y: offset.y
+				};
+				paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
 			}
 		});
 
@@ -186,6 +207,14 @@ Class ("paella.VideoRect", paella.DomNode, {
 
 	allowZoom: function() {
 		return true;
+	},
+
+	captureFrame: function() {
+		return Promise.resolve(null);
+	},
+
+	supportsCaptureFrame: function() {
+		return Promise.resolve(false);
 	}
 });
 
@@ -456,6 +485,20 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 			shortLabel:function() { return this.res.h + "p"; },
 			compare:function(q2) { return this.res.w*this.res.h - q2.res.w*q2.res.h; }
 		};
+	},
+
+	captureFrame: function() {
+		return new Promise((resolve) => {
+			resolve({
+				source:this.video,
+				width:this.video.videoWidth,
+				height:this.video.videoHeight
+			});
+		});
+	},
+
+	supportsCaptureFrame: function() {
+		return Promise.resolve(true);
 	},
 
 	// Initialization functions
