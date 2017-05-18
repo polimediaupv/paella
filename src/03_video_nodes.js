@@ -109,6 +109,10 @@ Class ("paella.VideoRect", paella.DomNode, {
 		let zoomSettings = paella.player.config.player.videoZoom || {};
 		let zoomEnabled = zoomSettings.enabled!==undefined ? zoomSettings.enabled : true;
 		this._maxZoom = zoomSettings.max || 400;
+		$(this.domElement).css({
+			left:"0%",
+			top: "0%"
+		});
 
 		Object.defineProperty(this,'zoom', {
 			get: function() { return this._zoom; }
