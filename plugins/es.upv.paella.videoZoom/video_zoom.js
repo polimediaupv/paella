@@ -106,7 +106,7 @@
                     if (update) {
                         setTimeout(() => {
                             updateThumbs();
-                        }, 100);
+                        }, 2000);
                     }
                 }
                 update = true;
