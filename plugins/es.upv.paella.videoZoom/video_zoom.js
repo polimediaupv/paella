@@ -28,6 +28,35 @@
             });
     }
 
+    function setupButtons(videoPlayer) {
+        let wrapper = videoPlayer.parent;
+        let wrapperDom = wrapper.domElement;
+
+        let zoomButton = document.createElement('button');
+        wrapperDom.appendChild(zoomButton);
+        zoomButton.className = "videoZoomButton btn zoomIn";
+        zoomButton.innerHTML = '<i class="glyphicon glyphicon-zoom-in"></i>'
+        $(zoomButton).on('mousedown',() => {
+            paella.player.videoContainer.disablePlayOnClick();
+            videoPlayer.zoomIn();
+        });
+        $(zoomButton).on('mouseup',() => {
+            setTimeout(() => paella.player.videoContainer.enablePlayOnClick(),10);
+        });
+
+        zoomButton = document.createElement('button');
+        wrapperDom.appendChild(zoomButton);
+        zoomButton.className = "videoZoomButton btn zoomOut";
+        zoomButton.innerHTML = '<i class="glyphicon glyphicon-zoom-out"></i>'
+        $(zoomButton).on('mousedown',() => {
+            paella.player.videoContainer.disablePlayOnClick();
+            videoPlayer.zoomOut();
+        });
+        $(zoomButton).on('mouseup',() => {
+            setTimeout(() => paella.player.videoContainer.enablePlayOnClick(),10);
+        });
+    }
+
     class VideoZoomPlugin extends paella.VideoOverlayButtonPlugin {
         getIndex() {return 10; }
         getSubclass() { return "videoZoom"; }
@@ -44,24 +73,27 @@
             paella.player.videoContainer.videoPlayers()
                 .then((players) => {
                     players.forEach((player,index) => {
-                        player.supportsCaptureFrame().then((supports) => {
-                            if (supports) {
-                                let thumbContainer = document.createElement('div');
-                                thumbContainer.className = "zoom-container"
-                                let thumb = getThumbnailContainer.apply(this,[index]);
-                                let zoomRect = getZoomRect.apply(this);
-                                this.button.appendChild(thumbContainer);
-                                thumbContainer.appendChild(thumb);
-                                thumbContainer.appendChild(zoomRect);
-                                $(thumbContainer).hide();
-                                this._thumbnails.push({
-                                    player:player,
-                                    thumbContainer:thumbContainer,
-                                    zoomRect:zoomRect,
-                                    canvas:thumb
-                                });
-                            }
-                        })
+                        if (player.allowZoom()) {
+                            setupButtons.apply(this,[player]);
+                            player.supportsCaptureFrame().then((supports) => {
+                                if (supports) {
+                                    let thumbContainer = document.createElement('div');
+                                    thumbContainer.className = "zoom-container"
+                                    let thumb = getThumbnailContainer.apply(this,[index]);
+                                    let zoomRect = getZoomRect.apply(this);
+                                    this.button.appendChild(thumbContainer);
+                                    thumbContainer.appendChild(thumb);
+                                    thumbContainer.appendChild(zoomRect);
+                                    $(thumbContainer).hide();
+                                    this._thumbnails.push({
+                                        player:player,
+                                        thumbContainer:thumbContainer,
+                                        zoomRect:zoomRect,
+                                        canvas:thumb
+                                    });
+                                }
+                            })
+                        }
                     });
                 });
             

@@ -42,6 +42,26 @@
     border: 1px solid #0e0e0e;
 }
 
+.videoZoomButton {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    z-index: 1;
+    margin-left: 0px;
+    opacity: 0.3;
+    background: transparent;
+    font-size: 2em;
+    padding: 0px;
+}
+
+.videoZoomButton.zoomOut {
+    left: 30px;
+}
+
+.videoZoomButton:hover {
+    opacity: 1.0;
+}
+
 @media (max-width:600px) {
     .buttonPlugin.right.videoZoom {
         width: 50px;

@@ -5,7 +5,10 @@
 		"videoQualityStrategy": "paella.LimitedBestFitVideoQualityStrategy",
 		"videoQualityStrategyParams":{ "maxAutoQualityRes":720 },
 		"reloadOnFullscreen": true,
-		"videoZoomEnabled": true,
+		"videoZoom": {
+			"enabled":true,
+			"max":800
+		},
 
 		"deprecated-methods":[{"name":"streaming","enabled":true},
 				   {"name":"html","enabled":true},
