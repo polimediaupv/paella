@@ -102,8 +102,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 	initialize:function(id, domType, left, top, width, height) {
 		this._zoom = 100;
 		this.parent(domType,id,{width:this._zoom + '%',position:'absolute'});
-		this._zoomTarget = {};
-		this._baseMouse = {};
+		this._mouseCenter = {};
 		this._zoomOffset = { x:0, y: 0 };
 
 		let zoomSettings = paella.player.config.player.videoZoom || {};
@@ -150,6 +149,12 @@ Class ("paella.VideoRect", paella.DomNode, {
 
 			this.zoomIn = () => {
 				if (this._zoom>=this._maxZoom) return;
+				if (!this._mouseCenter) {
+					this._mouseCenter = {
+						x: $(this.domElement).width() / 2,
+						y: $(this.domElement).height() / 2	
+					}
+				}
 				this._zoom += 25;
 				this._zoom = this._zoom < 100 ? 100 : this._zoom;			
 				this._zoom = this._zoom > this._maxZoom ? this._maxZoom : this._zoom;
@@ -157,10 +162,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 					w: $(this.domElement).width(),
 					h: $(this.domElement).height()
 				};
-				let mouse = {
-					x: $(this.domElement).width() / 2,
-					y: $(this.domElement).height() / 2
-				};
+				let mouse = this._mouseCenter;
 				$(this.domElement).css({
 					width:this._zoom + '%'
 				});
@@ -188,6 +190,12 @@ Class ("paella.VideoRect", paella.DomNode, {
 
 			this.zoomOut = () => {
 				if (this._zoom<=100) return;
+				if (!this._mouseCenter) {
+					this._mouseCenter = {
+						x: $(this.domElement).width() / 2,
+						y: $(this.domElement).height() / 2	
+					}
+				}
 				this._zoom -= 25;
 				this._zoom = this._zoom < 100 ? 100 : this._zoom;			
 				this._zoom = this._zoom > this._maxZoom ? this._maxZoom : this._zoom;
@@ -195,10 +203,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 					w: $(this.domElement).width(),
 					h: $(this.domElement).height()
 				};
-				let mouse = {
-					x: $(this.domElement).width() / 2,
-					y: $(this.domElement).height() / 2
-				};
+				let mouse = this._mouseCenter;
 				$(this.domElement).css({
 					width:this._zoom + '%'
 				});
@@ -259,6 +264,8 @@ Class ("paella.VideoRect", paella.DomNode, {
 					y: offset.y
 				};
 				paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
+
+				this._mouseCenter = mouse;
 			});
 
 			$(this.domElement).on('mousemove',(evt) => {
@@ -290,6 +297,8 @@ Class ("paella.VideoRect", paella.DomNode, {
 						y: offset.y
 					};
 					paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
+
+					this._mouseCenter = mouse;
 				}
 			});
 
