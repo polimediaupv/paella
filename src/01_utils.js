@@ -393,6 +393,7 @@ Class ("paella.MessageBox", {
 
 	doShowFrame:function(src,closeButton,width,height,onClose) {
 		this.onClose = onClose;
+		$('#playerContainer').addClass("modalVisible");
 
 		if (this.currentMessageBox) {
 			this.close();
@@ -473,6 +474,7 @@ Class ("paella.MessageBox", {
 
 	doShowElement:function(domElement,closeButton,width,height,className,onClose) {
 		this.onClose = onClose;
+		$('#playerContainer').addClass("modalVisible");
 
 		if (this.currentMessageBox) {
 			this.close();
@@ -514,6 +516,7 @@ Class ("paella.MessageBox", {
 
 	doShowMessage:function(message,closeButton,width,height,className,onClose) {
 		this.onClose = onClose;
+		$('#playerContainer').addClass("modalVisible");
 
 		if (this.currentMessageBox) {
 			this.close();
@@ -597,6 +600,7 @@ Class ("paella.MessageBox", {
 		if (this.currentMessageBox && this.currentMessageBox.parentNode) {
 			var msgBox = this.currentMessageBox;
 			var parent = msgBox.parentNode;
+			$('#playerContainer').removeClass("modalVisible");
 			$(msgBox).animate({opacity:0.0},300,function() {
 				parent.removeChild(msgBox);
 			});
