@@ -157,8 +157,8 @@ Class ("paella.VideoRect", paella.DomNode, {
 				for (let i=0; i<evt.originalEvent.targetTouches.length; ++i) {
 					let touch = evt.originalEvent.targetTouches[i];
 					touches.push({
-						x: touch.screenX - videoOffset.top,
-						y: touch.screenY - videoOffset.left
+						x: touch.screenX - videoOffset.left,
+						y: touch.screenY - videoOffset.top
 					});
 				}
 				if (touches.length>1) evt.preventDefault();
@@ -170,10 +170,9 @@ Class ("paella.VideoRect", paella.DomNode, {
 				let videoOffset = $(this.domElement).offset();
 				for (let i=0; i<evt.originalEvent.targetTouches.length; ++i) {
 					let touch = evt.originalEvent.targetTouches[i];
-					console.log(touch.screenY);
 					curTouches.push({
-						x: touch.screenX - videoOffset.top,
-						y: touch.screenY - videoOffset.left
+						x: touch.screenX - videoOffset.left,
+						y: touch.screenY - videoOffset.top
 					});
 				}
 				if (curTouches.length>1 && touches.length>1) {
