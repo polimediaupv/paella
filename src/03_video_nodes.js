@@ -102,7 +102,8 @@ Class ("paella.VideoRect", paella.DomNode, {
 	initialize:function(id, domType, left, top, width, height) {
 		this._zoom = 100;
 		this.parent(domType,id,{width:this._zoom + '%',position:'absolute'});
-		this._mouseCenter = {};
+		this._mouseCenter = { x:0, y:0 };
+		this._mouseDown = { x:0, y:0 };
 		this._zoomOffset = { x:0, y: 0 };
 
 		let zoomSettings = paella.player.config.player.videoZoom || {};
@@ -149,6 +150,52 @@ Class ("paella.VideoRect", paella.DomNode, {
 		}
 
 		if (zoomEnabled) {
+			function panImage(o) {
+				let center = {
+					x: this._mouseCenter.x - o.x * 1.1,
+					y: this._mouseCenter.y - o.y * 1.1
+				};
+				let videoSize = {
+					w: $(this.domElement).width(),
+					h: $(this.domElement).height()
+				};
+				let maxOffset = this._zoom - 100;
+				let offset = {
+					x: (center.x * maxOffset / videoSize.w),
+					y: (center.y * maxOffset / videoSize.h)
+				};
+				
+				if (offset.x>maxOffset) {
+					offset.x = maxOffset;
+				}
+				else if (offset.x<0) {
+					offset.x = 0;
+				}
+				else {
+					this._mouseCenter.x = center.x;
+				}
+				if (offset.y>maxOffset) {
+					offset.y = maxOffset;
+				}
+				else if (offset.y<0) {
+					offset.y = 0;
+				}
+				else {
+					this._mouseCenter.y = center.y;
+				}
+				console.log(offset);
+				$(this.domElement).css({
+					left:"-" + offset.x + "%",
+					top: "-" + offset.y + "%"
+				});
+
+				this._zoomOffset = {
+					x: offset.x,
+					y: offset.y
+				};
+				paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
+			}
+
 			let touches = [];
 			$(this.domElement).on('touchstart', (evt) => {
 				if (!this.allowZoom()) return;
@@ -222,8 +269,10 @@ Class ("paella.VideoRect", paella.DomNode, {
 						y: curTouches[0].y - touches[0].y,
 					}
 
-					this._mouseCenter = curTouches[0];
-					
+					panImage.apply(this,[desp]);
+
+					//this._mouseCenter = curTouches[0];
+					/*
 					let newVideoSize = {
 						w: $(this.domElement).width(),
 						h: $(this.domElement).height()
@@ -248,7 +297,9 @@ Class ("paella.VideoRect", paella.DomNode, {
 						y: offset.y
 					};
 					paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
+					*/
 					touches = curTouches;
+
 					evt.preventDefault();
 				}
 			});
@@ -379,18 +430,30 @@ Class ("paella.VideoRect", paella.DomNode, {
 				this._mouseCenter = mouse;
 			});
 
+			$(this.domElement).on('mousedown',(evt) => {
+				this._mouseDown = mousePos(evt);
+			});
+
 			$(this.domElement).on('mousemove',(evt) => {
 				if (!this.allowZoom()) return;
 				this.drag = evt.buttons>0;
 				if (this.drag) {
 					paella.player.videoContainer.disablePlayOnClick();
+
 					let mouse = mousePos(evt);
+					panImage.apply(this,[{
+						x: mouse.x - this._mouseDown.x,
+						y: mouse.y - this._mouseDown.y
+					}]);
+					this._mouseDown = mouse;
+					/*					
 					let newVideoSize = {
 						w: $(this.domElement).width(),
 						h: $(this.domElement).height()
 					};
 					
 					let maxOffset = this._zoom - 100;
+
 					let offset = {
 						x: (mouse.x * maxOffset / newVideoSize.w),
 						y: (mouse.y * maxOffset / newVideoSize.h)
@@ -410,6 +473,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 					paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
 
 					this._mouseCenter = mouse;
+					*/
 				}
 			});
 
