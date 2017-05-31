@@ -53,7 +53,8 @@
 			"default":"CookieDataDelegate",
 			"trimming":"CookieDataDelegate",
 			"userInfo": "UserDataDelegate",
-			"visualAnnotations": "VisualAnnotationsDataDelegate"
+			"visualAnnotations": "VisualAnnotationsDataDelegate",
+			"metadata":"VideoManifestMetadataDataDelegate"
 		}
 	},
 	"folders": {
@@ -96,6 +97,15 @@
 			"es.upv.paella.liveStreamingIndicatorPlugin":  { "enabled": true },
 			"es.upv.paella.showEditorPlugin":{"enabled":true,"alwaysVisible":true},
 			"es.upv.paella.arrowSlidesNavigatorPlugin": {"enabled": true, "showArrowsIn": "slave"},
+			"es.upv.paella.videoDataPlugin": {
+				"enabled": true,
+				"excludeLocations":[
+					"paellaplayer.upv.es"
+				],
+				"excludeParentLocations":[
+					"localhost:8000"
+				]
+			},
 			
 			"//****": "TabBar Plugins",
 			"es.upv.paella.commentsPlugin": {"enabled": false},
