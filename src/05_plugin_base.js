@@ -592,7 +592,7 @@ Class ("paella.VideoOverlayButtonPlugin", paella.ButtonPlugin,{
 
 	// Returns the button subclass.
 	getSubclass:function() {
-		return "myVideoOverlayButtonPlugin";
+		return "myVideoOverlayButtonPlugin" + " " + this.getAlignment();
 	},
 
 	action:function(button) {
