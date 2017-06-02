@@ -1136,6 +1136,9 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 			var slaveVideoData = this._streamProvider.mainSlaveVideo;
 			var masterVideo = paella.videoFactory.getVideoObject(this.video1Id,masterVideoData, masterRect);
 			var slaveVideo = slaveVideoData ? paella.videoFactory.getVideoObject(this.videoSlaveId + 1,slaveVideoData, slaveRect) : null;
+			if (slaveVideo) {
+				slaveVideo.setVolume(0);
+			}
 			
 			this._audioPlayers = [];
 			audioStreamsData.forEach((streamData,index) => {

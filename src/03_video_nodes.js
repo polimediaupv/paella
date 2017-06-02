@@ -183,7 +183,6 @@ Class ("paella.VideoRect", paella.DomNode, {
 				else {
 					this._mouseCenter.y = center.y;
 				}
-				console.log(offset);
 				$(this.domElement).css({
 					left:"-" + offset.x + "%",
 					top: "-" + offset.y + "%"
@@ -270,34 +269,6 @@ Class ("paella.VideoRect", paella.DomNode, {
 					}
 
 					panImage.apply(this,[desp]);
-
-					//this._mouseCenter = curTouches[0];
-					/*
-					let newVideoSize = {
-						w: $(this.domElement).width(),
-						h: $(this.domElement).height()
-					};
-					let mouse = this._mouseCenter;
-					let maxOffset = this._zoom - 100;
-					let offset = {
-						x: (mouse.x * maxOffset / newVideoSize.w),
-						y: (mouse.y * maxOffset / newVideoSize.h)
-					};
-					
-					offset.x = offset.x<maxOffset ? offset.x : maxOffset;
-					offset.y = offset.y<maxOffset ? offset.y : maxOffset;
-					
-					$(this.domElement).css({
-						left:"-" + offset.x + "%",
-						top: "-" + offset.y + "%"
-					});
-
-					this._zoomOffset = {
-						x: offset.x,
-						y: offset.y
-					};
-					paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
-					*/
 					touches = curTouches;
 
 					evt.preventDefault();
@@ -446,34 +417,6 @@ Class ("paella.VideoRect", paella.DomNode, {
 						y: mouse.y - this._mouseDown.y
 					}]);
 					this._mouseDown = mouse;
-					/*					
-					let newVideoSize = {
-						w: $(this.domElement).width(),
-						h: $(this.domElement).height()
-					};
-					
-					let maxOffset = this._zoom - 100;
-
-					let offset = {
-						x: (mouse.x * maxOffset / newVideoSize.w),
-						y: (mouse.y * maxOffset / newVideoSize.h)
-					};
-					
-					offset.x = offset.x<maxOffset ? offset.x : maxOffset;
-					offset.y = offset.y<maxOffset ? offset.y : maxOffset;
-					
-					$(this.domElement).css({
-						left:"-" + offset.x + "%",
-						top: "-" + offset.y + "%"
-					});
-					this._zoomOffset = {
-						x: offset.x,
-						y: offset.y
-					};
-					paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
-
-					this._mouseCenter = mouse;
-					*/
 				}
 			});
 
@@ -932,6 +875,14 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	setVolume:function(volume) {
         return this._deferredAction(() => {
             this.video.volume = volume;
+			if (volume==0) {
+				this.video.setAttribute("muted","muted");
+				this.video.muted = true;
+			}
+			else {
+				this.video.removeAttribute("muted");
+				this.video.muted = false;
+			}
         });
 	},
 
@@ -1010,7 +961,8 @@ Class ("paella.videoFactories.Html5VideoFactory", {
 	isStreamCompatible:function(streamData) {
 		try {
 			if (paella.videoFactories.Html5VideoFactory.s_instances>0 && 
-				base.userAgent.system.iOS)
+				base.userAgent.system.iOS &&
+				(paella.utils.userAgent.system.Version.major<10 || paella.utils.userAgent.system.Version.minor<3))
 			{
 				return false;
 			}
