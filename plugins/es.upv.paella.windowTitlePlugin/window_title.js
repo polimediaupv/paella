@@ -5,18 +5,12 @@ Class ("paella.plugins.WindowTitlePlugin",paella.EventDrivenPlugin,{
 		return "es.upv.paella.windowTitlePlugin";
 	},
 
-	getEvents:function() {
-		return [
-			paella.events.singleVideoReady
-		];
-	},
-
-	onEvent:function(eventType,params) {
-		switch (eventType) {
-			case paella.events.singleVideoReady:
-				if (!this._initDone) this.loadTitle();
-				break;
-		}
+	checkEnabled:function(onSuccess) {
+		paella.player.videoContainer.masterVideo().duration()
+			.then((d) => {
+				this.loadTitle();
+			});
+		onSuccess(true);
 	},
 
 	loadTitle:function() {
