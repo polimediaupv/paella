@@ -73,20 +73,8 @@
 		{
 			"lang": "es",
 			"text": "Español (traducción automática)",
-			"format": "dfxp",
-			"url": "be0c7738-039d-9445-8237-8b85f37cd303.es.dfxp"
-		},
-		{
-			"lang": "en",
-			"text": "English (automatic transciption)",
-			"format": "dfxp",
-			"url": "be0c7738-039d-9445-8237-8b85f37cd303.en.dfxp"
-		},
-		{
-			"lang": "ca",
-			"text": "Valencià/Català (traducció automàtica)",
-			"format": "dfxp",
-			"url": "be0c7738-039d-9445-8237-8b85f37cd303.ca.dfxp"
+			"format": "vtt",
+			"url": "captions.es.vtt"
 		}
 	]
 }
