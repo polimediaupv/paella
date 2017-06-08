@@ -125,6 +125,7 @@
 									
 			"//****": "Captions Parser Plugins",
 			"es.upv.paella.captions.DFXPParserPlugin": {"enabled":true},
+			"es.teltek.paella.captions.WebVTTParserPlugin": {"enabled":true},
 			
 			"//****": "Search Service Plugins",
 			"es.upv.paella.search.captionsSearchPlugin": {"enabled":true},
