@@ -4,8 +4,10 @@
         constructor(id,stream) {
             super('div',id);
             this._stream = stream;
+
         }
 
+        stream() { return this._stream; }
         setAutoplay() {return Promise.reject(new Error("no such compatible video player"));}
         load() {return Promise.reject(new Error("no such compatible video player")); }
         play() { return Promise.reject(new Error("no such compatible video player")); }

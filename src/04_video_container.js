@@ -582,6 +582,9 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 			this.profileFrameStrategy = null;
 
 			this.videoWrappers = [];
+			this._players = [];
+			this._videoPlayers = [];
+			this._audioPlayers = [];
 
 			this.videoClasses = {
 				master:"video masterVideo",
@@ -1003,8 +1006,35 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 			return this.videoWrappers.length>1 ? this.videoWrappers[1].getNode(this.videoSlaveId + 1) : null;
 		}
 
+		players() {
+			let This = this;
+			return new Promise((resolve) => {
+				function waitResult() {
+					if (!This.masterVideo()) {
+						setTimeout(() => waitResult(), 10);
+					}
+					else {
+						resolve(This._players);
+					}
+				}
+				waitResult();
+			});
+		}
+
 		videoPlayers() {
-			// TODO: multistream support for more than two videos
+			let This = this;
+			return new Promise((resolve) => {
+				function waitResult() {
+					if (!This.masterVideo()) {
+						setTimeout(() => waitResult(), 10);
+					}
+					else {
+						resolve(This._videoPlayers);
+					}
+				}
+				waitResult();
+			});
+/*
 			let This = this;
 			return new Promise((resolve) => {
 				function buildResult() {
@@ -1018,6 +1048,22 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 					}
 				}
 				buildResult();
+			});
+			*/
+		}
+
+		audioPlayers() {
+			let This = this;
+			return new Promise((resolve) => {
+				function waitResult() {
+					if (!This.masterVideo()) {
+						setTimeout(() => waitResult(), 10);
+					}
+					else {
+						resolve(This._audioPlayers);
+					}
+				}
+				waitResult();
 			});
 		}
 
@@ -1118,6 +1164,19 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 			this.seekToTime(time);
 		}
 
+		getAudioLanguages() {
+			return new Promise((resolve) => {
+				let lang = [];
+				resolve(lang);
+			});
+		}
+
+		setAudioLanguage(lang) {
+			return new Promise((resolve) => {
+				resolve();
+			});
+		}
+
 		setStreamData(videoData) {
 			var This = this;
 			this._sourceData = videoData;
@@ -1133,18 +1192,25 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 			var masterVideoData = this._streamProvider.masterVideo;
 			var audioStreamsData = this._streamProvider.audioStreams;
 
+			this._players = [];
+			this._videoPlayers = [];
+			this._audioPlayers = [];
 			var slaveVideoData = this._streamProvider.mainSlaveVideo;
 			var masterVideo = paella.videoFactory.getVideoObject(this.video1Id,masterVideoData, masterRect);
+			this._players.push(masterVideo);
+			this._videoPlayers.push(masterVideo);
 			var slaveVideo = slaveVideoData ? paella.videoFactory.getVideoObject(this.videoSlaveId + 1,slaveVideoData, slaveRect) : null;
 			if (slaveVideo) {
 				slaveVideo.setVolume(0);
+				this._players.push(slaveVideo);
+				this._videoPlayers.push(slaveVideo);
 			}
 			
-			this._audioPlayers = [];
 			audioStreamsData.forEach((streamData,index) => {
 				let audioPlayer = paella.audioFactory.getAudioObject(this.audioId + index,streamData);
 				if (audioPlayer) {
 					this._audioPlayers.push(audioPlayer);
+					this._players.push(audioPlayer);
 					this.container.addNode(audioPlayer);
 				}
 			});
@@ -1209,7 +1275,10 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 					if (videoData.length>1) {
 						slaveVideo.setVolume(slaveVolume);
 					}
-
+					return This.setAudioLanguage(paella.dictionary.currentLanguage());
+				})
+				
+				.then(function() {
 					paella.events.trigger(paella.events.videoReady);
 
 					var getProfile = base.parameters.get('profile');

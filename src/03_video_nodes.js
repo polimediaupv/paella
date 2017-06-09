@@ -472,6 +472,13 @@ Class ("paella.VideoElementBase", paella.VideoRect,{
 		Object.defineProperty(this,'ready',{
 			get:function() { return this._ready; }
 		});
+
+		Object.defineProperty(this,'stream',{
+			get: function() {
+				return this._stream;
+			}
+		});
+		
 		if (this._stream.preview) this.setPosterFrame(this._stream.preview);
 	},
 
