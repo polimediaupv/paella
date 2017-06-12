@@ -17,6 +17,10 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 			}	
 		});
 	},
+
+	allowZoom:function() {
+		return true;
+	},
 	
 	load:function() {
 		if (base.userAgent.system.iOS) {
@@ -74,20 +78,36 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 	},
 	
 	getQualities:function() {
-		let This = this;
-		return new Promise((resolve) => {
-			if (!this._qualities) {
-				This._qualities = [];
-				This._hls.levels.forEach(function(q, index){
-					This._qualities.push(This._getQualityObject(index, {
-						index: index,
-						res: { w:q.width, h:q.height },
-						bitrate: q.bitrate
-					}));						
-				});					
-			}
-			resolve(This._qualities);
-		});
+		if (base.userAgent.system.iOS) {
+			return new Promise((resolve,reject) => {
+				resolve([
+					{
+						index: 0,
+						res: "",
+						src: "",
+						toString:function() { return "auto"; },
+						shortLabel:function() { return "auto"; },
+						compare:function(q2) { return 0; }
+					}
+				]);
+			});
+		}
+		else {
+			let This = this;
+			return new Promise((resolve) => {
+				if (!this._qualities) {
+					This._qualities = [];
+					This._hls.levels.forEach(function(q, index){
+						This._qualities.push(This._getQualityObject(index, {
+							index: index,
+							res: { w:q.width, h:q.height },
+							bitrate: q.bitrate
+						}));						
+					});					
+				}
+				resolve(This._qualities);
+			});
+		}
 	},
 	
 	printQualityes: function() {
@@ -103,12 +123,17 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 	},
 	
 	setQuality:function(index) {
-		this.qualityIndex = index;
-		//this._hls.currentLevel = index;		
-		this._hls.nextLevel = index;		
-		return new Promise((resolve,reject) => {
-			resolve();
-		});
+		if (base.userAgent.system.iOS) {
+			return Promise.resolve();
+		}
+		else {
+			this.qualityIndex = index;
+			//this._hls.currentLevel = index;		
+			this._hls.nextLevel = index;		
+			return new Promise((resolve,reject) => {
+				resolve();
+			});
+		}
 	},
 
 	getNextQuality:function() {
@@ -119,12 +144,17 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 	},
 
 	
-	getCurrentQuality:function() {	
-		this.getNextQuality()
-		return new Promise((resolve,reject) => {
-			let index = (this.qualityIndex == undefined) ? this._hls.currentLevel : this.qualityIndex;
-			resolve(this._qualities[index]);
-		});
+	getCurrentQuality:function() {
+		if (base.userAgent.system.iOS) {
+			return Promise.resolve(0);
+		}
+		else {
+			this.getNextQuality()
+			return new Promise((resolve,reject) => {
+				let index = (this.qualityIndex == undefined) ? this._hls.currentLevel : this.qualityIndex;
+				resolve(this._qualities[index]);
+			});
+		}
 	}
 });
 
