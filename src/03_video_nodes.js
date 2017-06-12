@@ -242,7 +242,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 						let mouse = this._mouseCenter;
 						$(this.domElement).css({
 							width:this._zoom + '%',
-							height:this._zoom + '%',
+							height:this._zoom + '%'
 						});
 						
 						let maxOffset = this._zoom - 100;
@@ -382,7 +382,8 @@ Class ("paella.VideoRect", paella.DomNode, {
 						h: $(this.domElement).height()
 					};
 					$(this.domElement).css({
-						width:this._zoom + '%'
+						width:this._zoom + '%',
+						height:this._zoom + '%'
 					});
 					
 					let maxOffset = this._zoom - 100;
