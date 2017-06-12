@@ -20,6 +20,7 @@
 Class ("paella.Node", {
 	identifier:'',
 	nodeList:null,
+	parent:null,
 
 	initialize:function(id) {
 		this.nodeList = {};
@@ -31,6 +32,7 @@ Class ("paella.Node", {
 	},
 
 	addNode:function(childNode) {
+		childNode.parent = this;
 		this.nodeList[childNode.identifier] = childNode;
 		return childNode;
 	},

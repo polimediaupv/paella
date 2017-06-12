@@ -11,11 +11,29 @@ const	gulp = require('gulp'),
 		flatten = require('gulp-flatten'),
 		path = require('path'),
 
-		exec = require('child_process').execSync;
+		exec = require('child_process').execSync,
+
+		runSequence = require('run-sequence'),
+		nightwatch = require('gulp-nightwatch');
+		
 
 var config = {
 	outDir:'build/'
 };
+
+
+gulp.task("test:nightwatch:local:run", function(){
+	return gulp.src('')
+	.pipe(nightwatch({
+		configFile: 'tests/nightwatch/nightwatch.js'
+	}));
+});
+
+
+gulp.task("test:local", function(cb){
+	runSequence('test:nightwatch:local:run', cb)
+});
+
 
 function getVersion() {
 	let pkg = require('./package.json');

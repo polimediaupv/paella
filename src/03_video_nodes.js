@@ -16,7 +16,6 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 paella.Profiles = {
 	profileList: null,
 	
@@ -101,76 +100,344 @@ Class ("paella.VideoRect", paella.DomNode, {
 	_rect:null,
 
 	initialize:function(id, domType, left, top, width, height) {
-		var This = this;
-		this._rect = { left:left, top:top, width:width, height:height };
-		var relativeSize = new paella.RelativeVideoSize();
-		var percentTop = relativeSize.percentVSize(top) + '%';
-		var percentLeft = relativeSize.percentWSize(left) + '%';
-		var percentWidth = relativeSize.percentWSize(width) + '%';
-		var percentHeight = relativeSize.percentVSize(height) + '%';
-		var style = {top:percentTop,left:percentLeft,width:percentWidth,height:percentHeight,position:'absolute',zIndex:GlobalParams.video.zIndex};
-		this.parent(domType,id,style);
-	},
+		this._zoom = 100;
+		this.parent(domType,id,{width:this._zoom + '%',position:'absolute'});
+		this._mouseCenter = { x:0, y:0 };
+		this._mouseDown = { x:0, y:0 };
+		this._zoomOffset = { x:0, y: 0 };
 
-	setRect:function(rect,animate) {
-		this._rect = JSON.parse(JSON.stringify(rect));
-		var relativeSize = new paella.RelativeVideoSize();
-		var percentTop = relativeSize.percentVSize(rect.top) + '%';
-		var percentLeft = relativeSize.percentWSize(rect.left) + '%';
-		var percentWidth = relativeSize.percentWSize(rect.width) + '%';
-		var percentHeight = relativeSize.percentVSize(rect.height) + '%';
-		var style = {top:percentTop,left:percentLeft,width:percentWidth,height:percentHeight,position:'absolute'};
-		if (animate) {
-			this.disableClassName();
-			var thisClass = this;
+		let zoomSettings = paella.player.config.player.videoZoom || {};
+		let zoomEnabled = zoomSettings.enabled!==undefined ? zoomSettings.enabled : true;
+		this._maxZoom = zoomSettings.max || 400;
+		$(this.domElement).css({
+			left:"0%",
+			top: "0%"
+		});
 
-			$(this.domElement).animate(style,400,function(){
-				thisClass.enableClassName();
-				paella.events.trigger(paella.events.setComposition, { video:thisClass });
+		Object.defineProperty(this,'zoom', {
+			get: function() { return this._zoom; }
+		});
+
+		Object.defineProperty(this,'zoomOffset',{
+			get: function() { return this._zoomOffset; }
+		});
+
+		function mousePos(evt) {
+			return {
+				x:evt.originalEvent.offsetX,
+				y:evt.originalEvent.offsetY
+			};
+		}
+
+		function wheelDelta(evt) {
+			let wheel = evt.originalEvent.deltaY * (paella.utils.userAgent.Firefox ? 2:1);
+			let maxWheel = 6;
+			return -Math.abs(wheel) < maxWheel ? wheel : maxWheel * Math.sign(wheel);
+		}
+
+		function touchesLength(p0,p1) {
+			return Math.sqrt(
+				(p1.x - p0.x) * (p1.x - p0.x) +
+				(p1.y - p0.y) * (p1.y - p0.y)
+			);
+		}
+
+		function centerPoint(p0,p1) {
+			return {
+				x:(p1.x - p0.x) / 2 + p0.x,
+				y:(p1.y - p0.y) / 2 + p0.y
+			}
+		}
+
+		if (zoomEnabled) {
+			function panImage(o) {
+				let center = {
+					x: this._mouseCenter.x - o.x * 1.1,
+					y: this._mouseCenter.y - o.y * 1.1
+				};
+				let videoSize = {
+					w: $(this.domElement).width(),
+					h: $(this.domElement).height()
+				};
+				let maxOffset = this._zoom - 100;
+				let offset = {
+					x: (center.x * maxOffset / videoSize.w),
+					y: (center.y * maxOffset / videoSize.h)
+				};
+				
+				if (offset.x>maxOffset) {
+					offset.x = maxOffset;
+				}
+				else if (offset.x<0) {
+					offset.x = 0;
+				}
+				else {
+					this._mouseCenter.x = center.x;
+				}
+				if (offset.y>maxOffset) {
+					offset.y = maxOffset;
+				}
+				else if (offset.y<0) {
+					offset.y = 0;
+				}
+				else {
+					this._mouseCenter.y = center.y;
+				}
+				$(this.domElement).css({
+					left:"-" + offset.x + "%",
+					top: "-" + offset.y + "%"
+				});
+
+				this._zoomOffset = {
+					x: offset.x,
+					y: offset.y
+				};
+				paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
+			}
+
+			let touches = [];
+			$(this.domElement).on('touchstart', (evt) => {
+				if (!this.allowZoom()) return;
+				touches = [];
+				let videoOffset = $(this.domElement).offset();
+				for (let i=0; i<evt.originalEvent.targetTouches.length; ++i) {
+					let touch = evt.originalEvent.targetTouches[i];
+					touches.push({
+						x: touch.screenX - videoOffset.left,
+						y: touch.screenY - videoOffset.top
+					});
+				}
+				if (touches.length>1) evt.preventDefault();
 			});
-			this.enableClassNameAfter(400);
-		}
-		else {
-			$(this.domElement).css(style);
-			paella.events.trigger(paella.events.setComposition, { video:this });
+
+			$(this.domElement).on('touchmove', (evt) => {
+				if (!this.allowZoom()) return;
+				let curTouches = [];
+				let videoOffset = $(this.domElement).offset();
+				for (let i=0; i<evt.originalEvent.targetTouches.length; ++i) {
+					let touch = evt.originalEvent.targetTouches[i];
+					curTouches.push({
+						x: touch.screenX - videoOffset.left,
+						y: touch.screenY - videoOffset.top
+					});
+				}
+				if (curTouches.length>1 && touches.length>1) {
+					let l0 = touchesLength(touches[0],touches[1]);
+					let l1 = touchesLength(curTouches[0],curTouches[1]);
+					let delta = l1 - l0;
+					let center = centerPoint(touches[0],touches[1]);
+					this._mouseCenter = center;
+					
+					this._zoom += delta;
+					this._zoom = this._zoom < 100 ? 100 : this._zoom;			
+					this._zoom = this._zoom > this._maxZoom ? this._maxZoom : this._zoom;
+					let newVideoSize = {
+						w: $(this.domElement).width(),
+						h: $(this.domElement).height()
+					};
+					let mouse = this._mouseCenter;
+					$(this.domElement).css({
+						width:this._zoom + '%'
+					});
+					
+					let maxOffset = this._zoom - 100;
+					let offset = {
+						x: (mouse.x * maxOffset / newVideoSize.w),
+						y: (mouse.y * maxOffset / newVideoSize.h)
+					};
+					
+					offset.x = offset.x<maxOffset ? offset.x : maxOffset;
+					offset.y = offset.y<maxOffset ? offset.y : maxOffset;
+					
+					$(this.domElement).css({
+						left:"-" + offset.x + "%",
+						top: "-" + offset.y + "%"
+					});
+
+					this._zoomOffset = {
+						x: offset.x,
+						y: offset.y
+					};
+					paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
+					touches = curTouches;
+					evt.preventDefault();
+				}
+				else if (curTouches.length>0) {
+					let desp = {
+						x: curTouches[0].x - touches[0].x,
+						y: curTouches[0].y - touches[0].y,
+					}
+
+					panImage.apply(this,[desp]);
+					touches = curTouches;
+
+					evt.preventDefault();
+				}
+			});
+
+			$(this.domElement).on('touchend', (evt) => {
+				if (!this.allowZoom()) return;
+				if (touches.length>1) evt.preventDefault();
+			});
+
+			this.zoomIn = () => {
+				if (this._zoom>=this._maxZoom) return;
+				if (!this._mouseCenter) {
+					this._mouseCenter = {
+						x: $(this.domElement).width() / 2,
+						y: $(this.domElement).height() / 2	
+					}
+				}
+				this._zoom += 25;
+				this._zoom = this._zoom < 100 ? 100 : this._zoom;			
+				this._zoom = this._zoom > this._maxZoom ? this._maxZoom : this._zoom;
+				let newVideoSize = {
+					w: $(this.domElement).width(),
+					h: $(this.domElement).height()
+				};
+				let mouse = this._mouseCenter;
+				$(this.domElement).css({
+					width:this._zoom + '%'
+				});
+				
+				let maxOffset = this._zoom - 100;
+				let offset = {
+					x: (mouse.x * maxOffset / newVideoSize.w),
+					y: (mouse.y * maxOffset / newVideoSize.h)
+				};
+				
+				offset.x = offset.x<maxOffset ? offset.x : maxOffset;
+				offset.y = offset.y<maxOffset ? offset.y : maxOffset;
+				
+				$(this.domElement).css({
+					left:"-" + offset.x + "%",
+					top: "-" + offset.y + "%"
+				});
+
+				this._zoomOffset = {
+					x: offset.x,
+					y: offset.y
+				};
+				paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
+			}
+
+			this.zoomOut = () => {
+				if (this._zoom<=100) return;
+				if (!this._mouseCenter) {
+					this._mouseCenter = {
+						x: $(this.domElement).width() / 2,
+						y: $(this.domElement).height() / 2	
+					}
+				}
+				this._zoom -= 25;
+				this._zoom = this._zoom < 100 ? 100 : this._zoom;			
+				this._zoom = this._zoom > this._maxZoom ? this._maxZoom : this._zoom;
+				let newVideoSize = {
+					w: $(this.domElement).width(),
+					h: $(this.domElement).height()
+				};
+				let mouse = this._mouseCenter;
+				$(this.domElement).css({
+					width:this._zoom + '%'
+				});
+				
+				let maxOffset = this._zoom - 100;
+				let offset = {
+					x: (mouse.x * maxOffset / newVideoSize.w),
+					y: (mouse.y * maxOffset / newVideoSize.h)
+				};
+				
+				offset.x = offset.x<maxOffset ? offset.x : maxOffset;
+				offset.y = offset.y<maxOffset ? offset.y : maxOffset;
+				
+				$(this.domElement).css({
+					left:"-" + offset.x + "%",
+					top: "-" + offset.y + "%"
+				});
+
+				this._zoomOffset = {
+					x: offset.x,
+					y: offset.y
+				};
+				paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
+			}
+
+			$(this.domElement).on('mousewheel wheel',(evt) => {
+				if (!this.allowZoom()) return;
+				let mouse = mousePos(evt);
+				let wheel = wheelDelta(evt);
+				if (this._zoom>=this._maxZoom && wheel>0) return;
+				this._zoom += wheel;
+				this._zoom = this._zoom < 100 ? 100 : this._zoom;			
+				this._zoom = this._zoom > this._maxZoom ? this._maxZoom : this._zoom;
+				let newVideoSize = {
+					w: $(this.domElement).width(),
+					h: $(this.domElement).height()
+				};
+				$(this.domElement).css({
+					width:this._zoom + '%'
+				});
+				
+				let maxOffset = this._zoom - 100;
+				let offset = {
+					x: (mouse.x * maxOffset / newVideoSize.w),
+					y: (mouse.y * maxOffset / newVideoSize.h)
+				};
+				
+				offset.x = offset.x<maxOffset ? offset.x : maxOffset;
+				offset.y = offset.y<maxOffset ? offset.y : maxOffset;
+				
+				$(this.domElement).css({
+					left:"-" + offset.x + "%",
+					top: "-" + offset.y + "%"
+				});
+
+				this._zoomOffset = {
+					x: offset.x,
+					y: offset.y
+				};
+				paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
+
+				this._mouseCenter = mouse;
+			});
+
+			$(this.domElement).on('mousedown',(evt) => {
+				this._mouseDown = mousePos(evt);
+			});
+
+			$(this.domElement).on('mousemove',(evt) => {
+				if (!this.allowZoom()) return;
+				this.drag = evt.buttons>0;
+				if (this.drag) {
+					paella.player.videoContainer.disablePlayOnClick();
+
+					let mouse = mousePos(evt);
+					panImage.apply(this,[{
+						x: mouse.x - this._mouseDown.x,
+						y: mouse.y - this._mouseDown.y
+					}]);
+					this._mouseDown = mouse;
+				}
+			});
+
+			$(this.domElement).on('mouseup',(evt) => {
+				if (!this.allowZoom()) return;
+				this.drag = false;
+				setTimeout(() => paella.player.videoContainer.enablePlayOnClick(), 10);
+			});
 		}
 	},
 
-	getRect:function() {
-		return this._rect;
+	allowZoom: function() {
+		return true;
 	},
 
-	disableClassName:function() {
-		this.classNameBackup = this.domElement.className;
-		this.domElement.className = "";
+	captureFrame: function() {
+		return Promise.resolve(null);
 	},
 
-	enableClassName:function() {
-		this.domElement.className = this.classNameBackup;
-	},
-
-	enableClassNameAfter:function(millis) {
-		setTimeout("$('#" + this.domElement.id + "')[0].className = '" + this.classNameBackup + "'",millis);
-	},
-
-	setVisible:function(visible,animate) {
-		if (visible=="true" && animate) {
-			$(this.domElement).show();
-			$(this.domElement).animate({opacity:1.0},300);
-		}
-		else if (visible=="true" && !animate) {
-			$(this.domElement).show();
-		}
-		else if (visible=="false" && animate) {
-			$(this.domElement).animate({opacity:0.0},300);
-		}
-		else if (visible=="false" && !animate) {
-			$(this.domElement).hide();
-		}
-	},
-
-	setLayer:function(layer) {
-		this.domElement.style.zIndex = layer;
+	supportsCaptureFrame: function() {
+		return Promise.resolve(false);
 	}
 });
 
@@ -443,6 +710,20 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		};
 	},
 
+	captureFrame: function() {
+		return new Promise((resolve) => {
+			resolve({
+				source:this.video,
+				width:this.video.videoWidth,
+				height:this.video.videoHeight
+			});
+		});
+	},
+
+	supportsCaptureFrame: function() {
+		return Promise.resolve(true);
+	},
+
 	// Initialization functions
 	getVideoData:function() {
 		var This = this;
@@ -594,6 +875,14 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	setVolume:function(volume) {
         return this._deferredAction(() => {
             this.video.volume = volume;
+			if (volume==0) {
+				this.video.setAttribute("muted","muted");
+				this.video.muted = true;
+			}
+			else {
+				this.video.removeAttribute("muted");
+				this.video.muted = false;
+			}
         });
 	},
 
@@ -672,7 +961,8 @@ Class ("paella.videoFactories.Html5VideoFactory", {
 	isStreamCompatible:function(streamData) {
 		try {
 			if (paella.videoFactories.Html5VideoFactory.s_instances>0 && 
-				base.userAgent.system.iOS)
+				base.userAgent.system.iOS &&
+				(paella.utils.userAgent.system.Version.major<10 || paella.utils.userAgent.system.Version.minor<3))
 			{
 				return false;
 			}
@@ -773,6 +1063,11 @@ Class ("paella.ImageVideo", paella.VideoElementBase,{
 	},
 
 	// Initialization functions
+
+	allowZoom:function() {
+		return false;
+	},
+
 	getVideoData:function() {
 		let This = this;
 		return new Promise((resolve) => {

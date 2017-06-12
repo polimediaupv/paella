@@ -340,6 +340,10 @@ Class ("paella.Video360Theta", paella.VideoElementBase,{
 	},
 
 	// Initialization functions
+	allowZoom() {
+		return false;
+	},
+	
 	getVideoData:function() {
 		var This = this;
 		return new Promise((resolve,reject) => {
