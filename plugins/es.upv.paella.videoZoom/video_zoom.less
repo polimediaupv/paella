@@ -43,17 +43,23 @@
 }
 
 .videoWrapper {
-    text-align: center;
+    display: flex;
+    justify-content: center;
 }
 
 .videoZoomButton {
     z-index: 1;
     margin-left: 2px;
     margin-right: 2px;
+    margin-top: 4px;
     opacity: 0.2;
     background: white;
     font-size: 2em;
     padding: 0px 4px 0px 4px;
+    box-shadow: 2px 2px 5px 0px black;
+    width: 30px;
+    height: 30px;
+    flex-direction: row-reverse;
 }
 
 .videoZoomButton.zoomOut {
