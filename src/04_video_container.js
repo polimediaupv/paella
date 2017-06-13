@@ -369,11 +369,15 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 
 	enableTrimming:function() {
 		this._trimming.enabled = true;
+		let cap=paella.captions.getActiveCaptions()
+		if(cap!==undefined) paella.plugins.captionsPlugin.buildBodyContent(cap._captions,"list");
 		paella.events.trigger(paella.events.setTrim,{trimEnabled:this._trimming.enabled,trimStart:this._trimming.start,trimEnd:this._trimming.end});
 	},
 
 	disableTrimming:function() {
 		this._trimming.enabled = false;
+		let cap=paella.captions.getActiveCaptions()
+		if(cap!==undefined) paella.plugins.captionsPlugin.buildBodyContent(cap._captions,"list");
 		paella.events.trigger(paella.events.setTrim,{trimEnabled:this._trimming.enabled,trimStart:this._trimming.start,trimEnd:this._trimming.end});
 	},
 
@@ -397,6 +401,10 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 					}
 					if (currentTime>this._trimming.end) {
 						this.setCurrentTime(this._trimming.end);
+					}
+					if(this._trimming.enabled){
+						let cap=paella.captions.getActiveCaptions();
+						if(cap!==undefined) paella.plugins.captionsPlugin.buildBodyContent(cap._captions,"list");
 					}
 					paella.events.trigger(paella.events.setTrim,{trimEnabled:this._trimming.enabled,trimStart:this._trimming.start,trimEnd:this._trimming.end});
 					resolve();
