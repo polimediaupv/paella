@@ -21,6 +21,9 @@ class AudioLanguage extends paella.ButtonPlugin {
 	setup() {
 		var This = this;
         this.setLanguageLabel();
+        paella.events.bind(paella.events.audioLanguageChanged, () => {
+            this.setLanguageLabel();
+        });
 	}
 
 	getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
@@ -61,7 +64,7 @@ class AudioLanguage extends paella.ButtonPlugin {
 	}
 
     setLanguageLabel() {
-        this.setText("ES");
+        this.setText(paella.player.videoContainer.audioLanguage);
     }
 }
 

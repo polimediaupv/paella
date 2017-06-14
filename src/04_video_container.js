@@ -1130,6 +1130,10 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 			this.seekToTime(time);
 		}
 
+		get audioLanguage() {
+			return this._audioLanguage;
+		}
+
 		getAudioLanguages() {
 			return new Promise((resolve) => {
 				let lang = [];
@@ -1170,6 +1174,8 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 					})
 
 					.then(() => {
+						this._audioLanguage = this.mainAudioPlayer().stream.language;
+						paella.events.trigger(paella.events.audioLanguageChanged);
 						resolve();
 					})
 			});
@@ -1269,7 +1275,7 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 					var masterVolume = (config.player.audio && config.player.audio.master!=undefined) ?
 												config.player.audio.master:1.0;
 					masterVideo.setVolume(masterVolume);
-					return This.setAudioLanguage(paella.dictionary.currentLanguage());
+					return This.setAudioLanguage(This._audioLanguage);
 				})
 				
 				.then(function() {
