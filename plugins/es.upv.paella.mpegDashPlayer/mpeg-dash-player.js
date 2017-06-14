@@ -166,10 +166,7 @@ Class ("paella.MpegDashVideo", paella.Html5Video,{
 Class ("paella.videoFactories.MpegDashVideoFactory", {
 	isStreamCompatible:function(streamData) {
 		try {
-			if (paella.videoFactories.Html5VideoFactory.s_instances>0 && 
-				base.userAgent.system.iOS &&
-				(paella.utils.userAgent.system.Version.major<10 || paella.utils.userAgent.system.Version.minor<3))
-			{
+			if (base.userAgent.system.iOS) {
 				return false;
 			}
 			for (var key in streamData.sources) {
