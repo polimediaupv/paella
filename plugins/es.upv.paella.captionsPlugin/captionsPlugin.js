@@ -355,37 +355,43 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
     	var thisClass = this;
     	$(thisClass._body).empty();
     	obj.forEach(function(l){
-    		thisClass._inner = document.createElement('div');
-        	thisClass._inner.className = 'bodyInnerContainer';
-        	thisClass._inner.innerHTML = l.content;
-        	if(type=="list"){
-        		thisClass._inner.setAttribute('sec-begin',l.begin);
-        		thisClass._inner.setAttribute('sec-end',l.end);
-        		thisClass._inner.setAttribute('sec-id',l.id);
-        		thisClass._autoScroll = true;
-        	}
-        	if(type=="search"){
-        		thisClass._inner.setAttribute('sec-begin',l.time);
-        	}
-        	thisClass._body.appendChild(thisClass._inner);
+			paella.player.videoContainer.trimming()
+				.then((trimming)=>{
+					if(trimming.enabled && (l.end<trimming.start || l.begin>trimming.end)){
+						return;
+					}
+					thisClass._inner = document.createElement('div');
+					thisClass._inner.className = 'bodyInnerContainer';
+					thisClass._inner.innerHTML = l.content;
+					if(type=="list"){
+						thisClass._inner.setAttribute('sec-begin',l.begin);
+						thisClass._inner.setAttribute('sec-end',l.end);
+						thisClass._inner.setAttribute('sec-id',l.id);
+						thisClass._autoScroll = true;
+					}
+					if(type=="search"){
+						thisClass._inner.setAttribute('sec-begin',l.time);
+					}
+					thisClass._body.appendChild(thisClass._inner);
 
-        	//JQUERY
-        	$(thisClass._inner).hover(
-        		function(){ 
-        			$(this).css('background-color','rgba(250, 161, 102, 0.5)');	           		
-        		},
-        		function(){ 
-        			$(this).removeAttr('style');
-        		}
-	        );
-	        $(thisClass._inner).click(function(){ 
-	        		var secBegin = $(this).attr("sec-begin");
-					paella.player.videoContainer.trimming()
-						.then((trimming) => {
-							let offset = trimming.enabled ? trimming.start : 0;
-							paella.player.videoContainer.seekToTime(parseInt(secBegin - offset));
-						});
-	        });
+					//JQUERY
+					$(thisClass._inner).hover(
+						function(){ 
+							$(this).css('background-color','rgba(250, 161, 102, 0.5)');	           		
+						},
+						function(){ 
+							$(this).removeAttr('style');
+						}
+					);
+					$(thisClass._inner).click(function(){ 
+							var secBegin = $(this).attr("sec-begin");
+							paella.player.videoContainer.trimming()
+								.then((trimming) => {
+									let offset = trimming.enabled ? trimming.start : 0;
+									paella.player.videoContainer.seekToTime(parseInt(secBegin - offset));
+								});
+					});
+				});
     	});
     }
 });
