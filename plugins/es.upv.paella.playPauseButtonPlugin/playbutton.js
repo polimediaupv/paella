@@ -10,7 +10,8 @@ Class ("paella.plugins.PlayPauseButtonPlugin",paella.ButtonPlugin, {
 	getIndex:function() {return 110;},
 
 	checkEnabled:function(onSuccess) {
-		onSuccess(!paella.player.isLiveStream());
+		onSuccess(!paella.player.isLiveStream() || base.userAgent.system.Android 
+			|| base.userAgent.system.iOS);
 	},
 
 	setup:function() {

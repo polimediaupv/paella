@@ -248,14 +248,19 @@ Class ("paella.captions.Caption", {
 		}
 		else {
 			var results = [];
-			this._index.search(txt).forEach(function(s){
-				var c = self.getCaptionById(s.ref);
-				
-				results.push({time: c.begin, content: c.content, score: s.score});
-			});		
-			if (next) {
-				next(false, results);
-			}
+			paella.player.videoContainer.trimming()
+				.then((trimming)=>{
+					this._index.search(txt).forEach(function(s){
+						var c = self.getCaptionById(s.ref);
+						if(trimming.enabled && (c.end<trimming.start || c.begin>trimming.end)){
+							return;
+						}
+						results.push({time: c.begin, content: c.content, score: s.score});
+					});		
+					if (next) {
+					next(false, results);
+				}
+				});
 		}
 	}	
 });
