@@ -1176,7 +1176,7 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 
 			this._streamProvider.init(videoData);
 
-			var masterRect = videoData.length>1 ? {x:850,y:140,w:360,h:550}:{x:0,y:0,w:1280,h:720};
+			var masterRect = this._streamProvider.slaveVideos>0 ? {x:850,y:140,w:360,h:550}:{x:0,y:0,w:1280,h:720};
 			var slaveRect = {x:10,y:40,w:800,h:600};
 			this._isMonostream = this._streamProvider.slaveVideos.length==0;
 			var masterVideoData = this._streamProvider.masterVideo;
@@ -1214,12 +1214,12 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 			if (slaveVideo) slaveVideo.setVideoQualityStrategy(this._videoQualityStrategy);
 
 			addVideoWrapper.apply(this,['masterVideoWrapper',masterVideo]);
-			if (videoData.length>1) {
+			if (this._streamProvider.slaveVideos>0) {
 				addVideoWrapper.apply(this,['slaveVideoWrapper',slaveVideo]);
 			}
 			return masterVideo.load()
-				.then(function() {
-					if (videoData.length>1) {
+				.then(() => {
+					if (this._streamProvider.slaveVideos>0) {
 						return slaveVideo.load();
 					}
 					else {
@@ -1351,7 +1351,7 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 				animate = base.userAgent.browser.Explorer ? false:animate;
 				paella.Profiles.loadProfile(profileName,(profileData) => {
 					this._currentProfile = profileName;
-					if (this.numberOfStreams()==1) {
+					if (this._streamProvider.slaveVideos==0) {
 						profileData.masterVideo = this.getMonostreamMasterProfile();
 						profileData.slaveVideo = this.getMonostreamSlaveProfile();
 					}
