@@ -9,7 +9,8 @@ Class ("paella.plugins.PlayButtonOnScreen",paella.EventDrivenPlugin,{
 	firstPlay:false,
 
 	checkEnabled:function(onSuccess) {
-		onSuccess(!paella.player.isLiveStream());
+		onSuccess(!paella.player.isLiveStream() || base.userAgent.system.Android 
+			|| base.userAgent.system.iOS);
 	},
 
 	getIndex:function() {
