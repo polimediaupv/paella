@@ -84,52 +84,75 @@ Class ("paella.plugins.ArrowSlidesNavigator", paella.EventDrivenPlugin, {
 		this.hideArrows();
 	},	
 	
+	getCurrentRange: function() {
+		return new Promise((resolve) => {
+			if (this._frames.length<1) {
+				resolve(null);
+			}
+			else {
+				let trimming = null;
+				let duration = 0;
+				paella.player.videoContainer.duration()
+					.then((d) => {
+						duration = d;
+						return paella.player.videoContainer.trimming();
+					})
+
+					.then((t) => {
+						trimming = t;
+						return paella.player.videoContainer.currentTime();
+					})
+
+					.then((currentTime) => {
+						if (!this._frames.some((f1,i,array) => {
+							if (i+1==array.length) { return; }
+							let f0 = i==0 ? f1 : this._frames[i-1];
+							let f2 = this._frames[i+1];
+							let t0 = trimming.enabled ? f0.time - trimming.start : f0.time;
+							let t1 = trimming.enabled ? f1.time - trimming.start : f1.time;
+							let t2 = trimming.enabled ? f2.time - trimming.start : f2.time;
+							if (t1<currentTime && t2>currentTime) {
+								let range = {
+									prev: t0,
+									next: t2
+								};
+								if (t0<0) {
+									range.prev = t1>0 ? t1 : 0;
+								}
+								resolve(range);
+								return true;
+							}
+						})) {
+							let t0 = this._frames[this._frames.length-2].time;
+							let t1 = this._frames[this._frames.length-1].time;
+							resolve({
+								prev: trimming.enabled ? t0 - trimming.start : t0,
+								next: trimming.enabled ? t1 - trimming.start : t1
+							});
+						}
+					});
+			}
+		})
+	},
+
 	goNextSlide: function() {
 		var self = this;
-		paella.player.videoContainer.currentTime()
-		.then(function(currentTime) {
-			if (self._frames.length>1) {		
-				for (let i = 0; i < self._frames.length-1; i++) { 
-					var f1 = self._frames[i];
-					var f2 = self._frames[i+1];
-					
-					if ((f1.time <= currentTime) && (f2.time > currentTime)) {
-						paella.player.videoContainer.seekToTime(f2.time);	
-					}				
-				}
-			}
-		});
+		let trimming;
+		this.getCurrentRange()
+			.then((range) => {
+				console.log(range);
+				paella.player.videoContainer.seekToTime(range.next);
+			});
 	},
 
 	goPrevSlide: function() {
 		var self = this;
-		paella.player.videoContainer.currentTime()
-		.then(function(currentTime) {
-			if (self._frames.length==1) {
-				paella.player.videoContainer.seekToTime(self._frames[0].time);		
-			}
-			else {
-				//check first frame
-				if (currentTime < self._frames[1].time) {
-					paella.player.videoContainer.seekToTime(self._frames[0].time);	
-				}
-				// check last frame
-				else if (self._frames[self._frames.length-1].time <= currentTime) {
-					paella.player.videoContainer.seekToTime(self._frames[self._frames.length-2].time);
-				}
-				// check midle frames
-				else {
-					for (let i = 1; i < self._frames.length-1; i++) { 
-						var f1 = self._frames[i];
-						var f2 = self._frames[i+1];
-						
-						if ((f1.time <= currentTime) && (f2.time > currentTime)) {
-							paella.player.videoContainer.seekToTime(self._frames[i-1].time);	
-						}				
-					}
-				}
-			}
-		});		
+		let trimming = null;
+		this.getCurrentRange()
+			.then((range) => {
+				console.log(range);
+				paella.player.videoContainer.seekToTime(range.prev-1);
+			});
 	},
 	
 	showArrows:function(){
