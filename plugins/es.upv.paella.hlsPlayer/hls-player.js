@@ -164,7 +164,7 @@ Class ("paella.videoFactories.HLSVideoFactory", {
 		try {
 			if (paella.videoFactories.Html5VideoFactory.s_instances>0 && 
 				base.userAgent.system.iOS &&
-				(paella.utils.userAgent.system.Version.major<10 || paella.utils.userAgent.system.Version.minor<3))
+				(paella.utils.userAgent.system.Version.major<=10 && paella.utils.userAgent.system.Version.minor<3))
 			{
 				return false;
 			}
