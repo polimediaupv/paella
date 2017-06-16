@@ -42,7 +42,7 @@ Class ("paella.plugins.FullScreenPlugin",paella.ButtonPlugin, {
 			paella.player.goFullScreen();
 		}
 
-		if (paella.player.config.player.reloadOnFullscreen) {
+		if (paella.player.config.player.reloadOnFullscreen && !paella.utils.userAgent.system.iOS) {
 			setTimeout(function() {
 				if(self._reload) {
 					paella.player.videoContainer.setQuality(null)
