@@ -825,10 +825,17 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 			var sources = this._stream.sources[this._streamName];
 			this._currentQuality = index<sources.length ? index:0;
 			var currentTime = this.video.currentTime;
+			
+			let This = this;
+			let onSeek = function() {
+				This.unFreeze().then(() => {
+					resolve();
+					This.video.removeEventListener('seeked',onSeek,false);
+				});
+			};
+	
 			this.freeze()
-
 				.then(() => {
-					this._ready = false;
 					return this.load();
 				})
 
@@ -836,11 +843,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 					if (!paused) {
 						this.play();
 					}
-					$(this.video).on('seeked',() => {
-						this.unFreeze();
-						resolve();
-						$(this.video).off('seeked');
-					});
+					this.video.addEventListener('seeked',onSeek);
 					this.video.currentTime = currentTime;
 				});
 		});
@@ -943,7 +946,9 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	unFreeze:function(){
 		return this._deferredAction(() => {
 			var c = document.getElementById(this.video.className + "canvas");
-			$(c).remove();
+			if (c) {
+				$(c).remove();
+			}
 		});
 	},
 	
