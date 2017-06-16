@@ -123,9 +123,6 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		if (paella.player.isLiveStream()) {
 			$(this.domElement).hide();
 		}
-		setTimeout(function(){
-			self.drawTimeMarks();
-		},200);
 	},
 
 	mouseOut:function(event){
@@ -139,15 +136,27 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	},
 
 	drawTimeMarks:function(){
-		this.imageSetup()
+		let trimming = {};
+		paella.player.videoContainer.trimming()
+			.then((t) => {
+				trimming = t;
+				return this.imageSetup();
+			})
+			
 			.then(() => {
-				var self = this;
-				var parent = $("#playerContainer_controls_playback_playbackBar");
+				let self = this;
+				// Updated duration value. The duration may change during playback, because it's
+				// possible to set the trimming during playback (for instance, using a plugin)
+				let duration = trimming.enabled ? trimming.end - trimming.start : this._videoLength;
+				let parent = $("#playerContainer_controls_playback_playbackBar");
 				this.clearCanvas();
 				if (this._keys && paella.player.config.player.slidesMarks.enabled) {
 					this._keys.forEach(function (l) {
-						var aux = (parseInt(l) * parent.width()) / self._videoLength; // conversion to canvas
-						self.drawTimeMark(parseInt(aux));
+						let timeInstant = parseInt(l) - trimming.start;
+						if (timeInstant>0) {
+							var aux = (timeInstant * parent.width()) / self._videoLength; // conversion to canvas
+							self.drawTimeMark(aux);
+						}
 					});
 				}
 			});
@@ -188,7 +197,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	movePassive:function(event){
 		var This = this;
 
-		function updateTimePreview(duration) {
+		function updateTimePreview(duration,trimming) {
 			// CONTROLS_BAR POSITON
 			var p = $(This.domElement);
 			var pos = p.offset();
@@ -199,14 +208,17 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 			var position = left * 100 / width; // GET % OF THE STREAM
 
 			var time = position * duration / 100;
+			if (trimming.enabled) {
+				time += trimming.start;
+			}
 
-			var hou = Math.floor(time / 3600)%24;
+			var hou = Math.floor((time - trimming.start) / 3600)%24;
 			hou = ("00"+hou).slice(hou.toString().length);
 
-			var min = Math.floor(time / 60)%60;
+			var min = Math.floor((time - trimming.start) / 60)%60;
 			min = ("00"+min).slice(min.toString().length);
 
-			var sec = Math.floor(time%60);
+			var sec = Math.floor((time - trimming.start)%60);
 			sec = ("00"+sec).slice(sec.toString().length);
 
 			var timestr = (hou+":"+min+":"+sec);
@@ -261,9 +273,15 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		}
 
 		paella.player.videoContainer.duration()
-			.then(function(d) {
-				updateTimePreview(d);
-			});
+			let duration = 0;
+			paella.player.videoContainer.duration()
+				.then(function(d) {
+					duration = d;
+					return paella.player.videoContainer.trimming();
+				})
+				.then(function(trimming) {
+					updateTimePreview(duration,trimming);
+				});
 	},
 
 	imageSetup:function(){
@@ -300,24 +318,22 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 
 		var src = $("#imgOverlay").attr('src');
 		$(self._imgNode).show();
-				if(sec > this._next || sec < this._prev) {
-					src = self.getPreviewImageSrc(sec);
-					if(src){
-						self._lastSrc = src;
-						$( "#imgOverlay" ).attr('src', src); // UPDATING IMAGE
-					}
-					else self.hideImg();
-				} // RELOAD IF OUT OF INTERVAL
-					else { 	
-						if(src!=undefined) { return; }
-						else { 
-							$( "#imgOverlay" ).attr('src', self._lastSrc); 
-						}// KEEP LAST IMAGE
-					}			
-
-				
-
+		if(sec > this._next || sec < this._prev) {
+			src = self.getPreviewImageSrc(sec);
+			if(src){
+				self._lastSrc = src;
+				$( "#imgOverlay" ).attr('src', src); // UPDATING IMAGE
+			}
+			else self.hideImg();
+		} // RELOAD IF OUT OF INTERVAL
+		else { 	
+			if(src!=undefined) { return; }
+			else { 
+				$( "#imgOverlay" ).attr('src', self._lastSrc); 
+			}// KEEP LAST IMAGE
+		}
 	},
+
 	hideImg:function(){
 		var self = this;
 		$(self._imgNode).hide();
