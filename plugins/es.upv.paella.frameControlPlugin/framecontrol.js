@@ -347,7 +347,16 @@ Class ("paella.plugins.FrameControlPlugin",paella.ButtonPlugin,{
 	},
 
 	onClick:function(event,frameData) {
-		paella.player.videoContainer.seekToTime(frameData.time + 1);
+		paella.player.videoContainer.trimming()
+			.then((trimming) => {
+				let time = trimming.enabled ? frameData.time - trimming.start : frameData.time;
+				if (time>0) {
+					paella.player.videoContainer.seekToTime(time + 1);
+				}
+				else {
+					paella.player.videoContainer.seekToTime(0);
+				}
+			});
 	},
 
 	onTimeUpdate:function(currentTime) {
