@@ -153,3 +153,47 @@
 
     paella.plugins.videoZoomPlugin = new VideoZoomPlugin();
 })();
+
+(function() {
+
+    class VideoZoomToolbarPlugin extends paella.ButtonPlugin {
+        getAlignment() { return 'right'; }
+        getSubclass() { return "videoZoomToolbar"; }
+        getIndex() { return 2030; }
+        getMinWindowSize() { return 600; }
+        getName() { return "es.upv.paella.videoZoomToolbarPlugin"; }
+        getDefaultToolTip() { return base.dictionary.translate("Change theme"); }
+        getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
+
+        checkEnabled(onSuccess) {
+            paella.player.videoContainer.videoPlayers()
+                .then((players) => {
+                    let pluginData = paella.player.config.plugins.list["es.upv.paella.videoZoomToolbarPlugin"];
+                    let playerIndex = pluginData.targetStreamIndex;
+                    this.targetPlayer = players.length>playerIndex ? players[playerIndex] : null;
+                    onSuccess(this.targetPlayer && this.targetPlayer.allowZoom());
+                });
+        }
+        
+        buildContent(domElement) {
+            function getZoomButton(className,onClick) {
+                let btn = document.createElement('div');
+                btn.className = `videoZoomToolbarItem ${ className }`;
+                btn.innerHTML = `<i class="glyphicon glyphicon-${ className }"></i>`;
+                $(btn).click(onClick);
+                return btn;
+            }
+            domElement.appendChild(getZoomButton('zoom-in',(evt) => {
+                this.targetPlayer.zoomIn();
+            }));
+            domElement.appendChild(getZoomButton('zoom-out',(evt) => {
+                this.targetPlayer.zoomOut();
+            }));
+        }
+    }
+
+
+    paella.plugins.videoZoomToolbarPlugin = new VideoZoomToolbarPlugin();
+
+
+})();
