@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+* Paella 5.1.14
+
+  * Fix error changing quality in mpeg dash streams.
+
+* Paella 5.1.13
+
+  * Bug fixed in window title plugin
+
 * Paella 5.1.12
 
   * Fix some issues when changing profile (#249)

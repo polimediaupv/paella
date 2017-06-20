@@ -115,7 +115,7 @@ Class ("paella.MpegDashVideo", paella.Html5Video,{
 				this._player.on(dashjs.MediaPlayer.events.METRIC_CHANGED, (a,b) => {
 					if (a.type=="metricchanged") {
 						if (currentQuality!=this._player.getQualityFor("video")) {
-							currentQuality = This._player.getQualityFor("video");
+							currentQuality = this._player.getQualityFor("video");
 							resolve();
 						}
 					}
