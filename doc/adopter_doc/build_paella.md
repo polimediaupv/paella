@@ -1,40 +1,68 @@
-# Build and install from source
+# Download Paella Player
+## Download precompiled stable version
+### Dependencies
 
-In this section we are going to explain how to build and install Paella Player.
+If you want to use a stable version of Paella Player, you can download it using Bower. To do it, you'll need to install [Node.js](https://nodejs.org). Download and install it following the instructions for your specific platform:
 
-## Dependencies
+[https://nodejs.org/en/download](https://nodejs.org/en/download)
 
-Paella Player uses [Gulp](http://gulp.com/) as a task runner. so we need to install some dependencies:
+After that, install bower using the Node.js package manager. Using the command line, run the following command:
 
-1. [Node Js](http://nodejs.org/)
-2. [Gulp Js](http://gulpjs.com/)
+#### macOS / Linux / Unix
 
-First we are goint to install [Node Js](http://nodejs.org/) in our system. To do so, go to [http://nodejs.org/](http://nodejs.org/) and download and install nodejs.
-Now we have the node and npm command installed.
+```
+	sudo npm install -g bower
+```
 
-Now, we are going to install the other dependencies. To do so open a terminal and run the next command:
+#### Windows
 
-	$ npm -g install gulp
-	
-If you are in a OSX/Linux machine, run that command with sudo:
+```
+	npm install -g bower
+```
 
-	$ sudo npm -g install gulp
+And then, you can use bower to download Paella Player:
 
+```
+	cd /path/to/paella/folder
+	bower install paella
+```
+
+Bower will download Paella Player in your current folder, inside a new directory named "bower_components". Inside this directory, you'll find a specific directory for the Paella Player, containing the compiled player and some examples.
+
+
+## Build and install from source
+### Dependencies
+
+In addition to Node.js and Bower, Paella Player uses [Gulp](http://gulp.com/) as a task runner and build system. You can use npm to install Gulp in your system:
+
+#### macOS / Linux / Unix
+
+```
+	sudo npm install -g gulp
+```
+
+#### Windows
+
+```
+	npm install -g gulp
+```
 
 Finally, we need to install the gulp modules needed by Paella. Open the terminal and go to the folder you have downloaded paella player.
 Now, run the next command:
 
-	$ npm install
+```	
+	npm install
+```
 
 Congratulations, you have all the dependencies installed.	
-
-
 
 ## Build Paella Player
 
 To build paella player you need to open a terminal and go to the paella folder, and run:
 
-	$ gulp build.release
+```
+	gulp build.release
+```
 	
 A new folder (called 'build') will be created	with the player and a test repository. You will find paella at 'build/player'.
 
@@ -43,7 +71,9 @@ A new folder (called 'build') will be created	with the player and a test reposit
 
 You can test Paella by running the command:
 
-	$ gulp server.release
+```
+gulp server.release
+```
 
 This command will build paella and launch a local server with paella. You can open a browser and navigate to [http://localhost:8000](http://localhost:8000).
 
