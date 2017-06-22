@@ -37,13 +37,18 @@ gulp.task("test:local", function(cb){
 
 function getVersion() {
 	let pkg = require('./package.json');
-	let rev = exec('git show --oneline -s');
-	let re = /([a-z0-9:]+)\s/i;
-	let reResult = re.exec(rev);
-	if (reResult && !/fatal/.test(reResult[1])) {
-		return pkg.version + ' - build: ' + reResult[1];
+	try {
+		let rev = exec('git show --oneline -s');
+		let re = /([a-z0-9:]+)\s/i;
+		let reResult = re.exec(rev);
+		if (reResult && !/fatal/.test(reResult[1])) {
+			return pkg.version + ' - build: ' + reResult[1];
+		}
+		else {
+			return pkg.version;
+		}
 	}
-	else {
+	catch (e) {
 		return pkg.version;
 	}
 }
