@@ -27,7 +27,13 @@
             if (window!=window.parent) {
                 excluded = excluded || excludeParent.some((url) => {
                     let re = RegExp(url,"i");
-                    return re.test(parent.location.href);
+                    try {
+                        return re.test(parent.location.href);
+                    }
+                    catch(e) {
+                        // Cross domain error
+                        return false;
+                    }
                 });
             }
             onSuccess(!excluded);
