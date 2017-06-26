@@ -122,7 +122,7 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 			var message = document.createElement('div');
 
 			var header = document.createElement('h3');
-			header.innerHTML = base.dictionary.translate("Flash player 9 nedded");
+			header.innerHTML = base.dictionary.translate("Flash player needed");
 
 			var text = document.createElement('div');
 

@@ -518,7 +518,7 @@ Class ("base.UserAgent",{
 
 	parseIOSVersion:function(userAgentString) {
 		this.system.Version = {};
-		if (/iPhone OS (\d+)_(\d+)_*(\d*)/i.test(userAgentString)) {
+		if (/iPhone OS (\d+)_(\d+)_*(\d*)/i.test(userAgentString) || /iPad; CPU OS (\d+)_(\d+)_*(\d*)/i.test(userAgentString)) {
 			this.system.Version.major = Number(RegExp.$1);
 			this.system.Version.minor = Number(RegExp.$2);
 			this.system.Version.revision = (RegExp.$3) ? Number(RegExp.$3):0;

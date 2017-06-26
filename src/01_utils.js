@@ -393,6 +393,7 @@ Class ("paella.MessageBox", {
 
 	doShowFrame:function(src,closeButton,width,height,onClose) {
 		this.onClose = onClose;
+		$('#playerContainer').addClass("modalVisible");
 
 		if (this.currentMessageBox) {
 			this.close();
@@ -425,7 +426,11 @@ Class ("paella.MessageBox", {
 		iframeContainer.style.height = "100%";
 		messageContainer.appendChild(iframeContainer);
 
-		$('body')[0].appendChild(modalContainer);
+		if (paella.player.isFullScreen()) {
+			paella.player.mainContainer.appendChild(modalContainer);
+		}else{
+			$('body')[0].appendChild(modalContainer);
+		}
 
 		this.currentMessageBox = modalContainer;
 		this.messageContainer = messageContainer;
@@ -473,6 +478,7 @@ Class ("paella.MessageBox", {
 
 	doShowElement:function(domElement,closeButton,width,height,className,onClose) {
 		this.onClose = onClose;
+		$('#playerContainer').addClass("modalVisible");
 
 		if (this.currentMessageBox) {
 			this.close();
@@ -514,6 +520,7 @@ Class ("paella.MessageBox", {
 
 	doShowMessage:function(message,closeButton,width,height,className,onClose) {
 		this.onClose = onClose;
+		$('#playerContainer').addClass("modalVisible");
 
 		if (this.currentMessageBox) {
 			this.close();
@@ -597,6 +604,7 @@ Class ("paella.MessageBox", {
 		if (this.currentMessageBox && this.currentMessageBox.parentNode) {
 			var msgBox = this.currentMessageBox;
 			var parent = msgBox.parentNode;
+			$('#playerContainer').removeClass("modalVisible");
 			$(msgBox).animate({opacity:0.0},300,function() {
 				parent.removeChild(msgBox);
 			});

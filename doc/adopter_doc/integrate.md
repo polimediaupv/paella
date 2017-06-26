@@ -3,7 +3,7 @@
 Paella needs to know certain information to play your videos.
 
 - How many videos there are
-- The URLS of those videos
+- The URLs of those videos
 - The properties of those videos (length, size, ...)
 - Preview pictures
 - etc...

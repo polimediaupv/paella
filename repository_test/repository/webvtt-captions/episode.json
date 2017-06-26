@@ -1,0 +1,72 @@
+{
+    "mediapackage": {
+        "slides": [
+            {
+                "mimetype": "image/jpeg",
+                "thumb": {
+                    "url": "http://paellaplayer.upv.es/demo/repository/pm-be0c7738-039d-9445-8237-8b85f37cd303/slides/thumb_0.jpg",
+                    "resolution": ""
+                },
+                "time": "00:00:00"
+            }
+        ],
+        "captions": [
+                {
+                        "lang": "es",
+                        "text": "Español (traducción automática)",
+                        "format": "dfxp",
+                        "url": "https://fuster.cc.upv.es/tl-pm/dfxp?db=pm&id=be0c7738-039d-9445-8237-8b85f37cd303&lang=es&format=1&pol=0"
+                },
+                {
+                        "lang": "en",
+                        "text": "English (automatic transciption)",
+                        "format": "dfxp",
+                        "url": "https://fuster.cc.upv.es/tl-pm/dfxp?db=pm&id=be0c7738-039d-9445-8237-8b85f37cd303&lang=en&format=1&pol=0"
+                },
+                {
+                        "lang": "ca",
+                        "text": "Valencià/Català (traducció automàtica)",
+                        "format": "dfxp",
+                        "url": "https://fuster.cc.upv.es/tl-pm/dfxp?db=pm&id=be0c7738-039d-9445-8237-8b85f37cd303&lang=ca&format=1&pol=0"
+                }
+        ],
+        "media": {
+            "tracks": [
+                {
+                    "mimetype": "video/mp4",
+                    "tags": [],
+                    "url": "http://paellaplayer.upv.es/demo/repository/pm-be0c7738-039d-9445-8237-8b85f37cd303/video/720p.mp4",
+                    "mediainfo": {
+                        "video": {
+                            "resolution": "1280x720"
+                        }
+                    },
+                    "preview": "http://paellaplayer.upv.es/demo/repository/pm-be0c7738-039d-9445-8237-8b85f37cd303/slides/thumb_0.jpg",
+                    "type": "presentation/delivery",
+                    "id": "video-1"
+                },
+                {
+                    "mimetype": "video/mp4",
+                    "tags": [],
+                    "url": "http://paellaplayer.upv.es/demo/repository/pm-be0c7738-039d-9445-8237-8b85f37cd303/video/360p.mp4",
+                    "mediainfo": {
+                        "video": {
+                            "resolution": "640x360"
+                        }
+                    },
+                    "preview": "http://paellaplayer.upv.es/demo/repository/pm-be0c7738-039d-9445-8237-8b85f37cd303/slides/thumb_0.jpg",
+                    "type": "presentation/delivery",
+                    "id": "video-1"
+                }
+            ]
+        },
+        "metadata": {
+            "duration": "0",
+            "start": "2014-03-20T12:30:00Z",
+            "creators": [],
+            "license": "",
+            "title": ""
+        }
+    },
+    "version": "1.0.0"
+}

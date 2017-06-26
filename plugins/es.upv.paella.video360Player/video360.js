@@ -229,6 +229,10 @@ Class ("paella.Video360", paella.VideoElementBase,{
 	},
 
 	// Initialization functions
+	allowZoom() {
+		return false;
+	},
+	
 	getVideoData:function() {
 		var This = this;
 		return new Promise((resolve,reject) => {

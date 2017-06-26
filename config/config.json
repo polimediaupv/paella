@@ -5,6 +5,10 @@
 		"videoQualityStrategy": "paella.LimitedBestFitVideoQualityStrategy",
 		"videoQualityStrategyParams":{ "maxAutoQualityRes":720 },
 		"reloadOnFullscreen": true,
+		"videoZoom": {
+			"enabled":true,
+			"max":800
+		},
 
 		"deprecated-methods":[{"name":"streaming","enabled":true},
 				   {"name":"html","enabled":true},
@@ -49,7 +53,8 @@
 			"default":"CookieDataDelegate",
 			"trimming":"CookieDataDelegate",
 			"userInfo": "UserDataDelegate",
-			"visualAnnotations": "VisualAnnotationsDataDelegate"
+			"visualAnnotations": "VisualAnnotationsDataDelegate",
+			"metadata":"VideoManifestMetadataDataDelegate"
 		}
 	},
 	"folders": {
@@ -86,11 +91,23 @@
 			"es.upv.paella.visualAnnotationPlugin": {"enabled":true,"url":"https://media.upv.es/rest/video/"},
 			"es.upv.paella.pipModePlugin": { "enabled":true },
 			"es.upv.paella.ratePlugin": { "enabled":true },
+			"es.upv.paella.videoZoomPlugin": { "enabled":true },
+			"es.upv.paella.audioLanguage": { "enabled":true },
+			"es.upv.paella.videoZoomToolbarPlugin": { "enabled":true, "targetStreamIndex":0 },
 
 			"//****": "Video Overlay Button Plugins",
 			"es.upv.paella.liveStreamingIndicatorPlugin":  { "enabled": true },
 			"es.upv.paella.showEditorPlugin":{"enabled":true,"alwaysVisible":true},
 			"es.upv.paella.arrowSlidesNavigatorPlugin": {"enabled": true, "showArrowsIn": "slave"},
+			"es.upv.paella.videoDataPlugin": {
+				"enabled": true,
+				"excludeLocations":[
+					"paellaplayer.upv.es"
+				],
+				"excludeParentLocations":[
+					"localhost:8000"
+				]
+			},
 			
 			"//****": "TabBar Plugins",
 			"es.upv.paella.commentsPlugin": {"enabled": false},
@@ -110,6 +127,7 @@
 									
 			"//****": "Captions Parser Plugins",
 			"es.upv.paella.captions.DFXPParserPlugin": {"enabled":true},
+			"es.teltek.paella.captions.WebVTTParserPlugin": {"enabled":true},
 			
 			"//****": "Search Service Plugins",
 			"es.upv.paella.search.captionsSearchPlugin": {"enabled":true},

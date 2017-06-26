@@ -8,7 +8,7 @@ To make easier the use of paella from third parties we have created a [JSON sche
 
 To make this even easier we made this [tool](https://rawgit.com/polimediaupv/paella/develop/tools/mediapackagecreator/jsoncreateutil.html) to define our JSONs 
  
-#JSON Structure
+## JSON Structure
  We will detail the JSON structure from the root
  ```json
  {
@@ -18,7 +18,7 @@ To make this even easier we made this [tool](https://rawgit.com/polimediaupv/pae
 }
 ```
 
-##streams
+### streams
 This will hold an array with the diferent video streams that the player will play, the max length of this array should be 2, since paella by default can only play 2 video streams.
 ```json
 {
@@ -34,15 +34,15 @@ This will hold an array with the diferent video streams that the player will pla
 }
 ```
 
-##stream
+#### stream
 Each stream in the stream array will have:
 * preview: url containing the image that will be used as preview for the stream
 * sources: source or sources of the data stream 
 
-##source
+#### source
 The admites source types are mp4,ogg,webm,flv,rtmp & image, since all the source types but image share the same JSON structure we will diferenciate between video-source and image-source 
 
-##video-source
+#### video-source
 A video-source consist in an array with the videos that forms the diferent resoultions and qualities of the stream, in the example below we have an mp4 source but any of the video types uses this format.
 
 ```json
@@ -76,7 +76,7 @@ A video-source consist in an array with the videos that forms the diferent resou
     * w:widht
     * h:height
         
-##image-source
+#### image-source
 When we use an image array as source of the video stream the way this should be represented in the JSON is this:
 
 ```json
@@ -119,7 +119,7 @@ When we use an image array as source of the video stream the way this should be 
     * w:widht
     * h:height
         
-#frameList
+### frameList
 The storyboard uses an array of images wich is defined in the JSON in the frameList
 
 ```json
@@ -145,9 +145,34 @@ The storyboard uses an array of images wich is defined in the JSON in the frameL
 * url: url of the image
 * thumb: url of the thumb of the image
 
- 
- #metadata
- here we store custom info about the videos that we will play
+### subtitles
+
+```
+	"captions": [
+		{
+			"lang": "es",
+			"text": "Español (traducción automática)",
+			"format": "dfxp",
+			"url": "be0c7738-039d-9445-8237-8b85f37cd303.es.dfxp"
+		},
+		{
+			"lang": "en",
+			"text": "English (automatic transciption)",
+			"format": "dfxp",
+			"url": "be0c7738-039d-9445-8237-8b85f37cd303.en.dfxp"
+		},
+		{
+			"lang": "ca",
+			"text": "Valencià/Català (traducció automàtica)",
+			"format": "dfxp",
+			"url": "be0c7738-039d-9445-8237-8b85f37cd303.ca.dfxp"
+		}
+	]
+}
+```
+
+### metadata
+here we store custom info about the videos that we will play
  
  ```json
  {

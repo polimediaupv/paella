@@ -1,6 +1,18 @@
 CHANGELOG
 =========
 
+* Paella 5.2
+
+  * New video plugin: HLS player.
+  * Zoom on videos.
+  * Two new video zoom plugins.
+  * Video title plugin.
+  * Dual video playback in iOS 10.3 and above.
+  * Multiple audio stream selector (compatible with desktop browsers).
+  * WebVTT subtitle support.
+  * New multi language audio selector plugin.
+  * Refactoring, improvements and bug fixes.
+
 * Paella 5.1.14
 
   * Fix error changing quality in mpeg dash streams.

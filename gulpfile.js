@@ -11,21 +11,44 @@ const	gulp = require('gulp'),
 		flatten = require('gulp-flatten'),
 		path = require('path'),
 
-		exec = require('child_process').execSync;
+		exec = require('child_process').execSync,
+
+		runSequence = require('run-sequence'),
+		nightwatch = require('gulp-nightwatch');
+		
 
 var config = {
 	outDir:'build/'
 };
 
+
+gulp.task("test:nightwatch:local:run", function(){
+	return gulp.src('')
+	.pipe(nightwatch({
+		configFile: 'tests/nightwatch/nightwatch.js'
+	}));
+});
+
+
+gulp.task("test:local", function(cb){
+	runSequence('test:nightwatch:local:run', cb)
+});
+
+
 function getVersion() {
 	let pkg = require('./package.json');
-	let rev = exec('git show --oneline -s');
-	let re = /([a-z0-9:]+)\s/i;
-	let reResult = re.exec(rev);
-	if (reResult && !/fatal/.test(reResult[1])) {
-		return pkg.version + ' - build: ' + reResult[1];
+	try {
+		let rev = exec('git show --oneline -s');
+		let re = /([a-z0-9:]+)\s/i;
+		let reResult = re.exec(rev);
+		if (reResult && !/fatal/.test(reResult[1])) {
+			return pkg.version + ' - build: ' + reResult[1];
+		}
+		else {
+			return pkg.version;
+		}
 	}
-	else {
+	catch (e) {
 		return pkg.version;
 	}
 }

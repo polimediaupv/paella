@@ -41,7 +41,7 @@ Add the paella css and js dependecies:
   <body>
   </body>
 </html>
-````
+```
 
 Then add the container where paella is going to load:
 
