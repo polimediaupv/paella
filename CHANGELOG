@@ -1,6 +1,16 @@
 CHANGELOG
 =========
 
+* Paella 5.2
+
+  * New video plugin: hls player.
+  * Video zoom.
+  * Two new video zoom plugins.
+  * Video title plugin.
+  * Multiple audio stream selector (compatible with desktop browsers).
+  * New multi language audio selector plugin.
+  * Refactoring, improvements and bug fixes.
+
 * Paella 5.1.14
 
   * Fix error changing quality in mpeg dash streams.
