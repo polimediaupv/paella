@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+* Paella 5.2.1
+
+  * Now it's possible to specify the video, preview and title using URL parameters.
+  * Visual improvements in breaks plugin.
+  
 * Paella 5.2.0
 
   * New video plugin: HLS player.
