@@ -237,6 +237,56 @@ Class ("paella.DefaultInitDelegate", paella.InitDelegate, {
  */
 paella.load = function(playerContainer, params) {
 	var auth = (params && params.auth) || {};
+
+	// Build custom init data using url parameters
+	let master = null;
+	if (master = paella.utils.parameters.get('video')) {
+		let slave = paella.utils.parameters.get('videoSlave');
+		slave = slave && decodeURIComponent(slave);
+		let masterPreview = paella.utils.parameters.get('preview');
+		masterPreview = masterPreview && decodeURIComponent(masterPreview);
+		let slavePreview = paella.utils.parameters.get('previewSlave');
+		slavePreview = slavePreview && decodeURIComponent(slavePreview);
+		let title = paella.utils.parameters.get('preview') || "Untitled Video";
+		
+		let data = {
+			metadata: {
+				title: title
+			},
+			streams: [
+				{
+					sources: {
+						mp4: [
+							{
+								src:decodeURIComponent(master),
+								mimetype:"video/mp4",
+								res:{ w:0, h:0 }
+							}
+						]
+					},
+					preview:masterPreview
+				}
+			]
+		}
+
+		if (slave) {
+			data.streams.push({
+				sources: {
+					mp4: [
+						{
+							src:slave,
+							mimetype:"video/mp4",
+							res:{ w:0, h:0 }
+						}
+					]
+				},
+				preview:slavePreview
+			});
+		}
+
+		params.data = data;
+	}
+	
 	var initObjects = {
 		videoLoader: new paella.DefaultVideoLoader(params.data || params.url)
 	};
