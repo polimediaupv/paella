@@ -58,8 +58,9 @@ Class ("paella.plugins.BreaksPlayerPlugin",paella.EventDrivenPlugin,{
 	},
 	showBreaks:function(br) {
 		if (!this.visibleBreaks[br.s]) {
-			var rect = {left:100,top:350,width:1080,height:20};
-			br.elem = paella.player.videoContainer.overlayContainer.addText(br.content,rect);
+			var rect = {left:100,top:350,width:1080,height:40};
+			let content = br.content || paella.dictionary.translate("Break")
+			br.elem = paella.player.videoContainer.overlayContainer.addText(content,rect);
 			br.elem.className = 'textBreak';
 			this.visibleBreaks[br.s] = br;
 		}
