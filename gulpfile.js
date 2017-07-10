@@ -125,7 +125,10 @@ gulp.task("copy", function() {
 			.pipe(gulp.dest(`${config.outDir}player/resources/images`)),
 
 		gulp.src(['index.html','test.html'])
-			.pipe(gulp.dest(`${config.outDir}player/`))
+			.pipe(gulp.dest(`${config.outDir}player/`)),
+
+		gulp.src('node_modules/traceur/bin/traceur-runtime.js')
+			.pipe(gulp.dest(`${config.outDir}player/javascript`))
 	];
 
 	function addPlugins(pluginPath) {
