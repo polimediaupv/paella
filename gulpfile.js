@@ -7,6 +7,7 @@ const	gulp = require('gulp'),
 		traceur = require('gulp-traceur'),
 		merge = require('gulp-merge-json'),
 		fs = require('fs'),
+		minify = require('gulp-minify'),
 		uglify = require('gulp-uglify'),
 		flatten = require('gulp-flatten'),
 		path = require('path'),
@@ -128,6 +129,7 @@ gulp.task("copy", function() {
 			.pipe(gulp.dest(`${config.outDir}player/`)),
 
 		gulp.src('node_modules/traceur/bin/traceur-runtime.js')
+			.pipe(minify({ ext: { min: '.min.js' }}))
 			.pipe(gulp.dest(`${config.outDir}player/javascript`))
 	];
 
