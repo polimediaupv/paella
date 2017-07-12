@@ -126,13 +126,8 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	},
 
 	mouseOut:function(event){
-		var self = this;
-		if(self._hasSlides) {
-			$("#divTimeImageOverlay").remove();
-		}
-		else {
-			$("#divTimeOverlay").remove();
-		}
+		$("#divTimeImageOverlay").remove();
+		$("#divTimeOverlay").remove();
 	},
 
 	drawTimeMarks:function(){
@@ -222,11 +217,35 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 			sec = ("00"+sec).slice(sec.toString().length);
 
 			var timestr = (hou+":"+min+":"+sec);
-
 			// CREATING THE OVERLAY
 			if(This._hasSlides) {
-				if($("#divTimeImageOverlay").length == 0)
-					This.setupTimeImageOverlay(timestr,pos.top,width);
+				var breaks_plugin = paella.plugins.breaksPlayerPlugin;
+				var i = 0;
+				if (breaks_plugin && breaks_plugin.breaks !== undefined) {
+					for (i = 0; i < breaks_plugin.breaks.length; i++) {
+						var e;
+						if (trimming.enabled) {
+							e = Math.min(breaks_plugin.breaks[i].e, trimming.end);
+						} else {
+							e = breaks_plugin.breaks[i].e;
+						}
+						if (time <= e &&
+							time >= breaks_plugin.breaks[i].s) {
+							break;
+						}
+					}
+				}
+				if (i != breaks_plugin.breaks.length) {
+					$("#divTimeImageOverlay").remove();
+					if ($("#divTimeOverlay").length == 0) {
+						This.setupTimeOnly(timestr, pos.top, width);
+					} else {
+						$("#divTimeOverlay")[0].innerHTML = timestr;
+					}
+				} else if ($("#divTimeImageOverlay").length == 0) {
+					$("#divTimeOverlay").remove();
+					This.setupTimeImageOverlay(timestr, pos.top, width);
+				}
 				else {
 					$("#divTimeOverlay")[0].innerHTML = timestr; //IF CREATED, UPDATE TIME AND IMAGE
 				}
