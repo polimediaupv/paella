@@ -548,7 +548,11 @@ Class ("paella.MessageBox", {
 		messageContainer.innerHTML = message;
 		modalContainer.appendChild(messageContainer);
 
-		$('body')[0].appendChild(modalContainer);
+		if (paella.player.isFullScreen()) {
+			paella.player.mainContainer.appendChild(modalContainer);
+		}else{
+			$('body')[0].appendChild(modalContainer);
+		}
 
 		this.currentMessageBox = modalContainer;
 		this.messageContainer = messageContainer;
