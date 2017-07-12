@@ -252,8 +252,21 @@ Class ("paella.captions.Caption", {
 				.then((trimming)=>{
 					this._index.search(txt).forEach(function(s){
 						var c = self.getCaptionById(s.ref);
-						if(trimming.enabled && (c.end<trimming.start || c.begin>trimming.end)){
+						var breaks_plugin = paella.plugins.breaksPlayerPlugin;
+						if (trimming.enabled && (c.end < trimming.start || c.begin > trimming.end)) {
 							return;
+						}
+						if (breaks_plugin && breaks_plugin.breaks !== undefined) {
+							for (var i = 0; i < breaks_plugin.breaks.length; i++) {
+								if (!trimming.enabled && (c.end <= breaks_plugin.breaks[i].e &&
+										c.begin >= breaks_plugin.breaks[i].s)) {
+									return;
+								}
+								if (trimming.enabled && (c.end <= Math.min(breaks_plugin.breaks[i].e, trimming.end) &&
+										c.begin >= breaks_plugin.breaks[i].s - trimming.start)) {
+									return;
+								}
+							}
 						}
 						results.push({time: c.begin, content: c.content, score: s.score});
 					});		
