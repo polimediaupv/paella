@@ -22,7 +22,9 @@ script:
   - gulp test:local
 
 after_script:
-  - ls -l `pwd`/build
+  - mkdir ~/deploy
+  - tar cvzf ~/deploy/paella.tgz -C `pwd`/build/ .
+  - ls -l ~/deploy
 
 #before_deploy:
 #  - sh ./.travis_scripts/prepate_deploy.sh 
