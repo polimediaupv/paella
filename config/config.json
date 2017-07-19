@@ -8,7 +8,7 @@
 		"videoZoom": {
 			"enabled":true,
 			"max":800,
-			"minWindowSize":400
+			"minWindowSize":500
 		},
 
 		"deprecated-methods":[{"name":"streaming","enabled":true},
