@@ -91,7 +91,7 @@
 			"es.upv.paella.visualAnnotationPlugin": {"enabled":true,"url":"https://media.upv.es/rest/video/"},
 			"es.upv.paella.pipModePlugin": { "enabled":true },
 			"es.upv.paella.ratePlugin": { "enabled":true },
-			"es.upv.paella.videoZoomPlugin": { "enabled":true },
+			"es.upv.paella.videoZoomPlugin": { "enabled":false },
 			"es.upv.paella.audioLanguage": { "enabled":true },
 			"es.upv.paella.videoZoomToolbarPlugin": { "enabled":true, "targetStreamIndex":0 },
 
