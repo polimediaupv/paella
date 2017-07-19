@@ -140,6 +140,10 @@
                     }
                 })
             });
+
+            paella.events.bind(paella.events.zoomAvailabilityChanged, (evt,target) => {
+                console.log("Zoom availability changed: " + target.available );
+            });
         }
 
         action(button) {
@@ -152,9 +156,6 @@
     }
 
     paella.plugins.videoZoomPlugin = new VideoZoomPlugin();
-})();
-
-(function() {
 
     class VideoZoomToolbarPlugin extends paella.ButtonPlugin {
         getAlignment() { return 'right'; }

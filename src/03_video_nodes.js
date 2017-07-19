@@ -96,6 +96,8 @@ Class ("paella.RelativeVideoSize", {
 	}
 });
 
+
+
 Class ("paella.VideoRect", paella.DomNode, {
 	_rect:null,
 
@@ -106,6 +108,28 @@ Class ("paella.VideoRect", paella.DomNode, {
 		this.parent(domType,id,zoomEnabled ? {width:this._zoom + '%',height:"100%",position:'absolute'} : { width:"100%" });
 
 		if (zoomEnabled) {
+			this._zoomAvailable = true;
+			function checkZoomAvailable() {
+				let minWindowSize = paella.player.config.player &&
+									paella.player.config.player.videoZoom &&
+									paella.player.config.player.videoZoom.minWindowSize;
+				let parentSize = {
+					width: $(this.domElement.parentElement).width(),
+					height: $(this.domElement.parentElement).height()
+				};
+
+				let available = parentSize.width>=minWindowSize || parentSize.height>=minWindowSize;
+				if (this._zoomAvailable!=available) {
+					this._zoomAvailable = available;
+					paella.events.trigger(paella.events.zoomAvailabilityChanged, { available:available });
+				}
+			}
+			checkZoomAvailable.apply(this);
+
+			$(window).resize(() => {
+				checkZoomAvailable.apply(this);
+			});
+
 			this._zoom = 100;
 			this._mouseCenter = { x:0, y:0 };
 			this._mouseDown = { x:0, y:0 };
@@ -447,6 +471,13 @@ Class ("paella.VideoRect", paella.DomNode, {
 
 	supportsCaptureFrame: function() {
 		return Promise.resolve(false);
+	},
+
+	// zoomAvailable will only return true if the zoom is enabled, the
+	// video plugin supports zoom and the current video resolution is higher than
+	// the current video size
+	zoomAvailable: function() {
+		return this.allowZoom() && this._zoomAvailable;
 	}
 });
 

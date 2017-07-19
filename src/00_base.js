@@ -58,6 +58,7 @@ paella.events = {
 	resize:'paella:resize',		// params: { width:paellaPlayerContainer width, height:paellaPlayerContainer height }
 	videoZoomChanged:'paella:videoZoomChanged',
 	audioLanguageChanged:'paella:audiolanguagechanged',
+	zoomAvailabilityChanged:'paella:zoomavailabilitychanged',
 
 	qualityChanged:'paella:qualityChanged',
 	singleVideoReady:'paella:singleVideoReady',
