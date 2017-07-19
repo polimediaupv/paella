@@ -70,10 +70,25 @@
         setup() {
             var thisClass = this;
             this._thumbnails = [];
+            this._visible = false;
+            function checkVisibility() {
+                let buttons = $('.videoZoomButton');
+                let thumbs = $('.videoZoom');
+                if (this._visible) {
+                    buttons.show();    
+                    thumbs.show();
+                }
+                else {
+                    buttons.hide();
+                    thumbs.hide();
+                }
+            }
+
             paella.player.videoContainer.videoPlayers()
                 .then((players) => {
                     players.forEach((player,index) => {
                         if (player.allowZoom()) {
+                            this._visible = player.zoomAvailable();
                             setupButtons.apply(this,[player]);
                             player.supportsCaptureFrame().then((supports) => {
                                 if (supports) {
@@ -91,6 +106,7 @@
                                         zoomRect:zoomRect,
                                         canvas:thumb
                                     });
+                                    checkVisibility.apply(this);
                                 }
                             })
                         }
@@ -140,6 +156,11 @@
                     }
                 })
             });
+
+            paella.events.bind(paella.events.zoomAvailabilityChanged, (evt,target) => {
+                this._visible = target.available;
+                checkVisibility.apply(this);
+            });
         }
 
         action(button) {
@@ -152,15 +173,14 @@
     }
 
     paella.plugins.videoZoomPlugin = new VideoZoomPlugin();
-})();
-
-(function() {
 
     class VideoZoomToolbarPlugin extends paella.ButtonPlugin {
         getAlignment() { return 'right'; }
         getSubclass() { return "videoZoomToolbar"; }
         getIndex() { return 2030; }
-        getMinWindowSize() { return 600; }
+        getMinWindowSize() { return (paella.player.config.player &&
+                                    paella.player.config.player.videoZoom &&
+                                    paella.player.config.player.videoZoom.minWindowSize) || 600; }
         getName() { return "es.upv.paella.videoZoomToolbarPlugin"; }
         getDefaultToolTip() { return base.dictionary.translate("Change theme"); }
         getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
