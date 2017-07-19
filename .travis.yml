@@ -22,11 +22,19 @@ script:
   - gulp test:local
 
 after_script:
-  - mkdir ~/deploy
-  - tar cvzf ~/deploy/paella.tgz -C `pwd`/build/ .
-  - ls -l ~/deploy
+  - sh ./.travis_scripts/prepate_deploy.sh 
 
 #before_deploy:
 #  - sh ./.travis_scripts/prepate_deploy.sh 
 
 
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: UI6zIHGkhy7p/OtViLbi1yxuyYPteAoRGFO7D8xhc8N6YAkzxYFmlTHdUQgFj4Hgh+5gO6/jW9kpTkbkbATSIVLOLcuLyJEq6jDuorM2q8D2VInpc5ZpNddFjiQdKaIkZL8CeBnncKvmxCBZeHgE4MQPOGHtCQ900viROEVY0ak=
+  file:
+    - ${HOME}/deploy/paella-prebuilt-${TRAVIS_TAG}.tgz
+  on:
+    repo: polimediaupv/paella
+    tags: true
