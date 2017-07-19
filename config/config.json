@@ -89,7 +89,6 @@
 			"es.upv.paella.themeChooserPlugin":  {"enabled":true},
 			"es.upv.paella.viewModePlugin": { "enabled": true },
 			"es.upv.paella.volumeRangePlugin":{"enabled":true, "showMasterVolume": true, "showSlaveVolume": false },
-			"es.upv.paella.visualAnnotationPlugin": {"enabled":true,"url":"https://media.upv.es/rest/video/"},
 			"es.upv.paella.pipModePlugin": { "enabled":true },
 			"es.upv.paella.ratePlugin": { "enabled":true },
 			"es.upv.paella.videoZoomPlugin": { "enabled":true },
@@ -115,7 +114,6 @@
 			"es.upv.paella.test.tabBarExamplePlugin": {"enabled": false},
 			
 			"//****": "Event Driven Plugins",
-			"es.upv.paella.annotationsPlayerPlugin": {"enabled":false},
 			"es.upv.paella.blackBoardPlugin": {"enabled": true},
 			"es.upv.paella.breaksPlayerPlugin": {"enabled": true},
 			"es.upv.paella.overlayCaptionsPlugin": {"enabled": true},
@@ -136,14 +134,7 @@
 			
 			"//****": "User Tracking Saver Plugins",
 			"es.upv.paella.usertracking.elasticsearchSaverPlugin": { "enabled": false, "url": "http://my.elastic.server"},
-			"es.upv.paella.usertracking.GoogleAnalyticsSaverPlugIn": { "enabled": false, "trackingID": "UA-XXXXXXXX-Y" },
-			
-			"//****": "Editor Plugins",
-			"es.upv.paella.editor.snapShotsEditorPlugin": {"enabled":true},
-			"es.upv.paella.editor.toolStatusPlugin": {"enabled":true},
-			"es.upv.paella.editor.trackAnnotationsPlugin": {"enabled":true},
-			"es.upv.paella.editor.trackBreaksPlugin": {"enabled":true},
-			"es.upv.paella.editor.trimmingTrackPlugin": {"enabled":true}
+			"es.upv.paella.usertracking.GoogleAnalyticsSaverPlugIn": { "enabled": false, "trackingID": "UA-XXXXXXXX-Y" }			
 		}
 	},
     "standalone" : {
