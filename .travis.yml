@@ -21,11 +21,9 @@ script:
   - docker run -d --name paella-test-selenium --link paella-test-nginx:paella -p 4444:4444 selenium/standalone-chrome:3.3.0
   - gulp test:local
 
-after_script:
-  - sh ./.travis_scripts/prepate_deploy.sh 
 
-#before_deploy:
-#  - sh ./.travis_scripts/prepate_deploy.sh 
+before_deploy:
+  - sh ./.travis_scripts/prepate_deploy.sh 
 
 
 deploy:
