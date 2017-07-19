@@ -3,7 +3,9 @@ CHANGELOG
 
 * Paella 5.2.2
 
-  * Bug fixed in breaks plugin
+  * Bug fixed in breaks plugin.
+  * Now it's possible to configure the minimum window size to enable the video zoom.
+  * Deprecated plugins removed.
 
 * Paella 5.2.1
 
