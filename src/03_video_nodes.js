@@ -96,6 +96,8 @@ Class ("paella.RelativeVideoSize", {
 	}
 });
 
+
+
 Class ("paella.VideoRect", paella.DomNode, {
 	_rect:null,
 
@@ -106,6 +108,24 @@ Class ("paella.VideoRect", paella.DomNode, {
 		this.parent(domType,id,zoomEnabled ? {width:this._zoom + '%',height:"100%",position:'absolute'} : { width:"100%" });
 
 		if (zoomEnabled) {
+			this._zoomAvailable = true;
+			function checkZoomAvailable() {
+				let minWindowSize = paella.player.config.player &&
+									paella.player.config.player.videoZoom &&
+									paella.player.config.player.videoZoom.minWindowSize;
+
+				let available = $(window).width()>=minWindowSize;
+				if (this._zoomAvailable!=available) {
+					this._zoomAvailable = available;
+					paella.events.trigger(paella.events.zoomAvailabilityChanged, { available:available });
+				}
+			}
+			checkZoomAvailable.apply(this);
+
+			$(window).resize(() => {
+				checkZoomAvailable.apply(this);
+			});
+
 			this._zoom = 100;
 			this._mouseCenter = { x:0, y:0 };
 			this._mouseDown = { x:0, y:0 };
@@ -201,7 +221,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 
 				let touches = [];
 				$(this.domElement).on('touchstart', (evt) => {
-					if (!this.allowZoom()) return;
+					if (!this.allowZoom() || !this._zoomAvailable) return;
 					touches = [];
 					let videoOffset = $(this.domElement).offset();
 					for (let i=0; i<evt.originalEvent.targetTouches.length; ++i) {
@@ -215,7 +235,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 				});
 
 				$(this.domElement).on('touchmove', (evt) => {
-					if (!this.allowZoom()) return;
+					if (!this.allowZoom() || !this._zoomAvailable) return;
 					let curTouches = [];
 					let videoOffset = $(this.domElement).offset();
 					for (let i=0; i<evt.originalEvent.targetTouches.length; ++i) {
@@ -281,12 +301,12 @@ Class ("paella.VideoRect", paella.DomNode, {
 				});
 
 				$(this.domElement).on('touchend', (evt) => {
-					if (!this.allowZoom()) return;
+					if (!this.allowZoom() || !this._zoomAvailable) return;
 					if (touches.length>1) evt.preventDefault();
 				});
 
 				this.zoomIn = () => {
-					if (this._zoom>=this._maxZoom) return;
+					if (this._zoom>=this._maxZoom || !this._zoomAvailable) return;
 					if (!this._mouseCenter) {
 						this._mouseCenter = {
 							x: $(this.domElement).width() / 2,
@@ -328,7 +348,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 				}
 
 				this.zoomOut = () => {
-					if (this._zoom<=100) return;
+					if (this._zoom<=100 || !this._zoomAvailable) return;
 					if (!this._mouseCenter) {
 						this._mouseCenter = {
 							x: $(this.domElement).width() / 2,
@@ -370,7 +390,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 				}
 
 				$(this.domElement).on('mousewheel wheel',(evt) => {
-					if (!this.allowZoom()) return;
+					if (!this.allowZoom() || !this._zoomAvailable) return;
 					let mouse = mousePos(evt);
 					let wheel = wheelDelta(evt);
 					if (this._zoom>=this._maxZoom && wheel>0) return;
@@ -414,7 +434,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 				});
 
 				$(this.domElement).on('mousemove',(evt) => {
-					if (!this.allowZoom()) return;
+					if (!this.allowZoom() || !this._zoomAvailable) return;
 					this.drag = evt.buttons>0;
 					if (this.drag) {
 						paella.player.videoContainer.disablePlayOnClick();
@@ -429,7 +449,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 				});
 
 				$(this.domElement).on('mouseup',(evt) => {
-					if (!this.allowZoom()) return;
+					if (!this.allowZoom() || !this._zoomAvailable) return;
 					this.drag = false;
 					setTimeout(() => paella.player.videoContainer.enablePlayOnClick(), 10);
 				});
@@ -447,6 +467,13 @@ Class ("paella.VideoRect", paella.DomNode, {
 
 	supportsCaptureFrame: function() {
 		return Promise.resolve(false);
+	},
+
+	// zoomAvailable will only return true if the zoom is enabled, the
+	// video plugin supports zoom and the current video resolution is higher than
+	// the current video size
+	zoomAvailable: function() {
+		return this.allowZoom() && this._zoomAvailable;
 	}
 });
 

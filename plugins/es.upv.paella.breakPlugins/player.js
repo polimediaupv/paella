@@ -52,15 +52,17 @@ Class ("paella.plugins.BreaksPlayerPlugin",paella.EventDrivenPlugin,{
 			}
 		}
 	},
+	
 	areBreaksClickable:function() {
             //Returns true if the config value is set and if we are not on the editor.
 	    return this.config.neverShow && !(paella.editor.instance && paella.editor.instance.isLoaded);
 	},
+
 	showBreaks:function(br) {
 		if (!this.visibleBreaks[br.s]) {
 			var rect = {left:100,top:350,width:1080,height:40};
-			let content = br.content || paella.dictionary.translate("Break")
-			br.elem = paella.player.videoContainer.overlayContainer.addText(content,rect);
+			let name = br.name || paella.dictionary.translate("Break")
+			br.elem = paella.player.videoContainer.overlayContainer.addText(name,rect);
 			br.elem.className = 'textBreak';
 			this.visibleBreaks[br.s] = br;
 		}

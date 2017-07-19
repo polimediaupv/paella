@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+* Paella 5.2.2
+
+  * Bug fixed in breaks plugin.
+  * Now it's possible to configure the minimum window size to enable the video zoom.
+  * Deprecated plugins removed.
+
 * Paella 5.2.1
 
   * Now it's possible to specify the video, preview and title using URL parameters.
