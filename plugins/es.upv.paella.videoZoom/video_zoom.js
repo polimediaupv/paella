@@ -196,6 +196,12 @@
         }
         
         buildContent(domElement) {
+            paella.events.bind(paella.events.videoZoomChanged, (evt,target) => {
+                this.setText(target.video.zoom + "%");
+            });
+
+            this.setText("100%");
+
             function getZoomButton(className,onClick) {
                 let btn = document.createElement('div');
                 btn.className = `videoZoomToolbarItem ${ className }`;

@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.2.3
+
+  * Now the video zoom button in toolbar shows the current zoom level.
+
 * Paella 5.2.2
 
   * Bug fixed in breaks plugin.
