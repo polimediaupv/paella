@@ -64,8 +64,8 @@ gulp.task("webserver", function() {
 
 gulp.task("compile", function() {
 	return gulp.src(["src/*.js","plugins/*/*.js"])
-		.pipe(traceur())
 		.pipe(concat("paella_player.js"))
+		.pipe(traceur())
 		.pipe(replace(/@version@/,getVersion()))
 		.pipe(uglify())
 		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
