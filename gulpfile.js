@@ -58,13 +58,16 @@ function getFiles(dir,fileExt,filelist) {
 	let fs = require('fs'),
 	files = fs.readdirSync(dir);
 	filelist = filelist || [];
+	if (!Array.isArray(fileExt)) {
+		fileExt = [fileExt];
+	}
 	files.forEach(function(file) {
 		let ext = file.split('.').pop();
 		if (fs.statSync(dir + '/' + file).isDirectory()) {
-			filelist = getFiles(dir + file + '/', filelist);
+			filelist = getFiles(dir + file + '/', fileExt, filelist);
 		}
 		else if (fileExt.indexOf(ext)!=-1) {
-			filelist.push(file);
+			filelist.push(dir + file);
 		}
 	});
 	return filelist;
