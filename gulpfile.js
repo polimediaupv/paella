@@ -54,6 +54,22 @@ function getVersion() {
 	}
 }
 
+function getFiles(dir,fileExt,filelist) {
+	let fs = require('fs'),
+	files = fs.readdirSync(dir);
+	filelist = filelist || [];
+	files.forEach(function(file) {
+		let ext = file.split('.').pop();
+		if (fs.statSync(dir + '/' + file).isDirectory()) {
+			filelist = getFiles(dir + file + '/', filelist);
+		}
+		else if (fileExt.indexOf(ext)!=-1) {
+			filelist.push(file);
+		}
+	});
+	return filelist;
+}
+
 gulp.task("webserver", function() {
 	connect.server({
 		name: 'Paella Player',
@@ -63,7 +79,9 @@ gulp.task("webserver", function() {
 });
 
 gulp.task("compile", function() {
-	return gulp.src(["src/*.js","plugins/*/*.js"])
+	let files = getFiles("src/","js");
+	files = getFiles("plugins/","js",files);
+	return gulp.src(files)
 		.pipe(concat("paella_player.js"))
 		.pipe(traceur())
 		.pipe(replace(/@version@/,getVersion()))
@@ -72,7 +90,9 @@ gulp.task("compile", function() {
 });
 
 gulp.task("compileDebug", function() {
-	return gulp.src(["src/*.js","plugins/*/*.js"])
+	let files = getFiles("src/","js");
+	files = getFiles("plugins/","js",files);
+	return gulp.src(files)
 		.pipe(traceur())
 		.pipe(concat("paella_player.js"))
 		.pipe(replace(/\@version\@/,getVersion()))
