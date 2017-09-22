@@ -197,7 +197,7 @@
         
         buildContent(domElement) {
             paella.events.bind(paella.events.videoZoomChanged, (evt,target) => {
-                this.setText(target.video.zoom + "%");
+                this.setText(Math.round(target.video.zoom) + "%");
             });
 
             this.setText("100%");
