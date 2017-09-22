@@ -174,6 +174,14 @@ Class ("paella.VideoRect", paella.DomNode, {
 			}
 
 			if (zoomEnabled) {
+				let eventCapture = document.createElement('div');
+				setTimeout(() => this.domElement.parentElement.appendChild(eventCapture), 10);
+
+				eventCapture.style.position = "absolute";
+				eventCapture.style.top = "0px";
+				eventCapture.style.left = "0px";
+				eventCapture.style.right = "0px";
+				eventCapture.style.bottom = "0px";
 				function panImage(o) {
 					let center = {
 						x: this._mouseCenter.x - o.x * 1.1,
@@ -220,7 +228,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 				}
 
 				let touches = [];
-				$(this.domElement).on('touchstart', (evt) => {
+				$(eventCapture).on('touchstart', (evt) => {
 					if (!this.allowZoom() || !this._zoomAvailable) return;
 					touches = [];
 					let videoOffset = $(this.domElement).offset();
@@ -234,7 +242,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 					if (touches.length>1) evt.preventDefault();
 				});
 
-				$(this.domElement).on('touchmove', (evt) => {
+				$(eventCapture).on('touchmove', (evt) => {
 					if (!this.allowZoom() || !this._zoomAvailable) return;
 					let curTouches = [];
 					let videoOffset = $(this.domElement).offset();
@@ -300,7 +308,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 					}
 				});
 
-				$(this.domElement).on('touchend', (evt) => {
+				$(eventCapture).on('touchend', (evt) => {
 					if (!this.allowZoom() || !this._zoomAvailable) return;
 					if (touches.length>1) evt.preventDefault();
 				});
@@ -389,7 +397,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 					paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
 				}
 
-				$(this.domElement).on('mousewheel wheel',(evt) => {
+				$(eventCapture).on('mousewheel wheel',(evt) => {
 					if (!this.allowZoom() || !this._zoomAvailable) return;
 					let mouse = mousePos(evt);
 					let wheel = wheelDelta(evt);
@@ -429,13 +437,14 @@ Class ("paella.VideoRect", paella.DomNode, {
 					this._mouseCenter = mouse;
 				});
 
-				$(this.domElement).on('mousedown',(evt) => {
+				$(eventCapture).on('mousedown',(evt) => {
 					this._mouseDown = mousePos(evt);
+					this.drag = true;
 				});
 
-				$(this.domElement).on('mousemove',(evt) => {
+				$(eventCapture).on('mousemove',(evt) => {
 					if (!this.allowZoom() || !this._zoomAvailable) return;
-					this.drag = evt.buttons>0;
+					//this.drag = evt.buttons>0;
 					if (this.drag) {
 						paella.player.videoContainer.disablePlayOnClick();
 
@@ -448,10 +457,14 @@ Class ("paella.VideoRect", paella.DomNode, {
 					}
 				});
 
-				$(this.domElement).on('mouseup',(evt) => {
+				$(eventCapture).on('mouseup',(evt) => {
 					if (!this.allowZoom() || !this._zoomAvailable) return;
 					this.drag = false;
 					setTimeout(() => paella.player.videoContainer.enablePlayOnClick(), 10);
+				});
+
+				$(eventCapture).on('mouseleave',(evt) => {
+					this.drag = false;
 				});
 			}
 		}
