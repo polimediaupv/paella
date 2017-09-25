@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+* Paella 5.2.4
+
+  * Bug fixed in zoom plugin, in Safari 11 for macOS 10.13
+  * Autoplay settings updated to take account of the upcoming browser restrictions in Safari 11 and Chrome 64
+
 * Paella 5.2.3
 
   * Now the video zoom button in toolbar shows the current zoom level.
