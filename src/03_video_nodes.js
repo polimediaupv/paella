@@ -110,9 +110,9 @@ Class ("paella.VideoRect", paella.DomNode, {
 		if (zoomEnabled) {
 			this._zoomAvailable = true;
 			function checkZoomAvailable() {
-				let minWindowSize = paella.player.config.player &&
+				let minWindowSize = (paella.player.config.player &&
 									paella.player.config.player.videoZoom &&
-									paella.player.config.player.videoZoom.minWindowSize;
+									paella.player.config.player.videoZoom.minWindowSize) || 500;
 
 				let available = $(window).width()>=minWindowSize;
 				if (this._zoomAvailable!=available) {
