@@ -1296,6 +1296,7 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 		}
 		
 		setAutoplay(ap = true) {
+			if (!this.supportAutoplay()) return false;
 			this._autoplay = ap;
 			if (this.masterVideo()) {
 				this.masterVideo().setAutoplay(ap);
@@ -1306,12 +1307,27 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 			if (this._audioPlayers.lenght>0) {
 				this._audioPlayers.forEach((p) => { p.setAutoplay(ap); });
 			}
+			return true;
 		}
 
 		autoplay() {
-			return (base.parameters.get('autoplay')=='true' ||
-					this._streamProvider.isLiveStreaming) &&
-				!base.userAgent.browser.IsMobileVersion;
+			return 	this.supportAutoplay() &&
+					(base.parameters.get('autoplay')=='true' || this._streamProvider.isLiveStreaming) &&
+					!base.userAgent.browser.IsMobileVersion;
+		}
+
+		supportAutoplay() {
+			let result = false;
+			if (this.masterVideo()) {
+				result = this.masterVideo().setAutoplay(ap);
+			}
+			if (this.slaveVideo() && result) {
+				result = result && this.slaveVideo().setAutoplay(ap);
+			}
+			if (this._audioPlayers.lenght>0 && result) {
+				this._audioPlayers.forEach((p) => { result = result && p.setAutoplay(ap); });
+			}
+			return result;
 		}
 
 		numberOfStreams() {

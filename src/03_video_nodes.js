@@ -556,6 +556,10 @@ Class ("paella.VideoElementBase", paella.VideoRect,{
 		return paella_DeferredNotImplemented();
 	},
 
+	supportAutoplay:function() {
+		return false;
+	},
+
 	// Playback functions
 	getVideoData:function() {
 		return paella_DeferredNotImplemented();
