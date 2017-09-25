@@ -557,7 +557,7 @@ Class ("paella.VideoElementBase", paella.VideoRect,{
 	},
 
 	supportAutoplay:function() {
-		return false;
+		return true;
 	},
 
 	// Playback functions
@@ -968,6 +968,23 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
         });
 	},
 
+	supportAutoplay:function() {
+		let macOS10_13_safari = paella.utils.userAgent.system.MacOS &&
+								paella.utils.userAgent.system.Version.minor>=13 &&
+								paella.utils.userAgent.browser.Safari;
+		let iOS = paella.utils.userAgent.system.iOS;
+		// Autoplay does not work from Chrome version 64
+		let chrome_v64 =	paella.utils.userAgent.browser.Chrome &&
+							paella.utils.userAgent.browser.Version.major>=64;
+		if (macOS10_13_safari || iOS || chrome_v64)
+		{
+			return false;
+		}
+		else {
+			return true;
+		}
+	},
+
 	goFullScreen:function() {
 		return this._deferredAction(() => {
 			var elem = this.video;
@@ -1193,6 +1210,10 @@ Class ("paella.ImageVideo", paella.VideoElementBase,{
 		else {
 			return paella_DeferredRejected(new Error("Could not load video: invalid quality stream index"));
 		}
+	},
+
+	supportAutoplay:function() {
+		return true;
 	},
 
 	getQualities:function() {

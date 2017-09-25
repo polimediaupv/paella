@@ -1220,17 +1220,19 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 				}
 			});
 
-			var autoplay = this.autoplay();
-			masterVideo.setAutoplay(autoplay);
-			if (slaveVideo) slaveVideo.setAutoplay(autoplay);
-
+			
 			masterVideo.setVideoQualityStrategy(this._videoQualityStrategy);
 			if (slaveVideo) slaveVideo.setVideoQualityStrategy(this._videoQualityStrategy);
-
+			
 			addVideoWrapper.apply(this,['masterVideoWrapper',masterVideo]);
 			if (this._streamProvider.slaveVideos.length>0) {
 				addVideoWrapper.apply(this,['slaveVideoWrapper',slaveVideo]);
 			}
+
+			var autoplay = this.autoplay();
+			masterVideo.setAutoplay(autoplay);
+			if (slaveVideo) slaveVideo.setAutoplay(autoplay);
+
 			return masterVideo.load()
 				.then(() => {
 					if (this._streamProvider.slaveVideos.length>0) {
@@ -1319,13 +1321,13 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 		supportAutoplay() {
 			let result = false;
 			if (this.masterVideo()) {
-				result = this.masterVideo().setAutoplay(ap);
+				result = this.masterVideo().supportAutoplay();
 			}
 			if (this.slaveVideo() && result) {
-				result = result && this.slaveVideo().setAutoplay(ap);
+				result = result && this.slaveVideo().supportAutoplay();
 			}
 			if (this._audioPlayers.lenght>0 && result) {
-				this._audioPlayers.forEach((p) => { result = result && p.setAutoplay(ap); });
+				this._audioPlayers.forEach((p) => { result = result && p.supportAutoplay(); });
 			}
 			return result;
 		}

@@ -21,6 +21,8 @@
         setPlaybackRate(rate) { return Promise.reject(new Error("no such compatible video player")); }
         playbackRate() { return Promise.reject(new Error("no such compatible video player")); }
         unload() { return Promise.reject(new Error("no such compatible video player")); }
+        
+        supportAutoplay() { return false;}
     };
 
     paella.AudioElementBase = AudioElementBase;
