@@ -191,7 +191,9 @@
                     let pluginData = paella.player.config.plugins.list["es.upv.paella.videoZoomToolbarPlugin"];
                     let playerIndex = pluginData.targetStreamIndex;
                     this.targetPlayer = players.length>playerIndex ? players[playerIndex] : null;
-                    onSuccess(this.targetPlayer && this.targetPlayer.allowZoom());
+                    onSuccess(paella.player.config.player.videoZoom.enabled &&
+                              this.targetPlayer &&
+                              this.targetPlayer.allowZoom());
                 });
         }
         
