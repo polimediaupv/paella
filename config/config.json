@@ -31,10 +31,6 @@
 		"audioMethods":[
 			{ "factory":"MultiformatAudioFactory", "enabled":true }
 		],
-        "audio": {
-            "master": 1.0,
-            "slave": 0.0
-        },
         "rtmpSettings":{
             "bufferTime":5,
 			"requiresSubscription": false
@@ -43,9 +39,6 @@
 			"enabled":true,
 			"color":"gray"
 		}
-	},
-	"editor":{
-		"enabled":true
 	},
 	"defaultProfile":"slide_professor",
 	"data":{

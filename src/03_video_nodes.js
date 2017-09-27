@@ -107,12 +107,21 @@ Class ("paella.VideoRect", paella.DomNode, {
 
 		this.parent(domType,id,zoomEnabled ? {width:this._zoom + '%',height:"100%",position:'absolute'} : { width:"100%" });
 
+		let eventCapture = document.createElement('div');
+		setTimeout(() => this.domElement.parentElement.appendChild(eventCapture), 10);
+
+		eventCapture.style.position = "absolute";
+		eventCapture.style.top = "0px";
+		eventCapture.style.left = "0px";
+		eventCapture.style.right = "0px";
+		eventCapture.style.bottom = "0px";
+
 		if (zoomEnabled) {
 			this._zoomAvailable = true;
 			function checkZoomAvailable() {
-				let minWindowSize = paella.player.config.player &&
+				let minWindowSize = (paella.player.config.player &&
 									paella.player.config.player.videoZoom &&
-									paella.player.config.player.videoZoom.minWindowSize;
+									paella.player.config.player.videoZoom.minWindowSize) || 500;
 
 				let available = $(window).width()>=minWindowSize;
 				if (this._zoomAvailable!=available) {
@@ -173,287 +182,290 @@ Class ("paella.VideoRect", paella.DomNode, {
 				}
 			}
 
-			if (zoomEnabled) {
-				function panImage(o) {
-					let center = {
-						x: this._mouseCenter.x - o.x * 1.1,
-						y: this._mouseCenter.y - o.y * 1.1
-					};
-					let videoSize = {
-						w: $(this.domElement).width(),
-						h: $(this.domElement).height()
-					};
-					let maxOffset = this._zoom - 100;
-					let offset = {
-						x: (center.x * maxOffset / videoSize.w),
-						y: (center.y * maxOffset / videoSize.h)
-					};
-					
-					if (offset.x>maxOffset) {
-						offset.x = maxOffset;
-					}
-					else if (offset.x<0) {
-						offset.x = 0;
-					}
-					else {
-						this._mouseCenter.x = center.x;
-					}
-					if (offset.y>maxOffset) {
-						offset.y = maxOffset;
-					}
-					else if (offset.y<0) {
-						offset.y = 0;
-					}
-					else {
-						this._mouseCenter.y = center.y;
-					}
-					$(this.domElement).css({
-						left:"-" + offset.x + "%",
-						top: "-" + offset.y + "%"
-					});
-
-					this._zoomOffset = {
-						x: offset.x,
-						y: offset.y
-					};
-					paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
+			function panImage(o) {
+				let center = {
+					x: this._mouseCenter.x - o.x * 1.1,
+					y: this._mouseCenter.y - o.y * 1.1
+				};
+				let videoSize = {
+					w: $(this.domElement).width(),
+					h: $(this.domElement).height()
+				};
+				let maxOffset = this._zoom - 100;
+				let offset = {
+					x: (center.x * maxOffset / videoSize.w),
+					y: (center.y * maxOffset / videoSize.h)
+				};
+				
+				if (offset.x>maxOffset) {
+					offset.x = maxOffset;
 				}
-
-				let touches = [];
-				$(this.domElement).on('touchstart', (evt) => {
-					if (!this.allowZoom() || !this._zoomAvailable) return;
-					touches = [];
-					let videoOffset = $(this.domElement).offset();
-					for (let i=0; i<evt.originalEvent.targetTouches.length; ++i) {
-						let touch = evt.originalEvent.targetTouches[i];
-						touches.push({
-							x: touch.screenX - videoOffset.left,
-							y: touch.screenY - videoOffset.top
-						});
-					}
-					if (touches.length>1) evt.preventDefault();
-				});
-
-				$(this.domElement).on('touchmove', (evt) => {
-					if (!this.allowZoom() || !this._zoomAvailable) return;
-					let curTouches = [];
-					let videoOffset = $(this.domElement).offset();
-					for (let i=0; i<evt.originalEvent.targetTouches.length; ++i) {
-						let touch = evt.originalEvent.targetTouches[i];
-						curTouches.push({
-							x: touch.screenX - videoOffset.left,
-							y: touch.screenY - videoOffset.top
-						});
-					}
-					if (curTouches.length>1 && touches.length>1) {
-						let l0 = touchesLength(touches[0],touches[1]);
-						let l1 = touchesLength(curTouches[0],curTouches[1]);
-						let delta = l1 - l0;
-						let center = centerPoint(touches[0],touches[1]);
-						this._mouseCenter = center;
-						
-						this._zoom += delta;
-						this._zoom = this._zoom < 100 ? 100 : this._zoom;			
-						this._zoom = this._zoom > this._maxZoom ? this._maxZoom : this._zoom;
-						let newVideoSize = {
-							w: $(this.domElement).width(),
-							h: $(this.domElement).height()
-						};
-						let mouse = this._mouseCenter;
-						$(this.domElement).css({
-							width:this._zoom + '%',
-							height:this._zoom + '%'
-						});
-						
-						let maxOffset = this._zoom - 100;
-						let offset = {
-							x: (mouse.x * maxOffset / newVideoSize.w),
-							y: (mouse.y * maxOffset / newVideoSize.h)
-						};
-						
-						offset.x = offset.x<maxOffset ? offset.x : maxOffset;
-						offset.y = offset.y<maxOffset ? offset.y : maxOffset;
-						
-						$(this.domElement).css({
-							left:"-" + offset.x + "%",
-							top: "-" + offset.y + "%"
-						});
-
-						this._zoomOffset = {
-							x: offset.x,
-							y: offset.y
-						};
-						paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
-						touches = curTouches;
-						evt.preventDefault();
-					}
-					else if (curTouches.length>0) {
-						let desp = {
-							x: curTouches[0].x - touches[0].x,
-							y: curTouches[0].y - touches[0].y,
-						}
-
-						panImage.apply(this,[desp]);
-						touches = curTouches;
-
-						evt.preventDefault();
-					}
-				});
-
-				$(this.domElement).on('touchend', (evt) => {
-					if (!this.allowZoom() || !this._zoomAvailable) return;
-					if (touches.length>1) evt.preventDefault();
-				});
-
-				this.zoomIn = () => {
-					if (this._zoom>=this._maxZoom || !this._zoomAvailable) return;
-					if (!this._mouseCenter) {
-						this._mouseCenter = {
-							x: $(this.domElement).width() / 2,
-							y: $(this.domElement).height() / 2	
-						}
-					}
-					this._zoom += 25;
-					this._zoom = this._zoom < 100 ? 100 : this._zoom;			
-					this._zoom = this._zoom > this._maxZoom ? this._maxZoom : this._zoom;
-					let newVideoSize = {
-						w: $(this.domElement).width(),
-						h: $(this.domElement).height()
-					};
-					let mouse = this._mouseCenter;
-					$(this.domElement).css({
-						width:this._zoom + '%',
-						height:this._zoom + '%'
-					});
-					
-					let maxOffset = this._zoom - 100;
-					let offset = {
-						x: (mouse.x * maxOffset / newVideoSize.w),
-						y: (mouse.y * maxOffset / newVideoSize.h)
-					};
-					
-					offset.x = offset.x<maxOffset ? offset.x : maxOffset;
-					offset.y = offset.y<maxOffset ? offset.y : maxOffset;
-					
-					$(this.domElement).css({
-						left:"-" + offset.x + "%",
-						top: "-" + offset.y + "%"
-					});
-
-					this._zoomOffset = {
-						x: offset.x,
-						y: offset.y
-					};
-					paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
+				else if (offset.x<0) {
+					offset.x = 0;
 				}
-
-				this.zoomOut = () => {
-					if (this._zoom<=100 || !this._zoomAvailable) return;
-					if (!this._mouseCenter) {
-						this._mouseCenter = {
-							x: $(this.domElement).width() / 2,
-							y: $(this.domElement).height() / 2	
-						}
-					}
-					this._zoom -= 25;
-					this._zoom = this._zoom < 100 ? 100 : this._zoom;			
-					this._zoom = this._zoom > this._maxZoom ? this._maxZoom : this._zoom;
-					let newVideoSize = {
-						w: $(this.domElement).width(),
-						h: $(this.domElement).height()
-					};
-					let mouse = this._mouseCenter;
-					$(this.domElement).css({
-						width:this._zoom + '%',
-						height:this._zoom + '%'
-					});
-					
-					let maxOffset = this._zoom - 100;
-					let offset = {
-						x: (mouse.x * maxOffset / newVideoSize.w),
-						y: (mouse.y * maxOffset / newVideoSize.h)
-					};
-					
-					offset.x = offset.x<maxOffset ? offset.x : maxOffset;
-					offset.y = offset.y<maxOffset ? offset.y : maxOffset;
-					
-					$(this.domElement).css({
-						left:"-" + offset.x + "%",
-						top: "-" + offset.y + "%"
-					});
-
-					this._zoomOffset = {
-						x: offset.x,
-						y: offset.y
-					};
-					paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
+				else {
+					this._mouseCenter.x = center.x;
 				}
-
-				$(this.domElement).on('mousewheel wheel',(evt) => {
-					if (!this.allowZoom() || !this._zoomAvailable) return;
-					let mouse = mousePos(evt);
-					let wheel = wheelDelta(evt);
-					if (this._zoom>=this._maxZoom && wheel>0) return;
-					this._zoom += wheel;
-					this._zoom = this._zoom < 100 ? 100 : this._zoom;			
-					this._zoom = this._zoom > this._maxZoom ? this._maxZoom : this._zoom;
-					let newVideoSize = {
-						w: $(this.domElement).width(),
-						h: $(this.domElement).height()
-					};
-					$(this.domElement).css({
-						width:this._zoom + '%',
-						height:this._zoom + '%'
-					});
-					
-					let maxOffset = this._zoom - 100;
-					let offset = {
-						x: (mouse.x * maxOffset / newVideoSize.w),
-						y: (mouse.y * maxOffset / newVideoSize.h)
-					};
-					
-					offset.x = offset.x<maxOffset ? offset.x : maxOffset;
-					offset.y = offset.y<maxOffset ? offset.y : maxOffset;
-					
-					$(this.domElement).css({
-						left:"-" + offset.x + "%",
-						top: "-" + offset.y + "%"
-					});
-
-					this._zoomOffset = {
-						x: offset.x,
-						y: offset.y
-					};
-					paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
-
-					this._mouseCenter = mouse;
+				if (offset.y>maxOffset) {
+					offset.y = maxOffset;
+				}
+				else if (offset.y<0) {
+					offset.y = 0;
+				}
+				else {
+					this._mouseCenter.y = center.y;
+				}
+				$(this.domElement).css({
+					left:"-" + offset.x + "%",
+					top: "-" + offset.y + "%"
 				});
 
-				$(this.domElement).on('mousedown',(evt) => {
-					this._mouseDown = mousePos(evt);
-				});
-
-				$(this.domElement).on('mousemove',(evt) => {
-					if (!this.allowZoom() || !this._zoomAvailable) return;
-					this.drag = evt.buttons>0;
-					if (this.drag) {
-						paella.player.videoContainer.disablePlayOnClick();
-
-						let mouse = mousePos(evt);
-						panImage.apply(this,[{
-							x: mouse.x - this._mouseDown.x,
-							y: mouse.y - this._mouseDown.y
-						}]);
-						this._mouseDown = mouse;
-					}
-				});
-
-				$(this.domElement).on('mouseup',(evt) => {
-					if (!this.allowZoom() || !this._zoomAvailable) return;
-					this.drag = false;
-					setTimeout(() => paella.player.videoContainer.enablePlayOnClick(), 10);
-				});
+				this._zoomOffset = {
+					x: offset.x,
+					y: offset.y
+				};
+				paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
 			}
+
+			let touches = [];
+			$(eventCapture).on('touchstart', (evt) => {
+				if (!this.allowZoom() || !this._zoomAvailable) return;
+				touches = [];
+				let videoOffset = $(this.domElement).offset();
+				for (let i=0; i<evt.originalEvent.targetTouches.length; ++i) {
+					let touch = evt.originalEvent.targetTouches[i];
+					touches.push({
+						x: touch.screenX - videoOffset.left,
+						y: touch.screenY - videoOffset.top
+					});
+				}
+				if (touches.length>1) evt.preventDefault();
+			});
+
+			$(eventCapture).on('touchmove', (evt) => {
+				if (!this.allowZoom() || !this._zoomAvailable) return;
+				let curTouches = [];
+				let videoOffset = $(this.domElement).offset();
+				for (let i=0; i<evt.originalEvent.targetTouches.length; ++i) {
+					let touch = evt.originalEvent.targetTouches[i];
+					curTouches.push({
+						x: touch.screenX - videoOffset.left,
+						y: touch.screenY - videoOffset.top
+					});
+				}
+				if (curTouches.length>1 && touches.length>1) {
+					let l0 = touchesLength(touches[0],touches[1]);
+					let l1 = touchesLength(curTouches[0],curTouches[1]);
+					let delta = l1 - l0;
+					let center = centerPoint(touches[0],touches[1]);
+					this._mouseCenter = center;
+					
+					this._zoom += delta;
+					this._zoom = this._zoom < 100 ? 100 : this._zoom;			
+					this._zoom = this._zoom > this._maxZoom ? this._maxZoom : this._zoom;
+					let newVideoSize = {
+						w: $(this.domElement).width(),
+						h: $(this.domElement).height()
+					};
+					let mouse = this._mouseCenter;
+					$(this.domElement).css({
+						width:this._zoom + '%',
+						height:this._zoom + '%'
+					});
+					
+					let maxOffset = this._zoom - 100;
+					let offset = {
+						x: (mouse.x * maxOffset / newVideoSize.w),
+						y: (mouse.y * maxOffset / newVideoSize.h)
+					};
+					
+					offset.x = offset.x<maxOffset ? offset.x : maxOffset;
+					offset.y = offset.y<maxOffset ? offset.y : maxOffset;
+					
+					$(this.domElement).css({
+						left:"-" + offset.x + "%",
+						top: "-" + offset.y + "%"
+					});
+
+					this._zoomOffset = {
+						x: offset.x,
+						y: offset.y
+					};
+					paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
+					touches = curTouches;
+					evt.preventDefault();
+				}
+				else if (curTouches.length>0) {
+					let desp = {
+						x: curTouches[0].x - touches[0].x,
+						y: curTouches[0].y - touches[0].y,
+					}
+
+					panImage.apply(this,[desp]);
+					touches = curTouches;
+
+					evt.preventDefault();
+				}
+			});
+
+			$(eventCapture).on('touchend', (evt) => {
+				if (!this.allowZoom() || !this._zoomAvailable) return;
+				if (touches.length>1) evt.preventDefault();
+			});
+
+			this.zoomIn = () => {
+				if (this._zoom>=this._maxZoom || !this._zoomAvailable) return;
+				if (!this._mouseCenter) {
+					this._mouseCenter = {
+						x: $(this.domElement).width() / 2,
+						y: $(this.domElement).height() / 2	
+					}
+				}
+				this._zoom += 25;
+				this._zoom = this._zoom < 100 ? 100 : this._zoom;			
+				this._zoom = this._zoom > this._maxZoom ? this._maxZoom : this._zoom;
+				let newVideoSize = {
+					w: $(this.domElement).width(),
+					h: $(this.domElement).height()
+				};
+				let mouse = this._mouseCenter;
+				$(this.domElement).css({
+					width:this._zoom + '%',
+					height:this._zoom + '%'
+				});
+				
+				let maxOffset = this._zoom - 100;
+				let offset = {
+					x: (mouse.x * maxOffset / newVideoSize.w),
+					y: (mouse.y * maxOffset / newVideoSize.h)
+				};
+				
+				offset.x = offset.x<maxOffset ? offset.x : maxOffset;
+				offset.y = offset.y<maxOffset ? offset.y : maxOffset;
+				
+				$(this.domElement).css({
+					left:"-" + offset.x + "%",
+					top: "-" + offset.y + "%"
+				});
+
+				this._zoomOffset = {
+					x: offset.x,
+					y: offset.y
+				};
+				paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
+			}
+
+			this.zoomOut = () => {
+				if (this._zoom<=100 || !this._zoomAvailable) return;
+				if (!this._mouseCenter) {
+					this._mouseCenter = {
+						x: $(this.domElement).width() / 2,
+						y: $(this.domElement).height() / 2	
+					}
+				}
+				this._zoom -= 25;
+				this._zoom = this._zoom < 100 ? 100 : this._zoom;			
+				this._zoom = this._zoom > this._maxZoom ? this._maxZoom : this._zoom;
+				let newVideoSize = {
+					w: $(this.domElement).width(),
+					h: $(this.domElement).height()
+				};
+				let mouse = this._mouseCenter;
+				$(this.domElement).css({
+					width:this._zoom + '%',
+					height:this._zoom + '%'
+				});
+				
+				let maxOffset = this._zoom - 100;
+				let offset = {
+					x: (mouse.x * maxOffset / newVideoSize.w),
+					y: (mouse.y * maxOffset / newVideoSize.h)
+				};
+				
+				offset.x = offset.x<maxOffset ? offset.x : maxOffset;
+				offset.y = offset.y<maxOffset ? offset.y : maxOffset;
+				
+				$(this.domElement).css({
+					left:"-" + offset.x + "%",
+					top: "-" + offset.y + "%"
+				});
+
+				this._zoomOffset = {
+					x: offset.x,
+					y: offset.y
+				};
+				paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
+			}
+
+			$(eventCapture).on('mousewheel wheel',(evt) => {
+				if (!this.allowZoom() || !this._zoomAvailable) return;
+				let mouse = mousePos(evt);
+				let wheel = wheelDelta(evt);
+				if (this._zoom>=this._maxZoom && wheel>0) return;
+				this._zoom += wheel;
+				this._zoom = this._zoom < 100 ? 100 : this._zoom;			
+				this._zoom = this._zoom > this._maxZoom ? this._maxZoom : this._zoom;
+				let newVideoSize = {
+					w: $(this.domElement).width(),
+					h: $(this.domElement).height()
+				};
+				$(this.domElement).css({
+					width:this._zoom + '%',
+					height:this._zoom + '%'
+				});
+				
+				let maxOffset = this._zoom - 100;
+				let offset = {
+					x: (mouse.x * maxOffset / newVideoSize.w),
+					y: (mouse.y * maxOffset / newVideoSize.h)
+				};
+				
+				offset.x = offset.x<maxOffset ? offset.x : maxOffset;
+				offset.y = offset.y<maxOffset ? offset.y : maxOffset;
+				
+				$(this.domElement).css({
+					left:"-" + offset.x + "%",
+					top: "-" + offset.y + "%"
+				});
+
+				this._zoomOffset = {
+					x: offset.x,
+					y: offset.y
+				};
+				paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
+
+				this._mouseCenter = mouse;
+			});
+
+			$(eventCapture).on('mousedown',(evt) => {
+				this._mouseDown = mousePos(evt);
+				this.drag = true;
+			});
+
+			$(eventCapture).on('mousemove',(evt) => {
+				if (!this.allowZoom() || !this._zoomAvailable) return;
+				//this.drag = evt.buttons>0;
+				if (this.drag) {
+					paella.player.videoContainer.disablePlayOnClick();
+
+					let mouse = mousePos(evt);
+					panImage.apply(this,[{
+						x: mouse.x - this._mouseDown.x,
+						y: mouse.y - this._mouseDown.y
+					}]);
+					this._mouseDown = mouse;
+				}
+			});
+
+			$(eventCapture).on('mouseup',(evt) => {
+				if (!this.allowZoom() || !this._zoomAvailable) return;
+				this.drag = false;
+				setTimeout(() => paella.player.videoContainer.enablePlayOnClick(), 10);
+			});
+
+			$(eventCapture).on('mouseleave',(evt) => {
+				this.drag = false;
+			});
 		}
 	},
 
@@ -541,6 +553,10 @@ Class ("paella.VideoElementBase", paella.VideoRect,{
 
 	load:function() {
 		return paella_DeferredNotImplemented();
+	},
+
+	supportAutoplay:function() {
+		return true;
 	},
 
 	// Playback functions
@@ -951,6 +967,23 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
         });
 	},
 
+	supportAutoplay:function() {
+		let macOS10_13_safari = paella.utils.userAgent.system.MacOS &&
+								paella.utils.userAgent.system.Version.minor>=13 &&
+								paella.utils.userAgent.browser.Safari;
+		let iOS = paella.utils.userAgent.system.iOS;
+		// Autoplay does not work from Chrome version 64
+		let chrome_v64 =	paella.utils.userAgent.browser.Chrome &&
+							paella.utils.userAgent.browser.Version.major>=64;
+		if (macOS10_13_safari || iOS || chrome_v64)
+		{
+			return false;
+		}
+		else {
+			return true;
+		}
+	},
+
 	goFullScreen:function() {
 		return this._deferredAction(() => {
 			var elem = this.video;
@@ -1176,6 +1209,10 @@ Class ("paella.ImageVideo", paella.VideoElementBase,{
 		else {
 			return paella_DeferredRejected(new Error("Could not load video: invalid quality stream index"));
 		}
+	},
+
+	supportAutoplay:function() {
+		return true;
 	},
 
 	getQualities:function() {

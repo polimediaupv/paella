@@ -76,6 +76,10 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 			});
 		}
 	},
+
+	supportAutoplay:function() {
+		return true;
+	},
 	
 	getQualities:function() {
 		if (base.userAgent.system.iOS) {

@@ -69,6 +69,10 @@ Class ("paella.MpegDashVideo", paella.Html5Video,{
 		});
 	},
 
+	supportAutoplay:function() {
+		return true;
+	},
+
 	getQualities:function() {
 		return new Promise((resolve) => {
 			this._deferredAction(() => {
