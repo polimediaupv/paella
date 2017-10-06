@@ -192,6 +192,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	},
 
 	onLoadConfig:function(configData) {
+		paella.pluginManager.registerPlugins();
 		paella.data = new paella.Data(configData);
 
 		this.config = configData;
