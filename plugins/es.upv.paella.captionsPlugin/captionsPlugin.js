@@ -357,8 +357,21 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
     	obj.forEach(function(l){
 			paella.player.videoContainer.trimming()
 				.then((trimming)=>{
-					if(trimming.enabled && (l.end<trimming.start || l.begin>trimming.end)){
+					var breaks_plugin = paella.plugins.breaksPlayerPlugin;
+					if (trimming.enabled && (l.end < trimming.start || l.begin > trimming.end)) {
 						return;
+					}
+					if (breaks_plugin && breaks_plugin.breaks !== undefined) {
+						for (var i = 0; i < breaks_plugin.breaks.length; i++) {
+							if (!trimming.enabled && (l.end <= breaks_plugin.breaks[i].e &&
+									l.begin >= breaks_plugin.breaks[i].s)) {
+								return;
+							}
+							if (trimming.enabled && (l.end <= Math.min(breaks_plugin.breaks[i].e, trimming.end) &&
+									l.begin >= breaks_plugin.breaks[i].s - trimming.start)) {
+								return;
+							}
+						}
 					}
 					thisClass._inner = document.createElement('div');
 					thisClass._inner.className = 'bodyInnerContainer';
