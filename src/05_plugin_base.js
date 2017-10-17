@@ -163,7 +163,12 @@
 		registerPlugins: function() {
 			g_pluginCallbackList.forEach((pluginCallback) => {
 				let PluginClass = pluginCallback();
-				paella.pluginManager.registerPlugin(new PluginClass());
+				let pluginInstance = new PluginClass();
+				if (pluginInstance.getInstanceName()) {
+					paella.plugins = paella.plugins || {};
+					paella.plugins[pluginInstance.getInstanceName()] = pluginInstance;
+				}
+				paella.pluginManager.registerPlugin(pluginInstance);
 			});
 		}
 	});
@@ -198,6 +203,8 @@
 				target.addPlugin(this);
 			}
 		},
+
+		getInstanceName:function() { return null; },
 	
 		getRootNode:function(id) {
 			return null;

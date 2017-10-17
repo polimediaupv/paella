@@ -26,17 +26,22 @@ paella.addPlugin(function() {
 
 paella.addPlugin(function() {
 	return class FrameControlPlugin extends paella.ButtonPlugin {
-		get frames() { this._frames; }
+		get frames() { return this._frames; }
 		set frames(v) { this._frames = v; }
-		get highResFrames() { this._highResFrames; }
+		get highResFrames() { return this._highResFrames; }
 		set highResFrames(v) { this._highResFrames = v; }
-		get currentFrame() { this._currentFrame; }
+		get currentFrame() { return this._currentFrame; }
 		set currentFrame(v) { this._currentFrame = v; }
-		get navButtons() { this._navButtons; }
+		get navButtons() { return this._navButtons; }
 		set navButtons(v) { this._navButtons = v; }
-		get buttons() {  this._buttons; }
-		set buttons(v) {  this._buttons = v; }
-		get contx() { this._contx; }
+		get buttons() {
+			if (!this._buttons) {
+				this._buttons = [];
+			}
+			return this._buttons;
+		}
+		set buttons(v) { this._buttons = v; }
+		get contx() { return this._contx; }
 		set contx(v) { this._contx = v; }
 		
 		getAlignment() { return 'right'; }

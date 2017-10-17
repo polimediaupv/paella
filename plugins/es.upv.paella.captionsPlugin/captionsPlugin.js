@@ -1,5 +1,6 @@
 paella.addPlugin(function() {
 	return class CaptionsPlugin extends paella.ButtonPlugin {
+		getInstanceName() { return "captionsPlugin"; }	// plugin instance will be available in paella.plugins.captionsPlugin
 		getAlignment() { return 'right'; }
 		getSubclass() { return 'captionsPluginButton'; }
 		getName() { return "es.upv.paella.captionsPlugin"; }
