@@ -1,33 +1,21 @@
-Class ("paella.LiveStreamIndicator",paella.VideoOverlayButtonPlugin,{
-    isEditorVisible:function() {
-        return paella.editor.instance!=null;
-    },
-    getIndex:function() {return 10;},
 
-    getSubclass:function() {
-        return "liveIndicator";
-    },
+paella.addPlugin(function() {
+    return class LiveStreamIndicator extends paella.VideoOverlayButtonPlugin {
+        isEditorVisible() { return paella.editor.instance!=null; }
+        getIndex() {return 10;}
+        getSubclass() { return "liveIndicator"; }
+        getAlignment() { return 'right'; }
+        getDefaultToolTip() { return base.dictionary.translate("This video is a live stream"); }
+        getName() { return "es.upv.paella.liveStreamingIndicatorPlugin"; }
 
-    getAlignment:function() {
-        return 'right';
-    },
-    getDefaultToolTip:function() { return base.dictionary.translate("This video is a live stream"); },
+        checkEnabled(onSuccess) {
+            onSuccess(paella.player.isLiveStream());
+        }
 
-    checkEnabled:function(onSuccess) {
-        onSuccess(paella.player.isLiveStream());
-    },
+        setup() {}
 
-    setup:function() {
-        var thisClass = this;
-    },
-
-    action:function(button) {
-        paella.messageBox.showMessage(base.dictionary.translate("Live streaming mode: This is a live video, so, some capabilities of the player are disabled"));
-    },
-
-    getName:function() {
-        return "es.upv.paella.liveStreamingIndicatorPlugin";
+        action(button) {
+            paella.messageBox.showMessage(base.dictionary.translate("Live streaming mode: This is a live video, so, some capabilities of the player are disabled"));
+        }
     }
 });
-
-paella.plugins.liveStreamIndicator = new paella.LiveStreamIndicator();
