@@ -133,6 +133,14 @@
 	},
     "standalone" : {
         "repository": "../repository/"
-    }
+	},
+	"skin": {
+		"available": [
+			"dark",
+			"dark_small",
+			"light",
+			"light_small"
+		]
+	}
 }
 
