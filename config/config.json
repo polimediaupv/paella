@@ -87,6 +87,7 @@
 			"es.upv.paella.videoZoomPlugin": { "enabled":true },
 			"es.upv.paella.audioLanguage": { "enabled":true },
 			"es.upv.paella.videoZoomToolbarPlugin": { "enabled":true, "targetStreamIndex":0 },
+			"es.upv.paella.airPlayPlugin": { "enabled":true },
 
 			"//****": "Video Overlay Button Plugins",
 			"es.upv.paella.liveStreamingIndicatorPlugin":  { "enabled": true },
@@ -132,6 +133,14 @@
 	},
     "standalone" : {
         "repository": "../repository/"
-    }
+	},
+	"skin": {
+		"available": [
+			"dark",
+			"dark_small",
+			"light",
+			"light_small"
+		]
+	}
 }
 

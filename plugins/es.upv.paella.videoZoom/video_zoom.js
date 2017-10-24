@@ -1,4 +1,4 @@
-(function() {
+paella.addPlugin(function() {
     let g_canvasWidth = 320;
     let g_canvasHeight = 180;
 
@@ -57,7 +57,7 @@
         });
     }
 
-    class VideoZoomPlugin extends paella.VideoOverlayButtonPlugin {
+    return class VideoZoomPlugin extends paella.VideoOverlayButtonPlugin {
         getIndex() {return 10; }
         getSubclass() { return "videoZoom"; }
         getAlignment() { return 'right'; }
@@ -171,10 +171,11 @@
             return "es.upv.paella.videoZoomPlugin";
         }
     }
+});
 
-    paella.plugins.videoZoomPlugin = new VideoZoomPlugin();
-
-    class VideoZoomToolbarPlugin extends paella.ButtonPlugin {
+paella.addPlugin(function() {
+    
+    return class VideoZoomToolbarPlugin extends paella.ButtonPlugin {
         getAlignment() { return 'right'; }
         getSubclass() { return "videoZoomToolbar"; }
         getIndex() { return 2030; }
@@ -219,9 +220,4 @@
             }));
         }
     }
-
-
-    paella.plugins.videoZoomToolbarPlugin = new VideoZoomToolbarPlugin();
-
-
-})();
+});
