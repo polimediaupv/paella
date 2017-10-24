@@ -165,10 +165,14 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 
 Class ("paella.videoFactories.HLSVideoFactory", {
 	isStreamCompatible:function(streamData) {
+		if (paella.videoFactories.HLSVideoFactory.s_instances===undefined) {
+			paella.videoFactories.HLSVideoFactory.s_instances = 0;
+		}
 		try {
-			if (paella.videoFactories.Html5VideoFactory.s_instances>0 && 
-				base.userAgent.system.iOS &&
-				(paella.utils.userAgent.system.Version.major<=10 && paella.utils.userAgent.system.Version.minor<3))
+			if (paella.videoFactories.HLSVideoFactory.s_instances>0 && 
+				base.userAgent.system.iOS)
+		//	In old iOS devices, playing more than one HLS stream may cause that the browser tab crash
+		//		&& (paella.utils.userAgent.system.Version.major<=10 && paella.utils.userAgent.system.Version.minor<3))
 			{
 				return false;
 			}
@@ -182,7 +186,7 @@ Class ("paella.videoFactories.HLSVideoFactory", {
 	},
 
 	getVideoObject:function(id, streamData, rect) {
-		++paella.videoFactories.Html5VideoFactory.s_instances;
+		++paella.videoFactories.HLSVideoFactory.s_instances;
 		return new paella.HLSPlayer(id, streamData, rect.x, rect.y, rect.w, rect.h);
 	}
 });
