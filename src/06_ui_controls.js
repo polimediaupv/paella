@@ -622,6 +622,7 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 	buttonPlugins:[],
 	
 	_hidden:false,
+	_over:false,
 
 	addPlugin:function(plugin) {
 		var thisClass = this;
@@ -654,6 +655,10 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 		$(document).mousemove(function(event) {
 			paella.player.controls.restartHideTimer();
 		});
+
+		$(this.domElement).bind("mousemove",function(event) { thisClass._over = true; });
+		$(this.domElement).bind("mouseout",function(event) { thisClass._over = false; });
+
 		paella.events.bind(paella.events.endVideo,function(event) { thisClass.onEndVideoEvent(); });
 		paella.events.bind('keydown',function(event) { thisClass.onKeyEvent(); });
 
@@ -767,7 +772,7 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 
 	autohideTimeout:function() {
 		var playbackBar = this.playbackControl().playbackBar();
-		if (playbackBar.isSeeking()) {
+		if (playbackBar.isSeeking() || this._over) {
 			paella.player.controls.restartHideTimer();
 		}
 		else {
