@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.3.5
+
+  * HLS streams limited to one simultaneous stream on iOS, to prevent memory problems on old iOS devices.
+
 * Paella 5.2.4
 
   * Bug fixed in zoom plugin, in Safari 11 for macOS 10.13
