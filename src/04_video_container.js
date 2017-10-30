@@ -1157,7 +1157,7 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 						let promises = [];
 						
 						players.forEach((player) => {
-							if (player.stream.language==lang) {
+							if (!audioSet && (player.stream.language==lang)) {
 								audioSet = true;
 								this._audioPlayer = player;
 							}
@@ -1583,3 +1583,4 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 	paella.VideoContainer = VideoContainer;
 
 })();
+
