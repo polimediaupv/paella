@@ -1306,7 +1306,7 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 			if (this.slaveVideo()) {
 				this.slaveVideo().setAutoplay(ap);
 			}
-			if (this._audioPlayers.lenght>0) {
+			if (this._audioPlayers.length>0) {
 				this._audioPlayers.forEach((p) => { p.setAutoplay(ap); });
 			}
 			return true;
@@ -1326,7 +1326,7 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 			if (this.slaveVideo() && result) {
 				result = result && this.slaveVideo().supportAutoplay();
 			}
-			if (this._audioPlayers.lenght>0 && result) {
+			if (this._audioPlayers.length>0 && result) {
 				this._audioPlayers.forEach((p) => { result = result && p.supportAutoplay(); });
 			}
 			return result;
