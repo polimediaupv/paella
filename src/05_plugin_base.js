@@ -22,7 +22,7 @@
 		pluginList: [],
 		eventDrivenPlugins: [],
 		enabledPlugins: [],
-	
+		doResize: true,
 	
 	//	checkPluginVisibility
 	
@@ -51,7 +51,7 @@
 			});
 			
 			var timer = new base.Timer(function() {
-				if (paella.player && paella.player.controls) paella.player.controls.onresize();
+				if (paella.player && paella.player.controls && This.doResize) paella.player.controls.onresize();
 			}, 1000);
 			timer.repeat = true;
 		},
