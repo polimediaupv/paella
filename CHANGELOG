@@ -1,7 +1,11 @@
 CHANGELOG
 =========
 
-* Paella 5.3.5
+* Paella 5.2.6
+
+  * HLS streams in Safari for macOS now uses the native hls player.
+  
+* Paella 5.2.5
 
   * HLS streams limited to one simultaneous stream on iOS, to prevent memory problems on old iOS devices.
 
