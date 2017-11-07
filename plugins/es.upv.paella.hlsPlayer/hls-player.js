@@ -23,7 +23,9 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 	},
 	
 	load:function() {
-		if (base.userAgent.system.iOS) {
+		if (base.userAgent.system.iOS ||
+			base.userAgent.browser.Safari)
+		{
 			return this.parent();
 		}
 		else {
@@ -82,7 +84,9 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 	},
 	
 	getQualities:function() {
-		if (base.userAgent.system.iOS) {
+		if (base.userAgent.system.iOS ||
+			base.userAgent.browser.Safari)
+		{
 			return new Promise((resolve,reject) => {
 				resolve([
 					{
@@ -127,7 +131,9 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 	},
 	
 	setQuality:function(index) {
-		if (base.userAgent.system.iOS) {
+		if (base.userAgent.system.iOS ||
+			base.userAgent.browser.Safari)
+		{
 			return Promise.resolve();
 		}
 		else {
@@ -149,7 +155,9 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 
 	
 	getCurrentQuality:function() {
-		if (base.userAgent.system.iOS) {
+		if (base.userAgent.system.iOS ||
+			base.userAgent.browser.Safari)
+		{
 			return Promise.resolve(0);
 		}
 		else {
