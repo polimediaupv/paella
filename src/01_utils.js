@@ -75,6 +75,16 @@ Class ("paella.MouseManager", {
 
 // paella.utils
 ///////////////////////////////////////////////////////
+(function initSkinDeps() {
+	var link = document.createElement('link');
+	link.rel = 'stylesheet';
+	link.href = paella.baseUrl + 'resources/bootstrap/css/bootstrap.min.css';
+	link.type = 'text/css';
+	link.media = 'screen';
+	link.charset = 'utf-8';
+	document.head.appendChild(link);
+})();
+
 paella.utils = {	
 	mouseManager: new paella.MouseManager(),
 	
@@ -87,15 +97,15 @@ paella.utils = {
 		},
 		
 		profiles: function() {
-			return paella.utils.folders.get("profiles") || "config/profiles";			
+			return paella.baseUrl + (paella.utils.folders.get("profiles") || "config/profiles");
 		},
 		
 		resources: function() {
-			return paella.utils.folders.get("resources") || "resources";			
+			return paella.baseUrl + (paella.utils.folders.get("resources") || "resources");
 		},
 		
 		skins: function() {
-			return paella.utils.folders.get("skins") || paella.utils.folders.get("resources") + "/style";			
+			return paella.baseUrl + (paella.utils.folders.get("skins") || paella.utils.folders.get("resources") + "/style");
 		}
 	},
 	
