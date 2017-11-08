@@ -177,8 +177,8 @@ Class ("paella.PlayerBase", {
 
 Class ("paella.InitDelegate", {
 	initParams:{
-		configUrl:'config/config.json',
-		dictionaryUrl:'localization/paella',
+		configUrl:paella.baseUrl + 'config/config.json',
+		dictionaryUrl:paella.baseUrl + 'localization/paella',
 		accessControl:null,
 		videoLoader:null
 	},
