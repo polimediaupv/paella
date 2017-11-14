@@ -459,6 +459,10 @@
 		getSubclass:function() {
 			return "myButtonPlugin";
 		},
+
+		getIconClass:function() {
+			return "icon-play";
+		},
 	
 		addSubclass:function($subclass) {
 			$(this.container).addClass($subclass);
@@ -587,7 +591,10 @@
 		plugin.container = elem;
 		plugin.ui = elem;
 		plugin.setToolTip(plugin.getDefaultToolTip());
-		
+
+		let icon = document.createElement('i');
+		icon.className = 'button-icon ' + plugin.getIconClass();
+		elem.appendChild(icon);
 			
 		function onAction(self) {
 			paella.userTracking.log("paella:button:action", self.plugin.getName());

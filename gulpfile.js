@@ -148,6 +148,9 @@ gulp.task("copy", function() {
 		gulp.src('resources/images/**')
 			.pipe(gulp.dest(`${config.outDir}player/resources/images`)),
 
+		gulp.src('resources/style/fonts/**')
+			.pipe(gulp.dest(`${config.outDir}player/resources/style/fonts`)),
+
 		gulp.src(['index.html','test.html'])
 			.pipe(gulp.dest(`${config.outDir}player/`)),
 
