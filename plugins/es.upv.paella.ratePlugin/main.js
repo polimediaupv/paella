@@ -4,6 +4,7 @@ paella.addPlugin(function() {
 		
 		getAlignment() { return 'right'; }
 		getSubclass() { return "rateButtonPlugin"; }
+		getIconClass() { return 'icon-star'; }
 		getIndex() { return 540; }
 		getMinWindowSize() { return 500; }
 		getName() { return "es.upv.paella.ratePlugin"; }

@@ -2,6 +2,7 @@ paella.addPlugin(function() {
 	return class SocialPlugin extends paella.ButtonPlugin {
 		getAlignment() { return 'right'; }
 		getSubclass() { return "showSocialPluginButton"; }
+		getIconClass() { return 'icon-social'; }
 		getIndex() { return 560; }
 		getMinWindowSize() { return 600; }
 		getName() { return "es.upv.paella.socialPlugin"; }

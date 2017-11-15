@@ -16,6 +16,7 @@ paella.addPlugin(function() {
 
 		getAlignment() { return 'right'; }
 		getSubclass() { return "extendedTabAdapterPlugin"; }
+		getIconClass() { return 'icon-folder'; }
 		getIndex() { return 2030; }
 		getMinWindowSize() { return 550; }
 		getName() { return "es.upv.paella.extendedTabAdapterPlugin"; }

@@ -2,6 +2,7 @@ paella.addPlugin(function() {
 	return class ThemeChooserPlugin extends paella.ButtonPlugin {
 		getAlignment() { return 'right'; }
 		getSubclass() { return "themeChooserPlugin"; }
+		getIconClass() { return 'icon-paintbrush'; }
 		getIndex() { return 2030; }
 		getMinWindowSize() { return 600; }
 		getName() { return "es.upv.paella.themeChooserPlugin"; }	

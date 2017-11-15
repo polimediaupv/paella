@@ -4,6 +4,7 @@ paella.addPlugin(function() {
 		
 		getAlignment() { return 'left'; }
 		getSubclass() { return "showPlaybackRateButton"; }
+		getIconClass() { return 'icon-screen'; }
 		getIndex() { return 140; }
 		getMinWindowSize() { return 500; }
 		getName() { return "es.upv.paella.playbackRatePlugin"; }
@@ -59,7 +60,7 @@ paella.addPlugin(function() {
 
 		onItemClick(button,label,rate) {
 			var self = this;
-				paella.player.videoContainer.setPlaybackRate(rate);
+			paella.player.videoContainer.setPlaybackRate(rate);
 			this.setText(label);
 			paella.player.controls.hidePopUp(this.getName());
 

@@ -15,6 +15,7 @@ paella.addPlugin(function() {
 
 		getAlignment() { return 'right'; }
 		getSubclass() { return "footPrints"; }
+		getIconClass() { return 'icon-stats'; }
 		getIndex() { return 590; }
 		getDefaultToolTip() { return base.dictionary.translate("Show statistics"); }
 		getName() { return "es.upv.paella.footprintsPlugin"; }

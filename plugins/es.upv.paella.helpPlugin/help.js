@@ -4,6 +4,7 @@ paella.addPlugin(function() {
 		getIndex() { return 509; }
 		getAlignment() { return 'right'; }
 		getSubclass() { return "helpButton"; }
+		getIconClass() { return 'icon-help'; }
 		getName() { return "es.upv.paella.helpPlugin"; }
 		getMinWindowSize() { return 650; }
 

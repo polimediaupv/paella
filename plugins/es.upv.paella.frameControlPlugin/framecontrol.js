@@ -46,6 +46,7 @@ paella.addPlugin(function() {
 		
 		getAlignment() { return 'right'; }
 		getSubclass() { return "frameControl"; }
+		getIconClass() { return 'icon-presentation-mode'; }
 		getIndex() { return 510; }
 		getMinWindowSize() { return 450; }
 		getName() { return "es.upv.paella.frameControlPlugin"; }

@@ -3,6 +3,7 @@ paella.addPlugin(function() {
 		getInstanceName() { return "captionsPlugin"; }	// plugin instance will be available in paella.plugins.captionsPlugin
 		getAlignment() { return 'right'; }
 		getSubclass() { return 'captionsPluginButton'; }
+		getIconClass() { return 'icon-captions'; }
 		getName() { return "es.upv.paella.captionsPlugin"; }
 		getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
 		getDefaultToolTip() { return base.dictionary.translate("Subtitles"); }

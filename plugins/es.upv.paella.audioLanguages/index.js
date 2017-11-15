@@ -2,6 +2,7 @@ paella.addPlugin(function() {
 	return class AudioLanguage extends paella.ButtonPlugin {
 		getAlignment() { return 'right'; }
 		getSubclass() { return "audioLanguages"; }
+		getIconClass() { return 'icon-headphone'; }
 		getIndex() { return 2040; }
 		getMinWindowSize() { return 400; }
 		getName() { return "es.upv.paella.audioLanguage"; }

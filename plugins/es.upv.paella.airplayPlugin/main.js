@@ -4,6 +4,7 @@ paella.addPlugin(function() {
 		getIndex() { return 552; }
 		getAlignment() { return 'right'; }
 		getSubclass() { return "AirPlayButton"; }
+		getIconClass() { return 'icon-airplay'; }
 		getName() { return "es.upv.paella.airPlayPlugin"; }
 		checkEnabled(onSuccess) {
 			this._visible = false;

@@ -178,6 +178,7 @@ paella.addPlugin(function() {
     return class VideoZoomToolbarPlugin extends paella.ButtonPlugin {
         getAlignment() { return 'right'; }
         getSubclass() { return "videoZoomToolbar"; }
+        getIconClass() { return 'icon-screen'; }
         getIndex() { return 2030; }
         getMinWindowSize() { return (paella.player.config.player &&
                                     paella.player.config.player.videoZoom &&

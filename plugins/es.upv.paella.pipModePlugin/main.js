@@ -3,6 +3,7 @@ paella.addPlugin(function() {
         getIndex() { return 551; }
         getAlignment() { return 'right'; }
         getSubclass() { return "PIPModeButton"; }
+        getIconClass() { return 'icon-pip'; }
         getName() { return "es.upv.paella.pipModePlugin"; }
         checkEnabled(onSuccess) {
             var mainVideo = paella.player.videoContainer.masterVideo();

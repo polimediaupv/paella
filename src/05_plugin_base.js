@@ -515,7 +515,10 @@
 		},
 		
 		setText:function(text) {
-			this.container.innerHTML = text;
+			this.container.innerHTML = '<span class="button-text">' + text + '</span>';
+			if (this._i) {
+				this.container.appendChild(this._i);
+			}
 		},
 	
 		hideButton:function() {
@@ -586,7 +589,7 @@
 		var elem = document.createElement('div');
 		elem.className = plugin.getClassName();
 		elem.id = id;
-		elem.innerHTML = plugin.getText();
+		elem.innerHTML = '<span class="button-text">' + plugin.getText() + '</span>';
 		elem.setAttribute("tabindex", 1000+plugin.getIndex());
 		elem.setAttribute("alt", "");
 		elem.setAttribute("role", "button");

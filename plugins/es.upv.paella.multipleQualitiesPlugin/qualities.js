@@ -4,6 +4,7 @@ paella.addPlugin(function() {
 		
 		getAlignment() { return 'right'; }
 		getSubclass() { return "showMultipleQualitiesPlugin"; }
+		getIconClass() { return 'icon-screen'; }
 		getIndex() { return 2030; }
 		getMinWindowSize() { return 550; }
 		getName() { return "es.upv.paella.multipleQualitiesPlugin"; }

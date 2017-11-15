@@ -3,6 +3,7 @@ paella.addPlugin(function() {
 	return class VolumeRangePlugin extends paella.ButtonPlugin {
 		getAlignment() { return 'left'; }
 		getSubclass() { return 'volumeRangeButton'; }
+		getIconClass() { return 'icon-volume-high'; }
 		getName() { return "es.upv.paella.volumeRangePlugin"; }
 		getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
 		getDefaultToolTip() { return base.dictionary.translate("Volume"); }
@@ -108,13 +109,13 @@ paella.addPlugin(function() {
 			var self = this;
 			
 			paella.player.videoContainer.mainAudioPlayer().volume()
-				.then(function(volume){
-					if (volume === undefined) { selected = 'med'; }
-					else if (volume == 0) { selected = 'mute'; }
-					else if (volume < 0.33) { selected = 'min'; }
-					else if (volume < 0.66) { selected = 'med'; }
-					else { selected = 'max'; }
-					self.button.className = ['buttonPlugin', self.getAlignment(), self.getSubclass(), selected].join(' ');				
+				.then((volume) => {
+					if (volume === undefined) { selected = 'icon-volume-mid'; }
+					else if (volume == 0) { selected = 'icon-volume-mute'; }
+					else if (volume < 0.33) { selected = 'icon-volume-low'; }
+					else if (volume < 0.66) { selected = 'icon-volume-mid'; }
+					else { selected = 'icon-volume-high'; }
+					this.changeIconClass(selected);
 				})
 		}
 	};
