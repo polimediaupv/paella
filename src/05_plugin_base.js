@@ -535,6 +535,10 @@
 			this.subclass = newSubclass;
 			this.container.className = this.getClassName();
 		},
+
+		changeIconClass:function(newClass) {
+			this._i.className = 'button-icon ' + newClass;
+		},
 	
 		getClassName:function() {
 			return paella.ButtonPlugin.kClassName + ' ' + this.getAlignment() + ' ' + this.subclass;
@@ -595,6 +599,7 @@
 		let icon = document.createElement('i');
 		icon.className = 'button-icon ' + plugin.getIconClass();
 		elem.appendChild(icon);
+		plugin._i = icon;
 			
 		function onAction(self) {
 			paella.userTracking.log("paella:button:action", self.plugin.getName());

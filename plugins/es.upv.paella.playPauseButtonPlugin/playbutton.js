@@ -3,12 +3,15 @@ paella.addPlugin(function() {
 	return class PlayPauseButtonPlugin extends paella.ButtonPlugin {
 		constructor() {
 			super();
+			this.playIconClass = 'icon-play';
+			this.pauseIconClass = 'icon-pause';
 			this.playSubclass = 'playButton';
 			this.pauseSubclass = 'pauseButton';
 		}
 	
 		getAlignment() { return 'left'; }
 		getSubclass() { return this.playSubclass; }
+		getIconClass() { return this.playIconClass; }
 		getName() { return "es.upv.paella.playPauseButtonPlugin"; }
 		getDefaultToolTip() { return base.dictionary.translate("Play"); }
 		getIndex() { return 110; }
@@ -19,12 +22,20 @@ paella.addPlugin(function() {
 		}
 	
 		setup() {
-			var This = this;
 			if (paella.player.playing()) {
-				this.changeSubclass(This.pauseSubclass);
+				this.changeIconClass(this.playIconClass);
 			}
-			paella.events.bind(paella.events.play,function(event) { This.changeSubclass(This.pauseSubclass); This.setToolTip(paella.dictionary.translate("Pause"));});
-			paella.events.bind(paella.events.pause,function(event) { This.changeSubclass(This.playSubclass); This.setToolTip(paella.dictionary.translate("Play"));});
+			paella.events.bind(paella.events.play,(event) => {
+				this.changeIconClass(this.pauseIconClass);
+				this.changeSubclass(this.pauseSubclass);
+				this.setToolTip(paella.dictionary.translate("Pause"));
+			});
+
+			paella.events.bind(paella.events.pause,(event) => {
+				this.changeIconClass(this.playIconClass);
+				this.changeSubclass(this.playSubclass);
+				this.setToolTip(paella.dictionary.translate("Play"));
+			});
 		}
 	
 		action(button) {
