@@ -1005,7 +1005,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 
 	unFreeze:function(){
 		return this._deferredAction(() => {
-			var c = document.getElementById(this.video.className + "canvas");
+			var c = document.getElementById(this.video.id + "canvas");
 			if (c) {
 				$(c).remove();
 			}
@@ -1016,7 +1016,8 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		var This = this;
 		return this._deferredAction(function() {
 			var canvas = document.createElement("canvas");
-			canvas.id = This.video.className + "canvas";
+			canvas.id = This.video.id + "canvas";
+			canvas.className = "freezeFrame";
 			canvas.width = This.video.videoWidth;
 			canvas.height = This.video.videoHeight;
 			canvas.style.cssText = This.video.style.cssText;
