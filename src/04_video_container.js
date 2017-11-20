@@ -966,16 +966,12 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 
 		volume() {
 			return new Promise((resolve) => {
-				this.mainAudioPlayer().then((player) => {
-					return player.volume();
-				})
-
-				.then((vol) => {
+				this.mainAudioPlayer().volume().then((vol) => {
 					resolve(vol);
 				})
 			});
 		}
-		
+
 		masterVideo() {
 			return this.videoWrappers.length>0 ? this.videoWrappers[0].getNode(this.video1Id) : null;
 		}
