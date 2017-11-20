@@ -23,6 +23,9 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 	},
 	
 	load:function() {
+		if (this._posterFrame) {
+			this.video.setAttribute("poster",this._posterFrame);
+		}
 		if (base.userAgent.system.iOS ||
 			base.userAgent.browser.Safari)
 		{
@@ -79,10 +82,6 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 		}
 	},
 
-	supportAutoplay:function() {
-		return true;
-	},
-	
 	getQualities:function() {
 		if (base.userAgent.system.iOS ||
 			base.userAgent.browser.Safari)
@@ -136,13 +135,18 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 		{
 			return Promise.resolve();
 		}
+		else if (index!==null) {
+			try {
+				this.qualityIndex = index;
+				this._hls.nextLevel = index;		
+			}
+			catch(err) {
+
+			}
+			return Promise.resolve();
+		}
 		else {
-			this.qualityIndex = index;
-			//this._hls.currentLevel = index;		
-			this._hls.nextLevel = index;		
-			return new Promise((resolve,reject) => {
-				resolve();
-			});
+			return Promise.resolve();
 		}
 	},
 

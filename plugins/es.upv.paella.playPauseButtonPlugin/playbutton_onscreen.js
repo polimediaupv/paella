@@ -9,8 +9,7 @@ Class ("paella.plugins.PlayButtonOnScreen",paella.EventDrivenPlugin,{
 	firstPlay:false,
 
 	checkEnabled:function(onSuccess) {
-		onSuccess(!paella.player.isLiveStream() || base.userAgent.system.Android 
-			|| base.userAgent.system.iOS);
+		onSuccess(true);
 	},
 
 	getIndex:function() {
@@ -81,7 +80,12 @@ Class ("paella.plugins.PlayButtonOnScreen",paella.EventDrivenPlugin,{
 	},
 
 	getEvents:function() {
-		return [paella.events.endVideo,paella.events.play,paella.events.pause,paella.events.showEditor,paella.events.hideEditor];
+		return [
+			paella.events.endVideo,
+			paella.events.play,
+			paella.events.pause,
+			paella.events.timeUpdate
+		];
 	},
 
 	onEvent:function(eventType,params) {
@@ -90,18 +94,18 @@ Class ("paella.plugins.PlayButtonOnScreen",paella.EventDrivenPlugin,{
 				this.endVideo();
 				break;
 			case paella.events.play:
-				this.play();
+				this.isPlaying = true;
+				this.showIcon = false;
 				break;
 			case paella.events.pause:
-				this.pause();
+				this.isPlaying = false;
 				break;
-			case paella.events.showEditor:
-				this.showEditor();
-				break;
-			case paella.events.hideEditor:
-				this.hideEditor();
+			case paella.events.timeUpdate:
+				this.isPlaying = true;
+				this.showIcon = false;
 				break;
 		}
+		this.checkStatus();
 	},
 
 	onPlayButtonClick:function() {
@@ -111,28 +115,6 @@ Class ("paella.plugins.PlayButtonOnScreen",paella.EventDrivenPlugin,{
 
 	endVideo:function() {
 		this.isPlaying = false;
-		this.checkStatus();
-	},
-
-	play:function() {
-		this.isPlaying = true;
-		this.showIcon = false;
-		this.checkStatus();
-	},
-
-	pause:function() {
-		this.isPlaying = false;
-		this.showIcon = false;
-		this.checkStatus();
-	},
-
-	showEditor:function() {
-		this.enabled = false;
-		this.checkStatus();
-	},
-
-	hideEditor:function() {
-		this.enabled = true;
 		this.checkStatus();
 	},
 	

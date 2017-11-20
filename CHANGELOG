@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.2.7
+
+  * Improvements and bug fixes in HLS.
+  
 * Paella 5.2.6
 
   * HLS streams in Safari for macOS now uses the native hls player.
