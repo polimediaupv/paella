@@ -63,7 +63,7 @@ function getFiles(dir,fileExt,filelist) {
 	}
 	files.forEach(function(file) {
 		let ext = file.split('.').pop();
-		if (fs.statSync(dir + '/' + file).isDirectory()) {
+		if (fs.statSync(dir + '/' + file).isDirectory() && file!='deps') {
 			filelist = getFiles(dir + file + '/', fileExt, filelist);
 		}
 		else if (fileExt.indexOf(ext)!=-1) {

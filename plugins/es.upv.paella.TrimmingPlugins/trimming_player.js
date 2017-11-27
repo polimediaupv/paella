@@ -1,4 +1,7 @@
 paella.addPlugin(function() {
+
+
+	
 	return class TrimmingLoaderPlugin extends paella.EventDrivenPlugin {
 		
 		getName() { return "es.upv.paella.trimmingPlayerPlugin"; }
