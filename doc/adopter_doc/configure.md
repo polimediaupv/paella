@@ -74,22 +74,24 @@ In this file we have all the setups concerning plugins.. streams.. compositions.
 
 ```
 
-#- How To ?
+# How To ?
 
-##- How to set streaming method priority?
+## How to set streaming method priority?
 
 In "player" : { "methods" } We can set the priority of streaming method.
 
 
-##- How set the default composition?
+## How set the default composition?
 
 Use "defaultProfile" for set the default video composition.
 
-##- How to set/modify data delegates?
+
+## How to set/modify data delegates?
 
 Take a look to the [Integrate Paella section](integrate.md)
 
-##- Can I choose when a plugin is shown depending on the play mode ( embed, fullScreen, standard .. etc )?
+
+## Can I choose when a plugin is shown depending on the play mode ( embed, fullScreen, standard .. etc )?
 
 Inside config file at plugins section you can set the mode for show the plugin using:
 ```javascript
