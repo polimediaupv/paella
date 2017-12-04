@@ -34,7 +34,7 @@ paella.addPlugin(function() {
 	
 		showUI(){
 			if(paella.captions.getAvailableLangs().length>=1){
-				this.parent();
+				super.showUI();
 			}
 		}
 	
