@@ -81,7 +81,7 @@ gulp.task("webserver", function() {
 	});
 });
 
-gulp.task("compile", function() {
+gulp.task("compileES5", function() {
 	let files = getFiles("src/","js");
 	files = getFiles("plugins/","js",files);
 	return gulp.src(files)
@@ -92,7 +92,17 @@ gulp.task("compile", function() {
 		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
 });
 
-gulp.task("compileDebug", function() {
+gulp.task("compileES2015", function() {
+	let files = getFiles("src/","js");
+	files = getFiles("plugins/","js",files);
+	return gulp.src(files)
+		.pipe(concat("paella_player_es2015.js"))
+		.pipe(replace(/@version@/,getVersion()))
+		.pipe(uglify())
+		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
+});
+
+gulp.task("compileDebugES5", function() {
 	let files = getFiles("src/","js");
 	files = getFiles("plugins/","js",files);
 	return gulp.src(files)
@@ -101,6 +111,18 @@ gulp.task("compileDebug", function() {
 		.pipe(replace(/\@version\@/,getVersion()))
 		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
 });
+
+gulp.task("compileDebugES2015", function() {
+	let files = getFiles("src/","js");
+	files = getFiles("plugins/","js",files);
+	return gulp.src(files)
+		.pipe(concat("paella_player_es2015.js"))
+		.pipe(replace(/\@version\@/,getVersion()))
+		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
+});
+
+gulp.task("compile",["compileES5","compileES2015"]);
+gulp.task("compileDebug",["compileDebugES5","compileDebugES2015"]);
 
 gulp.task("styles", function() {
 	let p = [];
