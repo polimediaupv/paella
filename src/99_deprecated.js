@@ -106,3 +106,5 @@ paella.debug = {
 		base.log.log(msg);
 	}
 };
+
+paella.debugReady = true;
