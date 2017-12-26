@@ -1,4 +1,4 @@
-# Download Paella Player
+# Download a precompiled Paella player
 
 You can download a precompiled paella player from `github releases` or downlod it using `bower`
 
