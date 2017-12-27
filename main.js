@@ -27,6 +27,7 @@ function launch(indexFile) {
         }
         win.loadURL(url.format({
             pathname: path.join(__dirname, indexFile),
+            search:'id=belmar-multiresolution-remote',
             protocol: 'file',
             slashes: true
         }));

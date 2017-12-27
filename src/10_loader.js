@@ -288,6 +288,13 @@ paella.load = function(playerContainer, params) {
 		videoLoader: new paella.DefaultVideoLoader(params.data || params.url)
 	};
 
+	if (params.configUrl) {
+		initObjects.configUrl = params.configUrl;
+	}
+	if (params.dictionaryUrl) {
+		initObjects.dictionaryUrl = params.dictionaryUrl;
+	}
+
 	if (params.config) {
 		paella.initDelegate = new paella.DefaultInitDelegate(params.config, initObjects);
 	}

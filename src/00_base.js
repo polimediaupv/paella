@@ -20,16 +20,21 @@ var GlobalParams = {
 };
 
 
-var paella = {};
+window.paella = window.paella || {};
 paella.player = null;
 paella.version = "@version@";
 
 (function buildBaseUrl() {
-	var scripts = document.getElementsByTagName('script');
-	var script = scripts[scripts.length-1].src.split("/");
-	script.pop(); // Remove javascript file name
-	script.pop(); // Remove javascript/ folder name
-	paella.baseUrl = script.join("/") + '/';
+	if (window.paella_debug_baseUrl) {
+		paella.baseUrl = window.paella_debug_baseUrl;
+	}
+	else {
+		var scripts = document.getElementsByTagName('script');
+		var script = scripts[scripts.length-1].src.split("/");
+		script.pop(); // Remove javascript file name
+		script.pop(); // Remove javascript/ folder name
+		paella.baseUrl = script.join("/") + '/';
+	}
 })();
 
 paella.events = {

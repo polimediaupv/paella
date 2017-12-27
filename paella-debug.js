@@ -29,11 +29,13 @@ function loadPaellaDebug(playerContainer,params) {
         else {
             importFile(src);
         }
-    }    
-
+    }
+    
     let corePath = __dirname;
     let coreSources = path.join(corePath,"src");
     let pluginSources = path.join(corePath,"plugins");
+
+    window.paella_debug_baseUrl = path.join(corePath,'build/player/');
 
     importFolder(coreSources);
     importFolder(pluginSources);
