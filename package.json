@@ -26,5 +26,8 @@
   },
   "scripts": {
     "test": "gulp test:local"
+  },
+  "dependencies": {
+    "electron-window-state-manager": "^0.3.2"
   }
 }
