@@ -6,6 +6,11 @@ const url = require('url');
 const path = require('path');
 const WindowStateManager = require('electron-window-state-manager');
 
+function buildPaella() {
+    let exec = require('child_process').execSync;
+    exec('gulp build.debug');
+}
+
 function launch(indexFile) {
     let win = null;
     
@@ -44,4 +49,5 @@ function launch(indexFile) {
     });    
 }
 
+buildPaella();
 launch("index-debug.html",false);
