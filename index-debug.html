@@ -16,10 +16,25 @@
         
 		<script type="text/javascript" src="paella-debug.js"></script>
 
-		<link rel="stylesheet" href="build/player/resources/bootstrap/css/bootstrap.min.css" type="text/css" media="screen" charset="utf-8">
+        <link rel="stylesheet" href="build/player/resources/bootstrap/css/bootstrap.min.css" type="text/css" media="screen" charset="utf-8">
+        
+        <style>
+            .paella-debug-tools {
+                position: fixed;
+                left: 0px;
+                top: 0px;
+                z-index: 1000000;
+            }
+        </style>
 	</head>
     <body id="body" onload="loadPaellaDebug('playerContainer',{ url:'repository_test/repository/', configUrl:'build/player/config/config.json', dictionaryUrl:'build/player/localization/paella' })">
 		<div id="playerContainer" style="display:block;width:100%">
-		</div>
+        </div>
+
+        <div class="paella-debug-tools">
+            <select id="videoSelector">
+            </select>
+
+        </div>
 	</body>
 </html>

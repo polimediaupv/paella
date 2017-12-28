@@ -42,6 +42,22 @@ function loadPaellaDebug(playerContainer,params) {
 
     function doLoad() {
 
+        // Fill in the video selector field
+        let currentVideoId = base.parameters.get('id');
+        let selectField = document.getElementById('videoSelector');
+        fs.readdirSync(__dirname + '/repository_test/repository').forEach((videoId) => {
+            let option = document.createElement('option');
+            option.id = videoId;
+            option.innerHTML = videoId;
+            if (videoId==currentVideoId) {
+                option.selected = true;
+            }
+            selectField.appendChild(option);
+        });
+        selectField.addEventListener('change',function(event) {
+            location.href = location.pathname + '?id=' + event.target.value;
+        });
+
         if (!window.paella || !paella.debugReady) {
             setTimeout(() => doLoad(),100);
         }
