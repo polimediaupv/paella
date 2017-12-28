@@ -34,6 +34,9 @@ function launch(indexFile) {
         win.on('close', () => {
             mainWindowState.saveState(win);
         });
+        app.on('window-all-closed', () => {
+            app.quit();
+        });
     }
     
     app.on('ready', () => {

@@ -1,4 +1,9 @@
 
+function buildPaella() {
+    let exec = require('child_process').execSync;
+    exec('gulp build.debug');
+}
+
 function loadPaellaDebug(playerContainer,params) {
     let fs = require("fs");
     let path = require("path");
@@ -66,5 +71,6 @@ function loadPaellaDebug(playerContainer,params) {
         }
     }
 
+    buildPaella();
     doLoad();
 }
