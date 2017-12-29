@@ -48,7 +48,8 @@
 			"trimming":"CookieDataDelegate",
 			"userInfo": "UserDataDelegate",
 			"visualAnnotations": "VisualAnnotationsDataDelegate",
-			"metadata":"VideoManifestMetadataDataDelegate"
+			"metadata":"VideoManifestMetadataDataDelegate",
+			"cameraTrack":"TrackCameraDataDelegate"
 		}
 	},
 	"folders": {
