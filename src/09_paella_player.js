@@ -190,8 +190,8 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	},
 
 	onLoadConfig:function(configData) {
-		paella.pluginManager.registerPlugins();
 		paella.data = new paella.Data(configData);
+		paella.pluginManager.registerPlugins();
 
 		this.config = configData;
 		this.videoIdentifier = paella.initDelegate.getId();
