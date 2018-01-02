@@ -24,9 +24,9 @@ paella.addPlugin(function() {
 			this.total_time_start = 0
 			this.total_time_end = 0
 
-			var self = this
+			let self = this
 			this._loadDeps().then(function (){
-				var conf = {
+				let conf = {
 					"endpoint" : self.endpoint,
 					"auth" : self.auth
 				};
@@ -47,7 +47,7 @@ paella.addPlugin(function() {
 			paella.events.bind(paella.events.timeUpdate, function(event,params){
 				self.current_time.push(params.currentTime)
 				self.progress = self.get_progress(params.currentTime, params.duration)
-				if (self.progress == 1 && self.completed == false){
+				if (self.progress === 1 && self.completed === false){
 					self.completed = true
 					self.end_played_segment(params.currentTime)
 					self.send_completed(params.currentTime, self.progress)
@@ -79,7 +79,7 @@ paella.addPlugin(function() {
 
 		log(event, params) {
 			var p = params;
-			var self = this
+			let self = this
 			// console.log(event)
 			// console.log(params)
 			switch (event) {
@@ -273,7 +273,7 @@ paella.addPlugin(function() {
 			var a = this.current_time.filter(function(value){
 				return value <= seekedto -1
 			})
-			if (a.length == 0){
+			if (a.length === 0){
 				a = this.current_time.filter(function(value){
 					return value >= seekedto + 1
 				})
@@ -347,7 +347,7 @@ paella.addPlugin(function() {
 
 		end_played_segment(end_time){
 			var arr;
-			arr = (this.played_segments == "")? []:this.played_segments.split("[,]");
+			arr = (this.played_segments === "")? []:this.played_segments.split("[,]");
 			arr.push(this.played_segments_segment_start + "[.]" + end_time);
 			this.played_segments = arr.join("[,]");
 			this.played_segments_segment_end = end_time;
@@ -363,7 +363,7 @@ paella.addPlugin(function() {
 			var arr, arr2;
 
 			//get played segments array
-			arr = (this.played_segments == "")? []:this.played_segments.split("[,]");
+			arr = (this.played_segments === "")? []:this.played_segments.split("[,]");
 			if(this.played_segments_segment_start != null){
 				arr.push(this.played_segments_segment_start + "[.]" + currentTime);
 			}
