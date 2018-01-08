@@ -104,7 +104,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 		let zoomSettings = paella.player.config.player.videoZoom || {};
 		let zoomEnabled = (zoomSettings.enabled!==undefined ? zoomSettings.enabled : true) && this.allowZoom();
 
-		this.parent(domType,id,zoomEnabled ? {width:this._zoom + '%',height:"100%",position:'absolute'} : { width:"100%" });
+		this.parent(domType,id,zoomEnabled ? {width:this._zoom + '%',height:"100%",position:'absolute'} : { width:"100%", height:"100%" });
 
 		let eventCapture = document.createElement('div');
 		setTimeout(() => this.domElement.parentElement.appendChild(eventCapture), 10);
