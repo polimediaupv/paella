@@ -32,11 +32,12 @@ Class ("paella.plugins.ArrowSlidesNavigator", paella.EventDrivenPlugin, {
 	createOverlay:function(){
 		var self = this;
 
-		let overlayContainer = paella.player.videoContainer.overlayContainer;
+		let parentContainer = null;
 		
 		if (!this.arrows) {
 			this.arrows = document.createElement('div');
-			this.arrows.id = "arrows";
+			//this.arrows.id = "arrows";
+			this.arrows.className = "arrow-slide-navigator-container";
 			this.arrows.style.marginTop = "25%";
 			
 			let arrowNext = document.createElement('div');
@@ -58,29 +59,39 @@ Class ("paella.plugins.ArrowSlidesNavigator", paella.EventDrivenPlugin, {
 			});			
 		}
 		
-		if (this.container) {
-			overlayContainer.removeElement(this.container);
-		}
 		switch (self._showArrowsIn) {
 			case 'full':
+				let overlayContainer = paella.player.videoContainer.overlayContainer;
+				if (this.container) {
+					overlayContainer.removeElement(this.container);
+				}
 				this.container = overlayContainer.addLayer();
 				this.container.style.marginRight = "0";
 				this.container.style.marginLeft = "0";			
 				this.arrows.style.marginTop = "25%";
+				this.container.appendChild(this.arrows);
 				break;
 			case 'master':
-				var element = document.createElement('div');			
-				this.container = overlayContainer.addElement(element,overlayContainer.getMasterRect());			
+				parentContainer = paella.player.videoContainer.masterVideo() &&
+								  paella.player.videoContainer.masterVideo().parent &&
+								  paella.player.videoContainer.masterVideo().parent.domElement;
+				if (!parentContainer) return;
+				if (this.arrows) {
+					parentContainer.removeElement(this.arrows);
+				}	
+				parentContainer.appendChild(arrows);
 				this.arrows.style.marginTop = "23%";
 				break;
 			case 'slave':
-				var element = document.createElement('div');			
-				this.container = overlayContainer.addElement(element,overlayContainer.getSlaveRect());
+				parentContainer = paella.player.videoContainer.slaveVideo() &&
+								  paella.player.videoContainer.slaveVideo().parent &&
+								  paella.player.videoContainer.slaveVideo().parent.domElement;
+				if (!parentContainer) return;
+				parentContainer.appendChild(this.arrows);
 				this.arrows.style.marginTop = "35%";
 				break;
 		}
 		
-		this.container.appendChild(this.arrows);
 		this.hideArrows();
 	},	
 	
@@ -173,9 +184,9 @@ Class ("paella.plugins.ArrowSlidesNavigator", paella.EventDrivenPlugin, {
     		case paella.events.controlBarDidHide:
     			this.hideArrows();
     			break;
-    		case paella.events.setComposition:
-    			this.createOverlay();
-    			break;
+    		//case paella.events.setComposition:
+    		//	this.createOverlay();
+    		//	break;
     	}
 	}
 });
