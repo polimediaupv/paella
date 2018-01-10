@@ -231,6 +231,7 @@ Class ("paella.DefaultInitDelegate", paella.InitDelegate, {
 
 /*
  *	playerContainer	Player DOM container id
+ *	params.configUrl		Url to the config json file
  *	params.config			Use this configuration file
  *	params.data				Paella video data schema
  *	params.url				Repository URL
@@ -290,6 +291,10 @@ paella.load = function(playerContainer, params) {
 	var initObjects = {
 		videoLoader: new paella.DefaultVideoLoader(params.data || params.url)
 	};
+
+	if (params.configUrl) {
+		initObjects.configUrl = params.configUrl;
+	}
 
 	if (params.config) {
 		paella.initDelegate = new paella.DefaultInitDelegate(params.config, initObjects);
