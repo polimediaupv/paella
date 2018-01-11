@@ -96,6 +96,9 @@ echo "[INFO] Using $TMP_FOLDER as temporal folder"
 
 cp -r $DEPLOY_FOLDER/ $TMP_FOLDER
 
+if [ -f "package.json" ]; then
+  cp package.json $TMP_FOLDER
+fi
 if [ -f "$SCRIPT_FOLDER/package.json" ]; then
   cp $SCRIPT_FOLDER/package.json $TMP_FOLDER
 fi
