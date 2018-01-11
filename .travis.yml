@@ -28,7 +28,7 @@ script:
 
 deploy:
   - provider: script
-    script: sh ./.publish_scripts/publish.sh
+    script: DEBUG=1 sh ./.publish_scripts/publish.sh
     skip_cleanup: true
     on:
       tags: true
