@@ -34,15 +34,22 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 		}
 	},
 
-	loadVideo: function (videoId, onSuccess) {
+	getVideoUrl:function() {
+		return (/\/$/.test(this._url) ? this._url:this._url + '/') + paella.initDelegate.getId() + '/';
+	},
+
+	getDataUrl:function() {
+		return this.getVideoUrl() + 'data.json';
+	},
+
+
+	loadVideo: function (onSuccess) {
 		if (this._data) {
 			this.loadVideoData(this._data, onSuccess);
 		}
 		else if (this._url) {
 			var This = this;
-			this._url = (/\/$/.test(this._url) ? this._url:this._url + '/')
-				 + videoId + '/';
-			base.ajax.get({ url:this._url + 'data.json' },
+			base.ajax.get({ url:this.getDataUrl() },
 				function(data,type,err) {
 					if (typeof(data)=="string") {
 						try {

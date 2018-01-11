@@ -1,12 +1,24 @@
-paella.addPlugin(function() {
-
-
-    class TrackCameraDataDelegate extends paella.DataDelegate {
+paella.addDataDelegate("cameraTrack",() => {
+    return class TrackCameraDataDelegate extends paella.DataDelegate {
         read(context,params,onSuccess) {
-            let url = paella.player.videoLoader._url + 'trackhd.json';
-            paella.utils.ajax.get({ url:url },
-                (data) => onSuccess(JSON.parse(data)),
-                () => onSuccess(null) );
+            let videoUrl = paella.player.videoLoader.getVideoUrl();
+            if (videoUrl) {
+                videoUrl += 'trackhd.json';
+                paella.utils.ajax.get({ url:videoUrl },
+                    (data) => {
+                        if (typeof(data)=="string") {
+                            try {
+                                data = JSON.parse(data);
+                            }
+                            catch(err) {}
+                        }
+                        onSuccess(data)
+                    },
+                    () => onSuccess(null) );
+            }
+            else {
+                onSuccess(null);
+            }
         }
     
         write(context,params,value,onSuccess) {
@@ -14,10 +26,10 @@ paella.addPlugin(function() {
     
         remove(context,params,onSuccess) {
         }
-    }
+    };
+});
 
-    paella.dataDelegates.TrackCameraDataDelegate = TrackCameraDataDelegate;
-
+paella.addPlugin(function() {
     return class Track4KPlugin extends paella.EventDrivenPlugin {
         constructor() {
             super();
@@ -38,7 +50,7 @@ paella.addPlugin(function() {
             if (eventType==paella.events.play) {
             }
             else if (eventType==paella.events.timeupdate) {
-                console.log("Hola");
+                //console.log("timeupdate");
             }
         }
     }
