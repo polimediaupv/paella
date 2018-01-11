@@ -1,0 +1,11 @@
+{
+  "name": "paella",
+  "description": "Paella Player",
+  "keywords": "HTML5 paella player",
+  "homepage": "http://paellaplayer.upv.es/",
+  "license": "ECL-2.0",
+  "ignore": [
+  ],
+  "dependencies": {
+  }  
+}
