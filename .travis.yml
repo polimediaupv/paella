@@ -22,8 +22,8 @@ script:
   - gulp test:local
 
 
-before_deploy:
-  - sh ./.travis_scripts/prepate_deploy.sh 
+#before_deploy:
+#  - sh ./.travis_scripts/prepate_deploy.sh 
 
 
 deploy:
@@ -32,7 +32,6 @@ deploy:
     skip_cleanup: true
     on:
       tags: true
-
   - provider: releases
     skip_cleanup: true
     api_key:
