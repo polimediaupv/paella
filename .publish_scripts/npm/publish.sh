@@ -91,7 +91,7 @@ if [[ ! 0 == $ret ]]; then # it is a proper semver VERSION
   exit 0
 fi
 
-TMP_FOLDER=$(mktemp -d -t deploy-npm)
+TMP_FOLDER=$(mktemp -d -t deploy-npm.XXXXXX)
 echo "[INFO] Using $TMP_FOLDER as temporal folder"
 
 cp -r $DEPLOY_FOLDER/ $TMP_FOLDER

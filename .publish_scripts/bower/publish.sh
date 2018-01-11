@@ -105,7 +105,7 @@ fi
 
 echo "[INFO] Publishing bower package version=$VERSION"
 
-TMP_FOLDER=$(mktemp -d -t deploy-npm)
+TMP_FOLDER=$(mktemp -d -t deploy-bower.XXXXXX)
 echo "[INFO] Using $TMP_FOLDER as temporal folder"
 
 git clone git://github.com/$GIT_BOWER_REPO $TMP_FOLDER
