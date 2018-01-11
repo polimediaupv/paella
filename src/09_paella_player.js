@@ -181,6 +181,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 			.then(function(config) {
 				This.accessControl = paella.initDelegate.initParams.accessControl;
+				This.videoLoader = paella.initDelegate.initParams.videoLoader;
 				This.onLoadConfig(config);
 				if (config.skin) {
 					var skin = config.skin.default || 'dark';
@@ -290,10 +291,9 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	loadVideo:function() {
 		if (this.videoIdentifier) {
 			var This = this;
-			var loader = paella.initDelegate.initParams.videoLoader;
-			paella.player.videoLoader = loader;
+			var loader = paella.player.videoLoader;
 			this.onresize();
-			loader.loadVideo(this.videoIdentifier,() => {
+			loader.loadVideo(() => {
 				var playOnLoad = false;
 				This.videoContainer.setStreamData(loader.streams)
 					.then(function() {

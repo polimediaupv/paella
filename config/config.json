@@ -47,7 +47,8 @@
 			"trimming":"CookieDataDelegate",
 			"userInfo": "UserDataDelegate",
 			"visualAnnotations": "VisualAnnotationsDataDelegate",
-			"metadata":"VideoManifestMetadataDataDelegate"
+			"metadata":"VideoManifestMetadataDataDelegate",
+			"cameraTrack":"TrackCameraDataDelegate"
 		}
 	},
 	"folders": {
@@ -116,6 +117,7 @@
 			"es.upv.paella.trimmingPlayerPlugin": {"enabled":true},
 			"es.upv.paella.zoomPlugin": {"enabled": false},
 			"es.upv.paella.windowTitlePlugin": {"enabled": true},
+			"es.upv.paella.track4kPlugin": { "enabled":true },
 									
 			"//****": "Captions Parser Plugins",
 			"es.upv.paella.captions.DFXPParserPlugin": {"enabled":true},
