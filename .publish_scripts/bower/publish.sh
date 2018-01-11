@@ -108,7 +108,7 @@ echo "[INFO] Publishing bower package version=$VERSION"
 TMP_FOLDER=$(mktemp -d -t deploy-bower.XXXXXX)
 echo "[INFO] Using $TMP_FOLDER as temporal folder"
 
-git clone https://github.com/$GIT_BOWER_REPO $TMP_FOLDER
+git clone https://${GIT_BOWER_TOKEN}@github.com/${GIT_BOWER_REPO}.git $TMP_FOLDER
 rm -rf $TMP_FOLDER/*
 
 cp -r $DEPLOY_FOLDER/ $TMP_FOLDER
@@ -130,7 +130,7 @@ git config --local user.name "$GIT_BOWER_NAME"
 git add -A
 git commit -q -m "[automated publishing] version $VERSION" 
 git tag $VERSION
-git push --tags https://${GIT_BOWER_TOKEN}@github.com/$GIT_BOWER_REPO master
+git push --tags https://${GIT_BOWER_TOKEN}@github.com/${GIT_BOWER_REPO}.git master
 
 popd > /dev/null
 
