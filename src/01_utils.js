@@ -278,97 +278,146 @@ Class ("paella.DataDelegate", {
 
 paella.dataDelegates = {};
 
-Class ("paella.dataDelegates.CookieDataDelegate", paella.DataDelegate, {
-	initialize:function() {
-	},
+(function() {
+	let g_delegateCallbacks = {};
+	let g_dataDelegates = [];
 
-	serializeKey:function(context,params) {
-		if (typeof(params)=='object') params = JSON.stringify(params);
-		return context + '|' + params;
-	},
+	class Data {
+		get enabled() { return this._enabled; }
 
-	read:function(context,params,onSuccess) {
-		var key = this.serializeKey(context,params);
-		var value = base.cookies.get(key);
-		try {
-			value = unescape(value);
-			value = JSON.parse(value);
+		get dataDelegates() { return g_dataDelegates; }
+	
+		constructor(config) {
+			this._enabled = config.data.enabled;
+
+			// Delegate callbacks
+			let executedCallbacks = [];
+			for (let context in g_delegateCallbacks) {
+				let callback = g_delegateCallbacks[context];
+				let DelegateClass = null;
+				let delegateName = null;
+
+				if (!executedCallbacks.some((execCallbackData) => {
+					if (execCallbackData.callback==callback) {
+						delegateName = execCallbackData.delegateName;
+						return true;
+					}
+				})) {
+					DelegateClass = g_delegateCallbacks[context]();
+					delegateName = DelegateClass.name;
+					paella.dataDelegates[delegateName] = DelegateClass;
+					executedCallbacks.push({ callback:callback, delegateName:delegateName });
+				}
+
+				if (!config.data.dataDelegates[context]) {
+					config.data.dataDelegates[context] = delegateName;
+				}
+
+			}
+
+			for (var key in config.data.dataDelegates) {
+				try {
+					
+					var delegateName = config.data.dataDelegates[key];
+					var DelegateClass = paella.dataDelegates[delegateName];
+					var delegateInstance = new DelegateClass();
+					g_dataDelegates[key] = delegateInstance;
+				
+				}
+				catch (e) {
+					console.warn("Warning: delegate not found - " + delegateName);
+				}
+			}
+
+
+			// Default data delegate
+			if (!this.dataDelegates["default"]) {
+				this.dataDelegates["default"] = new paella.dataDelegates.DefaultDataDelegate();
+			}
 		}
-		catch (e) {}
-		if (typeof(onSuccess)=='function') {
-			onSuccess(value,true);
+	
+		read(context,key,onSuccess) {
+			var del = this.getDelegate(context);
+			del.read(context,key,onSuccess);
 		}
-	},
-
-	write:function(context,params,value,onSuccess) {
-		var key = this.serializeKey(context,params);
-		if (typeof(value)=='object') value = JSON.stringify(value);
-		value = escape(value);
-		base.cookies.set(key,value);
-		if(typeof(onSuccess)=='function') {
-			onSuccess({},true);
+	
+		write(context,key,params,onSuccess) {
+			var del = this.getDelegate(context);
+			del.write(context,key,params,onSuccess);
 		}
-	},
-
-	remove:function(context,params,onSuccess) {
-		var key = this.serializeKey(context,params);
-		if (typeof(value)=='object') value = JSON.stringify(value);
-		base.cookies.set(key,'');
-		if(typeof(onSuccess)=='function') {
-			onSuccess({},true);
+	
+		remove(context,key,onSuccess) {
+			var del = this.getDelegate(context);
+			del.remove(context,key,onSuccess);
 		}
-
+	
+		getDelegate(context) {
+			if (this.dataDelegates[context]) return this.dataDelegates[context];
+			else return this.dataDelegates["default"];
+		}
 	}
-});
 
-paella.dataDelegates.DefaultDataDelegate = paella.dataDelegates.CookieDataDelegate;
+	paella.Data = Data;
 
+	paella.addDataDelegate = function(context,callback) {
+		if (Array.isArray(context)) {
+			context.forEach((ctx) => {
+				g_delegateCallbacks[ctx] = callback;
+			})
+		}
+		else if (typeof(context)=="string") {
+			g_delegateCallbacks[context] = callback;
+		}
+	}
 
-Class ("paella.Data", {
-	enabled:false,
-	dataDelegates:{},
+})();
 
-	initialize:function(config) {
-		this.enabled = config.data.enabled;
-		for (var key in config.data.dataDelegates) {
+paella.addDataDelegate(["default","trimming"], () => {
+	paella.dataDelegates.DefaultDataDelegate = class CookieDataDelegate extends paella.DataDelegate {
+		serializeKey(context,params) {
+			if (typeof(params)=='object') params = JSON.stringify(params);
+			return context + '|' + params;
+		}
+	
+		read(context,params,onSuccess) {
+			var key = this.serializeKey(context,params);
+			var value = base.cookies.get(key);
 			try {
-				var delegateName = config.data.dataDelegates[key];
-				var DelegateClass = paella.dataDelegates[delegateName];
-				var delegateInstance = new DelegateClass();
-				this.dataDelegates[key] = delegateInstance;
+				value = unescape(value);
+				value = JSON.parse(value);
 			}
-			catch (e) {
-				base.log.debug("Warning: delegate not found - " + delegateName);
+			catch (e) {}
+			if (typeof(onSuccess)=='function') {
+				onSuccess(value,true);
 			}
 		}
-		if (!this.dataDelegates["default"]) {
-			this.dataDelegates["default"] = new paella.dataDelegates.DefaultDataDelegate();
+	
+		write(context,params,value,onSuccess) {
+			var key = this.serializeKey(context,params);
+			if (typeof(value)=='object') value = JSON.stringify(value);
+			value = escape(value);
+			base.cookies.set(key,value);
+			if(typeof(onSuccess)=='function') {
+				onSuccess({},true);
+			}
 		}
-	},
-
-	read:function(context,key,onSuccess) {
-		var del = this.getDelegate(context);
-		del.read(context,key,onSuccess);
-	},
-
-	write:function(context,key,params,onSuccess) {
-		var del = this.getDelegate(context);
-		del.write(context,key,params,onSuccess);
-	},
-
-	remove:function(context,key,onSuccess) {
-		var del = this.getDelegate(context);
-		del.remove(context,key,onSuccess);
-	},
-
-	getDelegate:function(context) {
-		if (this.dataDelegates[context]) return this.dataDelegates[context];
-		else return this.dataDelegates["default"];
+	
+		remove(context,params,onSuccess) {
+			var key = this.serializeKey(context,params);
+			if (typeof(value)=='object') value = JSON.stringify(value);
+			base.cookies.set(key,'');
+			if(typeof(onSuccess)=='function') {
+				onSuccess({},true);
+			}
+		}
 	}
-});
+
+	return paella.dataDelegates.DefaultDataDelegate;
+})
 
 // Will be initialized inmediately after loading config.json, in PaellaPlayer.onLoadConfig()
 paella.data = null;
+
 
 Class ("paella.MessageBox", {
 	modalContainerClassName:'modalMessageContainer',

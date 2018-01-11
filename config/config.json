@@ -44,7 +44,6 @@
 	"data":{
 		"enabled":true,
 		"dataDelegates":{
-			"default":"CookieDataDelegate",
 			"trimming":"CookieDataDelegate",
 			"userInfo": "UserDataDelegate",
 			"visualAnnotations": "VisualAnnotationsDataDelegate",
