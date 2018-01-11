@@ -40,8 +40,8 @@ deploy:
       secure: UI6zIHGkhy7p/OtViLbi1yxuyYPteAoRGFO7D8xhc8N6YAkzxYFmlTHdUQgFj4Hgh+5gO6/jW9kpTkbkbATSIVLOLcuLyJEq6jDuorM2q8D2VInpc5ZpNddFjiQdKaIkZL8CeBnncKvmxCBZeHgE4MQPOGHtCQ900viROEVY0ak=
     file:
       - ${HOME}/prebuilt/paella-prebuilt-${TRAVIS_TAG}.tar.gz
-    body: ${CHANGELOG}
-    draft: ${DRAFT}
+    body: "${CHANGELOG}"
+    draft: "${DRAFT}"
     on:
       repo: polimediaupv/paella
       tags: true
