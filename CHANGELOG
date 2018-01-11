@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+* Paella 5.2.9
+
+  * Bug fixed in arrow slide navigator plugin
+  * Added configUrl parameter to paella.load options
+
+* Paella 5.2.8
+
+  * Bug fixes and improvements
+
 * Paella 5.2.7
 
   * Improvements and bug fixes in HLS.

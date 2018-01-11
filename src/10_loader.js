@@ -228,6 +228,7 @@ Class ("paella.DefaultInitDelegate", paella.InitDelegate, {
 
 /*
  *	playerContainer	Player DOM container id
+ *	params.configUrl		Url to the config json file
  *	params.config			Use this configuration file
  *	params.data				Paella video data schema
  *	params.url				Repository URL

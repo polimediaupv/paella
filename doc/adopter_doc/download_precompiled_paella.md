@@ -37,3 +37,19 @@ And then, you can use bower to download Paella Player:
 
 Bower will download Paella Player in your current folder, inside a new directory named `bower_components`. 
 Inside this directory, you'll find a specific directory for the Paella Player, containing the compiled player and some examples.
+
+
+## Test Paella
+
+To test Paella you need to put the files you downloaded in a web server. You can *not* open the index.html file from
+a local folder.
+
+If you don't have a web server to test you ned to download one ([nginx](https://nginx.org/),
+[apache](https://httpd.apache.org/), ...) or you can create one easyly with python.
+
+Run this command from the paella folder and navigate to http://localhost:8000
+```
+python -m SimpleHTTPServer 8000
+```
+
+
