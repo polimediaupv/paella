@@ -14,6 +14,20 @@ is_proper_version(){
   return 0
 }
 
+
+is_draft_version(){
+  version="$1"
+
+  if [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+(\-[0-9A-Za-z\.\-]+)(\+[0-9A-Za-z\.\-]+)?$ ]]
+  then
+    echo 0
+    return 0
+  fi
+
+  echo 1
+  return 0
+}
+
 # copied from https://github.com/angular/angular.js/blob/master/scripts/utils.inc
 # replaceInFile file findPattern replacePattern
 replaceInFile() {

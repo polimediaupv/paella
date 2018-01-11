@@ -22,13 +22,15 @@ script:
   - gulp test:local
 
 
-#before_deploy:
+before_deploy:
+  - export CHANGELOG=$(head -$(($(grep -n -m 2 " * Paella" CHANGELOG | tail -1 | cut -f1 -d:)-1)) CHANGELOG)
+  - export DRAFT=$(sh ./.publish_scripts/is_draft_version.sh ${TRAVIS_TAG})
 #  - sh ./.travis_scripts/prepate_deploy.sh 
 
 
 deploy:
   - provider: script
-    script: DEBUG=1 sh ./.publish_scripts/publish.sh
+    script: sh ./.publish_scripts/publish.sh
     skip_cleanup: true
     on:
       tags: true
@@ -38,6 +40,8 @@ deploy:
       secure: UI6zIHGkhy7p/OtViLbi1yxuyYPteAoRGFO7D8xhc8N6YAkzxYFmlTHdUQgFj4Hgh+5gO6/jW9kpTkbkbATSIVLOLcuLyJEq6jDuorM2q8D2VInpc5ZpNddFjiQdKaIkZL8CeBnncKvmxCBZeHgE4MQPOGHtCQ900viROEVY0ak=
     file:
       - ${HOME}/prebuilt/paella-prebuilt-${TRAVIS_TAG}.tar.gz
+    body: ${CHANGELOG}
+    draft: ${DRAFT}
     on:
       repo: polimediaupv/paella
       tags: true
