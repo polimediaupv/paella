@@ -9,7 +9,7 @@ source  $SCRIPT_FOLDER/utility.sh
 
 ret=$( is_draft_version $VERSION )
 if [[ ! 0 == $ret ]]; then # it is a proper semver VERSION
-  echo "false"
+  echo 0
 else
-  echo "true"
+  echo 1
 fi

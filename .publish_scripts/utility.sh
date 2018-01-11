@@ -15,7 +15,7 @@ is_proper_version(){
 }
 
 
-is_draft_version(){
+is_prerelease_version(){
   version="$1"
 
   if [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+(\-[0-9A-Za-z\.\-]+)(\+[0-9A-Za-z\.\-]+)?$ ]]
