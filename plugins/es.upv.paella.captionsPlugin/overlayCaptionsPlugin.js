@@ -99,9 +99,12 @@ paella.addPlugin(function() {
 						if(caption){
 							$(this.container).show();
 							this.innerContainer.innerHTML = caption.content;
+							this.moveCaptionsOverlay("auto");
+
 						}
 						else { 
 							this.innerContainer.innerHTML = ""; 
+							this.hideContent();
 						}
 					});
 			}
@@ -115,16 +118,21 @@ paella.addPlugin(function() {
 	
 		moveCaptionsOverlay(pos){
 			var thisClass = this;
+			var marginbottom = 10;
 
 			if(thisClass.controlsPlayback==null) thisClass.controlsPlayback = $('#playerContainer_controls_playback');
-			
+
+			if(pos=="auto" || pos==undefined) {
+				pos = paella.player.controls.isHidden() ? "down" : "top";
+			}
 			if(pos=="down"){
-				var t = thisClass.controlsPlayback.offset().top;
-				thisClass.innerContainer.style.bottom = (-thisClass.container.offsetHeight+50)+"px";
+				var t = thisClass.container.offsetHeight;
+				t -= thisClass.innerContainer.offsetHeight + marginbottom;
+				thisClass.innerContainer.style.bottom = (0 - t) + "px";
 			}
 			if(pos=="top") {
 				var t2 = thisClass.controlsPlayback.offset().top;
-				t2 -= thisClass.innerContainer.offsetHeight+10;
+				t2 -= thisClass.innerContainer.offsetHeight + marginbottom;
 				thisClass.innerContainer.style.bottom = (0-t2)+"px";
 			}
 		}
