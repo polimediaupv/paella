@@ -24,6 +24,7 @@ script:
 
 before_deploy:
   - export PRERELEASE=$(sh ./.publish_scripts/is_prerelease_version.sh ${TRAVIS_TAG})
+  - export PRERELEASE2=true
 
 
 deploy:
@@ -41,4 +42,4 @@ deploy:
     prerelease: true
     on:
       repo: polimediaupv/paella
-      tags: true
+      tags: ${PRERELEASE2}
