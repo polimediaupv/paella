@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.2.10
+
+  * Fix publish scripts
+
 * Paella 5.2.9
 
   * Bug fixed in arrow slide navigator plugin
