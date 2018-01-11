@@ -102,6 +102,10 @@ fi
 if [ -f "$SCRIPT_FOLDER/package.json" ]; then
   cp $SCRIPT_FOLDER/package.json $TMP_FOLDER
 fi
+
+if [ -f "README.md" ]; then
+  cp README.md $TMP_FOLDER
+fi
 if [ -f "$SCRIPT_FOLDER/README.md" ]; then
   cp $SCRIPT_FOLDER/README.md $TMP_FOLDER
 fi

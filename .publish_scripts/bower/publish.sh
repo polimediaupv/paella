@@ -130,7 +130,7 @@ git config --local user.name "$GIT_BOWER_NAME"
 git add -A
 git commit -q -m "[automated publishing] version $VERSION" 
 git tag $VERSION
-git push --tags https://${GIT_BOWER_TOKEN}@github.com/${GIT_BOWER_REPO} master
+git push --tags  master
 
 popd > /dev/null
 
