@@ -1,6 +1,6 @@
 {
   "name": "paellaplayer",
-  "version": "5.2.8",
+  "version": "5.2.10",
   "description": "Paella Player",
   "license": "ECL-2.0",
   "repository": {
@@ -26,5 +26,8 @@
   },
   "scripts": {
     "test": "gulp test:local"
+  },
+  "dependencies": {
+    "electron-window-state-manager": "^0.3.2"
   }
 }

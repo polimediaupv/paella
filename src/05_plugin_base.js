@@ -460,7 +460,7 @@
 		},
 
 		getIconClass:function() {
-			return "icon-play";
+			return "";
 		},
 	
 		addSubclass:function($subclass) {

@@ -34,15 +34,22 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 		}
 	},
 
-	loadVideo: function (videoId, onSuccess) {
+	getVideoUrl:function() {
+		return (/\/$/.test(this._url) ? this._url:this._url + '/') + paella.initDelegate.getId() + '/';
+	},
+
+	getDataUrl:function() {
+		return this.getVideoUrl() + 'data.json';
+	},
+
+
+	loadVideo: function (onSuccess) {
 		if (this._data) {
 			this.loadVideoData(this._data, onSuccess);
 		}
 		else if (this._url) {
 			var This = this;
-			this._url = (/\/$/.test(this._url) ? this._url:this._url + '/')
-				 + videoId + '/';
-			base.ajax.get({ url:this._url + 'data.json' },
+			base.ajax.get({ url:this.getDataUrl() },
 				function(data,type,err) {
 					if (typeof(data)=="string") {
 						try {
@@ -228,6 +235,7 @@ Class ("paella.DefaultInitDelegate", paella.InitDelegate, {
 
 /*
  *	playerContainer	Player DOM container id
+ *	params.configUrl		Url to the config json file
  *	params.config			Use this configuration file
  *	params.data				Paella video data schema
  *	params.url				Repository URL
@@ -287,6 +295,13 @@ paella.load = function(playerContainer, params) {
 	var initObjects = {
 		videoLoader: new paella.DefaultVideoLoader(params.data || params.url)
 	};
+
+	if (params.configUrl) {
+		initObjects.configUrl = params.configUrl;
+	}
+	if (params.dictionaryUrl) {
+		initObjects.dictionaryUrl = params.dictionaryUrl;
+	}
 
 	if (params.config) {
 		paella.initDelegate = new paella.DefaultInitDelegate(params.config, initObjects);

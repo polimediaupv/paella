@@ -37,7 +37,20 @@ Class ("paella.VideoLoader", {
 		return this.metadata;
 	},
 
-	loadVideo:function(videoId,onSuccess) {
+	getVideoId:function() {
+		return paella.initDelegate.getId();
+	},
+
+	getVideoUrl:function() {
+		// This function must to return the base video URL
+		return "";
+	},
+
+	getDataUrl:function() {
+		// This function must to return the location of the video data file
+	},
+
+	loadVideo:function(onSuccess) {
 		// This function must to:
 		//	- load this.streams and this.frameList
 		// 	- Check streams compatibility using this.isStreamCompatible(streamIndex)
