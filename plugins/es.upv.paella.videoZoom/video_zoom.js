@@ -55,6 +55,7 @@ paella.addPlugin(function() {
         $(zoomButton).on('mouseup',() => {
             setTimeout(() => paella.player.videoContainer.enablePlayOnClick(),10);
         });
+
     }
 
     return class VideoZoomPlugin extends paella.VideoOverlayButtonPlugin {
