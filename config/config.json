@@ -130,7 +130,8 @@
 			
 			"//****": "User Tracking Saver Plugins",
 			"es.upv.paella.usertracking.elasticsearchSaverPlugin": { "enabled": false, "url": "http://my.elastic.server"},
-			"es.upv.paella.usertracking.GoogleAnalyticsSaverPlugIn": { "enabled": false, "trackingID": "UA-XXXXXXXX-Y" }			
+			"es.upv.paella.usertracking.GoogleAnalyticsSaverPlugIn": { "enabled": false, "trackingID": "UA-XXXXXXXX-Y" },
+			"es.upv.paella.usertracking.piwikSaverPlugIn": { "enabled": false, "tracker":"//tracker.server.com", "siteId": "1" }			
 		}
 	},
     "standalone" : {
