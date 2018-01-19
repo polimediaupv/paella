@@ -33,12 +33,40 @@ paella.addDataDelegate("cameraTrack",() => {
     // Used to connect the toolbar button with the track4k plugin
     let g_track4kPlugin = null;
     
+    /*
     function updatePosition(positionData) {
         let zoom = this._videoData.originalWidth / this._videoData.width;
         let left = positionData[0] / this._videoData.originalWidth;
         let top = (positionData[1] + this._videoData.originalHeight / 2) / this._videoData.originalHeight; 
         paella.player.videoContainer.masterVideo().setZoom(zoom  * 100,left * zoom * 100,(top * zoom - 1) * 100);
     }
+
+    function nextFrame(time,trackData) {
+        let data = null;
+        time = Math.round(time);
+        while (!data && time>0) {
+            let key = `t${ time }`;
+            data = trackData[key];
+            time--;
+        }
+        return data;
+    }
+
+    function prevFrame(time,trackData) {
+        let data = null;
+        time = Math.round(time);
+        while (!data && time>0) {
+            let key = `t${ time }`;
+            data = trackData[key];
+            time--;
+        }
+        return data;
+    }
+
+    function curFrame(time,trackData) {
+        
+    }
+    */
 
     paella.addPlugin(function() {
         return class Track4KPlugin extends paella.EventDrivenPlugin {
@@ -71,7 +99,7 @@ paella.addDataDelegate("cameraTrack",() => {
     
             getName() { return "es.upv.paella.track4kPlugin"; }
             getEvents() {
-                return [ paella.events.timeupdate, paella.events.play ]
+                return [ paella.events.timeupdate, paella.events.play, paella.events.seekToTime ]
             }
             onEvent(eventType,data) {
                 if (eventType==paella.events.play) {
@@ -79,11 +107,30 @@ paella.addDataDelegate("cameraTrack",() => {
                 else if (eventType==paella.events.timeupdate) {
                     this.updateZoom(data.currentTime);    
                 }
+                else if (eventType==paella.events.seekToTime) {
+                    this.seekTo(data.newPosition);
+                    //updatePosition.apply(this,[this._lastPosition]);
+                }
             }
     
             updateZoom(currentTime) {
                 let key = `t${ Math.round(currentTime) }`;
                 let data = this._trackData[key];
+                if (data && this._lastPosition!=data && this._enabled) {
+                    this._lastPosition = data;
+                    updatePosition.apply(this,[data]);
+                }
+            }
+
+            seekTo(time) {
+                let data = null;
+                time = Math.round(time);
+                while (!data && time>0) {
+                    let key = `t${ time }`;
+                    data = this._trackData[key];
+                    time--;
+                }
+                
                 if (data && this._lastPosition!=data && this._enabled) {
                     this._lastPosition = data;
                     updatePosition.apply(this,[data]);
