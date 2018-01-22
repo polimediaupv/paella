@@ -472,6 +472,25 @@ Class ("paella.VideoRect", paella.DomNode, {
 		return true;
 	},
 
+	setZoom: function(zoom,left,top) {
+		if (this.zoomAvailable()) {
+			this._zoomOffset.x = left;
+			this._zoomOffset.y = top;
+			this._zoom = zoom;
+			
+			$(this.domElement).animate({
+				width:this._zoom + '%',
+				height:this._zoom + '%'
+			},100);
+		
+			$(this.domElement).animate({
+				left:"-" + this._zoomOffset.x + "%",
+				top: "-" + this._zoomOffset.y + "%"
+			},100);
+			paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
+		}
+	},
+
 	captureFrame: function() {
 		return Promise.resolve(null);
 	},

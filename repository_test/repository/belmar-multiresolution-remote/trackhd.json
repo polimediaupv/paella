@@ -1,6 +1,7 @@
 {
 	"inputFile":"/home/fernando/Descargas/presenter_cut.mp4",
 	"processedFrames": 22708,
+	"originalWidth":1280, "originalHeight":720,
 	"width": 400, "height": 200,
 	"positions": {
 		"t0":[440,0,400,200],
