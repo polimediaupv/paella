@@ -19,6 +19,7 @@ paella.addPlugin(function() {
 			this.quality = null
 			this.fullscreen = false
 			this.title = ""
+			this.description = ""
 			this.user_agent = ""
 			this.total_time = 0
 			this.total_time_start = 0
@@ -46,11 +47,21 @@ paella.addPlugin(function() {
 			})
 			paella.events.bind(paella.events.timeUpdate, function(event,params){
 				self.current_time.push(params.currentTime)
-				self.progress = self.get_progress(params.currentTime, params.duration)
-				if (self.progress === 1 && self.completed === false){
-					self.completed = true
-					self.end_played_segment(params.currentTime)
-					self.send_completed(params.currentTime, self.progress)
+				if (self.current_time.length >=10){
+					self.current_time = self.current_time.slice(-10)
+				}
+
+				let a = Math.round(self.current_time[0])
+				let b = Math.round(self.current_time[9])
+
+				if ((params.currentTime !== 0)  && (a + 1 >= b) && (b - 1 >= a)){
+					self.progress = self.get_progress(params.currentTime, params.duration)
+					if (self.progress === 1 && self.completed === false){
+						self.completed = true
+						self.end_played_segment(params.currentTime)
+						self.start_played_segment(params.currentTime)
+						self.send_completed(params.currentTime, self.progress)
+					}
 				}
 			})
 		}
@@ -85,8 +96,10 @@ paella.addPlugin(function() {
 			switch (event) {
 				//Retrieve initial parameters from player
 				case "paella:loadComplete":
+				//TODO Obtain title and description localized
 				this.user_agent = navigator.userAgent.toString();
 				this.title = paella.player.videoLoader.getMetadata().title
+				this.description = paella.player.videoLoader.getMetadata().description
 				paella.player.videoContainer.duration().then(function(duration) {
 					return paella.player.videoContainer.mainAudioPlayer().volume().then(function(volume) {
 						return paella.player.videoContainer.getCurrentQuality().then(function(quality) {
@@ -164,8 +177,7 @@ paella.addPlugin(function() {
 			//TODO Get the user from LMS
 			var agent = new ADL.XAPIStatement.Agent("mailto:annonymous@example.com", "Annonymous")
 			var verb = new ADL.XAPIStatement.Verb(params.verb.id, params.verb.description)
-			//TODO Get the correct URL to the activity
-			var activity = new ADL.XAPIStatement.Activity("http://example.com/" + this.title.replace(/\s+/g, ''), this.title, "Video demo")
+			var activity = new ADL.XAPIStatement.Activity(window.location.href, this.title, this.description)
 			activity.definition.type = "https://w3id.org/xapi/video/activity-type/video"
 			paella.player.videoContainer.mainAudioPlayer().volume().then(function(volume){})
 			var statement = new ADL.XAPIStatement(agent, verb, activity)
@@ -224,6 +236,10 @@ paella.addPlugin(function() {
 			paella.player.videoContainer.currentTime()
 			.then(function(currentTime) {
 				var start_time = self.format_float(currentTime)
+				//When the video starts we force start_time to 0
+				if (start_time <= 1){
+					start_time = 0
+				}
 				self.start_played_segment(start_time)
 				var statement = {
 					"verb":{
@@ -248,6 +264,10 @@ paella.addPlugin(function() {
 				//return paella.player.videoContainer.duration().then(function(duration) {
 				var end_time = self.format_float(currentTime)
 				//self.progress = self.get_progress(end_time, duration)
+				//If a video end, the player go to the video start and raise a pause event with currentTime = 0
+				if (end_time === 0){
+					end_time = self.duration
+				}
 				self.end_played_segment(end_time)
 				var statement = {
 					"verb":{
@@ -278,12 +298,17 @@ paella.addPlugin(function() {
 					return value >= seekedto + 1
 				})
 			}
-			var seekedfrom = a.pop()
+			//In some cases, when you seek to the end of the video the array contains zeros at the end
+			var seekedfrom = a.filter(Number).pop()
 			this.current_time = []
 			this.current_time.push(seekedto)
 			// Fin de FIXME
-			this.end_played_segment(seekedfrom)
-			this.start_played_segment(seekedto)
+			//If the video is paused it's not neccesary create a new segment, because the pause event already close a segment
+			self.progress = self.get_progress(seekedfrom, self.duration)
+			if (!this.paused){
+				this.end_played_segment(seekedfrom)
+				this.start_played_segment(seekedto)
+			}
 			//paella.player.videoContainer.duration().then(function(duration) {
 			//var progress = self.get_progress(seekedfrom, duration)
 
@@ -351,7 +376,7 @@ paella.addPlugin(function() {
 			arr.push(this.played_segments_segment_start + "[.]" + end_time);
 			this.played_segments = arr.join("[,]");
 			this.played_segments_segment_end = end_time;
-			this.played_segments_segment_start = null;
+			//this.played_segments_segment_start = null;
 		}
 
 		format_float(number){
