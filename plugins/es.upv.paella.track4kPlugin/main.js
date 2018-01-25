@@ -98,11 +98,17 @@ paella.addDataDelegate("cameraTrack",() => {
                 this._videoData = {}
                 this._trackData = {};
                 paella.data.read('cameraTrack',{id:paella.initDelegate.getId()},(data) => {
-                    this._videoData.width = data.width;
-                    this._videoData.height = data.height;
-                    this._videoData.originalWidth = data.originalWidth;
-                    this._videoData.originalHeight = data.originalHeight;
-                    this._trackData = data.positions;
+                    if (data) {
+                        this._videoData.width = data.width;
+                        this._videoData.height = data.height;
+                        this._videoData.originalWidth = data.originalWidth;
+                        this._videoData.originalHeight = data.originalHeight;
+                        this._trackData = data.positions;
+                        this._enabled = true;
+                    }
+                    else {
+                        this._enabled = false;
+                    }
                 });
 
                 this._enabled = true;

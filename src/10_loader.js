@@ -110,10 +110,10 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 			var newFrames = {};
 			data.frameList.forEach(function(frame) {
 				if (! /^[a-zA-Z]+:\/\//.test(frame.url) && !/^data:/.test(frame.url)) {
-					frame.url = This._url + frame.url;
+					frame.url = This.getVideoUrl() + frame.url;
 				}
 				if (frame.thumb && ! /^[a-zA-Z]+:\/\//.test(frame.thumb) && !/^data:/.test(frame.thumb)) {
-					frame.thumb = This._url + frame.thumb;
+					frame.thumb = This.getVideoUrl() + frame.thumb;
 				}
 				var id = frame.time;
 				newFrames[id] = frame;
@@ -126,7 +126,7 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 	loadStream:function(stream) {
 		var This=this;
 		if (stream.preview && ! /^[a-zA-Z]+:\/\//.test(stream.preview) && !/^data:/.test(stream.preview)) {
-			stream.preview = This._url + stream.preview;
+			stream.preview = This.getVideoUrl() + stream.preview;
 		}
 
 		if (stream.sources.image) {
@@ -135,10 +135,10 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 					var newFrames = {};
 					image.frames.forEach(function(frame) {
 						if (frame.src && ! /^[a-zA-Z]+:\/\//.test(frame.src) && !/^data:/.test(frame.src)) {
-							frame.src = This._url + frame.src;
+							frame.src = This.getVideoUrl() + frame.src;
 						}
 						if (frame.thumb && ! /^[a-zA-Z]+:\/\//.test(frame.thumb) && !/^data:/.test(frame.thumb)) {
-							frame.thumb = This._url + frame.thumb;
+							frame.thumb = This.getVideoUrl() + frame.thumb;
 						}
 						var id = "frame_" + frame.time;
 						newFrames[id] = frame.src;
@@ -155,7 +155,7 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 						var pattern = /^[a-zA-Z\:]+\:\/\//gi;
 						if (typeof(sourceItem.src)=="string") {
 							if(sourceItem.src.match(pattern) == null){
-								sourceItem.src = This._url + sourceItem.src;
+								sourceItem.src = This.getVideoUrl() + sourceItem.src;
 							}
 						}
 						sourceItem.type = sourceItem.mimetype;
@@ -174,7 +174,7 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 				var url = captions[i].url;
 
 				if (! /^[a-zA-Z]+:\/\//.test(url)) {
-					url = this._url + url;
+					url = This.getVideoUrl() + url;
 				}
 				var c = new paella.captions.Caption(i, captions[i].format, url, {code: captions[i].lang, txt: captions[i].text});
 				paella.captions.addCaptions(c);
@@ -198,7 +198,7 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 		blackboard.frames.forEach(function(frame) {
 			var id = "frame_" + Math.round(frame.time);
 			if (!/^[a-zA-Z]+:\/\//.test(frame.src)) {
-				frame.src = This._url + frame.src;
+				frame.src = This.getVideoUrl() + frame.src;
 			}
 			imageObject.frames[id] = frame.src;
 		});
