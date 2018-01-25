@@ -472,21 +472,29 @@ Class ("paella.VideoRect", paella.DomNode, {
 		return true;
 	},
 
-	setZoom: function(zoom,left,top) {
+	setZoom: function(zoom,left,top,tween=0) {
 		if (this.zoomAvailable()) {
 			this._zoomOffset.x = left;
 			this._zoomOffset.y = top;
 			this._zoom = zoom;
 			
-			$(this.domElement).animate({
-				width:this._zoom + '%',
-				height:this._zoom + '%'
-			},100);
-		
-			$(this.domElement).animate({
-				left:"-" + this._zoomOffset.x + "%",
-				top: "-" + this._zoomOffset.y + "%"
-			},100);
+			if (tween==0) {
+				$(this.domElement).css({
+					width:this._zoom + '%',
+					height:this._zoom + '%',
+					left:"-" + this._zoomOffset.x + "%",
+					top: "-" + this._zoomOffset.y + "%"
+				});
+			}
+			else {
+				$(this.domElement).stop(true,false).animate({
+					width:this._zoom + '%',
+					height:this._zoom + '%',
+					left:"-" + this._zoomOffset.x + "%",
+					top: "-" + this._zoomOffset.y + "%"
+				},tween,"linear");
+			}
+
 			paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
 		}
 	},

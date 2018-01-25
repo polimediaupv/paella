@@ -12,6 +12,9 @@ paella.addDataDelegate("cameraTrack",() => {
                             }
                             catch(err) {}
                         }
+                        data.positions.sort((a,b) => {
+                            return a.time-b.time;
+                        })
                         onSuccess(data)
                     },
                     () => onSuccess(null) );
@@ -33,40 +36,57 @@ paella.addDataDelegate("cameraTrack",() => {
     // Used to connect the toolbar button with the track4k plugin
     let g_track4kPlugin = null;
     
-    /*
+    
     function updatePosition(positionData) {
         let zoom = this._videoData.originalWidth / this._videoData.width;
         let left = positionData[0] / this._videoData.originalWidth;
         let top = (positionData[1] + this._videoData.originalHeight / 2) / this._videoData.originalHeight; 
-        paella.player.videoContainer.masterVideo().setZoom(zoom  * 100,left * zoom * 100,(top * zoom - 1) * 100);
+        paella.player.videoContainer.masterVideo().setZoom(zoom  * 100,left * zoom * 100,(top * zoom - 1) * 100, 1000);
     }
 
-    function nextFrame(time,trackData) {
-        let data = null;
+    function nextFrame(time) {
+        let index = -1;
         time = Math.round(time);
-        while (!data && time>0) {
-            let key = `t${ time }`;
-            data = trackData[key];
-            time--;
+        this._trackData.some((data,i) => {
+            if (data.time>=time) {
+                index = i;
+            }
+            return index!=-1;
+        });
+        // Index contains the current frame index
+        if (this._trackData.length>index+1) {
+            return this._trackData[index+1];
         }
-        return data;
+        else {
+            return null;
+        }
     }
 
-    function prevFrame(time,trackData) {
-        let data = null;
+    function prevFrame(time) {
+        let frame = this._trackData[0];
         time = Math.round(time);
-        while (!data && time>0) {
-            let key = `t${ time }`;
-            data = trackData[key];
-            time--;
-        }
-        return data;
+        this._trackData.some((data,i) => {
+            if (data.time==time) {
+                return true;
+            }
+            frame = data;
+            return false;
+        });
+        return frame;
     }
 
-    function curFrame(time,trackData) {
-        
+    function curFrame(time) {
+        let frameRect = null;
+        time = Math.round(time);
+        this._trackData.some((data,index) => {
+            if (data.time==time) {
+                frameRect = data.rect;
+            }
+            return frameRect!=null;
+        });
+        return frameRect;
     }
-    */
+    
 
     paella.addPlugin(function() {
         return class Track4KPlugin extends paella.EventDrivenPlugin {
@@ -109,13 +129,11 @@ paella.addDataDelegate("cameraTrack",() => {
                 }
                 else if (eventType==paella.events.seekToTime) {
                     this.seekTo(data.newPosition);
-                    //updatePosition.apply(this,[this._lastPosition]);
                 }
             }
     
             updateZoom(currentTime) {
-                let key = `t${ Math.round(currentTime) }`;
-                let data = this._trackData[key];
+                let data = curFrame.apply(this,[currentTime]);
                 if (data && this._lastPosition!=data && this._enabled) {
                     this._lastPosition = data;
                     updatePosition.apply(this,[data]);
@@ -123,15 +141,8 @@ paella.addDataDelegate("cameraTrack",() => {
             }
 
             seekTo(time) {
-                let data = null;
-                time = Math.round(time);
-                while (!data && time>0) {
-                    let key = `t${ time }`;
-                    data = this._trackData[key];
-                    time--;
-                }
-                
-                if (data && this._lastPosition!=data && this._enabled) {
+                let data = prevFrame.apply(this,[time]);
+                if (data && this._enabled) {
                     this._lastPosition = data;
                     updatePosition.apply(this,[data]);
                 }
@@ -152,7 +163,7 @@ paella.addDataDelegate("cameraTrack",() => {
                                         paella.player.config.player.videoZoom &&
                                         paella.player.config.player.videoZoom.minWindowSize) || 600; }
             getName() { return "es.upv.paella.videoZoomTrack4kPlugin"; }
-            getDefaultToolTip() { return base.dictionary.translate("Set zoom"); }
+            getDefaultToolTip() { return base.dictionary.translate("Set video zoom"); }
             getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
     
             checkEnabled(onSuccess) {
@@ -170,15 +181,13 @@ paella.addDataDelegate("cameraTrack",() => {
             buildContent(domElement) {
                 paella.events.bind(paella.events.videoZoomChanged, (evt,target) => {
                     if (g_track4kPlugin.enabled) {
-                        this.setText("auto");
+                        this.changeIconClass("icon-mini-videocamera");
                     }
                     else {
-                        this.setText(Math.round(target.video.zoom) + "%");
+                        this.changeIconClass("icon-mini-zoom-in");
                     }
                 });
-    
-                this.setText(g_track4kPlugin.enabled ? "auto" : "100%");
-    
+        
                 function getZoomButton(className,onClick,content) {
                     let btn = document.createElement('div');
                     btn.className = `videoZoomToolbarItem ${ className }`;

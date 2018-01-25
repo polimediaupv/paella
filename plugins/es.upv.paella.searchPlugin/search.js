@@ -2,7 +2,7 @@ paella.addPlugin(function() {
 	return class SearchPlugin extends paella.ButtonPlugin {
 		getAlignment() { return 'right'; }
 		getSubclass() { return 'searchButton'; }
-		getIconClass() { return 'icon-zoom'; }
+		getIconClass() { return 'icon-binoculars'; }
 		getMinWindowSize() { return 550; }
 		getName() { return "es.upv.paella.searchPlugin"; }
 		getButtonType() { return paella.ButtonPlugin.type.popUpButton; }	

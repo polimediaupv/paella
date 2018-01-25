@@ -4,3 +4,13 @@
     width: 50px;
     text-align: center;
 }
+
+.buttonPlugin.right.videoZoomToolbar i.button-icon.icon-mini-videocamera {
+    font-size: 27px;
+    margin-left: -2px;
+}
+
+.buttonPlugin.right.videoZoomToolbar i.button-icon.icon-mini-zoom-in {
+    font-size: 29px;
+    margin-left: -6px;
+}
