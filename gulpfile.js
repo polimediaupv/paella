@@ -98,6 +98,7 @@ gulp.task("compileES2015", function() {
 	return gulp.src(files)
 		.pipe(concat("paella_player_es2015.js"))
 		.pipe(replace(/@version@/,getVersion()))
+		.pipe(uglify())
 		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
 });
 
