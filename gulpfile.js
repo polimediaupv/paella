@@ -8,7 +8,7 @@ const	gulp = require('gulp'),
 		merge = require('gulp-merge-json'),
 		fs = require('fs'),
 		minify = require('gulp-minify'),
-		uglify = require('gulp-uglify'),
+		uglify = require('gulp-uglify-es').default,
 		flatten = require('gulp-flatten'),
 		path = require('path'),
 
