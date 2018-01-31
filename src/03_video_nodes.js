@@ -434,6 +434,8 @@ Class ("paella.VideoRect", paella.DomNode, {
 				paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
 
 				this._mouseCenter = mouse;
+				evt.stopPropagation();
+				return false;
 			});
 
 			$(eventCapture).on('mousedown',(evt) => {
