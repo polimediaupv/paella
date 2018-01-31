@@ -38,11 +38,14 @@ paella.addDataDelegate("cameraTrack",() => {
     let g_track4kPlugin = null;
     
     
-    function updatePosition(positionData) {
+    function updatePosition(positionData,nextFrameData) {
+        let twinTime = nextFrameData ? (nextFrameData.time - positionData.time) * 1000 : 100;
+        if (twinTime>2000) twinTime = 2000;
         let zoom = this._videoData.originalWidth / this._videoData.width;
-        let left = positionData[0] / this._videoData.originalWidth;
-        let top = (positionData[1] + this._videoData.originalHeight / 2) / this._videoData.originalHeight; 
-        paella.player.videoContainer.masterVideo().setZoom(zoom  * 100,left * zoom * 100,(top * zoom - 1) * 100, 1000);
+        let rect = positionData.rect;
+        let left = rect[0] / this._videoData.originalWidth;
+        let top = (rect[1] + this._videoData.originalHeight / 2) / this._videoData.originalHeight; 
+        paella.player.videoContainer.masterVideo().setZoom(zoom  * 100,left * zoom * 100,(top * zoom - 1) * 100, twinTime);
     }
 
     function nextFrame(time) {
@@ -81,7 +84,7 @@ paella.addDataDelegate("cameraTrack",() => {
         time = Math.round(time);
         this._trackData.some((data,index) => {
             if (data.time==time) {
-                frameRect = data.rect;
+                frameRect = data;
             }
             return frameRect!=null;
         });
@@ -141,9 +144,10 @@ paella.addDataDelegate("cameraTrack",() => {
     
             updateZoom(currentTime) {
                 let data = curFrame.apply(this,[currentTime]);
+                let nextFrameData = nextFrame.apply(this,[currentTime]);
                 if (data && this._lastPosition!=data && this._enabled) {
                     this._lastPosition = data;
-                    updatePosition.apply(this,[data]);
+                    updatePosition.apply(this,[data,nextFrameData]);
                 }
             }
 
