@@ -100,7 +100,7 @@ paella.addDataDelegate("cameraTrack",() => {
                 g_track4kPlugin = this;
 
                 this._videoData = {}
-                this._trackData = {};
+                this._trackData = [];
                 paella.data.read('cameraTrack',{id:paella.initDelegate.getId()},(data) => {
                     if (data) {
                         this._videoData.width = data.width;
@@ -132,6 +132,7 @@ paella.addDataDelegate("cameraTrack",() => {
                 return [ paella.events.timeupdate, paella.events.play, paella.events.seekToTime ]
             }
             onEvent(eventType,data) {
+                if (!this._trackData.length) return;
                 if (eventType==paella.events.play) {
                 }
                 else if (eventType==paella.events.timeupdate) {
