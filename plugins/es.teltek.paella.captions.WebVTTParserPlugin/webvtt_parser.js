@@ -1,13 +1,12 @@
-(function () {
+paella.addPlugin(function () {
     /////////////////////////////////////////////////
     // WebVTT Parser
     /////////////////////////////////////////////////
-    Class("paella.captions.parsers.WebVTTParserPlugin", paella.CaptionParserPlugIn, {
-        ext: ["vtt"],
-        getName: function () {
-            return "es.teltek.paella.captions.WebVTTParserPlugin";
-        },
-        parse: function (content, lang, next) {
+    return class WebVTTParserPlugin extends paella.CaptionParserPlugIn {
+        get ext() { return ["vtt"] }
+        getName() { return "es.teltek.paella.captions.WebVTTParserPlugin"; }
+
+        parse(content, lang, next) {
             var captions = [];
             var self = this;
             var lls = content.split("\n");
@@ -55,9 +54,9 @@
             } else {
                 next(true);
             }
-        },
+        }
 
-        parseTimeTextToSeg: function (ttime) {
+        parseTimeTextToSeg(ttime) {
             var nseg = 0;
             var factor = 1;
             ttime = /(([0-9]{2}:)?[0-9]{2}:[0-9]{2}.[0-9]{3})/.exec(ttime);
@@ -68,10 +67,5 @@
             }
             return nseg;
         }
-    });
-
-
-    new paella.captions.parsers.WebVTTParserPlugin();
-
-
-}());
+    }
+})

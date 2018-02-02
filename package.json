@@ -1,6 +1,6 @@
 {
   "name": "paellaplayer",
-  "version": "5.2.10",
+  "version": "5.3.0",
   "description": "Paella Player",
   "license": "ECL-2.0",
   "repository": {
@@ -16,14 +16,18 @@
     "gulp-merge-json": "^0.3.0",
     "gulp-replace": "^0.5.4",
     "gulp-sourcemaps": "^1.6.0",
+    "traceur": "0.0.111",
     "gulp-traceur": "^0.17.2",
-    "gulp-uglify": "^2.0.0",
+    "gulp-uglify-es": "^1.0.0",
+    "gulp-minify": "^1.0.0",
     "run-sequence": "^1.2.2",
     "gulp-nightwatch": "^0.3.2",
     "nightwatch": "^0.9.14"
   },
   "scripts": {
-	  "test": "gulp test:local"
+    "test": "gulp test:local"
+  },
+  "dependencies": {
+    "electron-window-state-manager": "^0.3.2"
   }
-  
 }

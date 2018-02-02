@@ -1,12 +1,12 @@
 /////////////////////////////////////////////////
 // Caption Search
 /////////////////////////////////////////////////
-Class ("paella.plugins.CaptionsSearchPlugIn", paella.SearchServicePlugIn, {
-	getName: function() { return "es.upv.paella.search.captionsSearchPlugin"; },
-
-	search: function(text, next) {
-		paella.captions.search(text, next);
-	}	
+paella.addPlugin(function() {
+	return class CaptionsSearchPlugIn extends paella.SearchServicePlugIn {
+		getName() { return "es.upv.paella.search.captionsSearchPlugin"; }
+	
+		search(text, next) {
+			paella.captions.search(text, next);
+		}	
+	}
 });
-
-new paella.plugins.CaptionsSearchPlugIn();

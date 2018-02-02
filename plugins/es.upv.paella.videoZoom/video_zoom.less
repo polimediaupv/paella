@@ -47,6 +47,12 @@
     justify-content: center;
 }
 
+/* The canvas "freeze frame" to overlay video element, instead of flex side aligned */
+.freezeFrame {
+    align-self:center;
+    position: absolute;
+}
+
 .videoZoomButton {
     z-index: 1;
     margin-left: 2px;
@@ -96,10 +102,6 @@
 }
 
 .buttonPlugin.videoZoomToolbar {
-    background-position: -600% -100%;
-    font-size: 0.8em;
-    padding-top: 9px;
-    text-align: center;
 }
 
 .videoZoomToolbarItem {

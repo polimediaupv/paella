@@ -1,29 +1,41 @@
 /*  
 	Paella HTML 5 Multistream Player
-	Copyright (C) 2013  Universitat Politècnica de València
+	Copyright (C) 2017  Universitat Politècnica de València Licensed under the
+	Educational Community License, Version 2.0 (the "License"); you may
+	not use this file except in compliance with the License. You may
+	obtain a copy of the License at
 
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
+	http://www.osedu.org/licenses/ECL-2.0
 
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an "AS IS"
+	BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+	or implied. See the License for the specific language governing
+	permissions and limitations under the License.
 */
+
 var GlobalParams = {
 	video:{zIndex:1},
 	background:{zIndex:0}
 };
 
 
-var paella = {};
+window.paella = window.paella || {};
 paella.player = null;
 paella.version = "@version@";
+
+(function buildBaseUrl() {
+	if (window.paella_debug_baseUrl) {
+		paella.baseUrl = window.paella_debug_baseUrl;
+	}
+	else {
+		var scripts = document.getElementsByTagName('script');
+		var script = scripts[scripts.length-1].src.split("/");
+		script.pop(); // Remove javascript file name
+		script.pop(); // Remove javascript/ folder name
+		paella.baseUrl = script.join("/") + '/';
+	}
+})();
 
 paella.events = {
 	play:"paella:play",
@@ -75,7 +87,9 @@ paella.events = {
 	captionsDisabled: 'paella:caption:disabled',  // Event triguered when a caption es disabled.
 	
 
-	trigger:function(event,params) { $(document).trigger(event,params); },
+	trigger:function(event,params) {
+		$(document).trigger(event,params);
+	},
 	bind:function(event,callback) { $(document).bind(event,function(event,params) { callback(event,params);}); },
 	
 	setupExternalListener:function() {

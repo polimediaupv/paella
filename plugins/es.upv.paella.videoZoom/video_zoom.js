@@ -1,4 +1,4 @@
-(function() {
+paella.addPlugin(function() {
     let g_canvasWidth = 320;
     let g_canvasHeight = 180;
 
@@ -55,9 +55,10 @@
         $(zoomButton).on('mouseup',() => {
             setTimeout(() => paella.player.videoContainer.enablePlayOnClick(),10);
         });
+
     }
 
-    class VideoZoomPlugin extends paella.VideoOverlayButtonPlugin {
+    return class VideoZoomPlugin extends paella.VideoOverlayButtonPlugin {
         getIndex() {return 10; }
         getSubclass() { return "videoZoom"; }
         getAlignment() { return 'right'; }
@@ -171,12 +172,14 @@
             return "es.upv.paella.videoZoomPlugin";
         }
     }
+});
 
-    paella.plugins.videoZoomPlugin = new VideoZoomPlugin();
-
-    class VideoZoomToolbarPlugin extends paella.ButtonPlugin {
+paella.addPlugin(function() {
+    
+    return class VideoZoomToolbarPlugin extends paella.ButtonPlugin {
         getAlignment() { return 'right'; }
         getSubclass() { return "videoZoomToolbar"; }
+        getIconClass() { return 'icon-screen'; }
         getIndex() { return 2030; }
         getMinWindowSize() { return (paella.player.config.player &&
                                     paella.player.config.player.videoZoom &&
@@ -219,9 +222,4 @@
             }));
         }
     }
-
-
-    paella.plugins.videoZoomToolbarPlugin = new VideoZoomToolbarPlugin();
-
-
-})();
+});

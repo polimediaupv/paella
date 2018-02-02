@@ -1,20 +1,18 @@
-/*
- Paella HTML 5 Multistream Player
- Copyright (C) 2013  Universitat Politècnica de València
+/*  
+	Paella HTML 5 Multistream Player
+	Copyright (C) 2017  Universitat Politècnica de València Licensed under the
+	Educational Community License, Version 2.0 (the "License"); you may
+	not use this file except in compliance with the License. You may
+	obtain a copy of the License at
 
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+	http://www.osedu.org/licenses/ECL-2.0
 
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an "AS IS"
+	BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+	or implied. See the License for the specific language governing
+	permissions and limitations under the License.
+*/
 
 
 Class ("paella.VideoLoader", {
@@ -39,7 +37,20 @@ Class ("paella.VideoLoader", {
 		return this.metadata;
 	},
 
-	loadVideo:function(videoId,onSuccess) {
+	getVideoId:function() {
+		return paella.initDelegate.getId();
+	},
+
+	getVideoUrl:function() {
+		// This function must to return the base video URL
+		return "";
+	},
+
+	getDataUrl:function() {
+		// This function must to return the location of the video data file
+	},
+
+	loadVideo:function(onSuccess) {
 		// This function must to:
 		//	- load this.streams and this.frameList
 		// 	- Check streams compatibility using this.isStreamCompatible(streamIndex)
@@ -177,8 +188,8 @@ Class ("paella.PlayerBase", {
 
 Class ("paella.InitDelegate", {
 	initParams:{
-		configUrl:'config/config.json',
-		dictionaryUrl:'localization/paella',
+		configUrl:paella.baseUrl + 'config/config.json',
+		dictionaryUrl:paella.baseUrl + 'localization/paella',
 		accessControl:null,
 		videoLoader:null
 	},

@@ -1,20 +1,18 @@
-/*
- Paella HTML 5 Multistream Player
- Copyright (C) 2013  Universitat Politècnica de València
+/*  
+	Paella HTML 5 Multistream Player
+	Copyright (C) 2017  Universitat Politècnica de València Licensed under the
+	Educational Community License, Version 2.0 (the "License"); you may
+	not use this file except in compliance with the License. You may
+	obtain a copy of the License at
 
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+	http://www.osedu.org/licenses/ECL-2.0
 
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an "AS IS"
+	BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+	or implied. See the License for the specific language governing
+	permissions and limitations under the License.
+*/
 
 
 // Paella Mouse Manager
@@ -75,6 +73,16 @@ Class ("paella.MouseManager", {
 
 // paella.utils
 ///////////////////////////////////////////////////////
+(function initSkinDeps() {
+	var link = document.createElement('link');
+	link.rel = 'stylesheet';
+	link.href = paella.baseUrl + 'resources/bootstrap/css/bootstrap.min.css';
+	link.type = 'text/css';
+	link.media = 'screen';
+	link.charset = 'utf-8';
+	document.head.appendChild(link);
+})();
+
 paella.utils = {	
 	mouseManager: new paella.MouseManager(),
 	
@@ -87,15 +95,15 @@ paella.utils = {
 		},
 		
 		profiles: function() {
-			return paella.utils.folders.get("profiles") || "config/profiles";			
+			return paella.baseUrl + (paella.utils.folders.get("profiles") || "config/profiles");
 		},
 		
 		resources: function() {
-			return paella.utils.folders.get("resources") || "resources";			
+			return paella.baseUrl + (paella.utils.folders.get("resources") || "resources");
 		},
 		
 		skins: function() {
-			return paella.utils.folders.get("skins") || paella.utils.folders.get("resources") + "/style";			
+			return paella.baseUrl + (paella.utils.folders.get("skins") || paella.utils.folders.get("resources") + "/style");
 		}
 	},
 	
@@ -270,97 +278,146 @@ Class ("paella.DataDelegate", {
 
 paella.dataDelegates = {};
 
-Class ("paella.dataDelegates.CookieDataDelegate", paella.DataDelegate, {
-	initialize:function() {
-	},
+(function() {
+	let g_delegateCallbacks = {};
+	let g_dataDelegates = [];
 
-	serializeKey:function(context,params) {
-		if (typeof(params)=='object') params = JSON.stringify(params);
-		return context + '|' + params;
-	},
+	class Data {
+		get enabled() { return this._enabled; }
 
-	read:function(context,params,onSuccess) {
-		var key = this.serializeKey(context,params);
-		var value = base.cookies.get(key);
-		try {
-			value = unescape(value);
-			value = JSON.parse(value);
+		get dataDelegates() { return g_dataDelegates; }
+	
+		constructor(config) {
+			this._enabled = config.data.enabled;
+
+			// Delegate callbacks
+			let executedCallbacks = [];
+			for (let context in g_delegateCallbacks) {
+				let callback = g_delegateCallbacks[context];
+				let DelegateClass = null;
+				let delegateName = null;
+
+				if (!executedCallbacks.some((execCallbackData) => {
+					if (execCallbackData.callback==callback) {
+						delegateName = execCallbackData.delegateName;
+						return true;
+					}
+				})) {
+					DelegateClass = g_delegateCallbacks[context]();
+					delegateName = DelegateClass.name;
+					paella.dataDelegates[delegateName] = DelegateClass;
+					executedCallbacks.push({ callback:callback, delegateName:delegateName });
+				}
+
+				if (!config.data.dataDelegates[context]) {
+					config.data.dataDelegates[context] = delegateName;
+				}
+
+			}
+
+			for (var key in config.data.dataDelegates) {
+				try {
+					
+					var delegateName = config.data.dataDelegates[key];
+					var DelegateClass = paella.dataDelegates[delegateName];
+					var delegateInstance = new DelegateClass();
+					g_dataDelegates[key] = delegateInstance;
+				
+				}
+				catch (e) {
+					console.warn("Warning: delegate not found - " + delegateName);
+				}
+			}
+
+
+			// Default data delegate
+			if (!this.dataDelegates["default"]) {
+				this.dataDelegates["default"] = new paella.dataDelegates.DefaultDataDelegate();
+			}
 		}
-		catch (e) {}
-		if (typeof(onSuccess)=='function') {
-			onSuccess(value,true);
+	
+		read(context,key,onSuccess) {
+			var del = this.getDelegate(context);
+			del.read(context,key,onSuccess);
 		}
-	},
-
-	write:function(context,params,value,onSuccess) {
-		var key = this.serializeKey(context,params);
-		if (typeof(value)=='object') value = JSON.stringify(value);
-		value = escape(value);
-		base.cookies.set(key,value);
-		if(typeof(onSuccess)=='function') {
-			onSuccess({},true);
+	
+		write(context,key,params,onSuccess) {
+			var del = this.getDelegate(context);
+			del.write(context,key,params,onSuccess);
 		}
-	},
-
-	remove:function(context,params,onSuccess) {
-		var key = this.serializeKey(context,params);
-		if (typeof(value)=='object') value = JSON.stringify(value);
-		base.cookies.set(key,'');
-		if(typeof(onSuccess)=='function') {
-			onSuccess({},true);
+	
+		remove(context,key,onSuccess) {
+			var del = this.getDelegate(context);
+			del.remove(context,key,onSuccess);
 		}
-
+	
+		getDelegate(context) {
+			if (this.dataDelegates[context]) return this.dataDelegates[context];
+			else return this.dataDelegates["default"];
+		}
 	}
-});
 
-paella.dataDelegates.DefaultDataDelegate = paella.dataDelegates.CookieDataDelegate;
+	paella.Data = Data;
 
+	paella.addDataDelegate = function(context,callback) {
+		if (Array.isArray(context)) {
+			context.forEach((ctx) => {
+				g_delegateCallbacks[ctx] = callback;
+			})
+		}
+		else if (typeof(context)=="string") {
+			g_delegateCallbacks[context] = callback;
+		}
+	}
 
-Class ("paella.Data", {
-	enabled:false,
-	dataDelegates:{},
+})();
 
-	initialize:function(config) {
-		this.enabled = config.data.enabled;
-		for (var key in config.data.dataDelegates) {
+paella.addDataDelegate(["default","trimming"], () => {
+	paella.dataDelegates.DefaultDataDelegate = class CookieDataDelegate extends paella.DataDelegate {
+		serializeKey(context,params) {
+			if (typeof(params)=='object') params = JSON.stringify(params);
+			return context + '|' + params;
+		}
+	
+		read(context,params,onSuccess) {
+			var key = this.serializeKey(context,params);
+			var value = base.cookies.get(key);
 			try {
-				var delegateName = config.data.dataDelegates[key];
-				var DelegateClass = paella.dataDelegates[delegateName];
-				var delegateInstance = new DelegateClass();
-				this.dataDelegates[key] = delegateInstance;
+				value = unescape(value);
+				value = JSON.parse(value);
 			}
-			catch (e) {
-				base.log.debug("Warning: delegate not found - " + delegateName);
+			catch (e) {}
+			if (typeof(onSuccess)=='function') {
+				onSuccess(value,true);
 			}
 		}
-		if (!this.dataDelegates["default"]) {
-			this.dataDelegates["default"] = new paella.dataDelegates.DefaultDataDelegate();
+	
+		write(context,params,value,onSuccess) {
+			var key = this.serializeKey(context,params);
+			if (typeof(value)=='object') value = JSON.stringify(value);
+			value = escape(value);
+			base.cookies.set(key,value);
+			if(typeof(onSuccess)=='function') {
+				onSuccess({},true);
+			}
 		}
-	},
-
-	read:function(context,key,onSuccess) {
-		var del = this.getDelegate(context);
-		del.read(context,key,onSuccess);
-	},
-
-	write:function(context,key,params,onSuccess) {
-		var del = this.getDelegate(context);
-		del.write(context,key,params,onSuccess);
-	},
-
-	remove:function(context,key,onSuccess) {
-		var del = this.getDelegate(context);
-		del.remove(context,key,onSuccess);
-	},
-
-	getDelegate:function(context) {
-		if (this.dataDelegates[context]) return this.dataDelegates[context];
-		else return this.dataDelegates["default"];
+	
+		remove(context,params,onSuccess) {
+			var key = this.serializeKey(context,params);
+			if (typeof(value)=='object') value = JSON.stringify(value);
+			base.cookies.set(key,'');
+			if(typeof(onSuccess)=='function') {
+				onSuccess({},true);
+			}
+		}
 	}
-});
+
+	return paella.dataDelegates.DefaultDataDelegate;
+})
 
 // Will be initialized inmediately after loading config.json, in PaellaPlayer.onLoadConfig()
 paella.data = null;
+
 
 Class ("paella.MessageBox", {
 	modalContainerClassName:'modalMessageContainer',
@@ -548,7 +605,11 @@ Class ("paella.MessageBox", {
 		messageContainer.innerHTML = message;
 		modalContainer.appendChild(messageContainer);
 
-		$('body')[0].appendChild(modalContainer);
+		if (paella.player.isFullScreen()) {
+			paella.player.mainContainer.appendChild(modalContainer);
+		}else{
+			$('body')[0].appendChild(modalContainer);
+		}
 
 		this.currentMessageBox = modalContainer;
 		this.messageContainer = messageContainer;

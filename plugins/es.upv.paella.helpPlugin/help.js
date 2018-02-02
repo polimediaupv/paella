@@ -1,36 +1,37 @@
-Class ("paella.plugins.HelpPlugin",paella.ButtonPlugin, {
+paella.addPlugin(function() {
+	return class HelpPlugin extends paella.ButtonPlugin {
 
-	getIndex:function() { return 509; },
-	getAlignment:function() { return 'right'; },
-	getSubclass:function() { return "helpButton"; },
-	getName:function() { return "es.upv.paella.helpPlugin"; },
-	getMinWindowSize:function() { return 650; },
+		getIndex() { return 509; }
+		getAlignment() { return 'right'; }
+		getSubclass() { return "helpButton"; }
+		getIconClass() { return 'icon-help'; }
+		getName() { return "es.upv.paella.helpPlugin"; }
+		getMinWindowSize() { return 650; }
 
-	getDefaultToolTip:function() { return base.dictionary.translate("Show help") + ' (' + base.dictionary.translate("Paella version:") + ' ' + paella.version + ')'; },
+		getDefaultToolTip() { return base.dictionary.translate("Show help") + ' (' + base.dictionary.translate("Paella version:") + ' ' + paella.version + ')'; }
 
 
-	checkEnabled:function(onSuccess) { 
-		var availableLangs = (this.config && this.config.langs) || [];
-		onSuccess(availableLangs.length>0); 
-	},
+		checkEnabled(onSuccess) { 
+			var availableLangs = (this.config && this.config.langs) || [];
+			onSuccess(availableLangs.length>0); 
+		}
 
-	action:function(button) {
-		var mylang = base.dictionary.currentLanguage();
+		action(button) {
+			var mylang = base.dictionary.currentLanguage();
+			
+			var availableLangs = (this.config && this.config.langs) || [];
+			var idx = availableLangs.indexOf(mylang);
+			if (idx < 0) { idx = 0; }
+							
+			//paella.messageBox.showFrame("http://paellaplayer.upv.es/?page=usage");
+			let url = "resources/style/help/help_" + availableLangs[idx] + ".html";
+			if (base.userAgent.browser.IsMobileVersion) {
+				window.open(url);
+			}
+			else {
+				paella.messageBox.showFrame(url);
+			}
+		}
 		
-		var availableLangs = (this.config && this.config.langs) || [];
-		var idx = availableLangs.indexOf(mylang);
-		if (idx < 0) { idx = 0; }
-						
-		//paella.messageBox.showFrame("http://paellaplayer.upv.es/?page=usage");
-		let url = "resources/style/help/help_" + availableLangs[idx] + ".html";
-		if (base.userAgent.browser.IsMobileVersion) {
-			window.open(url);
-		}
-		else {
-			paella.messageBox.showFrame(url);
-		}
 	}
-	
 });
-
-paella.plugins.helpPlugin = new paella.plugins.HelpPlugin();

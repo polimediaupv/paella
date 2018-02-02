@@ -44,11 +44,11 @@
 	"data":{
 		"enabled":true,
 		"dataDelegates":{
-			"default":"CookieDataDelegate",
 			"trimming":"CookieDataDelegate",
 			"userInfo": "UserDataDelegate",
 			"visualAnnotations": "VisualAnnotationsDataDelegate",
-			"metadata":"VideoManifestMetadataDataDelegate"
+			"metadata":"VideoManifestMetadataDataDelegate",
+			"cameraTrack":"TrackCameraDataDelegate"
 		}
 	},
 	"folders": {
@@ -86,7 +86,9 @@
 			"es.upv.paella.ratePlugin": { "enabled":true },
 			"es.upv.paella.videoZoomPlugin": { "enabled":true },
 			"es.upv.paella.audioLanguage": { "enabled":true },
-			"es.upv.paella.videoZoomToolbarPlugin": { "enabled":true, "targetStreamIndex":0 },
+			"es.upv.paella.videoZoomToolbarPlugin": { "enabled":false, "targetStreamIndex":0 },
+			"es.upv.paella.videoZoomTrack4kPlugin": { "enabled":true, "targetStreamIndex":0 },
+			"es.upv.paella.airPlayPlugin": { "enabled":true },
 
 			"//****": "Video Overlay Button Plugins",
 			"es.upv.paella.liveStreamingIndicatorPlugin":  { "enabled": true },
@@ -116,6 +118,7 @@
 			"es.upv.paella.trimmingPlayerPlugin": {"enabled":true},
 			"es.upv.paella.zoomPlugin": {"enabled": false},
 			"es.upv.paella.windowTitlePlugin": {"enabled": true},
+			"es.upv.paella.track4kPlugin": { "enabled":true },
 									
 			"//****": "Captions Parser Plugins",
 			"es.upv.paella.captions.DFXPParserPlugin": {"enabled":true},
@@ -127,11 +130,20 @@
 			
 			"//****": "User Tracking Saver Plugins",
 			"es.upv.paella.usertracking.elasticsearchSaverPlugin": { "enabled": false, "url": "http://my.elastic.server"},
-			"es.upv.paella.usertracking.GoogleAnalyticsSaverPlugIn": { "enabled": false, "trackingID": "UA-XXXXXXXX-Y" }			
+			"es.upv.paella.usertracking.GoogleAnalyticsSaverPlugIn": { "enabled": false, "trackingID": "UA-XXXXXXXX-Y" },
+			"es.upv.paella.usertracking.piwikSaverPlugIn": { "enabled": false, "tracker":"//tracker.server.com", "siteId": "1" }			
 		}
 	},
     "standalone" : {
         "repository": "../repository/"
-    }
+	},
+	"skin": {
+		"available": [
+			"dark",
+			"dark_small",
+			"light",
+			"light_small"
+		]
+	}
 }
 

@@ -7,7 +7,8 @@ const	gulp = require('gulp'),
 		traceur = require('gulp-traceur'),
 		merge = require('gulp-merge-json'),
 		fs = require('fs'),
-		uglify = require('gulp-uglify'),
+		minify = require('gulp-minify'),
+		uglify = require('gulp-uglify-es').default,
 		flatten = require('gulp-flatten'),
 		path = require('path'),
 
@@ -53,6 +54,25 @@ function getVersion() {
 	}
 }
 
+function getFiles(dir,fileExt,filelist) {
+	let fs = require('fs'),
+	files = fs.readdirSync(dir);
+	filelist = filelist || [];
+	if (!Array.isArray(fileExt)) {
+		fileExt = [fileExt];
+	}
+	files.forEach(function(file) {
+		let ext = file.split('.').pop();
+		if (fs.statSync(dir + '/' + file).isDirectory() && file!='deps') {
+			filelist = getFiles(dir + file + '/', fileExt, filelist);
+		}
+		else if (fileExt.indexOf(ext)!=-1) {
+			filelist.push(dir + file);
+		}
+	});
+	return filelist;
+}
+
 gulp.task("webserver", function() {
 	connect.server({
 		name: 'Paella Player',
@@ -61,22 +81,48 @@ gulp.task("webserver", function() {
 	});
 });
 
-gulp.task("compile", function() {
-	return gulp.src(["src/*.js","plugins/*/*.js"])
-		.pipe(traceur())
+gulp.task("compileES5", function() {
+	let files = getFiles("src/","js");
+	files = getFiles("plugins/","js",files);
+	return gulp.src(files)
 		.pipe(concat("paella_player.js"))
+		.pipe(traceur())
 		.pipe(replace(/@version@/,getVersion()))
 		.pipe(uglify())
 		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
 });
 
-gulp.task("compileDebug", function() {
-	return gulp.src(["src/*.js","plugins/*/*.js"])
+gulp.task("compileES2015", function() {
+	let files = getFiles("src/","js");
+	files = getFiles("plugins/","js",files);
+	return gulp.src(files)
+		.pipe(concat("paella_player_es2015.js"))
+		.pipe(replace(/@version@/,getVersion()))
+		.pipe(uglify())
+		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
+});
+
+gulp.task("compileDebugES5", function() {
+	let files = getFiles("src/","js");
+	files = getFiles("plugins/","js",files);
+	return gulp.src(files)
 		.pipe(traceur())
 		.pipe(concat("paella_player.js"))
 		.pipe(replace(/\@version\@/,getVersion()))
 		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
 });
+
+gulp.task("compileDebugES2015", function() {
+	let files = getFiles("src/","js");
+	files = getFiles("plugins/","js",files);
+	return gulp.src(files)
+		.pipe(concat("paella_player_es2015.js"))
+		.pipe(replace(/\@version\@/,getVersion()))
+		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
+});
+
+gulp.task("compile",["compileES5","compileES2015"]);
+gulp.task("compileDebug",["compileDebugES5","compileDebugES2015"]);
 
 gulp.task("styles", function() {
 	let p = [];
@@ -124,8 +170,15 @@ gulp.task("copy", function() {
 		gulp.src('resources/images/**')
 			.pipe(gulp.dest(`${config.outDir}player/resources/images`)),
 
+		gulp.src('resources/style/fonts/**')
+			.pipe(gulp.dest(`${config.outDir}player/resources/style/fonts`)),
+
 		gulp.src(['index.html','test.html'])
-			.pipe(gulp.dest(`${config.outDir}player/`))
+			.pipe(gulp.dest(`${config.outDir}player/`)),
+
+		gulp.src('node_modules/traceur/bin/traceur-runtime.js')
+			.pipe(minify({ ext: { min: '.min.js' }}))
+			.pipe(gulp.dest(`${config.outDir}player/javascript`))
 	];
 
 	function addPlugins(pluginPath) {

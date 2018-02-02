@@ -3,16 +3,16 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 	_currentQuality:null,
 	_duration:0,
 	_paused:true,
-
+	_streamName:null,
 	_flashId:null,
 	_swfContainer:null,
 	_flashVideo:null,
 	_volume:1,
 
-
 	initialize:function(id,stream,left,top,width,height) {
 		this.parent(id,stream,'div',left,top,width,height);
 		this._flashId = id + 'Movie';
+		this._streamName = 'rtmp';
 		var This = this;
 
 		this._stream.sources.rtmp.sort(function(a,b) {
@@ -286,17 +286,12 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 			var sources = this._stream.sources.rtmp;
 			this._currentQuality = index<sources.length ? index:0;
 			var source = sources[index];
-			if (source.isLiveStream) {
-				return resolve();
-			}
-			else {
-				var currentTime = this._currentTime;
-				this.load()
-					.then(function() {
-						//This._loadCurrentFrame();
-						resolve();
-					});
-			}
+			this._ready = false;
+			this._isReady = false;
+			this.load()
+				.then(function() {
+					resolve();
+				});
 		});
 	},
 

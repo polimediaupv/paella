@@ -1,23 +1,23 @@
-Class ("paella.plugins.WindowTitlePlugin",paella.EventDrivenPlugin,{
-	_initDone:false,
+paella.addPlugin(function() {
+	return class WindowTitlePlugin extends paella.EventDrivenPlugin {
+		
+		getName() {
+			return "es.upv.paella.windowTitlePlugin";
+		}
+		
+		checkEnabled(onSuccess) {
+			this._initDone = false;
+			paella.player.videoContainer.masterVideo().duration()
+				.then((d) => {
+					this.loadTitle();
+				});
+			onSuccess(true);
+		}
 
-	getName:function() {
-		return "es.upv.paella.windowTitlePlugin";
-	},
-
-	checkEnabled:function(onSuccess) {
-		paella.player.videoContainer.masterVideo().duration()
-			.then((d) => {
-				this.loadTitle();
-			});
-		onSuccess(true);
-	},
-
-	loadTitle:function() {
-		var title = paella.player.videoLoader.getMetadata() && paella.player.videoLoader.getMetadata().title;
-		document.title = title || document.title;
-		this._initDone = true;
-	}
+		loadTitle() {
+			var title = paella.player.videoLoader.getMetadata() && paella.player.videoLoader.getMetadata().title;
+			document.title = title || document.title;
+			this._initDone = true;
+		}
+	};
 });
-
-paella.plugins.windowTitlePlugin = new paella.plugins.WindowTitlePlugin();
