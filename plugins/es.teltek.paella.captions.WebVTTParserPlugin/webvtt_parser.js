@@ -44,7 +44,7 @@ paella.addPlugin(function () {
                     if (c.content === undefined) {
                         c.content = ll;
                     } else {
-                        c.content += "<p></p>" + ll;
+                        c.content += "<br/>" + ll;
                     }
                 }
             }
