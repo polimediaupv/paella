@@ -1438,7 +1438,7 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 			var minDiff = 10;
 			var re = /([0-9\.]+)\/([0-9\.]+)/;
 			var result = profileData.rect[0];
-			var videoAspectRatio = videoDimensions.h==0 ? 1.333333:videoDimensions.w / videoDimensions.h;
+			var videoAspectRatio = videoDimensions.h==0 ? 1.777777:videoDimensions.w / videoDimensions.h;
 			var profileAspectRatio = 1;
 			var reResult = false;
 			profileData.rect.forEach(function(rect) {
