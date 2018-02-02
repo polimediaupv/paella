@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+* Paella 5.3.0
+
+  * New plugin registration system.
+  * Automatic zoom using track 4k
+  * Refactoring and bug fixes
+  * Use 16/9 aspect ratio for audio sources
+  * New plugin: Usertracking xAPI plugin (@dpeite)
+  * New plugin: Usertracking Piwik plugin
+
 * Paella 5.2.10
 
   * Fix publish scripts
