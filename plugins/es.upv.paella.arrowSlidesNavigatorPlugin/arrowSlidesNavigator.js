@@ -153,7 +153,7 @@ paella.addPlugin(function() {
 			let trimming = null;
 			this.getCurrentRange()
 				.then((range) => {
-					paella.player.videoContainer.seekToTime(range.prev-1);
+					paella.player.videoContainer.seekToTime(range.prev);
 				});
 		}
 		
