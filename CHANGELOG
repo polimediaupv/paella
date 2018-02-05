@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.2.11
+
+  * Fix bug in embed code
+
 * Paella 5.2.10
 
   * Fix publish scripts
