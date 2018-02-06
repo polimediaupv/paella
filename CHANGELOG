@@ -10,6 +10,10 @@ CHANGELOG
   * New plugin: Usertracking xAPI plugin (@dpeite)
   * New plugin: Usertracking Piwik plugin
 
+* Paella 5.2.12
+
+  * Changed function to build localization files
+
 * Paella 5.2.11
 
   * Fix bug in embed code
