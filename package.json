@@ -1,6 +1,6 @@
 {
   "name": "paellaplayer",
-  "version": "5.2.11",
+  "version": "5.2.12",
   "description": "Paella Player",
   "license": "ECL-2.0",
   "repository": {
@@ -8,22 +8,26 @@
     "url": "https://github.com/polimediaupv/paella.git"
   },
   "devDependencies": {
+    "glob-all": "^3.1.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-connect": "^3.1.0",
     "gulp-flatten": "^0.3.1",
     "gulp-less": "^3.1.0",
     "gulp-merge-json": "^0.3.0",
+    "gulp-nightwatch": "^0.3.2",
     "gulp-replace": "^0.5.4",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-traceur": "^0.17.2",
     "gulp-uglify": "^2.0.0",
-    "run-sequence": "^1.2.2",
-    "gulp-nightwatch": "^0.3.2",
-    "nightwatch": "^0.9.14"
+    "nightwatch": "^0.9.14",
+    "run-sequence": "^1.2.2"
   },
   "scripts": {
-	  "test": "gulp test:local"
+    "test": "gulp test:local"
+  },
+  "dependencies": {
+    "glob": "^7.1.2",
+    "gulp-fn": "0.0.0"
   }
-  
 }

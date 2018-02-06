@@ -14,8 +14,8 @@ const	gulp = require('gulp'),
 		exec = require('child_process').execSync,
 
 		runSequence = require('run-sequence'),
-		nightwatch = require('gulp-nightwatch');
-		
+		nightwatch = require('gulp-nightwatch'),
+		glob = require('glob-all');		;
 
 var config = {
 	outDir:'build/'
@@ -146,24 +146,33 @@ gulp.task("copy", function() {
 	return Promise.all(p);
 });
 
-gulp.task("dictionary", function() {
+
+
+ 
+gulp.task("dictionary", function(cb) {	
 	let p = [];
-	fs.readdirSync('localization')
-		.forEach((dict) => {
-			let re = RegExp(".*_([a-z]+)\.json");
-			let result = re.exec(dict);
-			if (result) {
-				let lang = result[1];
-				p.push(gulp.src([
-					'localization/' + dict,
-					`plugins/**/localization/${lang}.json`
-					])
-					.pipe(merge(`paella_${lang}.json`))
-					.pipe(gulp.dest(`${config.outDir}player/localization`)));
-			}
-		});
+	let langs = [];
+	glob.sync([
+		'localization/*',
+	]).forEach((l) => {
+		let re = RegExp(".*_([a-z]+)(\-[a-zA-Z]+)?\.json");
+		let result = re.exec(l);
+		if (result && !langs.includes(result[1])) {	
+			langs.push(result[1]);
+		}
+	});
+
+	langs.forEach((lang) => {
+		p.push(gulp.src([
+			`localization/**${lang}**.json`,
+			`plugins/**/localization/${lang}**.json`
+			])
+			.pipe(merge(`paella_${lang}.json`))
+			.pipe(gulp.dest(`${config.outDir}player/localization`)));		
+	});
 	return Promise.all(p);
 });
+
 
 gulp.task("setupBower", function() {
 	config.outDir = "../bower-paella/";
