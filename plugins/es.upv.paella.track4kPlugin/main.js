@@ -183,7 +183,9 @@ paella.addDataDelegate("cameraTrack",() => {
                     .then((players) => {
                         let pluginData = paella.player.config.plugins.list[this.getName()];
                         let playerIndex = pluginData.targetStreamIndex;
+                        let autoByDefault = pluginData.autoModeByDefault;
                         this.targetPlayer = players.length>playerIndex ? players[playerIndex] : null;
+                        g_track4kPlugin.enabled = autoByDefault;
                         onSuccess(paella.player.config.player.videoZoom.enabled &&
                                   this.targetPlayer &&
                                   this.targetPlayer.allowZoom());
@@ -191,14 +193,18 @@ paella.addDataDelegate("cameraTrack",() => {
             }
             
             buildContent(domElement) {
-                paella.events.bind(paella.events.videoZoomChanged, (evt,target) => {
+                let updateButtonIcon = () => {
                     if (g_track4kPlugin.enabled) {
                         this.changeIconClass("icon-mini-videocamera");
                     }
                     else {
                         this.changeIconClass("icon-mini-zoom-in");
                     }
+                }
+                paella.events.bind(paella.events.videoZoomChanged, (evt,target) => {
+                    updateButtonIcon();
                 });
+                updateButtonIcon();
         
                 function getZoomButton(className,onClick,content) {
                     let btn = document.createElement('div');
