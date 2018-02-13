@@ -284,6 +284,10 @@ Class ("paella.InitDelegate", {
 				var params = {};
 				params.url = configUrl;
 				base.ajax.get(params,(data,type,returnCode) => {
+						try {
+							data = JSON.parse(data);
+						}
+						catch(e) {}
 						loadAccessControl(data);
 						resolve(data);
 					},
