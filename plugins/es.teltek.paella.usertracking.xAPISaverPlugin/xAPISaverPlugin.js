@@ -6,6 +6,7 @@ paella.addPlugin(function() {
 		setup(){
 			this.endpoint = this.config.endpoint;
 			this.auth = this.config.auth;
+			this.user_info = {"name": "Annonymous", "email" : "mailto:annonymous@example.com"}
 			this.paused = true
 			this.played_segments = ""
 			this.played_segments_segment_start = null
@@ -51,8 +52,8 @@ paella.addPlugin(function() {
 					self.current_time = self.current_time.slice(-10)
 				}
 
-				let a = Math.round(self.current_time[0])
-				let b = Math.round(self.current_time[9])
+				var a = Math.round(self.current_time[0])
+				var b = Math.round(self.current_time[9])
 
 				if ((params.currentTime !== 0)  && (a + 1 >= b) && (b - 1 >= a)){
 					self.progress = self.get_progress(params.currentTime, params.duration)
@@ -98,16 +99,24 @@ paella.addPlugin(function() {
 				case "paella:loadComplete":
 				//TODO Obtain title and description localized
 				this.user_agent = navigator.userAgent.toString();
+				//TODO Check if title is empty, if empty the next lines will fail in send function
+				//// 'var activity = new ADL.XAPIStatement.Activity(window.location.href, this.title, this.description)
+				//// activity.definition.type = "https://w3id.org/xapi/video/activity-type/video"'
 				this.title = paella.player.videoLoader.getMetadata().title
 				this.description = paella.player.videoLoader.getMetadata().description
 				paella.player.videoContainer.duration().then(function(duration) {
 					return paella.player.videoContainer.mainAudioPlayer().volume().then(function(volume) {
 						return paella.player.videoContainer.getCurrentQuality().then(function(quality) {
-							self.duration = duration
-							self.volume = volume
-							self.speed = 1
-							self.quality = quality.shortLabel()
-							self.send_initialized()
+							return paella.player.auth.userData().then(function (user_info){
+								self.duration = duration
+								self.volume = volume
+								self.speed = 1
+								self.quality = quality.shortLabel()
+								if (user_info.email && user_info.name){
+									self.user_info = user_info
+								}
+								self.send_initialized()
+							});
 						});
 					});
 				});
@@ -174,8 +183,7 @@ paella.addPlugin(function() {
 		}
 
 		send(params){
-			//TODO Get the user from LMS
-			var agent = new ADL.XAPIStatement.Agent("mailto:annonymous@example.com", "Annonymous")
+			var agent = new ADL.XAPIStatement.Agent(this.user_info.email, this.user_info.name)
 			var verb = new ADL.XAPIStatement.Verb(params.verb.id, params.verb.description)
 			var activity = new ADL.XAPIStatement.Activity(window.location.href, this.title, this.description)
 			activity.definition.type = "https://w3id.org/xapi/video/activity-type/video"
