@@ -20,7 +20,7 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 		this.language = "us-US"
 		this.quality = null
 		this.fullscreen = false
-		this.title = ""
+		this.title = "No title available"
 		this.description = ""
 		this.user_agent = ""
 		this.total_time = 0
@@ -98,12 +98,11 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 		switch (event) {
 			//Retrieve initial parameters from player
 			case "paella:loadComplete":
-			//TODO Obtain title and description localized
 			this.user_agent = navigator.userAgent.toString();
-			//TODO Check if title is empty, if empty the next lines will fail in send function
-			//// 'var activity = new ADL.XAPIStatement.Activity(window.location.href, this.title, this.description)
-			//// activity.definition.type = "https://w3id.org/xapi/video/activity-type/video"'
-			this.title = paella.player.videoLoader.getMetadata().title
+			//TODO Obtain title and description localized
+			if (paella.player.videoLoader.getMetadata().title){
+				this.title = paella.player.videoLoader.getMetadata().title
+			}
 			this.description = paella.player.videoLoader.getMetadata().description
 			paella.player.videoContainer.duration().then(function(duration) {
 				return paella.player.videoContainer.mainAudioPlayer().volume().then(function(volume) {
@@ -194,7 +193,6 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 		paella.player.videoContainer.mainAudioPlayer().volume().then(function(volume){})
 		var statement = new ADL.XAPIStatement(agent, verb, activity)
 		statement.result = params.result
-		//TODO: Obtain language
 		statement.context = {
 			"language": this.language,
 			"extensions":{
