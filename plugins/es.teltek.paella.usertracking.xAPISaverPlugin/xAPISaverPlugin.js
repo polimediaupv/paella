@@ -58,7 +58,7 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 
 			if ((params.currentTime !== 0)  && (a + 1 >= b) && (b - 1 >= a)){
 				self.progress = self.get_progress(params.currentTime, params.duration)
-				if (self.progress === 1 && self.completed === false){
+				if (self.progress >= 0.95 && self.completed === false){
 					self.completed = true
 					self.end_played_segment(params.currentTime)
 					self.start_played_segment(params.currentTime)
@@ -434,7 +434,6 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 
 	var progress = 1 * (progress_length / duration).toFixed(2);
 	return progress;
-	// return 1
 }
 });
 
