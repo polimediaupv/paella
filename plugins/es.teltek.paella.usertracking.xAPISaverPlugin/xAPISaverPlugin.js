@@ -17,6 +17,7 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 		this.completed = false
 		this.volume = null
 		this.speed = null
+		this.language = "us-US"
 		this.quality = null
 		this.fullscreen = false
 		this.title = ""
@@ -111,6 +112,9 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 							self.duration = duration
 							self.volume = volume
 							self.speed = 1
+							if (paella.player.videoContainer.mainAudioPlayer().stream.language){
+								self.language = paella.player.videoContainer.mainAudioPlayer().stream.language.replace("_","-")
+							}
 							self.quality = quality.shortLabel()
 							if (user_info.email && user_info.name){
 								self.user_info = user_info
