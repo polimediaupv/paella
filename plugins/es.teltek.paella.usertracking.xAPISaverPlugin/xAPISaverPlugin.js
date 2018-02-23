@@ -26,6 +26,7 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 		this.total_time = 0
 		this.total_time_start = 0
 		this.total_time_end = 0
+		this.session_id = ""
 
 		let self = this
 		this._loadDeps().then(function (){
@@ -190,9 +191,14 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 		paella.player.videoContainer.mainAudioPlayer().volume().then(function(volume){})
 		var statement = new ADL.XAPIStatement(agent, verb, activity)
 		statement.result = params.result
+		if (params.verb.id === "http://adlnet.gov/expapi/verbs/initialized"){
+			statement.generateId()
+			this.session_id = statement.id
+		}
 		statement.context = {
 			"language": this.language,
 			"extensions":{
+				"https://w3id.org/xapi/video/extensions/session-id": this.session_id,
 				"https://w3id.org/xapi/video/extensions/length": Math.floor(this.duration),
 				"https://w3id.org/xapi/video/extensions/volume": this.format_float(this.volume),
 				"https://w3id.org/xapi/video/extensions/speed": this.speed + "x",
