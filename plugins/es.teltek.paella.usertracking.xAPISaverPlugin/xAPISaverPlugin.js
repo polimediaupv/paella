@@ -35,17 +35,10 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 				"auth" : self.auth
 			};
 			ADL.XAPIWrapper.changeConfig(conf);
-			//TODO get cookie to use in registration and session_id
-			ADL.XAPIWrapper.lrs.registration = ADL.ruuid()
+			//TODO get cookie to use in registration
+			ADL.XAPIWrapper.lrs.registration = self.checkCookie()
 
-			//TODO: Get session data from LRS
-			// var myparams = ADL.XAPIWrapper.searchParams();
-			// var actor = new ADL.XAPIStatement.Agent("mailto:annonymous@example.com", "Annonymous");
-			// myparams['activity'] = "http://example.com/test_video";
-			// myparams['verb'] = 'https://w3id.org/xapi/video/verbs/paused';
-			// myparams['limit']	= 1;
-			// var ret = ADL.XAPIWrapper.getStatements(myparams);
-			// console.log(ret)
+			self.get_session_data()
 
 		})
 		paella.events.bind(paella.events.timeUpdate, function(event,params){
@@ -67,6 +60,52 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 				}
 			}
 		})
+	},
+
+	get_session_data:function(){
+		var myparams = ADL.XAPIWrapper.searchParams();
+		var agent = new ADL.XAPIStatement.Agent(this.user_info.email, this.user_info.name)
+		myparams['activity'] = window.location.href;
+		myparams['verb'] = 'http://adlnet.gov/expapi/verbs/terminated';
+		myparams['registration'] = this.checkCookie();
+		myparams['limit']	= 1;
+		var ret = ADL.XAPIWrapper.getStatements(myparams);
+		if (ret.statements.length === 1){
+			this.played_segments = ret.statements[0].result.extensions['https://w3id.org/xapi/video/extensions/played-segments']
+			this.progress = ret.statements[0].result.extensions['https://w3id.org/xapi/video/extensions/progress']
+		}
+	},
+
+	getCookie:function(cname) {
+		var name = cname + "=";
+		var decodedCookie = decodeURIComponent(document.cookie);
+		var ca = decodedCookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	},
+
+	setCookie:function(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+	},
+
+	checkCookie:function(){
+		var registration = this.getCookie(this.user_info.name);
+		if (registration === "") {
+			registration = ADL.ruuid()
+		}
+		this.setCookie(this.user_info.name, registration, 1);
+		return registration
 	},
 
 	checkEnabled:function(onSuccess) {
@@ -207,7 +246,6 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 				"https://w3id.org/xapi/video/extensions/user-agent": this.user_agent
 			}
 		}
-		statement.generateRegistration()
 
 		// Dispatch the statement to the LRS
 		var result = ADL.XAPIWrapper.sendStatement(statement);
