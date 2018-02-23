@@ -99,11 +99,8 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 			//Retrieve initial parameters from player
 			case "paella:loadComplete":
 			this.user_agent = navigator.userAgent.toString();
-			//TODO Obtain title and description localized
-			if (paella.player.videoLoader.getMetadata().title){
-				this.title = paella.player.videoLoader.getMetadata().title
-			}
-			this.description = paella.player.videoLoader.getMetadata().description
+			this.get_title()
+			this.get_description()
 			paella.player.videoContainer.duration().then(function(duration) {
 				return paella.player.videoContainer.mainAudioPlayer().volume().then(function(volume) {
 					return paella.player.videoContainer.getCurrentQuality().then(function(quality) {
@@ -392,6 +389,24 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 	format_float:function(number){
 		number = parseFloat(number) //Ensure that number is a float
 		return parseFloat(number.toFixed(3))
+	},
+
+	get_title:function(){
+		if (paella.player.videoLoader.getMetadata().i18nTitle){
+			this.title = paella.player.videoLoader.getMetadata().i18nTitle
+		}
+		else if (paella.player.videoLoader.getMetadata().title){
+			this.title = paella.player.videoLoader.getMetadata().title
+		}
+	},
+
+	get_description:function(){
+		if (paella.player.videoLoader.getMetadata().i18nTitle){
+			this.description = paella.player.videoLoader.getMetadata().i18nDescription
+		}
+		else {
+			this.description = paella.player.videoLoader.getMetadata().description
+		}
 	},
 
 	get_progress:function(currentTime, duration){
