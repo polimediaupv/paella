@@ -6,7 +6,7 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 	setup:function(){
 		this.endpoint = this.config.endpoint;
 		this.auth = this.config.auth;
-		this.user_info = {"name": "Annonymous", "email" : "mailto:annonymous@example.com"}
+		this.user_info = {}
 		this.paused = true
 		this.played_segments = ""
 		this.played_segments_segment_start = null
@@ -35,11 +35,6 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 				"auth" : self.auth
 			};
 			ADL.XAPIWrapper.changeConfig(conf);
-			//TODO get cookie to use in registration
-			ADL.XAPIWrapper.lrs.registration = self.checkCookie()
-
-			self.get_session_data()
-
 		})
 		paella.events.bind(paella.events.timeUpdate, function(event,params){
 			self.current_time.push(params.currentTime)
@@ -64,15 +59,23 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 
 	get_session_data:function(){
 		var myparams = ADL.XAPIWrapper.searchParams();
-		var agent = new ADL.XAPIStatement.Agent(this.user_info.email, this.user_info.name)
+		var agent = JSON.stringify({"mbox" : this.user_info.email})
+		var timestamp = new Date()
+		timestamp.setDate(timestamp.getDate() - 1);
+		timestamp = timestamp.toISOString()
 		myparams['activity'] = window.location.href;
 		myparams['verb'] = 'http://adlnet.gov/expapi/verbs/terminated';
-		myparams['registration'] = this.checkCookie();
+		myparams['since'] = timestamp
 		myparams['limit']	= 1;
+		myparams['agent'] = agent
 		var ret = ADL.XAPIWrapper.getStatements(myparams);
 		if (ret.statements.length === 1){
 			this.played_segments = ret.statements[0].result.extensions['https://w3id.org/xapi/video/extensions/played-segments']
 			this.progress = ret.statements[0].result.extensions['https://w3id.org/xapi/video/extensions/progress']
+			ADL.XAPIWrapper.lrs.registration = ret.statements[0].context.registration
+		}
+		else{
+			ADL.XAPIWrapper.lrs.registration = ADL.ruuid()
 		}
 	},
 
@@ -100,12 +103,12 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 	},
 
 	checkCookie:function(){
-		var registration = this.getCookie(this.user_info.name);
-		if (registration === "") {
-			registration = ADL.ruuid()
+		var user_info = this.getCookie("user_info");
+		if (user_info === "") {
+			user_info = JSON.stringify(generateName())
 		}
-		this.setCookie(this.user_info.name, registration, 1);
-		return registration
+		this.setCookie("user_info", user_info);
+		return JSON.parse(user_info)
 	},
 
 	checkEnabled:function(onSuccess) {
@@ -120,8 +123,10 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 		return new Promise((resolve,reject) => {
 			if (!window.$paella_mpd) {
 				require(['resources/deps/xapiwrapper.min.js'],function() {
-					window.$paella_bg2e = true;
-					resolve(window.$paella_bg2e);
+					require(['resources/deps/random_name_generator.js'],function() {
+						window.$paella_bg2e = true;
+						resolve(window.$paella_bg2e);
+					});
 				});
 			}
 			else {
@@ -152,9 +157,16 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 								self.language = paella.player.videoContainer.mainAudioPlayer().stream.language.replace("_","-")
 							}
 							self.quality = quality.shortLabel()
+
 							if (user_info.email && user_info.name){
 								self.user_info = user_info
 							}
+							else{
+								self.user_info = self.checkCookie()
+							}
+
+							self.get_session_data()
+
 							self.send_initialized()
 						});
 					});
@@ -244,6 +256,12 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 				"https://w3id.org/xapi/video/extensions/quality": this.quality,
 				"https://w3id.org/xapi/video/extensions/full-screen": this.fullscreen,
 				"https://w3id.org/xapi/video/extensions/user-agent": this.user_agent
+			},
+			"contextActivities":{
+				"category":[{
+					"objectType":"Activity",
+					"id":"https://w3id.org/xapi/video"
+				}]
 			}
 		}
 
