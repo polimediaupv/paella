@@ -32,7 +32,7 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 		this._loadDeps().then(function (){
 			let conf = {
 				"endpoint" : self.endpoint,
-				"auth" : self.auth
+				"auth" : "Basic " + toBase64(self.auth)
 			};
 			ADL.XAPIWrapper.changeConfig(conf);
 		})
