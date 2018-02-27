@@ -200,7 +200,8 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 				var current_time = self.format_float(currentTime)
 				self.volume = params.master
 				//self.send_interacted(current_time, {"https://w3id.org/xapi/video/extensions/volume": params.master})
-				self.send_interacted(current_time)
+				var interacted = {"https://w3id.org/xapi/video/extensions/volume": self.format_float(params.master)}
+				self.send_interacted(current_time, interacted)
 
 			});
 			break;
@@ -209,7 +210,8 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 			.then(function(currentTime) {
 				var current_time = self.format_float(currentTime)
 				self.speed = params.rate
-				self.send_interacted(current_time)
+				var interacted = {"https://w3id.org/xapi/video/extensions/speed": params.rate + "x"}
+				self.send_interacted(current_time, interacted)
 			})
 			break;
 			case "paella:qualityChanged":
@@ -217,7 +219,8 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 				return paella.player.videoContainer.getCurrentQuality().then(function(quality) {
 					self.quality = quality.shortLabel()
 					var current_time = self.format_float(currentTime)
-					self.send_interacted(current_time)
+					var interacted = {"https://w3id.org/xapi/video/extensions/quality": quality.shortLabel()}
+					self.send_interacted(current_time, interacted)
 				})
 			})
 			break;
@@ -226,7 +229,8 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 			paella.player.videoContainer.currentTime().then(function(currentTime) {
 				var current_time = self.format_float(currentTime)
 				self.fullscreen ? self.fullscreen = false : self.fullscreen = true
-				self.send_interacted(current_time)
+				var interacted = {"https://w3id.org/xapi/video/extensions/full-screen": self.fullscreen}
+				self.send_interacted(current_time, interacted)
 			})
 			break;
 			default:
@@ -246,17 +250,30 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 			statement.generateId()
 			this.session_id = statement.id
 		}
+
+
+		var ce_base = {
+			"https://w3id.org/xapi/video/extensions/session-id": this.session_id,
+			"https://w3id.org/xapi/video/extensions/length": Math.floor(this.duration),
+			"https://w3id.org/xapi/video/extensions/user-agent": this.user_agent
+		}
+		var ce_interactions = {
+			"https://w3id.org/xapi/video/extensions/volume": this.format_float(this.volume),
+			"https://w3id.org/xapi/video/extensions/speed": this.speed + "x",
+			"https://w3id.org/xapi/video/extensions/quality": this.quality,
+			"https://w3id.org/xapi/video/extensions/full-screen": this.fullscreen
+		}
+		var context_extensions = {}
+		if (params.interacted){
+			context_extensions = $.extend({}, ce_base, params.interacted)
+		}
+		else{
+			context_extensions = $.extend({}, ce_base, ce_interactions)
+		}
+
 		statement.context = {
 			"language": this.language,
-			"extensions":{
-				"https://w3id.org/xapi/video/extensions/session-id": this.session_id,
-				"https://w3id.org/xapi/video/extensions/length": Math.floor(this.duration),
-				"https://w3id.org/xapi/video/extensions/volume": this.format_float(this.volume),
-				"https://w3id.org/xapi/video/extensions/speed": this.speed + "x",
-				"https://w3id.org/xapi/video/extensions/quality": this.quality,
-				"https://w3id.org/xapi/video/extensions/full-screen": this.fullscreen,
-				"https://w3id.org/xapi/video/extensions/user-agent": this.user_agent
-			},
+			"extensions": context_extensions,
 			"contextActivities":{
 				"category":[{
 					"objectType":"Activity",
@@ -420,7 +437,7 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 		this.send(statement)
 	},
 
-	send_interacted:function(current_time){
+	send_interacted:function(current_time, interacted){
 		var statement = {
 			"verb":{
 				"id":"http://adlnet.gov/expapi/verbs/interacted",
@@ -430,7 +447,8 @@ Class ("paella.plugins.xAPISaverPlugin",paella.userTracking.SaverPlugIn, {
 				"extensions":{
 					"https://w3id.org/xapi/video/extensions/time" : current_time
 				}
-			}
+			},
+			"interacted" : interacted
 		}
 		this.send(statement)
 	},
