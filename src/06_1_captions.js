@@ -186,7 +186,16 @@ Class ("paella.captions.Caption", {
 			var parser = captionParserManager._formats[self._format];			
 			if (parser == undefined) {
 				base.log.debug("Error adding captions: Format not supported!");
-				if (next) { next(true); }
+				paella.player.videoContainer.duration(true)
+				.then((duration)=>{
+					self._captions = [{
+						id: 0,
+		            	begin: 0,
+		            	end: duration,
+		            	content: base.dictionary.translate("Error! Captions format not supported.")
+					}];
+					if (next) { next(true); }
+				});
 			}
 			else {
 				parser.parse(dataRaw, self._lang.code, function(err, c) {
