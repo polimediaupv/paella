@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.2.13
+
+  * Fixed a bug when loading captions in an not supported format
+
 * Paella 5.2.12
 
   * Changed function to build localization files
