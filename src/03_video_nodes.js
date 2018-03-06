@@ -114,6 +114,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 		eventCapture.style.left = "0px";
 		eventCapture.style.right = "0px";
 		eventCapture.style.bottom = "0px";
+		this.eventCapture = eventCapture;
 
 		if (zoomEnabled) {
 			this._zoomAvailable = true;
@@ -514,6 +515,14 @@ Class ("paella.VideoRect", paella.DomNode, {
 	// the current video size
 	zoomAvailable: function() {
 		return this.allowZoom() && this._zoomAvailable;
+	},
+
+	disableEventCapture: function() {
+		this.eventCapture.style.pointerEvents = 'none';
+	},
+
+	enableEventCapture: function() {
+		this.eventCapture.style.pointerEvents = '';
 	}
 });
 
