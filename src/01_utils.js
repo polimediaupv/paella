@@ -419,24 +419,23 @@ paella.addDataDelegate(["default","trimming"], () => {
 paella.data = null;
 
 // Include scripts in header
+let g_requiredScripts = {};
 paella.require = function(path) {
-	return new Promise((resolve,reject) => {
-		paella.ajax.get({url:path},function() {
+	if (!g_requiredScripts[path]) {
+		g_requiredScripts[path] = new Promise((resolve,reject) => {
 			let script = document.createElement("script");
 			if (path.split(".").pop()=='js') {
 				script.src = path;
 				script.async = false;
 				document.head.appendChild(script);
-				resolve();
+				setTimeout(() => resolve(), 100);
 			}
 			else {
 				reject(new Error("Unexpected file type"));
 			}
-		},
-		function() {
-			reject(new Error("No such file script file: " + path));
-		})
-	});
+		});
+	}
+	return g_requiredScripts[path];
 }
 
 
