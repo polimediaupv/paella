@@ -312,6 +312,7 @@ Class ("paella.ChromaVideo", paella.VideoElementBase,{
 
 					var stream = this._currentQuality<sources.length ? sources[this._currentQuality]:null;
 					this.video = null;
+					this.domElement.parentNode.style.backgroundColor = "transparent";
 					if (stream) {
 						this.canvasController = null;
 						buildChromaVideoCanvas(stream,this.domElement)
