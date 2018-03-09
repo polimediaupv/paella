@@ -1034,7 +1034,6 @@ base.ajax = {
 		var ajaxObj = jQuery.ajax({
 			url:params.url,
 			data:params.params,
-			cache:false,
 			type:type
 		});
 
