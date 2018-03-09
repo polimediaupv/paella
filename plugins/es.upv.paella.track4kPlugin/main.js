@@ -42,7 +42,7 @@ paella.addDataDelegate("cameraTrack",() => {
         let twinTime = nextFrameData ? (nextFrameData.time - positionData.time) * 1000 : 100;
         if (twinTime>2000) twinTime = 2000;
         let zoom = this._videoData.originalWidth / this._videoData.width;
-        let rect = positionData.rect;
+        let rect = (positionData && positionData.rect) || [0, 0];
         let left = rect[0] / this._videoData.originalWidth;
         let top = (rect[1] + this._videoData.originalHeight / 2) / this._videoData.originalHeight; 
         paella.player.videoContainer.masterVideo().setZoom(zoom  * 100,left * zoom * 100,(top * zoom - 1) * 100, twinTime);
@@ -101,6 +101,11 @@ paella.addDataDelegate("cameraTrack",() => {
 
                 this._videoData = {}
                 this._trackData = [];
+
+                this._enabled = true;
+            }
+
+            checkEnabled(cb) {
                 paella.data.read('cameraTrack',{id:paella.initDelegate.getId()},(data) => {
                     if (data) {
                         this._videoData.width = data.width;
@@ -113,9 +118,8 @@ paella.addDataDelegate("cameraTrack",() => {
                     else {
                         this._enabled = false;
                     }
+                    cb(this._enabled);
                 });
-
-                this._enabled = true;
             }
 
             get enabled() { return this._enabled; }
