@@ -23,7 +23,6 @@
     "gulp-uglify-es": "^1.0.0",
     "gulp-minify": "^1.0.0",
     "run-sequence": "^1.2.2",
-    "gulp-nightwatch": "^0.3.2",
     "nightwatch": "^0.9.14"
   },
   "scripts": {
