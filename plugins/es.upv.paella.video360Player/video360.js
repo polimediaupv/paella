@@ -190,14 +190,19 @@ Class ("paella.Video360", paella.VideoElementBase,{
 
 	_loadDeps:function() {
 		return new Promise((resolve,reject) => {
-			if (!window.$paella_mpd) {
-				require(['resources/deps/bg2e.js'],function() {
-					window.$paella_bg2e = true;
-					resolve(window.$paella_bg2e);
-				});
+			if (!window.$paella_bg2e) {
+				paella.require(paella.baseUrl + 'resources/deps/bg2e.js')
+					.then(() => {
+						window.$paella_bg2e = bg;
+						resolve(window.$paella_bg2e);
+					})
+					.catch((err) => {
+						console.error(err.message);
+						reject();
+					});
 			}
 			else {
-				defer.resolve(window.$paella_mpd);
+				defer.resolve(window.$paella_bg2e);
 			}	
 		});
 	},
@@ -282,6 +287,7 @@ Class ("paella.Video360", paella.VideoElementBase,{
 								this.canvasController = canvasController;
 								this.video = canvasController.video;
 								this.video.pause();
+								this.disableEventCapture();
 								resolve(stream);
 							});
 					}

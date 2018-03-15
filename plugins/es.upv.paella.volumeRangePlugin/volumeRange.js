@@ -102,6 +102,28 @@ paella.addPlugin(function() {
 
 			domElement.appendChild(videoRangeContainer);
 			thisClass.updateClass();
+
+			var Keys = {Tab:9,Return:13,Esc:27,End:35,Home:36,Left:37,Up:38,Right:39,Down:40};
+
+			$(this.button).keyup(function(event) {
+				if(thisClass.isPopUpOpen()) {
+					paella.player.videoContainer.volume().then((v) => {
+						let newvol = -1;
+						if (event.keyCode == Keys.Left) {
+							newvol = v - 0.1;
+						}
+						else if (event.keyCode == Keys.Right) {
+							newvol = v + 0.1;
+						}
+
+						if (newvol!=-1) {
+							newvol = newvol<0 ? 0 : newvol>1 ? 1 : newvol;
+							paella.player.videoContainer.setVolume(newvol).then((v) => {
+							})
+						}
+					});
+				}
+			});
 		}
 
 		updateClass() {

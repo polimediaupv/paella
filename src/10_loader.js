@@ -35,17 +35,39 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 	},
 
 	getVideoUrl:function() {
-		return (/\/$/.test(this._url) ? this._url:this._url + '/') + paella.initDelegate.getId() + '/';
+		if (paella.initDelegate.initParams.videoUrl) {
+			return typeof(paella.initDelegate.initParams.videoUrl)=="function" ?
+				paella.initDelegate.initParams.videoUrl() :
+				paella.initDelegate.initParams.videoUrl;
+		}
+		else {
+			return (/\/$/.test(this._url) ? this._url:this._url + '/') + paella.initDelegate.getId() + '/';
+		}
 	},
 
 	getDataUrl:function() {
-		return this.getVideoUrl() + 'data.json';
+		if (paella.initDelegate.initParams.dataUrl) {
+			return typeof(paella.initDelegate.initParams.dataUrl)=='function' ?
+				paella.initDelegate.initParams.dataUrl() :
+				paella.initDelegate.initParams.dataUrl;
+		}
+		else {
+			return this.getVideoUrl() + 'data.json';
+		}
 	},
 
 
 	loadVideo: function (onSuccess) {
+		let loadVideoDelegate = paella.initDelegate.initParams.loadVideo;
+
 		if (this._data) {
 			this.loadVideoData(this._data, onSuccess);
+		}
+		else if (loadVideoDelegate) {
+			loadVideoDelegate().then((data) => {
+				this._data = data;
+				this.loadVideoData(this._data, onSuccess);
+			});
 		}
 		else if (this._url) {
 			var This = this;
@@ -208,29 +230,6 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 });
 
 Class ("paella.DefaultInitDelegate", paella.InitDelegate, {
-	initialize:function(config, params) {
-		if (arguments.length==1) {
-			this.parent(arguments[0]);
-		}
-		else if (arguments.length==2) {
-			this._config = arguments[0];
-			this.parent(arguments[1]);
-		}
-	},
-
-	loadConfig: function() {
-		if (this._config) {
-			return new Promise((resolve) => {
-				base.dictionary.addDictionary(this._config);
-				var AccessControlClass = Class.fromString(this._config.player.accessControlClass || "paella.AccessControl");
-				this.initParams.accessControl = new AccessControlClass();
-				resolve(this._config);
-			});
-		}
-		else {
-			return this.parent();
-		}
-	}
 });
 
 /*
@@ -291,23 +290,10 @@ paella.load = function(playerContainer, params) {
 
 		params.data = data;
 	}
-	
-	var initObjects = {
-		videoLoader: new paella.DefaultVideoLoader(params.data || params.url)
-	};
 
-	if (params.configUrl) {
-		initObjects.configUrl = params.configUrl;
-	}
-	if (params.dictionaryUrl) {
-		initObjects.dictionaryUrl = params.dictionaryUrl;
-	}
+	var initObjects = params;
+	initObjects.videoLoader = new paella.DefaultVideoLoader(params.data || params.url);
 
-	if (params.config) {
-		paella.initDelegate = new paella.DefaultInitDelegate(params.config, initObjects);
-	}
-	else {
-		paella.initDelegate = new paella.DefaultInitDelegate(initObjects);
-	}
+	paella.initDelegate = new paella.DefaultInitDelegate(initObjects);
 	new PaellaPlayer(playerContainer,paella.initDelegate);
 };

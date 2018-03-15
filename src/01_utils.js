@@ -418,6 +418,26 @@ paella.addDataDelegate(["default","trimming"], () => {
 // Will be initialized inmediately after loading config.json, in PaellaPlayer.onLoadConfig()
 paella.data = null;
 
+// Include scripts in header
+let g_requiredScripts = {};
+paella.require = function(path) {
+	if (!g_requiredScripts[path]) {
+		g_requiredScripts[path] = new Promise((resolve,reject) => {
+			let script = document.createElement("script");
+			if (path.split(".").pop()=='js') {
+				script.src = path;
+				script.async = false;
+				document.head.appendChild(script);
+				setTimeout(() => resolve(), 100);
+			}
+			else {
+				reject(new Error("Unexpected file type"));
+			}
+		});
+	}
+	return g_requiredScripts[path];
+}
+
 
 Class ("paella.MessageBox", {
 	modalContainerClassName:'modalMessageContainer',

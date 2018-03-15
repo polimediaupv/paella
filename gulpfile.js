@@ -173,7 +173,7 @@ gulp.task("copy", function() {
 		gulp.src('resources/style/fonts/**')
 			.pipe(gulp.dest(`${config.outDir}player/resources/style/fonts`)),
 
-		gulp.src(['index.html','test.html'])
+		gulp.src(['*.html'])
 			.pipe(gulp.dest(`${config.outDir}player/`)),
 
 		gulp.src('node_modules/traceur/bin/traceur-runtime.js')

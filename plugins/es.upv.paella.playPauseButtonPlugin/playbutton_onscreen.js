@@ -13,7 +13,7 @@ paella.addPlugin(function() {
 	
 		checkEnabled(onSuccess) {
 			onSuccess(!paella.player.isLiveStream() || base.userAgent.system.Android 
-				|| base.userAgent.system.iOS);
+				|| base.userAgent.system.iOS || !paella.player.videoContainer.supportAutoplay());
 		}
 	
 		getIndex() { return 1010; }
