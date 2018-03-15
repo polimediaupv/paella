@@ -1,20 +1,18 @@
-/*
- Paella HTML 5 Multistream Player
- Copyright (C) 2013  Universitat Politècnica de València
+/*  
+	Paella HTML 5 Multistream Player
+	Copyright (C) 2017  Universitat Politècnica de València Licensed under the
+	Educational Community License, Version 2.0 (the "License"); you may
+	not use this file except in compliance with the License. You may
+	obtain a copy of the License at
 
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+	http://www.osedu.org/licenses/ECL-2.0
 
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an "AS IS"
+	BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+	or implied. See the License for the specific language governing
+	permissions and limitations under the License.
+*/
 
 
 (function(){
@@ -22,18 +20,18 @@
 
 var userTrackingManager = new (Class ({
 	_plugins: [],
-	
+
 	addPlugin: function(plugin) {
 		var self = this;
 		plugin.checkEnabled(function(isEnabled) {
 			if (isEnabled) {
 				plugin.setup();
-				self._plugins.push(plugin);				
+				self._plugins.push(plugin);
 			}
-		});	
+		});
 	},
 	initialize: function() {
-		paella.pluginManager.setTarget('userTrackingSaverPlugIn', this);	
+		paella.pluginManager.setTarget('userTrackingSaverPlugIn', this);
 	}
 }))();
 
@@ -42,9 +40,9 @@ paella.userTracking = {};
 
 Class ("paella.userTracking.SaverPlugIn", paella.FastLoadPlugin, {
 	type:'userTrackingSaverPlugIn',
-	getIndex: function() {return -1;},	
+	getIndex: function() {return -1;},
 	checkEnabled:function(onSuccess) { onSuccess(true); },
-	
+
 	log: function(event, params) {
 		throw new Error('paella.userTracking.SaverPlugIn#log must be overridden by subclass');
 	}
@@ -55,7 +53,7 @@ var evsentsToLog = {};
 
 paella.userTracking.log = function(event, params) {
 	if (evsentsToLog[event] != undefined) {
-		evsentsToLog[event].cancel();		
+		evsentsToLog[event].cancel();
 	}
 	evsentsToLog[event] = new base.Timer(function(timer) {
 		userTrackingManager._plugins.forEach(function(p) {
@@ -71,8 +69,8 @@ paella.userTracking.log = function(event, params) {
 // Log automatic events
 //////////////////////////////////////////////////////////
 // Log simple events
-[paella.events.play, paella.events.pause, paella.events.endVideo, 
-paella.events.showEditor, paella.events.hideEditor, 
+[paella.events.play, paella.events.pause, paella.events.endVideo,
+paella.events.showEditor, paella.events.hideEditor,
 paella.events.enterFullscreen, paella.events.exitFullscreen, paella.events.loadComplete].forEach(function(event){
 	paella.events.bind(event, function(ev, params) {
 		paella.userTracking.log(event);
@@ -100,7 +98,7 @@ paella.events.enterFullscreen, paella.events.exitFullscreen, paella.events.loadC
 
 // Log setProfile
 [paella.events.setProfile].forEach(function(event){
-	paella.events.bind(event, function(ev, params) {		
+	paella.events.bind(event, function(ev, params) {
 		paella.userTracking.log(event, params.profileName);
 	});
 });
@@ -115,14 +113,14 @@ paella.events.enterFullscreen, paella.events.exitFullscreen, paella.events.loadC
 			log = params;
 		}
 		catch(e) {}
-		
+
 		paella.userTracking.log(event, log);
 	});
 });
 
 
 // Log param events
-[paella.events.setVolume, paella.events.resize, paella.events.setPlaybackRate].forEach(function(event){
+[paella.events.setVolume, paella.events.resize, paella.events.setPlaybackRate, paella.events.qualityChanged].forEach(function(event){
 	paella.events.bind(event, function(ev, params) {
 		var log;
 		try {
@@ -130,7 +128,7 @@ paella.events.enterFullscreen, paella.events.exitFullscreen, paella.events.loadC
 			log = params;
 		}
 		catch(e) {}
-		
+
 		paella.userTracking.log(event, log);
 	});
 });

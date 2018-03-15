@@ -1,21 +1,18 @@
-/*
- Paella HTML 5 Multistream Player
- Copyright (C) 2013  Universitat Politècnica de València
+/*  
+	Paella HTML 5 Multistream Player
+	Copyright (C) 2017  Universitat Politècnica de València Licensed under the
+	Educational Community License, Version 2.0 (the "License"); you may
+	not use this file except in compliance with the License. You may
+	obtain a copy of the License at
 
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+	http://www.osedu.org/licenses/ECL-2.0
 
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an "AS IS"
+	BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+	or implied. See the License for the specific language governing
+	permissions and limitations under the License.
+*/
 
 
 // Default Video Loader
@@ -37,15 +34,44 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 		}
 	},
 
-	loadVideo: function (videoId, onSuccess) {
+	getVideoUrl:function() {
+		if (paella.initDelegate.initParams.videoUrl) {
+			return typeof(paella.initDelegate.initParams.videoUrl)=="function" ?
+				paella.initDelegate.initParams.videoUrl() :
+				paella.initDelegate.initParams.videoUrl;
+		}
+		else {
+			return (/\/$/.test(this._url) ? this._url:this._url + '/') + paella.initDelegate.getId() + '/';
+		}
+	},
+
+	getDataUrl:function() {
+		if (paella.initDelegate.initParams.dataUrl) {
+			return typeof(paella.initDelegate.initParams.dataUrl)=='function' ?
+				paella.initDelegate.initParams.dataUrl() :
+				paella.initDelegate.initParams.dataUrl;
+		}
+		else {
+			return this.getVideoUrl() + 'data.json';
+		}
+	},
+
+
+	loadVideo: function (onSuccess) {
+		let loadVideoDelegate = paella.initDelegate.initParams.loadVideo;
+
 		if (this._data) {
 			this.loadVideoData(this._data, onSuccess);
 		}
+		else if (loadVideoDelegate) {
+			loadVideoDelegate().then((data) => {
+				this._data = data;
+				this.loadVideoData(this._data, onSuccess);
+			});
+		}
 		else if (this._url) {
 			var This = this;
-			this._url = (/\/$/.test(this._url) ? this._url:this._url + '/')
-				 + videoId + '/';
-			base.ajax.get({ url:this._url + 'data.json' },
+			base.ajax.get({ url:this.getDataUrl() },
 				function(data,type,err) {
 					if (typeof(data)=="string") {
 						try {
@@ -106,10 +132,10 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 			var newFrames = {};
 			data.frameList.forEach(function(frame) {
 				if (! /^[a-zA-Z]+:\/\//.test(frame.url) && !/^data:/.test(frame.url)) {
-					frame.url = This._url + frame.url;
+					frame.url = This.getVideoUrl() + frame.url;
 				}
 				if (frame.thumb && ! /^[a-zA-Z]+:\/\//.test(frame.thumb) && !/^data:/.test(frame.thumb)) {
-					frame.thumb = This._url + frame.thumb;
+					frame.thumb = This.getVideoUrl() + frame.thumb;
 				}
 				var id = frame.time;
 				newFrames[id] = frame;
@@ -122,7 +148,7 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 	loadStream:function(stream) {
 		var This=this;
 		if (stream.preview && ! /^[a-zA-Z]+:\/\//.test(stream.preview) && !/^data:/.test(stream.preview)) {
-			stream.preview = This._url + stream.preview;
+			stream.preview = This.getVideoUrl() + stream.preview;
 		}
 
 		if (stream.sources.image) {
@@ -131,10 +157,10 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 					var newFrames = {};
 					image.frames.forEach(function(frame) {
 						if (frame.src && ! /^[a-zA-Z]+:\/\//.test(frame.src) && !/^data:/.test(frame.src)) {
-							frame.src = This._url + frame.src;
+							frame.src = This.getVideoUrl() + frame.src;
 						}
 						if (frame.thumb && ! /^[a-zA-Z]+:\/\//.test(frame.thumb) && !/^data:/.test(frame.thumb)) {
-							frame.thumb = This._url + frame.thumb;
+							frame.thumb = This.getVideoUrl() + frame.thumb;
 						}
 						var id = "frame_" + frame.time;
 						newFrames[id] = frame.src;
@@ -151,7 +177,7 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 						var pattern = /^[a-zA-Z\:]+\:\/\//gi;
 						if (typeof(sourceItem.src)=="string") {
 							if(sourceItem.src.match(pattern) == null){
-								sourceItem.src = This._url + sourceItem.src;
+								sourceItem.src = This.getVideoUrl() + sourceItem.src;
 							}
 						}
 						sourceItem.type = sourceItem.mimetype;
@@ -170,7 +196,7 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 				var url = captions[i].url;
 
 				if (! /^[a-zA-Z]+:\/\//.test(url)) {
-					url = this._url + url;
+					url = This.getVideoUrl() + url;
 				}
 				var c = new paella.captions.Caption(i, captions[i].format, url, {code: captions[i].lang, txt: captions[i].text});
 				paella.captions.addCaptions(c);
@@ -194,7 +220,7 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 		blackboard.frames.forEach(function(frame) {
 			var id = "frame_" + Math.round(frame.time);
 			if (!/^[a-zA-Z]+:\/\//.test(frame.src)) {
-				frame.src = This._url + frame.src;
+				frame.src = This.getVideoUrl() + frame.src;
 			}
 			imageObject.frames[id] = frame.src;
 		});
@@ -204,29 +230,6 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 });
 
 Class ("paella.DefaultInitDelegate", paella.InitDelegate, {
-	initialize:function(config, params) {
-		if (arguments.length==1) {
-			this.parent(arguments[0]);
-		}
-		else if (arguments.length==2) {
-			this._config = arguments[0];
-			this.parent(arguments[1]);
-		}
-	},
-
-	loadConfig: function() {
-		if (this._config) {
-			return new Promise((resolve) => {
-				base.dictionary.addDictionary(this._config);
-				var AccessControlClass = Class.fromString(this._config.player.accessControlClass || "paella.AccessControl");
-				this.initParams.accessControl = new AccessControlClass();
-				resolve(this._config);
-			});
-		}
-		else {
-			return this.parent();
-		}
-	}
 });
 
 /*
@@ -287,20 +290,10 @@ paella.load = function(playerContainer, params) {
 
 		params.data = data;
 	}
-	
-	var initObjects = {
-		videoLoader: new paella.DefaultVideoLoader(params.data || params.url)
-	};
 
-	if (params.configUrl) {
-		initObjects.configUrl = params.configUrl;
-	}
+	var initObjects = params;
+	initObjects.videoLoader = new paella.DefaultVideoLoader(params.data || params.url);
 
-	if (params.config) {
-		paella.initDelegate = new paella.DefaultInitDelegate(params.config, initObjects);
-	}
-	else {
-		paella.initDelegate = new paella.DefaultInitDelegate(initObjects);
-	}
+	paella.initDelegate = new paella.DefaultInitDelegate(initObjects);
 	new PaellaPlayer(playerContainer,paella.initDelegate);
 };

@@ -74,7 +74,8 @@
 				]
 			},
 			"preview":"",
-			"type":"audio"
+			"type":"audio",
+			"language":"es"
 		}
 	],
 	"frameList": [

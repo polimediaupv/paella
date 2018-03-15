@@ -42,9 +42,10 @@
     border: 1px solid #0e0e0e;
 }
 
-.videoWrapper {
-    display: flex;
-    justify-content: center;
+/* The canvas "freeze frame" to overlay video element, instead of flex side aligned */
+.freezeFrame {
+    align-self:center;
+    position: absolute;
 }
 
 .videoZoomButton {
@@ -59,7 +60,8 @@
     box-shadow: 2px 2px 5px 0px black;
     width: 30px;
     height: 30px;
-    flex-direction: row-reverse;
+    position: relative;
+    left: 40%;
 }
 
 .videoZoomButton.zoomOut {
@@ -96,10 +98,6 @@
 }
 
 .buttonPlugin.videoZoomToolbar {
-    background-position: -600% -100%;
-    font-size: 0.8em;
-    padding-top: 9px;
-    text-align: center;
 }
 
 .videoZoomToolbarItem {
@@ -117,3 +115,4 @@
 
 .videoZoomToolbarItem.zoomOut {
 }
+

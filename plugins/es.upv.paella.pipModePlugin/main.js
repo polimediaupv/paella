@@ -1,33 +1,34 @@
-Class ("paella.plugins.PIPModePlugin", paella.ButtonPlugin, {
-	getIndex:function() { return 551; },
-	getAlignment:function() { return 'right'; },
-	getSubclass:function() { return "PIPModeButton"; },
-	getName:function() { return "es.upv.paella.pipModePlugin"; },
-	checkEnabled:function(onSuccess) {
-        var mainVideo = paella.player.videoContainer.masterVideo();
-        var video = mainVideo.video;
-        if (video && video.webkitSetPresentationMode) {
-            onSuccess(true);
+paella.addPlugin(function() {
+    return class PIPModePlugin extends paella.ButtonPlugin {
+        getIndex() { return 551; }
+        getAlignment() { return 'right'; }
+        getSubclass() { return "PIPModeButton"; }
+        getIconClass() { return 'icon-pip'; }
+        getName() { return "es.upv.paella.pipModePlugin"; }
+        checkEnabled(onSuccess) {
+            var mainVideo = paella.player.videoContainer.masterVideo();
+            var video = mainVideo.video;
+            if (video && video.webkitSetPresentationMode) {
+                onSuccess(true);
+            }
+            else {
+                onSuccess(false);
+            }
         }
-        else {
-            onSuccess(false);
-        }
-	},
-	getDefaultToolTip:function() { return base.dictionary.translate("Set picture-in-picture mode."); },
+        getDefaultToolTip() { return base.dictionary.translate("Set picture-in-picture mode."); }
 
-	setup:function() {
-		
-	},
+        setup() {
+            
+        }
 
-	action:function(button) {
-		var video = paella.player.videoContainer.masterVideo().video;
-        if (video.webkitPresentationMode=="picture-in-picture") {
-            video.webkitSetPresentationMode("inline");
+        action(button) {
+            var video = paella.player.videoContainer.masterVideo().video;
+            if (video.webkitPresentationMode=="picture-in-picture") {
+                video.webkitSetPresentationMode("inline");
+            }
+            else {
+                video.webkitSetPresentationMode("picture-in-picture");
+            }
         }
-        else {
-            video.webkitSetPresentationMode("picture-in-picture");
-        }
-	}
+    }
 });
-
-paella.plugins.pipModePlugin = new paella.plugins.PIPModePlugin();

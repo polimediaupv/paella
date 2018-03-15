@@ -1,20 +1,18 @@
-/*
- Paella HTML 5 Multistream Player
- Copyright (C) 2013  Universitat Politècnica de València
+/*  
+	Paella HTML 5 Multistream Player
+	Copyright (C) 2017  Universitat Politècnica de València Licensed under the
+	Educational Community License, Version 2.0 (the "License"); you may
+	not use this file except in compliance with the License. You may
+	obtain a copy of the License at
 
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+	http://www.osedu.org/licenses/ECL-2.0
 
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an "AS IS"
+	BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+	or implied. See the License for the specific language governing
+	permissions and limitations under the License.
+*/
 
 
 Class ("paella.VideoLoader", {
@@ -39,7 +37,20 @@ Class ("paella.VideoLoader", {
 		return this.metadata;
 	},
 
-	loadVideo:function(videoId,onSuccess) {
+	getVideoId:function() {
+		return paella.initDelegate.getId();
+	},
+
+	getVideoUrl:function() {
+		// This function must to return the base video URL
+		return "";
+	},
+
+	getDataUrl:function() {
+		// This function must to return the location of the video data file
+	},
+
+	loadVideo:function(onSuccess) {
 		// This function must to:
 		//	- load this.streams and this.frameList
 		// 	- Check streams compatibility using this.isStreamCompatible(streamIndex)
@@ -115,6 +126,30 @@ Class ("paella.PlayerBase", {
 	},
 
 	initialize:function(playerId) {
+		Object.defineProperty(this,'repoUrl',{
+			get:function() {
+				return paella.player.videoLoader._url || "";
+			}
+		});
+
+		Object.defineProperty(this,'videoUrl',{
+			get:function() {
+				return paella.player.videoLoader.getVideoUrl();
+			}
+		});
+
+		Object.defineProperty(this,'dataUrl',{
+			get:function() {
+				return paella.player.videoLoader.getDataUrl();
+			}
+		});
+
+		Object.defineProperty(this,'videoId',{
+			get:function() {
+				return paella.initDelegate.getId();
+			}
+		});
+
 		if (base.parameters.get('log') != undefined) {
 			var log = 0;
 			switch(base.parameters.get('log')) {
@@ -177,13 +212,25 @@ Class ("paella.PlayerBase", {
 
 Class ("paella.InitDelegate", {
 	initParams:{
-		configUrl:'config/config.json',
-		dictionaryUrl:'localization/paella',
+		configUrl:paella.baseUrl + 'config/config.json',
+		dictionaryUrl:paella.baseUrl + 'localization/paella',
 		accessControl:null,
-		videoLoader:null
+		videoLoader:null,
+
+		// Other parameters set externally:
+		//	config: json containing the configuration file
+		//	loadConfig: function(defaultConfigUrl). Returns a promise with the config.json data
+		//	url: attribute. Contains the repository base URL
+		//	videoUrl: function. Returns the base URL of the video (example: baseUrl + videoID)
+		//	dataUrl: function. Returns the full URL to get the data.json file
+		//	loadVideo: Function. Returns a promise with the data.json file content
 	},
 
 	initialize:function(params) {
+		if (arguments.length==2) {
+			this._config = arguments[0];
+		}
+
 		if (params) {
 			for (var key in params) {
 				this.initParams[key] = params[key];
@@ -208,30 +255,48 @@ Class ("paella.InitDelegate", {
 	},
 
 	loadConfig:function() {
-		return new Promise((resolve,reject) => {
-			var configUrl = this.initParams.configUrl;
-			var params = {};
-			params.url = configUrl;
-			base.ajax.get(params,(data,type,returnCode) => {
-					if (typeof(data)=='string') {
+		let loadAccessControl = (data) => {
+			var AccessControlClass = Class.fromString(data.player.accessControlClass || "paella.AccessControl");
+			this.initParams.accessControl = new AccessControlClass();
+		};
+
+		if (this.initParams.config) {
+			return new Promise((resolve) => {
+				loadAccessControl(this.initParams.config);
+				resolve(this.initParams.config);
+			})
+		}
+		else if (this.initParams.loadConfig) {
+			return new Promise((resolve,reject) => {
+				this.initParams.loadConfig(this.initParams.configUrl)
+					.then((data) => {
+						loadAccessControl(data);
+						resolve(data);
+					})
+					.catch((err) => {
+						reject(err);
+					});
+			})
+		}
+		else {
+			return new Promise((resolve,reject) => {
+				var configUrl = this.initParams.configUrl;
+				var params = {};
+				params.url = configUrl;
+				base.ajax.get(params,(data,type,returnCode) => {
 						try {
 							data = JSON.parse(data);
 						}
-						catch (e) {
-							reject();
-							return;
-						}
-					}
-					base.dictionary.addDictionary(data);
-					var AccessControlClass = Class.fromString(data.player.accessControlClass || "paella.AccessControl");
-					this.initParams.accessControl = new AccessControlClass();
-					resolve(data);
-				},
-				function(data,type,returnCode) {
-					paella.messageBox.showError(base.dictionary.translate("Error! Config file not found. Please configure paella!"));
-					//onSuccess({});
-				});
-		});
+						catch(e) {}
+						loadAccessControl(data);
+						resolve(data);
+					},
+					function(data,type,returnCode) {
+						paella.messageBox.showError(base.dictionary.translate("Error! Config file not found. Please configure paella!"));
+						//onSuccess({});
+					});
+			});
+		}
 	}
 });
 

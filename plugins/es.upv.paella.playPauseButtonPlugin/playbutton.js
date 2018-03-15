@@ -1,40 +1,54 @@
 //paella.plugins.PlayPauseButtonPlugin = Class.create(paella.ButtonPlugin, {
-Class ("paella.plugins.PlayPauseButtonPlugin",paella.ButtonPlugin, {
-	playSubclass:'playButton',
-	pauseSubclass:'pauseButton',
-
-	getAlignment:function() { return 'left'; },
-	getSubclass:function() { return this.playSubclass; },
-	getName:function() { return "es.upv.paella.playPauseButtonPlugin"; },
-	getDefaultToolTip:function() { return base.dictionary.translate("Play"); },
-	getIndex:function() {return 110;},
-
-	checkEnabled:function(onSuccess) {
-		onSuccess(!paella.player.isLiveStream() || base.userAgent.system.Android 
-			|| base.userAgent.system.iOS);
-	},
-
-	setup:function() {
-		var This = this;
-		if (paella.player.playing()) {
-			this.changeSubclass(This.pauseSubclass);
+paella.addPlugin(function() {
+	return class PlayPauseButtonPlugin extends paella.ButtonPlugin {
+		constructor() {
+			super();
+			this.playIconClass = 'icon-play';
+			this.pauseIconClass = 'icon-pause';
+			this.playSubclass = 'playButton';
+			this.pauseSubclass = 'pauseButton';
 		}
-		paella.events.bind(paella.events.play,function(event) { This.changeSubclass(This.pauseSubclass); This.setToolTip(paella.dictionary.translate("Pause"));});
-		paella.events.bind(paella.events.pause,function(event) { This.changeSubclass(This.playSubclass); This.setToolTip(paella.dictionary.translate("Play"));});
-	},
-
-	action:function(button) {
-		paella.player.videoContainer.paused()
-			.then(function(paused) {
-				if (paused) {
-					paella.player.play();
-				}
-				else {
-					paella.player.pause();
-				}
+	
+		getAlignment() { return 'left'; }
+		getSubclass() { return this.playSubclass; }
+		getIconClass() { return this.playIconClass; }
+		getName() { return "es.upv.paella.playPauseButtonPlugin"; }
+		getDefaultToolTip() { return base.dictionary.translate("Play"); }
+		getIndex() { return 110; }
+	
+		checkEnabled(onSuccess) {
+			onSuccess(!paella.player.isLiveStream() || base.userAgent.system.Android 
+				|| base.userAgent.system.iOS);
+		}
+	
+		setup() {
+			if (paella.player.playing()) {
+				this.changeIconClass(this.playIconClass);
+			}
+			paella.events.bind(paella.events.play,(event) => {
+				this.changeIconClass(this.pauseIconClass);
+				this.changeSubclass(this.pauseSubclass);
+				this.setToolTip(paella.dictionary.translate("Pause"));
 			});
-	}
-});
 
-paella.plugins.playPauseButtonPlugn = new paella.plugins.PlayPauseButtonPlugin();
+			paella.events.bind(paella.events.pause,(event) => {
+				this.changeIconClass(this.playIconClass);
+				this.changeSubclass(this.playSubclass);
+				this.setToolTip(paella.dictionary.translate("Play"));
+			});
+		}
+	
+		action(button) {
+			paella.player.videoContainer.paused()
+				.then(function(paused) {
+					if (paused) {
+						paella.player.play();
+					}
+					else {
+						paella.player.pause();
+					}
+				});
+		}
+	}	
+});
 

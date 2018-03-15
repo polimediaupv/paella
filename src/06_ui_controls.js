@@ -1,20 +1,19 @@
-/*
- Paella HTML 5 Multistream Player
- Copyright (C) 2013  Universitat Politècnica de València
+/*  
+	Paella HTML 5 Multistream Player
+	Copyright (C) 2017  Universitat Politècnica de València Licensed under the
+	Educational Community License, Version 2.0 (the "License"); you may
+	not use this file except in compliance with the License. You may
+	obtain a copy of the License at
 
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+	http://www.osedu.org/licenses/ECL-2.0
 
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an "AS IS"
+	BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+	or implied. See the License for the specific language governing
+	permissions and limitations under the License.
+*/
 
- You should have received a copy of the GNU General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 
 
 Class ("paella.TimeControl", paella.DomNode,{
@@ -622,6 +621,7 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 	buttonPlugins:[],
 	
 	_hidden:false,
+	_over:false,
 
 	addPlugin:function(plugin) {
 		var thisClass = this;
@@ -654,6 +654,10 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 		$(document).mousemove(function(event) {
 			paella.player.controls.restartHideTimer();
 		});
+
+		$(this.domElement).bind("mousemove",function(event) { thisClass._over = true; });
+		$(this.domElement).bind("mouseout",function(event) { thisClass._over = false; });
+
 		paella.events.bind(paella.events.endVideo,function(event) { thisClass.onEndVideoEvent(); });
 		paella.events.bind('keydown',function(event) { thisClass.onKeyEvent(); });
 
@@ -767,7 +771,7 @@ Class ("paella.ControlsContainer", paella.DomNode,{
 
 	autohideTimeout:function() {
 		var playbackBar = this.playbackControl().playbackBar();
-		if (playbackBar.isSeeking()) {
+		if (playbackBar.isSeeking() || this._over) {
 			paella.player.controls.restartHideTimer();
 		}
 		else {

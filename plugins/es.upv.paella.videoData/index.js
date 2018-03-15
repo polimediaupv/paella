@@ -1,6 +1,23 @@
-(function() {
+paella.addDataDelegate('metadata', () => {
+    return class VideoManifestMetadataDataDelegate extends paella.DataDelegate {
+        read(context, params, onSuccess) {
+            let metadata = paella.player.videoLoader.getMetadata();
+            onSuccess(metadata[params], true);
+        }
 
-    class VideoDataPlugin extends paella.VideoOverlayButtonPlugin {
+        write(context, params, value, onSuccess) {
+            onSuccess({}, true);
+        }
+
+        remove(context, params, onSuccess) {
+            onSuccess({}, true);
+        }
+    }
+});
+
+paella.addPlugin(function() {
+
+    return class VideoDataPlugin extends paella.VideoOverlayButtonPlugin {
         
         getIndex() { return 10; }
 
@@ -57,24 +74,4 @@
             return "es.upv.paella.videoDataPlugin";
         }
     }
-
-    paella.plugins.videoDataPlugin = new VideoDataPlugin();
-
-    class VideoManifestMetadataDataDelegate extends paella.DataDelegate {
-        read(context, params, onSuccess) {
-            let metadata = paella.player.videoLoader.getMetadata();
-            onSuccess(metadata[params], true);
-        }
-
-        write(context, params, value, onSuccess) {
-            onSuccess({}, true);
-        }
-
-        remove(context, params, onSuccess) {
-            onSuccess({}, true);
-        }
-    }
-
-    paella.dataDelegates.VideoManifestMetadataDataDelegate = VideoManifestMetadataDataDelegate;
-
-})();
+});

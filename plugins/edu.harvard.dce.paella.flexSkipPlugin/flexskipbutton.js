@@ -1,63 +1,45 @@
-Class("paella.plugins.FlexSkipPlugin", paella.ButtonPlugin, {
-	getAlignment: function() {
-		return 'left';
-	},
-	getName: function() {
-		return "edu.harvard.dce.paella.flexSkipPlugin";
-	},
-	getIndex: function() {
-		return 121;
-	},
-	getSubclass: function() {
-		return 'flexSkip_Rewind_10';
-	},
-	formatMessage: function() {
-		return 'Rewind 10 seconds';
-	},
-	getDefaultToolTip: function() {
-		return base.dictionary.translate(this.formatMessage());
-	},
-	getMinWindowSize: function() {
-		return 510;
-	},
-
-	checkEnabled: function(onSuccess) {
-		onSuccess(!paella.player.isLiveStream());
-	},
+paella.addPlugin(function() {
+	class FlexSkipPlugin extends paella.ButtonPlugin {
+		getAlignment() { return 'left'; }
+		getName() { return "edu.harvard.dce.paella.flexSkipPlugin"; }
+		getIndex() { return 121; }
+		getSubclass() { return 'flexSkip_Rewind_10'; }
+		getIconClass() { return 'icon-back-10-s'; }
+		formatMessage() { return 'Rewind 10 seconds'; }
+		getDefaultToolTip() { return base.dictionary.translate(this.formatMessage()); }
+		getMinWindowSize() { return 510; }
 	
-	action: function(button) {
-		paella.player.videoContainer.currentTime()
-			.then(function(currentTime) {
-				paella.player.videoContainer.seekToTime(currentTime - 10);
-			});
+		checkEnabled(onSuccess) {
+			onSuccess(!paella.player.isLiveStream());
+		}
+		
+		action(button) {
+			paella.player.videoContainer.currentTime()
+				.then(function(currentTime) {
+					paella.player.videoContainer.seekToTime(currentTime - 10);
+				});
+		}
 	}
+
+	paella.plugins.FlexSkipPlugin = FlexSkipPlugin;
+
+	return FlexSkipPlugin;
 });
 
-paella.plugins.flexSkipPlugin = new paella.plugins.FlexSkipPlugin();
+paella.addPlugin(function() {
 
-
-
-Class("paella.plugins.FlexSkipForwardPlugin", paella.plugins.FlexSkipPlugin, {
-	getIndex: function() {
-		return 122;
-	},
-	getName: function() {
-		return "edu.harvard.dce.paella.flexSkipForwardPlugin";
-	},
-	
-	getSubclass: function() {
-		return 'flexSkip_Forward_30';
-	},
-	formatMessage: function() {
-		return 'Forward 30 seconds';
-	},
-	
-	action: function(button) {
-		paella.player.videoContainer.currentTime()
-			.then(function(currentTime) {
-				paella.player.videoContainer.seekToTime(currentTime + 30);
-			});
+	return class FlexSkipForwardPlugin extends paella.plugins.FlexSkipPlugin {
+		getIndex() { return 122; }
+		getName() { return "edu.harvard.dce.paella.flexSkipForwardPlugin"; }
+		getSubclass() { return 'flexSkip_Forward_30'; }
+		getIconClass() { return 'icon-forward-30-s'; }
+		formatMessage() { return 'Forward 30 seconds'; }
+		
+		action(button) {
+			paella.player.videoContainer.currentTime()
+				.then(function(currentTime) {
+					paella.player.videoContainer.seekToTime(currentTime + 30);
+				});
+		}
 	}
 });
-
-paella.plugins.flexSkipForwardPlugin = new paella.plugins.FlexSkipForwardPlugin();
