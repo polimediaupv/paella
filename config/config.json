@@ -118,7 +118,7 @@
 			"es.upv.paella.zoomPlugin": {"enabled": false},
 			"es.upv.paella.windowTitlePlugin": {"enabled": true},
 			"es.upv.paella.track4kPlugin": { "enabled":true },
-									
+
 			"//****": "Captions Parser Plugins",
 			"es.upv.paella.captions.DFXPParserPlugin": {"enabled":true},
 			"es.teltek.paella.captions.WebVTTParserPlugin": {"enabled":true},
@@ -130,9 +130,16 @@
 			"//****": "User Tracking Saver Plugins",
 			"es.upv.paella.usertracking.elasticsearchSaverPlugin": { "enabled": false, "url": "http://my.elastic.server"},
 			"es.upv.paella.usertracking.GoogleAnalyticsSaverPlugIn": { "enabled": false, "trackingID": "UA-XXXXXXXX-Y" },
-			"es.upv.paella.usertracking.piwikSaverPlugIn": { "enabled": false, "tracker":"//tracker.server.com", "siteId": "1" },		
+			"es.upv.paella.usertracking.piwikSaverPlugIn": { "enabled": false, "tracker":"http://localhost/piwik/", "siteId": "1" },
+      "org.opencast.usertracking.MatomoSaverPlugIn": {
+        "enabled": false,
+        "server": "http://localhost/piwik/",
+        "site_id": 1,
+        "heartbeat": 30,
+        "client_id": "Paella Player"
+      },
 			"es.teltek.paella.usertracking.xAPISaverPlugin": {"enabled": false, "endpoint":"http://localhost:8081/data/xAPI/", "auth":"auth_key"}
-      
+
 		}
 	},
     "standalone" : {
