@@ -1286,7 +1286,7 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 						return This.setProfile(cookieProfile, false);
 					}
 					else {
-						return This.setProfile(paella.Profiles.getDefaultProfile(), false);
+						return This.setProfile(paella.profiles.getDefaultProfile(), false);
 					}
 				});
 		}
@@ -1379,25 +1379,22 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 					resolve();	// Nothing to do, the video is not loaded
 				}
 				else {
-					paella.Profiles.loadProfile(profileName,(profileData) => {
-						this._currentProfile = profileName;
-						if (this._streamProvider.slaveVideos.length==0) {
-							profileData.masterVideo = this.getMonostreamMasterProfile();
-							profileData.slaveVideo = this.getMonostreamSlaveProfile();
-						}
-						this.applyProfileWithJson(profileData,animate);
-						resolve(profileName);
-					});
+					paella.profiles.loadProfile(profileName)
+						.then((profileData) => {
+							this._currentProfile = profileName;
+							if (this._streamProvider.slaveVideos.length==0) {
+								profileData.masterVideo = this.getMonostreamMasterProfile();
+								profileData.slaveVideo = this.getMonostreamSlaveProfile();
+							}
+							this.applyProfileWithJson(profileData,animate);
+							resolve(profileName);
+						});
 				}
 			});
 		}
 
 		getProfile(profileName) {
-			return new Promise((resolve,reject) => {
-				paella.Profiles.loadProfile(profileName,(profileData) => {
-					resolve(profileData);
-				});
-			});
+			paella.profiles.loadProfile(profileName);
 		}
 
 		hideAllLogos() {
