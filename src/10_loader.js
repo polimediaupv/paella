@@ -196,7 +196,7 @@ Class ("paella.DefaultVideoLoader", paella.VideoLoader, {
 				var url = captions[i].url;
 
 				if (! /^[a-zA-Z]+:\/\//.test(url)) {
-					url = This.getVideoUrl() + url;
+					url = this.getVideoUrl() + url;
 				}
 				var c = new paella.captions.Caption(i, captions[i].format, url, {code: captions[i].lang, txt: captions[i].text});
 				paella.captions.addCaptions(c);

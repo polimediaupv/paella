@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.3.1
+
+  * Bug fixed in captions load
+
 * Paella 5.3.0
 
   * New plugin registration system.
