@@ -27,7 +27,10 @@
             return new Promise((resolve,reject) => {
                 let result = null;
                 g_profiles.some((profile) => {
-                    return (result = profile.id==profileId);
+                    if (profile.id==profileId) {
+                        result = profile;
+                    }
+                    return result;
                 });
                 result ? resolve(result) : reject(new Error("No such profile"));
             });
