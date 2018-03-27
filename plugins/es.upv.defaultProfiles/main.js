@@ -1,27 +1,37 @@
+
 paella.addProfile(() => {
     return new Promise((resolve,reject) => {
-        resolve({
-            id:"s_p_blackboard2",
-            name:{es:"Pizarra"},
-            hidden:false,
-            icon:"slide_professor_icon.png",
-            slaveVideo: {
-                content: "presenter",
-                rect:[
-                {aspectRatio:"16/9",left:10,top:70,width:432,height:243}],
-                visible:true,
-                layer:1
-            },
-            masterVideo: {
-                content:"presentation",
-                rect:[{aspectRatio:"16/9",left:450,top:135,width:816,height:459}],
-                visible:true,
-                layer:1
-            },
-            blackBoardImages: {left:10,top:325,width:432,height:324},
-            background: {content:"slide_professor_paella.jpg",zIndex:5,rect: { left:0,top:0,width:1280,height:720},visible: true,layer:0},
-            logos: [{content:"paella_logo.png",zIndex:5,rect: { top:10,left:10,width:49,height:42}}]
-        })
+        paella.events.bind(paella.events.videoReady,() => {
+            // TODO: videoContainer.sourceData is deprecated, update this code
+            var n = paella.player.videoContainer.sourceData[0].sources;
+			if(n.hasOwnProperty("image")==false) {
+                resolve(null);
+            }
+            else {
+                resolve({
+                    id:"s_p_blackboard2",
+                    name:{es:"Pizarra"},
+                    hidden:false,
+                    icon:"slide_professor_icon.png",
+                    slaveVideo: {
+                        content: "presenter",
+                        rect:[
+                        {aspectRatio:"16/9",left:10,top:70,width:432,height:243}],
+                        visible:true,
+                        layer:1
+                    },
+                    masterVideo: {
+                        content:"presentation",
+                        rect:[{aspectRatio:"16/9",left:450,top:135,width:816,height:459}],
+                        visible:true,
+                        layer:1
+                    },
+                    blackBoardImages: {left:10,top:325,width:432,height:324},
+                    background: {content:"slide_professor_paella.jpg",zIndex:5,rect: { left:0,top:0,width:1280,height:720},visible: true,layer:0},
+                    logos: [{content:"paella_logo.png",zIndex:5,rect: { top:10,left:10,width:49,height:42}}]
+                });
+            }
+        });
     })
 });
 
@@ -243,25 +253,34 @@ paella.addProfile(() => {
 
 paella.addProfile(() => {
     return new Promise((resolve,reject) => {
-        resolve({
-            id:"chroma",
-            name:{es:"Polimedia"},
-            hidden:false,
-            icon:"slide_icon.png",
-            masterVideo:{content:"presenter",rect:[
-                {aspectRatio:"16/9",left:0,top:0,width:1280,height:720},
-                {aspectRatio:"16/10",left:64,top:0,width:1152,height:720},
-                {aspectRatio:"5/3",left:40,top:0,width:1200,height:720},
-                {aspectRatio:"5/4",left:190,top:0,width:900,height:720},
-                {aspectRatio:"4/3",left:160,top:0,width:960,height:720}],visible:"true",layer:"1"},
-            slaveVideo:{content:"presentation",rect:[
-                {aspectRatio:"16/9",left:0,top:0,width:1280,height:720},
-                {aspectRatio:"16/10",left:64,top:0,width:1152,height:720},
-                {aspectRatio:"5/3",left:40,top:0,width:1200,height:720},
-                {aspectRatio:"5/4",left:190,top:0,width:900,height:720},
-                {aspectRatio:"4/3",left:160,top:0,width:960,height:720}],visible:"true",layer:"0"},
-            background:{content:"default_background_paella.jpg",zIndex:5,rect:{left:0,top:0,width:1280,height:720},visible:"true",layer:"0"},
-            logos:[{content:"paella_logo.png",zIndex:5,rect:{top:10,left:10,width:49,height:42}}]
+        paella.events.bind(paella.events.videoReady, () => {
+            // TODO: videoContainer.sourceData is deprecated. Update this code
+            var n = paella.player.videoContainer.sourceData[0].sources;
+            if (!n.chroma) {
+                resolve(null);
+            }
+            else {
+                resolve({
+                    id:"chroma",
+                    name:{es:"Polimedia"},
+                    hidden:false,
+                    icon:"slide_icon.png",
+                    masterVideo:{content:"presenter",rect:[
+                        {aspectRatio:"16/9",left:0,top:0,width:1280,height:720},
+                        {aspectRatio:"16/10",left:64,top:0,width:1152,height:720},
+                        {aspectRatio:"5/3",left:40,top:0,width:1200,height:720},
+                        {aspectRatio:"5/4",left:190,top:0,width:900,height:720},
+                        {aspectRatio:"4/3",left:160,top:0,width:960,height:720}],visible:"true",layer:"1"},
+                    slaveVideo:{content:"presentation",rect:[
+                        {aspectRatio:"16/9",left:0,top:0,width:1280,height:720},
+                        {aspectRatio:"16/10",left:64,top:0,width:1152,height:720},
+                        {aspectRatio:"5/3",left:40,top:0,width:1200,height:720},
+                        {aspectRatio:"5/4",left:190,top:0,width:900,height:720},
+                        {aspectRatio:"4/3",left:160,top:0,width:960,height:720}],visible:"true",layer:"0"},
+                    background:{content:"default_background_paella.jpg",zIndex:5,rect:{left:0,top:0,width:1280,height:720},visible:"true",layer:"0"},
+                    logos:[{content:"paella_logo.png",zIndex:5,rect:{top:10,left:10,width:49,height:42}}]
+                })
+            }
         })
     })
 });

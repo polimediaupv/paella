@@ -145,6 +145,9 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 				}
 				
 				paella.events.trigger(paella.events.setProfile,{profileName:profileName});
+			})
+			.catch((err) => {
+				// No such profile
 			});
 	},
 

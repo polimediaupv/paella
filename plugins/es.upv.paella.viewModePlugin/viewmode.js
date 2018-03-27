@@ -56,43 +56,40 @@ paella.addPlugin(function() {
 				}
 			});
 		}
-	
-		buildContent(domElement) {
-			  var thisClass = this;
+
+		rebuildProfileList() {
 			this.buttonItems = {};
-			paella.Profiles.loadProfileList(function(profiles) {
-				Object.keys(profiles).forEach(function(profile) {
-					if (profiles[profile].hidden) return;
-					if (thisClass.active_profiles) {
-						var active = false;
-						thisClass.active_profiles.forEach(function(ap) {
-							if (ap == profile) {active = true;}
-						});
-						if (active == false) {
-							return;
-						}
-					}
-					
-					
-					// START - BLACKBOARD DEPENDENCY
-					var n = paella.player.videoContainer.sourceData[0].sources;
-					if(profile=="s_p_blackboard2" && n.hasOwnProperty("image")==false) { return; }
-					// END - BLACKBOARD DEPENDENCY
-	
-					if (profile=="chroma" && !n.chroma) {
+			this.domElement.innerHTML = "";
+			paella.profiles.profileList.forEach((profileData) => {
+				if (profileData.hidden) return;
+				if (this.active_profiles) {
+					var active = false;
+					this.active_profiles.forEach(function(ap) {
+						if (ap == profile) {active = true;}
+					});
+					if (active == false) {
 						return;
 					}
+				}
+
+				var buttonItem = this.getProfileItemButton(profileData.id, profileData);
+				this.buttonItems[profileData.id] = buttonItem;
+				this.domElement.appendChild(buttonItem);
+				this.buttons.push(buttonItem);
+				if(paella.player.selectedProfile == profileData.id){
+					this.buttonItems[profileData.id].className = this.getButtonItemClass(profileData.id, true);
+				}
+			});
+			this.selected_button = this.buttons.length;
+		}
 	
-					var profileData = profiles[profile];
-					var buttonItem = thisClass.getProfileItemButton(profile, profileData);
-					thisClass.buttonItems[profile] = buttonItem;
-					domElement.appendChild(buttonItem);
-					thisClass.buttons.push(buttonItem);
-					if(paella.player.selectedProfile == profile){
-						thisClass.buttonItems[profile].className = thisClass.getButtonItemClass(profile, true);
-					}
-				});
-				thisClass.selected_button = thisClass.buttons.length;
+		buildContent(domElement) {
+			var thisClass = this;
+			this.domElement = domElement;
+			this.rebuildProfileList();
+
+			paella.events.bind(paella.events.profileListChanged,() => {
+				this.rebuildProfileList();
 			});
 		}
 	

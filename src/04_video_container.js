@@ -1279,15 +1279,25 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 
 					var getProfile = base.parameters.get('profile');
 					var cookieProfile = base.cookies.get('lastProfile');
+					let promise = null;
 					if (getProfile) {
-						return This.setProfile(getProfile, false);
+						promise = This.setProfile(getProfile, false);
 					}
 					else if (cookieProfile) {
-						return This.setProfile(cookieProfile, false);
+						promise = This.setProfile(cookieProfile, false);
 					}
-					else {
-						return This.setProfile(paella.profiles.getDefaultProfile(), false);
+
+					if (!promise) {
+						promise = This.setProfile(paella.profiles.getDefaultProfile(), false);
 					}
+
+					return new Promise((resolve) => {
+						promise.then(() => resolve)
+						.catch(() => {
+							This.setProfile(paella.profiles.getDefaultProfile(), false)
+								.then(() => resolve());
+						});
+					});
 				});
 		}
 		
@@ -1373,7 +1383,7 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 		}
 
 		setProfile(profileName,animate) {
-			return new Promise((resolve) => {
+			return new Promise((resolve,reject) => {
 				animate = base.userAgent.browser.Explorer ? false:animate;
 				if (!this.masterVideo()) {
 					resolve();	// Nothing to do, the video is not loaded
@@ -1388,6 +1398,9 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 							}
 							this.applyProfileWithJson(profileData,animate);
 							resolve(profileName);
+						})
+						.catch((err) => {
+							reject(err);
 						});
 				}
 			});
