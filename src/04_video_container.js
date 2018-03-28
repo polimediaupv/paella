@@ -1292,7 +1292,7 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 					}
 
 					return new Promise((resolve) => {
-						promise.then(() => resolve)
+						promise.then(() => resolve())
 						.catch(() => {
 							This.setProfile(paella.profiles.getDefaultProfile(), false)
 								.then(() => resolve());
@@ -1339,6 +1339,46 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 		numberOfStreams() {
 			return this._sourceData.length;
 		}
+
+		resizePortrait() {
+			var width = (paella.player.isFullScreen() == true) ? $(window).width() : $(this.domElement).width();
+			var relativeSize = new paella.RelativeVideoSize();
+			var height = relativeSize.proportionalHeight(width);
+			this.container.domElement.style.width = width + 'px';
+			this.container.domElement.style.height = height + 'px';
+
+			var containerHeight = (paella.player.isFullScreen() == true) ? $(window).height() : $(this.domElement).height();
+			var newTop = containerHeight / 2 - height / 2;
+			this.container.domElement.style.top = newTop + "px";
+		}
+
+		resizeLandscape() {
+			var height = (paella.player.isFullScreen() == true) ? $(window).height() : $(this.domElement).height();
+			var relativeSize = new paella.RelativeVideoSize();
+			var width = relativeSize.proportionalWidth(height);
+			this.container.domElement.style.width = width + 'px';
+			this.container.domElement.style.height = height + 'px';
+			this.container.domElement.style.top = '0px';
+		}
+
+		onresize() {
+			super.onresize();
+			var relativeSize = new paella.RelativeVideoSize();
+			var aspectRatio = relativeSize.aspectRatio();
+			var width = (paella.player.isFullScreen() == true) ? $(window).width() : $(this.domElement).width();
+			var height = (paella.player.isFullScreen() == true) ? $(window).height() : $(this.domElement).height();
+			var containerAspectRatio = width/height;
+
+			if (containerAspectRatio>aspectRatio) {
+				this.resizeLandscape();
+			}
+			else {
+				this.resizePortrait();
+			}
+		}
+
+
+
 
 		getMonostreamMasterProfile() {
 			var mv = this.masterVideo();
@@ -1543,43 +1583,6 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 					.then(function(slaveVideoData) {
 						doApply.apply(This, [ masterVideoData, slaveVideoData ]);
 					});
-			}
-		}
-
-		resizePortrail() {
-			var width = (paella.player.isFullScreen() == true) ? $(window).width() : $(this.domElement).width();
-			var relativeSize = new paella.RelativeVideoSize();
-			var height = relativeSize.proportionalHeight(width);
-			this.container.domElement.style.width = width + 'px';
-			this.container.domElement.style.height = height + 'px';
-
-			var containerHeight = (paella.player.isFullScreen() == true) ? $(window).height() : $(this.domElement).height();
-			var newTop = containerHeight / 2 - height / 2;
-			this.container.domElement.style.top = newTop + "px";
-		}
-
-		resizeLandscape() {
-			var height = (paella.player.isFullScreen() == true) ? $(window).height() : $(this.domElement).height();
-			var relativeSize = new paella.RelativeVideoSize();
-			var width = relativeSize.proportionalWidth(height);
-			this.container.domElement.style.width = width + 'px';
-			this.container.domElement.style.height = height + 'px';
-			this.container.domElement.style.top = '0px';
-		}
-
-		onresize() {
-			super.onresize();
-			var relativeSize = new paella.RelativeVideoSize();
-			var aspectRatio = relativeSize.aspectRatio();
-			var width = (paella.player.isFullScreen() == true) ? $(window).width() : $(this.domElement).width();
-			var height = (paella.player.isFullScreen() == true) ? $(window).height() : $(this.domElement).height();
-			var containerAspectRatio = width/height;
-
-			if (containerAspectRatio>aspectRatio) {
-				this.resizeLandscape();
-			}
-			else {
-				this.resizePortrail();
 			}
 		}
 	}

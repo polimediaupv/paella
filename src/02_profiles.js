@@ -1,5 +1,6 @@
 (function() {
     let g_profiles = [];
+    let g_monostreamProfile = null;
 
 	paella.addProfile = function(cb) {
 		cb().then((profileData) => {
@@ -8,7 +9,13 @@
 				paella.events.trigger(paella.events.profileListChanged, { profileData:profileData });
 			}
 		});
-	}
+    }
+    
+    paella.setMonostreamProfile = function(cb) {
+        cb().then((profileData) => {
+            g_monostreamProfile = profileData;
+        })
+    }
 
 	class Profiles {
         get profileList() { return g_profiles; }
