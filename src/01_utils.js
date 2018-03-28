@@ -625,7 +625,7 @@ Class ("paella.MessageBox", {
 		messageContainer.innerHTML = message;
 		modalContainer.appendChild(messageContainer);
 
-		if (paella.player.isFullScreen()) {
+		if (paella.player && paella.player.isFullScreen()) {
 			paella.player.mainContainer.appendChild(modalContainer);
 		}else{
 			$('body')[0].appendChild(modalContainer);
