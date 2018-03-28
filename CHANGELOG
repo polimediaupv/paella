@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+* Paella 5.3.2
+
+  * Bug fixed in paella.MessageBox
+  * Bug fixed in travis scripts
+  * Added Matomo (org.opencast.usertracking.MatomoSaverPlugIn) plugin (thanks to @rrolf)
+
 * Paella 5.3.1
 
   * Bug fixed in captions load
