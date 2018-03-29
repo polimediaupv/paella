@@ -135,7 +135,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 
 	setProfile:function(profileName,animate) {
-		  this.videoContainer.setProfile(profileName,animate)
+		paella.profiles.setProfile(profileName,animate)
 			.then((profileName) => {
 				return paella.player.getProfile(profileName);
 			})
@@ -152,7 +152,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	},
 
 	getProfile:function(profileName) {
-		return this.videoContainer.getProfile(profileName);
+		return paella.profiles.getProfile(profileName);
 	},
 
 	initialize:function(playerId) {
@@ -166,7 +166,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 		Object.defineProperty(this,'selectedProfile',{
 			get: function() {
-				return this.videoContainer.getCurrentProfileName();
+				return paella.profiles.currentProfileName;
 			}
 		});
 	},
