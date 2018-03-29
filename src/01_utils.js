@@ -663,9 +663,9 @@ Class ("paella.MessageBox", {
 	createCloseButton:function() {
 		if (this.messageContainer) {
 			var thisClass = this;
-			var closeButton = document.createElement('div');
+			var closeButton = document.createElement('span');
 			this.messageContainer.appendChild(closeButton);
-			closeButton.className = 'paella_messageContainer_closeButton';
+			closeButton.className = 'paella_messageContainer_closeButton icon-cancel-circle';
 			$(closeButton).click(function(event) { thisClass.onCloseButtonClick(); });
 		}
 	},
