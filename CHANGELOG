@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.3.3
+
+  * UX bug fixed in paella.MessageBox
+
 * Paella 5.3.2
 
   * Bug fixed in paella.MessageBox
