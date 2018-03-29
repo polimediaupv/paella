@@ -57,7 +57,6 @@ paella.events = {
 	loadComplete:'paella:loadComplete',
 	loadPlugins:'paella:loadPlugins',
 	error:'paella:error',
-	setProfile:'paella:setprofile',
 	documentChanged:'paella:documentChanged',
 	didSaveChanges:'paella:didsavechanges',
 	controlBarWillHide:'paella:controlbarwillhide',
@@ -71,7 +70,7 @@ paella.events = {
 	videoZoomChanged:'paella:videoZoomChanged',
 	audioLanguageChanged:'paella:audiolanguagechanged',
 	zoomAvailabilityChanged:'paella:zoomavailabilitychanged',
-
+	
 	qualityChanged:'paella:qualityChanged',
 	singleVideoReady:'paella:singleVideoReady',
 	singleVideoUnloaded:'paella:singleVideoUnloaded',
@@ -86,6 +85,8 @@ paella.events = {
 	captionsEnabled: 'paella:caption:enabled',  // Event triguered when a caption es enabled.
 	captionsDisabled: 'paella:caption:disabled',  // Event triguered when a caption es disabled.
 	
+	profileListChanged:'paella:profilelistchanged',
+	setProfile:'paella:setprofile',
 
 	trigger:function(event,params) {
 		$(document).trigger(event,params);

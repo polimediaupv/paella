@@ -135,21 +135,24 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 
 	setProfile:function(profileName,animate) {
-		  this.videoContainer.setProfile(profileName,animate)
-          .then((profileName) => {
-              return paella.player.getProfile(profileName);
-          })
-          .then((profileData) => {
-              if (!paella.player.videoContainer.isMonostream) {
-                  base.cookies.set("lastProfile", profileName);
-              }
-              
-              paella.events.trigger(paella.events.setProfile,{profileName:profileName});
-          });
+		paella.profiles.setProfile(profileName,animate)
+			.then((profileName) => {
+				return paella.player.getProfile(profileName);
+			})
+			.then((profileData) => {
+				if (!paella.player.videoContainer.isMonostream) {
+					base.cookies.set("lastProfile", profileName);
+				}
+				
+				paella.events.trigger(paella.events.setProfile,{profileName:profileName});
+			})
+			.catch((err) => {
+				// No such profile
+			});
 	},
 
 	getProfile:function(profileName) {
-		return this.videoContainer.getProfile(profileName);
+		return paella.profiles.getProfile(profileName);
 	},
 
 	initialize:function(playerId) {
@@ -163,7 +166,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 		Object.defineProperty(this,'selectedProfile',{
 			get: function() {
-				return this.videoContainer.getCurrentProfileName();
+				return paella.profiles.currentProfileName;
 			}
 		});
 	},
@@ -264,12 +267,14 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 		if (this.controls) this.controls.onresize();
 
 		// Resize the layout profile
-		var cookieProfile = paella.utils.cookies.get('lastProfile');
-		if (cookieProfile) {
-			this.setProfile(cookieProfile,false);
-		}
-		else {
-			this.setProfile(paella.Profiles.getDefaultProfile(), false);
+		if (this.videoContainer.ready) {
+			var cookieProfile = paella.utils.cookies.get('lastProfile');
+			if (cookieProfile) {
+				this.setProfile(cookieProfile,false);
+			}
+			else {
+				this.setProfile(paella.Profiles.getDefaultProfile(), false);
+			}
 		}
 		
 		paella.events.trigger(paella.events.resize,{width:$(this.videoContainer.domElement).width(), height:$(this.videoContainer.domElement).height()});

@@ -681,6 +681,8 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 			});
 		}
 
+		get streamProvider() { return this._streamProvider; }
+
 		_getQualityStrategyObject() {
 			var Constructor = null;
 			paella.player.config.player
@@ -1279,15 +1281,25 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 
 					var getProfile = base.parameters.get('profile');
 					var cookieProfile = base.cookies.get('lastProfile');
+					let promise = null;
 					if (getProfile) {
-						return This.setProfile(getProfile, false);
+						promise = paella.profiles.setProfile(getProfile, false);
 					}
 					else if (cookieProfile) {
-						return This.setProfile(cookieProfile, false);
+						promise = paella.profiles.setProfile(cookieProfile, false);
 					}
-					else {
-						return This.setProfile(paella.Profiles.getDefaultProfile(), false);
+
+					if (!promise) {
+						promise = paella.profiles.setProfile(paella.profiles.getDefaultProfile(), false);
 					}
+
+					return new Promise((resolve) => {
+						promise.then(() => resolve())
+						.catch(() => {
+							paella.profiles.setProfile(paella.profiles.getDefaultProfile(), false)
+								.then(() => resolve());
+						});
+					});
 				});
 		}
 		
@@ -1330,213 +1342,7 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 			return this._sourceData.length;
 		}
 
-		getMonostreamMasterProfile() {
-			var mv = this.masterVideo();
-			return {
-				content:"presenter",
-				visible:true,
-				layer:1,
-				rect:[
-					{ aspectRatio:"1/1",left:280,top:0,width:720,height:720 },
-					{ aspectRatio:"6/5",left:208,top:0,width:864,height:720 },
-					{ aspectRatio:"5/4",left:190,top:0,width:900,height:720 },
-					{ aspectRatio:"4/3",left:160,top:0,width:960,height:720 },
-					{ aspectRatio:"11/8",left:145,top:0,width:990,height:720 },
-					{ aspectRatio:"1.41/1",left:132,top:0,width:1015,height:720 },
-					{ aspectRatio:"1.43/1",left:125,top:0,width:1029,height:720 },
-					{ aspectRatio:"3/2",left:100,top:0,width:1080,height:720 },
-					{ aspectRatio:"16/10",left:64,top:0,width:1152,height:720 },
-					{ aspectRatio:"5/3",left:40,top:0,width:1200,height:720 },
-					{ aspectRatio:"16/9",left:0,top:0,width:1280,height:720 },
-					{ aspectRatio:"1.85/1",left:0,top:14,width:1280,height:692 },
-					{ aspectRatio:"2.35/1",left:0,top:87,width:1280,height:544 },
-					{ aspectRatio:"2.41/1",left:0,top:94,width:1280,height:531 },
-					{ aspectRatio:"2.76/1",left:0,top:128,width:1280,height:463 }
-				]
-			};
-		}
-
-		getMonostreamSlaveProfile() {
-			return {
-				content:"slides",
-				visible:false,
-				layer:0,
-				rect:[
-					{aspectRatio:"16/9",left:0,top:0,width:0,height:0},
-					{aspectRatio:"4/3",left:0,top:0,width:0,height:0},
-				]
-			};
-		}
-
-		getCurrentProfileName() {
-			return this._currentProfile;
-		}
-
-		setProfile(profileName,animate) {
-			return new Promise((resolve) => {
-				animate = base.userAgent.browser.Explorer ? false:animate;
-				if (!this.masterVideo()) {
-					resolve();	// Nothing to do, the video is not loaded
-				}
-				else {
-					paella.Profiles.loadProfile(profileName,(profileData) => {
-						this._currentProfile = profileName;
-						if (this._streamProvider.slaveVideos.length==0) {
-							profileData.masterVideo = this.getMonostreamMasterProfile();
-							profileData.slaveVideo = this.getMonostreamSlaveProfile();
-						}
-						this.applyProfileWithJson(profileData,animate);
-						resolve(profileName);
-					});
-				}
-			});
-		}
-
-		getProfile(profileName) {
-			return new Promise((resolve,reject) => {
-				paella.Profiles.loadProfile(profileName,(profileData) => {
-					resolve(profileData);
-				});
-			});
-		}
-
-		hideAllLogos() {
-			for (var i=0;i<this.logos.length;++i) {
-				var logoId = this.logos[i];
-				var logo = this.container.getNode(logoId);
-				$(logo.domElement).hide();
-			}
-		}
-
-		showLogos(logos) {
-			if (logos == undefined) return;
-			var relativeSize = new paella.RelativeVideoSize();
-			for (var i=0; i<logos.length;++i) {
-				var logo = logos[i];
-				var logoId = logo.content;
-				var logoNode = this.container.getNode(logoId);
-				var rect = logo.rect;
-				if (!logoNode) {
-					style = {};
-					logoNode = this.container.addNode(new paella.DomNode('img',logoId,style));
-					logoNode.domElement.setAttribute('src', paella.utils.folders.profiles() + '/resources/' + logoId);
-					logoNode.domElement.setAttribute('src', paella.utils.folders.profiles() + '/resources/' + logoId);
-				}
-				else {
-					$(logoNode.domElement).show();
-				}
-				var percentTop = relativeSize.percentVSize(rect.top) + '%';
-				var percentLeft = relativeSize.percentWSize(rect.left) + '%';
-				var percentWidth = relativeSize.percentWSize(rect.width) + '%';
-				var percentHeight = relativeSize.percentVSize(rect.height) + '%';
-				var style = {top:percentTop,left:percentLeft,width:percentWidth,height:percentHeight,position:'absolute',zIndex:logo.zIndex};
-				$(logoNode.domElement).css(style);
-			}
-		}
-		
-		getClosestRect(profileData,videoDimensions) {
-			var minDiff = 10;
-			var re = /([0-9\.]+)\/([0-9\.]+)/;
-			var result = profileData.rect[0];
-			var videoAspectRatio = videoDimensions.h==0 ? 1.777777:videoDimensions.w / videoDimensions.h;
-			var profileAspectRatio = 1;
-			var reResult = false;
-			profileData.rect.forEach(function(rect) {
-				if ((reResult = re.exec(rect.aspectRatio))) {
-					profileAspectRatio = Number(reResult[1]) / Number(reResult[2]);
-				}
-				var diff = Math.abs(profileAspectRatio - videoAspectRatio);
-				if (minDiff>diff) {
-					minDiff = diff;
-					result = rect;
-				}
-			});
-			return result;
-		}
-
-		applyProfileWithJson(profileData,animate) {
-			var doApply = function(masterData, slaveData) {
-				if (animate==undefined) animate = true;
-				let video1 = this.videoWrappers[0];
-				let video2 = this.videoWrappers.length>1 ? this.videoWrappers[1] : null;
-				let videoPlayer1 = this.masterVideo();
-				let videoPlayer2 = this.slaveVideo();
-
-				let background = this.container.getNode(this.backgroundId);
-
-				let masterDimensions = masterData.res;
-				let slaveDimensions = slaveData && slaveData.res;
-				let rectMaster = this.getClosestRect(profileData.masterVideo,masterData.res);
-				let rectSlave = slaveData && this.getClosestRect(profileData.slaveVideo,slaveData.res);
-
-				// Logos
-				// Hide previous logos
-				this.hideAllLogos();
-
-				// Create or show new logos
-				this.showLogos(profileData.logos);
-
-				if (dynamic_cast("paella.ProfileFrameStrategy",this.profileFrameStrategy)) {
-					var containerSize = { width:$(this.domElement).width(), height:$(this.domElement).height() };
-					var scaleFactor = rectMaster.width / containerSize.width;
-					var scaledMaster = { width:masterDimensions.w*scaleFactor, height:masterDimensions.h*scaleFactor };
-					rectMaster.left = Number(rectMaster.left);
-					rectMaster.top = Number(rectMaster.top);
-					rectMaster.width = Number(rectMaster.width);
-					rectMaster.height = Number(rectMaster.height);
-					rectMaster = this.profileFrameStrategy.adaptFrame(scaledMaster,rectMaster);
-					if (video2) {
-						var scaledSlave = { width:slaveDimensions.w * scaleFactor, height:slaveDimensions.h * scaleFactor };
-						rectSlave.left = Number(rectSlave.left);
-						rectSlave.top = Number(rectSlave.top);
-						rectSlave.width = Number(rectSlave.width);
-						rectSlave.height = Number(rectSlave.height);
-						rectSlave = this.profileFrameStrategy.adaptFrame(scaledSlave,rectSlave);
-					}
-				}
-
-				video1.setRect(rectMaster,animate);
-				this.currentMasterVideoRect = rectMaster;
-				video1.setVisible(profileData.masterVideo.visible,animate);
-				this.currentMasterVideoRect.visible = /true/i.test(profileData.masterVideo.visible) ? true:false;
-				this.currentMasterVideoRect.layer = parseInt(profileData.masterVideo.layer);
-				if (video2) {
-					video2.setRect(rectSlave,animate);
-					this.currentSlaveVideoRect = rectSlave;
-					this.currentSlaveVideoRect.visible = /true/i.test(profileData.slaveVideo.visible) ? true:false;
-					this.currentSlaveVideoRect.layer = parseInt(profileData.slaveVideo.layer);
-					video2.setVisible(profileData.slaveVideo.visible,animate);
-					video2.setLayer(profileData.slaveVideo.layer);
-				}
-				video1.setLayer(profileData.masterVideo.layer);
-				background.setImage(paella.utils.folders.profiles() + '/resources/' + profileData.background.content);
-			};
-			
-			var This = this;
-			if (!this.masterVideo()) {
-				return;
-			}
-			else if (!this.slaveVideo()) {		
-				this.masterVideo().getVideoData()
-					.then(function(data) {
-						doApply.apply(This, [ data ]);
-					});
-			}
-			else {
-				var masterVideoData = {};		
-				this.masterVideo().getVideoData()
-					.then(function(data) {
-						masterVideoData = data;
-						return This.slaveVideo().getVideoData();
-					})
-					
-					.then(function(slaveVideoData) {
-						doApply.apply(This, [ masterVideoData, slaveVideoData ]);
-					});
-			}
-		}
-
-		resizePortrail() {
+		resizePortrait() {
 			var width = (paella.player.isFullScreen() == true) ? $(window).width() : $(this.domElement).width();
 			var relativeSize = new paella.RelativeVideoSize();
 			var height = relativeSize.proportionalHeight(width);
@@ -1569,7 +1375,7 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 				this.resizeLandscape();
 			}
 			else {
-				this.resizePortrail();
+				this.resizePortrait();
 			}
 		}
 	}
