@@ -1005,14 +1005,14 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	},
 
 	supportAutoplay:function() {
-		let macOS10_13_safari = paella.utils.userAgent.system.MacOS &&
-								paella.utils.userAgent.system.Version.minor>=13 &&
+		let macOS10_12_safari = paella.utils.userAgent.system.MacOS &&
+								paella.utils.userAgent.system.Version.minor>=12 &&
 								paella.utils.userAgent.browser.Safari;
 		let iOS = paella.utils.userAgent.system.iOS;
 		// Autoplay does not work from Chrome version 64
 		let chrome_v64 =	paella.utils.userAgent.browser.Chrome &&
 							paella.utils.userAgent.browser.Version.major>=64;
-		if (macOS10_13_safari || iOS || chrome_v64)
+		if (macOS10_12_safari || iOS || chrome_v64)
 		{
 			return false;
 		}
