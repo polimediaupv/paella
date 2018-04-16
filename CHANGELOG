@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.3.4
+
+  * Fixes and improvements in live streaming videos
+
 * Paella 5.3.3
 
   * UX bug fixed in paella.MessageBox

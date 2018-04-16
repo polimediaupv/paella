@@ -17,8 +17,7 @@ paella.addPlugin(function() {
 		getIndex() { return 110; }
 	
 		checkEnabled(onSuccess) {
-			onSuccess(!paella.player.isLiveStream() || base.userAgent.system.Android 
-				|| base.userAgent.system.iOS);
+			onSuccess(true);
 		}
 	
 		setup() {
