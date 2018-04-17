@@ -127,7 +127,9 @@
                 video2.setLayer(profileData.slaveVideo.layer);
             }
             video1.setLayer(profileData.masterVideo.layer);
-            background.setImage(paella.utils.folders.profiles() + '/resources/' + profileData.background.content);
+            if (profileData.background) {
+                background.setImage(paella.utils.folders.profiles() + '/resources/' + profileData.background.content);
+            }
         };
         
         if (!this.masterVideo()) {
