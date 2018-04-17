@@ -479,34 +479,41 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	}
 });
 
-Class ("paella.ProfileFrameStrategy",{
-	valid:function() {
-		return true;
-	},
+(function() {
+	// Profile frame strategies
+	
+	class ProfileFrameStrategy {
+		valid() { return true; }
 
-	adaptFrame:function(videoDimensions,frameRect) {
-		return frameRect;
-	}
-});
-
-Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
-	adaptFrame:function(videoDimensions,frameRect) {
-		if (videoDimensions.width<frameRect.width|| videoDimensions.height<frameRect.height)
-		{
-			var frameRectCopy = JSON.parse(JSON.stringify(frameRect));
-			frameRectCopy.width = videoDimensions.width;
-			frameRectCopy.height = videoDimensions.height;
-			var diff = { w:frameRect.width - videoDimensions.width,
-						 h:frameRect.height - videoDimensions.height };
-			frameRectCopy.top = frameRectCopy.top + diff.h/2;
-			frameRectCopy.left = frameRectCopy.left + diff.w/2;
-			return frameRectCopy;
+		adaptFrame(videoDimensions,frameRect) {
+			return frameRect;
 		}
-		return frameRect;
 	}
-});
+
+	paella.ProfileFrameStrategy = ProfileFrameStrategy;
+
+	class LimitedSizeProfileFrameStrategy extends ProfileFrameStrategy {
+		adaptFrame(videoDimensions,frameRect) {
+			if (videoDimensions.width<frameRect.width|| videoDimensions.height<frameRect.height) {
+				var frameRectCopy = JSON.parse(JSON.stringify(frameRect));
+				frameRectCopy.width = videoDimensions.width;
+				frameRectCopy.height = videoDimensions.height;
+				var diff = { w:frameRect.width - videoDimensions.width,
+							h:frameRect.height - videoDimensions.height };
+				frameRectCopy.top = frameRectCopy.top + diff.h/2;
+				frameRectCopy.left = frameRectCopy.left + diff.w/2;
+				return frameRectCopy;
+			}
+			return frameRect;
+		}
+	}
+
+	paella.LimitedSizeProfileFrameStrategy = LimitedSizeProfileFrameStrategy;
+})();
 
 (function() {
+
+	
 
 	class StreamProvider {
 		constructor(videoData) {
@@ -550,12 +557,8 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 			return this._masterVideo;
 		}
 
-		get slaveVideos() {
-			return this._slaveVideos;
-		}
-
-		get mainSlaveVideo() {
-			return this._slaveVideos.length>0 ? this._slaveVideos[0]:null;
+		get videoStreams() {
+			return this._videoData;
 		}
 
 		get audioStreams() {
