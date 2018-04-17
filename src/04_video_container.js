@@ -511,7 +511,6 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 	class StreamProvider {
 		constructor(videoData) {
 			this._masterVideo = null;
-			this._slaveVideos = [];
 			this._videoStreams = [];
 			this._audioStreams = [];
 		}
@@ -529,9 +528,6 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 				if (stream.role=='master') {
 					this._masterVideo = stream;
 				}
-				else if (stream.type=='video') {
-					this._slaveVideos.push(stream);
-				}
 
 				if (stream.type=='video') {
 					this._videoStreams.push(stream);
@@ -544,6 +540,10 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 			if (this._videoStreams.length==0) {
 				throw new Error("No video streams found. Paella Player requires at least one video stream.");
 			}
+		}
+
+		get isMonostream() {
+			return this._videoStreams.length==1;
 		}
 
 		get masterVideo() {
@@ -577,7 +577,7 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 		return wrapper;
 	}
 
-	class VideoContainer extends paella.VideoContainerBase {
+	class VideoContainer_old extends paella.VideoContainerBase {
 		constructor(id) {
 			super(id);
 			this.containerId = '';
@@ -1377,6 +1377,20 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 			else {
 				this.resizePortrait();
 			}
+		}
+	}
+
+	class VideoContainer extends paella.VideoContainerBase {
+
+		get streamProvider() { return this._streamProvider; }
+		get ready() { return this._ready; }
+		get isMonostream() { return this._streamProvider.isMonostream; }
+
+		constructor(id) {
+			super(id);
+
+			this._streamProvider = new paella.StreamProvider();
+			this._ready = false;
 		}
 	}
 
