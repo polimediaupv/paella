@@ -481,8 +481,25 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 
 (function() {
 	// Profile frame strategies
-	
+
 	class ProfileFrameStrategy {
+		static Factory() {
+			var config = paella.player.config;
+
+			try {
+				var strategyClass = config.player.profileFrameStrategy;
+				var ClassObject = paella.utils.objectFromString(strategyClass);
+				var strategy = new ClassObject();
+				if (strategy instanceof paella.ProfileFrameStrategy) {
+					return strategy;
+				}
+			}
+			catch (e) {
+			}
+			
+			return null;
+		}
+
 		valid() { return true; }
 
 		adaptFrame(videoDimensions,frameRect) {
@@ -513,13 +530,17 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 
 (function() {
 
-	
-
 	class StreamProvider {
 		constructor(videoData) {
-			this._masterVideo = null;
+			this._mainStream = null;
 			this._videoStreams = [];
 			this._audioStreams = [];
+
+			this._mainPlayer = null;
+			this._audioPlayer = null;
+			this._videoPlayers = [];
+			this._audioPlayers = [];
+			this._players = [];
 		}
 
 		init(videoData) {
@@ -533,7 +554,7 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 			this._videoData.forEach((stream, index) => {
 				stream.type = stream.type || 'video';
 				if (stream.role=='master') {
-					this._masterVideo = stream;
+					this._mainStream = stream;
 				}
 
 				if (stream.type=='video') {
@@ -547,14 +568,50 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 			if (this._videoStreams.length==0) {
 				throw new Error("No video streams found. Paella Player requires at least one video stream.");
 			}
+
+			// Create video players
+			this._videoStreams.forEach((videoStream,index) => {
+				let rect = {x:0,y:0,w:1280,h:720};
+				let player = paella.videoFactory.getVideoObject(`video_${ index }`, videoStream, rect);
+
+				if (videoStream==this._mainStream) {
+					this._mainPlayer = player;
+					this._audioPlayer = player;
+				}
+				else {
+					player.setVolume(0);
+				}
+
+				this._videoPlayers.push(player);
+				this._players.push(player);
+			});
+
+			// Create audio player
+			this._audioStreams.forEach((audioStream,index) => {
+				let player = paella.audioFactory.getAudioObject(`audio_${ index }`,audioStream);
+				if (player) {
+					this._audioPlayers.push(player);
+					this._players.push(player);
+				}
+			});
+		}
+
+		loadVideos() {
+			let promises = [];
+
+			this._players.forEach((player) => {
+				promises.push(player.load());
+			});
+			
+			return Promise.all(promises);
 		}
 
 		get isMonostream() {
 			return this._videoStreams.length==1;
 		}
 
-		get masterVideo() {
-			return this._masterVideo;
+		get mainStream() {
+			return this._mainStream;
 		}
 
 		get videoStreams() {
@@ -568,6 +625,15 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		get isLiveStreaming() {
 			return paella.player.isLiveStream();
 		}
+
+		set qualityStrategy(strategy) {
+			this._qualityStrategy = strategy;
+			this._videoPlayers.forEach((player) => {
+				player.setVideoQualityStrategy(strategy);
+			})
+		}
+
+		get qualityStrategy() { return this._qualityStrategy || null; }
 	}
 
 	paella.StreamProvider = StreamProvider;
@@ -1394,6 +1460,17 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 
 			this._streamProvider = new paella.StreamProvider();
 			this._ready = false;
+
+			setProfileFrameStrategy(paella.ProfileFrameStrategy.Factory());
+			setVideoQualityStrategy(paella.VideoQualityStrategy.Factory());
+		}
+
+		setProfileFrameStrategy(strategy) {
+			this._profileFrameStrategy = strategy;
+		}
+
+		setVideoQualityStrategy(strategy) {
+			this.streamProvider.qualityStrategy = strategy;
 		}
 	}
 
