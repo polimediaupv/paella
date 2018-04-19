@@ -541,6 +541,8 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 			this._videoPlayers = [];
 			this._audioPlayers = [];
 			this._players = [];
+
+			this._autoplay = base.parameters.get('autoplay')=='true' || this.isLiveStreaming;
 		}
 
 		init(videoData) {
@@ -570,9 +572,12 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 			}
 
 			// Create video players
+			let autoplay = this.autoplay;
 			this._videoStreams.forEach((videoStream,index) => {
 				let rect = {x:0,y:0,w:1280,h:720};
 				let player = paella.videoFactory.getVideoObject(`video_${ index }`, videoStream, rect);
+				player.setVideoQualityStrategy(this._qualityStrategy);
+				player.setAutoplay(autoplay);
 
 				if (videoStream==this._mainStream) {
 					this._mainPlayer = player;
@@ -589,6 +594,7 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 			// Create audio player
 			this._audioStreams.forEach((audioStream,index) => {
 				let player = paella.audioFactory.getAudioObject(`audio_${ index }`,audioStream);
+				player.setAutoplay(autoplay);
 				if (player) {
 					this._audioPlayers.push(player);
 					this._players.push(player);
@@ -622,6 +628,22 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 			return this._audioStreams;
 		}
 
+		get videoPlayers() {
+			return this._videoPlayers;
+		}
+
+		get audioPlayers() {
+			return this._audioPlayers;
+		}
+
+		get mainVideoPlayer() {
+			return this._mainPlayer;
+		}
+
+		get mainAudioPlayer() {
+			return this._audioPlayer;
+		}
+
 		get isLiveStreaming() {
 			return paella.player.isLiveStream();
 		}
@@ -634,6 +656,23 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		}
 
 		get qualityStrategy() { return this._qualityStrategy || null; }
+
+		get autoplay() {
+			return this.supportAutoplay && this._autoplay;
+		}
+
+		set autoplay(ap) {
+			if (!this.supportAutoplay || this.isLiveStreaming) return;
+			this._autoplay = ap;
+			if (this.videoPlayers) {
+				this.videoPlayers.forEach((player) => player.setAutoplay(ap));
+				this.audioPlayers.forEach((player) => player.setAutoplay(ap));
+			}
+		}
+
+		get supportAutoplay() {
+			return this.videoPlayers.every((player) => player.supportAutoplay());
+		}
 	}
 
 	paella.StreamProvider = StreamProvider;
@@ -1449,20 +1488,44 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		}
 	}
 
+	class TrimmingHandler {
+		constructor(videoContainer) {
+			this._videoContainer = videoContainer;
+
+			this._enabled = false;
+			this._start = 0;
+			this._end = 0;
+		}
+
+		get enabled() { return this._enabled && this._end>this._start; }
+		get start() { return this._start; }
+		get end() { return this._end; }
+
+		init(trimmingData) {
+
+		}
+
+		checkVideoBounds(currentTime,isPaused,duration) {
+
+		}
+	}
+
 	class VideoContainer extends paella.VideoContainerBase {
 
 		get streamProvider() { return this._streamProvider; }
 		get ready() { return this._ready; }
 		get isMonostream() { return this._streamProvider.isMonostream; }
+		get trimming() { return this._trimmingHandler; }
 
 		constructor(id) {
 			super(id);
 
 			this._streamProvider = new paella.StreamProvider();
 			this._ready = false;
+			this._trimmingHandler = new TrimmingHandler(this);
 
-			setProfileFrameStrategy(paella.ProfileFrameStrategy.Factory());
-			setVideoQualityStrategy(paella.VideoQualityStrategy.Factory());
+			this.setProfileFrameStrategy(paella.ProfileFrameStrategy.Factory());
+			this.setVideoQualityStrategy(paella.VideoQualityStrategy.Factory());
 		}
 
 		setProfileFrameStrategy(strategy) {
@@ -1471,6 +1534,58 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 
 		setVideoQualityStrategy(strategy) {
 			this.streamProvider.qualityStrategy = strategy;
+		}
+
+		autoplay() { return this.streamProvider.autoplay; }
+		supportAutoplay() { return this.streamProvider.supportAutoplay; }
+		setAutoplay(ap=true) {
+			this.streamProvider.autoplay = ap;
+			return this.streamProvider.supportAutoplay;
+		}
+
+
+		setStreamData(data) {
+			return new Promise((resolve,reject) => {
+				this.streamProvider.init(videoData);
+
+				let masterRect = this._streamProvider.slaveVideos.length>0 ? {x:850,y:140,w:360,h:550}:{x:0,y:0,w:1280,h:720};
+				let otherRect = {x:10,y:40,w:800,h:600};
+
+				this.streamProvider.videoPlayers.forEach((player,index) => {
+					addVideoWrapper.apply(this,['videoPlayerWrapper_' + index],player);
+					player.setAutoplay(this.autoplay());
+				});
+
+				this.streamProvider.loadVideos()
+					.then(() => {
+						$(this.streamProvider.mainVideoPlayer.video).bind('timeupdate', (evt) => {
+							let trimming = this.trimmingHandler;
+							let current = evt.currentTarget.currentTime;
+							let duration = evt.currentTarget.duration;
+							if (this.trimmingHandler.enabled) {
+								current -= trimming.start;
+								duration = trimming.end - trimming.start;
+							}
+							paella.events.trigger(paella.events.timeupdate, { videoContainer:this });
+							trimming.checkVideoBounds(evt.currentTarget.currentTime,evt.currentTarget.paused,duration);
+						});
+
+						this._ready = true;
+						let getProfile = base.parameters.get('profile');
+						let cookieProfile = base.cookies.get('profile');
+						let profileToUse = base.parameters.get('profile') ||
+										   base.cookies.get('profile') ||
+										   paella.profiles.getDefaultProfile();
+
+						paella.profiles.setProfile(profileToUse)
+							.then(() => {
+								resolve();
+							})
+							.catch(() => {
+								paella.profiles.setProfile(paella.profiles.getDefaultProfile(), false).then(() => resolve());
+							});
+					});
+			});
 		}
 	}
 

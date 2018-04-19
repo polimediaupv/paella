@@ -238,7 +238,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 				userData = d;
 				if (canRead) {
 					thisClass.loadVideo();
-					thisClass.videoContainer.publishVideo();
 				}
 				else if (userData.isAnonymous) {
 					var redirectUrl = paella.initDelegate.initParams.accessControl.getAuthenticationUrl("player/?id=" + paella.player.videoIdentifier);
