@@ -1516,6 +1516,8 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		get ready() { return this._ready; }
 		get isMonostream() { return this._streamProvider.isMonostream; }
 		get trimming() { return this._trimmingHandler; }
+		get videoWrappers() { return this._videoWrappers; }
+		get container() { return this._container; }
 
 		constructor(id) {
 			super(id);
@@ -1523,6 +1525,11 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 			this._streamProvider = new paella.StreamProvider();
 			this._ready = false;
 			this._trimmingHandler = new TrimmingHandler(this);
+			this._videoWrappers = [];
+
+			this._container = new paella.DomNode('div','mainVideoContainer',{position:'relative',display:'block',marginLeft:'auto',marginRight:'auto',width:'1024px',height:'567px'});
+			this._container.domElement.setAttribute('role','main');
+			this.addNode(this._container);
 
 			this.setProfileFrameStrategy(paella.ProfileFrameStrategy.Factory());
 			this.setVideoQualityStrategy(paella.VideoQualityStrategy.Factory());
@@ -1544,15 +1551,15 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		}
 
 
-		setStreamData(data) {
+		setStreamData(videoData) {
 			return new Promise((resolve,reject) => {
 				this.streamProvider.init(videoData);
 
-				let masterRect = this._streamProvider.slaveVideos.length>0 ? {x:850,y:140,w:360,h:550}:{x:0,y:0,w:1280,h:720};
-				let otherRect = {x:10,y:40,w:800,h:600};
+				//let masterRect = this._streamProvider.slaveVideos.length>0 ? {x:850,y:140,w:360,h:550}:{x:0,y:0,w:1280,h:720};
+				//let otherRect = {x:10,y:40,w:800,h:600}; 
 
 				this.streamProvider.videoPlayers.forEach((player,index) => {
-					addVideoWrapper.apply(this,['videoPlayerWrapper_' + index],player);
+					addVideoWrapper.apply(this,['videoPlayerWrapper_' + index,player]);
 					player.setAutoplay(this.autoplay());
 				});
 
