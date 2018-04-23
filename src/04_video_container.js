@@ -1550,6 +1550,9 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 			return this.streamProvider.supportAutoplay;
 		}
 
+		masterVideo() {
+			return this.streamProvider.mainVideoPlayer;
+		}
 
 		setStreamData(videoData) {
 			return new Promise((resolve,reject) => {
