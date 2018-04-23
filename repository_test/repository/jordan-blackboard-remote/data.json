@@ -17,7 +17,8 @@
 					}
 				]
 			},
-			"preview": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/attachment-172/PRESENTER.jpg"
+			"preview": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/attachment-172/PRESENTER.jpg",
+			"content":"presenter"
 		},
 		{
 			"sources": {
@@ -120,7 +121,8 @@
 					}
 				]
 			},
-			"preview": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/attachment-173/SCREEN.jpg"
+			"preview": "http://paellaplayer.upv.es/demo/repository/jordan-blackboard/attachment-173/SCREEN.jpg",
+			"content":"presentation"
 		}
 	],
 	"frameList": [

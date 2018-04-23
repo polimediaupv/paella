@@ -12,7 +12,8 @@
 						"mimetype": "video/mp4"
 					}				]
 			},
-			"preview": "preview/presenter_cut.jpg"
+			"preview": "preview/presenter_cut.jpg",
+			"content":"presenter"
 		},
 		{
 			"sources": {
@@ -79,7 +80,8 @@
 					}
 				]
 			},
-			"preview": "preview/presentation_cut.jpg"
+			"preview": "preview/presentation_cut.jpg",
+			"content":"presentation"
 		}
 	],
 	"frameList": [

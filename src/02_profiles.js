@@ -72,7 +72,7 @@
         return result;
     }
 
-    function applyProfileWithJson(profileData,animate) {
+    function applyProfileWithJson_old(profileData,animate) {
         var doApply = function(masterData, slaveData) {
             if (animate==undefined) animate = true;
             let video1 = this.videoWrappers[0];
@@ -155,6 +155,17 @@
         }
     }
 
+    function applyProfileWithJson(profileData,animate) {
+        if (animate==undefined) animate = true;
+        function getProfileForVideo(streamData) {
+
+        }
+
+        this.streamProvider.videoPlayers.forEach((player) => {
+
+        });
+    }
+
 	class Profiles {
         constructor() {
             this._currentProfileName;
@@ -201,7 +212,7 @@
 				if (!paella.player.videoContainer.ready) {
 					resolve();	// Nothing to do, the video is not loaded
 				}
-				else if (paella.player.videoContainer.streamProvider.slaveVideos.length==0) {
+				else if (paella.player.videoContainer.streamProvider.videoStreams.length==1) {
                     this.loadMonostreamProfile()
                         .then((profileData) => {
                             this._currentProfileName = profileName;
