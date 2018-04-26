@@ -157,13 +157,50 @@
 
     function applyProfileWithJson(profileData,animate) {
         if (animate==undefined) animate = true;
-        function getProfileForVideo(streamData) {
+        let getProfile = (content) => {
+            let result = null;
+            profileData.videos.some((videoProfile) => {
+                if (videoProfile.content==content) {
+                    result = videoProfile;
+                }
+                return result!=null;
+            });
+            return result;
+        };
 
-        }
+        let applyVideoRect = (profile,videoData,videoWrapper,player) => {
+            let frameStrategy = this.profileFrameStrategy;
+            if (frameStrategy) {
+                let rect = getClosestRect(profile,videoData.res);
+                let videoSize = videoData.res;
+                let containerSize = { width:$(this.domElement).width(), height:$(this.domElement).height() };
+                let scaleFactor = rect.width / containerSize.width;
+                let scaledVideoSize = { width:videoSize.w * scaleFactor, height:videoSize.h * scaleFactor };
+                rect.left = Number(rect.left);
+                rect.top = Number(rect.top);
+                rect.width = Number(rect.width);
+                rect.height = Number(rect.height);
+                rect = frameStrategy.adaptFrame(scaledVideoSize,rect);
+                
+                let visible = /true/i.test(profile.visible);
+                let layer = parseInt(profile.layer);
 
-        this.streamProvider.videoPlayers.forEach((player) => {
-
-        });
+                videoWrapper.setRect(rect,animate);
+                videoWrapper.setVisible(profile.visible,animate);
+            }
+        };
+        
+        this.streamProvider.videoStreams.forEach((streamData,index) => {
+            let profile = getProfile(streamData.content);
+            if (profile) {
+                let videoWrapper = this.videoWrappers[index];
+                let player = this.streamProvider.videoPlayers[index];
+                player.getVideoData()
+                    .then((data) => {
+                        applyVideoRect(profile,data,videoWrapper,player);
+                    });
+            }
+        })
     }
 
 	class Profiles {
