@@ -244,23 +244,23 @@ paella.addPlugin(function() {
 				case "auto":
 					var streams = paella.initDelegate.initParams.videoLoader.streams;
 					if (streams.length == 1){
-						overlayContainer.addElement(frameRoot, overlayContainer.getMasterRect());
+						overlayContainer.addElement(frameRoot, overlayContainer.getVideoRect(0));
 					}
 					else if (streams.length >= 2){
-						overlayContainer.addElement(frameRoot, overlayContainer.getSlaveRect());
+						overlayContainer.addElement(frameRoot, overlayContainer.getVideoRect(1));
 					}
 					overlayContainer.enableBackgroundMode();
 					this.hiResFrame = frameRoot;
 					break;
 				case "master":
-					overlayContainer.addElement(frameRoot, overlayContainer.getMasterRect());
+					overlayContainer.addElement(frameRoot, overlayContainer.getVideoRect(0));
 					overlayContainer.enableBackgroundMode();
 					this.hiResFrame = frameRoot;
 					break;
 				case "slave":
 					var streams = paella.initDelegate.initParams.videoLoader.streams;
 					if (streams.length >= 2){
-						overlayContainer.addElement(frameRoot, overlayContainer.getSlaveRect());
+						overlayContainer.addElement(frameRoot, overlayContainer.getVideoRect(0));
 						overlayContainer.enableBackgroundMode();
 						this.hiResFrame = frameRoot;
 					}

@@ -65,6 +65,8 @@ paella.addPlugin(function() {
 			if (this.container) {
 				overlayContainer.removeElement(this.container);
 			}
+
+			// TODO: Make compatible with n-streams
 			switch (self._showArrowsIn) {
 				case 'full':
 					this.container = overlayContainer.addLayer();
@@ -74,12 +76,12 @@ paella.addPlugin(function() {
 					break;
 				case 'master':
 					var element = document.createElement('div');			
-					this.container = overlayContainer.addElement(element,overlayContainer.getMasterRect());			
+					this.container = overlayContainer.addElement(element,overlayContainer.getVideoRect(0));			
 					this.arrows.style.marginTop = "23%";
 					break;
 				case 'slave':
-					var element = document.createElement('div');			
-					this.container = overlayContainer.addElement(element,overlayContainer.getSlaveRect());
+					var element = document.createElement('div');
+					this.container = overlayContainer.addElement(element,overlayContainer.getVideoRect(1));
 					this.arrows.style.marginTop = "35%";
 					break;
 			}

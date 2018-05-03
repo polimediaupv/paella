@@ -54,12 +54,8 @@ Class ("paella.VideoOverlay", paella.DomNode,{
 		this.domElement.innerHTML = "";
 	},
 
-	getMasterRect:function() {
-		return paella.player.videoContainer.getMasterVideoRect();
-	},
-
-	getSlaveRect:function() {
-		return paella.player.videoContainer.getSlaveVideoRect();
+	getVideoRect:function(index) {
+		return paella.player.videoContainer.getVideoRect(index);
 	},
 
 	addText:function(text,rect,isDebug) {
@@ -624,8 +620,13 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 			return this._videoData;
 		}
 
+		
 		get audioStreams() {
 			return this._audioStreams;
+		}
+		
+		get streams() {
+			return this._videoStreams.concat(this._audioStreams);
 		}
 
 		get videoPlayers() {
@@ -634,6 +635,21 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 
 		get audioPlayers() {
 			return this._audioPlayers;
+		}
+
+		get players() {
+			return this._videoPlayers.concat(this._audioPlayers);
+		}
+
+		callPlayerFunction(fnName) {
+			let promises = [];
+			let functionArguments = arguments;
+
+			this.players.forEach((player) => {
+				promises.push(player[fnName](...functionArguments));
+			});
+
+			return Promise.all(promises);
 		}
 
 		get mainVideoPlayer() {
@@ -1519,6 +1535,7 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		get videoWrappers() { return this._videoWrappers; }
 		get container() { return this._container; }
 		get profileFrameStrategy() { return this._profileFrameStrategy; }
+		get sourceData() { return this._sourceData; }
 
 		constructor(id) {
 			super(id);
@@ -1539,6 +1556,149 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 			this.setVideoQualityStrategy(paella.VideoQualityStrategy.Factory());
 		}
 
+		// Playback and status functions
+		play() {
+			return new Promise((resolve,reject) => {
+				this.streamProvider.callPlayerFunction('play')
+					.then(() => {
+						super.play();
+						resolve();
+					})
+					.catch((err) => {
+						reject(err);
+					})
+			});
+		}
+
+		pause() {
+			return new Promise((resolve,reject) => {
+				this.streamProvider.callPlayerFunction('pause')
+					.then(() => {
+						super.pause();
+						resolve();
+					})
+					.catch((err) => {
+						reject(err);
+					})
+			});
+		}
+
+		setCurrentTime(time) {
+			// TODO: trimming
+			/*
+			return new Promise((resolve) => {
+				let promises = [];
+				if (this._trimming.enabled) {
+					time += this._trimming.start;
+					if (time<this._trimming.start) time = this._trimming.start;
+					if (time>this._trimming.end) time = this._trimming.end;
+				}
+				promises.push(this.masterVideo().setCurrentTime(time));
+				if (this.slaveVideo()) promises.push(this.slaveVideo().setCurrentTime(time));
+				this._audioPlayers.forEach((player) => { promises.push(player.setCurrentTime(time)); });
+
+				Promise.all(promises)
+					.then(() => {
+						return this.duration(false);
+					})
+					.then((duration) => {
+						resolve({ time:time, duration:duration});
+					});
+			});
+			*/
+			return new Promise((resolve,reject) => {
+				this.streamProvider.callPlayerFunction('setCurrentTime',time)
+					.then(() => {
+						return this.duration(false);
+					})
+
+					.then((duration) => {
+						resolve({ time:time, duration:duration });
+					})
+
+					.catch((err) => {
+						reject(err);
+					})
+			})
+		}
+
+		currentTime(ignoreTrimming = false) {
+			// TODO: trimming
+			/*
+			if (this._trimming.enabled && !ignoreTrimming) {
+				var trimStart = this._trimming.start;
+				return new Promise((resolve) => {
+					this.masterVideo().currentTime()
+						.then(function(t) {
+							resolve(t - trimStart);
+						});
+				});
+			}
+			else {
+				return this.masterVideo().currentTime();
+			}
+			*/
+			return this.streamProvider.mainVideoPlayer.currentTime();
+		}
+
+		setPlaybackRate(rate) {
+			this.streamProvider.callPlayerFunction('setPlaybackRate',rate);
+			super.setPlaybackRate(rate);
+		}
+
+		setVolume(params) {
+			if (typeof(params)=='object') {
+				console.warn("videoContainer.setVolume(): set parameter as object is deprecated");
+				return Promise.resolve();
+			}
+			else {
+				return new Promise((resolve,reject) => {
+					this.streamProvider.callPlayerFunction('setVolume',params)
+						.then(() => {
+							paella.events.trigger(paella.events.setVolume, { master:params });
+							resolve(params);
+						})
+						.catch((err) => {
+							reject(err);
+						})
+				})
+			}
+		}
+
+		volume() {
+			return new Promise((resolve) => {
+				this.streamProvider.mainVideoPlayer.volume()
+					.then((vol) => {
+						resolve(vol);
+					});
+			});
+		}
+
+		duration() {
+
+		}
+
+		paused() {}
+
+		// Trimming functions
+		// TODO: implement this
+		trimEnabled() {}
+		trimStart() {}
+		trimEnd() {}
+
+		// Video quality functions
+		// TODO: Implement this
+		getQualities() {}
+		setQuality(index) {}
+		getCurrentQuality() {}
+
+		// Audio language functions
+		// TODO: implement this
+		get audioLanguage() {}
+		getAudioLanguages() {}
+		setAudioLanguage(lang) {}
+
+
 		setProfileFrameStrategy(strategy) {
 			this._profileFrameStrategy = strategy;
 		}
@@ -1558,7 +1718,17 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 			return this.streamProvider.mainVideoPlayer;
 		}
 
+		getVideoRect(videoIndex) {
+			if (this.videoWrappers.length>videoIndex) {
+				return this.videoWrappers[videoIndex].getRect();
+			}
+			else {
+				throw new Error(`Video wrapper with index ${ videoIndex } not found`);
+			}
+		}
+
 		setStreamData(videoData) {
+			this._sourceData = videoData;
 			return new Promise((resolve,reject) => {
 				this.streamProvider.init(videoData);
 

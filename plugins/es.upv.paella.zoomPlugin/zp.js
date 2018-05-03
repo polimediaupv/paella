@@ -278,7 +278,7 @@ paella.addPlugin(function() {
 			newframe.className = "newframe";
 			
 			overlayContainer = paella.player.videoContainer.overlayContainer;
-			overlayContainer.addElement(newframe, overlayContainer.getMasterRect());
+			overlayContainer.addElement(newframe, overlayContainer.getVideoRect(0));
 
 			var zoomframe = document.createElement("div");
 			zoomframe.className = "zoomFrame";	
