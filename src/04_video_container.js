@@ -643,7 +643,10 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 
 		callPlayerFunction(fnName) {
 			let promises = [];
-			let functionArguments = arguments;
+			let functionArguments = [];
+			for (let i=1; i<arguments.length; ++i) {
+				functionArguments.push(arguments[i]);
+			}
 
 			this.players.forEach((player) => {
 				promises.push(player[fnName](...functionArguments));
@@ -1693,7 +1696,6 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		trimEnd() { return Promise.resolve(this.trimmingHandler.end); }
 
 		// Video quality functions
-		// TODO: Implement this
 		getQualities() {
 			return this.streamProvider.mainVideoPlayer.getQualities();
 		}
@@ -1701,8 +1703,8 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		setQuality(index) {
 			let qualities = [];
 			let promises = [];
-			this.streamProvider.videoPlayers.forEach(function(player) {
-				playerData = {
+			this.streamProvider.videoPlayers.forEach((player) => {
+				let playerData = {
 					player:player,
 					promise:player.getQualities()
 				};
@@ -1828,7 +1830,7 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 								current -= trimming.start;
 								duration = trimming.end - trimming.start;
 							}
-							paella.events.trigger(paella.events.timeupdate, { videoContainer:this });
+							paella.events.trigger(paella.events.timeupdate, { videoContainer:this, currentTime:current, duration:duration });
 							trimming.checkVideoBounds(evt.currentTarget.currentTime,evt.currentTarget.paused,duration);
 						});
 
