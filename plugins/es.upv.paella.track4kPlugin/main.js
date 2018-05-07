@@ -183,17 +183,15 @@ paella.addDataDelegate("cameraTrack",() => {
             getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
     
             checkEnabled(onSuccess) {
-                paella.player.videoContainer.videoPlayers()
-                    .then((players) => {
-                        let pluginData = paella.player.config.plugins.list[this.getName()];
-                        let playerIndex = pluginData.targetStreamIndex;
-                        let autoByDefault = pluginData.autoModeByDefault;
-                        this.targetPlayer = players.length>playerIndex ? players[playerIndex] : null;
-                        g_track4kPlugin.enabled = autoByDefault;
-                        onSuccess(paella.player.config.player.videoZoom.enabled &&
-                                  this.targetPlayer &&
-                                  this.targetPlayer.allowZoom());
-                    });
+                let players = paella.player.videoContainer.streamProvider.videoPlayers;
+                let pluginData = paella.player.config.plugins.list[this.getName()];
+                let playerIndex = pluginData.targetStreamIndex;
+                let autoByDefault = pluginData.autoModeByDefault;
+                this.targetPlayer = players.length>playerIndex ? players[playerIndex] : null;
+                g_track4kPlugin.enabled = autoByDefault;
+                onSuccess(paella.player.config.player.videoZoom.enabled &&
+                            this.targetPlayer &&
+                            this.targetPlayer.allowZoom());
             }
             
             buildContent(domElement) {
