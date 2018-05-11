@@ -1507,29 +1507,6 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		}
 	}
 
-	class TrimmingHandler {
-		constructor(videoContainer) {
-			this._videoContainer = videoContainer;
-
-			this._enabled = false;
-			this._start = 0;
-			this._end = 0;
-		}
-
-		get enabled() { return this._enabled && this._end>this._start; }
-		get start() { return this._start; }
-		get end() { return this._end; }
-		get trimmingData() { return { start:this._start, end:this._end, enabled:this._enabled }; }
-
-		init(trimmingData) {
-
-		}
-
-		checkVideoBounds(currentTime,isPaused,duration) {
-
-		}
-	}
-
 	class VideoContainer extends paella.VideoContainerBase {
 
 		get streamProvider() { return this._streamProvider; }
@@ -1546,7 +1523,6 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 
 			this._streamProvider = new paella.StreamProvider();
 			this._ready = false;
-			this._trimmingHandler = new TrimmingHandler(this);
 			this._videoWrappers = [];
 
 			this._container = new paella.DomNode('div','playerContainer_videoContainer_container',{position:'relative',display:'block',marginLeft:'auto',marginRight:'auto',width:'1024px',height:'567px'});
@@ -1592,30 +1568,21 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		}
 
 		setCurrentTime(time) {
-			// TODO: trimming
-			/*
-			return new Promise((resolve) => {
-				let promises = [];
-				if (this._trimming.enabled) {
-					time += this._trimming.start;
-					if (time<this._trimming.start) time = this._trimming.start;
-					if (time>this._trimming.end) time = this._trimming.end;
-				}
-				promises.push(this.masterVideo().setCurrentTime(time));
-				if (this.slaveVideo()) promises.push(this.slaveVideo().setCurrentTime(time));
-				this._audioPlayers.forEach((player) => { promises.push(player.setCurrentTime(time)); });
-
-				Promise.all(promises)
-					.then(() => {
-						return this.duration(false);
-					})
-					.then((duration) => {
-						resolve({ time:time, duration:duration});
-					});
-			});
-			*/
 			return new Promise((resolve,reject) => {
-				this.streamProvider.callPlayerFunction('setCurrentTime',time)
+				this.trimming()
+					.then((trimmingData) => {
+						if (trimmingData.enabled) {
+							time += trimmingData.start;
+							if (time<trimmingData.start) {
+								time = trimmingData.start;
+							}
+							if (time>trimmingData.end) {
+								time = trimmingData.end;
+							}
+						}
+						return this.streamProvider.callPlayerFunction('setCurrentTime',time);
+					})
+				
 					.then(() => {
 						return this.duration(false);
 					})
@@ -1631,22 +1598,22 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		}
 
 		currentTime(ignoreTrimming = false) {
-			// TODO: trimming
-			/*
-			if (this._trimming.enabled && !ignoreTrimming) {
-				var trimStart = this._trimming.start;
-				return new Promise((resolve) => {
-					this.masterVideo().currentTime()
-						.then(function(t) {
-							resolve(t - trimStart);
-						});
+			return new Promise((resolve) => {
+				let trimmingData = null;
+				let p = ignoreTrimming ? Promise.resolve({ enabled:false }) : this.trimming();
+
+				p.then((t) => {
+					trimmingData = t;
+					return this.streamProvider.mainVideoPlayer.currentTime();
+				})
+
+				.then((time) => {
+					if (trimmingData.enabled) {
+						time = time - trimmingData.start;
+					}
+					resolve(time)
 				});
-			}
-			else {
-				return this.masterVideo().currentTime();
-			}
-			*/
-			return this.streamProvider.mainVideoPlayer.currentTime();
+			});
 		}
 
 		setPlaybackRate(rate) {
@@ -1675,25 +1642,28 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 			return this._audioPlayer.volume();
 		}
 
-		duration() {
-			// TODO: Trimming
+		duration(ignoreTrimming = false) {
 			return new Promise((resolve) => {
-				this.streamProvider.mainVideoPlayer.duration()
-					.then((duration) => {
-						resolve(duration);
-					})
+				let trimmingData = null;
+				let p = ignoreTrimming ? Promise.resolve({ enabled:false }) : this.trimming();
+
+				p.then((t) => {
+					trimmingData = t;
+					return this.streamProvider.mainVideoPlayer.duration();
+				})
+				
+				.then((duration) => {
+					if (trimmingData.enabled) {
+						duration = trimmingData.end - trimmingData.start;
+					}
+					resolve(duration);
+				});
 			})
 		}
 
 		paused() {
 			return this.streamProvider.mainVideoPlayer.isPaused();
 		}
-
-		// Trimming functions
-		trimming() { return Promise.resolve(this.trimmingHandler.trimmingData); }
-		trimEnabled() { return Promise.resolve(this.trimmingHandler.enabled); }
-		trimStart() { return Promise.resolve(this.trimmingHandler.start); }
-		trimEnd() { return Promise.resolve(this.trimmingHandler.end); }
 
 		// Video quality functions
 		getQualities() {
@@ -1823,15 +1793,18 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 
 					.then(() => {
 						$(this.streamProvider.mainVideoPlayer.video).bind('timeupdate', (evt) => {
-							let trimming = this.trimmingHandler;
-							let current = evt.currentTarget.currentTime;
-							let duration = evt.currentTarget.duration;
-							if (this.trimmingHandler.enabled) {
-								current -= trimming.start;
-								duration = trimming.end - trimming.start;
-							}
-							paella.events.trigger(paella.events.timeupdate, { videoContainer:this, currentTime:current, duration:duration });
-							trimming.checkVideoBounds(evt.currentTarget.currentTime,evt.currentTarget.paused,duration);
+							this.trimming().then((trimmingData) => {
+								let current = evt.currentTarget.currentTime;
+								let duration = evt.currentTarget.duration;
+								if (trimmingData.enabled) {
+									current -= trimmingData.start;
+									duration = trimmingData.end - trimmingData.start;
+								}
+								paella.events.trigger(paella.events.timeupdate, { videoContainer:this, currentTime:current, duration:duration });
+								if (current>=duration) {
+									this.streamProvider.callPlayerFunction('pause');
+								}
+							})
 						});
 
 						this._ready = true;
