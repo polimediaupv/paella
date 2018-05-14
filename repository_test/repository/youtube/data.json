@@ -16,7 +16,8 @@
 					}
 				]
 			},
-			"preview": "490512.jpg"
+			"preview": "490512.jpg",
+			"content":"presenter"
 		},
 		{
 			"sources": {
@@ -30,7 +31,8 @@
 					}
 				]
 			},
-			"preview": ""
+			"preview": "",
+			"content":"presentation"
 		}
 	]
 }

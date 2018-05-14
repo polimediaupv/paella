@@ -18,7 +18,8 @@
 				]
 			},
 			"preview": "http://paellaplayer.upv.es/demo/repository/dual-video-audio/preview/presenter_cut.jpg",
-			"type":"video"
+			"type":"video",
+			"content":"presenter"
 		},
 		{
 			"sources": {
@@ -63,7 +64,8 @@
 				]
 			},
 			"preview": "http://paellaplayer.upv.es/demo/repository/dual-video-audio/preview/presentation_cut.jpg",
-			"type":"video"
+			"type":"video",
+			"content":"presentation"
 		},
 		{
 			"sources": {

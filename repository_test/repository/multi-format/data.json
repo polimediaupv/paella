@@ -27,7 +27,8 @@
 					}
 				]
 			},
-			"preview": "http://paellaplayer.upv.es/demo/repository/multi-format/attachment-2/presenter_cut.jpg"
+			"preview": "http://paellaplayer.upv.es/demo/repository/multi-format/attachment-2/presenter_cut.jpg",
+			"content":"presenter"
 		},
 		{
 			"sources": {
@@ -81,7 +82,8 @@
 					}
 				]
 			},
-			"preview": "http://paellaplayer.upv.es/demo/repository/multi-format/attachment-3/presentation_cut.jpg"
+			"preview": "http://paellaplayer.upv.es/demo/repository/multi-format/attachment-3/presentation_cut.jpg",
+			"content":"presentation"
 		}
 	],
 	"frameList": [

@@ -72,7 +72,7 @@
         return result;
     }
 
-    function applyProfileWithJson(profileData,animate) {
+    function applyProfileWithJson_old(profileData,animate) {
         var doApply = function(masterData, slaveData) {
             if (animate==undefined) animate = true;
             let video1 = this.videoWrappers[0];
@@ -155,6 +155,54 @@
         }
     }
 
+    function applyProfileWithJson(profileData,animate) {
+        if (animate==undefined) animate = true;
+        let getProfile = (content) => {
+            let result = null;
+            profileData.videos.some((videoProfile) => {
+                if (videoProfile.content==content) {
+                    result = videoProfile;
+                }
+                return result!=null;
+            });
+            return result;
+        };
+
+        let applyVideoRect = (profile,videoData,videoWrapper,player) => {
+            let frameStrategy = this.profileFrameStrategy;
+            if (frameStrategy) {
+                let rect = getClosestRect(profile,videoData.res);
+                let videoSize = videoData.res;
+                let containerSize = { width:$(this.domElement).width(), height:$(this.domElement).height() };
+                let scaleFactor = rect.width / containerSize.width;
+                let scaledVideoSize = { width:videoSize.w * scaleFactor, height:videoSize.h * scaleFactor };
+                rect.left = Number(rect.left);
+                rect.top = Number(rect.top);
+                rect.width = Number(rect.width);
+                rect.height = Number(rect.height);
+                rect = frameStrategy.adaptFrame(scaledVideoSize,rect);
+                
+                let visible = /true/i.test(profile.visible);
+                let layer = parseInt(profile.layer);
+
+                videoWrapper.setRect(rect,animate);
+                videoWrapper.setVisible(profile.visible,animate);
+            }
+        };
+        
+        this.streamProvider.videoStreams.forEach((streamData,index) => {
+            let profile = getProfile(streamData.content);
+            if (profile) {
+                let videoWrapper = this.videoWrappers[index];
+                let player = this.streamProvider.videoPlayers[index];
+                player.getVideoData()
+                    .then((data) => {
+                        applyVideoRect(profile,data,videoWrapper,player);
+                    });
+            }
+        })
+    }
+
 	class Profiles {
         constructor() {
             this._currentProfileName;
@@ -201,7 +249,7 @@
 				if (!paella.player.videoContainer.ready) {
 					resolve();	// Nothing to do, the video is not loaded
 				}
-				else if (paella.player.videoContainer.streamProvider.slaveVideos.length==0) {
+				else if (paella.player.videoContainer.streamProvider.videoStreams.length==1) {
                     this.loadMonostreamProfile()
                         .then((profileData) => {
                             this._currentProfileName = profileName;

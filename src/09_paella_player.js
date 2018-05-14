@@ -238,7 +238,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 				userData = d;
 				if (canRead) {
 					thisClass.loadVideo();
-					thisClass.videoContainer.publishVideo();
 				}
 				else if (userData.isAnonymous) {
 					var redirectUrl = paella.initDelegate.initParams.accessControl.getAuthenticationUrl("player/?id=" + paella.player.videoIdentifier);
@@ -357,13 +356,13 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 			slavePreviewImg = streams[1].preview;
 		}
 		if (masterPreviewImg) {
-			var masterRect = paella.player.videoContainer.overlayContainer.getMasterRect();
+			var masterRect = paella.player.videoContainer.overlayContainer.getVideoRect(0);
 			this.masterPreviewElem = document.createElement('img');
 			this.masterPreviewElem.src = masterPreviewImg;
 			paella.player.videoContainer.overlayContainer.addElement(this.masterPreviewElem,masterRect);
 		}
 		if (slavePreviewImg) {
-			var slaveRect = paella.player.videoContainer.overlayContainer.getSlaveRect();
+			var slaveRect = paella.player.videoContainer.overlayContainer.getVideoRect(1);
 			this.slavePreviewElem = document.createElement('img');
 			this.slavePreviewElem.src = slavePreviewImg;
 			paella.player.videoContainer.overlayContainer.addElement(this.slavePreviewElem,slaveRect);

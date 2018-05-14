@@ -258,7 +258,7 @@ paella.addPlugin(function() {
 	
 			setTimeout(function(){ // TIMER FOR NICE VIEW
 				let overlayContainer = paella.player.videoContainer.overlayContainer;
-				overlayContainer.addElement(blackBoardDiv, overlayContainer.getMasterRect());
+				overlayContainer.addElement(blackBoardDiv, overlayContainer.getVideoRect(0));
 				overlayContainer.addElement(lensContainer, self._containerRect);
 			}, self._creationTimer);
 		}

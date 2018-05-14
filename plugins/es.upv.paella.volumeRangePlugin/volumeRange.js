@@ -42,7 +42,7 @@ paella.addPlugin(function() {
 
 		storeVolume(){
 			var This = this;
-			paella.player.videoContainer.mainAudioPlayer().volume()
+			paella.player.videoContainer.streamProvider.mainAudioPlayer.volume()
 				.then(function(v) {
 					This._tempMasterVolume = v;
 					This._storedValue = true;
@@ -55,7 +55,7 @@ paella.addPlugin(function() {
 			}
 
 			if(this._tempMasterVolume){
-				paella.player.videoContainer.setVolume({ master:this._tempMasterVolume });
+				paella.player.videoContainer.setVolume(this._tempMasterVolume);
 			}
 			this._storedValue = false;
 		}
@@ -77,7 +77,7 @@ paella.addPlugin(function() {
 			rangeInputMaster.min = 0;
 			rangeInputMaster.max = 1;
 			rangeInputMaster.step = 0.01;
-			paella.player.videoContainer.masterVideo().volume()
+			paella.player.videoContainer.audioPlayer.volume()
 				.then((vol) => {
 					rangeInputMaster.value = vol;
 				})
@@ -86,7 +86,7 @@ paella.addPlugin(function() {
 				var masterVolume = $(rangeInputMaster).val();
 				var slaveVolume = 0;
 				thisClass._control_NotMyselfEvent = false;
-				paella.player.videoContainer.setVolume({ master:masterVolume });
+				paella.player.videoContainer.setVolume(masterVolume);
 			};
 			$(rangeInputMaster).bind('input', function (e) { updateMasterVolume(); });
 			$(rangeInputMaster).change(function() { updateMasterVolume(); });
@@ -130,7 +130,7 @@ paella.addPlugin(function() {
 			var selected = '';
 			var self = this;
 			
-			paella.player.videoContainer.mainAudioPlayer().volume()
+			paella.player.videoContainer.volume()
 				.then((volume) => {
 					if (volume === undefined) { selected = 'icon-volume-mid'; }
 					else if (volume == 0) { selected = 'icon-volume-mute'; }
