@@ -824,14 +824,16 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 				return Promise.resolve();
 			}
 			else {
-				this._audioPlayer.setVolume(params)
-					.then(() => {
-						paella.events.trigger(paella.events.setVolume, { master:params });
-						resolve(params);
-					})
-					.catch((err) => {
-						reject(err);
-					})
+				return new Promise((resolve,reject) => {
+					this._audioPlayer.setVolume(params)
+						.then(() => {
+							paella.events.trigger(paella.events.setVolume, { master:params });
+							resolve(params);
+						})
+						.catch((err) => {
+							reject(err);
+						});
+				});
 			}
 		}
 
