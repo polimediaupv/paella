@@ -1013,7 +1013,7 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 										   base.cookies.get('profile') ||
 										   paella.profiles.getDefaultProfile();
 
-						paella.profiles.setProfile(profileToUse)
+						paella.profiles.setProfile(profileToUse, false)
 							.then(() => {
 								resolve();
 							})
