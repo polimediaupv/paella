@@ -50,14 +50,14 @@ paella.addProfile(() => {
                     icon:"slide_professor_icon.png",
                     videos: [
                         {
-                            content: "presenter",
+                            content: "presentation",
                             rect:[
                             {aspectRatio:"16/9",left:10,top:70,width:432,height:243}],
                             visible:true,
                             layer:1
                         },
                         {
-                            content:"presentation",
+                            content:"presenter",
                             rect:[{aspectRatio:"16/9",left:450,top:135,width:816,height:459}],
                             visible:true,
                             layer:1

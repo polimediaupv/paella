@@ -1007,6 +1007,7 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 						});
 
 						this._ready = true;
+						paella.events.trigger(paella.events.videoReady);
 						let getProfile = base.parameters.get('profile');
 						let cookieProfile = base.cookies.get('profile');
 						let profileToUse = base.parameters.get('profile') ||
