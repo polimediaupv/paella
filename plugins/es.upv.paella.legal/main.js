@@ -14,7 +14,8 @@ paella.addPlugin(() => {
         }
 
         action(button) {
-            alert("Hello");
+            let plugin = paella.player.config.plugins.list[this.getName()];
+            window.open(plugin.legalUrl);
         }
 
         getName() { return "es.upv.paella.legalPlugin"; }
