@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+* Paella 5.3.5
+
+  * Loader icon updated
+  * Bug fixed in arrow slides navigator plugin
+
 * Paella 5.3.4
 
   * Fixes and improvements in live streaming videos
