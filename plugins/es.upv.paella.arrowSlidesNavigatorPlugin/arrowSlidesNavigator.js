@@ -67,6 +67,8 @@ paella.addPlugin(function() {
 			}
 
 			// TODO: Make compatible with n-streams
+			let rect = null;
+			let element = null;
 			switch (self._showArrowsIn) {
 				case 'full':
 					this.container = overlayContainer.addLayer();
@@ -75,14 +77,19 @@ paella.addPlugin(function() {
 					this.arrows.style.marginTop = "25%";
 					break;
 				case 'master':
-					var element = document.createElement('div');			
-					this.container = overlayContainer.addElement(element,overlayContainer.getVideoRect(0));			
+					element = document.createElement('div');
+					rect = overlayContainer.getVideoRect(0);
+					this.container = overlayContainer.addElement(element,rect);
+					this.visible = rect.visible;
 					this.arrows.style.marginTop = "23%";
 					break;
 				case 'slave':
-					var element = document.createElement('div');
-					this.container = overlayContainer.addElement(element,overlayContainer.getVideoRect(1));
+					element = document.createElement('div');
+					rect = overlayContainer.getVideoRect(1);
+					this.container = overlayContainer.addElement(element,rect);
+					this.visible = rect.visible;
 					this.arrows.style.marginTop = "35%";
+					
 					break;
 			}
 			
@@ -159,7 +166,7 @@ paella.addPlugin(function() {
 				});
 		}
 		
-		showArrows(){ $(this.arrows).show(); }
+		showArrows(){ if (this.visible) $(this.arrows).show(); }
 		hideArrows(){ $(this.arrows).hide(); }
 		
 		getEvents() { return [paella.events.controlBarDidShow, paella.events.controlBarDidHide, paella.events.setComposition]; }

@@ -183,6 +183,7 @@
                 rect = frameStrategy.adaptFrame(scaledVideoSize,rect);
                 
                 let visible = /true/i.test(profile.visible);
+                rect.visible = visible;
                 let layer = parseInt(profile.layer);
 
                 videoWrapper.setRect(rect,animate);
