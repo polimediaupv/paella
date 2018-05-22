@@ -73,14 +73,19 @@ paella.addPlugin(function() {
 					this.arrows.style.marginTop = "25%";
 					break;
 				case 'master':
-					var element = document.createElement('div');			
-					this.container = overlayContainer.addElement(element,overlayContainer.getMasterRect());			
+					var element = document.createElement('div');
+					var rect = overlayContainer.getMasterRect();			
+					this.container = overlayContainer.addElement(element,rect);
+					this.visible = rect.visible;
 					this.arrows.style.marginTop = "23%";
 					break;
 				case 'slave':
-					var element = document.createElement('div');			
-					this.container = overlayContainer.addElement(element,overlayContainer.getSlaveRect());
+					var element = document.createElement('div');
+					var rect = overlayContainer.getSlaveRect();
+					this.container = overlayContainer.addElement(element,rect);
+					this.visible = rect.visible;
 					this.arrows.style.marginTop = "35%";
+					
 					break;
 			}
 			
@@ -157,7 +162,7 @@ paella.addPlugin(function() {
 				});
 		}
 		
-		showArrows(){ $(this.arrows).show(); }
+		showArrows(){ if (this.visible) $(this.arrows).show(); }
 		hideArrows(){ $(this.arrows).hide(); }
 		
 		getEvents() { return [paella.events.controlBarDidShow, paella.events.controlBarDidHide, paella.events.setComposition]; }
