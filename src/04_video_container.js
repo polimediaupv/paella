@@ -180,17 +180,20 @@ Class ("paella.VideoOverlay", paella.DomNode,{
 		}
 
 		setVisible(visible,animate) {
-			if (visible=="true" && animate) {
+			if (typeof(visible=="string")) {
+				visible = /true/i.test(visible) ? true : false;
+			}
+			if (visible && animate) {
 				$(this.domElement).show();
 				$(this.domElement).animate({opacity:1.0},300);
 			}
-			else if (visible=="true" && !animate) {
+			else if (visible && !animate) {
 				$(this.domElement).show();
 			}
-			else if (visible=="false" && animate) {
+			else if (!visible && animate) {
 				$(this.domElement).animate({opacity:0.0},300);
 			}
-			else if (visible=="false" && !animate) {
+			else if (!visible && !animate) {
 				$(this.domElement).hide();
 			}
 		}
