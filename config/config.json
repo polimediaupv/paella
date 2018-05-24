@@ -103,7 +103,9 @@
         ]
       },
       "es.upv.paella.legalPlugin": {
-        "enabled": true,
+		"enabled": true,
+		"label": "Legal info",
+		"position": "right",
         "legalUrl": "https://en.wikipedia.org/wiki/General_Data_Protection_Regulation"
       },
 
