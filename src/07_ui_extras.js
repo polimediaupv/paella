@@ -23,13 +23,26 @@ Class ("paella.LoaderContainer", paella.DomNode,{
 
 	initialize:function(id) {
 		this.parent('div',id,{position:'fixed',backgroundColor:'white',opacity:'0.7',top:'0px',left:'0px',right:'0px',bottom:'0px',zIndex:10000});
-		this.loader = this.addNode(new paella.DomNode('div','',{position:'fixed',width:'128px',height:'128px',top:'50%',left:'50%',marginLeft:'-64px',marginTop:'-64px',backgroundImage:'url(' + paella.utils.folders.resources() + '/images/loader.png)'}));
-		var thisClass = this;
-		paella.events.bind(paella.events.loadComplete,function(event,params) { thisClass.loadComplete(params); });
-		this.timer = new base.Timer(function(timer) {
-			thisClass.loaderPosition -= 128;
-			thisClass.loader.domElement.style.backgroundPosition = thisClass.loaderPosition + 'px';
-		},1000);
+		this.loader = this.addNode(new paella.DomNode('i','',{
+			width: "100px",
+			height: "100px",
+			color: "black",
+			display: "block",
+			marginLeft: "auto",
+			marginRight: "auto",
+			marginTop: "32%",
+			fontSize: "100px",
+		}));
+		this.loader.domElement.className = "icon-spinner";
+
+		paella.events.bind(paella.events.loadComplete,(event,params) => { this.loadComplete(params); });
+		this.timer = new base.Timer((timer) => {
+			//thisClass.loaderPosition -= 128;
+			
+			//thisClass.loader.domElement.style.backgroundPosition = thisClass.loaderPosition + 'px';
+			this.loader.domElement.style.transform = `rotate(${ this.loaderPosition }deg`;
+			this.loaderPosition+=45;
+		},250);
 		this.timer.repeat = true;
 	},
 
