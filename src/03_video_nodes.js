@@ -684,7 +684,13 @@ Class ("paella.VideoElementBase", paella.VideoRect,{
 		return paella_DeferredNotImplemented();
 	},
 
+	disable:function() {
+		console.log("Disable video requested");
+	},
 
+	enable:function() {
+		console.log("Enable video requested");
+	},
 
 	// Utility functions
 	setClassName:function(className) {

@@ -188,18 +188,30 @@
 
                 videoWrapper.setRect(rect,animate);
                 videoWrapper.setVisible(profile.visible,animate);
+
+                // The disable/enable functions may not be called on main audio player
+                if (paella.player.videoContainer.streamProvider.mainAudioPlayer!=player) {
+
+                    profile.visible ? player.enable() : player.disable();
+                }
             }
         };
         
         this.streamProvider.videoStreams.forEach((streamData,index) => {
             let profile = getProfile(streamData.content);
+            let player = this.streamProvider.videoPlayers[index];
+            let videoWrapper = this.videoWrappers[index];
             if (profile) {
-                let videoWrapper = this.videoWrappers[index];
-                let player = this.streamProvider.videoPlayers[index];
                 player.getVideoData()
                     .then((data) => {
                         applyVideoRect(profile,data,videoWrapper,player);
                     });
+            }
+            else {
+                videoWrapper.setVisible(false,animate);
+                if (paella.player.videoContainer.streamProvider.mainAudioPlayer!=player) {
+                    player.disable();
+                }
             }
         })
     }
