@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+* Paella 5.3.6
+
+  * Improvements in legal info plugin
+  * Fixed issue in fullscreen plugin, in browsers that don't support autoplay
+
 * Paella 5.3.5
 
   * Loader icon updated
