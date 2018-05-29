@@ -16,7 +16,6 @@ paella.addPlugin(function() {
 		
 		setup() {
 			this._reload = this.config.reloadOnFullscreen ? this.config.reloadOnFullscreen.enabled:false;
-			this._keepUserQuality = this.config.reloadOnFullscreen ? this.config.reloadOnFullscreen.keepUserSelection:true;
 			paella.events.bind(paella.events.enterFullscreen, (event) => this.onEnterFullscreen());
 			paella.events.bind(paella.events.exitFullscreen, (event) => this.onExitFullscreen());
 		}
@@ -42,7 +41,7 @@ paella.addPlugin(function() {
 				paella.player.goFullScreen();
 			}
 	
-			if (paella.player.config.player.reloadOnFullscreen && !paella.utils.userAgent.system.iOS) {
+			if (paella.player.config.player.reloadOnFullscreen && paella.player.videoContainer.supportAutoplay()) {
 				setTimeout(() => {
 					if(this._reload) {
 						paella.player.videoContainer.setQuality(null)
