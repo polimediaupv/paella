@@ -3,19 +3,24 @@ paella.addPlugin(() => {
     return class LegalPlugin extends paella.VideoOverlayButtonPlugin {
         getIndex() { return 0; }
         getSubclass() { return "legal"; }
-        getAlignment() { return "right"; }
+        getAlignment() { return paella.player.config.plugins.list[this.getName()].position; }
         getDefaultToolTip() { return ""; }
-        checkEnabled(onSuccess) { onSuccess(true); }
+
+        checkEnabled(onSuccess) {
+            onSuccess(true);
+        }
+
         setup() {
+            let plugin = paella.player.config.plugins.list[this.getName()];
             let title = document.createElement('a');
-            title.innerHTML = "Legal";
+            title.innerHTML = plugin.label;
+            this._url = plugin.legalUrl;
             title.className = "";
             this.button.appendChild(title);
         }
 
         action(button) {
-            let plugin = paella.player.config.plugins.list[this.getName()];
-            window.open(plugin.legalUrl);
+            window.open(this._url);
         }
 
         getName() { return "es.upv.paella.legalPlugin"; }
