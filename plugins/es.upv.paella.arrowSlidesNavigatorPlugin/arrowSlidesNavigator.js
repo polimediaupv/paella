@@ -124,7 +124,7 @@ paella.addPlugin(function() {
 								let t0 = trimming.enabled ? f0.time - trimming.start : f0.time;
 								let t1 = trimming.enabled ? f1.time - trimming.start : f1.time;
 								let t2 = trimming.enabled ? f2.time - trimming.start : f2.time;
-								if (t1<currentTime && t2>currentTime) {
+								if ((t1<currentTime && t2>currentTime) || t1==currentTime) {
 									let range = {
 										prev: t0,
 										next: t2
