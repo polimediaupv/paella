@@ -5,7 +5,10 @@ paella.addPlugin(function() {
 		getName() { return "es.upv.paella.arrowSlidesNavigatorPlugin"; }
 
 		checkEnabled(onSuccess) {
-			if (!paella.initDelegate.initParams.videoLoader.frameList || Object.keys(paella.initDelegate.initParams.videoLoader.frameList).length==0 && paella.player.videoContainer.isMonostream) {
+			if (!paella.initDelegate.initParams.videoLoader.frameList ||
+				Object.keys(paella.initDelegate.initParams.videoLoader.frameList).length==0 ||
+				paella.player.videoContainer.isMonostream)
+			{
 				onSuccess(false);
 			}
 			else {
