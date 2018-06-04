@@ -377,9 +377,13 @@ paella.addPlugin(function() {
 
 		onTimeUpdate(currentTime) {
 			var frame = null;
+			paella.player.videoContainer.trimming()
+				.then((trimming) => {
+				    let time = trimming.enabled ? currentTime + trimming.start : currentTime;
+
 			for (var i = 0; i<this.frames.length; ++i) {
-				if (this.frames[i].frameData && this.frames[i].frameData.time<=currentTime) {
-					frame = this.frames[i];
+				if (this.frames[i].frameData && this.frames[i].frameData.time<=time) {
+				    frame = this.frames[i];
 				}
 				else {
 					break;
@@ -392,6 +396,10 @@ paella.addPlugin(function() {
 				this.currentFrame = frame;
 				this.currentFrame.className = 'frameControlItem current';
 			}
+
+
+				});
+
 		}
 	}
 });
