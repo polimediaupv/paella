@@ -94,7 +94,7 @@ paella.addProfile(() => {
                     id:"s_p_blackboard2",
                     name:{es:"Pizarra"},
                     hidden:false,
-                    icon:"slide_professor_icon.png",
+                    icon:"s_p_blackboard.svg",
                     videos: [
                         {
                             content: "presentation",
@@ -125,7 +125,7 @@ paella.addProfile(() => {
             id:"slide_professor",
             name:{es:"Presentación y presentador"},
             hidden:false,
-            icon:"slide_professor_icon.png",
+            icon:"slide_professor_icon.svg",
             videos: [
                 { content:"presenter",rect:[
                     {aspectRatio:"16/9",left:712,top:302,width:560,height:315},
@@ -153,7 +153,7 @@ paella.addProfile(() => {
             id:"professor_slide",
             name:{es:"Presentador y presentación"},
             hidden:false,
-            icon:"professor_slide_icon.png",
+            icon:"professor_slide_icon.svg",
             videos: [
                 {
                     content:"presenter",rect:[
@@ -187,7 +187,7 @@ paella.addProfile(() => {
             id:"professor",
             name:{es:"Solo profesor"},
             hidden:false,
-            icon:"professor_icon.png",
+            icon:"professor_icon.svg",
             videos: [
                 {
                     content:"presenter",rect:[
@@ -217,7 +217,7 @@ paella.addProfile(() => {
             id:"slide",
             name:{es:"Solo presentación"},
             hidden:false,
-            icon:"slide_icon.png",
+            icon:"slide_icon.svg",
             videos: [
                 {
                     content:"presenter",rect:[
@@ -247,7 +247,7 @@ paella.addProfile(() => {
             id:"slide_over_professor",
             name:{es:"Presentación sobre profesor"},
             hidden:false,
-            icon:"slide_over_professor_icon.png",
+            icon:"slide_over_professor_icon.svg",
             videos: [
                 {
                     content:"presenter",rect:[
@@ -280,7 +280,7 @@ paella.addProfile(() => {
             id:"slide_over_professor_right",
             name:{es:"Presentación a la derecha, sobre profesor"},
             hidden:false,
-            icon:"slide_over_professor_right_icon.png",
+            icon:"slide_over_professor_right_icon.svg",
             videos: [
                 {
                     content:"presenter",rect:[
@@ -313,7 +313,7 @@ paella.addProfile(() => {
             id:"professor_over_slide",
             name:{es:"Profesor sobre presentación"},
             hidden:false,
-            icon:"slide_over_professor_icon.png",
+            icon:"professor_over_slide.svg",
             videos: [
                 {
                     content:"presentation",rect:[
@@ -346,7 +346,7 @@ paella.addProfile(() => {
             id:"professor_over_slide_right",
             name:{es:"Profesor a la derecha, sobre presentación"},
             hidden:false,
-            icon:"slide_over_professor_right_icon.png",
+            icon:"professor_over_slide_right_icon.svg",
             videos: [
                 {
                     content:"presentation",rect:[
@@ -416,7 +416,7 @@ paella.addProfile(() => {
                     id:"chroma",
                     name:{es:"Polimedia"},
                     hidden:false,
-                    icon:"slide_icon.png",
+                    icon:"chroma.svg",
                     videos: [
                         {
                             content:"presenter",rect:[

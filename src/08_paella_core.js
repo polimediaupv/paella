@@ -100,6 +100,8 @@ Class ("paella.PlayerBase", {
 	controls:null,
 	accessControl:null,
 
+	
+
 	checkCompatibility:function() {
 		var message = "";
 		if (base.parameters.get('ignoreBrowserCheck')) {

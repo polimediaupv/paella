@@ -96,6 +96,7 @@ paella.addPlugin(function() {
 		getProfileItemButton(profile,profileData) {
 			var elem = document.createElement('div');
 			elem.className = this.getButtonItemClass(profile,false);
+			elem.style.backgroundImage = `url(${ this.getButtonItemIcon(profileData) })`;
 			elem.id = profile + '_button';
 			elem.data = {
 				profile:profile,
@@ -135,6 +136,11 @@ paella.addPlugin(function() {
 	
 		getButtonItemClass(profileName,selected) {
 			return 'viewModeItemButton ' + profileName  + ((selected) ? ' selected':'');
+		}
+
+		getButtonItemIcon(profileData) {
+			console.log(profileData);
+			return `${ paella.baseUrl }resources/style/${ profileData.icon }`;
 		}
 	}
 });
