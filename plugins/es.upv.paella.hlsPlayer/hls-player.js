@@ -43,6 +43,7 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 								This._hls = new Hls();
 								This._hls.loadSource(source.src);
 								This._hls.attachMedia(This.video);
+								This._hls.config.capLevelToPlayerSize = true;
 								
 								This._hls.on(Hls.Events.LEVEL_SWITCHED, function(ev, data) {
 									This.qualityIndex = data.level;
