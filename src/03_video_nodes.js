@@ -800,8 +800,8 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 			index: index,
 			res: s.res,
 			src: s.src,
-			toString:function() { return this.res.w + "x" + this.res.h; },
-			shortLabel:function() { return this.res.h + "p"; },
+			toString:function() { return this.res.w==0 ? "auto" : this.res.w + "x" + this.res.h; },
+			shortLabel:function() { return this.res.w==0 ? "auto" : this.res.h + "p"; },
 			compare:function(q2) { return this.res.w*this.res.h - q2.res.w*q2.res.h; }
 		};
 	},

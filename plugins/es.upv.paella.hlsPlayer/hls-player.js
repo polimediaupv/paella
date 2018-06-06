@@ -43,10 +43,13 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 								This._hls = new Hls();
 								This._hls.loadSource(source.src);
 								This._hls.attachMedia(This.video);
-								This._hls.config.capLevelToPlayerSize = true;
-								
+								//This._hls.config.capLevelToPlayerSize = true;
+								//This._hls.currentLevel = -1;
+								This.autoQuality = true;
+
 								This._hls.on(Hls.Events.LEVEL_SWITCHED, function(ev, data) {
-									This.qualityIndex = data.level;
+									This.qualityIndex = This.autoQuality ? This._qualities.length - 1 : data.level;
+									paella.events.trigger(paella.events.qualityChanged,{});
 								});
 								
 								This._hls.on(Hls.Events.ERROR, function (event, data) {
@@ -83,17 +86,6 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 	},
 
 	getQualities:function() {
-		return Promise.resolve([
-			{
-				index: 0,
-				res: "",
-				src: "",
-				toString:function() { return "auto"; },
-				shortLabel:function() { return "auto"; },
-				compare:function(q2) { return 0; }
-			}
-		]);
-		/*
 		if (base.userAgent.system.iOS ||
 			base.userAgent.browser.Safari)
 		{
@@ -123,27 +115,31 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 						}));						
 					});					
 				}
+				This._qualities.push(
+					This._getQualityObject(This._qualities.length, {
+						index:This._qualities.length,
+						res: { w:0, h:0 },
+						bitrate: 0
+					}));
+				This.qualityIndex = This._qualities.length - 1;
 				resolve(This._qualities);
 			});
 		}
-		*/
 	},
 	
 	printQualityes: function() {
 		return new Promise((resolve,reject) => {
 			this.getCurrentQuality()
-			.then((cq)=>{
-				return this.getNextQuality();
-			})
-			.then((nq) => {
-				resolve();
-			})
+				.then((cq)=>{
+					return this.getNextQuality();
+				})
+				.then((nq) => {
+					resolve();
+				})
 		});		
 	},
 	
 	setQuality:function(index) {
-		return Promise.resolve();
-		/*
 		if (base.userAgent.system.iOS ||
 			base.userAgent.browser.Safari)
 		{
@@ -152,7 +148,13 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 		else if (index!==null) {
 			try {
 				this.qualityIndex = index;
-				this._hls.nextLevel = index;		
+				let level = index;
+				this.autoQuality = false;
+				if (index==This._qualities.length) {
+					level = -1;
+					this.autoQuality = true;
+				}				
+				this._hls.currentLevel = index;
 			}
 			catch(err) {
 
@@ -162,33 +164,27 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 		else {
 			return Promise.resolve();
 		}
-		*/
 	},
 
 	getNextQuality:function() {
 		return new Promise((resolve,reject) => {
-			let index = this._hls.nextLevel;
+			let index = this.qualityIndex;
 			resolve(this._qualities[index]);
 		});
 	},
 
 	
 	getCurrentQuality:function() {
-		return Promise.resolve(0);
-		/*
 		if (base.userAgent.system.iOS ||
 			base.userAgent.browser.Safari)
 		{
 			return Promise.resolve(0);
 		}
 		else {
-			this.getNextQuality()
 			return new Promise((resolve,reject) => {
-				let index = (this.qualityIndex == undefined) ? this._hls.currentLevel : this.qualityIndex;
-				resolve(this._qualities[index]);
+				resolve(this._qualities[this.qualityIndex]);
 			});
 		}
-		*/
 	}
 });
 
