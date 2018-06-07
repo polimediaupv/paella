@@ -231,12 +231,13 @@ paella.addPlugin(function() {
 			frameRoot.setAttribute('style', 'display: table;');
 			frame.setAttribute('style', 'display: table-cell; vertical-align:middle;');
 
+		    if (this.config.showCaptions === true){
 			var captionContainer = document.createElement('p');
 			captionContainer.className = "frameCaption";
 			captionContainer.innerHTML = caption || "";
 			frameRoot.append(captionContainer);
 			this._caption = captionContainer;
-
+		    }
 
 			let overlayContainer = paella.player.videoContainer.overlayContainer;
 			
@@ -342,8 +343,10 @@ paella.addPlugin(function() {
 			if (frame) {
 				var image = frame.url;
 				if(this._img){
-					this._img.setAttribute('src',image);
+				    this._img.setAttribute('src',image);
+				    if (this.config.showCaptions === true){
 					this._caption.innerHTML = frame.caption || "";
+				    }
 				}
 				else{
 					this.showHiResFrame(image,frame.caption);
@@ -374,9 +377,13 @@ paella.addPlugin(function() {
 
 		onTimeUpdate(currentTime) {
 			var frame = null;
+			paella.player.videoContainer.trimming()
+				.then((trimming) => {
+				    let time = trimming.enabled ? currentTime + trimming.start : currentTime;
+
 			for (var i = 0; i<this.frames.length; ++i) {
-				if (this.frames[i].frameData && this.frames[i].frameData.time<=currentTime) {
-					frame = this.frames[i];
+				if (this.frames[i].frameData && this.frames[i].frameData.time<=time) {
+				    frame = this.frames[i];
 				}
 				else {
 					break;
@@ -389,6 +396,10 @@ paella.addPlugin(function() {
 				this.currentFrame = frame;
 				this.currentFrame.className = 'frameControlItem current';
 			}
+
+
+				});
+
 		}
 	}
 });
