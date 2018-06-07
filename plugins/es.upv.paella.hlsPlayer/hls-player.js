@@ -43,13 +43,14 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 								This._hls = new Hls();
 								This._hls.loadSource(source.src);
 								This._hls.attachMedia(This.video);
-								//This._hls.config.capLevelToPlayerSize = true;
-								//This._hls.currentLevel = -1;
+								This._hls.config.capLevelToPlayerSize = true;
 								This.autoQuality = true;
 
 								This._hls.on(Hls.Events.LEVEL_SWITCHED, function(ev, data) {
+									This._qualities = This._qualities || [];
 									This.qualityIndex = This.autoQuality ? This._qualities.length - 1 : data.level;
 									paella.events.trigger(paella.events.qualityChanged,{});
+									if (console && console.log) console.log(`HLS: quality level changed to ${ data.level }`);
 								});
 								
 								This._hls.on(Hls.Events.ERROR, function (event, data) {
@@ -105,7 +106,7 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 		else {
 			let This = this;
 			return new Promise((resolve) => {
-				if (!this._qualities) {
+				if (!this._qualities || this._qualities.length==0) {
 					This._qualities = [];
 					This._hls.levels.forEach(function(q, index){
 						This._qualities.push(This._getQualityObject(index, {
@@ -114,13 +115,13 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 							bitrate: q.bitrate
 						}));						
 					});					
+					This._qualities.push(
+						This._getQualityObject(This._qualities.length, {
+							index:This._qualities.length,
+							res: { w:0, h:0 },
+							bitrate: 0
+						}));
 				}
-				This._qualities.push(
-					This._getQualityObject(This._qualities.length, {
-						index:This._qualities.length,
-						res: { w:0, h:0 },
-						bitrate: 0
-					}));
 				This.qualityIndex = This._qualities.length - 1;
 				resolve(This._qualities);
 			});
@@ -150,11 +151,11 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 				this.qualityIndex = index;
 				let level = index;
 				this.autoQuality = false;
-				if (index==This._qualities.length) {
+				if (index==this._qualities.length-1) {
 					level = -1;
 					this.autoQuality = true;
-				}				
-				this._hls.currentLevel = index;
+				}
+				this._hls.currentLevel = level;
 			}
 			catch(err) {
 
