@@ -1,0 +1,50 @@
+{
+	"metadata": {
+		"duration": 229,
+		"title": "La competencia de la iniciativa"
+	},
+	"streams": [
+		{
+			"sources": {
+				"mp4": [
+					{
+						"src": "http://paellaplayer.upv.es/demo/repository/multi-lang-audio/presenter.mp4",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1920",
+							"h": "1080"
+						}
+					}
+				]
+			},
+			"preview": "",
+			"type":"video"
+		},
+		{
+			"sources": {
+				"audio": [
+					{
+						"src": "http://paellaplayer.upv.es/demo/repository/multi-lang-audio/audio-es.m4a"
+					}
+				]
+			},
+			"preview":"",
+			"type":"audio",
+			"language":"es"
+		},
+        {
+			"sources": {
+				"audio": [
+					{
+						"src": "http://paellaplayer.upv.es/demo/repository/multi-lang-audio/audio-en.m4a"
+					}
+				]
+			},
+			"preview":"",
+			"type":"audio",
+			"language":"en"
+		}
+	],
+	"frameList": [
+	]
+}

@@ -100,6 +100,8 @@ Class ("paella.PlayerBase", {
 	controls:null,
 	accessControl:null,
 
+	
+
 	checkCompatibility:function() {
 		var message = "";
 		if (base.parameters.get('ignoreBrowserCheck')) {
@@ -126,6 +128,30 @@ Class ("paella.PlayerBase", {
 	},
 
 	initialize:function(playerId) {
+		Object.defineProperty(this,'repoUrl',{
+			get:function() {
+				return paella.player.videoLoader._url || "";
+			}
+		});
+
+		Object.defineProperty(this,'videoUrl',{
+			get:function() {
+				return paella.player.videoLoader.getVideoUrl();
+			}
+		});
+
+		Object.defineProperty(this,'dataUrl',{
+			get:function() {
+				return paella.player.videoLoader.getDataUrl();
+			}
+		});
+
+		Object.defineProperty(this,'videoId',{
+			get:function() {
+				return paella.initDelegate.getId();
+			}
+		});
+
 		if (base.parameters.get('log') != undefined) {
 			var log = 0;
 			switch(base.parameters.get('log')) {
@@ -191,10 +217,22 @@ Class ("paella.InitDelegate", {
 		configUrl:paella.baseUrl + 'config/config.json',
 		dictionaryUrl:paella.baseUrl + 'localization/paella',
 		accessControl:null,
-		videoLoader:null
+		videoLoader:null,
+
+		// Other parameters set externally:
+		//	config: json containing the configuration file
+		//	loadConfig: function(defaultConfigUrl). Returns a promise with the config.json data
+		//	url: attribute. Contains the repository base URL
+		//	videoUrl: function. Returns the base URL of the video (example: baseUrl + videoID)
+		//	dataUrl: function. Returns the full URL to get the data.json file
+		//	loadVideo: Function. Returns a promise with the data.json file content
 	},
 
 	initialize:function(params) {
+		if (arguments.length==2) {
+			this._config = arguments[0];
+		}
+
 		if (params) {
 			for (var key in params) {
 				this.initParams[key] = params[key];
@@ -219,30 +257,48 @@ Class ("paella.InitDelegate", {
 	},
 
 	loadConfig:function() {
-		return new Promise((resolve,reject) => {
-			var configUrl = this.initParams.configUrl;
-			var params = {};
-			params.url = configUrl;
-			base.ajax.get(params,(data,type,returnCode) => {
-					if (typeof(data)=='string') {
+		let loadAccessControl = (data) => {
+			var AccessControlClass = Class.fromString(data.player.accessControlClass || "paella.AccessControl");
+			this.initParams.accessControl = new AccessControlClass();
+		};
+
+		if (this.initParams.config) {
+			return new Promise((resolve) => {
+				loadAccessControl(this.initParams.config);
+				resolve(this.initParams.config);
+			})
+		}
+		else if (this.initParams.loadConfig) {
+			return new Promise((resolve,reject) => {
+				this.initParams.loadConfig(this.initParams.configUrl)
+					.then((data) => {
+						loadAccessControl(data);
+						resolve(data);
+					})
+					.catch((err) => {
+						reject(err);
+					});
+			})
+		}
+		else {
+			return new Promise((resolve,reject) => {
+				var configUrl = this.initParams.configUrl;
+				var params = {};
+				params.url = configUrl;
+				base.ajax.get(params,(data,type,returnCode) => {
 						try {
 							data = JSON.parse(data);
 						}
-						catch (e) {
-							reject();
-							return;
-						}
-					}
-					base.dictionary.addDictionary(data);
-					var AccessControlClass = Class.fromString(data.player.accessControlClass || "paella.AccessControl");
-					this.initParams.accessControl = new AccessControlClass();
-					resolve(data);
-				},
-				function(data,type,returnCode) {
-					paella.messageBox.showError(base.dictionary.translate("Error! Config file not found. Please configure paella!"));
-					//onSuccess({});
-				});
-		});
+						catch(e) {}
+						loadAccessControl(data);
+						resolve(data);
+					},
+					function(data,type,returnCode) {
+						paella.messageBox.showError(base.dictionary.translate("Error! Config file not found. Please configure paella!"));
+						//onSuccess({});
+					});
+			});
+		}
 	}
 });
 

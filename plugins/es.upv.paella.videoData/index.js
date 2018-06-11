@@ -1,5 +1,5 @@
-paella.addPlugin(function() {
-    class VideoManifestMetadataDataDelegate extends paella.DataDelegate {
+paella.addDataDelegate('metadata', () => {
+    return class VideoManifestMetadataDataDelegate extends paella.DataDelegate {
         read(context, params, onSuccess) {
             let metadata = paella.player.videoLoader.getMetadata();
             onSuccess(metadata[params], true);
@@ -13,8 +13,9 @@ paella.addPlugin(function() {
             onSuccess({}, true);
         }
     }
+});
 
-    paella.dataDelegates.VideoManifestMetadataDataDelegate = VideoManifestMetadataDataDelegate;
+paella.addPlugin(function() {
 
     return class VideoDataPlugin extends paella.VideoOverlayButtonPlugin {
         

@@ -245,7 +245,22 @@ paella.utils = {
 
 			return d;
 		}
-	}	
+	},
+
+	objectFromString: function(str) {
+	  var arr = str.split(".");
+	
+	  var fn = (window || this);
+	  for (var i = 0, len = arr.length; i < len; i++) {
+		fn = fn[arr[i]];
+	  }
+	
+	  if (typeof fn !== "function") {
+		throw new Error("constructor not found");
+	  }
+	
+	  return fn;
+	}
 };
 
 
@@ -418,6 +433,26 @@ paella.addDataDelegate(["default","trimming"], () => {
 // Will be initialized inmediately after loading config.json, in PaellaPlayer.onLoadConfig()
 paella.data = null;
 
+// Include scripts in header
+let g_requiredScripts = {};
+paella.require = function(path) {
+	if (!g_requiredScripts[path]) {
+		g_requiredScripts[path] = new Promise((resolve,reject) => {
+			let script = document.createElement("script");
+			if (path.split(".").pop()=='js') {
+				script.src = path;
+				script.async = false;
+				document.head.appendChild(script);
+				setTimeout(() => resolve(), 100);
+			}
+			else {
+				reject(new Error("Unexpected file type"));
+			}
+		});
+	}
+	return g_requiredScripts[path];
+}
+
 
 Class ("paella.MessageBox", {
 	modalContainerClassName:'modalMessageContainer',
@@ -483,7 +518,7 @@ Class ("paella.MessageBox", {
 		iframeContainer.style.height = "100%";
 		messageContainer.appendChild(iframeContainer);
 
-		if (paella.player.isFullScreen()) {
+		if (paella.player && paella.player.isFullScreen()) {
 			paella.player.mainContainer.appendChild(modalContainer);
 		}else{
 			$('body')[0].appendChild(modalContainer);
@@ -605,7 +640,7 @@ Class ("paella.MessageBox", {
 		messageContainer.innerHTML = message;
 		modalContainer.appendChild(messageContainer);
 
-		if (paella.player.isFullScreen()) {
+		if (paella.player && paella.player.isFullScreen()) {
 			paella.player.mainContainer.appendChild(modalContainer);
 		}else{
 			$('body')[0].appendChild(modalContainer);
@@ -643,9 +678,9 @@ Class ("paella.MessageBox", {
 	createCloseButton:function() {
 		if (this.messageContainer) {
 			var thisClass = this;
-			var closeButton = document.createElement('div');
+			var closeButton = document.createElement('span');
 			this.messageContainer.appendChild(closeButton);
-			closeButton.className = 'paella_messageContainer_closeButton';
+			closeButton.className = 'paella_messageContainer_closeButton icon-cancel-circle';
 			$(closeButton).click(function(event) { thisClass.onCloseButtonClick(); });
 		}
 	},

@@ -1,7 +1,7 @@
 {
 	"metadata": {
 		"duration": 0,
-		"title": "UPV-TV"
+		"title": "Youtube sample"
 	},
 	"streams": [
 		{
@@ -16,7 +16,8 @@
 					}
 				]
 			},
-			"preview": "490512.jpg"
+			"preview": "490512.jpg",
+			"content":"presenter"
 		},
 		{
 			"sources": {
@@ -30,7 +31,8 @@
 					}
 				]
 			},
-			"preview": ""
+			"preview": "",
+			"content":"presentation"
 		}
 	]
 }

@@ -1,0 +1,23 @@
+{
+	"metadata": {
+		"duration": 887,
+		"title": "HLS live streaming demo"
+	},
+	"streams": [
+		{
+			"sources": {
+				"hls": [
+					{
+						"src": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8",
+                        "mimetype": "video/mp4",
+                        "isLiveStream": true
+                    }
+                ]
+			},
+            "preview": "",
+			"content":"presenter"
+		}
+	],
+	"frameList": [
+	]
+}

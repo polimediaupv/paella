@@ -54,12 +54,8 @@ Class ("paella.VideoOverlay", paella.DomNode,{
 		this.domElement.innerHTML = "";
 	},
 
-	getMasterRect:function() {
-		return paella.player.videoContainer.getMasterVideoRect();
-	},
-
-	getSlaveRect:function() {
-		return paella.player.videoContainer.getSlaveVideoRect();
+	getVideoRect:function(index) {
+		return paella.player.videoContainer.getVideoRect(index);
 	},
 
 	addText:function(text,rect,isDebug) {
@@ -184,17 +180,20 @@ Class ("paella.VideoOverlay", paella.DomNode,{
 		}
 
 		setVisible(visible,animate) {
-			if (visible=="true" && animate) {
+			if (typeof(visible=="string")) {
+				visible = /true/i.test(visible) ? true : false;
+			}
+			if (visible && animate) {
 				$(this.domElement).show();
 				$(this.domElement).animate({opacity:1.0},300);
 			}
-			else if (visible=="true" && !animate) {
+			else if (visible && !animate) {
 				$(this.domElement).show();
 			}
-			else if (visible=="false" && animate) {
+			else if (!visible && animate) {
 				$(this.domElement).animate({opacity:0.0},300);
 			}
-			else if (visible=="false" && !animate) {
+			else if (!visible && !animate) {
 				$(this.domElement).hide();
 			}
 		}
@@ -479,41 +478,70 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	}
 });
 
-Class ("paella.ProfileFrameStrategy",{
-	valid:function() {
-		return true;
-	},
+(function() {
+	// Profile frame strategies
 
-	adaptFrame:function(videoDimensions,frameRect) {
-		return frameRect;
-	}
-});
+	class ProfileFrameStrategy {
+		static Factory() {
+			var config = paella.player.config;
 
-Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
-	adaptFrame:function(videoDimensions,frameRect) {
-		if (videoDimensions.width<frameRect.width|| videoDimensions.height<frameRect.height)
-		{
-			var frameRectCopy = JSON.parse(JSON.stringify(frameRect));
-			frameRectCopy.width = videoDimensions.width;
-			frameRectCopy.height = videoDimensions.height;
-			var diff = { w:frameRect.width - videoDimensions.width,
-						 h:frameRect.height - videoDimensions.height };
-			frameRectCopy.top = frameRectCopy.top + diff.h/2;
-			frameRectCopy.left = frameRectCopy.left + diff.w/2;
-			return frameRectCopy;
+			try {
+				var strategyClass = config.player.profileFrameStrategy;
+				var ClassObject = paella.utils.objectFromString(strategyClass);
+				var strategy = new ClassObject();
+				if (strategy instanceof paella.ProfileFrameStrategy) {
+					return strategy;
+				}
+			}
+			catch (e) {
+			}
+			
+			return null;
 		}
-		return frameRect;
+
+		valid() { return true; }
+
+		adaptFrame(videoDimensions,frameRect) {
+			return frameRect;
+		}
 	}
-});
+
+	paella.ProfileFrameStrategy = ProfileFrameStrategy;
+
+	class LimitedSizeProfileFrameStrategy extends ProfileFrameStrategy {
+		adaptFrame(videoDimensions,frameRect) {
+			if (videoDimensions.width<frameRect.width|| videoDimensions.height<frameRect.height) {
+				var frameRectCopy = JSON.parse(JSON.stringify(frameRect));
+				frameRectCopy.width = videoDimensions.width;
+				frameRectCopy.height = videoDimensions.height;
+				var diff = { w:frameRect.width - videoDimensions.width,
+							h:frameRect.height - videoDimensions.height };
+				frameRectCopy.top = frameRectCopy.top + diff.h/2;
+				frameRectCopy.left = frameRectCopy.left + diff.w/2;
+				return frameRectCopy;
+			}
+			return frameRect;
+		}
+	}
+
+	paella.LimitedSizeProfileFrameStrategy = LimitedSizeProfileFrameStrategy;
+})();
 
 (function() {
 
 	class StreamProvider {
 		constructor(videoData) {
-			this._masterVideo = null;
-			this._slaveVideos = [];
+			this._mainStream = null;
 			this._videoStreams = [];
 			this._audioStreams = [];
+
+			this._mainPlayer = null;
+			this._audioPlayer = null;
+			this._videoPlayers = [];
+			this._audioPlayers = [];
+			this._players = [];
+
+			this._autoplay = base.parameters.get('autoplay')=='true' || this.isLiveStreaming;
 		}
 
 		init(videoData) {
@@ -527,10 +555,7 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 			this._videoData.forEach((stream, index) => {
 				stream.type = stream.type || 'video';
 				if (stream.role=='master') {
-					this._masterVideo = stream;
-				}
-				else if (stream.type=='video') {
-					this._slaveVideos.push(stream);
+					this._mainStream = stream;
 				}
 
 				if (stream.type=='video') {
@@ -544,26 +569,131 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 			if (this._videoStreams.length==0) {
 				throw new Error("No video streams found. Paella Player requires at least one video stream.");
 			}
+
+			// Create video players
+			let autoplay = this.autoplay;
+			this._videoStreams.forEach((videoStream,index) => {
+				let rect = {x:0,y:0,w:1280,h:720};
+				let player = paella.videoFactory.getVideoObject(`video_${ index }`, videoStream, rect);
+				player.setVideoQualityStrategy(this._qualityStrategy);
+				player.setAutoplay(autoplay);
+
+				if (videoStream==this._mainStream) {
+					this._mainPlayer = player;
+					this._audioPlayer = player;
+				}
+				else {
+					player.setVolume(0);
+				}
+
+				this._videoPlayers.push(player);
+				this._players.push(player);
+			});
+
+			// Create audio player
+			this._audioStreams.forEach((audioStream,index) => {
+				let player = paella.audioFactory.getAudioObject(`audio_${ index }`,audioStream);
+				player.setAutoplay(autoplay);
+				if (player) {
+					this._audioPlayers.push(player);
+					this._players.push(player);
+				}
+			});
 		}
 
-		get masterVideo() {
-			return this._masterVideo;
+		loadVideos() {
+			let promises = [];
+
+			this._players.forEach((player) => {
+				promises.push(player.load());
+			});
+			
+			return Promise.all(promises);
 		}
 
-		get slaveVideos() {
-			return this._slaveVideos;
+		get isMonostream() {
+			return this._videoStreams.length==1;
 		}
 
-		get mainSlaveVideo() {
-			return this._slaveVideos.length>0 ? this._slaveVideos[0]:null;
+		get mainStream() {
+			return this._mainStream;
 		}
 
+		get videoStreams() {
+			return this._videoData;
+		}
+
+		
 		get audioStreams() {
 			return this._audioStreams;
+		}
+		
+		get streams() {
+			return this._videoStreams.concat(this._audioStreams);
+		}
+
+		get videoPlayers() {
+			return this._videoPlayers;
+		}
+
+		get audioPlayers() {
+			return this._audioPlayers;
+		}
+
+		get players() {
+			return this._videoPlayers.concat(this._audioPlayers);
+		}
+
+		callPlayerFunction(fnName) {
+			let promises = [];
+			let functionArguments = [];
+			for (let i=1; i<arguments.length; ++i) {
+				functionArguments.push(arguments[i]);
+			}
+
+			this.players.forEach((player) => {
+				promises.push(player[fnName](...functionArguments));
+			});
+
+			return Promise.all(promises);
+		}
+
+		get mainVideoPlayer() {
+			return this._mainPlayer;
+		}
+
+		get mainAudioPlayer() {
+			return this._audioPlayer;
 		}
 
 		get isLiveStreaming() {
 			return paella.player.isLiveStream();
+		}
+
+		set qualityStrategy(strategy) {
+			this._qualityStrategy = strategy;
+			this._videoPlayers.forEach((player) => {
+				player.setVideoQualityStrategy(strategy);
+			})
+		}
+
+		get qualityStrategy() { return this._qualityStrategy || null; }
+
+		get autoplay() {
+			return this.supportAutoplay && this._autoplay;
+		}
+
+		set autoplay(ap) {
+			if (!this.supportAutoplay || this.isLiveStreaming) return;
+			this._autoplay = ap;
+			if (this.videoPlayers) {
+				this.videoPlayers.forEach((player) => player.setAutoplay(ap));
+				this.audioPlayers.forEach((player) => player.setAutoplay(ap));
+			}
+		}
+
+		get supportAutoplay() {
+			return this.videoPlayers.every((player) => player.supportAutoplay());
 		}
 	}
 
@@ -578,965 +708,327 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 	}
 
 	class VideoContainer extends paella.VideoContainerBase {
+
+		get streamProvider() { return this._streamProvider; }
+		get ready() { return this._ready; }
+		get isMonostream() { return this._streamProvider.isMonostream; }
+		get trimmingHandler() { return this._trimmingHandler; }
+		get videoWrappers() { return this._videoWrappers; }
+		get container() { return this._container; }
+		get profileFrameStrategy() { return this._profileFrameStrategy; }
+		get sourceData() { return this._sourceData; }
+
 		constructor(id) {
 			super(id);
-			this.containerId = '';
-			this.video1Id = '';
-			this.videoSlaveId = '';
-			this.backgroundId = '';
-			this.container = null;
-			this.profileFrameStrategy = null;
 
-			this.videoWrappers = [];
-			this._players = [];
-			this._videoPlayers = [];
-			this._audioPlayers = [];
-			this._audioPlayer = null;
-			this._audioLanguage = paella.dictionary.currentLanguage();
-			this._volume = 1;
+			this._streamProvider = new paella.StreamProvider();
+			this._ready = false;
+			this._videoWrappers = [];
 
-			this.videoClasses = {
-				master:"video masterVideo",
-				slave:"video slaveVideo"
-			};
-
-			this.isHidden = false;
-			this.logos = null;
-
-			this.overlayContainer = null;
-			this.videoSyncTimeMillis = 5000;
-			this.currentMasterVideoRect = {};
-			this.currentSlaveVideoRect = {};
-
-			this._maxSyncDelay = 0.5;
-			this._isMonostream = false;
-
-			this._videoQualityStrategy = null;
-
-			this._sourceData = null;
-			this._isMasterReady = false;
-			this._isSlaveReady = false;
-
-			this._firstLoad = false;
-			this._playOnLoad = false;
-			this._seekToOnLoad = 0;
-				
-			this._showPosterFrame = true;
-			this._currentProfile = null;
-
-			var thisClass = this;
-			this._sourceData = [];
-			this.containerId = id + '_container';
-			this.video1Id = id + '_master';
-			this.videoSlaveId = id + '_slave_';
-			this.audioId = id + '_audio_';
-			this.backgroundId = id + '_bkg';
-			this.logos = [];
-			this._videoQualityStrategy = this._getQualityStrategyObject();
-
-
-			this.container = new paella.DomNode('div',this.containerId,{position:'relative',display:'block',marginLeft:'auto',marginRight:'auto',width:'1024px',height:'567px'});
-			this.container.domElement.setAttribute('role','main');
-			this.addNode(this.container);
+			this._container = new paella.DomNode('div','playerContainer_videoContainer_container',{position:'relative',display:'block',marginLeft:'auto',marginRight:'auto',width:'1024px',height:'567px'});
+			this._container.domElement.setAttribute('role','main');
+			this.addNode(this._container);
 
 			this.overlayContainer = new paella.VideoOverlay(this.domElement);
 			this.container.addNode(this.overlayContainer);
 
-			this.container.addNode(new paella.BackgroundContainer(this.backgroundId, paella.utils.folders.profiles() + '/resources/default_background_paella.jpg'));
+			this.setProfileFrameStrategy(paella.ProfileFrameStrategy.Factory());
+			this.setVideoQualityStrategy(paella.VideoQualityStrategy.Factory());
 
-			Object.defineProperty(this,'sourceData',{
-				get: function() { return this._sourceData; }
-			});
-
-			var timer = new base.Timer(function(timer) {
-				thisClass.syncVideos();
-			},thisClass.videoSyncTimeMillis);
-			timer.repeat = true;
-
-			var config = paella.player.config;
-			try {
-				var StrategyClass = config.player.profileFrameStrategy;
-				var ClassObject = Class.fromString(StrategyClass);
-				var strategy = new ClassObject();
-				if (dynamic_cast("paella.ProfileFrameStrategy", strategy)) {
-					this.setProfileFrameStrategy(strategy);
-				}
-			}
-			catch (e) {
-
-			}
-
-			this._streamProvider = new paella.StreamProvider();
-
-			Object.defineProperty(this,'ready',{
-				get: function() {
-					return this._isMasterReady && this._isSlaveReady;
-				}
-			});
-
-			Object.defineProperty(this,'isMonostream', {
-				get: function() {
-					return this._isMonostream;
-				}
-			});
+			this._audioLanguage = paella.dictionary.currentLanguage();
+			this._audioPlayer = null;
+			this._volume = 1;
 		}
 
-		_getQualityStrategyObject() {
-			var Constructor = null;
-			paella.player.config.player
-				.videoQualityStrategy
-				.split('.')
-				.forEach(function(ns,index,array) {
-					if (index==0 && array.length>1) {
-						Constructor = window[ns];
-					}
-					else {
-						Constructor = Constructor[ns];
-					}
-				});
-		
-			Constructor = Constructor || paella.VideoQualityStrategy();
-			return new Constructor();
-		}
-
-		getVideoData() {
-			return new Promise((resolve) => {
-				let result = { master:null, slaves:[] };
-				let promises = [];
-				if (this.masterVideo()) {
-					promises.push(this.masterVideo().getVideoData()
-						.then((masterVideoData) => {
-							result.master = masterVideoData;
-							return Promise.resolve(masterVideoData);
-						})
-					);
-				}
-				if (this.slaveVideo()) {
-					promises.push(this.slaveVideo().getVideoData()
-						.then((slaveVideoData) => {
-							result.slaves.push(slaveVideoData);
-							return Promise.resolve(slaveVideoData);
-						})
-					);
-				}
-
-				Promise.all(promises)
-					.then(() => {
-						resolve(result);
-					});
-			});
-		}
-
-		setVideoQualityStrategy(strategy) {
-			this._videoQualityStrategy = strategy;
-			if (this.masterVideo()) this.masterVideo().setVideoQualityStrategy(this._videoQualityStrategy);
-			if (this.slaveVideo()) slaveVideo.setVideoQualityStrategy(this._videoQualityStrategy);
-		}
-
-		setProfileFrameStrategy(strategy) {
-			this.profileFrameStrategy = strategy;
-		}
-
-		getMasterVideoRect() {
-			return this.currentMasterVideoRect;
-		}
-
-		getSlaveVideoRect() {
-			return this.currentSlaveVideoRect;
-		}
-	
-		setHidden(hidden) {
-			this.isHidden = hidden;
-		}
-
-		hideVideo() {
-			this.setHidden(true);
-		}
-
-		publishVideo() {
-			this.setHidden(false);
-		}
-
-		syncVideos() {
-			var This = this;
-			var masterVideo = this.masterVideo();
-			var slaveVideo = this.slaveVideo();
-			var masterCurrent = 0;
-			var slaveCurrent = 0;
-			if (!this._isMonostream && masterVideo) {
-				masterVideo.currentTime()
-					.then(function(m) {
-						masterCurrent = m;
-						if (slaveVideo) {
-							return slaveVideo.currentTime();
-						}
-						else {
-							return Promise.resolve(-1);
-						}
-					})
-
-					.then(function(s) {
-						if (s>=-1) {
-							slaveCurrent = s;
-							var diff = Math.abs(masterCurrent - slaveCurrent);
-
-							if (diff>This._maxSyncDelay) {
-								base.log.debug("Sync videos performed, diff=" + diff);
-								slaveVideo.setCurrentTime(masterCurrent);
-							}
-						}
-						let audioPromises = [];
-						This._audioPlayers.forEach((player) => {
-							audioPromises.push(player.currentTime());
-						});
-						return Promise.all(audioPromises);
-					})
-
-					.then(function(audioTime) {
-						audioTime.forEach(function(t,index) {
-							let player = This._audioPlayers[index];
-							let diff = Math.abs(masterCurrent - t);
-							if (diff>This._maxSyncDelay) {
-								base.log.debug("Sync audio performed, diff=" + diff);
-								player.setCurrentTime(t);
-							}
-						});
-					});
-			}
-		}
-
-		checkVideoBounds(trimming, current, paused, actualDuration) {
-			var This = this;
-			var start = trimming.start;
-			var end = trimming.end;
-			var enabled = trimming.enabled;
-			paella.events.bind(paella.events.endVideo, () => {
-				this.setCurrentTime(0);
-			});
-			if (!enabled) {
-				if (current>=actualDuration) {
-					paella.events.trigger(paella.events.endVideo, { videoContainer: this });
-					this.pause();
-				}
-			}
-			else {
-				if (current>=Math.floor(end) && !paused) {
-					paella.events.trigger(paella.events.endVideo, { videoContainer: this });
-					this.pause();
-				}
-				else if (current<start) {
-					this.setCurrentTime(start + 1);
-				}
-			}
-		}
-
+		// Playback and status functions
 		play() {
-			return new Promise((resolve) => {
-				if (!this._firstLoad) {
-					this._firstLoad = true;
-				}
-				else {
-					this._playOnLoad = true;
-				}
-				let masterVideo = this.masterVideo();
-				let slaveVideo = this.slaveVideo();
-				if (masterVideo) {
-					masterVideo.play()
-						.then(() => {
-							if (slaveVideo) {
-								slaveVideo.play();
-							}
-							this._audioPlayers.forEach((player) => {
-								player.play();
-							});
-							super.play();
-							resolve();
-						});
-				}
-				else {
-					reject(new Error("Invalid master video"));
-				}
+			return new Promise((resolve,reject) => {
+				this.streamProvider.callPlayerFunction('play')
+					.then(() => {
+						super.play();
+						resolve();
+					})
+					.catch((err) => {
+						reject(err);
+					})
 			});
 		}
 
 		pause() {
 			return new Promise((resolve,reject) => {
-				var masterVideo = this.masterVideo();
-				var slaveVideo = this.slaveVideo();
-				if (masterVideo) {
-					masterVideo.pause()
-						.then(() => {
-							if (slaveVideo) slaveVideo.pause();
-							this._audioPlayers.forEach((player) => {
-								player.pause();
-							});
-							super.pause();
-							resolve();
-						});
-				}
-				else {
-					reject(new Error("invalid master video"));
-				}
+				this.streamProvider.callPlayerFunction('pause')
+					.then(() => {
+						super.pause();
+						resolve();
+					})
+					.catch((err) => {
+						reject(err);
+					})
 			});
-		}
-
-		next() {
-			if (this._trimming.end!==0) {
-				this.setCurrentTime(this._trimming.end);
-			}
-			else {
-				this.duration(true)
-					.then(function(d) {
-						this.setCurrentTime(d);
-					});
-			}
-			super.next();
-		}
-
-		previous() {
-			this.setCurrentTime(this._trimming.start);
-			super.previous();
 		}
 
 		setCurrentTime(time) {
-			// if (time<=0) time = 1;  Fix #176
-			return new Promise((resolve) => {
-				let promises = [];
-				if (this._trimming.enabled) {
-					time += this._trimming.start;
-					if (time<this._trimming.start) time = this._trimming.start;
-					if (time>this._trimming.end) time = this._trimming.end;
-				}
-				promises.push(this.masterVideo().setCurrentTime(time));
-				if (this.slaveVideo()) promises.push(this.slaveVideo().setCurrentTime(time));
-				this._audioPlayers.forEach((player) => { promises.push(player.setCurrentTime(time)); });
-
-				Promise.all(promises)
+			return new Promise((resolve,reject) => {
+				this.trimming()
+					.then((trimmingData) => {
+						if (trimmingData.enabled) {
+							time += trimmingData.start;
+							if (time<trimmingData.start) {
+								time = trimmingData.start;
+							}
+							if (time>trimmingData.end) {
+								time = trimmingData.end;
+							}
+						}
+						return this.streamProvider.callPlayerFunction('setCurrentTime',time);
+					})
+				
 					.then(() => {
 						return this.duration(false);
 					})
+
 					.then((duration) => {
-						resolve({ time:time, duration:duration});
-					});
-			});
+						resolve({ time:time, duration:duration });
+					})
+
+					.catch((err) => {
+						reject(err);
+					})
+			})
 		}
 
 		currentTime(ignoreTrimming = false) {
-			if (this._trimming.enabled && !ignoreTrimming) {
-				var trimStart = this._trimming.start;
-				return new Promise((resolve) => {
-					this.masterVideo().currentTime()
-						.then(function(t) {
-							resolve(t - trimStart);
-						});
+			return new Promise((resolve) => {
+				let trimmingData = null;
+				let p = ignoreTrimming ? Promise.resolve({ enabled:false }) : this.trimming();
+
+				p.then((t) => {
+					trimmingData = t;
+					return this.streamProvider.mainVideoPlayer.currentTime();
+				})
+
+				.then((time) => {
+					if (trimmingData.enabled) {
+						time = time - trimmingData.start;
+					}
+					resolve(time)
 				});
-			}
-			else {
-				return this.masterVideo().currentTime();
-			}
+			});
 		}
 
 		setPlaybackRate(rate) {
-			var masterVideo = this.masterVideo();
-			var slaveVideo = this.slaveVideo();
-			if (masterVideo) {
-				masterVideo.setPlaybackRate(rate);
-			}
-			if (slaveVideo) {
-				slaveVideo.setPlaybackRate(rate);
-			}
+			this.streamProvider.callPlayerFunction('setPlaybackRate',rate);
 			super.setPlaybackRate(rate);
 		}
 
 		setVolume(params) {
-			return new Promise((resolve) => {
-				if (typeof(params)=='object') {
-					params = params.master!==undefined ? params.master:1;
-				}
-				this.mainAudioPlayer().setVolume(params)
-					.then(() => {
-						paella.events.trigger(paella.events.setVolume,{ master:params });
-						this._volume = params;
-						resolve(params);
-					});
-			});
+			if (typeof(params)=='object') {
+				console.warn("videoContainer.setVolume(): set parameter as object is deprecated");
+				return Promise.resolve();
+			}
+			else {
+				return new Promise((resolve,reject) => {
+					this._audioPlayer.setVolume(params)
+						.then(() => {
+							paella.events.trigger(paella.events.setVolume, { master:params });
+							resolve(params);
+						})
+						.catch((err) => {
+							reject(err);
+						});
+				});
+			}
 		}
 
 		volume() {
+			return this._audioPlayer.volume();
+		}
+
+		duration(ignoreTrimming = false) {
 			return new Promise((resolve) => {
-				this.mainAudioPlayer().volume().then((vol) => {
-					resolve(vol);
+				let trimmingData = null;
+				let p = ignoreTrimming ? Promise.resolve({ enabled:false }) : this.trimming();
+
+				p.then((t) => {
+					trimmingData = t;
+					return this.streamProvider.mainVideoPlayer.duration();
 				})
-			});
-		}
-
-		masterVideo() {
-			return this.videoWrappers.length>0 ? this.videoWrappers[0].getNode(this.video1Id) : null;
-		}
-
-		slaveVideo() {
-			return this.videoWrappers.length>1 ? this.videoWrappers[1].getNode(this.videoSlaveId + 1) : null;
-		}
-
-		mainAudioPlayer() {
-			return this._audioPlayer;
-		}
-
-		players() {
-			let This = this;
-			return new Promise((resolve) => {
-				function waitResult() {
-					if (!This.masterVideo()) {
-						setTimeout(() => waitResult(), 10);
+				
+				.then((duration) => {
+					if (trimmingData.enabled) {
+						duration = trimmingData.end - trimmingData.start;
 					}
-					else {
-						resolve(This._players);
-					}
-				}
-				waitResult();
-			});
-		}
-
-		videoPlayers() {
-			let This = this;
-			return new Promise((resolve) => {
-				function waitResult() {
-					if (!This.masterVideo()) {
-						setTimeout(() => waitResult(), 10);
-					}
-					else {
-						resolve(This._videoPlayers);
-					}
-				}
-				waitResult();
-			});
-		}
-
-		audioPlayers() {
-			let This = this;
-			return new Promise((resolve) => {
-				function waitResult() {
-					if (!This.masterVideo()) {
-						setTimeout(() => waitResult(), 10);
-					}
-					else {
-						resolve(This._audioPlayers);
-					}
-				}
-				waitResult();
-			});
-		}
-
-		duration(ignoreTrimming) {
-			var This = this;
-			return this.masterVideo().duration()
-				.then(function(d) {
-					if (This._trimming.enabled && !ignoreTrimming) {
-						d = This._trimming.end - This._trimming.start;
-					}
-					return d;
+					resolve(duration);
 				});
+			})
 		}
 
 		paused() {
-			return this.masterVideo().isPaused();
+			return this.streamProvider.mainVideoPlayer.isPaused();
 		}
 
-		trimEnabled() {
-			return this._trimming.enabled;
-		}
-
-		trimStart() {
-			if (this._trimming.enabled) {
-				return this._trimming.start;
-			}
-			else {
-				return 0;
-			}
-		}
-
-		trimEnd() {
-			if (this._trimming.enabled) {
-				return this._trimming.end;
-			}
-			else {
-				return this.duration();
-			}
-		}
-
+		// Video quality functions
 		getQualities() {
-			var qualities = [];
-			return new Promise((resolve) => {
-				this.masterVideo().getQualities()
-					.then(function(q) {
-						resolve(q);
-					});
-			});
+			return this.streamProvider.mainVideoPlayer.getQualities();
 		}
 
 		setQuality(index) {
-			var masterQualities = [];
-			var slaveQualities = [];
-			var This = this;
-			return new Promise((resolve) => {
-				function doSetQuality() {
-					var masterIndex = index<masterQualities.length ? index:masterQualities.length - 1;
-					var slaveIndex = index<slaveQualities.length ? index:slaveQualities.length - 1;
-					This.masterVideo().setQuality(masterIndex)
-						.then(() => {
-							if (This.slaveVideo()) {
-								return This.slaveVideo().setQuality(slaveIndex);
-							}
-							else {
-								return paella_DeferredResolved();
-							}
-						})
-
-						.then(() => {
-							paella.events.trigger(paella.events.qualityChanged);
-							resolve();
-						});
-				}
-
-				this.masterVideo().getQualities()
-					.then((q) => {
-						masterQualities = q;
-						if (this.slaveVideo()) {
-							return this.slaveVideo().getQualities();
-						}
-						else {
-							return paella_DeferredResolved();
-						}
-					})
-
-					.then((q) => {
-						slaveQualities = q || [];
-						doSetQuality();
-					});
+			let qualities = [];
+			let promises = [];
+			this.streamProvider.videoPlayers.forEach((player) => {
+				let playerData = {
+					player:player,
+					promise:player.getQualities()
+				};
+				qualities.push(playerData);
+				promises.push(playerData.promise);
 			});
-		}
 
+			let resultPromises = [];
+			Promise.all(promises).then(() => {
+				qualities.forEach((data) => {
+					data.promise.then((videoQualities) => {						
+						let videoQuality = videoQualities.length>index ? index:videoQualities.length - 1;
+						resultPromises.push(data.player.setQuality(index));
+					});
+				});
+			});
+			
+			return Promise.all(resultPromises);
+		}
 		getCurrentQuality() {
-			return this.masterVideo().getCurrentQuality();
+			return this.streamProvider.mainVideoPlayer.getCurrentQuality();
 		}
 
-		setStartTime(time) {
-			this.seekToTime(time);
-		}
-
+		// Audio language functions
 		get audioLanguage() {
 			return this._audioLanguage;
+		}
+
+		get audioPlayer() {
+			return this._audioPlayer;
 		}
 
 		getAudioLanguages() {
 			return new Promise((resolve) => {
 				let lang = [];
-				this.players()
-					.then((p) => {
-						p.forEach((player) => {
-							if (player.stream.language) {
-								lang.push(player.stream.language);
-							}
-						});
-						resolve(lang);
-					});
-			});
+				let p = this.streamProvider.players;
+				p.forEach((player) => {
+					if (player.stream.language) {
+						lang.push(player.stream.language);
+					}
+				})
+				resolve(lang);
+			})
 		}
 
 		setAudioLanguage(lang) {
 			return new Promise((resolve) => {
 				let audioSet = false;
-				this.players()
-					.then((players) => {
-						let promises = [];
-						
-						players.forEach((player) => {
-							if (!audioSet && (player.stream.language==lang)) {
-								audioSet = true;
-								this._audioPlayer = player;
-							}
-							promises.push(player.setVolume(0));
-						});
-						return Promise.all(promises);
-					})
+				let promises = [];
+				this.streamProvider.players.forEach((player) => {
+					if (!audioSet && player.stream.language==lang) {
+						audioSet = true;
+						this._audioPlayer = player;
+					}
+					promises.push(player.setVolume(0));
+				});
 
-					.then(() => {
-						if (!audioSet) {
-							this._audioPlayer = this.masterVideo();
-						}
-						return this.mainAudioPlayer().setVolume(this._volume);
-					})
+				if (!audioSet) {
+					this._audioPlayer = this.streamProvider.mainVideoPlayer;
+				}
 
-					.then(() => {
-						this._audioLanguage = this.mainAudioPlayer().stream.language;
-						paella.events.trigger(paella.events.audioLanguageChanged);
-						resolve();
-					})
-			});
+				Promise.all(promises).then(() => {
+					return this._audioPlayer.setVolume(this._volume);
+				})
+
+				.then(() => {
+					this._audioLanguage = this._audioPlayer.stream.language;
+					paella.events.trigger(paella.events.audioLanguageChanged);
+					resolve();
+				});
+			})
+		}
+
+		setProfileFrameStrategy(strategy) {
+			this._profileFrameStrategy = strategy;
+		}
+
+		setVideoQualityStrategy(strategy) {
+			this.streamProvider.qualityStrategy = strategy;
+		}
+
+		autoplay() { return this.streamProvider.autoplay; }
+		supportAutoplay() { return this.streamProvider.supportAutoplay; }
+		setAutoplay(ap=true) {
+			this.streamProvider.autoplay = ap;
+			return this.streamProvider.supportAutoplay;
+		}
+
+		masterVideo() {
+			return this.streamProvider.mainVideoPlayer;
+		}
+
+		getVideoRect(videoIndex) {
+			if (this.videoWrappers.length>videoIndex) {
+				return this.videoWrappers[videoIndex].getRect();
+			}
+			else {
+				throw new Error(`Video wrapper with index ${ videoIndex } not found`);
+			}
 		}
 
 		setStreamData(videoData) {
-			var This = this;
 			this._sourceData = videoData;
-			var overlayLoader = document.createElement("div");
-			overlayLoader.className = "videoLoaderOverlay";
-			this.overlayContainer.addElement(overlayLoader,{left:0,top:0,width:1280,height:720});
-
-			this._streamProvider.init(videoData);
-
-			var masterRect = this._streamProvider.slaveVideos.length>0 ? {x:850,y:140,w:360,h:550}:{x:0,y:0,w:1280,h:720};
-			var slaveRect = {x:10,y:40,w:800,h:600};
-			this._isMonostream = this._streamProvider.slaveVideos.length==0;
-			var masterVideoData = this._streamProvider.masterVideo;
-			var audioStreamsData = this._streamProvider.audioStreams;
-
-			this._players = [];
-			this._videoPlayers = [];
-			this._audioPlayers = [];
-			var slaveVideoData = this._streamProvider.mainSlaveVideo;
-			var masterVideo = paella.videoFactory.getVideoObject(this.video1Id,masterVideoData, masterRect);
-			this._audioPlayer = masterVideo;
-			this._players.push(masterVideo);
-			this._videoPlayers.push(masterVideo);
-			var slaveVideo = slaveVideoData ? paella.videoFactory.getVideoObject(this.videoSlaveId + 1,slaveVideoData, slaveRect) : null;
-			if (slaveVideo) {
-				slaveVideo.setVolume(0);
-				this._players.push(slaveVideo);
-				this._videoPlayers.push(slaveVideo);
-			}
-			
-			audioStreamsData.forEach((streamData,index) => {
-				let audioPlayer = paella.audioFactory.getAudioObject(this.audioId + index,streamData);
-				if (audioPlayer) {
-					this._audioPlayers.push(audioPlayer);
-					this._players.push(audioPlayer);
-					this.container.addNode(audioPlayer);
-				}
-			});
-
-			
-			masterVideo.setVideoQualityStrategy(this._videoQualityStrategy);
-			if (slaveVideo) slaveVideo.setVideoQualityStrategy(this._videoQualityStrategy);
-			
-			addVideoWrapper.apply(this,['masterVideoWrapper',masterVideo]);
-			if (this._streamProvider.slaveVideos.length>0) {
-				addVideoWrapper.apply(this,['slaveVideoWrapper',slaveVideo]);
-			}
-
-			var autoplay = this.autoplay();
-			masterVideo.setAutoplay(autoplay);
-			if (slaveVideo) slaveVideo.setAutoplay(autoplay);
-
-			return masterVideo.load()
-				.then(() => {
-					if (this._streamProvider.slaveVideos.length>0) {
-						return slaveVideo.load();
-					}
-					else {
-						return paella_DeferredResolved(true);
-					}
-				})
-
-				.then(function() {
-					if (This._audioPlayers.length>0) {
-						let audioLoadPromises = [];
-						This._audioPlayers.forEach(function(player) {
-							audioLoadPromises.push(player.load());
-						});
-						return Promise.all(audioLoadPromises);
-					}
-					else {
-						return paella_DeferredResolved(true);
-					}
-				})
-
-				.then(function() {
-					$(masterVideo.video).bind('timeupdate', function(evt) {
-						var trimming = This._trimming;
-						var current = evt.currentTarget.currentTime;
-						var duration = evt.currentTarget.duration;
-						if (trimming.enabled) {
-							current -= trimming.start;
-							duration = trimming.end - trimming.start;
-						}
-						paella.events.trigger(paella.events.timeupdate, { videoContainer:This, currentTime:current, duration:duration });
-						This.checkVideoBounds(trimming,evt.currentTarget.currentTime,evt.currentTarget.paused,duration);
-
-					});
-					This.overlayContainer.removeElement(overlayLoader);
-					This._isMasterReady = true;
-					This._isSlaveReady = true;
-
-					var config = paella.player.config;
-					var masterVolume = (config.player.audio && config.player.audio.master!=undefined) ?
-												config.player.audio.master:1.0;
-					masterVideo.setVolume(masterVolume);
-					return This.setAudioLanguage(This._audioLanguage);
-				})
-				
-				.then(function() {
-					paella.events.trigger(paella.events.videoReady);
-
-					var getProfile = base.parameters.get('profile');
-					var cookieProfile = base.cookies.get('lastProfile');
-					if (getProfile) {
-						return This.setProfile(getProfile, false);
-					}
-					else if (cookieProfile) {
-						return This.setProfile(cookieProfile, false);
-					}
-					else {
-						return This.setProfile(paella.Profiles.getDefaultProfile(), false);
-					}
-				});
-		}
-		
-		setAutoplay(ap = true) {
-			if (!this.supportAutoplay()) return false;
-			this._autoplay = ap;
-			if (this.masterVideo()) {
-				this.masterVideo().setAutoplay(ap);
-			}
-			if (this.slaveVideo()) {
-				this.slaveVideo().setAutoplay(ap);
-			}
-			if (this._audioPlayers.length>0) {
-				this._audioPlayers.forEach((p) => { p.setAutoplay(ap); });
-			}
-			return true;
-		}
-
-		autoplay() {
-			return 	this.supportAutoplay() &&
-					(base.parameters.get('autoplay')=='true' || this._streamProvider.isLiveStreaming) &&
-					!base.userAgent.browser.IsMobileVersion;
-		}
-
-		supportAutoplay() {
-			let result = false;
-			if (this.masterVideo()) {
-				result = this.masterVideo().supportAutoplay();
-			}
-			if (this.slaveVideo() && result) {
-				result = result && this.slaveVideo().supportAutoplay();
-			}
-			if (this._audioPlayers.length>0 && result) {
-				this._audioPlayers.forEach((p) => { result = result && p.supportAutoplay(); });
-			}
-			return result;
-		}
-
-		numberOfStreams() {
-			return this._sourceData.length;
-		}
-
-		getMonostreamMasterProfile() {
-			var mv = this.masterVideo();
-			return {
-				content:"presenter",
-				visible:true,
-				layer:1,
-				rect:[
-					{ aspectRatio:"1/1",left:280,top:0,width:720,height:720 },
-					{ aspectRatio:"6/5",left:208,top:0,width:864,height:720 },
-					{ aspectRatio:"5/4",left:190,top:0,width:900,height:720 },
-					{ aspectRatio:"4/3",left:160,top:0,width:960,height:720 },
-					{ aspectRatio:"11/8",left:145,top:0,width:990,height:720 },
-					{ aspectRatio:"1.41/1",left:132,top:0,width:1015,height:720 },
-					{ aspectRatio:"1.43/1",left:125,top:0,width:1029,height:720 },
-					{ aspectRatio:"3/2",left:100,top:0,width:1080,height:720 },
-					{ aspectRatio:"16/10",left:64,top:0,width:1152,height:720 },
-					{ aspectRatio:"5/3",left:40,top:0,width:1200,height:720 },
-					{ aspectRatio:"16/9",left:0,top:0,width:1280,height:720 },
-					{ aspectRatio:"1.85/1",left:0,top:14,width:1280,height:692 },
-					{ aspectRatio:"2.35/1",left:0,top:87,width:1280,height:544 },
-					{ aspectRatio:"2.41/1",left:0,top:94,width:1280,height:531 },
-					{ aspectRatio:"2.76/1",left:0,top:128,width:1280,height:463 }
-				]
-			};
-		}
-
-		getMonostreamSlaveProfile() {
-			return {
-				content:"slides",
-				visible:false,
-				layer:0,
-				rect:[
-					{aspectRatio:"16/9",left:0,top:0,width:0,height:0},
-					{aspectRatio:"4/3",left:0,top:0,width:0,height:0},
-				]
-			};
-		}
-
-		getCurrentProfileName() {
-			return this._currentProfile;
-		}
-
-		setProfile(profileName,animate) {
-			return new Promise((resolve) => {
-				animate = base.userAgent.browser.Explorer ? false:animate;
-				if (!this.masterVideo()) {
-					resolve();	// Nothing to do, the video is not loaded
-				}
-				else {
-					paella.Profiles.loadProfile(profileName,(profileData) => {
-						this._currentProfile = profileName;
-						if (this._streamProvider.slaveVideos.length==0) {
-							profileData.masterVideo = this.getMonostreamMasterProfile();
-							profileData.slaveVideo = this.getMonostreamSlaveProfile();
-						}
-						this.applyProfileWithJson(profileData,animate);
-						resolve(profileName);
-					});
-				}
-			});
-		}
-
-		getProfile(profileName) {
 			return new Promise((resolve,reject) => {
-				paella.Profiles.loadProfile(profileName,(profileData) => {
-					resolve(profileData);
+				this.streamProvider.init(videoData);
+
+				this.streamProvider.videoPlayers.forEach((player,index) => {
+					addVideoWrapper.apply(this,['videoPlayerWrapper_' + index,player]);
+					player.setAutoplay(this.autoplay());
 				});
-			});
-		}
 
-		hideAllLogos() {
-			for (var i=0;i<this.logos.length;++i) {
-				var logoId = this.logos[i];
-				var logo = this.container.getNode(logoId);
-				$(logo.domElement).hide();
-			}
-		}
-
-		showLogos(logos) {
-			if (logos == undefined) return;
-			var relativeSize = new paella.RelativeVideoSize();
-			for (var i=0; i<logos.length;++i) {
-				var logo = logos[i];
-				var logoId = logo.content;
-				var logoNode = this.container.getNode(logoId);
-				var rect = logo.rect;
-				if (!logoNode) {
-					style = {};
-					logoNode = this.container.addNode(new paella.DomNode('img',logoId,style));
-					logoNode.domElement.setAttribute('src', paella.utils.folders.profiles() + '/resources/' + logoId);
-					logoNode.domElement.setAttribute('src', paella.utils.folders.profiles() + '/resources/' + logoId);
-				}
-				else {
-					$(logoNode.domElement).show();
-				}
-				var percentTop = relativeSize.percentVSize(rect.top) + '%';
-				var percentLeft = relativeSize.percentWSize(rect.left) + '%';
-				var percentWidth = relativeSize.percentWSize(rect.width) + '%';
-				var percentHeight = relativeSize.percentVSize(rect.height) + '%';
-				var style = {top:percentTop,left:percentLeft,width:percentWidth,height:percentHeight,position:'absolute',zIndex:logo.zIndex};
-				$(logoNode.domElement).css(style);
-			}
-		}
-		
-		getClosestRect(profileData,videoDimensions) {
-			var minDiff = 10;
-			var re = /([0-9\.]+)\/([0-9\.]+)/;
-			var result = profileData.rect[0];
-			var videoAspectRatio = videoDimensions.h==0 ? 1.333333:videoDimensions.w / videoDimensions.h;
-			var profileAspectRatio = 1;
-			var reResult = false;
-			profileData.rect.forEach(function(rect) {
-				if ((reResult = re.exec(rect.aspectRatio))) {
-					profileAspectRatio = Number(reResult[1]) / Number(reResult[2]);
-				}
-				var diff = Math.abs(profileAspectRatio - videoAspectRatio);
-				if (minDiff>diff) {
-					minDiff = diff;
-					result = rect;
-				}
-			});
-			return result;
-		}
-
-		applyProfileWithJson(profileData,animate) {
-			var doApply = function(masterData, slaveData) {
-				if (animate==undefined) animate = true;
-				let video1 = this.videoWrappers[0];
-				let video2 = this.videoWrappers.length>1 ? this.videoWrappers[1] : null;
-				let videoPlayer1 = this.masterVideo();
-				let videoPlayer2 = this.slaveVideo();
-
-				let background = this.container.getNode(this.backgroundId);
-
-				let masterDimensions = masterData.res;
-				let slaveDimensions = slaveData && slaveData.res;
-				let rectMaster = this.getClosestRect(profileData.masterVideo,masterData.res);
-				let rectSlave = slaveData && this.getClosestRect(profileData.slaveVideo,slaveData.res);
-
-				// Logos
-				// Hide previous logos
-				this.hideAllLogos();
-
-				// Create or show new logos
-				this.showLogos(profileData.logos);
-
-				if (dynamic_cast("paella.ProfileFrameStrategy",this.profileFrameStrategy)) {
-					var containerSize = { width:$(this.domElement).width(), height:$(this.domElement).height() };
-					var scaleFactor = rectMaster.width / containerSize.width;
-					var scaledMaster = { width:masterDimensions.w*scaleFactor, height:masterDimensions.h*scaleFactor };
-					rectMaster.left = Number(rectMaster.left);
-					rectMaster.top = Number(rectMaster.top);
-					rectMaster.width = Number(rectMaster.width);
-					rectMaster.height = Number(rectMaster.height);
-					rectMaster = this.profileFrameStrategy.adaptFrame(scaledMaster,rectMaster);
-					if (video2) {
-						var scaledSlave = { width:slaveDimensions.w * scaleFactor, height:slaveDimensions.h * scaleFactor };
-						rectSlave.left = Number(rectSlave.left);
-						rectSlave.top = Number(rectSlave.top);
-						rectSlave.width = Number(rectSlave.width);
-						rectSlave.height = Number(rectSlave.height);
-						rectSlave = this.profileFrameStrategy.adaptFrame(scaledSlave,rectSlave);
-					}
-				}
-
-				video1.setRect(rectMaster,animate);
-				this.currentMasterVideoRect = rectMaster;
-				video1.setVisible(profileData.masterVideo.visible,animate);
-				this.currentMasterVideoRect.visible = /true/i.test(profileData.masterVideo.visible) ? true:false;
-				this.currentMasterVideoRect.layer = parseInt(profileData.masterVideo.layer);
-				if (video2) {
-					video2.setRect(rectSlave,animate);
-					this.currentSlaveVideoRect = rectSlave;
-					this.currentSlaveVideoRect.visible = /true/i.test(profileData.slaveVideo.visible) ? true:false;
-					this.currentSlaveVideoRect.layer = parseInt(profileData.slaveVideo.layer);
-					video2.setVisible(profileData.slaveVideo.visible,animate);
-					video2.setLayer(profileData.slaveVideo.layer);
-				}
-				video1.setLayer(profileData.masterVideo.layer);
-				background.setImage(paella.utils.folders.profiles() + '/resources/' + profileData.background.content);
-			};
-			
-			var This = this;
-			if (!this.masterVideo()) {
-				return;
-			}
-			else if (!this.slaveVideo()) {		
-				this.masterVideo().getVideoData()
-					.then(function(data) {
-						doApply.apply(This, [ data ]);
-					});
-			}
-			else {
-				var masterVideoData = {};		
-				this.masterVideo().getVideoData()
-					.then(function(data) {
-						masterVideoData = data;
-						return This.slaveVideo().getVideoData();
+				this.streamProvider.loadVideos()
+					.then(() => {
+						return this.setAudioLanguage(this.audioLanguage);
 					})
-					
-					.then(function(slaveVideoData) {
-						doApply.apply(This, [ masterVideoData, slaveVideoData ]);
+
+					.then(() => {
+						$(this.streamProvider.mainVideoPlayer.video).bind('timeupdate', (evt) => {
+							this.trimming().then((trimmingData) => {
+								let current = evt.currentTarget.currentTime;
+								let duration = evt.currentTarget.duration;
+								if (trimmingData.enabled) {
+									current -= trimmingData.start;
+									duration = trimmingData.end - trimmingData.start;
+								}
+								paella.events.trigger(paella.events.timeupdate, { videoContainer:this, currentTime:current, duration:duration });
+								if (current>=duration) {
+									this.streamProvider.callPlayerFunction('pause');
+								}
+							})
+						});
+
+						this._ready = true;
+						paella.events.trigger(paella.events.videoReady);
+						let getProfile = base.parameters.get('profile');
+						let cookieProfile = base.cookies.get('profile');
+						let profileToUse = base.parameters.get('profile') ||
+										   base.cookies.get('profile') ||
+										   paella.profiles.getDefaultProfile();
+
+						paella.profiles.setProfile(profileToUse, false)
+							.then(() => {
+								resolve();
+							})
+							.catch(() => {
+								paella.profiles.setProfile(paella.profiles.getDefaultProfile(), false).then(() => resolve());
+							});
 					});
-			}
+			});
 		}
 
-		resizePortrail() {
+		resizePortrait() {
 			var width = (paella.player.isFullScreen() == true) ? $(window).width() : $(this.domElement).width();
 			var relativeSize = new paella.RelativeVideoSize();
 			var height = relativeSize.proportionalHeight(width);
@@ -1569,7 +1061,7 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 				this.resizeLandscape();
 			}
 			else {
-				this.resizePortrail();
+				this.resizePortrait();
 			}
 		}
 	}

@@ -168,7 +168,7 @@ paella.addPlugin(function() {
 				e.onclick=function(event){
 					var value = event.target? event.target.textContent: event.toElement.textContent;
 					if (value) {
-						var size = value.split("x");
+						var size = value.trim().split("x");
 
 						w_e.value = size[0];
 						h_e.value = size[1];

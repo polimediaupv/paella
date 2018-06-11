@@ -104,7 +104,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 		let zoomSettings = paella.player.config.player.videoZoom || {};
 		let zoomEnabled = (zoomSettings.enabled!==undefined ? zoomSettings.enabled : true) && this.allowZoom();
 
-		this.parent(domType,id,zoomEnabled ? {width:this._zoom + '%',height:"100%",position:'absolute'} : { width:"100%" });
+		this.parent(domType,id,zoomEnabled ? {width:this._zoom + '%',height:"100%",position:'absolute'} : { width:"100%", height:"100%" });
 
 		let eventCapture = document.createElement('div');
 		setTimeout(() => this.domElement.parentElement.appendChild(eventCapture), 10);
@@ -114,6 +114,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 		eventCapture.style.left = "0px";
 		eventCapture.style.right = "0px";
 		eventCapture.style.bottom = "0px";
+		this.eventCapture = eventCapture;
 
 		if (zoomEnabled) {
 			this._zoomAvailable = true;
@@ -434,6 +435,8 @@ Class ("paella.VideoRect", paella.DomNode, {
 				paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
 
 				this._mouseCenter = mouse;
+				evt.stopPropagation();
+				return false;
 			});
 
 			$(eventCapture).on('mousedown',(evt) => {
@@ -472,21 +475,29 @@ Class ("paella.VideoRect", paella.DomNode, {
 		return true;
 	},
 
-	setZoom: function(zoom,left,top) {
+	setZoom: function(zoom,left,top,tween=0) {
 		if (this.zoomAvailable()) {
 			this._zoomOffset.x = left;
 			this._zoomOffset.y = top;
 			this._zoom = zoom;
 			
-			$(this.domElement).animate({
-				width:this._zoom + '%',
-				height:this._zoom + '%'
-			},100);
-		
-			$(this.domElement).animate({
-				left:"-" + this._zoomOffset.x + "%",
-				top: "-" + this._zoomOffset.y + "%"
-			},100);
+			if (tween==0) {
+				$(this.domElement).css({
+					width:this._zoom + '%',
+					height:this._zoom + '%',
+					left:"-" + this._zoomOffset.x + "%",
+					top: "-" + this._zoomOffset.y + "%"
+				});
+			}
+			else {
+				$(this.domElement).stop(true,false).animate({
+					width:this._zoom + '%',
+					height:this._zoom + '%',
+					left:"-" + this._zoomOffset.x + "%",
+					top: "-" + this._zoomOffset.y + "%"
+				},tween,"linear");
+			}
+
 			paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
 		}
 	},
@@ -504,6 +515,14 @@ Class ("paella.VideoRect", paella.DomNode, {
 	// the current video size
 	zoomAvailable: function() {
 		return this.allowZoom() && this._zoomAvailable;
+	},
+
+	disableEventCapture: function() {
+		this.eventCapture.style.pointerEvents = 'none';
+	},
+
+	enableEventCapture: function() {
+		this.eventCapture.style.pointerEvents = '';
 	}
 });
 
@@ -665,7 +684,13 @@ Class ("paella.VideoElementBase", paella.VideoRect,{
 		return paella_DeferredNotImplemented();
 	},
 
+	disable:function() {
+		console.log("Disable video requested");
+	},
 
+	enable:function() {
+		console.log("Enable video requested");
+	},
 
 	// Utility functions
 	setClassName:function(className) {
@@ -986,14 +1011,14 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	},
 
 	supportAutoplay:function() {
-		let macOS10_13_safari = paella.utils.userAgent.system.MacOS &&
-								paella.utils.userAgent.system.Version.minor>=13 &&
+		let macOS10_12_safari = paella.utils.userAgent.system.MacOS &&
+								paella.utils.userAgent.system.Version.minor>=12 &&
 								paella.utils.userAgent.browser.Safari;
 		let iOS = paella.utils.userAgent.system.iOS;
 		// Autoplay does not work from Chrome version 64
 		let chrome_v64 =	paella.utils.userAgent.browser.Chrome &&
 							paella.utils.userAgent.browser.Version.major>=64;
-		if (macOS10_13_safari || iOS || chrome_v64)
+		if (macOS10_12_safari || iOS || chrome_v64)
 		{
 			return false;
 		}

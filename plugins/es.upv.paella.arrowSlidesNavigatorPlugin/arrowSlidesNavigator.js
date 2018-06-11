@@ -5,7 +5,10 @@ paella.addPlugin(function() {
 		getName() { return "es.upv.paella.arrowSlidesNavigatorPlugin"; }
 
 		checkEnabled(onSuccess) {
-			if (!paella.initDelegate.initParams.videoLoader.frameList || Object.keys(paella.initDelegate.initParams.videoLoader.frameList).length==0 && paella.player.videoContainer.isMonostream) {
+			if (!paella.initDelegate.initParams.videoLoader.frameList ||
+				Object.keys(paella.initDelegate.initParams.videoLoader.frameList).length==0 ||
+				paella.player.videoContainer.isMonostream)
+			{
 				onSuccess(false);
 			}
 			else {
@@ -65,6 +68,10 @@ paella.addPlugin(function() {
 			if (this.container) {
 				overlayContainer.removeElement(this.container);
 			}
+
+			// TODO: Make compatible with n-streams
+			let rect = null;
+			let element = null;
 			switch (self._showArrowsIn) {
 				case 'full':
 					this.container = overlayContainer.addLayer();
@@ -73,14 +80,19 @@ paella.addPlugin(function() {
 					this.arrows.style.marginTop = "25%";
 					break;
 				case 'master':
-					var element = document.createElement('div');			
-					this.container = overlayContainer.addElement(element,overlayContainer.getMasterRect());			
+					element = document.createElement('div');
+					rect = overlayContainer.getVideoRect(0);
+					this.container = overlayContainer.addElement(element,rect);
+					this.visible = rect.visible;
 					this.arrows.style.marginTop = "23%";
 					break;
 				case 'slave':
-					var element = document.createElement('div');			
-					this.container = overlayContainer.addElement(element,overlayContainer.getSlaveRect());
+					element = document.createElement('div');
+					rect = overlayContainer.getVideoRect(1);
+					this.container = overlayContainer.addElement(element,rect);
+					this.visible = rect.visible;
 					this.arrows.style.marginTop = "35%";
+					
 					break;
 			}
 			
@@ -115,7 +127,7 @@ paella.addPlugin(function() {
 								let t0 = trimming.enabled ? f0.time - trimming.start : f0.time;
 								let t1 = trimming.enabled ? f1.time - trimming.start : f1.time;
 								let t2 = trimming.enabled ? f2.time - trimming.start : f2.time;
-								if (t1<currentTime && t2>currentTime) {
+								if ((t1<currentTime && t2>currentTime) || t1==currentTime) {
 									let range = {
 										prev: t0,
 										next: t2
@@ -153,11 +165,11 @@ paella.addPlugin(function() {
 			let trimming = null;
 			this.getCurrentRange()
 				.then((range) => {
-					paella.player.videoContainer.seekToTime(range.prev-1);
+					paella.player.videoContainer.seekToTime(range.prev);
 				});
 		}
 		
-		showArrows(){ $(this.arrows).show(); }
+		showArrows(){ if (this.visible) $(this.arrows).show(); }
 		hideArrows(){ $(this.arrows).hide(); }
 		
 		getEvents() { return [paella.events.controlBarDidShow, paella.events.controlBarDidHide, paella.events.setComposition]; }
