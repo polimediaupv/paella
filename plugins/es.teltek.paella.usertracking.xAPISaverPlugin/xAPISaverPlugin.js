@@ -146,14 +146,15 @@ paella.addPlugin(function() {
         this.get_title()
         this.get_description()
         paella.player.videoContainer.duration().then(function(duration) {
-          return paella.player.videoContainer.mainAudioPlayer().volume().then(function(volume) {
+          return paella.player.videoContainer.streamProvider.mainAudioPlayer.volume()
+          .then(function(volume) {
             return paella.player.videoContainer.getCurrentQuality().then(function(quality) {
               return paella.player.auth.userData().then(function (user_info){
                 self.duration = duration
                 self.volume = volume
                 self.speed = 1
-                if (paella.player.videoContainer.mainAudioPlayer().stream.language){
-                  self.language = paella.player.videoContainer.mainAudioPlayer().stream.language.replace("_","-")
+                if (paella.player.videoContainer.streamProvider.mainAudioPlayer.stream.language){
+                  self.language = paella.player.videoContainer.streamProvider.mainAudioPlayer.stream.language.replace("_","-")
                 }
                 self.quality = quality.shortLabel()
 
@@ -242,7 +243,7 @@ paella.addPlugin(function() {
       var verb = new ADL.XAPIStatement.Verb(params.verb.id, params.verb.description)
       var activity = new ADL.XAPIStatement.Activity(window.location.href, this.title, this.description)
       activity.definition.type = "https://w3id.org/xapi/video/activity-type/video"
-      paella.player.videoContainer.mainAudioPlayer().volume().then(function(volume){})
+      paella.player.videoContainer.streamProvider.mainAudioPlayer.volume().then(function(volume){})
       var statement = new ADL.XAPIStatement(agent, verb, activity)
       statement.result = params.result
       if (params.verb.id === "http://adlnet.gov/expapi/verbs/initialized"){
