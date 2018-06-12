@@ -193,8 +193,8 @@ Class ("paella.VideoRect", paella.DomNode, {
 				};
 				let maxOffset = this._zoom - 100;
 				let offset = {
-					x: (center.x * maxOffset / videoSize.w),
-					y: (center.y * maxOffset / videoSize.h)
+					x: (center.x * maxOffset / videoSize.w) * (maxOffset / 100),
+					y: (center.y * maxOffset / videoSize.h) * (maxOffset / 100)
 				};
 				
 				if (offset.x>maxOffset) {
@@ -336,8 +336,8 @@ Class ("paella.VideoRect", paella.DomNode, {
 				
 				let maxOffset = this._zoom - 100;
 				let offset = {
-					x: (mouse.x * maxOffset / newVideoSize.w),
-					y: (mouse.y * maxOffset / newVideoSize.h)
+					x: (mouse.x * maxOffset / newVideoSize.w) * (maxOffset / 100),
+					y: (mouse.y * maxOffset / newVideoSize.h) * (maxOffset / 100)
 				};
 				
 				offset.x = offset.x<maxOffset ? offset.x : maxOffset;
@@ -378,8 +378,8 @@ Class ("paella.VideoRect", paella.DomNode, {
 				
 				let maxOffset = this._zoom - 100;
 				let offset = {
-					x: (mouse.x * maxOffset / newVideoSize.w),
-					y: (mouse.y * maxOffset / newVideoSize.h)
+					x: (mouse.x * maxOffset / newVideoSize.w) * (maxOffset / 100),
+					y: (mouse.y * maxOffset / newVideoSize.h) * (maxOffset / 100)
 				};
 				
 				offset.x = offset.x<maxOffset ? offset.x : maxOffset;
@@ -416,8 +416,8 @@ Class ("paella.VideoRect", paella.DomNode, {
 				
 				let maxOffset = this._zoom - 100;
 				let offset = {
-					x: (mouse.x * maxOffset / newVideoSize.w),
-					y: (mouse.y * maxOffset / newVideoSize.h)
+					x: (mouse.x * maxOffset / newVideoSize.w) * (maxOffset / 100),
+					y: (mouse.y * maxOffset / newVideoSize.h) * (maxOffset / 100)
 				};
 				
 				offset.x = offset.x<maxOffset ? offset.x : maxOffset;
@@ -800,8 +800,8 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 			index: index,
 			res: s.res,
 			src: s.src,
-			toString:function() { return this.res.w + "x" + this.res.h; },
-			shortLabel:function() { return this.res.h + "p"; },
+			toString:function() { return this.res.w==0 ? "auto" : this.res.w + "x" + this.res.h; },
+			shortLabel:function() { return this.res.w==0 ? "auto" : this.res.h + "p"; },
 			compare:function(q2) { return this.res.w*this.res.h - q2.res.w*q2.res.h; }
 		};
 	},

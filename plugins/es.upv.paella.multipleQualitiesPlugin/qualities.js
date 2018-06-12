@@ -37,6 +37,7 @@ paella.addPlugin(function() {
 
 		getItemButton(quality) {
 			var elem = document.createElement('div');
+			let This = this;
 			paella.player.videoContainer.getCurrentQuality()
 				.then((currentIndex,currentData) => {
 					var label = quality.shortLabel();
@@ -48,9 +49,9 @@ paella.addPlugin(function() {
 						$('.multipleQualityItem').removeClass('selected');
 						$('.multipleQualityItem.' + this.data.toString()).addClass('selected');
 						paella.player.videoContainer.setQuality(this.data.index)
-							.then(function() {
-								paella.player.controls.hidePopUp(this.getName());
-								this.setQualityLabel();
+							.then(() => {
+								paella.player.controls.hidePopUp(This.getName());
+								This.setQualityLabel();
 							});
 					});
 				});

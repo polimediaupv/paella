@@ -14,3 +14,7 @@
     font-size: 29px;
     margin-left: -6px;
 }
+
+.autoTrackingActivated {
+    color: red !important;
+}

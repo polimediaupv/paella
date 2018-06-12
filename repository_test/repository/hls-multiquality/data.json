@@ -1,0 +1,28 @@
+{
+	"metadata": {
+		"duration": 210,
+		"title": "HLS multi quality"
+	},
+	"streams": [
+		{
+			"sources": {
+				"hls": [
+					{
+						"src": "http://158.42.9.94:1935/VODTestMau/smil:belmar-demo.smil/playlist.m3u8",
+						"src__":"https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8",
+						"src_":"http://streaming.upv.es:1935/VODTestMau/smil:belmar-demobn.smil/playlist.m3u8",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1920",
+							"h": "1080"
+						}
+					}
+				]
+			},
+			"preview": "",
+			"content":"presenter"
+		}
+	],
+	"frameList": []
+}
+
