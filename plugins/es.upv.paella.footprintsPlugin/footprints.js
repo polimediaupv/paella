@@ -22,6 +22,7 @@ paella.addPlugin(function() {
 		getButtonType() { return paella.ButtonPlugin.type.timeLineButton; }
 	
 		setup(){
+			this._INTERVAL_LENGTH = 5;
 			var thisClass = this;
 			paella.events.bind(paella.events.timeUpdate, function(event) { thisClass.onTimeUpdate(); });
 	
@@ -66,25 +67,29 @@ paella.addPlugin(function() {
 		}
 	
 		onTimeUpdate() {
-			var self = this;
-			   paella.player.videoContainer.currentTime()
-			.then(function(currentTime) {	
-				var videoCurrentTime = Math.round(currentTime + paella.player.videoContainer.trimStart());
-				if (self.inPosition <= videoCurrentTime && videoCurrentTime <= self.inPosition + self.INTERVAL_LENGTH) {
-					self.outPosition = videoCurrentTime;
-					if (self.inPosition + self.INTERVAL_LENGTH === self.outPosition) {
-						self.trackFootPrint(self.inPosition, self.outPosition);
-						self.inPosition = self.outPosition;
+			let currentTime = -1;
+			paella.player.videoContainer.currentTime()
+				.then((c) => {
+					currentTime = c;
+					return paella.player.videoContainer.trimming();
+				})
+				.then((trimming) => {
+					let videoCurrentTime = Math.round(currentTime + (trimming.enabled ? trimming.start : 0));
+					if (this.inPosition <= videoCurrentTime && videoCurrentTime <= this.inPosition + this.INTERVAL_LENGTH) {
+						this.outPosition = videoCurrentTime;
+						if ((this.inPosition + this.INTERVAL_LENGTH)===this.outPosition) {
+							this.trackFootPrint(this.inPosition, this.outPosition);
+							this.inPosition = this.outPosition;
+						}
 					}
-				}
-				else {
-					self.trackFootPrint(self.inPosition, self.outPosition);
-					self.inPosition = videoCurrentTime;
-					self.outPosition = videoCurrentTime;
-				}
-			});
+					else {
+						this.trackFootPrint(this.inPosition, this.outPosition);
+						this.inPosition = videoCurrentTime;
+						this.outPosition = videoCurrentTime;
+					}
+				});
 		}
-	
+
 		trackFootPrint(inPosition, outPosition) {
 			var data = {"in": inPosition, "out": outPosition};
 			paella.data.write('footprints',{id:paella.initDelegate.getId()}, data);
