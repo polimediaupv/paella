@@ -60,23 +60,27 @@ Class ("paella.plugins.FootPrintsPlugin",paella.ButtonPlugin,{
 	},
 
     onTimeUpdate:function() {
-    	var self = this;
+		let currentTime = -1;
    		paella.player.videoContainer.currentTime()
-		.then(function(currentTime) {	
-			var videoCurrentTime = Math.round(currentTime + paella.player.videoContainer.trimStart());
-			if (self.inPosition <= videoCurrentTime && videoCurrentTime <= self.inPosition + self.INTERVAL_LENGTH) {
-				self.outPosition = videoCurrentTime;
-				if (self.inPosition + self.INTERVAL_LENGTH === self.outPosition) {
-					self.trackFootPrint(self.inPosition, self.outPosition);
-					self.inPosition = self.outPosition;
+			.then((c) => {
+				currentTime = c;
+				return paella.player.videoContainer.trimming();
+			})
+			.then((trimming) => {
+				let videoCurrentTime = Math.round(currentTime + (trimming.enabled ? trimming.start : 0));
+				if (this.inPosition <= videoCurrentTime && videoCurrentTime <= this.inPosition + this.INTERVAL_LENGTH) {
+					this.outPosition = videoCurrentTime;
+					if ((this.inPosition + this.INTERVAL_LENGHT)===this.outPosition) {
+						this.trackFootPrint(this.inPosition, this.outPosition);
+						this.inPosition = this.outPosition;
+					}
 				}
-			}
-			else {
-				self.trackFootPrint(self.inPosition, self.outPosition);
-				self.inPosition = videoCurrentTime;
-				self.outPosition = videoCurrentTime;
-			}
-		});
+				else {
+					this.trackFootPrint(this.inPosition, this.outPosition);
+					this.inPosition = videoCurrentTime;
+					this.outPosition = videoCurrentTime;
+				}
+			});
     },
 
     trackFootPrint:function(inPosition, outPosition) {
