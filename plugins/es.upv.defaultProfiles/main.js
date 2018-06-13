@@ -34,6 +34,7 @@ paella.setMonostreamProfile(() => {
     });
 });
 
+/*
 paella.addProfile(() => {
     return new Promise((resolve,reject) => {
         paella.events.bind(paella.events.videoReady,() => {
@@ -80,6 +81,7 @@ paella.addProfile(() => {
         })
     })
 });
+*/
 
 paella.addProfile(() => {
     return new Promise((resolve,reject) => {
@@ -97,7 +99,7 @@ paella.addProfile(() => {
                         {
                             content: "presenter",
                             rect:[
-                                { aspectRatio:"16/9",left:319, top:13, width:640, height:360 }
+                                { aspectRatio:"16/9",left:239, top:17, width:803, height:451 }
                             ],
                             visible:true,
                             layer:1
@@ -105,7 +107,7 @@ paella.addProfile(() => {
                         {
                             content: "presentation",
                             rect:[
-                                { aspectRatio:"16/9",left:37, top:388, width:566, height:318 }
+                                { aspectRatio:"16/9",left:44, top:482, width:389, height:218 }
                             ],
                             visible:true,
                             layer:1
@@ -113,19 +115,21 @@ paella.addProfile(() => {
                         {
                             content: "presenter-2",
                             rect:[
-                                { aspectRatio:"16/9",left:677, top:388, width:566, height:318 }
+                                { aspectRatio:"16/9",left:847, top:482, width:389, height:218 }
                             ],
                             visible:true,
                             layer:1
                         }
                     ],
-                    blackBoardImages: {left:10,top:325,width:432,height:324},
                     background: {content:"slide_professor_paella.jpg",zIndex:5,rect: { left:0,top:0,width:1280,height:720},visible: true,layer:0},
                     logos: [{content:"paella_logo.png",zIndex:5,rect: { top:10,left:10,width:49,height:42}}],
                     buttons: [
                         {
-                            rect: { left: 10, top: 10, width: 10, height: 10, label:"Rotate" },
-                            function(event) { this.rotate(); }
+                            rect: { left: 618, top: 495, width: 45, height: 45 },
+                            onClick: function(event) { this.rotate(); },
+                            label:"Rotate",
+                            icon:"icon_rotate.svg",
+                            layer: 2
                         }
                     ],
                     onApply: function() {

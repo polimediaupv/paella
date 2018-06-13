@@ -24,6 +24,27 @@
     }
 
     // Utility functions
+    function hideBackground() {
+        let bkgNode = this.container.getNode("videoContainerBackground");
+        if (bkgNode) this.container.removeNode(bkgNode);
+    }
+
+    function showBackground(bkgData) {
+        hideBackground.apply(this);
+        this.backgroundData = bkgData;
+        let style = {
+            backgroundImage: `url(${ paella.baseUrl }/resources/style/${ bkgData.content })`,
+            backgroundSize: "100% 100%",
+            zIndex: bkgData.layer,
+            position: 'absolute',
+            left: bkgData.rect.left + "px",
+            right: bkgData.rect.right + "px",
+            width: "100%",
+            height: "100%",
+        }
+        this.container.addNode(new paella.DomNode('div',"videoContainerBackground",style));
+    }
+
     function hideAllLogos() {
         if (this.logos == undefined) return;
         for (var i=0;i<this.logos.length;++i) {
@@ -49,12 +70,59 @@
             else {
                 $(logoNode.domElement).show();
             }
-            var percentTop = relativeSize.percentVSize(rect.top) + '%';
-            var percentLeft = relativeSize.percentWSize(rect.left) + '%';
-            var percentWidth = relativeSize.percentWSize(rect.width) + '%';
-            var percentHeight = relativeSize.percentVSize(rect.height) + '%';
+            var percentTop = Number(relativeSize.percentVSize(rect.top)) + '%';
+            var percentLeft = Number(relativeSize.percentWSize(rect.left)) + '%';
+            var percentWidth = Number(relativeSize.percentWSize(rect.width)) + '%';
+            var percentHeight = Number(relativeSize.percentVSize(rect.height)) + '%';
             var style = {top:percentTop,left:percentLeft,width:percentWidth,height:percentHeight,position:'absolute',zIndex:logo.zIndex};
             $(logoNode.domElement).css(style);
+        }
+    }
+
+    function hideButtons() {
+        if (this.buttons) {
+            this.buttons.forEach((btn) => {
+                this.container.removeNode(this.container.getNode(btn.id));
+            });
+            this.buttons = null;
+        }
+    }
+
+    function showButtons(buttons,profileData) {
+        hideButtons();
+        if (buttons) {
+            let relativeSize = new paella.RelativeVideoSize();
+            this.buttons = buttons;
+            buttons.forEach((btn,index) => {
+                btn.id = "button_" + index;
+                let rect = btn.rect;
+                let percentTop = relativeSize.percentVSize(rect.top) + '%';
+                let percentLeft = relativeSize.percentWSize(rect.left) + '%';
+                let percentWidth = relativeSize.percentWSize(rect.width) + '%';
+                let percentHeight = relativeSize.percentVSize(rect.height) + '%';
+                let style = {
+                    top:percentTop,
+                    left:percentLeft,
+                    width:percentWidth,
+                    height:percentHeight,
+                    position:'absolute',
+                    zIndex:btn.layer,
+                    backgroundImage: `url(${ paella.baseUrl }/resources/style/${ btn.icon })`,
+                    backgroundSize: '100% 100%',
+                    display: 'block'
+                };
+                let logoNode = this.container.addNode(new paella.DomNode('button',btn.id,style));
+                logoNode.domElement.className = "paella-profile-button";
+                logoNode.domElement.data = {
+                    action: btn.onClick,
+                    profileData: profileData
+                }
+                $(logoNode.domElement).click(function(evt) {
+                    this.data.action.apply(this.data.profileData,[evt]);
+                    evt.stopPropagation();
+                    return false;
+                })
+            })
         }
     }
 
@@ -123,6 +191,10 @@
         profileData.onApply().then(() => {
             hideAllLogos.apply(this);
             showLogos.apply(this,[profileData.logos]);
+            hideBackground.apply(this);
+            showBackground.apply(this,[profileData.background]);
+            hideButtons.apply(this);
+            showButtons.apply(this,[profileData.buttons, profileData]);
             this.streamProvider.videoStreams.forEach((streamData,index) => {
                 let profile = getProfile(streamData.content);
                 let player = this.streamProvider.videoPlayers[index];
@@ -219,7 +291,7 @@
         }
 
         placeVideos() {
-
+            this.setProfile(this._currentProfileName,false);
         }
     }
 

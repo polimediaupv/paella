@@ -1,0 +1,13 @@
+.paella-profile-button {
+    background-color: lightgray;
+    border: none;
+    border-radius: 10%;
+}
+
+.paella-profile-button:hover {
+    background-color: rgb(155, 155, 155);
+}
+
+.paella-profile-button:active {
+    background-color: rgb(0, 0, 0);
+}
