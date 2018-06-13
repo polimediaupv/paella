@@ -30,6 +30,7 @@
     }
 
     function showBackground(bkgData) {
+        if (!bkgData) return;
         hideBackground.apply(this);
         this.backgroundData = bkgData;
         let style = {
@@ -89,7 +90,7 @@
     }
 
     function showButtons(buttons,profileData) {
-        hideButtons();
+        hideButtons.apply(this);
         if (buttons) {
             let relativeSize = new paella.RelativeVideoSize();
             this.buttons = buttons;
