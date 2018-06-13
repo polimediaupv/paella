@@ -84,6 +84,71 @@ paella.addProfile(() => {
 paella.addProfile(() => {
     return new Promise((resolve,reject) => {
         paella.events.bind(paella.events.videoReady,() => {
+            if (paella.player.videoContainer.streamProvider.videoPlayers.length<3) {
+                resolve(null);
+            }
+            else {
+                resolve({
+                    id:"dynamic_triple_stream",
+                    name:{es:"Tres streams posición dinámica"},
+                    hidden:false,
+                    icon:"three_streams_icon.svg",
+                    videos: [
+                        {
+                            content: "presenter",
+                            rect:[
+                                { aspectRatio:"16/9",left:319, top:13, width:640, height:360 }
+                            ],
+                            visible:true,
+                            layer:1
+                        },
+                        {
+                            content: "presentation",
+                            rect:[
+                                { aspectRatio:"16/9",left:37, top:388, width:566, height:318 }
+                            ],
+                            visible:true,
+                            layer:1
+                        },
+                        {
+                            content: "presenter-2",
+                            rect:[
+                                { aspectRatio:"16/9",left:677, top:388, width:566, height:318 }
+                            ],
+                            visible:true,
+                            layer:1
+                        }
+                    ],
+                    blackBoardImages: {left:10,top:325,width:432,height:324},
+                    background: {content:"slide_professor_paella.jpg",zIndex:5,rect: { left:0,top:0,width:1280,height:720},visible: true,layer:0},
+                    logos: [{content:"paella_logo.png",zIndex:5,rect: { top:10,left:10,width:49,height:42}}],
+                    buttons: [
+                        {
+                            rect: { left: 10, top: 10, width: 10, height: 10, label:"Rotate" },
+                            function(event) { this.rotate(); }
+                        }
+                    ],
+                    onApply: function() {
+                        return Promise.resolve();
+                    },
+                    rotate: function() {
+                        let v0 = this.videos[0].content;
+                        let v1 = this.videos[1].content;
+                        let v2 = this.videos[2].content;
+                        this.videos[0].content = v2;
+                        this.videos[1].content = v0;
+                        this.videos[2].content = v1;
+                        paella.profiles.placeVideos();
+                    }
+                })
+            }
+        })
+    })
+});
+
+paella.addProfile(() => {
+    return new Promise((resolve,reject) => {
+        paella.events.bind(paella.events.videoReady,() => {
             // TODO: videoContainer.sourceData is deprecated, update this code
             var n = paella.player.videoContainer.sourceData[0].sources;
 			if(n.hasOwnProperty("image")==false) {

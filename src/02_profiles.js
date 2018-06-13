@@ -5,7 +5,10 @@
 	paella.addProfile = function(cb) {
 		cb().then((profileData) => {
 			if (profileData) {
-				g_profiles.push(profileData);
+                g_profiles.push(profileData);
+                if (typeof(profileData.onApply)!="function") {
+                    profileData.onApply = function() { return Promise.resolve(); }
+                }
 				paella.events.trigger(paella.events.profileListChanged, { profileData:profileData });
 			}
 		});
@@ -13,32 +16,35 @@
     
     paella.setMonostreamProfile = function(cb) {
         cb().then((profileData) => {
+            if (typeof(profileData.onApply)!="function") {
+                profileData.onApply = function() { return Promise.resolve(); }
+            }
             g_monostreamProfile = profileData;
         })
     }
 
     // Utility functions
     function hideAllLogos() {
+        if (this.logos == undefined) return;
         for (var i=0;i<this.logos.length;++i) {
-            var logoId = this.logos[i];
+            var logoId = this.logos[i].content.replace(/\./ig,"-");
             var logo = this.container.getNode(logoId);
             $(logo.domElement).hide();
         }
     }
 
     function showLogos(logos) {
-        if (logos == undefined) return;
+        this.logos = logos;
         var relativeSize = new paella.RelativeVideoSize();
         for (var i=0; i<logos.length;++i) {
             var logo = logos[i];
-            var logoId = logo.content;
+            var logoId = logo.content.replace(/\./ig,"-");
             var logoNode = this.container.getNode(logoId);
             var rect = logo.rect;
             if (!logoNode) {
                 style = {};
                 logoNode = this.container.addNode(new paella.DomNode('img',logoId,style));
-                logoNode.domElement.setAttribute('src', paella.utils.folders.profiles() + '/resources/' + logoId);
-                logoNode.domElement.setAttribute('src', paella.utils.folders.profiles() + '/resources/' + logoId);
+                logoNode.domElement.setAttribute('src', paella.baseUrl + '/resources/style/' + logo.content);
             }
             else {
                 $(logoNode.domElement).show();
@@ -70,89 +76,6 @@
             }
         });
         return result;
-    }
-
-    function applyProfileWithJson_old(profileData,animate) {
-        var doApply = function(masterData, slaveData) {
-            if (animate==undefined) animate = true;
-            let video1 = this.videoWrappers[0];
-            let video2 = this.videoWrappers.length>1 ? this.videoWrappers[1] : null;
-            let videoPlayer1 = this.masterVideo();
-            let videoPlayer2 = this.slaveVideo();
-
-            let background = this.container.getNode(this.backgroundId);
-
-            let masterDimensions = masterData.res;
-            let slaveDimensions = slaveData && slaveData.res;
-            let rectMaster = getClosestRect(profileData.masterVideo,masterData.res);
-            let rectSlave = slaveData && getClosestRect(profileData.slaveVideo,slaveData.res);
-
-            // Logos
-            // Hide previous logos
-            hideAllLogos.apply(paella.player.videoContainer);
-
-            // Create or show new logos
-            showLogos.apply(this,[profileData.logos]);
-
-            if (dynamic_cast("paella.ProfileFrameStrategy",this.profileFrameStrategy)) {
-                var containerSize = { width:$(this.domElement).width(), height:$(this.domElement).height() };
-                var scaleFactor = rectMaster.width / containerSize.width;
-                var scaledMaster = { width:masterDimensions.w*scaleFactor, height:masterDimensions.h*scaleFactor };
-                rectMaster.left = Number(rectMaster.left);
-                rectMaster.top = Number(rectMaster.top);
-                rectMaster.width = Number(rectMaster.width);
-                rectMaster.height = Number(rectMaster.height);
-                rectMaster = this.profileFrameStrategy.adaptFrame(scaledMaster,rectMaster);
-                if (video2) {
-                    var scaledSlave = { width:slaveDimensions.w * scaleFactor, height:slaveDimensions.h * scaleFactor };
-                    rectSlave.left = Number(rectSlave.left);
-                    rectSlave.top = Number(rectSlave.top);
-                    rectSlave.width = Number(rectSlave.width);
-                    rectSlave.height = Number(rectSlave.height);
-                    rectSlave = this.profileFrameStrategy.adaptFrame(scaledSlave,rectSlave);
-                }
-            }
-
-            video1.setRect(rectMaster,animate);
-            this.currentMasterVideoRect = rectMaster;
-            video1.setVisible(profileData.masterVideo.visible,animate);
-            this.currentMasterVideoRect.visible = /true/i.test(profileData.masterVideo.visible) ? true:false;
-            this.currentMasterVideoRect.layer = parseInt(profileData.masterVideo.layer);
-            if (video2) {
-                video2.setRect(rectSlave,animate);
-                this.currentSlaveVideoRect = rectSlave;
-                this.currentSlaveVideoRect.visible = /true/i.test(profileData.slaveVideo.visible) ? true:false;
-                this.currentSlaveVideoRect.layer = parseInt(profileData.slaveVideo.layer);
-                video2.setVisible(profileData.slaveVideo.visible,animate);
-                video2.setLayer(profileData.slaveVideo.layer);
-            }
-            video1.setLayer(profileData.masterVideo.layer);
-            if (profileData.background) {
-                background.setImage(paella.utils.folders.profiles() + '/resources/' + profileData.background.content);
-            }
-        };
-        
-        if (!this.masterVideo()) {
-            return;
-        }
-        else if (!this.slaveVideo()) {		
-            this.masterVideo().getVideoData()
-                .then((data) => {
-                    doApply.apply(this, [ data ]);
-                });
-        }
-        else {
-            var masterVideoData = {};		
-            this.masterVideo().getVideoData()
-                .then((data) => {
-                    masterVideoData = data;
-                    return this.slaveVideo().getVideoData();
-                })
-                
-                .then((slaveVideoData) => {
-                    doApply.apply(this, [ masterVideoData, slaveVideoData ]);
-                });
-        }
     }
 
     function applyProfileWithJson(profileData,animate) {
@@ -197,23 +120,27 @@
             }
         };
         
-        this.streamProvider.videoStreams.forEach((streamData,index) => {
-            let profile = getProfile(streamData.content);
-            let player = this.streamProvider.videoPlayers[index];
-            let videoWrapper = this.videoWrappers[index];
-            if (profile) {
-                player.getVideoData()
-                    .then((data) => {
-                        applyVideoRect(profile,data,videoWrapper,player);
-                    });
-            }
-            else {
-                videoWrapper.setVisible(false,animate);
-                if (paella.player.videoContainer.streamProvider.mainAudioPlayer!=player) {
-                    player.disable();
+        profileData.onApply().then(() => {
+            hideAllLogos.apply(this);
+            showLogos.apply(this,[profileData.logos]);
+            this.streamProvider.videoStreams.forEach((streamData,index) => {
+                let profile = getProfile(streamData.content);
+                let player = this.streamProvider.videoPlayers[index];
+                let videoWrapper = this.videoWrappers[index];
+                if (profile) {
+                    player.getVideoData()
+                        .then((data) => {
+                            applyVideoRect(profile,data,videoWrapper,player);
+                        });
                 }
-            }
-        })
+                else {
+                    videoWrapper.setVisible(false,animate);
+                    if (paella.player.videoContainer.streamProvider.mainAudioPlayer!=player) {
+                        player.disable();
+                    }
+                }
+            });
+        });
     }
 
 	class Profiles {
@@ -252,7 +179,7 @@
             })
         }
 
-        get currentProfile() { return null; }
+        get currentProfile() { return this.getProfile(this._currentProfileName); }
 
         get currentProfileName() { return this._currentProfileName; }
 
@@ -288,6 +215,10 @@
         }
 
         getProfile(profileName) {
+
+        }
+
+        placeVideos() {
 
         }
     }
