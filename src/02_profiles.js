@@ -7,7 +7,7 @@
 			if (profileData) {
                 g_profiles.push(profileData);
                 if (typeof(profileData.onApply)!="function") {
-                    profileData.onApply = function() { return Promise.resolve(); }
+                    profileData.onApply = function() { }
                 }
 				paella.events.trigger(paella.events.profileListChanged, { profileData:profileData });
 			}
@@ -17,7 +17,7 @@
     paella.setMonostreamProfile = function(cb) {
         cb().then((profileData) => {
             if (typeof(profileData.onApply)!="function") {
-                profileData.onApply = function() { return Promise.resolve(); }
+                profileData.onApply = function() {  }
             }
             g_monostreamProfile = profileData;
         })
@@ -189,30 +189,29 @@
             }
         };
         
-        profileData.onApply().then(() => {
-            hideAllLogos.apply(this);
-            showLogos.apply(this,[profileData.logos]);
-            hideBackground.apply(this);
-            showBackground.apply(this,[profileData.background]);
-            hideButtons.apply(this);
-            showButtons.apply(this,[profileData.buttons, profileData]);
-            this.streamProvider.videoStreams.forEach((streamData,index) => {
-                let profile = getProfile(streamData.content);
-                let player = this.streamProvider.videoPlayers[index];
-                let videoWrapper = this.videoWrappers[index];
-                if (profile) {
-                    player.getVideoData()
-                        .then((data) => {
-                            applyVideoRect(profile,data,videoWrapper,player);
-                        });
+        profileData.onApply();
+        hideAllLogos.apply(this);
+        showLogos.apply(this,[profileData.logos]);
+        hideBackground.apply(this);
+        showBackground.apply(this,[profileData.background]);
+        hideButtons.apply(this);
+        showButtons.apply(this,[profileData.buttons, profileData]);
+        this.streamProvider.videoStreams.forEach((streamData,index) => {
+            let profile = getProfile(streamData.content);
+            let player = this.streamProvider.videoPlayers[index];
+            let videoWrapper = this.videoWrappers[index];
+            if (profile) {
+                player.getVideoData()
+                    .then((data) => {
+                        applyVideoRect(profile,data,videoWrapper,player);
+                    });
+            }
+            else {
+                videoWrapper.setVisible(false,animate);
+                if (paella.player.videoContainer.streamProvider.mainAudioPlayer!=player) {
+                    player.disable();
                 }
-                else {
-                    videoWrapper.setVisible(false,animate);
-                    if (paella.player.videoContainer.streamProvider.mainAudioPlayer!=player) {
-                        player.disable();
-                    }
-                }
-            });
+            }
         });
     }
 
@@ -234,6 +233,15 @@
         }
 
         loadProfile(profileId) {
+            let result = null;
+            g_profiles.some((profile) => {
+                if (profile.id==profileId) {
+                    result = profile;
+                }
+                return result;
+            });
+            return result;
+            /*
             return new Promise((resolve,reject) => {
                 let result = null;
                 g_profiles.some((profile) => {
@@ -244,12 +252,16 @@
                 });
                 result ? resolve(result) : reject(new Error("No such profile"));
             });
+            */
         }
 
         loadMonostreamProfile() {
+            return g_monostreamProfile;
+            /*
             return new Promise((resolve,reject) => {
                 resolve(g_monostreamProfile);
             })
+            */
         }
 
         get currentProfile() { return this.getProfile(this._currentProfileName); }
@@ -257,6 +269,23 @@
         get currentProfileName() { return this._currentProfileName; }
 
         setProfile(profileName,animate) {
+            animate = base.userAgent.browser.Explorer ? false:animate;
+            if (!paella.player.videoContainer.ready) {
+                return false;	// Nothing to do, the video is not loaded
+            }
+            else if (paella.player.videoContainer.streamProvider.videoStreams.length==1) {
+                let profileData = this.loadMonostreamProfile();  
+                this._currentProfileName = profileName;
+                applyProfileWithJson.apply(paella.player.videoContainer,[profileData,animate]);
+                return true;
+            }
+            else {
+                let profileData = this.loadProfile(profileName);
+                this._currentProfileName = profileName;
+                applyProfileWithJson.apply(paella.player.videoContainer,[profileData,animate]);
+                return true;
+            }
+            /*
             return new Promise((resolve,reject) => {
 				animate = base.userAgent.browser.Explorer ? false:animate;
 				if (!paella.player.videoContainer.ready) {
@@ -284,7 +313,8 @@
                             reject(err);
                         });
                 }
-			});
+            });
+            */
         }
 
         getProfile(profileName) {

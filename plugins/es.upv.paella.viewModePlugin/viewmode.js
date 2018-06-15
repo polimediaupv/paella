@@ -110,22 +110,21 @@ paella.addPlugin(function() {
 		}
 	
 		onProfileChange(profileName) {
-			  var thisClass = this;
-				var ButtonItem = this.buttonItems[profileName];
-	
-				var n = this.buttonItems;
-				var arr = Object.keys(n);
-				arr.forEach(function(i){
-					  thisClass.buttonItems[i].className = thisClass.getButtonItemClass(i,false);
-				});
+			var thisClass = this;
+			var ButtonItem = this.buttonItems[profileName];
+
+			var n = this.buttonItems;
+			var arr = Object.keys(n);
+			arr.forEach(function(i){
+					thisClass.buttonItems[i].className = thisClass.getButtonItemClass(i,false);
+			});
 	
 			if(ButtonItem) {
-					  ButtonItem.className = thisClass.getButtonItemClass(profileName,true);
+				ButtonItem.className = thisClass.getButtonItemClass(profileName,true);
 			}
 		}
 	
 		onItemClick(button,profile,profileData) {
-			var thisClass = this;
 			var ButtonItem = this.buttonItems[profile];
 	
 			if (ButtonItem) {
@@ -139,7 +138,6 @@ paella.addPlugin(function() {
 		}
 
 		getButtonItemIcon(profileData) {
-			console.log(profileData);
 			return `${ paella.baseUrl }resources/style/${ profileData.icon }`;
 		}
 	}

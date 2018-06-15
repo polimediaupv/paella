@@ -135,20 +135,13 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 
 	setProfile:function(profileName,animate) {
-		paella.profiles.setProfile(profileName,animate)
-			.then((profileName) => {
-				return paella.player.getProfile(profileName);
-			})
-			.then((profileData) => {
-				if (!paella.player.videoContainer.isMonostream) {
-					base.cookies.set("lastProfile", profileName);
-				}
-				
-				paella.events.trigger(paella.events.setProfile,{profileName:profileName});
-			})
-			.catch((err) => {
-				// No such profile
-			});
+		if (paella.profiles.setProfile(profileName,animate)) {
+			let profileData = paella.player.getProfile(profileName);
+			if (profileData && !paella.player.videoContainer.isMonostream) {
+				base.cookies.set('lastProfile', profileName);
+			}
+			paella.events.trigger(paella.events.setProfile,{profileName:profileName});
+		}
 	},
 
 	getProfile:function(profileName) {

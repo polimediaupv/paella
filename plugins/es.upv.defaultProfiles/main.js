@@ -133,7 +133,6 @@ paella.addProfile(() => {
                         }
                     ],
                     onApply: function() {
-                        return Promise.resolve();
                     },
                     rotate: function() {
                         let v0 = this.videos[0].content;

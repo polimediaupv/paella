@@ -1011,19 +1011,16 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 
 						this._ready = true;
 						paella.events.trigger(paella.events.videoReady);
-						let getProfile = base.parameters.get('profile');
-						let cookieProfile = base.cookies.get('profile');
 						let profileToUse = base.parameters.get('profile') ||
 										   base.cookies.get('profile') ||
 										   paella.profiles.getDefaultProfile();
 
-						paella.profiles.setProfile(profileToUse, false)
-							.then(() => {
-								resolve();
-							})
-							.catch(() => {
-								paella.profiles.setProfile(paella.profiles.getDefaultProfile(), false).then(() => resolve());
-							});
+						if (paella.profiles.setProfile(profileToUse, false)) {
+							resolve();
+						}
+						else if (!paella.profiles.setProfile(paella.profiles.getDefaultProfile(), false)) {
+							resolve();
+						}
 					});
 			});
 		}
