@@ -890,6 +890,17 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		}
 	},
 
+	disable:function() {
+		//this._playState = !this.video.paused;
+		//this.video.pause();
+	},
+
+	enable:function() {
+		//if (this._playState) {
+		//	this.video.play();
+		//}
+	},
+
 	getQualities:function() {
 		return new Promise((resolve,reject) => {
 			setTimeout(() => {

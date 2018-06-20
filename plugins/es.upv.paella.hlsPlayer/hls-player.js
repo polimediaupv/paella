@@ -26,8 +26,8 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 		if (this._posterFrame) {
 			this.video.setAttribute("poster",this._posterFrame);
 		}
-		if (base.userAgent.system.iOS ||
-			base.userAgent.browser.Safari)
+		if (base.userAgent.system.iOS)// ||
+		//	base.userAgent.browser.Safari)
 		{
 			return this.parent();
 		}
@@ -87,8 +87,8 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 	},
 
 	getQualities:function() {
-		if (base.userAgent.system.iOS ||
-			base.userAgent.browser.Safari)
+		if (base.userAgent.system.iOS)// ||
+	//		base.userAgent.browser.Safari)
 		{
 			return new Promise((resolve,reject) => {
 				resolve([
@@ -141,8 +141,8 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 	},
 	
 	setQuality:function(index) {
-		if (base.userAgent.system.iOS ||
-			base.userAgent.browser.Safari)
+		if (base.userAgent.system.iOS)// ||
+			//base.userAgent.browser.Safari)
 		{
 			return Promise.resolve();
 		}
@@ -176,8 +176,8 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 
 	
 	getCurrentQuality:function() {
-		if (base.userAgent.system.iOS ||
-			base.userAgent.browser.Safari)
+		if (base.userAgent.system.iOS)// ||
+			//base.userAgent.browser.Safari)
 		{
 			return Promise.resolve(0);
 		}
