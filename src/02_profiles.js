@@ -179,12 +179,12 @@
                 let layer = parseInt(profile.layer);
 
                 videoWrapper.setRect(rect,animate);
-                videoWrapper.setVisible(profile.visible,animate);
+                videoWrapper.setVisible(visible,animate);
 
                 // The disable/enable functions may not be called on main audio player
                 if (paella.player.videoContainer.streamProvider.mainAudioPlayer!=player) {
 
-                    profile.visible ? player.enable() : player.disable();
+                    visible ? player.enable() : player.disable();
                 }
             }
         };

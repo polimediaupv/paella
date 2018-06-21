@@ -265,7 +265,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 				this.setProfile(cookieProfile,false);
 			}
 			else {
-				this.setProfile(paella.Profiles.getDefaultProfile(), false);
+				this.setProfile(paella.player.selectedProfile, false);
 			}
 		}
 		

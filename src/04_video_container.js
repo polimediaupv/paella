@@ -1060,6 +1060,7 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 			else {
 				this.resizePortrait();
 			}
+			//paella.profiles.setProfile(paella.player.selectedProfile,false)
 		}
 	}
 
