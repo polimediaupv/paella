@@ -177,6 +177,7 @@
                 let visible = /true/i.test(profile.visible);
                 rect.visible = visible;
                 let layer = parseInt(profile.layer);
+                videoWrapper.domElement.style.zIndex = layer;
 
                 videoWrapper.setRect(rect,animate);
                 videoWrapper.setVisible(visible,animate);
