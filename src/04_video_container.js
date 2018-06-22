@@ -884,17 +884,27 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 				promises.push(playerData.promise);
 			});
 
-			let resultPromises = [];
-			Promise.all(promises).then(() => {
-				qualities.forEach((data) => {
-					data.promise.then((videoQualities) => {						
-						let videoQuality = videoQualities.length>index ? index:videoQualities.length - 1;
-						resultPromises.push(data.player.setQuality(index));
+			return new Promise((resolve) => {
+				let resultPromises = [];
+				Promise.all(promises)
+					.then(() => {
+						qualities.forEach((data) => {
+							data.promise.then((videoQualities) => {						
+								let videoQuality = videoQualities.length>index ? index:videoQualities.length - 1;
+								resultPromises.push(data.player.setQuality(videoQuality));
+							});
+						});
+
+						return Promise.all(resultPromises);
+					})
+
+					.then(() => {
+						//setTimeout(() => {
+							paella.events.trigger(paella.events.qualityChanged);
+							resolve();
+						//},10);
 					});
-				});
 			});
-			
-			return Promise.all(resultPromises);
 		}
 		getCurrentQuality() {
 			return this.streamProvider.mainVideoPlayer.getCurrentQuality();
@@ -979,6 +989,17 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		}
 
 		setStreamData(videoData) {
+			videoData.forEach((stream) => {
+				for (var type in stream.sources) {
+					let source = stream.sources[type];
+					source.forEach((item) => {
+						if (item.res) {
+							item.res.w = Number(item.res.w);
+							item.res.h = Number(item.res.h);
+						}
+					});
+				}
+			});
 			this._sourceData = videoData;
 			return new Promise((resolve,reject) => {
 				this.streamProvider.init(videoData);

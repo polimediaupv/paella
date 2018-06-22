@@ -8,14 +8,6 @@
 			"sources": {
 				"mp4": [
 					{
-						"src": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/media/240-presenter.mp4",
-						"mimetype": "video/mp4",
-						"res": {
-							"w": "426",
-							"h": "240"
-						}
-					},
-					{
 						"src": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/media/480-presenter.mp4",
 						"mimetype": "video/mp4",
 						"res": {
@@ -47,14 +39,6 @@
 		{
 			"sources": {
 				"mp4": [
-					{
-						"src": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/media/240-presentation.mp4",
-						"mimetype": "video/mp4",
-						"res": {
-							"w": "320",
-							"h": "240"
-						}
-					},
 					{
 						"src": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/media/480-presentation.mp4",
 						"mimetype": "video/mp4",

@@ -1028,7 +1028,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		let iOS = paella.utils.userAgent.system.iOS;
 		// Autoplay does not work from Chrome version 64
 		let chrome_v64 =	paella.utils.userAgent.browser.Chrome &&
-							paella.utils.userAgent.browser.Version.major>=64;
+							paella.utils.userAgent.browser.Version.major==64;
 		if (macOS10_12_safari || iOS || chrome_v64)
 		{
 			return false;
@@ -1176,9 +1176,9 @@ Class ("paella.ImageVideo", paella.VideoElementBase,{
 			index: index,
 			res: s.res,
 			src: s.src,
-			toString:function() { return this.res.w + "x" + this.res.h; },
+			toString:function() { return Number(this.res.w) + "x" + Number(this.res.h); },
 			shortLabel:function() { return this.res.h + "p"; },
-			compare:function(q2) { return this.res.w*this.res.h - q2.res.w*q2.res.h; }
+			compare:function(q2) { return Number(this.res.w)*Number(this.res.h) - Number(q2.res.w)*Number(q2.res.h); }
 		};
 	},
 
