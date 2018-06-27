@@ -101,6 +101,8 @@
                 let percentLeft = relativeSize.percentWSize(rect.left) + '%';
                 let percentWidth = relativeSize.percentWSize(rect.width) + '%';
                 let percentHeight = relativeSize.percentVSize(rect.height) + '%';
+                let url = paella.baseUrl;
+                url = url.replace(/\\/ig,'/');
                 let style = {
                     top:percentTop,
                     left:percentLeft,
@@ -108,7 +110,7 @@
                     height:percentHeight,
                     position:'absolute',
                     zIndex:btn.layer,
-                    backgroundImage: `url(${ paella.baseUrl }/resources/style/${ btn.icon })`,
+                    backgroundImage: `url(${ url }/resources/style/${ btn.icon })`,
                     backgroundSize: '100% 100%',
                     display: 'block'
                 };

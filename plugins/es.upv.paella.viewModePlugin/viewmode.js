@@ -96,7 +96,9 @@ paella.addPlugin(function() {
 		getProfileItemButton(profile,profileData) {
 			var elem = document.createElement('div');
 			elem.className = this.getButtonItemClass(profile,false);
-			elem.style.backgroundImage = `url(${ this.getButtonItemIcon(profileData) })`;
+			let url = this.getButtonItemIcon(profileData);
+			url = url.replace(/\\/ig,'/');
+			elem.style.backgroundImage = `url(${ url })`;
 			elem.id = profile + '_button';
 			elem.data = {
 				profile:profile,
