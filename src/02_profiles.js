@@ -220,7 +220,8 @@
 
 	class Profiles {
         constructor() {
-            this._currentProfileName;
+            paella.events.bind(paella.events.controlBarDidHide, () => this.hideButtons());
+            paella.events.bind(paella.events.controlBarDidShow, () => this.showButtons());
         }
 
         get profileList() { return g_profiles; }
@@ -244,27 +245,10 @@
                 return result;
             });
             return result;
-            /*
-            return new Promise((resolve,reject) => {
-                let result = null;
-                g_profiles.some((profile) => {
-                    if (profile.id==profileId) {
-                        result = profile;
-                    }
-                    return result;
-                });
-                result ? resolve(result) : reject(new Error("No such profile"));
-            });
-            */
         }
 
         loadMonostreamProfile() {
             return g_monostreamProfile;
-            /*
-            return new Promise((resolve,reject) => {
-                resolve(g_monostreamProfile);
-            })
-            */
         }
 
         get currentProfile() { return this.getProfile(this._currentProfileName); }
@@ -288,36 +272,6 @@
                 applyProfileWithJson.apply(paella.player.videoContainer,[profileData,animate]);
                 return true;
             }
-            /*
-            return new Promise((resolve,reject) => {
-				animate = base.userAgent.browser.Explorer ? false:animate;
-				if (!paella.player.videoContainer.ready) {
-					resolve();	// Nothing to do, the video is not loaded
-				}
-				else if (paella.player.videoContainer.streamProvider.videoStreams.length==1) {
-                    this.loadMonostreamProfile()
-                        .then((profileData) => {
-                            this._currentProfileName = profileName;
-                            applyProfileWithJson.apply(paella.player.videoContainer,[profileData,animate]);
-                            resolve(profileName);
-                        })
-                        .catch((err) => {
-                            reject(err);
-                        });
-                }
-                else {
-                    this.loadProfile(profileName)
-                        .then((profileData) => {
-                            this._currentProfileName = profileName;
-                            applyProfileWithJson.apply(paella.player.videoContainer,[profileData,animate]);
-                            resolve(profileName);
-                        })
-                        .catch((err) => {
-                            reject(err);
-                        });
-                }
-            });
-            */
         }
 
         getProfile(profileName) {
@@ -326,6 +280,14 @@
 
         placeVideos() {
             this.setProfile(this._currentProfileName,false);
+        }
+
+        hideButtons() {
+            $('.paella-profile-button').hide();
+        }
+
+        showButtons() {
+            $('.paella-profile-button').show();
         }
     }
 
