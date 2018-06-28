@@ -88,6 +88,8 @@ paella.events = {
 	profileListChanged:'paella:profilelistchanged',
 	setProfile:'paella:setprofile',
 
+	seekAvailabilityChanged:'paella:seekAvailabilityChanged',
+	
 	trigger:function(event,params) {
 		$(document).trigger(event,params);
 	},

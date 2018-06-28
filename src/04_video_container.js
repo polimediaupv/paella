@@ -218,6 +218,8 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 
 	_playOnClickEnabled: true,
 
+	_seekDisabled: false,
+
 	initialize:function(id) {
 		var self = this;
 		var style = {position:'absolute',left:'0px',right:'0px',top:'0px',bottom:'0px',overflow:'hidden'};
@@ -239,6 +241,28 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		this.domElement.addEventListener("touchstart",function(event) {
 			if (paella.player.controls) {
 				paella.player.controls.restartHideTimer();
+			}
+		});
+
+		Object.defineProperty(this, "seekDisabled", {
+			get: function() { return this._seekDisabled; },
+			set: function(v) {
+				let changed = v!=this._seekDisabled;
+				this._seekDisabled = v;
+				if (changed) {
+					paella.events.trigger(paella.events.seekAvailabilityChanged, { disabled:this._seekDisabled, enabled:!this._seekDisabled })
+				}
+			}
+		});
+
+		Object.defineProperty(this, "seekEnabled", {
+			get: function() { return !this._seekDisabled; },
+			set: function(v) {
+				let changed = v==this._seekDisabled;
+				this._seekDisabled = !v;
+				if (changed) {
+					paella.events.trigger(paella.events.seekAvailabilityChanged, { disabled:this._seekDisabled, enabled:!this._seekDisabled })
+				}
 			}
 		});
 	},
@@ -308,6 +332,10 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	},
 
 	seekTo:function(newPositionPercent) {
+		if (this._seekDisabled) {
+			console.log("Warning: Seek is disabled");
+			return;
+		}
 		var thisClass = this;
 		this.setCurrentPercent(newPositionPercent)
 			.then((timeData) => {
@@ -319,6 +347,10 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	},
 
 	seekToTime:function(time) {
+		if (this._seekDisabled) {
+			console.log("Seek is disabled");
+			return;
+		}
 		this.setCurrentTime(time)
 			.then((timeData) => {
 				this._force = true;
