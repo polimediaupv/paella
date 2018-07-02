@@ -122,6 +122,15 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		if (paella.player.isLiveStream()) {
 			$(this.domElement).hide();
 		}
+
+		paella.events.bind(paella.events.seekAvailabilityChanged, (e,data) => {
+			if (data.enabled) {
+				$(playbackFull.domElement).removeClass("disabled");
+			}
+			else {
+				$(playbackFull.domElement).addClass("disabled");
+			}
+		});
 	},
 
 	mouseOut:function(event){
