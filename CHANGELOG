@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+* Paella 6.0.0
+
+  * Multiple video stream support
+  * Video profile plugins
+  * Dynamic video profiles
+
 * Paella 5.3.7
 
   * Improvements on HLS plugin
