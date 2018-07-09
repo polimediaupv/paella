@@ -47,11 +47,11 @@ paella.addPlugin(function() {
 				this.arrows.style.marginTop = "25%";
 				
 				let arrowNext = document.createElement('div');
-				arrowNext.className = "buttonPlugin arrowSlideNavidator nextButton right icon-arrow-right"
+				arrowNext.className = "buttonPlugin arrowSlideNavidator nextButton right icon-next2"
 				this.arrows.appendChild(arrowNext);
 		
 				let arrowPrev = document.createElement('div');
-				arrowPrev.className = "buttonPlugin arrowSlideNavidator prevButton left icon-arrow-left"
+				arrowPrev.className = "buttonPlugin arrowSlideNavidator prevButton left icon-previous2"
 				this.arrows.appendChild(arrowPrev);
 		
 		
@@ -156,7 +156,11 @@ paella.addPlugin(function() {
 			let trimming;
 			this.getCurrentRange()
 				.then((range) => {
-					paella.player.videoContainer.seekToTime(range.next);
+					return paella.player.videoContainer.seekToTime(range.next);
+				})
+
+				.then(() => {
+					paella.player.videoContainer.play();
 				});
 		}
 	
@@ -165,7 +169,11 @@ paella.addPlugin(function() {
 			let trimming = null;
 			this.getCurrentRange()
 				.then((range) => {
-					paella.player.videoContainer.seekToTime(range.prev);
+					return paella.player.videoContainer.seekToTime(range.prev);
+				})
+				
+				.then(() => {
+					paella.player.videoContainer.play();
 				});
 		}
 		

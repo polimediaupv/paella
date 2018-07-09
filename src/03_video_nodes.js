@@ -684,11 +684,11 @@ Class ("paella.VideoElementBase", paella.VideoRect,{
 		return paella_DeferredNotImplemented();
 	},
 
-	disable:function() {
+	disable:function(isMainAudioPlayer) {
 		console.log("Disable video requested");
 	},
 
-	enable:function() {
+	enable:function(isMainAudioPlayer) {
 		console.log("Enable video requested");
 	},
 
@@ -890,12 +890,16 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		}
 	},
 
-	disable:function() {
+	disable:function(isMainAudioPlayer) {
+		if (isMainAudioPlayer) return;
+		this._isDisabled = true;
 		this._playState = !this.video.paused;
 		this.video.pause();
 	},
 
-	enable:function() {
+	enable:function(isMainAudioPlayer) {
+		if (isMainAudioPlayer) return;
+		this._isDisabled = false;
 		if (this._playState) {
 			this.video.play();
 		}
@@ -954,13 +958,17 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 
 	play:function() {
         return this._deferredAction(() => {
-            this.video.play();
+			if (!this._isDisabled) {
+				this.video.play();
+			}
         });
 	},
 
 	pause:function() {
         return this._deferredAction(() => {
-            this.video.pause();
+			if (!this._isDisabled) {
+				this.video.pause();
+			}
         });
 	},
 

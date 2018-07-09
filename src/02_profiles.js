@@ -185,10 +185,8 @@
                 videoWrapper.setVisible(visible,animate);
 
                 // The disable/enable functions may not be called on main audio player
-                if (paella.player.videoContainer.streamProvider.mainAudioPlayer!=player) {
-
-                    visible ? player.enable() : player.disable();
-                }
+                let isMainAudioPlayer = paella.player.videoContainer.streamProvider.mainAudioPlayer==player;
+                visible ? player.enable(isMainAudioPlayer) : player.disable(isMainAudioPlayer);
             }
         };
         
