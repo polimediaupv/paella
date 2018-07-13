@@ -144,8 +144,10 @@
         "heartbeat": 30,
         "client_id": "Paella Player"
       },
-      "es.teltek.paella.usertracking.xAPISaverPlugin": {"enabled": false, "endpoint":"http://localhost:8081/data/xAPI/", "auth":"auth_key"}
+      "es.teltek.paella.usertracking.xAPISaverPlugin": {"enabled": false, "endpoint":"http://localhost:8081/data/xAPI/", "auth":"auth_key"},
 
+      "//*****": "Keyboard plugins",
+      "es.upv.paella.defaultKeysPlugin": {"enabled": true }
     }
   },
     "standalone" : {

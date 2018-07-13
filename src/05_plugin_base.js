@@ -232,8 +232,6 @@
 	Class ("paella.EarlyLoadPlugin", paella.Plugin, {});
 	Class ("paella.DeferredLoadPlugin", paella.Plugin, {});
 	
-	
-	
 	Class ("paella.PopUpContainer", paella.DomNode,{
 		containers:null,
 		currentContainerId:-1,
