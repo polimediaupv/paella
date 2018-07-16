@@ -114,7 +114,7 @@ paella.addPlugin(function() {
 	
 		pause() {
 			this.isPlaying = false;
-			this.showIcon = false;
+			this.showIcon = true;
 			this.checkStatus();
 		}
 	
