@@ -34,55 +34,6 @@ paella.setMonostreamProfile(() => {
     });
 });
 
-/*
-paella.addProfile(() => {
-    return new Promise((resolve,reject) => {
-        paella.events.bind(paella.events.videoReady,() => {
-            if (paella.player.videoContainer.streamProvider.videoPlayers.length<3) {
-                resolve(null);
-            }
-            else {
-                resolve({
-                    id:"triple_stream",
-                    name:{es:"Tres streams"},
-                    hidden:false,
-                    icon:"three_streams_icon.svg",
-                    videos: [
-                        {
-                            content: "presenter",
-                            rect:[
-                                { aspectRatio:"16/9",left:319, top:13, width:640, height:360 }
-                            ],
-                            visible:true,
-                            layer:1
-                        },
-                        {
-                            content: "presentation",
-                            rect:[
-                                { aspectRatio:"16/9",left:37, top:388, width:566, height:318 }
-                            ],
-                            visible:true,
-                            layer:1
-                        },
-                        {
-                            content: "presenter-2",
-                            rect:[
-                                { aspectRatio:"16/9",left:677, top:388, width:566, height:318 }
-                            ],
-                            visible:true,
-                            layer:1
-                        }
-                    ],
-                    blackBoardImages: {left:10,top:325,width:432,height:324},
-                    background: {content:"slide_professor_paella.jpg",zIndex:5,rect: { left:0,top:0,width:1280,height:720},visible: true,layer:0},
-                    logos: [{content:"paella_logo.png",zIndex:5,rect: { top:10,left:10,width:49,height:42}}]
-                })
-            }
-        })
-    })
-});
-*/
-
 paella.addProfile(() => {
     return new Promise((resolve,reject) => {
         paella.events.bind(paella.events.videoReady,() => {
@@ -213,7 +164,7 @@ paella.addProfile(() => {
             logos:[{content:"paella_logo.png",zIndex:5,rect:{top:10,left:10,width:49,height:42}}],
             buttons: [
                 {
-                    rect: { left: 618, top: 625, width: 45, height: 45 },
+                    rect: { left: 682, top: 565, width: 45, height: 45 },
                     onClick: function(event) { this.switch(); },
                     label:"Switch",
                     icon:"icon_switch.svg",
@@ -324,7 +275,7 @@ paella.addProfile(() => {
             logos:[{content:"paella_logo.png",zIndex:5,rect:{top:10,left:10,width:49,height:42}}],
             buttons: [
                 {
-                    rect: { left: 618, top: 625, width: 45, height: 45 },
+                    rect: { left: 618, top: 565, width: 45, height: 45 },
                     onClick: function(event) { this.switch(); },
                     label:"Switch",
                     icon:"icon_switch.svg",
@@ -391,7 +342,7 @@ paella.addProfile(() => {
             logos:[{content:"paella_logo.png",zIndex:5,rect:{top:10,left:10,width:49,height:42}}],
             buttons: [
                 {
-                    rect: { left: 618, top: 625, width: 45, height: 45 },
+                    rect: { left: 618, top: 565, width: 45, height: 45 },
                     onClick: function(event) { this.switch(); },
                     label:"Switch",
                     icon:"icon_switch.svg",
