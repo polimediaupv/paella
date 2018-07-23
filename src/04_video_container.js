@@ -831,7 +831,7 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 		}
 
 		play() {
-			return new Promise((resolve) => {
+			return new Promise((resolve,reject) => {
 				if (!this._firstLoad) {
 					this._firstLoad = true;
 				}
@@ -843,15 +843,21 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 				if (masterVideo) {
 					masterVideo.play()
 						.then(() => {
+							let p = [];
 							if (slaveVideo) {
-								slaveVideo.play();
+								p.push(slaveVideo.play());
 							}
 							this._audioPlayers.forEach((player) => {
-								player.play();
+								p.push(player.play());
 							});
 							super.play();
-							resolve();
-						});
+							Promise.all(p)
+								.then(() => resolve())
+								.catch((err) => reject(err));
+						})
+						.catch((err) => {
+							reject(err);
+						})
 				}
 				else {
 					reject(new Error("Invalid master video"));
