@@ -1097,7 +1097,7 @@ Class ("paella.videoFactories.Html5VideoFactory", {
 			}
 			
 			for (var key in streamData.sources) {
-				if (key=='mp4') return true;
+				if (key=='mp4' || key=='mp3') return true;
 			}
 		}
 		catch (e) {}
