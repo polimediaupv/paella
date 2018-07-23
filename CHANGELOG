@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+* Paella 5.3.8
+
+  * HTML5 video factory now allows mp3 sources
+  * The VideoContainer.play() function now returns a rejected promise if the video can't be played
+
 * Paella 5.3.7
 
   * Improvements on HLS plugin

@@ -789,13 +789,23 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 
 	_deferredAction:function(action) {
 		return new Promise((resolve,reject) => {
+			function processResult(actionResult) {
+				if (actionResult instanceof Promise) {
+					actionResult.then((p) => resolve(p))
+						.catch((err) => reject(err));
+				}
+				else {
+					resolve(actionResult);
+				}
+			}
+
 			if (this.ready) {
-				resolve(action());
+				processResult(action());
 			}
 			else {
 				$(this.video).bind('canplay',() => {
 					this._ready = true;
-					resolve(action());
+					processResult(action());
 				});
 			}
 		});
@@ -954,13 +964,13 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 
 	play:function() {
         return this._deferredAction(() => {
-            this.video.play();
+            return this.video.play();
         });
 	},
 
 	pause:function() {
         return this._deferredAction(() => {
-            this.video.pause();
+            return this.video.pause();
         });
 	},
 
@@ -1104,7 +1114,7 @@ Class ("paella.videoFactories.Html5VideoFactory", {
 			}
 			
 			for (var key in streamData.sources) {
-				if (key=='mp4') return true;
+				if (key=='mp4' || key=='mp3') return true;
 			}
 		}
 		catch (e) {}

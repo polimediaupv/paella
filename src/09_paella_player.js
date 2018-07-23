@@ -389,20 +389,27 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	},
 
 	play:function() {
-		if (!this.controls) {
-			this.showPlaybackBar();
-			var urlParamTime = base.parameters.get("time");
-			var hashParamTime = base.hashParams.get("time");
-			var timeString = hashParamTime ? hashParamTime:urlParamTime ? urlParamTime:"0s";
-			var startTime = paella.utils.timeParse.timeToSeconds(timeString);
-			if (startTime) {
-				paella.player.videoContainer.setStartTime(startTime);
-			}
-			paella.events.trigger(paella.events.controlBarLoaded);
-			this.controls.onresize();
-		}
-
-		return this.videoContainer.play();
+		return new Promise((resolve,reject) => {
+			this.videoContainer.play()
+				.then(() => {
+					if (!this.controls) {
+						this.showPlaybackBar();
+						var urlParamTime = base.parameters.get("time");
+						var hashParamTime = base.hashParams.get("time");
+						var timeString = hashParamTime ? hashParamTime:urlParamTime ? urlParamTime:"0s";
+						var startTime = paella.utils.timeParse.timeToSeconds(timeString);
+						if (startTime) {
+							paella.player.videoContainer.setStartTime(startTime);
+						}
+						paella.events.trigger(paella.events.controlBarLoaded);
+						this.controls.onresize();
+					}
+					resolve();
+				})
+				.catch((err) => {
+					reject(err);
+				});
+		});
 	},
 
 	pause:function() {

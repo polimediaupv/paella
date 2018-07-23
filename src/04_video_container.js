@@ -687,7 +687,15 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 				promises.push(player[fnName](...functionArguments));
 			});
 
-			return Promise.all(promises);
+			return new Promise((resolve,reject) => {
+				Promise.all(promises)
+					.then(() => {
+						resolve();
+					})
+					.catch((err) => {
+						reject(err);
+					});
+			});
 		}
 
 		get mainVideoPlayer() {
@@ -782,7 +790,7 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 					})
 					.catch((err) => {
 						reject(err);
-					})
+					});
 			});
 		}
 
