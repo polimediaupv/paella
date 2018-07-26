@@ -901,18 +901,18 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 	},
 
 	disable:function(isMainAudioPlayer) {
-		if (isMainAudioPlayer) return;
-		this._isDisabled = true;
-		this._playState = !this.video.paused;
-		this.video.pause();
+		//if (isMainAudioPlayer) return;
+		//this._isDisabled = true;
+		//this._playState = !this.video.paused;
+		//this.video.pause();
 	},
 
 	enable:function(isMainAudioPlayer) {
-		if (isMainAudioPlayer) return;
-		this._isDisabled = false;
-		if (this._playState) {
-			this.video.play();
-		}
+		//if (isMainAudioPlayer) return;
+		//this._isDisabled = false;
+		//if (this._playState) {
+		//	this.video.play();
+		//}
 	},
 
 	getQualities:function() {
