@@ -22,12 +22,18 @@ new (Class (paella.userTracking.SaverPlugIn, {
 			p = {value: p};
 		}
 		
+		let currentTime = 0;
 		paella.player.videoContainer.currentTime()
-		.then(function(currentTime) {		
+		.then((t) => {
+			currentTime = t;
+			return paella.player.videoContainer.paused();
+		})
+
+		.then((paused) => {
 			var log = {
 				date: new Date(),
 				video: paella.initDelegate.getId(),
-				playing: !paella.player.videoContainer.paused(),
+				playing: !paused,
 				time: parseInt(currentTime + paella.player.videoContainer.trimStart()),
 				event: event,
 				params: p
