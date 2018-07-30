@@ -6,6 +6,7 @@ CHANGELOG
   * Multiple video stream support
   * Video profile plugins
   * Dynamic video profiles
+  * Bug fixed in Elasticsearch plugin
 
 * Paella 5.3.8
 
