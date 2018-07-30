@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 5.3.9
+
+  * Bug fixed in elasticsearch plugin
+  
 * Paella 5.3.8
 
   * HTML5 video factory now allows mp3 sources

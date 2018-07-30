@@ -23,19 +23,24 @@ paella.addPlugin(function() {
 				p = {value: p};
 			}
 			
+			let currentTime = 0;
 			paella.player.videoContainer.currentTime()
-			.then(function(currentTime) {		
-				var log = {
-					date: new Date(),
-					video: paella.initDelegate.getId(),
-					playing: !paella.player.videoContainer.paused(),
-					time: parseInt(currentTime + paella.player.videoContainer.trimStart()),
-					event: event,
-					params: p
-				};		
-				
-				paella.ajax.post({url:this._url+ "/"+ this._index + "/" + this._type + "/", params:JSON.stringify(log) });
-			});
+				.then((t) => {
+					currentTime = t;
+					return paella.player.videoContainer.paused();
+				})
+				.then((paused) => {
+					var log = {
+						date: new Date(),
+						video: paella.initDelegate.getId(),
+						playing: !paused,
+						time: parseInt(currentTime + paella.player.videoContainer.trimStart()),
+						event: event,
+						params: p
+					};		
+					
+					paella.ajax.post({url:this._url+ "/"+ this._index + "/" + this._type + "/", params:JSON.stringify(log) });
+				});
 		}
 	}
 });
