@@ -389,7 +389,7 @@ paella.addPlugin(function() {
 								paella.player.videoContainer.trimming()
 									.then((trimming) => {
 										let offset = trimming.enabled ? trimming.start : 0;
-										paella.player.videoContainer.seekToTime(parseInt(secBegin - offset));
+										paella.player.videoContainer.seekToTime(secBegin - offset + 0.1);
 									});
 						});
 					});
