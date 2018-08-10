@@ -110,7 +110,7 @@ paella.addPlugin(() => {
 							newTime = 0;
 							paella.player.videoContainer.pause();
 						} else {
-							newTime = br.e + (this.config.neverShow ? 0.01 : 0) - trimming.start;
+							newTime = br.e + (this.config.neverShow ? 0.5 : 0) - trimming.start;
 						}
 						paella.player.videoContainer.seekToTime(newTime);
 
@@ -122,7 +122,7 @@ paella.addPlugin(() => {
 							newTime = 0;
 							paella.player.videoContainer.pause();
 						} else {
-							newTime = br.e + (this.config.neverShow ? 0.01 : 0);
+							newTime = br.e + (this.config.neverShow ? 0.5 : 0);
 						}
 						paella.player.videoContainer.seekToTime(newTime);
 					});
