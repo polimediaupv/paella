@@ -345,19 +345,19 @@ paella.addPlugin(function() {
 				$(editor).hide();
 				$(thisClass._select).width('47%');
 			}
-	
+
 			if(!thisClass._searchOnCaptions){
 				if(res){$(thisClass._select).width('92%');}
 				else{$(thisClass._select).width('100%');}
 			 }
 		}
-	
+
 		buildBodyContent(obj,type) {
-			var thisClass = this;
-			$(thisClass._body).empty();
-			obj.forEach(function(l){
-				paella.player.videoContainer.trimming()
-					.then((trimming)=>{
+			paella.player.videoContainer.trimming()
+				.then((trimming)=>{
+					var thisClass = this;
+					$(thisClass._body).empty();
+					obj.forEach(function(l){
 						if(trimming.enabled && (l.end<trimming.start || l.begin>trimming.end)){
 							return;
 						}
@@ -389,7 +389,7 @@ paella.addPlugin(function() {
 								paella.player.videoContainer.trimming()
 									.then((trimming) => {
 										let offset = trimming.enabled ? trimming.start : 0;
-										paella.player.videoContainer.seekToTime(parseInt(secBegin - offset));
+										paella.player.videoContainer.seekToTime(secBegin - offset + 0.1);
 									});
 						});
 					});
