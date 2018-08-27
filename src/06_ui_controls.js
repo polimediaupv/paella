@@ -482,6 +482,8 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 	},
 
 	onresize:function() {
+		let playbackBar = $("#playerContainer_controls_playback_playbackBar");
+		this.getCanvas().width = playbackBar.width();
 		this.drawTimeMarks();
 	}
 });

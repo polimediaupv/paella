@@ -53,7 +53,13 @@ Class ("paella.HLSPlayer", paella.Html5Video,{
 									if (console && console.log) console.log(`HLS: quality level changed to ${ data.level }`);
 								});
 								
-								This._hls.on(Hls.Events.ERROR, function (event, data) {
+							    This._hls.on(Hls.Events.ERROR, function (event, data) {
+									//deal with nonfatal media errors that might come from redirects after session expiration
+									if (data.type == Hls.ErrorTypes.MEDIA_ERROR) {
+											This._hls.destroy();
+											base.log.error("paella.HLSPlayer: Encountered invalid media file");
+											reject(new Error("invalid media"));
+									}
 									if (data.fatal) {
 										switch(data.type) {
 										case Hls.ErrorTypes.NETWORK_ERROR:
