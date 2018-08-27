@@ -947,13 +947,13 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 
 	play:function() {
         return this._deferredAction(() => {
-            this.video.play();
+            return this.video.play();
         });
 	},
 
 	pause:function() {
         return this._deferredAction(() => {
-            this.video.pause();
+            return this.video.pause();
         });
 	},
 
