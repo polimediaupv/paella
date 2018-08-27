@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+* Paella 5.3.10
+
+  * Change width of PlaybackBar on resize (fixes #339)
+  * Return play and pause promise (fixes #341)
+  * Fix search when video is trimmed (fixes #351)
+  * Fix seek to incorrect caption and duplicated captions (fixes #353 and #354)
+  * Fix loop when seek throught a break in Safari for iOS (fixes #356)
+  * HLS plugin: handle nonfatal media errors
+
 * Paella 5.3.9
 
   * Bug fixed in elasticsearch plugin
