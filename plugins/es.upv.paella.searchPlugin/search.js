@@ -19,6 +19,7 @@ paella.addPlugin(function() {
 			this._searchTimer = null;
 			this._searchTimerTime = 1500;
 			this._searchBody = null;
+			this._trimming = null;
 			onSuccess(true);
 		}
 
@@ -43,6 +44,10 @@ paella.addPlugin(function() {
 			self._sortDefault = self.config.sortType || "time";
 			
 			paella.events.bind(paella.events.controlBarWillHide, function(evt) { if(self._open)paella.player.controls.cancelHideBar(); });
+			paella.player.videoContainer.trimming()
+				.then((trimData) => {
+					self._trimming = trimData;
+				});
 		}
 
 		prettyTime(seconds){
@@ -130,7 +135,9 @@ paella.addPlugin(function() {
 				}
 				else {
 					for(var i=0; i<results.length; i++){ // FILL THE BODY CONTAINER WITH RESULTS
-
+						if (thisClass._trimming.enabled && results[i].time <= thisClass._trimming.start){
+							continue;
+						}
 						//SEARCH SORT TYPE (TIME oR SCoRE)
 						if(thisClass._sortDefault == 'score') {
 							results.sort(function(a,b){
@@ -165,7 +172,8 @@ paella.addPlugin(function() {
 						
 						var sBodyText = document.createElement('p');
 						sBodyText.className = 'sBodyText';
-						sBodyText.innerHTML = "<span class='timeSpan'>"+thisClass.prettyTime(results[i].time)+"</span>"+results[i].content;
+						let time = thisClass._trimming.enabled ? results[i].time - thisClass._trimming.start : results[i].time;
+						sBodyText.innerHTML = "<span class='timeSpan'>"+thisClass.prettyTime(time)+"</span>"+results[i].content;
 
 
 						TimePicContainer.appendChild(sBodyPicture);
@@ -177,7 +185,7 @@ paella.addPlugin(function() {
 
 						searchBody.appendChild(sBodyInnerContainer);
 						//ADD SECS TO DOM FOR EASY HANDLE
-						sBodyInnerContainer.setAttribute('sec',results[i].time);
+						sBodyInnerContainer.setAttribute('sec', time);
 
 						//jQuery Binds for the search
 						$(sBodyInnerContainer).hover(
@@ -191,7 +199,7 @@ paella.addPlugin(function() {
 
 						$(sBodyInnerContainer).click(function(){ 
 							var sec = $(this).attr("sec");
-							paella.player.videoContainer.seekToTime(sec);
+							paella.player.videoContainer.seekToTime(parseInt(sec));
 							paella.player.play();
 						});
 					}
