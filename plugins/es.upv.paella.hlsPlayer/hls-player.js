@@ -203,7 +203,7 @@ Class ("paella.videoFactories.HLSVideoFactory", {
 		}
 		try {
 			if (paella.videoFactories.HLSVideoFactory.s_instances>0 && 
-				base.userAgent.system.iOS)
+				base.userAgent.system.iOS && paella.utils.userAgent.system.Version.major<=10)
 		//	In old iOS devices, playing more than one HLS stream may cause that the browser tab crash
 		//		&& (paella.utils.userAgent.system.Version.major<=10 && paella.utils.userAgent.system.Version.minor<3))
 			{
