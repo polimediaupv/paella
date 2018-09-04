@@ -66,7 +66,7 @@
             if (!logoNode) {
                 style = {};
                 logoNode = this.container.addNode(new paella.DomNode('img',logoId,style));
-                logoNode.domElement.setAttribute(`${paella.utils.folders.get("resources")}/style/${logo.content}`);
+                logoNode.domElement.setAttribute('src', `${paella.utils.folders.get("resources")}/style/${logo.content}`);
             }
             else {
                 $(logoNode.domElement).show();
