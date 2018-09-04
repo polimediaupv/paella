@@ -34,7 +34,7 @@
         hideBackground.apply(this);
         this.backgroundData = bkgData;
         let style = {
-            backgroundImage: `url(${ paella.baseUrl }/resources/style/${ bkgData.content })`,
+            backgroundImage: `url(${paella.utils.folders.get("resources")}/style/${ bkgData.content })`,
             backgroundSize: "100% 100%",
             zIndex: bkgData.layer,
             position: 'absolute',
@@ -66,7 +66,7 @@
             if (!logoNode) {
                 style = {};
                 logoNode = this.container.addNode(new paella.DomNode('img',logoId,style));
-                logoNode.domElement.setAttribute('src', paella.baseUrl + '/resources/style/' + logo.content);
+                logoNode.domElement.setAttribute(`${paella.utils.folders.get("resources")}/style/${logo.content}`);
             }
             else {
                 $(logoNode.domElement).show();
@@ -110,7 +110,7 @@
                     height:percentHeight,
                     position:'absolute',
                     zIndex:btn.layer,
-                    backgroundImage: `url(${ url }/resources/style/${ btn.icon })`,
+                    backgroundImage: `url(${paella.utils.folders.get("resources")}/style/${ btn.icon })`,
                     backgroundSize: '100% 100%',
                     display: 'block'
                 };
