@@ -444,6 +444,5 @@ function initPaellaEngage(playerId,initDelegate) {
 		initDelegate = new paella.InitDelegate();
 	}
 	paella.initDelegate = initDelegate;
-	var lang = navigator.language || window.navigator.userLanguage;
 	paellaPlayer = new PaellaPlayer(playerId,paella.initDelegate);
 }
