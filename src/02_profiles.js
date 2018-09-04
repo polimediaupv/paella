@@ -153,7 +153,7 @@
         if (animate==undefined) animate = true;
         let getProfile = (content) => {
             let result = null;
-            profileData.videos.some((videoProfile) => {
+            profileData && profileData.videos.some((videoProfile) => {
                 if (videoProfile.content==content) {
                     result = videoProfile;
                 }
@@ -190,13 +190,13 @@
             }
         };
         
-        profileData.onApply();
+        profileData && profileData.onApply();
         hideAllLogos.apply(this);
-        showLogos.apply(this,[profileData.logos]);
+        profileData && showLogos.apply(this,[profileData.logos]);
         hideBackground.apply(this);
-        showBackground.apply(this,[profileData.background]);
+        profileData && showBackground.apply(this,[profileData.background]);
         hideButtons.apply(this);
-        showButtons.apply(this,[profileData.buttons, profileData]);
+        profileData && showButtons.apply(this,[profileData.buttons, profileData]);
         this.streamProvider.videoStreams.forEach((streamData,index) => {
             let profile = getProfile(streamData.content);
             let player = this.streamProvider.videoPlayers[index];
@@ -207,7 +207,7 @@
                         applyVideoRect(profile,data,videoWrapper,player);
                     });
             }
-            else {
+            else if (videoWrapper) {
                 videoWrapper.setVisible(false,animate);
                 if (paella.player.videoContainer.streamProvider.mainAudioPlayer!=player) {
                     player.disable();

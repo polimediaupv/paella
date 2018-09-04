@@ -652,7 +652,8 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		}
 
 		get videoStreams() {
-			return this._videoData;
+			//return this._videoData;
+			return this._videoStreams;
 		}
 
 		
@@ -775,7 +776,7 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 			this.setProfileFrameStrategy(paella.ProfileFrameStrategy.Factory());
 			this.setVideoQualityStrategy(paella.VideoQualityStrategy.Factory());
 
-			this._audioLanguage = paella.dictionary.currentLanguage();
+			this._audioTag = paella.dictionary.currentLanguage();
 			this._audioPlayer = null;
 			this._volume = 1;
 		}
@@ -950,34 +951,34 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 			return this.streamProvider.mainVideoPlayer.getCurrentQuality();
 		}
 
-		// Audio language functions
-		get audioLanguage() {
-			return this._audioLanguage;
+		// Current audio functions
+		get audioTag() {
+			return this._audioTag;
 		}
 
 		get audioPlayer() {
 			return this._audioPlayer;
 		}
 
-		getAudioLanguages() {
+		getAudioTags() {
 			return new Promise((resolve) => {
 				let lang = [];
 				let p = this.streamProvider.players;
 				p.forEach((player) => {
-					if (player.stream.language) {
-						lang.push(player.stream.language);
+					if (player.stream.audioTag) {
+						lang.push(player.stream.audioTag);
 					}
 				})
 				resolve(lang);
 			})
 		}
 
-		setAudioLanguage(lang) {
+		setAudioTag(lang) {
 			return new Promise((resolve) => {
 				let audioSet = false;
 				let promises = [];
 				this.streamProvider.players.forEach((player) => {
-					if (!audioSet && player.stream.language==lang) {
+					if (!audioSet && player.stream.audioTag==lang) {
 						audioSet = true;
 						this._audioPlayer = player;
 					}
@@ -993,8 +994,8 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 				})
 
 				.then(() => {
-					this._audioLanguage = this._audioPlayer.stream.language;
-					paella.events.trigger(paella.events.audioLanguageChanged);
+					this._audioTag = this._audioPlayer.stream.audioTag;
+					paella.events.trigger(paella.events.audioTagChanged);
 					resolve();
 				});
 			})
@@ -1051,7 +1052,7 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 
 				this.streamProvider.loadVideos()
 					.then(() => {
-						return this.setAudioLanguage(this.audioLanguage);
+						return this.setAudioTag(this.audioTag);
 					})
 
 					.then(() => {

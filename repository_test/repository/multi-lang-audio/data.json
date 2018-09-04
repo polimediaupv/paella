@@ -18,7 +18,8 @@
 				]
 			},
 			"preview": "",
-			"type":"video"
+			"type":"video",
+			"content": "presenter"
 		},
 		{
 			"sources": {
@@ -30,7 +31,7 @@
 			},
 			"preview":"",
 			"type":"audio",
-			"language":"es"
+			"audioTag":"es"
 		},
         {
 			"sources": {
@@ -42,7 +43,7 @@
 			},
 			"preview":"",
 			"type":"audio",
-			"language":"en"
+			"audioTag":"en"
 		}
 	],
 	"frameList": [
