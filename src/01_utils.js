@@ -470,30 +470,22 @@ Class ("paella.MessageBox", {
 
 	showFrame:function(src,params) {
 		var closeButton = true;
-		var width = "80%";
-		var height = "80%";
 		var onClose = null;
 		if (params) {
 			closeButton = params.closeButton;
-			width = params.width;
-			height = params.height;
 			onClose = params.onClose;
 		}
 
-		this.doShowFrame(src,closeButton,width,height,onClose);
+		this.doShowFrame(src,closeButton,onClose);
 	},
 
-	doShowFrame:function(src,closeButton,width,height,onClose) {
+	doShowFrame:function(src,closeButton,onClose) {
 		this.onClose = onClose;
 		$('#playerContainer').addClass("modalVisible");
 
 		if (this.currentMessageBox) {
 			this.close();
 		}
-
-		if (!width) { width = '80%'; }
-
-		if (!height) { height = '80%'; }
 
 		var modalContainer = document.createElement('div');
 		modalContainer.className = this.modalContainerClassName;
@@ -506,9 +498,6 @@ Class ("paella.MessageBox", {
 
 		var messageContainer = document.createElement('div');
 		messageContainer.className = this.frameClassName;
-		messageContainer.style.width = width;
-		messageContainer.style.height = height;
-		messageContainer.style.position = 'relative';
 		modalContainer.appendChild(messageContainer);
 
 		var iframeContainer = document.createElement('iframe');
@@ -536,39 +525,31 @@ Class ("paella.MessageBox", {
 
 	showElement:function(domElement,params) {
 		var closeButton = true;
-		var width = "60%";
-		var height = "40%";
 		var onClose = null;
 		var className = this.messageClassName;
 		if (params) {
 			className = params.className;
 			closeButton = params.closeButton;
-			width = params.width;
-			height = params.height;
 			onClose = params.onClose;
 		}
 
-		this.doShowElement(domElement,closeButton,width,height,className,onClose);
+		this.doShowElement(domElement,closeButton,className,onClose);
 	},
 
 	showMessage:function(message,params) {
 		var closeButton = true;
-		var width = "60%";
-		var height = "40%";
 		var onClose = null;
 		var className = this.messageClassName;
 		if (params) {
 			className = params.className;
 			closeButton = params.closeButton;
-			width = params.width;
-			height = params.height;
 			onClose = params.onClose;
 		}
 
-		this.doShowMessage(message,closeButton,width,height,className,onClose);
+		this.doShowMessage(message,closeButton,className,onClose);
 	},
 
-	doShowElement:function(domElement,closeButton,width,height,className,onClose) {
+	doShowElement:function(domElement,closeButton,className,onClose) {
 		this.onClose = onClose;
 		$('#playerContainer').addClass("modalVisible");
 
@@ -576,10 +557,6 @@ Class ("paella.MessageBox", {
 			this.close();
 		}
 		if (!className) className = this.messageClassName;
-
-		if (!width) { width = '80%'; }
-
-		if (!height) { height = '30%'; }
 
 		var modalContainer = document.createElement('div');
 		modalContainer.className = this.modalContainerClassName;
@@ -592,9 +569,6 @@ Class ("paella.MessageBox", {
 
 		var messageContainer = document.createElement('div');
 		messageContainer.className = className;
-		messageContainer.style.width = width;
-		messageContainer.style.height = height;
-		messageContainer.style.position = 'relative';
 		messageContainer.appendChild(domElement);
 		modalContainer.appendChild(messageContainer);
 
@@ -610,7 +584,7 @@ Class ("paella.MessageBox", {
 		}
 	},
 
-	doShowMessage:function(message,closeButton,width,height,className,onClose) {
+	doShowMessage:function(message,closeButton,className,onClose) {
 		this.onClose = onClose;
 		$('#playerContainer').addClass("modalVisible");
 
@@ -618,10 +592,6 @@ Class ("paella.MessageBox", {
 			this.close();
 		}
 		if (!className) className = this.messageClassName;
-
-		if (!width) { width = '80%'; }
-
-		if (!height) { height = '30%'; }
 
 		var modalContainer = document.createElement('div');
 		modalContainer.className = this.modalContainerClassName;
@@ -634,9 +604,6 @@ Class ("paella.MessageBox", {
 
 		var messageContainer = document.createElement('div');
 		messageContainer.className = className;
-		messageContainer.style.width = width;
-		messageContainer.style.height = height;
-		messageContainer.style.position = 'relative';
 		messageContainer.innerHTML = message;
 		modalContainer.appendChild(messageContainer);
 
@@ -658,21 +625,17 @@ Class ("paella.MessageBox", {
 
 	showError:function(message,params) {
 		var closeButton = false;
-		var width = "60%";
-		var height = "20%";
 		var onClose = null;
 		if (params) {
 			closeButton = params.closeButton;
-			width = params.width;
-			height = params.height;
 			onClose = params.onClose;
 		}
 
-		this.doShowError(message,closeButton,width,height,onClose);
+		this.doShowError(message,closeButton,onClose);
 	},
 
-	doShowError:function(message,closeButton,width,height,onClose) {
-		this.doShowMessage(message,closeButton,width,height,this.errorClassName,onClose);
+	doShowError:function(message,closeButton,onClose) {
+		this.doShowMessage(message,closeButton,this.errorClassName,onClose);
 	},
 
 	createCloseButton:function() {
