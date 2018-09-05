@@ -36,7 +36,7 @@ paella.addPlugin(function() {
 
 		getItemButton(lang) {
 			var elem = document.createElement('div');
-			let currentTag = paella.player.videoContainer.streamProvider.mainAudioPlayer.stream.audioTag;
+			let currentTag = paella.player.videoContainer.audioTag;
 			let label = paella.dictionary.translate(lang);
 			elem.className = this.getButtonItemClass(label,lang==currentTag);
 			elem.id = "audioTagSelectorItem_" + lang;
