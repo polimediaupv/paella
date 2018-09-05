@@ -37,7 +37,14 @@ paella.setMonostreamProfile(() => {
 paella.addProfile(() => {
     return new Promise((resolve,reject) => {
         paella.events.bind(paella.events.videoReady,() => {
-            if (paella.player.videoContainer.streamProvider.videoPlayers.length<3) {
+            let streamCount = 0;
+            let validContent = ["presenter","presentation","presenter-2"]
+            paella.player.videoContainer.streamProvider.videoStreams.forEach((v) => {
+                if (validContent.indexOf(v.content)!=-1) {
+                    streamCount++
+                }
+            })
+            if (streamCount<3) {
                 resolve(null);
             }
             else {
@@ -132,6 +139,68 @@ paella.addProfile(() => {
                     blackBoardImages: {left:10,top:325,width:432,height:324},
                     background: {content:"slide_professor_paella.jpg",zIndex:5,rect: { left:0,top:0,width:1280,height:720},visible: true,layer:0},
                     logos: [{content:"paella_logo.png",zIndex:5,rect: { top:10,left:10,width:49,height:42}}]
+                });
+            }
+        });
+    })
+});
+
+paella.addProfile(() => {
+    return new Promise((resolve,reject) => {
+        paella.events.bind(paella.events.videoReady,() => {
+            let available = paella.player.videoContainer.streamProvider.videoStreams.some((v) => v.content=="blackboard")
+			if(!available) {
+                resolve(null);
+            }
+            else {
+                resolve({
+                    id:"blackboard_video_stream",
+                    name:{es:"Pizarra"},
+                    hidden:false,
+                    icon:"s_p_blackboard.svg",
+                    videos: [
+                        {
+                            content: "presentation",
+                            rect:[
+                            {aspectRatio:"16/9",left:10,top:70,width:432,height:243}],
+                            visible:true,
+                            layer:1
+                        },
+                        {
+                            content:"blackboard",
+                            rect:[{aspectRatio:"16/9",left:450,top:135,width:816,height:459}],
+                            visible:true,
+                            layer:1
+                        },
+                        {
+                            content:"presenter",
+                            rect:[{aspectRatio:"16/9",left:10,top:325,width:432,height:324}],
+                            visible:true,
+                            layer:1
+
+                        }
+                    ],
+                    //blackBoardImages: {left:10,top:325,width:432,height:324},
+                    background: {content:"slide_professor_paella.jpg",zIndex:5,rect: { left:0,top:0,width:1280,height:720},visible: true,layer:0},
+                    logos: [{content:"paella_logo.png",zIndex:5,rect: { top:10,left:10,width:49,height:42}}],
+                    buttons: [
+                        {
+                            rect: { left: 422, top: 295, width: 45, height: 45 },
+                            onClick: function(event) { this.rotate(); },
+                            label:"Rotate",
+                            icon:"icon_rotate.svg",
+                            layer: 2
+                        }
+                    ],
+                    rotate: function() {
+                        let v0 = this.videos[0].content;
+                        let v1 = this.videos[1].content;
+                        let v2 = this.videos[2].content;
+                        this.videos[0].content = v2;
+                        this.videos[1].content = v0;
+                        this.videos[2].content = v1;
+                        paella.profiles.placeVideos();
+                    }
                 });
             }
         });

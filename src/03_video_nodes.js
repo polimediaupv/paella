@@ -1224,9 +1224,9 @@ Class ("paella.ImageVideo", paella.VideoElementBase,{
 
 	// Initialization functions
 
-	allowZoom:function() {
+	/*allowZoom:function() {
 		return false;
-	},
+	},*/
 
 	getVideoData:function() {
 		let This = this;
