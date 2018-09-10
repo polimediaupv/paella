@@ -213,6 +213,16 @@ paella.addDataDelegate("cameraTrack",() => {
                             this.targetPlayer.allowZoom());
             }
 
+            setup() {
+                console.log(this.config)
+                if (this.config.autoModeByDefault) {
+                    this.zoomAuto()
+                }
+                else {
+                    this.resetZoom()
+                }
+            }
+
             buildContent(domElement) {
                 this.changeIconClass("icon-mini-zoom-in");
                 g_track4kPlugin.updateTrackingStatus = () => {
@@ -269,12 +279,12 @@ paella.addDataDelegate("cameraTrack",() => {
             resetZoom() {
               g_track4kPlugin.enabled = false;
               this.targetPlayer.setZoom(100,0,0,500);
-              g_track4kPlugin.updateTrackingStatus();
+              if (g_track4kPlugin.updateTrackingStatus) g_track4kPlugin.updateTrackingStatus();
             }
 
             zoomAuto() {
               g_track4kPlugin.enabled = ! g_track4kPlugin.enabled;
-              g_track4kPlugin.updateTrackingStatus();
+              if (g_track4kPlugin.updateTrackingStatus) g_track4kPlugin.updateTrackingStatus();
             }
         };
     });
