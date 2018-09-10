@@ -322,8 +322,8 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 	},
 
 	play:function() {
-		paella.events.trigger(paella.events.play);
 		this.startTimeupdate();
+		setTimeout(() => paella.events.trigger(paella.events.play), 50)
 	},
 
 	pause:function() {
