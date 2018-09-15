@@ -9,7 +9,6 @@ const	gulp = require('gulp'),
 		fs = require('fs'),
 		minify = require('gulp-minify'),
 		uglify = require('gulp-uglify-es').default,
-		flatten = require('gulp-flatten'),
 		path = require('path'),
 
 		exec = require('child_process').execSync,
@@ -220,9 +219,10 @@ gulp.task("dictionary", function(cb) {
 			`localization/**${lang}**.json`,
 			`plugins/**/localization/${lang}**.json`
 			])
-			.pipe(merge(`paella_${lang}.json`))
+			.pipe(merge({fileName:`paella_${lang}.json`}))
 			.pipe(gulp.dest(`${config.outDir}player/localization`)));		
 	});
+
 	return Promise.all(p);
 });
 
