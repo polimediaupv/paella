@@ -3,7 +3,7 @@
 In this section we are going to introduce the main concepts about Paella Player for developers, to understand and develop features for Paella Player.
 
 
-## Plugins.
+## Plugins
 
 How they works, and how to make a new one.
 
