@@ -95,7 +95,10 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 	goFullScreen: function() {
 		if (!this.isFullScreen()) {
-			if (base.userAgent.system.iOS) {
+			if (base.userAgent.system.iOS &&
+				(paella.utils.userAgent.browser.Version.major<12 ||
+				 !paella.utils.userAgent.system.iPad))
+			{
 				paella.player.videoContainer.masterVideo().goFullScreen();
 			}
 			else {			
