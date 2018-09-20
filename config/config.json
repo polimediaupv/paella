@@ -129,6 +129,7 @@
       "es.upv.paella.captions.DFXPParserPlugin": {"enabled":true},
       "es.teltek.paella.captions.WebVTTParserPlugin": {"enabled":true},
 
+
       "//****": "Search Service Plugins",
       "es.upv.paella.search.captionsSearchPlugin": {"enabled":true},
       "es.upv.paella.frameCaptionsSearchPlugin": {"enabled":true},
@@ -148,8 +149,8 @@
 
     }
   },
-    "standalone" : {
-        "repository": "../repository/"
+  "standalone" : {
+    "repository": "../repository/"
   },
   "skin": {
     "available": [
