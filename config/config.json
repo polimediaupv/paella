@@ -124,6 +124,13 @@
       "es.upv.paella.zoomPlugin": {"enabled": false},
       "es.upv.paella.windowTitlePlugin": {"enabled": true},
       "es.upv.paella.track4kPlugin": { "enabled":true },
+      "es.upv.paella.tripleStreamProfilePlugin": {
+        "enabled": true,
+        "videoSets": [
+          { "icon":"three_streams_icon.svg", "content":["presenter","presentation","presenter-2"] },
+          { "icon":"three_streams_icon.svg", "content":["presenter","presentation","presenter-3"] }
+        ]
+      },
 
       "//****": "Captions Parser Plugins",
       "es.upv.paella.captions.DFXPParserPlugin": {"enabled":true},

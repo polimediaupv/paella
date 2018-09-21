@@ -34,78 +34,94 @@ paella.setMonostreamProfile(() => {
     });
 });
 
-paella.addProfile(() => {
-    return new Promise((resolve,reject) => {
-        paella.events.bind(paella.events.videoReady,() => {
-            let streamCount = 0;
-            let validContent = ["presenter","presentation","presenter-2"]
-            paella.player.videoContainer.streamProvider.videoStreams.forEach((v) => {
-                if (validContent.indexOf(v.content)!=-1) {
-                    streamCount++
+
+
+paella.addPlugin(function() {
+	return class TripleStreamProfilePlugin extends paella.EventDrivenPlugin {
+		
+		getName() {
+			return "es.upv.paella.tripleStreamProfilePlugin";
+		}
+		
+		checkEnabled(onSuccess) {
+            let config = this.config;
+            let enabled = false
+            config.videoSets.forEach((videoSet,index) => {
+                let validContent = videoSet.content
+                if (validContent.length==3) {
+                    let streamCount = 0;
+                    paella.player.videoContainer.streamProvider.videoStreams.forEach((v) => {
+                        if (validContent.indexOf(v.content)!=-1) {
+                            streamCount++
+                        }
+                    })
+                    if (streamCount>=3) {
+                        enabled = true
+                        paella.addProfile(() => {
+                            return new Promise((resolve,reject) => {
+                                resolve({
+                                    id:"dynamic_triple_stream_" + index,
+                                    name:{es:"Tres streams posición dinámica"},
+                                    hidden:false,
+                                    icon:videoSet.icon,
+                                    videos: [
+                                        {
+                                            content: validContent[0],
+                                            rect:[
+                                                { aspectRatio:"16/9",left:239, top:17, width:803, height:451 }
+                                            ],
+                                            visible:true,
+                                            layer:1
+                                        },
+                                        {
+                                            content:  validContent[1],
+                                            rect:[
+                                                { aspectRatio:"16/9",left:44, top:482, width:389, height:218 }
+                                            ],
+                                            visible:true,
+                                            layer:1
+                                        },
+                                        {
+                                            content:  validContent[2],
+                                            rect:[
+                                                { aspectRatio:"16/9",left:847, top:482, width:389, height:218 }
+                                            ],
+                                            visible:true,
+                                            layer:1
+                                        }
+                                    ],
+                                    background: {content:"slide_professor_paella.jpg",zIndex:5,rect: { left:0,top:0,width:1280,height:720},visible: true,layer:0},
+                                    logos: [{content:"paella_logo.png",zIndex:5,rect: { top:10,left:10,width:49,height:42}}],
+                                    buttons: [
+                                        {
+                                            rect: { left: 618, top: 495, width: 45, height: 45 },
+                                            onClick: function(event) { this.rotate(); },
+                                            label:"Rotate",
+                                            icon:"icon_rotate.svg",
+                                            layer: 2
+                                        }
+                                    ],
+                                    onApply: function() {
+                                    },
+                                    rotate: function() {
+                                        let v0 = this.videos[0].content;
+                                        let v1 = this.videos[1].content;
+                                        let v2 = this.videos[2].content;
+                                        this.videos[0].content = v2;
+                                        this.videos[1].content = v0;
+                                        this.videos[2].content = v1;
+                                        paella.profiles.placeVideos();
+                                    }
+                                })
+                            })
+                        });
+                    }
                 }
             })
-            if (streamCount<3) {
-                resolve(null);
-            }
-            else {
-                resolve({
-                    id:"dynamic_triple_stream",
-                    name:{es:"Tres streams posición dinámica"},
-                    hidden:false,
-                    icon:"three_streams_icon.svg",
-                    videos: [
-                        {
-                            content: "presenter",
-                            rect:[
-                                { aspectRatio:"16/9",left:239, top:17, width:803, height:451 }
-                            ],
-                            visible:true,
-                            layer:1
-                        },
-                        {
-                            content: "presentation",
-                            rect:[
-                                { aspectRatio:"16/9",left:44, top:482, width:389, height:218 }
-                            ],
-                            visible:true,
-                            layer:1
-                        },
-                        {
-                            content: "presenter-2",
-                            rect:[
-                                { aspectRatio:"16/9",left:847, top:482, width:389, height:218 }
-                            ],
-                            visible:true,
-                            layer:1
-                        }
-                    ],
-                    background: {content:"slide_professor_paella.jpg",zIndex:5,rect: { left:0,top:0,width:1280,height:720},visible: true,layer:0},
-                    logos: [{content:"paella_logo.png",zIndex:5,rect: { top:10,left:10,width:49,height:42}}],
-                    buttons: [
-                        {
-                            rect: { left: 618, top: 495, width: 45, height: 45 },
-                            onClick: function(event) { this.rotate(); },
-                            label:"Rotate",
-                            icon:"icon_rotate.svg",
-                            layer: 2
-                        }
-                    ],
-                    onApply: function() {
-                    },
-                    rotate: function() {
-                        let v0 = this.videos[0].content;
-                        let v1 = this.videos[1].content;
-                        let v2 = this.videos[2].content;
-                        this.videos[0].content = v2;
-                        this.videos[1].content = v0;
-                        this.videos[2].content = v1;
-                        paella.profiles.placeVideos();
-                    }
-                })
-            }
-        })
-    })
+        }
+	};
 });
+
 
 paella.addProfile(() => {
     return new Promise((resolve,reject) => {
