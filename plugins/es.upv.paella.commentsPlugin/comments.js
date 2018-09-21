@@ -271,7 +271,7 @@ paella.addPlugin(function() {
 			divCommentValue.className = "comments_entry_comment";
 			divCommentContainer.appendChild(divCommentValue);		
 			
-			divCommentValue.innerHTML = comment["value"];
+			divCommentValue.innerHTML = escape(comment["value"]);
 			
 			var divCommentReply = document.createElement('div');
 			divCommentReply.id = rootID+"_comment_reply";
@@ -355,7 +355,7 @@ paella.addPlugin(function() {
 			divCommentValue.className = "comments_entry_comment";
 			divCommentContainer.appendChild(divCommentValue);		
 			
-			divCommentValue.innerHTML = comment["value"];
+			divCommentValue.innerHTML = escape(comment["value"]);
 			
 			paella.data.read('userInfo',{username:comment["userName"]}, function(data,status) {
 				if (data) {

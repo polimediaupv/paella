@@ -512,7 +512,7 @@
 		},
 		
 		setText:function(text) {
-			this.container.innerHTML = '<span class="button-text">' + text + '</span>';
+			this.container.innerHTML = '<span class="button-text">' + escape(text) + '</span>';
 			if (this._i) {
 				this.container.appendChild(this._i);
 			}
@@ -586,7 +586,7 @@
 		var elem = document.createElement('div');
 		elem.className = plugin.getClassName();
 		elem.id = id;
-		elem.innerHTML = '<span class="button-text">' + plugin.getText() + '</span>';
+		elem.innerHTML = '<span class="button-text">' + escape(plugin.getText()) + '</span>';
 		elem.setAttribute("tabindex", 1000+plugin.getIndex());
 		elem.setAttribute("alt", "");
 		elem.setAttribute("role", "button");

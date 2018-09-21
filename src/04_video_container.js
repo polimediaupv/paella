@@ -60,7 +60,7 @@ Class ("paella.VideoOverlay", paella.DomNode,{
 
 	addText:function(text,rect,isDebug) {
 		var textElem = document.createElement('div');
-		textElem.innerHTML = text;
+		textElem.innerText = text;
 		textElem.className = "videoOverlayText";
 		if (isDebug) textElem.style.backgroundColor = "red";
 		return this.addElement(textElem,rect);

@@ -53,7 +53,7 @@ paella.addPlugin(function() {
 	
 			var element = document.createElement("div");
 			element.className = 'videoLoadTest';
-			element.innerHTML = message;
+			element.innerHTML = escape(message);
 	
 			element.appendChild(button);
 			root.appendChild(element);
