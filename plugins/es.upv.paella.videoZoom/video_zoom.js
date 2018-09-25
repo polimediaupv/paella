@@ -183,7 +183,7 @@ paella.addPlugin(function() {
                                     paella.player.config.player.videoZoom &&
                                     paella.player.config.player.videoZoom.minWindowSize) || 600; }
         getName() { return "es.upv.paella.videoZoomToolbarPlugin"; }
-        getDefaultToolTip() { return base.dictionary.translate("Change theme"); }
+        getDefaultToolTip() { return base.dictionary.translate("Set video zoom"); }
         getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
 
         checkEnabled(onSuccess) {
