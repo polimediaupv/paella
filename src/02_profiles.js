@@ -220,6 +220,14 @@
         constructor() {
             paella.events.bind(paella.events.controlBarDidHide, () => this.hideButtons());
             paella.events.bind(paella.events.controlBarDidShow, () => this.showButtons());
+
+            paella.events.bind(paella.events.profileListChanged, () => {
+                if (paella.player && paella.player.videoContainer && 
+                    (!this.currentProfile || this.currentProfileName!=this.currentProfile.id))
+                {
+                    this.setProfile(this.currentProfileName,false);
+                }
+            })
         }
 
         get profileList() { return g_profiles; }
@@ -265,7 +273,7 @@
                 return true;
             }
             else {
-                let profileData = this.loadProfile(profileName);
+                let profileData = this.loadProfile(profileName) || (g_profiles.length>0 && g_profiles[0]);
                 this._currentProfileName = profileName;
                 applyProfileWithJson.apply(paella.player.videoContainer,[profileData,animate]);
                 return true;
