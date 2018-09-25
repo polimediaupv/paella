@@ -174,8 +174,8 @@
       "es.upv.paella.defaultKeysPlugin": {"enabled": true }
     }
   },
-    "standalone" : {
-        "repository": "../repository/"
+  "standalone" : {
+    "repository": "../repository/"
   },
   "skin": {
     "available": [
