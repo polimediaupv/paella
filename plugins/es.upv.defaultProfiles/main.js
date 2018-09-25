@@ -42,7 +42,6 @@ paella.addPlugin(function() {
 
         checkEnabled(onSuccess) {
             let config = this.config;
-            let enabled = false
             config.videoSets.forEach((videoSet,index) => {
                 let validContent = videoSet.content
                 if (validContent.length==1) {
@@ -53,7 +52,7 @@ paella.addPlugin(function() {
                         }
                     })
                     if (streamCount>=1) {
-                        enabled = true
+                        onSuccess(true);
                         paella.addProfile(() => {
                             return new Promise((resolve,reject) => {
                                 resolve({
@@ -94,6 +93,9 @@ paella.addPlugin(function() {
                             })
                         });
                     }
+                    else {
+                        onSuccess(false)
+                    }
                 }
             })
         }
@@ -109,7 +111,6 @@ paella.addPlugin(function() {
 		
 		checkEnabled(onSuccess) {
             let config = this.config;
-            let enabled = false
             config.videoSets.forEach((videoSet,index) => {
                 let validContent = videoSet.content
                 if (validContent.length==2) {
@@ -120,7 +121,7 @@ paella.addPlugin(function() {
                         }
                     })
                     if (streamCount>=2) {
-                        enabled = true
+                        onSuccess(true)
                         paella.addProfile(() => {
                             return new Promise((resolve,reject) => {
                                 resolve({
@@ -276,6 +277,9 @@ paella.addPlugin(function() {
                             })
                         });
                     }
+                    else {
+                        onSuccess(false);
+                    }
                 }
             })
         }
@@ -291,7 +295,6 @@ paella.addPlugin(function() {
 		
 		checkEnabled(onSuccess) {
             let config = this.config;
-            let enabled = false
             config.videoSets.forEach((videoSet,index) => {
                 let validContent = videoSet.content
                 if (validContent.length==3) {
@@ -302,7 +305,7 @@ paella.addPlugin(function() {
                         }
                     })
                     if (streamCount>=3) {
-                        enabled = true
+                        onSuccess(true);
                         paella.addProfile(() => {
                             return new Promise((resolve,reject) => {
                                 resolve({
@@ -361,6 +364,9 @@ paella.addPlugin(function() {
                                 })
                             })
                         });
+                    }
+                    else {
+                        onSuccess(false);
                     }
                 }
             })
@@ -427,36 +433,6 @@ paella.addProfile(() => {
                 });
             }
         });
-    })
-});
-
-paella.addProfile(() => {
-    return new Promise((resolve,reject) => {
-        resolve({
-            id:"blank_professor",
-            name:{es:"Nada y presentador"},
-            hidden:true,
-            icon:"slide_professor_icon.png",
-            videos: [
-                {
-                    content:"presenter",rect:[
-                        {aspectRatio:"16/9",left:712,top:302,width:560,height:315},
-                        {aspectRatio:"16/10",left:712,top:267,width:560,height:350},
-                        {aspectRatio:"4/3",left:712,top:198,width:560,height:420},
-                        {aspectRatio:"5/3",left:712,top:281,width:560,height:336},
-                        {aspectRatio:"5/4",left:712,top:169,width:560,height:448}
-                    ],visible:"true",layer:"1"
-                },
-                {
-                    content:"presentation",rect:[
-                        {aspectRatio:"4/3",left:0,top:0,width:300,height:300}
-                    ],visible:"false",layer:"1"
-                }
-            ],
-            background:{content:"slide_professor_paella.jpg",zIndex:5,rect:{left:0,top:0,width:1280,height:720},visible:"false",layer:"0"},
-            logos:[{content:"paella_logo.png",zIndex:5,rect:{top:10,left:10,width:49,height:42}}],
-            isMonostream:true
-        })
     })
 });
 

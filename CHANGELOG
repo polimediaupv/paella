@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+* Paella 6.0.1
+
+  * Better customization of video profile plugins
+  * Bug fixes
+
 * Paella 6.0.0
 
   * Multiple video stream support
@@ -72,6 +77,23 @@ CHANGELOG
   * Use 16/9 aspect ratio for audio sources
   * New plugin: Usertracking xAPI plugin (@dpeite)
   * New plugin: Usertracking Piwik plugin
+
+* Paella 5.2.17
+
+  * Bug fixed in elasticsearch plugin
+
+* Paella 5.2.16
+
+  * Improvements on HLS plugin
+  * Bug fixed in footprints plugin
+
+* Paella 5.2.15
+
+  * Legal info plugin improvements
+
+* Paella 5.2.14
+
+  * Legal info plugin added
 
 * Paella 5.2.13
 
