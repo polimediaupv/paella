@@ -21,7 +21,7 @@ Class ("paella.TimeControl", paella.DomNode,{
 		this.parent('div',id,{left:"0%"});
 		this.domElement.className = 'timeControlOld';
 		this.domElement.className = 'timeControl';
-		//this.domElement.innerHTML = "0:00:00";
+		//this.domElement.innerText = "0:00:00";
 		var thisClass = this;
 		paella.events.bind(paella.events.timeupdate,function(event,params) { thisClass.onTimeUpdate(params); });
 	},
@@ -29,7 +29,7 @@ Class ("paella.TimeControl", paella.DomNode,{
 	onTimeUpdate:function(memo) {
 		var videoContainer = memo.videoContainer;
 		var percent = memo.currentTime * 100 / memo.duration;
-		this.domElement.innerHTML = this.secondsToHours(parseInt(memo.currentTime));
+		this.domElement.innerText = this.secondsToHours(parseInt(memo.currentTime));
 	},
 
 	secondsToHours:function(sec_numb) {
@@ -236,7 +236,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 				if($("#divTimeImageOverlay").length == 0)
 					This.setupTimeImageOverlay(timestr,pos.top,width);
 				else {
-					$("#divTimeOverlay")[0].innerHTML = timestr; //IF CREATED, UPDATE TIME AND IMAGE
+					$("#divTimeOverlay")[0].innerText = timestr; //IF CREATED, UPDATE TIME AND IMAGE
 				}
 
 				// CALL IMAGEUPDATE
@@ -247,7 +247,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 					This.setupTimeOnly(timestr,pos.top,width);
 				}
 				else {
-					$("#divTimeOverlay")[0].innerHTML = timestr;
+					$("#divTimeOverlay")[0].innerText = timestr;
 				}
 			}
 
@@ -402,7 +402,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		div2.className = "divTimeOverlay";
 		div2.style.top = (top-20)+"px"; 
 		div2.id = ("divTimeOverlay");
-		div2.innerHTML = time_str;
+		div2.innerText = time_str;
 
 		div.appendChild(div2);
 
@@ -415,7 +415,7 @@ Class ("paella.PlaybackBar", paella.DomNode,{
 		div2.className = "divTimeOverlay";
 		div2.style.top = (top-20)+"px"; 
 		div2.id = ("divTimeOverlay");
-		div2.innerHTML = time_str;
+		div2.innerText = time_str;
 
 		//CHILD OF CONTROLS_BAR
 		$(this.domElement).parent().append(div2);

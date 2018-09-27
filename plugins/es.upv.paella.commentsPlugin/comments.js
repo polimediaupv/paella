@@ -37,7 +37,7 @@ paella.addPlugin(function() {
 					
 		loadContent() {
 			this.divRoot = this.domElement;
-			this.divRoot.innerHTML ="";
+			this.divRoot.innerText ="";
 			
 			this.divPublishComment = document.createElement('div');
 			this.divPublishComment.className = 'CommentPlugin_Publish';
@@ -100,7 +100,7 @@ paella.addPlugin(function() {
 					thisClass.addComment();
 				}
 			};
-			btnAddComment.innerHTML = base.dictionary.translate("Publish");
+			btnAddComment.innerText = base.dictionary.translate("Publish");
 			
 			this.publishCommentButtons.appendChild(btnAddComment);
 			
@@ -164,7 +164,7 @@ paella.addPlugin(function() {
 			var thisClass = this;
 			thisClass.commentsTree = [];
 			thisClass.comments = [];
-			this.divComments.innerHTML ="";
+			this.divComments.innerText ="";
 			
 			paella.data.read('comments',{id:paella.initDelegate.getId()},function(data,status) {
 				var i;
@@ -271,7 +271,7 @@ paella.addPlugin(function() {
 			divCommentValue.className = "comments_entry_comment";
 			divCommentContainer.appendChild(divCommentValue);		
 			
-			divCommentValue.innerHTML = escape(comment["value"]);
+			divCommentValue.innerText = comment["value"];
 			
 			var divCommentReply = document.createElement('div');
 			divCommentReply.id = rootID+"_comment_reply";
@@ -291,7 +291,7 @@ paella.addPlugin(function() {
 				//var btnRplyComment = document.createElement('button');
 				var btnRplyComment = document.createElement('div');
 				btnRplyComment.className = "reply_button";
-				btnRplyComment.innerHTML = base.dictionary.translate("Reply");
+				btnRplyComment.innerText = base.dictionary.translate("Reply");
 				
 				btnRplyComment.id = rootID+"_comment_reply_button";
 				btnRplyComment.onclick = function(){
@@ -355,7 +355,7 @@ paella.addPlugin(function() {
 			divCommentValue.className = "comments_entry_comment";
 			divCommentContainer.appendChild(divCommentValue);		
 			
-			divCommentValue.innerHTML = escape(comment["value"]);
+			divCommentValue.innerText = comment["value"];
 			
 			paella.data.read('userInfo',{username:comment["userName"]}, function(data,status) {
 				if (data) {
@@ -415,7 +415,7 @@ paella.addPlugin(function() {
 					thisClass.addReply(annotationID,textArea.id);
 				}
 			};
-			btnAddComment.innerHTML = base.dictionary.translate("Reply");
+			btnAddComment.innerText = base.dictionary.translate("Reply");
 			
 			this.publishCommentButtons.appendChild(btnAddComment);
 			

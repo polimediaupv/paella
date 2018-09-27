@@ -875,7 +875,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		}
 
 		var stream = this._currentQuality<sources.length ? sources[this._currentQuality]:null;
-		this.video.innerHTML = "";
+		this.video.innerText = "";
 		if (stream) {
 			var sourceElem = this.video.querySelector('source');
 			if (!sourceElem) {

@@ -59,7 +59,7 @@ paella.addPlugin(function() {
 
 		rebuildProfileList() {
 			this.buttonItems = {};
-			this.domElement.innerHTML = "";
+			this.domElement.innerText = "";
 			paella.profiles.profileList.forEach((profileData) => {
 				if (profileData.hidden) return;
 				if (this.active_profiles) {

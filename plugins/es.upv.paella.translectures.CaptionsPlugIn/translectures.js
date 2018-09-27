@@ -40,7 +40,7 @@ Class ("paella.captions.translectures.Caption", paella.captions.Caption, {
 
 		var messageBoxTitle = document.createElement('div');
 		messageBoxTitle.className = "title";
-		messageBoxTitle.innerHTML = base.dictionary.translate("You are trying to modify the transcriptions, but you are not Logged in!");		
+		messageBoxTitle.innerText = base.dictionary.translate("You are trying to modify the transcriptions, but you are not Logged in!");		
 		messageBoxElem.appendChild(messageBoxTitle);
 
 		var messageBoxAuthContainer = document.createElement('div');
@@ -64,7 +64,7 @@ Class ("paella.captions.translectures.Caption", paella.captions.Caption, {
 		messageBoxAuthLink.appendChild(messageBoxAuthLinkImg);
 
 		var messageBoxAuthLinkText = document.createElement('p');
-		messageBoxAuthLinkText.innerHTML = base.dictionary.translate("Continue editing the transcriptions anonymously");
+		messageBoxAuthLinkText.innerText = base.dictionary.translate("Continue editing the transcriptions anonymously");
 		messageBoxAuthLink.appendChild(messageBoxAuthLinkText);
 
 		$(messageBoxAuthLink).click(function() {
@@ -88,7 +88,7 @@ Class ("paella.captions.translectures.Caption", paella.captions.Caption, {
 		messageBoxAuthLink.appendChild(messageBoxAuthLinkImg);
 
 		messageBoxAuthLinkText = document.createElement('p');
-		messageBoxAuthLinkText.innerHTML = base.dictionary.translate("Log in and edit the transcriptions");
+		messageBoxAuthLinkText.innerText = base.dictionary.translate("Log in and edit the transcriptions");
 		messageBoxAuthLink.appendChild(messageBoxAuthLinkText);
 
 

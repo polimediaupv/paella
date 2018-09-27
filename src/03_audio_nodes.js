@@ -122,7 +122,7 @@ class MultiformatAudioElement extends paella.AudioElementBase {
         var This = this;
 		var sources = this._stream.sources[this._streamName];
 		var stream = sources.length>0 ? sources[0]:null;
-		this.audio.innerHTML = "";
+		this.audio.innerText = "";
 		if (stream) {
 			var sourceElem = this.audio.querySelector('source');
 			if (!sourceElem) {
