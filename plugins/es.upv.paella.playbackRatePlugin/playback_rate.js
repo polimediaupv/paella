@@ -46,7 +46,7 @@ paella.addPlugin(function() {
 				elem.className = this.getButtonItemClass(label,false);
 			}
 			elem.id = label + '_button';
-			elem.innerHTML = escape(label);
+			elem.innerText = label;
 			elem.data = {
 				label:label,
 				rate:rate,

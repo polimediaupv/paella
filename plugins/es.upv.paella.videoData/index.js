@@ -58,7 +58,7 @@ paella.addPlugin(function() {
 
         setup() {
             let title = document.createElement("h1");
-            title.innerHTML = "";
+            title.innerText = "";
             title.className = "videoTitle";
             this.button.appendChild(title);
 

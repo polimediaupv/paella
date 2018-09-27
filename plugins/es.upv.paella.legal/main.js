@@ -13,7 +13,7 @@ paella.addPlugin(() => {
         setup() {
             let plugin = paella.player.config.plugins.list[this.getName()];
             let title = document.createElement('a');
-            title.innerHTML = escape(plugin.label);
+            title.innerText = plugin.label;
             this._url = plugin.legalUrl;
             title.className = "";
             this.button.appendChild(title);

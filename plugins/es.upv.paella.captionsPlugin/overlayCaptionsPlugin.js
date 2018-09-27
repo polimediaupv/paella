@@ -98,12 +98,12 @@ paella.addPlugin(function() {
 						var caption = c.getCaptionAtTime(time.currentTime + offset);
 						if(caption){
 							$(this.container).show();
-							this.innerContainer.innerHTML = escape(caption.content);
+							this.innerContainer.innerText = caption.content;
 							this.moveCaptionsOverlay("auto");
 
 						}
 						else { 
-							this.innerContainer.innerHTML = ""; 
+							this.innerContainer.innerText = ""; 
 							this.hideContent();
 						}
 					});

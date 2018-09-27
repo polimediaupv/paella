@@ -51,7 +51,7 @@ Class ("paella.VideoOverlay", paella.DomNode,{
 	},
 
 	clear:function() {
-		this.domElement.innerHTML = "";
+		this.domElement.innerText = "";
 	},
 
 	getVideoRect:function(index) {

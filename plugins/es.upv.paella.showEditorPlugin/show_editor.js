@@ -9,8 +9,7 @@ paella.addPlugin(function() {
 		getIndex() {return 10;}
 		getDefaultToolTip() { return base.dictionary.translate("Enter editor mode"); }
 
-		checkEnabled(onSuccess) {
-			console.log("ii");
+		checkEnabled(onSuccess) {			
 			if (this.config.editorUrl) {
 				paella.initDelegate.initParams.accessControl.canWrite()
 				.then((canWrite)=>{

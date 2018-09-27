@@ -142,7 +142,7 @@ Class ("paella.ExtendedAdapter", {
 		var tabItem = document.createElement('div');
 		tabItem.setAttribute("tab", tabIndex);
 		tabItem.className = "tabLabel disabled";		
-		tabItem.innerHTML = plugin.getTabName();
+		tabItem.innerText = plugin.getTabName();
 		tabItem.plugin = plugin;
 		$(tabItem).click(function(event) { if (/disabled/.test(this.className)) { thisClass.showTab(tabIndex); this.plugin.action(this); } });
 		$(tabItem).keyup(function(event) {
