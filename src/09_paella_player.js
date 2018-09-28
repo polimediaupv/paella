@@ -397,13 +397,6 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 				.then(() => {
 					if (!this.controls) {
 						this.showPlaybackBar();
-						var urlParamTime = base.parameters.get("time");
-						var hashParamTime = base.hashParams.get("time");
-						var timeString = hashParamTime ? hashParamTime:urlParamTime ? urlParamTime:"0s";
-						var startTime = paella.utils.timeParse.timeToSeconds(timeString);
-						if (startTime) {
-							paella.player.videoContainer.setStartTime(startTime);
-						}
 						paella.events.trigger(paella.events.controlBarLoaded);
 						this.controls.onresize();
 					}

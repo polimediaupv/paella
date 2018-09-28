@@ -574,6 +574,7 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 			this._players = [];
 
 			this._autoplay = base.parameters.get('autoplay')=='true' || this.isLiveStreaming;
+			this._startTime = 0;
 		}
 
 		init(videoData) {
@@ -643,6 +644,14 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 			return Promise.all(promises);
 		}
 
+		get startTime() {
+			return this._startTime;
+		}
+
+		set startTime(s) {
+			this._startTime = s;
+		}
+
 		get isMonostream() {
 			return this._videoStreams.length==1;
 		}
@@ -691,6 +700,12 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 			return new Promise((resolve,reject) => {
 				Promise.all(promises)
 					.then(() => {
+						if (fnName=='play' && !this._firstPlay) {
+							this._firstPlay = true;
+							if (this._startTime) {
+								this.players.forEach((p) => p.setCurrentTime(this._startTime));
+							}
+						}
 						resolve();
 					})
 					.catch((err) => {
@@ -784,6 +799,7 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		// Playback and status functions
 		play() {
 			return new Promise((resolve,reject) => {
+				this.streamProvider.startTime = this._startTime;
 				this.streamProvider.callPlayerFunction('play')
 					.then(() => {
 						super.play();
@@ -1030,6 +1046,14 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 		}
 
 		setStreamData(videoData) {
+			var urlParamTime = base.parameters.get("time");
+			var hashParamTime = base.hashParams.get("time");
+			var timeString = hashParamTime ? hashParamTime:urlParamTime ? urlParamTime:"0s";
+			var startTime = paella.utils.timeParse.timeToSeconds(timeString);
+			if (startTime) {
+				this._startTime = startTime;
+			}
+			
 			videoData.forEach((stream) => {
 				for (var type in stream.sources) {
 					let source = stream.sources[type];
