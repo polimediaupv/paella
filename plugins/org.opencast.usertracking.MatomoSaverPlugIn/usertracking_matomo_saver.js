@@ -17,7 +17,11 @@ paella.addPlugin(function() {
           paella.userTracking.matomotracker = Piwik.getAsyncTracker( server + "piwik.php", site_id );
           paella.userTracking.matomotracker.client_id = thisClass.config.client_id;
           if (heartbeat && heartbeat > 0) paella.userTracking.matomotracker.enableHeartBeatTimer(heartbeat);
-          if (Piwik && Piwik.MediaAnalytics) Piwik.MediaAnalytics.scanForMedia();
+          if (Piwik && Piwik.MediaAnalytics) {
+            paella.events.bind(paella.events.videoReady, () => {
+              Piwik.MediaAnalytics.scanForMedia();
+            });
+          }
           thisClass.registerVisit();
         });
         onSuccess(true);
