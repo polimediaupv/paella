@@ -72,10 +72,11 @@ paella.addPlugin(function() {
             var thisClass = this;
             this._thumbnails = [];
             this._visible = false;
+            this._available = false;
             function checkVisibility() {
                 let buttons = $('.videoZoomButton');
                 let thumbs = $('.videoZoom');
-                if (this._visible) {
+                if (this._visible && this._available) {
                     buttons.show();    
                     thumbs.show();
                 }
@@ -88,7 +89,8 @@ paella.addPlugin(function() {
             let players = paella.player.videoContainer.streamProvider.videoPlayers;
             players.forEach((player,index) => {
                 if (player.allowZoom()) {
-                    this._visible = player.zoomAvailable();
+                    this._available = player.zoomAvailable();
+                    this._visible = this._available;
                     setupButtons.apply(this,[player]);
                     player.supportsCaptureFrame().then((supports) => {
                         if (supports) {
@@ -157,7 +159,18 @@ paella.addPlugin(function() {
             });
 
             paella.events.bind(paella.events.zoomAvailabilityChanged, (evt,target) => {
+                this._available = target.available;
                 this._visible = target.available;
+                checkVisibility.apply(this);
+            });
+
+            paella.events.bind(paella.events.controlBarDidHide, () => {
+                this._visible = false;
+                checkVisibility.apply(this);
+            });
+
+            paella.events.bind(paella.events.controlBarDidShow, () => {
+                this._visible = true;
                 checkVisibility.apply(this);
             });
         }
