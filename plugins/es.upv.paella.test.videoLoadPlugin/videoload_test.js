@@ -53,7 +53,7 @@ Class ("paella.plugins.VideoLoadTestPlugin",paella.EventDrivenPlugin,{
 
 		var button = document.createElement("div");
 		button.className ="btn";
-		button.innerHTML = "X";
+		button.innerText = "X";
 		button.onclick = function(){overlayContainer.removeElement(root);};
 
 		var element = document.createElement("div");

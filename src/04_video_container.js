@@ -53,7 +53,7 @@ Class ("paella.VideoOverlay", paella.DomNode,{
 	},
 
 	clear:function() {
-		this.domElement.innerHTML = "";
+		this.domElement.innerText = "";
 	},
 
 	getMasterRect:function() {
@@ -66,7 +66,7 @@ Class ("paella.VideoOverlay", paella.DomNode,{
 
 	addText:function(text,rect,isDebug) {
 		var textElem = document.createElement('div');
-		textElem.innerHTML = text;
+		textElem.innerHTML = paella.AntiXSS.htmlEscape(text);
 		textElem.className = "videoOverlayText";
 		if (isDebug) textElem.style.backgroundColor = "red";
 		return this.addElement(textElem,rect);

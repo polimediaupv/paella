@@ -43,7 +43,7 @@ Class ("paella.plugins.PlaybackRate",paella.ButtonPlugin,{
 			elem.className = this.getButtonItemClass(label,false);
 		}
 		elem.id = label + '_button';
-		elem.innerHTML = label;
+		elem.innerText = label;
 		elem.data = {
 			label:label,
 			rate:rate,

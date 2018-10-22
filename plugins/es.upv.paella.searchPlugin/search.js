@@ -102,14 +102,14 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 		parent.appendChild(loadingResults);
 		var sBodyText = document.createElement('p');
 		sBodyText.className = 'sBodyText';
-		sBodyText.innerHTML = base.dictionary.translate("Searching") + "...";
+		sBodyText.innerText = base.dictionary.translate("Searching") + "...";
 		parent.appendChild(sBodyText);
 	},
 
 	createNotResultsFound:function(parent){
 		var noResults = document.createElement('div');
 		noResults.className = "noResults";
-		noResults.innerHTML = base.dictionary.translate("Sorry! No results found.");
+		noResults.innerText = base.dictionary.translate("Sorry! No results found.");
 		parent.appendChild(noResults);
 	},
 
@@ -165,7 +165,7 @@ Class ("paella.plugins.SearchPlugin", paella.ButtonPlugin,{
 		        	
 		        	var sBodyText = document.createElement('p');
 		        	sBodyText.className = 'sBodyText';
-		        	sBodyText.innerHTML = "<span class='timeSpan'>"+thisClass.prettyTime(results[i].time)+"</span>"+results[i].content;
+		        	sBodyText.innerHTML = "<span class='timeSpan'>"+thisClass.prettyTime(results[i].time)+"</span>"+paella.AntiXSS.htmlEscape(results[i].content);
 
 
 		        	TimePicContainer.appendChild(sBodyPicture);

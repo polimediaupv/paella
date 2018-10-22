@@ -139,7 +139,7 @@ Class ("paella.VideoRect", paella.DomNode, {
 			this._mouseCenter = { x:0, y:0 };
 			this._mouseDown = { x:0, y:0 };
 			this._zoomOffset = { x:0, y: 0 };
-			this._maxZoom = zoomSettings.max || 400;
+			this._maxZoom = zoomSettings.max || 400;
 			$(this.domElement).css({
 				width: "100%",
 				height: "100%",
@@ -822,7 +822,7 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 		}
 
 		var stream = this._currentQuality<sources.length ? sources[this._currentQuality]:null;
-		this.video.innerHTML = "";
+		this.video.innerText = "";
 		if (stream) {
 			var sourceElem = this.video.querySelector('source');
 			if (!sourceElem) {

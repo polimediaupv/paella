@@ -14,7 +14,7 @@
 
         setup() {
             let title = document.createElement('a');
-            title.innerHTML = this._label;
+            title.innerText = this._label;
             title.className = "";
             this.button.appendChild(title);
         }

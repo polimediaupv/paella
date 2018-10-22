@@ -482,7 +482,7 @@ Class ("paella.ButtonPlugin", paella.UIPlugin,{
 	},
 	
 	setText:function(text) {
-		this.container.innerHTML = text;
+		this.container.innerHTML = paella.AntiXSS.htmlEscape(text);
 	},
 
 	hideButton:function() {
@@ -549,7 +549,7 @@ paella.ButtonPlugin.buildPluginButton = function(plugin,id) {
 	var elem = document.createElement('div');
 	elem.className = plugin.getClassName();
 	elem.id = id;
-	elem.innerHTML = plugin.getText();
+	elem.innerText = plugin.getText();
 	elem.setAttribute("tabindex", 1000+plugin.getIndex());
 	elem.setAttribute("alt", "");
 	elem.setAttribute("role", "button");

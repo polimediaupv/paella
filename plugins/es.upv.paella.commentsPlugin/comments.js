@@ -27,7 +27,7 @@ Class ("paella.plugins.CommentsPlugin",paella.TabBarPlugin,{
 				
 	loadContent:function() {
 		this.divRoot = this.domElement;
-		this.divRoot.innerHTML ="";
+		this.divRoot.innerText ="";
 		
 		this.divPublishComment = document.createElement('div');
 		this.divPublishComment.className = 'CommentPlugin_Publish';
@@ -90,7 +90,7 @@ Class ("paella.plugins.CommentsPlugin",paella.TabBarPlugin,{
 				thisClass.addComment();
 			}
 		};
-		btnAddComment.innerHTML = base.dictionary.translate("Publish");
+		btnAddComment.innerText = base.dictionary.translate("Publish");
 		
 		this.publishCommentButtons.appendChild(btnAddComment);
 		
@@ -154,7 +154,7 @@ Class ("paella.plugins.CommentsPlugin",paella.TabBarPlugin,{
 		var thisClass = this;
 		thisClass.commentsTree = [];
 		thisClass.comments = [];
-		this.divComments.innerHTML ="";
+		this.divComments.innerText ="";
 		
 		paella.data.read('comments',{id:paella.initDelegate.getId()},function(data,status) {
 			var i;
@@ -252,7 +252,7 @@ Class ("paella.plugins.CommentsPlugin",paella.TabBarPlugin,{
 		/*
 		var headLine = "<span class='comments_entry_username'>" + comment["userName"] + "</span>";
 		headLine += "<span class='comments_entry_datepublish'>" + datePublish + "</span>";
-		divCommentMetadata.innerHTML = headLine;
+		divCommentMetadata.innerText = headLine;
 		*/
 		
 		var divCommentValue;
@@ -261,7 +261,7 @@ Class ("paella.plugins.CommentsPlugin",paella.TabBarPlugin,{
 		divCommentValue.className = "comments_entry_comment";
 		divCommentContainer.appendChild(divCommentValue);		
 		
-		divCommentValue.innerHTML = comment["value"];
+		divCommentValue.innerText = comment["value"];
 		
 		var divCommentReply = document.createElement('div');
 		divCommentReply.id = rootID+"_comment_reply";
@@ -273,7 +273,7 @@ Class ("paella.plugins.CommentsPlugin",paella.TabBarPlugin,{
 				
 				var headLine = "<span class='comments_entry_username'>" + data.name + " " + data.lastname + "</span>";
 				headLine += "<span class='comments_entry_datepublish'>" + datePublish + "</span>";				
-				divCommentMetadata.innerHTML = headLine;
+				divCommentMetadata.innerText = headLine;
 			}
 		});
 
@@ -281,7 +281,7 @@ Class ("paella.plugins.CommentsPlugin",paella.TabBarPlugin,{
 			//var btnRplyComment = document.createElement('button');
 			var btnRplyComment = document.createElement('div');
 			btnRplyComment.className = "reply_button";
-			btnRplyComment.innerHTML = base.dictionary.translate("Reply");
+			btnRplyComment.innerText = base.dictionary.translate("Reply");
 			
 			btnRplyComment.id = rootID+"_comment_reply_button";
 			btnRplyComment.onclick = function(){
@@ -336,7 +336,7 @@ Class ("paella.plugins.CommentsPlugin",paella.TabBarPlugin,{
 		/*
 		var headLine = "<span class='comments_entry_username'>" + comment["userName"] + "</span>";
 		headLine += "<span class='comments_entry_datepublish'>" + datePublish + "</span>";
-		divCommentMetadata.innerHTML = headLine;
+		divCommentMetadata.innerText = headLine;
 		*/
 		
 		var divCommentValue;
@@ -345,7 +345,7 @@ Class ("paella.plugins.CommentsPlugin",paella.TabBarPlugin,{
 		divCommentValue.className = "comments_entry_comment";
 		divCommentContainer.appendChild(divCommentValue);		
 		
-		divCommentValue.innerHTML = comment["value"];
+		divCommentValue.innerText = comment["value"];
 		
 		paella.data.read('userInfo',{username:comment["userName"]}, function(data,status) {
 			if (data) {
@@ -353,7 +353,7 @@ Class ("paella.plugins.CommentsPlugin",paella.TabBarPlugin,{
 				
 				var headLine = "<span class='comments_entry_username'>" + data.name + " " + data.lastname + "</span>";
 				headLine += "<span class='comments_entry_datepublish'>" + datePublish + "</span>";				
-				divCommentMetadata.innerHTML = headLine;
+				divCommentMetadata.innerText = headLine;
 			}
 		});	
 			
@@ -405,7 +405,7 @@ Class ("paella.plugins.CommentsPlugin",paella.TabBarPlugin,{
 				thisClass.addReply(annotationID,textArea.id);
 			}
 		};
-		btnAddComment.innerHTML = base.dictionary.translate("Reply");
+		btnAddComment.innerText = base.dictionary.translate("Reply");
 		
 		this.publishCommentButtons.appendChild(btnAddComment);
 		

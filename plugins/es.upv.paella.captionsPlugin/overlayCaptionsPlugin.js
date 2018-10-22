@@ -101,10 +101,10 @@ Class ("paella.plugins.CaptionsOnScreen",paella.EventDrivenPlugin,{
 					var caption = c.getCaptionAtTime(time.currentTime + offset);
 					if(caption){
 						$(this.container).show();
-						this.innerContainer.innerHTML = caption.content;
+						this.innerContainer.innerText = caption.content;
 					}
 					else { 
-						this.innerContainer.innerHTML = ""; 
+						this.innerContainer.innerText = ""; 
 					}
 				});
 		}

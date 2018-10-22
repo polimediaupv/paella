@@ -43,7 +43,7 @@ Class ("paella.plugins.MultipleQualitiesPlugin",paella.ButtonPlugin,{
 				var label = quality.shortLabel();
 				elem.className = This.getButtonItemClass(label,quality.index==currentIndex);
 				elem.id = label;
-				elem.innerHTML = label;
+				elem.innerText = label;
 				elem.data = quality;
 				$(elem).click(function(event) {
 					$('.multipleQualityItem').removeClass('selected');

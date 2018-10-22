@@ -273,7 +273,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
         //BUTTON EDITOR
         thisClass._editor = document.createElement("button");
         thisClass._editor.className = "editorButton";
-        thisClass._editor.innerHTML = "";
+        thisClass._editor.innerText = "";
         thisClass._bar.appendChild(thisClass._editor);
 
         //BUTTON jQuery
@@ -362,7 +362,7 @@ Class ("paella.plugins.CaptionsPlugin", paella.ButtonPlugin,{
 					}
 					thisClass._inner = document.createElement('div');
 					thisClass._inner.className = 'bodyInnerContainer';
-					thisClass._inner.innerHTML = l.content;
+					thisClass._inner.innerText = l.content;
 					if(type=="list"){
 						thisClass._inner.setAttribute('sec-begin',l.begin);
 						thisClass._inner.setAttribute('sec-end',l.end);

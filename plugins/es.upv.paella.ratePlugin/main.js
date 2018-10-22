@@ -67,7 +67,7 @@ Class ("paella.plugins.RatePlugin",paella.ButtonPlugin,{
 		this.scoreContainer.rateButtons.className = "rateButtons";
 		this.buttons = [];
 		if (this.canVote) {
-			this.scoreContainer.rateButtons.innerHTML = "";
+			this.scoreContainer.rateButtons.innerText = "";
 			for (let i = 0; i<5; ++i) {
 				let btn = this.getStarButton(i + 1);
 				this.buttons.push(btn);
