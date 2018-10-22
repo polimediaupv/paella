@@ -134,7 +134,7 @@ paella.videoFactory = {
 		if (paella.videoFactories) {
 			var This = this;
 			paella.player.config.player.methods.forEach(function(method) {
-				if (method.enabled) {
+				if (method.enabled && paella.videoFactories[method.factory]) {
 					This.registerFactory(new paella.videoFactories[method.factory]());
 				}
 			});
