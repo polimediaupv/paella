@@ -164,7 +164,7 @@
 				let PluginClass = pluginCallback();
 				let pluginInstance = new PluginClass();
 				if (pluginInstance.getInstanceName()) {
-					paella.plugins = paella.plugins || {};
+					paella.plugins = paella.plugins || {};
 					paella.plugins[pluginInstance.getInstanceName()] = pluginInstance;
 				}
 				paella.pluginManager.registerPlugin(pluginInstance);

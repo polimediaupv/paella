@@ -43,7 +43,7 @@ paella.addPlugin(function() {
 					var label = quality.shortLabel();
 					elem.className = this.getButtonItemClass(label,quality.index==currentIndex);
 					elem.id = label;
-					elem.innerHTML = label;
+					elem.innerText = label;
 					elem.data = quality;
 					$(elem).click(function(event) {
 						$('.multipleQualityItem').removeClass('selected');

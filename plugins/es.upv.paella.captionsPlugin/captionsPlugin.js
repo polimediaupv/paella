@@ -274,7 +274,7 @@ paella.addPlugin(function() {
 			//BUTTON EDITOR
 			thisClass._editor = document.createElement("button");
 			thisClass._editor.className = "editorButton";
-			thisClass._editor.innerHTML = "";
+			thisClass._editor.innerText = "";
 			thisClass._bar.appendChild(thisClass._editor);
 	
 			//BUTTON jQuery
@@ -363,7 +363,7 @@ paella.addPlugin(function() {
 						}
 						thisClass._inner = document.createElement('div');
 						thisClass._inner.className = 'bodyInnerContainer';
-						thisClass._inner.innerHTML = l.content;
+						thisClass._inner.innerText = l.content;
 						if(type=="list"){
 							thisClass._inner.setAttribute('sec-begin',l.begin);
 							thisClass._inner.setAttribute('sec-end',l.end);

@@ -40,7 +40,7 @@ paella.addPlugin(function() {
 			let label = paella.dictionary.translate(lang);
 			elem.className = this.getButtonItemClass(label,lang==currentLanguage);
 			elem.id = "laguageSelectorItem_" + lang;
-			elem.innerHTML = label;
+			elem.innerText = label;
 			elem.data = lang;
 			$(elem).click(function(event) {
 				$('.videoAudioTrackItem').removeClass('selected');

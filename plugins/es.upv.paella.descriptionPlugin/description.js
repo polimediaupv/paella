@@ -19,9 +19,9 @@ paella.addPlugin(function() {
 				
 		loadContent() {
 			var container = this.domElement;
-			container.innerHTML = "Loading...";
+			container.innerText = "Loading...";
 			new paella.Timer(function(t) {
-				container.innerHTML = "Loading done";
+				container.innerText = "Loading done";
 			},2000);
 		}
 	}

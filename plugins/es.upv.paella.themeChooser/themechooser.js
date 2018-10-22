@@ -31,7 +31,7 @@ paella.addPlugin(function() {
 			paella.player.config.skin.available.forEach(function(item){
 				var elem = document.createElement('div');
 				elem.className = "themebutton";
-				elem.innerHTML = item.replace('-',' ').replace('_',' ');
+				elem.innerText = item.replace('-',' ').replace('_',' ');
 				$(elem).click(function(event) {
 					paella.utils.skin.set(item);
 					paella.player.controls.hidePopUp(This.getName());

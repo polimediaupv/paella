@@ -280,7 +280,7 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 
 	unloadAll:function(message) {
 		var loaderContainer = $('#paellaPlayer_loader')[0];
-		this.mainContainer.innerHTML = "";
+		this.mainContainer.innerText = "";
 		paella.messageBox.showError(message);
 	},
 

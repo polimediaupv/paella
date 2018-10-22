@@ -107,14 +107,14 @@ paella.addPlugin(function() {
 			parent.appendChild(loadingResults);
 			var sBodyText = document.createElement('p');
 			sBodyText.className = 'sBodyText';
-			sBodyText.innerHTML = base.dictionary.translate("Searching") + "...";
+			sBodyText.innerText = base.dictionary.translate("Searching") + "...";
 			parent.appendChild(sBodyText);
 		}
 
 		createNotResultsFound(parent){
 			var noResults = document.createElement('div');
 			noResults.className = "noResults";
-			noResults.innerHTML = base.dictionary.translate("Sorry! No results found.");
+			noResults.innerText = base.dictionary.translate("Sorry! No results found.");
 			parent.appendChild(noResults);
 		}
 
@@ -173,7 +173,7 @@ paella.addPlugin(function() {
 						var sBodyText = document.createElement('p');
 						sBodyText.className = 'sBodyText';
 						let time = thisClass._trimming.enabled ? results[i].time - thisClass._trimming.start : results[i].time;
-						sBodyText.innerHTML = "<span class='timeSpan'>"+thisClass.prettyTime(time)+"</span>"+results[i].content;
+						sBodyText.innerHTML = "<span class='timeSpan'>"+thisClass.prettyTime(time)+"</span>"+paella.AntiXSS.htmlEscape(results[i].content);
 
 
 						TimePicContainer.appendChild(sBodyPicture);

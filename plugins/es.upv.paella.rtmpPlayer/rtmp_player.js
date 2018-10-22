@@ -98,7 +98,7 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 					var message = document.createElement('div');
 
 					var header = document.createElement('h3');
-					header.innerHTML = base.dictionary.translate("Flash player problem");
+					header.innerText = base.dictionary.translate("Flash player problem");
 					var text = document.createElement('div');
 					text.innerHTML = base.dictionary.translate("A problem occurred trying to load flash player.") + "<br>" +
 						base.dictionary.translate("Please go to {0} and install it.")
@@ -122,7 +122,7 @@ Class ("paella.RTMPVideo", paella.VideoElementBase,{
 			var message = document.createElement('div');
 
 			var header = document.createElement('h3');
-			header.innerHTML = base.dictionary.translate("Flash player needed");
+			header.innerText = base.dictionary.translate("Flash player needed");
 
 			var text = document.createElement('div');
 

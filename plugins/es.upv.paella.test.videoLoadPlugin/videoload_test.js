@@ -48,7 +48,7 @@ paella.addPlugin(function() {
 	
 			var button = document.createElement("div");
 			button.className ="btn";
-			button.innerHTML = "X";
+			button.innerText = "X";
 			button.onclick = function(){overlayContainer.removeElement(root);};
 	
 			var element = document.createElement("div");
