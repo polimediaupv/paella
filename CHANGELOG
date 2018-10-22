@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+* Paella 6.0.3
+  
+  * Fix issues in errorContainer size
+  * Fixed bug in the zoom plugin visibility, when the control bar is hidden.
+  * Bug fixed in video factory selection method
+  
 * Paella 6.0.2
   
   * Fix some XSS security issues
