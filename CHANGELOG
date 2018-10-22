@@ -88,6 +88,12 @@ CHANGELOG
   * New plugin: Usertracking xAPI plugin (@dpeite)
   * New plugin: Usertracking Piwik plugin
 
+* Paella 5.2.18
+
+  * Full screen support on iPad iOS 12
+  * Fix some XSS security issues
+  * Update NPM dependencies
+
 * Paella 5.2.17
 
   * Bug fixed in elasticsearch plugin

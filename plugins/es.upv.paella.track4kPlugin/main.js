@@ -243,7 +243,7 @@ paella.addDataDelegate("cameraTrack",() => {
                     let btn = document.createElement('div');
                     btn.className = `videoZoomToolbarItem ${ className }`;
                     if (content) {
-                        btn.innerHTML = content;
+                        btn.innerText = content;
                     }
                     else {
                         btn.innerHTML = `<i class="glyphicon glyphicon-${ className }"></i>`;
