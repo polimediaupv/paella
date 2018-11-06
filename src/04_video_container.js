@@ -394,12 +394,6 @@ Class ("paella.VideoContainerBase", paella.DomNode,{
 					duration = d;
 					this._trimming.start = Math.floor(start);
 					this._trimming.end = Math.floor(end);
-					if (currentTime<this._trimming.start) {
-						this.setCurrentTime(this._trimming.start);
-					}
-					if (currentTime>this._trimming.end) {
-						this.setCurrentTime(this._trimming.end);
-					}
 					if(this._trimming.enabled){
 						let cap=paella.captions.getActiveCaptions();
 						if(cap!==undefined) paella.plugins.captionsPlugin.buildBodyContent(cap._captions,"list");
@@ -825,7 +819,7 @@ Class ("paella.LimitedSizeProfileFrameStrategy", paella.ProfileFrameStrategy, {
 					this.pause();
 				}
 				else if (current<start) {
-					this.setCurrentTime(start + 1);
+					this.setCurrentTime(0);
 				}
 			}
 		}
