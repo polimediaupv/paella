@@ -373,22 +373,29 @@ paella.addPlugin(function() {
 		}
 
 		onTimeUpdate(currentTime) {
-			var frame = null;
-			for (var i = 0; i<this.frames.length; ++i) {
-				if (this.frames[i].frameData && this.frames[i].frameData.time<=currentTime) {
-					frame = this.frames[i];
-				}
-				else {
-					break;
-				}
-			}
-			if (this.currentFrame!=frame && frame) {
-				//this.navButtons.left.scrollContainer.scrollLeft += 100;
-
-				if (this.currentFrame) this.currentFrame.className = 'frameControlItem';
-				this.currentFrame = frame;
-				this.currentFrame.className = 'frameControlItem current';
-			}
+			paella.player.videoContainer.trimming()
+				.then((trimming) => {
+					var frame = null;
+					if (trimming.enabled) {
+						currentTime += trimming.start;
+					}
+					
+					for (var i = 0; i<this.frames.length; ++i) {
+						if (this.frames[i].frameData && this.frames[i].frameData.time<=currentTime) {
+							frame = this.frames[i];
+						}
+						else {
+							break;
+						}
+					}
+					if (this.currentFrame!=frame && frame) {
+						//this.navButtons.left.scrollContainer.scrollLeft += 100;
+		
+						if (this.currentFrame) this.currentFrame.className = 'frameControlItem';
+						this.currentFrame = frame;
+						this.currentFrame.className = 'frameControlItem current';
+					}
+				});
 		}
 	}
 });
