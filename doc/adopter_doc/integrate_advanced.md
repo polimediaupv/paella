@@ -118,20 +118,18 @@ myStreamInfo: {
 		{ src:'/presentation.mp4', type:"video/mp4", res:{w:1024,h:768} },	// 1024x768 video
 		{ src:'/presentation2.mp4', type:"video/mp4", res:{w:640,h:480} }	// 640x480 video
 	],
+	// hls video source
+	hls: [
+		{ src: "https://hls-server.com/playlist.m3u8", mimetype: "video/mp4" }
+	],
+	// mpeg-dash video source
+	mpd: [
+		{ src: "http://mpeg-dash-server.com/manifest.mpd", mimetype: "video/mp4" }
+	],
 	// ogg video sourve
 	ogg:[
 		{ src:'/presentation.ogv', type:"video/ogg", res:{w:1024,h:768} },	// 1024x768 video
 		{ src:'/presentation2.mp4', type:"video/ogg", res:{w:640,h:480} }	// 640x480 video
-	],
-	// flv video sourve
-	flv:[
-		{ src:'/presentation.flv', type:"video/x-flv", res:{w:1024,h:768} },	// 1024x768 video
-		{ src:'/presentation2.flv', type:"video/x-flv", res:{w:640,h:480} }	// 640x480 video
-	],
-	// rtmp stream
-	rtmp:[
-		{src:"rtmp://server.com/endpoint/url1.mp4",type="video/mp4 | video/x-flv", res:{w:1024,h:768} },
-		{src:"rtmp://server.com/endpoint/url2.mp4",type="video/mp4 | video/x-flv", res:{w:640,h:480} }
 	],
 	// Images video:
 	image:[ {
@@ -166,7 +164,17 @@ myStreamInfo: {
 		type:"image/jpeg",
 		duration:928,
 		res:{w:1024,h:768}
-	} ]
+	} ],
+	// flv video sourve
+	flv:[
+		{ src:'/presentation.flv', type:"video/x-flv", res:{w:1024,h:768} },	// 1024x768 video
+		{ src:'/presentation2.flv', type:"video/x-flv", res:{w:640,h:480} }	// 640x480 video
+	],
+	// rtmp stream
+	rtmp:[
+		{src:"rtmp://server.com/endpoint/url1.mp4",type="video/mp4 | video/x-flv", res:{w:1024,h:768} },
+		{src:"rtmp://server.com/endpoint/url2.mp4",type="video/mp4 | video/x-flv", res:{w:640,h:480} }
+	],
 }
 ```
 
@@ -189,39 +197,90 @@ paella.data.read("myContext","key",function(data) {
 
 ### paella.DataDelegate
 
-To write and read data to and from your server, you must to implement your specific dataDelegates and register them in your config.json file:
+To write and read data to and from your server, you must to implement your specific dataDelegates. You can register your data delegate using he method `paella.addDataDelegate()`, The function receives two parameters:
+
+- The default contexts for which the data delegate is to be used.
+- A callback that returns the data delegate class.
+
+```
+paella.addDataDelegate(['context1','context2',...'contextn'], () => {
+	return MyDataDelegate
+}) 
+```
+
+The data delegate is implemented extending the paella.DataDelegate class:
+
+```
+paella.addDataDelegate(['context1','context2',...'contextn'], () => {
+	class MyDataDelegate extends paella.DataDelegate {
+		read(context,params,onSuccess) {
+			let readedData = readMyData(params);
+			onSuccess(readedData);
+		}
+
+		write(context,params,value,onSuccess) {
+			writeMyData(params,value);
+			onSuccess({},true);
+		}
+
+		remove(context,params,onSuccess) {
+			deleteMyData(params);
+			onSuccess();
+		}
+	}
+
+	return MyDataDelegate
+}) 
+```
 
 Example: cookie-based reader and writter delegate
 
 ``` js
-paella.dataDelegates.CookieDataDelegate = Class.create(paella.DataDelegate,{
-	initialize:function() {
-	},
-
-	read:function(context,params,onSuccess) {
-		if (typeof(params)=='object') params = JSON.stringify(params);
-		var value = paella.utils.cookies.get(params);
-		try {
-			value = JSON.parse(value);
+paella.addDataDelegate(["default","trimming"], () => {
+	paella.dataDelegates.DefaultDataDelegate = class CookieDataDelegate extends paella.DataDelegate {
+		serializeKey(context,params) {
+			if (typeof(params)=='object') params = JSON.stringify(params);
+			return context + '|' + params;
 		}
-		catch (e) {}
-		if (typeof(onSuccess)=='function') {
-			onSuccess(value,true);
+	
+		read(context,params,onSuccess) {
+			var key = this.serializeKey(context,params);
+			var value = base.cookies.get(key);
+			try {
+				value = unescape(value);
+				value = JSON.parse(value);
+			}
+			catch (e) {}
+			if (typeof(onSuccess)=='function') {
+				onSuccess(value,true);
+			}
 		}
-	},
-
-	write:function(context,params,value,onSuccess) {
-		if (typeof(params)=='object') params = JSON.stringify(params);
-		if (typeof(value)=='object') value = JSON.stringify(value);
-		paella.utils.cookies.set(params,value);
-		if(typeof(onSuccess)=='function') {
-			onSuccess({},true);
+	
+		write(context,params,value,onSuccess) {
+			var key = this.serializeKey(context,params);
+			if (typeof(value)=='object') value = JSON.stringify(value);
+			value = escape(value);
+			base.cookies.set(key,value);
+			if(typeof(onSuccess)=='function') {
+				onSuccess({},true);
+			}
+		}
+	
+		remove(context,params,onSuccess) {
+			var key = this.serializeKey(context,params);
+			if (typeof(value)=='object') value = JSON.stringify(value);
+			base.cookies.set(key,'');
+			if(typeof(onSuccess)=='function') {
+				onSuccess({},true);
+			}
 		}
 	}
-});
+
+	return paella.dataDelegates.DefaultDataDelegate;
+})
 ```
 
-Register cookie data delegate in config.json
+In the config.json file, you can override the default data delegate for a context.
 
 ``` js
 {
@@ -234,15 +293,8 @@ Register cookie data delegate in config.json
 		}
 	}
 }
-````
+```
 
-Each context is related with a service that your server can provide. This contexts usually are handled 
-by different plugins: for example, the "annotations" service is handled by the Paella Player Annotations
-plugin, to show annotations in the video canvas, and also are handled by the Paella Editor Annotation
-plugin to create and modify annotations. In a particular case, the server may supply these annotations
-by using files, and in other case may supply them using a REST API. The way in wich you must to implement
-your DataDelegate class will depend on the way your server provide the data.
+Each context is related with a service that your server can provide. This contexts usually are handled by different plugins: for example, the "annotations" service is handled by the Paella Player Annotations plugin, to show annotations in the video canvas, and also are handled by the Paella Editor Annotation plugin to create and modify annotations. In a particular case, the server may supply these annotations by using files, and in other case may supply them using a REST API. The way in wich you must to implement your DataDelegate class will depend on the way your server provide the data.
 
-The data format that you will receive and send in your DataDelegate will depend on the particular context: 
-for example, the "captions" context may expect a format, and the "annotations" context may expect a
-different one. Refer to the specific context documentation to know more about its data format.
+The data format that you will receive and send in your DataDelegate will depend on the particular context: for example, the "captions" context may expect a format, and the "annotations" context may expect a different one. Refer to the specific context documentation to know more about its data format.
