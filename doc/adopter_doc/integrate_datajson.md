@@ -25,7 +25,8 @@ This will hold an array with the diferent video streams that the player will pla
   "streams": [
     {
       "sources": {},
-      "preview": ""
+      "preview": "",
+      "content": "stream content"
     },
     .
     .
@@ -38,6 +39,89 @@ This will hold an array with the diferent video streams that the player will pla
 Each stream in the stream array will have:
 * preview: url containing the image that will be used as preview for the stream
 * sources: source or sources of the data stream 
+* content: a tag that describes the content of the video.
+
+##### About the stream content
+The `content` attribute is a tag used to determine where the video will be displayed in a multi-stream video. To determine the position of each video in multi-stream videos, Paella Player uses layout plugins. The valid tag values for the `content` property are determined in the plugin configuration, in `config.json`:
+
+Paella Player will use all the configurations that can be linked with the layout plugin settings, matching the `content` property of the stream with the `content` property of the plugin settings. For example, if you have a video with three streams:
+
+```
+"streams": [
+  {
+    "sources": { ... }
+    "content": "presenter"
+  },
+  {
+    "sources": { ... }
+    "content": "presentation"
+  },
+  {
+    "sources": { ... }
+    "content": "presenter-2"
+  }
+]
+```
+
+And using the following configuration:
+
+```
+"//**** Video profile plugins": "",
+"es.upv.paella.singleStreamProfilePlugin": {
+  "enabled": true,
+  "videoSets": [
+    { "icon":"professor_icon.svg", "id":"presenter", "content":["presenter"]},
+    { "icon":"slide_icon.svg", "id":"presentation", "content":["presentation"]}
+  ]
+},
+"es.upv.paella.dualStreamProfilePlugin": { "enabled":true,
+  "videoSets": [
+    { "icon":"slide_professor_icon.svg", "id":"presenter_presentation", "content":["presenter","presentation"] },
+    { "icon":"slide_professor_icon.svg", "id":"presenter2_presentation", "content":["presenter-2","presentation"] },
+    { "icon":"slide_professor_icon.svg", "id":"presenter3_presentation", "content":["presenter-3","presentation"] }
+  ]
+},
+"es.upv.paella.tripleStreamProfilePlugin": {
+  "enabled": true,
+  "videoSets": [
+    { "icon":"three_streams_icon.svg", "id":"presenter_presentation_presenter2", "content":["presenter","presentation","presenter-2"] },
+    { "icon":"three_streams_icon.svg", "id":"presenter_presentation_presenter3", "content":["presenter","presentation","presenter-3"] }
+  ]
+},
+```
+
+Paella Player will allow to set the following layouts:
+
+- Single stream layout, stream "presenter"
+- Single stream layout, stream "presentation"
+- Dual stream layout, streams "presenter" and "presentation"
+- Dual stream layout, streams "presenter-2" and "presentation"
+- Triple stream layout, streams "presenter", "presentation" and "presentation-2"
+
+If you want to add a setting to show the "presenter" and "presenter-2" videos, you can add a `videoSet` to the dualStreamProfilePlugin with the following settings:
+
+```
+  "es.upv.paella.singleStreamProfilePlugin": {
+    "enabled": true,
+    "videoSets": [
+      ...
+      { "icon":"slide_professor_icon.svg", "id":"presenter3_presentation", "content":["presenter","presenter-2"] }
+    ]
+  }
+```
+
+And if you want to add a single stream to show the "presenter-2" video, you can add a `videoSet` to the singleStreamProfilePlugin settings:
+
+```
+  "es.upv.paella.singleStreamProfilePlugin": {
+    "enabled": true,
+    "videoSets": [
+      ...
+      { "icon":"slide_professor_icon.svg", "id":"presenter3_presentation", "content":["presenter-2"] }
+    ]
+  }
+```
+
 
 #### source
 The admites source types are mp4,ogg,webm,flv,rtmp & image, since all the source types but image share the same JSON structure we will diferenciate between video-source and image-source 
@@ -64,7 +148,8 @@ A video-source consist in an array with the videos that forms the diferent resou
           .
         ],
       },
-      "preview": ""
+      "preview": "",
+      "content": "presenter"
     }
   ]
 }
@@ -105,7 +190,8 @@ When we use an image array as source of the video stream the way this should be 
           }
         ]
       },
-      "preview": ""
+      "preview": "",
+      "content": "presentation"
     }
   ]
 }
