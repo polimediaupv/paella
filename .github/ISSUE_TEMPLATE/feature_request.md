@@ -4,8 +4,6 @@ about: Suggest an idea
 
 ---
 
-Please provide thoughtful commentary on what this feature means for your. What will it allow you to do that you can't do today? What potential bugs and edge cases does it help to avoid? etc...
-
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
