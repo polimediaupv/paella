@@ -17,58 +17,62 @@
 
 // Paella Mouse Manager
 ///////////////////////////////////////////////////////
-Class ("paella.MouseManager", {
-	targetObject:null,
+(() => {
+	class MouseManager {	
+		get targetObject() { return this._targetObject; }
+		set targetObject(t) { this._targetObject = t; }
 
-	initialize:function() {
-		var thisClass = this;
-		paella.events.bind('mouseup',function(event) { thisClass.up(event); });
-		paella.events.bind('mousemove',function(event) { thisClass.move(event); });
-		paella.events.bind('mouseover',function(event) { thisClass.over(event); });
-	},
-
-	down:function(targetObject,event) {
-		this.targetObject = targetObject;
-		if (this.targetObject && this.targetObject.down) {
-			this.targetObject.down(event,event.pageX,event.pageY);
-			event.cancelBubble = true;
+		constructor() {
+			paella.events.bind('mouseup',(event) => this.up(event));
+			paella.events.bind('mousemove',(event) => this.move(event));
+			paella.events.bind('mouseover',(event) =>  this.over(event));
 		}
-		return false;
-	},
-
-	up:function(event) {
-		if (this.targetObject && this.targetObject.up) {
-			this.targetObject.up(event,event.pageX,event.pageY);
-			event.cancelBubble = true;
+	
+		down(targetObject,event) {
+			this.targetObject = targetObject;
+			if (this.targetObject && this.targetObject.down) {
+				this.targetObject.down(event,event.pageX,event.pageY);
+				event.cancelBubble = true;
+			}
+			return false;
 		}
-		this.targetObject = null;
-		return false;
-	},
-
-	out:function(event) {
-		if (this.targetObject && this.targetObject.out) {
-			this.targetObject.out(event,event.pageX,event.pageY);
-			event.cancelBubble = true;
+	
+		up(event) {
+			if (this.targetObject && this.targetObject.up) {
+				this.targetObject.up(event,event.pageX,event.pageY);
+				event.cancelBubble = true;
+			}
+			this.targetObject = null;
+			return false;
 		}
-		return false;
-	},
-
-	move:function(event) {
-		if (this.targetObject && this.targetObject.move) {
-			this.targetObject.move(event,event.pageX,event.pageY);
-			event.cancelBubble = true;
+	
+		out(event) {
+			if (this.targetObject && this.targetObject.out) {
+				this.targetObject.out(event,event.pageX,event.pageY);
+				event.cancelBubble = true;
+			}
+			return false;
 		}
-		return false;
-	},
-
-	over:function(event) {
-		if (this.targetObject && this.targetObject.over) {
-			this.targetObject.over(event,event.pageX,event.pageY);
-			event.cancelBubble = true;
+	
+		move(event) {
+			if (this.targetObject && this.targetObject.move) {
+				this.targetObject.move(event,event.pageX,event.pageY);
+				event.cancelBubble = true;
+			}
+			return false;
 		}
-		return false;
+	
+		over(event) {
+			if (this.targetObject && this.targetObject.over) {
+				this.targetObject.over(event,event.pageX,event.pageY);
+				event.cancelBubble = true;
+			}
+			return false;
+		}
 	}
-});
+
+	paella.MouseManager = MouseManager;
+})();
 
 
 // paella.utils
@@ -263,39 +267,33 @@ paella.utils = {
 	}
 };
 
-
-
-
-Class ("paella.DataDelegate", {
-	// onSuccess => function(response,readStatus)
-	read:function(context,params,onSuccess) {
-		// TODO: read key with context
-		if (typeof(onSuccess)=='function') {
-			onSuccess({},true);
-		}
-	},
-
-	// onSuccess => function(response,writeStatus)
-	write:function(context,params,value,onSuccess) {
-		// TODO: write key with context
-		if(typeof(onSuccess)=='function') {
-			onSuccess({},true);
-		}
-	},
-
-	remove:function(context,params,onSuccess) {
-		// TODO: write key with context
-		if(typeof(onSuccess)=='function') {
-			onSuccess({},true);
-		}
-	}
-});
-
-paella.dataDelegates = {};
-
 (function() {
 	let g_delegateCallbacks = {};
 	let g_dataDelegates = [];
+
+	class DataDelegate {
+		read(context,params,onSuccess) {
+			if (typeof(onSuccess)=='function') {
+				onSuccess({},true);
+			}
+		}
+
+		write(context,params,value,onSuccess) {
+			if (typeof(onSuccess)=='function') {
+				onSuccess({},true);
+			}
+		}
+
+		remove(context,params,onSuccess) {
+			if (typeof(onSuccess)=='function') {
+				onSuccess({},true);
+			}
+		}
+	}
+
+	paella.DataDelegate = DataDelegate;
+
+	paella.dataDelegates = {};
 
 	class Data {
 		get enabled() { return this._enabled; }
