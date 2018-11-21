@@ -15,116 +15,129 @@
 */
 
 
-Class ("paella.Node", {
-	identifier:'',
-	nodeList:null,
-	parent:null,
+(() => {
 
-	initialize:function(id) {
-		this.nodeList = {};
-		this.identifier = id;
-	},
-
-	addTo:function(parentNode) {
-		parentNode.addNode(this);
-	},
-
-	addNode:function(childNode) {
-		childNode.parent = this;
-		this.nodeList[childNode.identifier] = childNode;
-		return childNode;
-	},
-
-	getNode:function(id) {
-		return this.nodeList[id];
-	},
+	class Node {
+		get identifier() { return this._identifier; }
+		set identifier(id) { this._identifier = id; }
+		get nodeList() { return this._nodeList; }
+		get parent() { return this._parent; }
+		set parent(p) { this._parent = p; } 
 	
-	removeNode:function(childNode) {
-		if (this.nodeList[childNode.identifier]) {
-			delete this.nodeList[childNode.identifier];
-			return true;
+		constructor(id) {
+			this._nodeList = {};
+			this.identifier = id;
 		}
-		return false;
-	}
-});
-
-Class ("paella.DomNode", paella.Node,{
-	domElement:null,
-
-	initialize:function(elementType,id,style) {
-		this.parent(id);
-		this.domElement = document.createElement(elementType);
-		this.domElement.id = id;
-		if (style) $(this.domElement).css(style);
-	},
-
-	addNode:function(childNode) {
-		var returnValue = this.parent(childNode);
-		this.domElement.appendChild(childNode.domElement);
-		return returnValue;
-	},
-
-	onresize:function() {
-	},
 	
-	removeNode:function(childNode) {
-		if (this.parent(childNode)) {
-			this.domElement.removeChild(childNode.domElement);
+		addTo(parentNode) {
+			parentNode.addNode(this);
 		}
-	}
-});
-
-Class ("paella.Button", paella.DomNode,{
-	isToggle:false,
-
-	initialize:function(id,className,action,isToggle) {
-		this.isToggle = isToggle;
-		var style = {};
-		this.parent('div',id,style);
-		this.domElement.className = className;
-		if (isToggle) {
-			var thisClass = this;
-			$(this.domElement).click(function(event) {
-				thisClass.toggleIcon();
-			});
+	
+		addNode(childNode) {
+			childNode.parent = this;
+			this.nodeList[childNode.identifier] = childNode;
+			return childNode;
 		}
-		$(this.domElement).click('click',action);
-	},
 
-	isToggled:function() {
-		if (this.isToggle) {
-			var element = this.domElement;
-			return /([a-zA-Z0-9_]+)_active/.test(element.className);
+		getNode(id) {
+			return this.nodeList[id];
 		}
-		else {
+		
+		removeNode(childNode) {
+			if (this.nodeList[childNode.identifier]) {
+				delete this.nodeList[childNode.identifier];
+				return true;
+			}
 			return false;
 		}
-	},
-
-	toggle:function() {
-		this.toggleIcon();
-	},
-
-	toggleIcon:function() {
-		var element = this.domElement;
-		if (/([a-zA-Z0-9_]+)_active/.test(element.className)) {
-			element.className = RegExp.$1;
-		}
-		else {
-			element.className = element.className + '_active';
-		}
-
-	},
-
-	show:function() {
-		$(this.domElement).show();
-	},
-
-	hide:function() {
-		$(this.domElement).hide();
-	},
-
-	visible:function() {
-		return this.domElement.visible();
 	}
-});
+
+	paella.Node = Node;
+	
+	class DomNode extends paella.Node {
+		get domElement() { return this._domElement; }
+	
+		constructor(elementType,id,style) {
+			super(id);
+			this._domElement = document.createElement(elementType);
+			this.domElement.id = id;
+			if (style) this.style = style;
+		}
+
+		set style(s) { $(this.domElement).css(s); }
+	
+		addNode(childNode) {
+			let returnValue = super.addNode(childNode);
+			this.domElement.appendChild(childNode.domElement);
+			return returnValue;
+		}
+	
+		onresize() {
+		}
+		
+		removeNode(childNode) {
+			if (super.removeNode(childNode)) {
+				this.domElement.removeChild(childNode.domElement);
+			}
+		}
+	}
+
+	paella.DomNode = DomNode;
+	
+	class Button extends paella.DomNode {
+		get isToggle() { return this._isToggle; }
+		set isToggle(t) { this._isToggle = t; } 
+	
+		constructor(id,className,action,isToggle) {
+			var style = {};
+			super('div',id,style);
+			this.isToggle = isToggle;
+			this.domElement.className = className;
+			if (isToggle) {
+				$(this.domElement).click((event) => {
+					this.toggleIcon();
+				});
+			}
+			$(this.domElement).click('click',action);
+		}
+	
+		isToggled() {
+			if (this.isToggle) {
+				var element = this.domElement;
+				return /([a-zA-Z0-9_]+)_active/.test(element.className);
+			}
+			else {
+				return false;
+			}
+		}
+	
+		toggle() {
+			this.toggleIcon();
+		}
+	
+		toggleIcon() {
+			var element = this.domElement;
+			if (/([a-zA-Z0-9_]+)_active/.test(element.className)) {
+				element.className = RegExp.$1;
+			}
+			else {
+				element.className = element.className + '_active';
+			}
+		}
+	
+		show() {
+			$(this.domElement).show();
+		}
+	
+		hide() {
+			$(this.domElement).hide();
+		}
+	
+		visible() {
+			return this.domElement.visible();
+		}
+	}
+
+	paella.Button = Button;
+	
+})();
