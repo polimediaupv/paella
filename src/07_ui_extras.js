@@ -91,7 +91,8 @@
 
 			paella.pluginManager.setTarget('keyboard',this);
 
-			this._pluginList = [];
+			this._pluginList = []; 
+			
 		}
 
 		addPlugin(plugin) {

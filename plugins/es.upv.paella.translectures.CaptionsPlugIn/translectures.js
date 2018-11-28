@@ -1,6 +1,8 @@
 
-paella.plugins.translectures = {};
+(() => {
 
+paella.plugins.translectures = {};
+/*
 Class ("paella.captions.translectures.Caption", paella.captions.Caption, {
 	initialize: function(id, format, url, lang, editURL, next) {
 		this.parent(id, format, url, lang, next);
@@ -101,7 +103,7 @@ Class ("paella.captions.translectures.Caption", paella.captions.Caption, {
 	}
 });
 
-
+paella.captions.translectures.Caption = Caption;
 
 Class ("paella.plugins.translectures.CaptionsPlugIn", paella.EventDrivenPlugin, {
 		
@@ -165,5 +167,6 @@ Class ("paella.plugins.translectures.CaptionsPlugIn", paella.EventDrivenPlugin, 
 	}	
 });
 
-
-new paella.plugins.translectures.CaptionsPlugIn();
+//new paella.plugins.translectures.CaptionsPlugIn();
+*/
+})();
