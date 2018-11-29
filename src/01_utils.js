@@ -701,3 +701,19 @@ paella.AntiXSS = {
 			.replace(/&amp;/g, '&');
 	}
 };
+
+function paella_DeferredResolved(param) {
+	return new Promise((resolve) => {
+		resolve(param);
+	});
+}
+
+function paella_DeferredRejected(param) {
+	return new Promise((resolve,reject) => {
+		reject(param);
+	});
+}
+
+function paella_DeferredNotImplemented () {
+	return paella_DeferredRejected(new Error("not implemented"));
+}

@@ -31,7 +31,7 @@
 			if (base.userAgent.system.iOS)// ||
 			//	base.userAgent.browser.Safari)
 			{
-				return this.parent();
+				return super.load();
 			}
 			else {
 				let This = this;

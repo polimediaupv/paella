@@ -438,4 +438,4 @@
 		paella.initDelegate = initDelegate;
 		paellaPlayer = new PaellaPlayer(playerId,paella.initDelegate);
 	}
-})
+})();

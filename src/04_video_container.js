@@ -508,7 +508,7 @@ class VideoContainerBase extends paella.DomNode {
 		return true;
 	}
 
-	onresize() { this.parent(onresize);
+	onresize() { super.onresize(onresize);
 	}
 }
 

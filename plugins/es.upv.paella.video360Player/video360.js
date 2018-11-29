@@ -483,4 +483,4 @@ class Video360Factory extends paella.VideoFactory {
 
 paella.videoFactories.Video360Factory = Video360Factory;
 
-})()
+})();

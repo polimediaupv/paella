@@ -535,24 +535,6 @@ class VideoRect extends paella.DomNode {
 
 paella.VideoRect = VideoRect;
 
-function paella_DeferredResolved(param) {
-	return new Promise((resolve) => {
-		resolve(param);
-	});
-}
-
-function paella_DeferredRejected(param) {
-	return new Promise((resolve,reject) => {
-		reject(param);
-	});
-}
-
-function paella_DeferredNotImplemented () {
-	return paella_DeferredRejected(new Error("not implemented"));
-}
-
-
-
 class VideoElementBase extends paella.VideoRect {
 
 	constructor(id,stream,containerType,left,top,width,height) {
@@ -561,7 +543,6 @@ class VideoElementBase extends paella.VideoRect {
 		this._stream = stream;
 		this._ready = false;
 		this._autoplay = false;
-		this._stream = null;
 		this._videoQualityStrategy = null;
 		
 		if (this._stream.preview) this.setPosterFrame(this._stream.preview);
@@ -771,13 +752,13 @@ class Html5Video extends paella.VideoElementBase {
 		this.video.setAttribute("playsinline","");
 
 		function onProgress(event) {
-			if (!This._ready && This.video.readyState==4) {
-				This._ready = true;
-				if (This._initialCurrentTipe!==undefined) {
-					This.video.currentTime = This._initialCurrentTime;
-					delete This._initialCurrentTime;
+			if (!this._ready && this.video.readyState==4) {
+				this._ready = true;
+				if (this._initialCurrentTipe!==undefined) {
+					this.video.currentTime = this._initialCurrentTime;
+					delete this._initialCurrentTime;
 				}
-				This._callReadyEvent();
+				this._callReadyEvent();
 			}
 		}
 
