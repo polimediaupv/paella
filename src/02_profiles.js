@@ -153,13 +153,18 @@
         if (animate==undefined) animate = true;
         let getProfile = (content) => {
             let result = null;
-            profileData && profileData.videos.some((videoProfile) => {
-                if (videoProfile.content==content) {
-                    result = videoProfile;
-                }
-                return result!=null;
-            });
-            return result;
+            if (profileData.videos.length==1) {
+                return profileData.videos[0];
+            }
+            else {
+                profileData && profileData.videos.some((videoProfile) => {
+                    if (videoProfile.content==content) {
+                        result = videoProfile;
+                    }
+                    return result!=null;
+                });
+                return result;
+            }
         };
 
         let applyVideoRect = (profile,videoData,videoWrapper,player) => {
