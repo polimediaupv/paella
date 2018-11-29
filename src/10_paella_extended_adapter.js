@@ -14,7 +14,7 @@
 	permissions and limitations under the License.
 */
 
-
+/*
 Class ("paella.RightBarPlugin", paella.DeferredLoadPlugin,{
 	type:'rightBarPlugin',
 	getName:function() { return "es.upv.paella.RightBarPlugin"; },
@@ -185,3 +185,4 @@ Class ("paella.ExtendedAdapter", {
 
 
 paella.extendedAdapter = new paella.ExtendedAdapter();
+*/
