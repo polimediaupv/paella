@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 6.0.4
+
+  * Fix issues in stream video profiles
+
 * Paella 6.0.3
   
   * Fix issues in errorContainer size

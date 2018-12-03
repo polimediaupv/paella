@@ -151,12 +151,10 @@
 
     function applyProfileWithJson(profileData,animate) {
         if (animate==undefined) animate = true;
+        if (!profileData) return;
         let getProfile = (content) => {
             let result = null;
-            if (profileData.videos.length==1) {
-                return profileData.videos[0];
-            }
-            else {
+            
                 profileData && profileData.videos.some((videoProfile) => {
                     if (videoProfile.content==content) {
                         result = videoProfile;
@@ -164,7 +162,7 @@
                     return result!=null;
                 });
                 return result;
-            }
+            
         };
 
         let applyVideoRect = (profile,videoData,videoWrapper,player) => {
@@ -202,23 +200,37 @@
         profileData && showBackground.apply(this,[profileData.background]);
         hideButtons.apply(this);
         profileData && showButtons.apply(this,[profileData.buttons, profileData]);
-        this.streamProvider.videoStreams.forEach((streamData,index) => {
-            let profile = getProfile(streamData.content);
-            let player = this.streamProvider.videoPlayers[index];
-            let videoWrapper = this.videoWrappers[index];
+        if (this.streamProvider.videoStreams.length==1) {
+            let profile = paella.profiles.loadMonostreamProfile();
+            profile = profile && profile.videos && profile.videos.length>0 && profile.videos[0];
+            let player = this.streamProvider.videoPlayers[0];
+            let videoWrapper = this.videoWrappers[0];
             if (profile) {
                 player.getVideoData()
                     .then((data) => {
                         applyVideoRect(profile,data,videoWrapper,player);
-                    });
+                    })
             }
-            else if (videoWrapper) {
-                videoWrapper.setVisible(false,animate);
-                if (paella.player.videoContainer.streamProvider.mainAudioPlayer!=player) {
-                    player.disable();
+        }
+        else {
+            this.streamProvider.videoStreams.forEach((streamData,index) => {
+                let profile = getProfile(streamData.content);
+                let player = this.streamProvider.videoPlayers[index];
+                let videoWrapper = this.videoWrappers[index];
+                if (profile) {
+                    player.getVideoData()
+                        .then((data) => {
+                            applyVideoRect(profile,data,videoWrapper,player);
+                        });
                 }
-            }
-        });
+                else if (videoWrapper) {
+                    videoWrapper.setVisible(false,animate);
+                    if (paella.player.videoContainer.streamProvider.mainAudioPlayer!=player) {
+                        player.disable();
+                    }
+                }
+            });
+        }
     }
 
 	class Profiles {
