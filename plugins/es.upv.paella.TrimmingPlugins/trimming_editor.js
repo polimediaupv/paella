@@ -1,3 +1,4 @@
+/*
 paella.plugins.TrimmingTrackPlugin = Class.create(paella.editor.MainTrackPlugin,{
 	trimmingTrack:null,
 	trimmingData:{s:0,e:0},
@@ -95,3 +96,4 @@ paella.plugins.TrimmingTrackPlugin = Class.create(paella.editor.MainTrackPlugin,
 
 paella.plugins.trimmingTrackPlugin = new paella.plugins.TrimmingTrackPlugin();
 
+*/

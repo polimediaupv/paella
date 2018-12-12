@@ -18,11 +18,8 @@
 
 (function(){
 
-
-var captionParserManager = new (Class ({
-	_formats: {},
-	
-	addPlugin: function(plugin) {
+class CaptionParserManager {
+	addPlugin(plugin) {
 		var self = this;
 		var ext = plugin.ext;
 		
@@ -38,33 +35,36 @@ var captionParserManager = new (Class ({
 				self._formats[f] = plugin;
 			});
 		}
-	},
-	initialize: function() {
+	}
+
+	constructor() {
+		this._formats = {};
 		paella.pluginManager.setTarget('captionParser', this);	
 	}
-}))();
+}
 
+let captionParserManager = new CaptionParserManager();
 
-var SearchCallback = Class (base.AsyncLoaderCallback, {
-	initialize: function(caption, text) {
+class SearchCallback extends base.AsyncLoaderCallback {
+	constructor(caption, text) {
+		super();
 		this.name = "captionSearchCallback";
 		this.caption = caption;
 		this.text = text;
-	},
+	}
 
-	load: function(onSuccess, onError) {
-		var self = this;
-		this.caption.search(this.text, function(err, result) {
+	load(onSuccess, onError) {
+		this.caption.search(this.text, (err, result) => {
 			if (err) {
 				onError();
 			}
 			else {
-				self.result = result;
+				this.result = result;
 				onSuccess();
 			}
 		});
 	}
-});
+}
 
 paella.captions = {
 	parsers: {},
@@ -145,8 +145,8 @@ paella.captions = {
 };
 
 
-Class ("paella.captions.Caption", {
-	initialize: function(id, format, url, lang, next) {
+class Caption {
+	constructor(id, format, url, lang, next) {
 		this._id = id;
 		this._format = format;
 		this._url = url;
@@ -161,18 +161,18 @@ Class ("paella.captions.Caption", {
 		this._captionsProvider = "downloadCaptionsProvider";
 		
 		this.reloadCaptions(next);
-	},
+	}
 	
-	canEdit: function(next) {
+	canEdit(next) {
 		// next(err, canEdit)
 		next(false, false);
-	},
+	}
 	
-	goToEdit: function() {	
+	goToEdit() {	
 	
-	},	
+	}
 	
-	reloadCaptions: function(next) {
+	reloadCaptions(next) {
 		var self = this;
 	
 	
@@ -217,13 +217,13 @@ Class ("paella.captions.Caption", {
 			base.log.debug("Error loading captions: " + self._url);
 				if (next) { next(true); }
 		});
-	},
+	}
 	
-	getCaptions: function() {
+	getCaptions() {
 		return this._captions;	
-	},
+	}
 	
-	getCaptionAtTime: function(time) {
+	getCaptionAtTime(time) {
 		if (this._captions != undefined) {
 			for (var i=0; i<this._captions.length; ++i) {			
 				var l_cap = this._captions[i];
@@ -233,9 +233,9 @@ Class ("paella.captions.Caption", {
 			}
 		}
 		return undefined;		
-	},
+	}
 	
-	getCaptionById: function(id) {
+	getCaptionById(id) {
 		if (this._captions != undefined) {
 			for (var i=0; i<this._captions.length; ++i) {			
 				let l_cap = this._captions[i];
@@ -245,9 +245,9 @@ Class ("paella.captions.Caption", {
 			}
 		}
 		return undefined;
-	},
+	}
 	
-	search: function(txt, next) {
+	search(txt, next) {
 		var self = this;	
 		if (this._index == undefined) {
 			if (next) {
@@ -266,26 +266,32 @@ Class ("paella.captions.Caption", {
 						results.push({time: c.begin, content: c.content, score: s.score});
 					});		
 					if (next) {
-					next(false, results);
-				}
+						next(false, results);
+					}
 				});
 		}
 	}	
-});
+}
 
+paella.captions.Caption = Caption;
 
-
-
-Class ("paella.CaptionParserPlugIn", paella.FastLoadPlugin, {
-	type:'captionParser',
-	getIndex: function() {return -1;},
+class CaptionParserPlugIn extends paella.FastLoadPlugin {
+	get type() { return 'captionParser'; }
+	getIndex() {return -1;}
 	
-	ext: [],
-	parse: function(content, lang, next) {
+	get ext() {
+		if (!this._ext) {
+			this._ext = [];
+		}
+		return this._ext;
+	}
+
+	parse(content, lang, next) {
 		throw new Error('paella.CaptionParserPlugIn#parse must be overridden by subclass');
 	}
-});
+}
 
+paella.CaptionParserPlugIn = CaptionParserPlugIn;
 
 
 }());

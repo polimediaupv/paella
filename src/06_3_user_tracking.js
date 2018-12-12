@@ -18,35 +18,35 @@
 (function(){
 
 
-var userTrackingManager = new (Class ({
+var userTrackingManager = {
 	_plugins: [],
 
 	addPlugin: function(plugin) {
-		var self = this;
-		plugin.checkEnabled(function(isEnabled) {
+		plugin.checkEnabled((isEnabled) => {
 			if (isEnabled) {
 				plugin.setup();
-				self._plugins.push(plugin);
+				this._plugins.push(plugin);
 			}
 		});
 	},
 	initialize: function() {
 		paella.pluginManager.setTarget('userTrackingSaverPlugIn', this);
 	}
-}))();
-
+};
 
 paella.userTracking = {};
 
-Class ("paella.userTracking.SaverPlugIn", paella.FastLoadPlugin, {
-	type:'userTrackingSaverPlugIn',
-	getIndex: function() {return -1;},
-	checkEnabled:function(onSuccess) { onSuccess(true); },
+class SaverPlugIn extends paella.FastLoadPlugin {
+	get type() { return 'userTrackingSaverPlugIn'; }
+	getIndex() { return -1; }
+	checkEnabled(onSuccess) { onSuccess(true); }
 
-	log: function(event, params) {
+	log(event, params) {
 		throw new Error('paella.userTracking.SaverPlugIn#log must be overridden by subclass');
 	}
-});
+}
+
+paella.userTracking.SaverPlugIn = SaverPlugIn;
 
 
 var evsentsToLog = {};
@@ -69,23 +69,37 @@ paella.userTracking.log = function(event, params) {
 // Log automatic events
 //////////////////////////////////////////////////////////
 // Log simple events
-[paella.events.play, paella.events.pause, paella.events.endVideo,
-paella.events.showEditor, paella.events.hideEditor,
-paella.events.enterFullscreen, paella.events.exitFullscreen, paella.events.loadComplete].forEach(function(event){
+[
+	paella.events.play,
+	paella.events.pause,
+	paella.events.endVideo,
+	paella.events.showEditor,
+	paella.events.hideEditor,
+	paella.events.enterFullscreen,
+	paella.events.exitFullscreen,
+	paella.events.loadComplete
+].forEach(function(event){
 	paella.events.bind(event, function(ev, params) {
 		paella.userTracking.log(event);
 	});
 });
 
 // Log show/hide PopUp
-[paella.events.showPopUp, paella.events.hidePopUp].forEach(function(event){
+[
+	paella.events.showPopUp,
+	paella.events.hidePopUp]
+.forEach(function(event){
 	paella.events.bind(event, function(ev, params) {
 		paella.userTracking.log(event, params.identifier);
 	});
 });
 
 // Log captions Events
-[/*paella.events.captionAdded,*/ paella.events.captionsEnabled, paella.events.captionsDisabled].forEach(function(event){
+[
+	// paella.events.captionAdded, 
+	paella.events.captionsEnabled,
+	paella.events.captionsDisabled
+].forEach(function(event){
 	paella.events.bind(event, function(ev, params) {
 		var log;
 		if (params != undefined) {
@@ -97,7 +111,9 @@ paella.events.enterFullscreen, paella.events.exitFullscreen, paella.events.loadC
 });
 
 // Log setProfile
-[paella.events.setProfile].forEach(function(event){
+[
+	paella.events.setProfile
+].forEach(function(event){
 	paella.events.bind(event, function(ev, params) {
 		paella.userTracking.log(event, params.profileName);
 	});
@@ -105,7 +121,10 @@ paella.events.enterFullscreen, paella.events.exitFullscreen, paella.events.loadC
 
 
 // Log seek events
-[paella.events.seekTo, paella.events.seekToTime].forEach(function(event){
+[
+	paella.events.seekTo,
+	paella.events.seekToTime
+].forEach(function(event){
 	paella.events.bind(event, function(ev, params) {
 		var log;
 		try {
@@ -120,7 +139,12 @@ paella.events.enterFullscreen, paella.events.exitFullscreen, paella.events.loadC
 
 
 // Log param events
-[paella.events.setVolume, paella.events.resize, paella.events.setPlaybackRate, paella.events.qualityChanged].forEach(function(event){
+[
+	paella.events.setVolume,
+	paella.events.resize,
+	paella.events.setPlaybackRate,
+	paella.events.qualityChanged
+].forEach(function(event){
 	paella.events.bind(event, function(ev, params) {
 		var log;
 		try {

@@ -19,44 +19,45 @@
 (function(){
 
 
-var searchServiceManager = new (Class ({
+var searchServiceManager = {
 	_plugins: [],
 	
 	addPlugin: function(plugin) {
 		this._plugins.push(plugin);
 	},
+
 	initialize: function() {
 		paella.pluginManager.setTarget('SearchServicePlugIn', this);	
 	}
-}))();
+};
 
 
-var SearchCallback = Class (base.AsyncLoaderCallback, {
-	initialize: function(plugin, text) {
+class SearchCallback extends base.AsyncLoaderCallback {
+	constructor(plugin, text) {
+		super();
 		this.name = "searchCallback";
 		this.plugin = plugin;
 		this.text = text;
-	},
+	}
 
-	load: function(onSuccess, onError) {
-		var self = this;
-		this.plugin.search(this.text, function(err, result) {
+	load(onSuccess, onError) {
+		this.plugin.search(this.text, (err, result) => {
 			if (err) {
 				onError();
 			}
 			else {
-				self.result = result;
+				this.result = result;
 				onSuccess();
 			}
 		});
 	}
-});
+}
 
 
 paella.searchService = {
 	
 	search: function(text, next) {
-		var asyncLoader = new base.AsyncLoader();
+		let asyncLoader = new base.AsyncLoader();
 		
 		paella.userTracking.log("paella:searchService:search", text);
 		
@@ -79,15 +80,15 @@ paella.searchService = {
 };
 
 
-
-Class ("paella.SearchServicePlugIn", paella.FastLoadPlugin, {
-	type:'SearchServicePlugIn',
-	getIndex: function() {return -1;},
+class SearchServicePlugIn extends paella.FastLoadPlugin {
+	get type() { return 'SearchServicePlugIn'; }
+	getIndex() {return -1;}
 	
-	search: function(text, next) {
+	search(text, next) {
 		throw new Error('paella.SearchServicePlugIn#search must be overridden by subclass');
 	}
-});
+}
 
+paella.SearchServicePlugIn = SearchServicePlugIn;
 
 }());

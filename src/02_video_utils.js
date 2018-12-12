@@ -113,53 +113,54 @@
 
 	paella.LimitedBestFitVideoQualityStrategy = LimitedBestFitVideoQualityStrategy;
 
-})();
-
-
-
-Class ("paella.VideoFactory", {
-	isStreamCompatible:function(streamData) {
-		return false;
-	},
-
-	getVideoObject:function(id, streamData, rect) {
-		return null;
+	class VideoFactory {
+		isStreamCompatible(streamData) {
+			return false;
+		}
+	
+		getVideoObject(id, streamData, rect) {
+			return null;
+		}
 	}
-});
 
-paella.videoFactory = {
-	_factoryList:[],
+	paella.VideoFactory = VideoFactory;
+	paella.videoFactories = paella.videoFactories || {};
 
-	initFactories:function() {
-		if (paella.videoFactories) {
-			var This = this;
-			paella.player.config.player.methods.forEach(function(method) {
-				if (method.enabled && paella.videoFactories[method.factory]) {
-					This.registerFactory(new paella.videoFactories[method.factory]());
-				}
-			});
-			this.registerFactory(new paella.videoFactories.EmptyVideoFactory());
-		}
-	},
-
-	getVideoObject:function(id, streamData, rect) {
-		if (this._factoryList.length==0) {
-			this.initFactories();
-		}
-		var selectedFactory = null;
-		if (this._factoryList.some(function(factory) {
-			if (factory.isStreamCompatible(streamData)) {
-				selectedFactory = factory;
-				return true;
+	paella.videoFactory = {
+		_factoryList:[],
+	
+		initFactories:function() {
+			if (paella.videoFactories) {
+				var This = this;
+				paella.player.config.player.methods.forEach(function(method) {
+					if (method.enabled && paella.videoFactories[method.factory]) {
+						This.registerFactory(new paella.videoFactories[method.factory]());
+					}
+				});
+				this.registerFactory(new paella.videoFactories.EmptyVideoFactory());
 			}
-		})) {
-			return selectedFactory.getVideoObject(id, streamData, rect);
+		},
+	
+		getVideoObject:function(id, streamData, rect) {
+			if (this._factoryList.length==0) {
+				this.initFactories();
+			}
+			var selectedFactory = null;
+			if (this._factoryList.some(function(factory) {
+				if (factory.isStreamCompatible(streamData)) {
+					selectedFactory = factory;
+					return true;
+				}
+			})) {
+				return selectedFactory.getVideoObject(id, streamData, rect);
+			}
+			return null;
+		},
+	
+		registerFactory:function(factory) {
+			this._factoryList.push(factory);
 		}
-		return null;
-	},
-
-	registerFactory:function(factory) {
-		this._factoryList.push(factory);
-	}
-};
-
+	};
+	
+	
+})();

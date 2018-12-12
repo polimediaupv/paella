@@ -16,13 +16,14 @@
 
 (function() {
 
-	Class ("paella.LoaderContainer", paella.DomNode,{
-		timer:null,
-		loader:null,
-		loaderPosition:0,
+	class LoaderContainer extends paella.DomNode {
 	
-		initialize:function(id) {
-			this.parent('div',id,{position:'fixed',backgroundColor:'white',opacity:'0.7',top:'0px',left:'0px',right:'0px',bottom:'0px',zIndex:10000});
+		constructor(id) {
+			super('div',id,{position:'fixed',backgroundColor:'white',opacity:'0.7',top:'0px',left:'0px',right:'0px',bottom:'0px',zIndex:10000});
+			this.timer = null;
+			this.loader = null;
+			this.loaderPosition = 0;
+
 			this.loader = this.addNode(new paella.DomNode('i','',{
 				width: "100px",
 				height: "100px",
@@ -44,13 +45,15 @@
 				this.loaderPosition+=45;
 			},250);
 			this.timer.repeat = true;
-		},
+		}
 	
-		loadComplete:function(params) {
+		loadComplete(params) {
 			$(this.domElement).hide();
 			this.timer.repeat = false;
 		}
-	});
+	}
+
+	paella.LoaderContainer = LoaderContainer;
 	
 	paella.Keys = {
 		Space:32,
@@ -61,15 +64,17 @@
 		A:65,B:66,C:67,D:68,E:69,F:70,G:71,H:72,I:73,J:74,K:75,L:76,M:77,N:78,O:79,P:80,Q:81,R:82,S:83,T:84,U:85,V:86,W:87,X:88,Y:89,Z:90
 	};
 
-	Class ("paella.KeyPlugin", paella.FastLoadPlugin, {
-		type:'keyboard',
+	class KeyPlugin extends paella.FastLoadPlugin {
+		get type() { return 'keyboard'; }
 
-		onKeyPress:function(key) {
+		onKeyPress(key) {
 			console.log(key);
 			return false;
 		}
-	});
-	
+	}
+
+	paella.KeyPlugin = KeyPlugin;
+
 	class KeyManager {
 		get isPlaying() { return this._isPlaying; }
 		set isPlaying(p) { this._isPlaying = p; }
@@ -86,7 +91,8 @@
 
 			paella.pluginManager.setTarget('keyboard',this);
 
-			this._pluginList = [];
+			this._pluginList = []; 
+			
 		}
 
 		addPlugin(plugin) {
@@ -117,7 +123,7 @@
 			});
 		}
 	}
-	
+
 	paella.keyManager = new KeyManager();
 
 })();

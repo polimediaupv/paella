@@ -1,4 +1,5 @@
 
+(() => {
 
 function buildVideo360ThetaCanvas(stream, canvas) {
 	function cyln2world(a, e) {
@@ -239,15 +240,15 @@ class Video360ThetaCanvas extends bg.app.WindowController {
 	return controller.loaded();
 }
 
-Class ("paella.Video360Theta", paella.VideoElementBase,{
-	_posterFrame:null,
-	_currentQuality:null,
-	_autoplay:false,
-	_streamName:null,
+class Video360Theta extends paella.VideoElementBase {
 
-	initialize:function(id,stream,left,top,width,height,streamName) {
-		//this.parent(id,stream,'canvas',left,top,width,height);
-		this.parent(id,stream,'canvas',0,0,1280,720);
+	constructor(id,stream,left,top,width,height,streamName) {
+		super(id,stream,'canvas',0,0,1280,720);
+		this._posterFrame = null;
+		this._currentQuality = null;
+		this._autoplay = false;
+		this._streamName = null;
+
 		this._streamName = streamName || 'video360theta';
 		var This = this;
 
@@ -285,21 +286,21 @@ Class ("paella.Video360Theta", paella.VideoElementBase,{
 			onUpdateSize();
 		},500);
 		timer.repeat = true;
-	},
+	}
 
-	defaultProfile:function() {
+	defaultProfile() {
 		return 'chroma';
-	},
+	}
 
-	_setVideoElem:function(video) {
+	_setVideoElem(video) {
 		$(this.video).bind('progress', evtCallback);
 		$(this.video).bind('loadstart',evtCallback);
 		$(this.video).bind('loadedmetadata',evtCallback);
         $(this.video).bind('canplay',evtCallback);
 		$(this.video).bind('oncanplay',evtCallback);
-	},
+	}
 
-	_loadDeps:function() {
+	_loadDeps() {
 		return new Promise((resolve,reject) => {
 			if (!window.$paella_bg2e) {
 				paella.require(paella.baseUrl + 'resources/deps/bg2e.js')
@@ -316,10 +317,9 @@ Class ("paella.Video360Theta", paella.VideoElementBase,{
 				defer.resolve(window.$paella_bg2e);
 			}	
 		});
-	},
+	}
 
-
-	_deferredAction:function(action) {
+	_deferredAction(action) {
 		return new Promise((resolve,reject) => {
 			if (this.video) {
 				resolve(action());
@@ -331,9 +331,9 @@ Class ("paella.Video360Theta", paella.VideoElementBase,{
 				});
 			}
 		});
-	},
+	}
 
-	_getQualityObject:function(index, s) {
+	_getQualityObject(index, s) {
 		return {
 			index: index,
 			res: s.res,
@@ -342,14 +342,14 @@ Class ("paella.Video360Theta", paella.VideoElementBase,{
 			shortLabel:function() { return this.res.h + "p"; },
 			compare:function(q2) { return this.res.w*this.res.h - q2.res.w*q2.res.h; }
 		};
-	},
+	}
 
 	// Initialization functions
 	allowZoom() {
 		return false;
-	},
+	}
 	
-	getVideoData:function() {
+	getVideoData() {
 		var This = this;
 		return new Promise((resolve,reject) => {
 			this._deferredAction(() => {
@@ -366,20 +366,20 @@ Class ("paella.Video360Theta", paella.VideoElementBase,{
 				});
 			});
 		});
-	},
+	}
 	
-	setPosterFrame:function(url) {
+	setPosterFrame(url) {
 		this._posterFrame = url;
-	},
+	}
 
-	setAutoplay:function(auto) {
+	setAutoplay(auto) {
 		this._autoplay = auto;
 		if (auto && this.video) {
 			this.video.setAttribute("autoplay",auto);
 		}
-	},
+	}
 
-	load:function() {
+	load() {
 		var This = this;
 		return new Promise((resolve,reject) => {
 			this._loadDeps() 
@@ -407,9 +407,9 @@ Class ("paella.Video360Theta", paella.VideoElementBase,{
 					}
 				});
 		});
-	},
+	}
 
-	getQualities:function() {
+	getQualities() {
 		return new Promise((resolve,reject) => {
 			setTimeout(() => {
 				var result = [];
@@ -422,9 +422,9 @@ Class ("paella.Video360Theta", paella.VideoElementBase,{
 				resolve(result);
 			},10);
 		});
-	},
+	}
 
-	setQuality:function(index) {
+	setQuality(index) {
 		return new Promise((resolve) => {
 			var paused = this.video.paused;
 			var sources = this._stream.sources[this._streamName];
@@ -449,41 +449,41 @@ Class ("paella.Video360Theta", paella.VideoElementBase,{
 					this.video.currentTime = currentTime;
 				});
 		});
-	},
+	}
 
-	getCurrentQuality:function() {
+	getCurrentQuality() {
 		return new Promise((resolve) => {	
 			resolve(this._getQualityObject(this._currentQuality,this._stream.sources[this._streamName][this._currentQuality]));
 		});
-	},
+	}
 
-	play:function() {
+	play() {
         return this._deferredAction(() => {
 			bg.app.MainLoop.singleton.updateMode = bg.app.FrameUpdate.AUTO;
             this.video.play();
         });
-	},
+	}
 
-	pause:function() {
+	pause() {
         return this._deferredAction(() => {
 			bg.app.MainLoop.singleton.updateMode = bg.app.FrameUpdate.MANUAL;
             this.video.pause();
         });
-	},
+	}
 
-	isPaused:function() {
+	isPaused() {
         return this._deferredAction(() => {
             return this.video.paused;
         });
-	},
+	}
 
-	duration:function() {
+	duration() {
         return this._deferredAction(() => {
             return this.video.duration;
         });
-	},
+	}
 
-	setCurrentTime:function(time) {
+	setCurrentTime(time) {
         return this._deferredAction(() => {
             this.video.currentTime = time;
 			$(this.video).on('seeked',() => {
@@ -491,39 +491,39 @@ Class ("paella.Video360Theta", paella.VideoElementBase,{
 				$(this.video).off('seeked');
 			});
         });
-	},
+	}
 
-	currentTime:function() {
+	currentTime() {
         return this._deferredAction(() => {
             return this.video.currentTime;
         });
-	},
+	}
 
-	setVolume:function(volume) {
+	setVolume(volume) {
         return this._deferredAction(() => {
             this.video.volume = volume;
         });
-	},
+	}
 
-	volume:function() {
+	volume() {
 		return this._deferredAction(() => {
             return this.video.volume;
         });
-	},
+	}
 
-	setPlaybackRate:function(rate) {
+	setPlaybackRate(rate) {
 		return this._deferredAction(() => {
             this.video.playbackRate = rate;
         });
-	},
+	}
 
-	playbackRate: function() {
+	playbackRate() {
         return this._deferredAction(() => {
             return this.video.playbackRate;
         });
-	},
+	}
 
-	goFullScreen:function() {
+	goFullScreen() {
 		return this._deferredAction(() => {
 			var elem = this.video;
 			if (elem.requestFullscreen) {
@@ -539,34 +539,35 @@ Class ("paella.Video360Theta", paella.VideoElementBase,{
 				elem.webkitEnterFullscreen();
 			}
 		});
-	},
+	}
 
-
-	unFreeze:function(){
+	unFreeze(){
 		return this._deferredAction(() => {
 			var c = document.getElementById(this.video.className + "canvas");
 			$(c).remove();
 		});
-	},
+	}
 	
-	freeze:function(){
+	freeze(){
 		var This = this;
 		return this._deferredAction(function() {});
-	},
+	}
 
-	unload:function() {
+	unload() {
 		this._callUnloadEvent();
 		return paella_DeferredNotImplemented();
-	},
+	}
 
-	getDimensions:function() {
+	getDimensions() {
 		return paella_DeferredNotImplemented();
 	}
-});
+}
+
+paella.Video360Theta = Video360Theta;
 
 
-Class ("paella.videoFactories.Video360ThetaFactory", {
-	isStreamCompatible:function(streamData) {
+class Video360ThetaFactory extends paella.VideoFactory {
+	isStreamCompatible(streamData) {
 		try {
 			if (paella.ChromaVideo._loaded) {
 				return false;
@@ -582,11 +583,15 @@ Class ("paella.videoFactories.Video360ThetaFactory", {
 		}
 		catch (e) {}
 		return false;
-	},
+	}
 
-	getVideoObject:function(id, streamData, rect) {
+	getVideoObject(id, streamData, rect) {
 		paella.ChromaVideo._loaded = true;
 		++paella.videoFactories.Html5VideoFactory.s_instances;
 		return new paella.Video360Theta(id, streamData, rect.x, rect.y, rect.w, rect.h);
 	}
-});
+}
+
+paella.videoFactories.Video360ThetaFactory = Video360ThetaFactory;
+
+})();

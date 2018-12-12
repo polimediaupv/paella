@@ -1,3 +1,4 @@
+/*
 paella.addPlugin(function() {
 
 	return class DescriptionPlugin extends paella.TabBarPlugin {
@@ -26,3 +27,4 @@ paella.addPlugin(function() {
 		}
 	}
 })
+*/

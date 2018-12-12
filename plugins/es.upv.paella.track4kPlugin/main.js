@@ -214,7 +214,6 @@ paella.addDataDelegate("cameraTrack",() => {
             }
 
             setup() {
-                console.log(this.config)
                 if (this.config.autoModeByDefault) {
                     this.zoomAuto()
                 }

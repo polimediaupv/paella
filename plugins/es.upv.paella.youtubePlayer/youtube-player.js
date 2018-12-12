@@ -1,25 +1,21 @@
-/**
- * Created by fernando on 13/4/16.
- */
-Class ("paella.YoutubeVideo", paella.VideoElementBase,{
-	_posterFrame:null,
-	_currentQuality:null,
-	_autoplay:false,
 
-	_readyPromise:null,
+(() => {
+	
+class YoutubeVideo extends paella.VideoElementBase {
 
-	initialize:function(id,stream,left,top,width,height) {
-		this.parent(id,stream,'div',left,top,width,height);
-		var This = this;
+	constructor(id,stream,left,top,width,height) {
+		super(id,stream,'div',left,top,width,height);
+		this._posterFrame = null;
+		this._currentQuality = null;
+		this._autoplay = false;
+		this._readyPromise = null;
+
 		this._readyPromise = $.Deferred();
+	}
 
-		Object.defineProperty(this, 'video', {
-			get:function() { return This._youtubePlayer; }
-		});
-	},
+	get video() { return this._youtubePlayer; }
 
-
-	_deferredAction:function(action) {
+	_deferredAction(action) {
 		return new Promise((resolve,reject) => {
 			this._readyPromise.then(function() {
 					resolve(action());
@@ -28,9 +24,9 @@ Class ("paella.YoutubeVideo", paella.VideoElementBase,{
 					reject();
 				});
 		});
-	},
+	}
 
-	_getQualityObject:function(index, s) {
+	_getQualityObject(index, s) {
 		var level = 0;
 		switch (s) {
 			case 'small':
@@ -63,14 +59,14 @@ Class ("paella.YoutubeVideo", paella.VideoElementBase,{
 			shortLabel:function() { return this.label; },
 			compare:function(q2) { return this.level - q2.level; }
 		};
-	},
+	}
 
-	_onStateChanged:function(e) {
+	_onStateChanged(e) {
 		console.log("On state changed");
-	},
+	}
 
 	// Initialization functions
-	getVideoData:function() {
+	getVideoData() {
 		var This = this;
 		return new Promise((resolve,reject) => {
 			var stream = this._stream.sources.youtube[0];
@@ -89,18 +85,18 @@ Class ("paella.YoutubeVideo", paella.VideoElementBase,{
 				resolve(videoData);
 			})
 		});
-	},
+	}
 
-	setPosterFrame:function(url) {
+	setPosterFrame(url) {
 		this._posterFrame = url;
-	},
+	}
 
-	setAutoplay:function(auto) {
+	setAutoplay(auto) {
 		this._autoplay = auto;
 
-	},
+	}
 
-	setRect:function(rect,animate) {
+	setRect(rect,animate) {
 		this._rect = JSON.parse(JSON.stringify(rect));
 		var relativeSize = new paella.RelativeVideoSize();
 		var percentTop = relativeSize.percentVSize(rect.top) + '%';
@@ -122,9 +118,9 @@ Class ("paella.YoutubeVideo", paella.VideoElementBase,{
 			$('#' + this.identifier).css(style);
 			paella.events.trigger(paella.events.setComposition, { video:this });
 		}
-	},
+	}
 
-	setVisible:function(visible,animate) {
+	setVisible(visible,animate) {
 		if (visible=="true" && animate) {
 			$('#' + this.identifier).show();
 			$('#' + this.identifier).animate({opacity:1.0},300);
@@ -138,13 +134,13 @@ Class ("paella.YoutubeVideo", paella.VideoElementBase,{
 		else if (visible=="false" && !animate) {
 			$('#' + this.identifier).hide();
 		}
-	},
+	}
 
-	setLayer:function(layer) {
+	setLayer(layer) {
 		$('#' + this.identifier).css({ zIndex:layer});
-	},
+	}
 
-	load:function() {
+	load() {
 		var This = this;
 		return new Promise((resolve,reject) => {
 			this._qualityListReadyPromise = $.Deferred();
@@ -182,9 +178,9 @@ Class ("paella.YoutubeVideo", paella.VideoElementBase,{
 					}
 				});
 		});
-	},
+	}
 
-	getQualities:function() {
+	getQualities() {
 		let This = this;
 		return new Promise((resolve,reject) => {
 			This._qualityListReadyPromise.then(function(q) {
@@ -199,9 +195,9 @@ Class ("paella.YoutubeVideo", paella.VideoElementBase,{
 				resolve(result);
 			});
 		});
-	},
+	}
 
-	setQuality:function(index) {
+	setQuality(index) {
 		return new Promise((resolve,reject) => {
 			this._qualityListReadyPromise.then((q) => {
 				for (var key in this._qualities) {
@@ -214,17 +210,17 @@ Class ("paella.YoutubeVideo", paella.VideoElementBase,{
 				resolve();
 			});
 		});
-	},
+	}
 
-	getCurrentQuality:function() {
+	getCurrentQuality() {
 		return new Promise((resolve,reject) => {
 			this._qualityListReadyPromise.then((q) => {
 				resolve(this._qualities[this.video.getPlaybackQuality()]);
 			});
 		});
-	},
+	}
 
-	play:function() {
+	play() {
 		let This = this;
 		return new Promise((resolve,reject) => {
 			This._playing = true;
@@ -241,64 +237,64 @@ Class ("paella.YoutubeVideo", paella.VideoElementBase,{
 				}
 			},500);
 		});
-	},
+	}
 
-	pause:function() {
+	pause() {
 		return this._deferredAction(() => {
 			this._playing = false;
 			this.video.pauseVideo();
 		});
-	},
+	}
 
-	isPaused:function() {
+	isPaused() {
 		return this._deferredAction(() => {
 			return !this._playing;
 		});
-	},
+	}
 
-	duration:function() {
+	duration() {
 		return this._deferredAction(() => {
 			return this.video.getDuration();
 		});
-	},
+	}
 
-	setCurrentTime:function(time) {
+	setCurrentTime(time) {
 		return this._deferredAction(() => {
 			this.video.seekTo(time);
 		});
-	},
+	}
 
-	currentTime:function() {
+	currentTime() {
 		return this._deferredAction(() => {
 			return this.video.getCurrentTime();
 		});
-	},
+	}
 
-	setVolume:function(volume) {
+	setVolume(volume) {
 		return this._deferredAction(() => {
 			this.video.setVolume && this.video.setVolume(volume * 100);
 		});
-	},
+	}
 
-	volume:function() {
+	volume() {
 		return this._deferredAction(() => {
 			return this.video.getVolume() / 100;
 		});
-	},
+	}
 
-	setPlaybackRate:function(rate) {
+	setPlaybackRate(rate) {
 		return this._deferredAction(() => {
 			this.video.playbackRate = rate;
 		});
-	},
+	}
 
-	playbackRate: function() {
+	playbackRate() {
 		return this._deferredAction(() => {
 			return this.video.playbackRate;
 		});
-	},
+	}
 
-	goFullScreen:function() {
+	goFullScreen() {
 		return this._deferredAction(() => {
 			var elem = this.video;
 			if (elem.requestFullscreen) {
@@ -314,17 +310,16 @@ Class ("paella.YoutubeVideo", paella.VideoElementBase,{
 				elem.webkitEnterFullscreen();
 			}
 		});
-	},
+	}
 
-
-	unFreeze:function(){
+	unFreeze(){
 		return this._deferredAction(() => {
 			var c = document.getElementById(this.video.className + "canvas");
 			$(c).remove();
 		});
-	},
+	}
 
-	freeze:function(){
+	freeze(){
 		return this._deferredAction(() => {
 			var canvas = document.createElement("canvas");
 			canvas.id = this.video.className + "canvas";
@@ -337,20 +332,22 @@ Class ("paella.YoutubeVideo", paella.VideoElementBase,{
 			ctx.drawImage(this.video, 0, 0, Math.ceil(canvas.width/16)*16, Math.ceil(canvas.height/16)*16);//Draw image
 			this.video.parentElement.appendChild(canvas);
 		});
-	},
+	}
 
-	unload:function() {
+	unload() {
 		this._callUnloadEvent();
 		return paella_DeferredNotImplemented();
-	},
+	}
 
-	getDimensions:function() {
+	getDimensions() {
 		return paella_DeferredNotImplemented();
 	}
-});
+}
 
-Class ("paella.videoFactories.YoutubeVideoFactory", {
-	initYoutubeApi:function() {
+paella.YoutubeVideo = YoutubeVideo;
+
+class YoutubeVideoFactory extends paella.VideoFactory {
+	initYoutubeApi() {
 		if (!this._initialized) {
 			var tag = document.createElement('script');
 
@@ -363,9 +360,9 @@ Class ("paella.videoFactories.YoutubeVideoFactory", {
 			};
 			this._initialized = true;
 		}
-	},
+	}
 
-	isStreamCompatible:function(streamData) {
+	isStreamCompatible(streamData) {
 		try {
 			for (var key in streamData.sources) {
 				if (key=='youtube') return true;
@@ -373,20 +370,25 @@ Class ("paella.videoFactories.YoutubeVideoFactory", {
 		}
 		catch (e) {}
 		return false;
-	},
+	}
 
-	getVideoObject:function(id, streamData, rect) {
+	getVideoObject(id, streamData, rect) {
 		this.initYoutubeApi();
 		return new paella.YoutubeVideo(id, streamData, rect.x, rect.y, rect.w, rect.h);
 	}
-});
+}
+
+paella.videoFactories.YoutubeVideoFactory = YoutubeVideoFactory;
 
 //paella.youtubePlayerVars = {
 //	apiReadyPromise: $.Promise()
 //};
 
+
+})();
+
+
 function onYouTubeIframeAPIReady() {
-//	console.log("Youtube iframe API ready");
+	//	console.log("Youtube iframe API ready");
 	paella.youtubePlayerVars.apiReadyPromise.resolve();
 }
-

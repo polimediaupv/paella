@@ -14,7 +14,7 @@
 	permissions and limitations under the License.
 */
 
-
+/*
 Class ("paella.editor.EmbedPlayer", base.AsyncLoaderCallback,{
 	editar:null,
 
@@ -72,3 +72,5 @@ Class ("paella.editor.EmbedPlayer", base.AsyncLoaderCallback,{
 
 	}
 });
+
+*/
