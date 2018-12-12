@@ -236,7 +236,7 @@ class VideoContainerBase extends paella.DomNode {
 			if (this.firstClick && base.userAgent.browser.IsMobileVersion) return;
 			if (this.firstClick && !this._playOnClickEnabled) return;
 			paella.player.videoContainer.paused()
-				.then(function(paused) {
+				.then((paused) => {
 					this.firstClick = true;
 					if (paused) {
 						paella.player.play();

@@ -75,7 +75,7 @@ paella.Profiles = {
 class RelativeVideoSize {
 	get w() { return this._w || 1280; }
 	set w(v) { this._w = v; }
-	get h() { return this._h; }
+	get h() { return this._h || 720; }
 	set h(v) { this._h = v; }
 	
 	proportionalHeight(newWidth) {

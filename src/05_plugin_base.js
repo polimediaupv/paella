@@ -22,14 +22,14 @@ class PluginManager {
 	setupPlugin(plugin) {
 		plugin.setup();
 		this.enabledPlugins.push(plugin);
-		if (dynamic_cast("paella.UIPlugin", plugin)) {
+		if (eval("plugin instanceof paella.UIPlugin")) {
 			plugin.checkVisibility();
 		}	
 	}
 
 	checkPluginsVisibility() {	
 		this.enabledPlugins.forEach(function(plugin) {		
-			if (dynamic_cast("paella.UIPlugin", plugin)) {
+			if (eval("plugin instanceof paella.UIPlugin")) {
 				plugin.checkVisibility();
 			}								
 		});	
@@ -95,7 +95,7 @@ class PluginManager {
 			this.foreach(function(plugin,config) {
 				// Prevent load a plugin twice
 				if (plugin.isLoaded()) return;
-				if (dynamic_cast(pluginBaseClass, plugin) != null) {
+				if (eval("plugin instanceof " + pluginBaseClass)) {
 					if (config.enabled) {
 						base.log.debug("Load plugin (" + pluginBaseClass + "): " + plugin.getName());
 						plugin.config = config;							

@@ -157,7 +157,7 @@ class PlaybackBar extends paella.DomNode {
 				let parent = $("#playerContainer_controls_playback_playbackBar");
 				this.clearCanvas();
 				if (this._keys && paella.player.config.player.slidesMarks.enabled) {
-					this._keys.forEach(function (l) {
+					this._keys.forEach((l) => {
 						let timeInstant = parseInt(l) - trimming.start;
 						if (timeInstant>0) {
 							var aux = (timeInstant * parent.width()) / this._videoLength; // conversion to canvas
@@ -555,7 +555,7 @@ class PlaybackControl extends paella.DomNode {
 
 	get popUpPluginContainer() {
 		if (!this._popUpPluginContainer) {
-			this._popUpPluginContainer = new paella.PopUpContainer(id + '_popUpPluginContainer','popUpPluginContainer');
+			this._popUpPluginContainer = new paella.PopUpContainer(this.identifier + '_popUpPluginContainer','popUpPluginContainer');
 			this.addNode(this._popUpPluginContainer);
 		}
 		return this._popUpPluginContainer;
@@ -563,7 +563,7 @@ class PlaybackControl extends paella.DomNode {
 
 	get timeLinePluginContainer() {
 		if (!this._timeLinePluginContainer) {
-			this._timeLinePluginContainer = new paella.TimelineContainer(id + '_timelinePluginContainer','timelinePluginContainer');
+			this._timeLinePluginContainer = new paella.TimelineContainer(this.identifier + '_timelinePluginContainer','timelinePluginContainer');
 			this.addNode(this._timeLinePluginContainer);
 		}
 		return this._timeLinePluginContainer;
