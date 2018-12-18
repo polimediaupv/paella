@@ -734,13 +734,30 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 			}
 		}
 
-		function evtCallback(event) { onProgress.apply(This,event); }
+		function evtCallback(event) { onProgress.apply(This,[event]); }
 
 		$(this.video).bind('progress', evtCallback);
 		$(this.video).bind('loadstart',evtCallback);
 		$(this.video).bind('loadedmetadata',evtCallback);
         $(this.video).bind('canplay',evtCallback);
 		$(this.video).bind('oncanplay',evtCallback);
+
+		// Save current time to resume video
+		$(this.video).bind('timeupdate', (evt) => {
+			this._resumeCurrentTime = this.video.currentTime;
+		});
+
+
+		$(this.video).bind('emptied', (evt) => {
+			this.video.currentTime = this._resumeCurrentTime;
+		});
+		
+		// Fix safari setQuelity bug
+		if (paella.utils.userAgent.browser.Safari) {
+			$(this.video).bind('canplay canplaythrough', (evt) => {
+				this.video.currentTime = this._resumeCurrentTime;
+			});
+		}
 	},
 
 
