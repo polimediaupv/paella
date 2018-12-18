@@ -762,15 +762,34 @@ class Html5Video extends paella.VideoElementBase {
 			}
 		}
 
-		let evtCallback = (event) => { onProgress.apply(this,event); }
+
+		let evtCallback = (event) => { onProgress.apply(this,[event]); }
 
 		$(this.video).bind('progress', evtCallback);
 		$(this.video).bind('loadstart',evtCallback);
 		$(this.video).bind('loadedmetadata',evtCallback);
 		$(this.video).bind('canplay',evtCallback);
 		$(this.video).bind('oncanplay',evtCallback);
+
+		// Save current time to resume video
+		$(this.video).bind('timeupdate', (evt) => {
+			this._resumeCurrentTime = this.video.currentTime;
+		});
+
+
+		$(this.video).bind('emptied', (evt) => {
+			this.video.currentTime = this._resumeCurrentTime;
+		});
+		
+		// Fix safari setQuelity bug
+		if (paella.utils.userAgent.browser.Safari) {
+			$(this.video).bind('canplay canplaythrough', (evt) => {
+				this.video.currentTime = this._resumeCurrentTime;
+			});
+		}
 	}
 
+	
 	get video() { return this.domElement; }
 
 
