@@ -181,8 +181,11 @@
         "heartbeat": 30,
         "client_id": "Paella Player"
       },
+      "org.opencast.usertracking.x5gonSaverPlugIn": {
+        "enabled": true,
+        "token": "6j3hfn"
+      },
       "es.teltek.paella.usertracking.xAPISaverPlugin": {"enabled": false, "endpoint":"http://localhost:8081/data/xAPI/", "auth":"auth_key"},
-
       "//*****  Keyboard plugins": "",
       "es.upv.paella.defaultKeysPlugin": {"enabled": true }
     }
