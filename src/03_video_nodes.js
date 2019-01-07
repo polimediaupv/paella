@@ -776,9 +776,9 @@ class Html5Video extends paella.VideoElementBase {
 			this._resumeCurrentTime = this.video.currentTime;
 		});
 
-
+		
 		$(this.video).bind('emptied', (evt) => {
-			this.video.currentTime = this._resumeCurrentTime;
+			(this._resumeCurrentTime) ? this.video.currentTime = this._resumeCurrentTime: this.video.currentTime = 0;
 		});
 		
 		// Fix safari setQuelity bug
