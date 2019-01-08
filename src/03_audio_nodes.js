@@ -21,6 +21,22 @@
         setPlaybackRate(rate) { return Promise.reject(new Error("no such compatible video player")); }
         playbackRate() { return Promise.reject(new Error("no such compatible video player")); }
         unload() { return Promise.reject(new Error("no such compatible video player")); }
+
+        getQualities() {
+            return Promise.resolve([
+                {
+                    index: 0,
+                    res: { w: 0, h: 1 },
+                    src: "",
+                    toString: function() { return ""; },
+                    shortLabel: function() { return ""; },
+                    compare: function() { return 0; }
+                }
+            ]);
+        }
+
+        getCurrentQuality() { return Promise.resolve({}); }
+        defaultProfile() { return null; }
         
         supportAutoplay() { return false;}
     };

@@ -861,7 +861,7 @@ class VideoContainer extends paella.VideoContainerBase {
 
 			p.then((t) => {
 				trimmingData = t;
-				return this.streamProvider.mainVideoPlayer.currentTime();
+				return this.masterVideo().currentTime();
 			})
 
 			.then((time) => {
@@ -908,7 +908,7 @@ class VideoContainer extends paella.VideoContainerBase {
 
 			p.then((t) => {
 				trimmingData = t;
-				return this.streamProvider.mainVideoPlayer.duration();
+				return this.masterVideo().duration();
 			})
 			
 			.then((duration) => {
@@ -921,12 +921,12 @@ class VideoContainer extends paella.VideoContainerBase {
 	}
 
 	paused() {
-		return this.streamProvider.mainVideoPlayer.isPaused();
+		return this.masterVideo().isPaused();
 	}
 
 	// Video quality functions
 	getQualities() {
-		return this.streamProvider.mainVideoPlayer.getQualities();
+		return this.masterVideo().getQualities();
 	}
 
 	setQuality(index) {
@@ -964,7 +964,7 @@ class VideoContainer extends paella.VideoContainerBase {
 		});
 	}
 	getCurrentQuality() {
-		return this.streamProvider.mainVideoPlayer.getCurrentQuality();
+		return this.masterVideo().getCurrentQuality();
 	}
 
 	// Current audio functions
@@ -992,8 +992,13 @@ class VideoContainer extends paella.VideoContainerBase {
 	setAudioTag(lang) {
 		return new Promise((resolve) => {
 			let audioSet = false;
+			let firstAudioPlayer = null;
 			let promises = [];
 			this.streamProvider.players.forEach((player) => {
+				if (!firstAudioPlayer) {
+					firstAudioPlayer = player;
+				}
+
 				if (!audioSet && player.stream.audioTag==lang) {
 					audioSet = true;
 					this._audioPlayer = player;
@@ -1001,8 +1006,12 @@ class VideoContainer extends paella.VideoContainerBase {
 				promises.push(player.setVolume(0));
 			});
 
-			if (!audioSet) {
+			// NOTE: The audio only streams must define a valid audio tag
+			if (!audioSet && this.streamProvider.mainVideoPlayer) {
 				this._audioPlayer = this.streamProvider.mainVideoPlayer;
+			}
+			else if (!audioSet && firstAudioPlayer) {
+				this._audioPlayer = firstAudioPlayer;
 			}
 
 			Promise.all(promises).then(() => {
@@ -1033,7 +1042,7 @@ class VideoContainer extends paella.VideoContainerBase {
 	}
 
 	masterVideo() {
-		return this.streamProvider.mainVideoPlayer;
+		return this.streamProvider.mainVideoPlayer || this.audioPlayer;º
 	}
 
 	getVideoRect(videoIndex) {
@@ -1080,7 +1089,8 @@ class VideoContainer extends paella.VideoContainerBase {
 				})
 
 				.then(() => {
-					$(this.streamProvider.mainVideoPlayer.video).bind('timeupdate', (evt) => {
+					let eventBindingObject = this.masterVideo().video || this.masterVideo().audio;
+					$(eventBindingObject).bind('timeupdate', (evt) => {
 						this.trimming().then((trimmingData) => {
 							let current = evt.currentTarget.currentTime;
 							let duration = evt.currentTarget.duration;
