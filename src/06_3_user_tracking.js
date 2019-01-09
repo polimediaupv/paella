@@ -35,6 +35,7 @@ var userTrackingManager = {
 };
 
 paella.userTracking = {};
+userTrackingManager.initialize();
 
 class SaverPlugIn extends paella.FastLoadPlugin {
 	get type() { return 'userTrackingSaverPlugIn'; }
