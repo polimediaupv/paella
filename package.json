@@ -29,5 +29,8 @@
     "test": "gulp test:local",
     "build": "gulp",
     "serve": "gulp serve"
+  },
+  "dependencies": {
+    "natives": "^1.1.6"
   }
 }
