@@ -136,7 +136,7 @@
       "es.upv.paella.translecture.captionsPlugin": {"enabled":true},
       "es.upv.paella.trimmingPlayerPlugin": {"enabled":true},
       "es.upv.paella.windowTitlePlugin": {"enabled": true},
-      "es.upv.paella.track4kPlugin": { "enabled":true },
+      "es.upv.paella.track4kPlugin": { "enabled":false },
 
       "//**** Video profile plugins": "",
       "es.upv.paella.singleStreamProfilePlugin": {

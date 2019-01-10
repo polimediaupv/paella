@@ -35,15 +35,20 @@ paella.addPlugin(function() {
                         }
                     else {
                         // load x5gon lib from remote server
-                        console.log("X5gon: trackX5gon loading x5gon-snippet")
+                        console.log("X5gon: trackX5gon loading x5gon-snippet, token: " + token);
                         require(["https://platform.x5gon.org/api/v1/snippet/latest/x5gon-log.min.js"], function (x5gon) {
                             base.log.debug("X5gon: external x5gon snippet loaded");
                             console.log("X5gon: external x5gon snippet loaded");
-                        });            
-                        //x5gonActivityTracker('6j3hfn', testingEnvironment);
+
+                            // load cookieconsent lib from remote server
+                            require(["https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"], function (cookieconsent) {
+                                console.log("X5gon: external cookie consent lib loaded");
+                            })
+                            //x5gonActivityTracker(token, testingEnvironment);
                         tracked = true;
                         base.log.debug("X5gon: send data to X5gon servers");
                         onSuccess(true);
+                        });
                     }
                 }
             }
