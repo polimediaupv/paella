@@ -35,7 +35,7 @@
             ]);
         }
 
-        getCurrentQuality() { return Promise.resolve({}); }
+        getCurrentQuality() { return Promise.resolve(0); }
         defaultProfile() { return null; }
         
         supportAutoplay() { return false;}
