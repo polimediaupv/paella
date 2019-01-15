@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+* Paella 6.1.0
+
+  * All the core classes migrated to ECMAScript 2015.
+  * Improvements in HLS plugin configuration.
+  * Support for audio + images streams.
+  * Breaking changes:
+    - The index.html file now includes paella_player_es2015.js. If you plan to support
+      Internet Explorer, you will need to modify the index.html file to add the legacy scripts
+
 * Paella 6.0.4
 
   * Fix issues in stream video profiles
