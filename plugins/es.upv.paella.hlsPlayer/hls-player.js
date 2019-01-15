@@ -2,6 +2,83 @@
 (() => {
 
 	class HLSPlayer extends paella.Html5Video {
+		get config() {
+			let config = {
+				autoStartLoad: true,
+				startPosition : -1,
+				capLevelToPlayerSize: true,
+				debug: false,
+				defaultAudioCodec: undefined,
+				initialLiveManifestSize: 1,
+				maxBufferLength: 30,
+				maxMaxBufferLength: 600,
+				maxBufferSize: 60*1000*1000,
+				maxBufferHole: 0.5,
+				lowBufferWatchdogPeriod: 0.5,
+				highBufferWatchdogPeriod: 3,
+				nudgeOffset: 0.1,
+				nudgeMaxRetry : 3,
+				maxFragLookUpTolerance: 0.2,
+				liveSyncDurationCount: 3,
+				liveMaxLatencyDurationCount: 10,
+				enableWorker: true,
+				enableSoftwareAES: true,
+				manifestLoadingTimeOut: 10000,
+				manifestLoadingMaxRetry: 1,
+				manifestLoadingRetryDelay: 500,
+				manifestLoadingMaxRetryTimeout : 64000,
+				startLevel: undefined,
+				levelLoadingTimeOut: 10000,
+				levelLoadingMaxRetry: 4,
+				levelLoadingRetryDelay: 500,
+				levelLoadingMaxRetryTimeout: 64000,
+				fragLoadingTimeOut: 20000,
+				fragLoadingMaxRetry: 6,
+				fragLoadingRetryDelay: 500,
+				fragLoadingMaxRetryTimeout: 64000,
+				startFragPrefetch: false,
+				appendErrorMaxRetry: 3,
+				
+				// loader: customLoader,
+				// fLoader: customFragmentLoader,
+				// pLoader: customPlaylistLoader,
+				// xhrSetup: XMLHttpRequestSetupCallback,
+				// fetchSetup: FetchSetupCallback,
+				// abrController: customAbrController,
+				// timelineController: TimelineController,
+
+				enableWebVTT: true,
+				enableCEA708Captions: true,
+				stretchShortVideoTrack: false,
+				maxAudioFramesDrift : 1,
+				forceKeyFrameOnDiscontinuity: true,
+				abrEwmaFastLive: 5.0,
+				abrEwmaSlowLive: 9.0,
+				abrEwmaFastVoD: 4.0,
+				abrEwmaSlowVoD: 15.0,
+				abrEwmaDefaultEstimate: 500000,
+				abrBandWidthFactor: 0.95,
+				abrBandWidthUpFactor: 0.7,
+				minAutoBitrate: 0
+			};
+
+			let pluginConfig = {};
+			paella.player.config.player.methods.some((methodConfig) => {
+				if (methodConfig.factory=="HLSVideoFactory") {
+					pluginConfig = methodConfig.config;
+					return true;
+				}
+			});
+
+			for (let key in config) {
+				if (pluginConfig[key]!=undefined) {
+					config[key] = pluginConfig[key];
+				}
+			}
+
+			return config;
+		}
+
 		constructor(id,stream,left,top,width,height) {
 			super(id,stream,left,top,width,height,'hls');
 		}
@@ -28,6 +105,7 @@
 			if (this._posterFrame) {
 				this.video.setAttribute("poster",this._posterFrame);
 			}
+			
 			if (base.userAgent.system.iOS)// ||
 			//	base.userAgent.browser.Safari)
 			{
@@ -42,10 +120,10 @@
 						this._loadDeps()
 							.then(function(Hls) {
 								if(Hls.isSupported()) {
-									This._hls = new Hls();
+									let cfg = This.config;
+									This._hls = new Hls(cfg);
 									This._hls.loadSource(source.src);
 									This._hls.attachMedia(This.video);
-									This._hls.config.capLevelToPlayerSize = true;
 									This.autoQuality = true;
 	
 									This._hls.on(Hls.Events.LEVEL_SWITCHED, function(ev, data) {
