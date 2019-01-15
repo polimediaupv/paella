@@ -36,6 +36,11 @@ CHANGELOG
   * Dynamic video profiles
   * Bug fixed in Elasticsearch plugin
   * Full support for full screen on iPad, with iOS 12
+  * Breaking changes: Check the following link to update your data.json files
+    to support the new multistream capabilities:
+    https://github.com/polimediaupv/paella/blob/develop/doc/adopter_doc/integrate_datajson.md
+
+    
 
 * Paella 5.3.10
 

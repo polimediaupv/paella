@@ -22,6 +22,7 @@
     "gulp-uglify-es": "^1.0.0",
     "gulp-minify": "^3.1.0",
     "run-sequence": "^2.2.1",
+    "natives": "^1.1.6",
     "nightwatch": "^0.9.14",
     "electron-window-state-manager": "^0.3.2"
   },
