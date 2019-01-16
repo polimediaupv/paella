@@ -9,15 +9,16 @@ paella.addPlugin(function() {
             /* don't change these variables */
             var urlCookieconsentJS = "https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js";
             //var urlCookieconsentCSS = "https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css";
-            var token = this.config.token;
-            var testingEnvironment = this.config.testing_environment,
+            var token = this.config.token,
+                testingEnvironment = this.config.testing_environment,
                 storage_tracking_permission = "x5gon_tracking",
                 trackingPermission,
-                tracked = false;
-
-            //storedConsent = Basil.get(storage_tracking_permission);
+                tracked,
+                //TODO: Basil storage implementieren
+                storedConsent;// = Basil.get(storage_tracking_permission);
 
             function trackX5gon() {
+                console.log("X5gon: trackX5gon permission check [trackingPermission " + trackingPermission + "] [tracked " + tracked + "]");
                 if (isTrackingPermission() && !tracked) {
                     if (!token) {
                         base.log.debug("X5gon: token missing! Disabling X5gon PlugIn");
@@ -49,67 +50,64 @@ paella.addPlugin(function() {
                 require([urlCookieconsentJS], function (cookieconsent) {
                     console.log("X5gon: external cookie consent lib loaded");
 
-                   function showCookieconsent() {
-                       window.cookieconsent.initialise({
-                           "palette": {
-                               "popup": {
-                                   "background": "#1d8a8a"
-                               },
-                               "button": {
-                                   "background": "#62ffaa"
-                               }
-                           },
-                           "type": "opt-in",
-                           "content": {
-                               "message": "On this site the X5gon service can be included, to provide personalized Open Educational Ressources.",
-                               "dismiss": "Deny",
-                               "allow": "Accept",
-                               "link": "More information",
-                               // link to the X5GON platform privacy policy - describing what are we collecting
-                               // through the platform
-                               "href": "https://platform.x5gon.org/privacy-policy"
-                           },
-                           onInitialise: function (status) {
-                               var type = this.options.type;
-                               var didConsent = this.hasConsented();
-                               // enable cookies - send user data to the platform
-                               // only if the user enabled cookies
-                               if (type == 'opt-in' && didConsent) {
-                                   setTrackingPermission(true);
-                               } else {
-                                   setTrackingPermission(false);
-                               }
-                           },
-                           onStatusChange: function (status, chosenBefore) {
-                               var type = this.options.type;
-                               var didConsent = this.hasConsented();
-                               // enable cookies - send user data to the platform
-                               // only if the user enabled cookies
-                               if (type == 'opt-in' && didConsent) {
-                                   setTrackingPermission(true);
-                               } else {
-                                   setTrackingPermission(false);
-                               }
-                           },
-                           onRevokeChoice: function () {
-                               var type = this.options.type;
-                               var didConsent = this.hasConsented();
-                               // disable cookies - set what to do when
-                               // the user revokes cookie usage
-                               if (type == 'opt-in' && didConsent) {
-                                   setTrackingPermission(true);
-                               } else {
-                                   setTrackingPermission(false);
-                               }
-                           }
-                       })
-                   };
-
-                   showCookieconsent();
+                    window.cookieconsent.initialise({
+                        "palette": {
+                            "popup": {
+                                "background": "#1d8a8a"
+                            },
+                            "button": {
+                                "background": "#62ffaa"
+                            }
+                        },
+                        "type": "opt-in",
+                        "content": {
+                            "message": "On this site the X5gon service can be included, to provide personalized Open Educational Ressources.",
+                            "dismiss": "Deny",
+                            "allow": "Accept",
+                            "link": "More information",
+                            // link to the X5GON platform privacy policy - describing what are we collecting
+                            // through the platform
+                            "href": "https://platform.x5gon.org/privacy-policy"
+                        },
+                        onInitialise: function (status) {
+                            var type = this.options.type;
+                            var didConsent = this.hasConsented();
+                            // enable cookies - send user data to the platform
+                            // only if the user enabled cookies
+                            if (type == 'opt-in' && didConsent) {
+                                setTrackingPermission(true);
+                            } else {
+                                setTrackingPermission(false);
+                            }
+                        },
+                        onStatusChange: function (status, chosenBefore) {
+                            var type = this.options.type;
+                            var didConsent = this.hasConsented();
+                            // enable cookies - send user data to the platform
+                            // only if the user enabled cookies
+                            if (type == 'opt-in' && didConsent) {
+                                setTrackingPermission(true);
+                            } else {
+                                setTrackingPermission(false);
+                            }
+                        },
+                        onRevokeChoice: function () {
+                            var type = this.options.type;
+                            var didConsent = this.hasConsented();
+                            // disable cookies - set what to do when
+                            // the user revokes cookie usage
+                            if (type == 'opt-in' && didConsent) {
+                                setTrackingPermission(true);
+                            } else {
+                                setTrackingPermission(false);
+                            }
+                        }
+                    })
                 })
             }
             
             function isTrackingPermission() {
+                //TODO: DoNotTrack nach Cookie-Allow ignorieren? Rechltliche Situation?
                 if (isDoNotTrackStatus() || !trackingPermission) {
                     return false;
                 } else {
@@ -119,18 +117,25 @@ paella.addPlugin(function() {
 
             function isDoNotTrackStatus() {
                 if (window.navigator.doNotTrack == 1 || window.navigator.msDoNotTrack == 1) {
+                    console.log("X5gon: Browser DoNotTrack: true");
                     return true;
                 }
+                console.log("X5gon: Browser DoNotTrack: false");
                 return false;
             }
 
-            function setTrackingPermission(status) {
+            function setTrackingPermission(permissionStatus) {
+                //TODO: Status im Basil speichern
                 //Basil.set(status);
-                //storedConsent = status;
-                trackingPermission = status;
-                //trackX5gon(); 
-                console.log("X5gon: trackingPermissions: " + status);
+                storedConsent = permissionStatus;
+                trackingPermission = permissionStatus;
+                console.log("X5gon: trackingPermissions: " + permissionStatus);
+                trackX5gon();
             };
+
+            //TODO: Übersetzung implementieren
+
+            //TODO: console.log() überall entfernen
 
             initCookieNotification();
             trackX5gon(); 
