@@ -9,3 +9,4 @@ repository_test/repository/local*
 .idea
 tests/nightwatch/reports/*
 \.vscode/
+.eslintrc
