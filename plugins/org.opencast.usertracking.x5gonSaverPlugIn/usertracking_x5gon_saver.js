@@ -1,4 +1,5 @@
 paella.addPlugin(function() {
+    var self = this;
     return class X5gonTracking extends paella.userTracking.SaverPlugIn {
         getName() { 
             return "org.opencast.usertracking.x5gonSaverPlugIn"; 
@@ -13,9 +14,17 @@ paella.addPlugin(function() {
                 testingEnvironment = this.config.testing_environment,
                 storage_tracking_permission = "x5gon_tracking",
                 trackingPermission,
-                tracked,
-                //TODO: Basil storage implementieren
-                storedConsent;// = Basil.get(storage_tracking_permission);
+                tracked;
+
+            /* Basil storage init
+            var basilOptions = {
+                namespace: 'mhStorage'
+            };
+            console.log('das sollte funktionieren', window);
+            basil = new window.Basil(basilOptions);
+            storedConsent = basil.get(storage_tracking_permission);
+            */
+
 
             function trackX5gon() {
                 console.log("X5gon: trackX5gon permission check [trackingPermission " + trackingPermission + "] [tracked " + tracked + "]");
@@ -125,8 +134,8 @@ paella.addPlugin(function() {
             }
 
             function setTrackingPermission(permissionStatus) {
-                //TODO: Status im Basil speichern
-                //Basil.set(status);
+                //TODO: Basil storage status
+                //basil.set(status);
                 storedConsent = permissionStatus;
                 trackingPermission = permissionStatus;
                 console.log("X5gon: trackingPermissions: " + permissionStatus);
