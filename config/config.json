@@ -183,7 +183,8 @@
       },
       "org.opencast.usertracking.x5gonSaverPlugIn": {
         "enabled": true,
-        "token": "6j3hfn"
+        "token": "6j3hfn",
+        "testing_environment" : true
       },
       "es.teltek.paella.usertracking.xAPISaverPlugin": {"enabled": false, "endpoint":"http://localhost:8081/data/xAPI/", "auth":"auth_key"},
       "//*****  Keyboard plugins": "",
