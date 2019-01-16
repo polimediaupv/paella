@@ -29,5 +29,9 @@
     "test": "gulp test:local",
     "build": "gulp",
     "serve": "gulp serve"
+  },
+  "dependencies": {
+    "eslint": "^5.12.0",
+    "npm": "^6.5.0"
   }
 }
