@@ -6,26 +6,27 @@ paella.addPlugin(function() {
         };
 
         checkEnabled(onSuccess) {
+            console.log(navigator.language);
             
             /* don't change these variables */
             var urlCookieconsentJS = "https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js";
-            //var urlCookieconsentCSS = "https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css";
             var token = this.config.token,
                 testingEnvironment = this.config.testing_environment,
                 storage_tracking_permission = "x5gon_tracking",
                 trackingPermission,
                 tracked;
 
-            /* Basil storage init
+            //TODO: Basil einbinden (Problem mit windows objekt, scope?)
+            //Basil storage init
             var basilOptions = {
                 namespace: 'mhStorage'
             };
-            console.log('das sollte funktionieren', window);
-            basil = new window.Basil(basilOptions);
-            storedConsent = basil.get(storage_tracking_permission);
-            */
+            //basil = new window.Basil(basilOptions);
+            
+            var storedConsent //= basil.get(storage_tracking_permission);
 
-
+            console.log(window);
+            
             function trackX5gon() {
                 console.log("X5gon: trackX5gon permission check [trackingPermission " + trackingPermission + "] [tracked " + tracked + "]");
                 if (isTrackingPermission() && !tracked) {
@@ -116,7 +117,6 @@ paella.addPlugin(function() {
             }
             
             function isTrackingPermission() {
-                //TODO: DoNotTrack nach Cookie-Allow ignorieren? Rechltliche Situation?
                 if (isDoNotTrackStatus() || !trackingPermission) {
                     return false;
                 } else {
