@@ -6,27 +6,13 @@ paella.addPlugin(function() {
         };
 
         checkEnabled(onSuccess) {
-            console.log(navigator.language);
-            
             /* don't change these variables */
             var urlCookieconsentJS = "https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js";
             var token = this.config.token,
                 testingEnvironment = this.config.testing_environment,
-                storage_tracking_permission = "x5gon_tracking",
                 trackingPermission,
                 tracked;
-
-            //TODO: Basil einbinden (Problem mit windows objekt, scope?)
-            //Basil storage init
-            var basilOptions = {
-                namespace: 'mhStorage'
-            };
-            //basil = new window.Basil(basilOptions);
-            
-            var storedConsent //= basil.get(storage_tracking_permission);
-
-            console.log(window);
-            
+           
             function trackX5gon() {
                 console.log("X5gon: trackX5gon permission check [trackingPermission " + trackingPermission + "] [tracked " + tracked + "]");
                 if (isTrackingPermission() && !tracked) {
@@ -134,9 +120,6 @@ paella.addPlugin(function() {
             }
 
             function setTrackingPermission(permissionStatus) {
-                //TODO: Basil storage status
-                //basil.set(status);
-                storedConsent = permissionStatus;
                 trackingPermission = permissionStatus;
                 console.log("X5gon: trackingPermissions: " + permissionStatus);
                 trackX5gon();
