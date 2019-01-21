@@ -33,7 +33,7 @@ while getopts ":du:v:f:r:c:n:e:" opt; do
             ;;
         f)
             DEPLOY_FOLDER="$OPTARG"
-            ;;            
+            ;;
         r)
             GIT_BOWER_REPO="$OPTARG"
             ;;
@@ -81,7 +81,7 @@ if [ "${DEPLOY_FOLDER}x" == "x" ]; then
 fi
 
 if [ ! -d "${DEPLOY_FOLDER}" ]; then
-  echo "[ERROR] Deploy folder does not exists"  
+  echo "[ERROR] Deploy folder does not exists"
   exit 1
 fi
 
@@ -128,7 +128,7 @@ git config --local user.email "$GIT_BOWER_EMAIL"
 git config --local user.name "$GIT_BOWER_NAME"
 
 git add -A
-git commit -q -m "[automated publishing] version $VERSION" 
+git commit -q -m "[automated publishing] version $VERSION"
 git tag $VERSION
 git push --tags https://${GIT_BOWER_TOKEN}@github.com/${GIT_BOWER_REPO}.git master
 

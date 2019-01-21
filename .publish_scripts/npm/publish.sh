@@ -31,7 +31,7 @@ while getopts ":du:v:f:t:c:" opt; do
             ;;
         f)
             DEPLOY_FOLDER="$OPTARG"
-            ;;            
+            ;;
         t)
             NPM_TAG="$OPTARG"
             ;;
@@ -73,7 +73,7 @@ if [ "${DEPLOY_FOLDER}x" == "x" ]; then
 fi
 
 if [ ! -d "${DEPLOY_FOLDER}" ]; then
-  echo "[ERROR] Deploy folder does not exists"  
+  echo "[ERROR] Deploy folder does not exists"
   exit 1
 fi
 

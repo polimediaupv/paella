@@ -97,7 +97,7 @@
                     "preview": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/preview/presentation_cut.jpg",
                     "type": "presentation/delivery",
                     "id": "500f6b74-1557-4c87-8613-0ce5194b84ba"
-                },            
+                },
                 {
                     "mimetype": "video/mp4",
                     "tags": [],
@@ -143,7 +143,7 @@
                     "preview": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/preview/presentation_cut.jpg",
                     "type": "presentation/delivery",
                     "id": "500f6b74-1557-4c87-8613-0ce5194b84ba"
-                },            
+                },
                 {
                     "mimetype": "video/mp4",
                     "tags": [],
@@ -235,7 +235,7 @@
                     "preview": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/preview/presentation_cut.jpg",
                     "type": "presentation/delivery",
                     "id": "500f6b74-1557-4c87-8613-0ce5194b84ba"
-                }                
+                }
             ]
         },
         "metadata": {

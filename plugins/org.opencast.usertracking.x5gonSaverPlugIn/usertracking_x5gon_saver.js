@@ -1,26 +1,28 @@
-paella.addPlugin(function() {
+paella.addPlugin(function () {
     var self = this;
     return class X5gonTracking extends paella.userTracking.SaverPlugIn {
-        getName() { 
-            return "org.opencast.usertracking.x5gonSaverPlugIn"; 
+        getName() {
+            return "org.opencast.usertracking.x5gonSaverPlugIn";
         };
 
+        //TODO: Übersetzung implementieren
+        //TODO: console.log() entfernen
+        //TODO: Delete cookie after decline (cookieconsent)
+
         checkEnabled(onSuccess) {
-            /* don't change these variables */
             var urlCookieconsentJS = "https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js";
             var token = this.config.token,
                 testingEnvironment = this.config.testing_environment,
                 trackingPermission,
                 tracked;
-           
+
             function trackX5gon() {
                 console.log("X5gon: trackX5gon permission check [trackingPermission " + trackingPermission + "] [tracked " + tracked + "]");
                 if (isTrackingPermission() && !tracked) {
                     if (!token) {
                         base.log.debug("X5gon: token missing! Disabling X5gon PlugIn");
                         onSuccess(false);
-                        }
-                    else {
+                    } else {
                         // load x5gon lib from remote server
                         console.log("X5gon: trackX5gon loading x5gon-snippet, token: " + token);
                         require(["https://platform.x5gon.org/api/v1/snippet/latest/x5gon-log.min.js"], function (x5gon) {
@@ -32,7 +34,7 @@ paella.addPlugin(function() {
                                 base.log.debug("X5gon: send data to X5gon servers");
                                 console.log("X5gon: send data to X5gon servers");
                                 tracked = true;
-                            }                                             
+                            }
                         });
                     }
                     onSuccess(true);
@@ -101,13 +103,13 @@ paella.addPlugin(function() {
                     })
                 })
             }
-            
+
             function isTrackingPermission() {
                 if (isDoNotTrackStatus() || !trackingPermission) {
                     return false;
                 } else {
-                    return true;   
-                }  
+                    return true;
+                }
             }
 
             function isDoNotTrackStatus() {
@@ -125,12 +127,8 @@ paella.addPlugin(function() {
                 trackX5gon();
             };
 
-            //TODO: Übersetzung implementieren
-
-            //TODO: console.log() überall entfernen
-
             initCookieNotification();
-            trackX5gon(); 
+            trackX5gon();
 
             onSuccess(true);
         };

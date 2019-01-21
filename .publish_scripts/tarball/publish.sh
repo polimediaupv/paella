@@ -30,7 +30,7 @@ while getopts ":du:v:f:o:" opt; do
             ;;
         f)
             DEPLOY_FOLDER="$OPTARG"
-            ;;            
+            ;;
         o)
             OUTPUT_FOLDER="$OPTARG"
             ;;
@@ -69,13 +69,13 @@ if [ "${DEPLOY_FOLDER}x" == "x" ]; then
 fi
 
 if [ ! -d "${DEPLOY_FOLDER}" ]; then
-  echo "[ERROR] Deploy folder does not exists"  
+  echo "[ERROR] Deploy folder does not exists"
   exit 1
 fi
 
 mkdir -p ${OUTPUT_FOLDER}
 if [ ! -d "${OUTPUT_FOLDER}" ]; then
-  echo "[ERROR] Output folder does not exists"  
+  echo "[ERROR] Output folder does not exists"
   exit 1
 fi
 
