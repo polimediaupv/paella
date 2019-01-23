@@ -5,34 +5,29 @@ paella.addPlugin(function () {
             return "org.opencast.usertracking.x5gonSaverPlugIn";
         };
 
-        //TODO: Übersetzung implementieren
-        //TODO: console.log() auf base.log.debug ersetzen
-        //TODO: Cookieconsent nach oben 
-
         checkEnabled(onSuccess) {
-            var urlCookieconsentJS = "https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js";
-            var token = this.config.token,
+            var urlCookieconsentJS = "https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js",
+                token = this.config.token,
+                translations = [],
+                path,
                 testingEnvironment = this.config.testing_environment,
                 trackingPermission,
                 tracked;
 
             function trackX5gon() {
-                console.log("X5gon: trackX5gon permission check [trackingPermission " + trackingPermission + "] [tracked " + tracked + "]");
+                base.log.debug("X5GON: trackX5gon permission check [trackingPermission " + trackingPermission + "] [tracked " + tracked + "]");
                 if (isTrackingPermission() && !tracked) {
                     if (!token) {
-                        base.log.debug("X5gon: token missing! Disabling X5gon PlugIn");
+                        base.log.debug("X5GON: token missing! Disabling X5gon PlugIn");
                         onSuccess(false);
                     } else {
                         // load x5gon lib from remote server
-                        console.log("X5gon: trackX5gon loading x5gon-snippet, token: " + token);
+                        base.log.debug("X5GON: trackX5gon loading x5gon-snippet, token: " + token);
                         require(["https://platform.x5gon.org/api/v1/snippet/latest/x5gon-log.min.js"], function (x5gon) {
-                            base.log.debug("X5gon: external x5gon snippet loaded");
-                            console.log("X5gon: external x5gon snippet loaded");
-
+                            base.log.debug("X5GON: external x5gon snippet loaded");
                             if (typeof x5gonActivityTracker !== 'undefined') {
                                 x5gonActivityTracker(token, testingEnvironment);
-                                base.log.debug("X5gon: send data to X5gon servers");
-                                console.log("X5gon: send data to X5gon servers");
+                                base.log.debug("X5GON: send data to X5gon servers");
                                 tracked = true;
                             }
                         });
@@ -46,8 +41,7 @@ paella.addPlugin(function () {
             function initCookieNotification() {
                 // load cookieconsent lib from remote server
                 require([urlCookieconsentJS], function (cookieconsent) {
-                    console.log("X5gon: external cookie consent lib loaded");
-
+                    base.log.debug("X5GON: external cookie consent lib loaded");
                     window.cookieconsent.initialise({
                         "palette": {
                             "popup": {
@@ -58,11 +52,13 @@ paella.addPlugin(function () {
                             }
                         },
                         "type": "opt-in",
+                        "position": "top",
                         "content": {
-                            "message": "On this site the X5gon service can be included, to provide personalized Open Educational Ressources.",
-                            "dismiss": "Deny",
-                            "allow": "Accept",
-                            "link": "More information",
+                            "message": translate('x5_message', "On this site the X5gon service can be included, to provide personalized Open Educational Ressources."),
+                            "allow": translate('x5_accept', "Accept"),
+                            "deny": translate('x5_deny', "Deny"),
+                            "link": translate('x5_more_info', "More information"),
+                            "policy": translate('x5_policy', "Cookie Policy"),
                             // link to the X5GON platform privacy policy - describing what are we collecting
                             // through the platform
                             "href": "https://platform.x5gon.org/privacy-policy"
@@ -104,30 +100,66 @@ paella.addPlugin(function () {
                 })
             }
 
+            function initTranslate(language, funcSuccess, funcError) {
+                base.log.debug('X5GON: selecting language ' + language.slice(0,2));
+                var jsonstr = window.location.origin + '/player/localization/paella_' + language.slice(0,2) + '.json';
+                $.ajax({
+                    url: jsonstr,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data) {
+                            data.value_locale = language;
+                            translations = data;
+                            if (funcSuccess) {
+                                funcSuccess(translations);
+                            }
+                        } else if (funcError) {
+                            funcError();
+                        }
+                    },
+                    error: function () {
+                        if (funcError) {
+                            funcError();
+                        }
+                    }
+                });
+            }
+
+            function translate(str, strIfNotFound) {
+                return (translations[str] != undefined) ? translations[str] : strIfNotFound;
+            }
+
             function isTrackingPermission() {
-                if (isDoNotTrackStatus() || !trackingPermission) {
+                if (checkDoNotTrackStatus() || !trackingPermission) {
                     return false;
                 } else {
                     return true;
                 }
             }
 
-            function isDoNotTrackStatus() {
+            function checkDoNotTrackStatus() {
                 if (window.navigator.doNotTrack == 1 || window.navigator.msDoNotTrack == 1) {
-                    console.log("X5gon: Browser DoNotTrack: true");
+                    base.log.debug("X5GON: Browser DoNotTrack: true");
                     return true;
                 }
-                console.log("X5gon: Browser DoNotTrack: false");
+                base.log.debug("X5GON: Browser DoNotTrack: false");
                 return false;
             }
 
             function setTrackingPermission(permissionStatus) {
                 trackingPermission = permissionStatus;
-                console.log("X5gon: trackingPermissions: " + permissionStatus);
+                base.log.debug("X5GON: trackingPermissions: " + permissionStatus);
                 trackX5gon();
             };
 
-            initCookieNotification();
+            initTranslate(navigator.language, function () {
+                base.log.debug('X5GON: Successfully translated.');
+                initCookieNotification();
+            }, function () {
+                base.log.debug('X5gon: Error translating.');
+                initCookieNotification();
+            });
+
             trackX5gon();
 
             onSuccess(true);
