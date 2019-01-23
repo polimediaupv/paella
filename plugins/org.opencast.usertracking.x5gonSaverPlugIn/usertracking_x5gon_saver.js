@@ -6,8 +6,8 @@ paella.addPlugin(function () {
         };
 
         //TODO: Übersetzung implementieren
-        //TODO: console.log() entfernen
-        //TODO: Delete cookie after decline (cookieconsent)
+        //TODO: console.log() auf base.log.debug ersetzen
+        //TODO: Cookieconsent nach oben 
 
         checkEnabled(onSuccess) {
             var urlCookieconsentJS = "https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js";
