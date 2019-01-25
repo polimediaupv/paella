@@ -43,7 +43,8 @@ class DefaultVideoLoader extends paella.VideoLoader {
 				paella.initDelegate.initParams.videoUrl;
 		}
 		else {
-			return (/\/$/.test(this._url) ? this._url:this._url + '/') + paella.initDelegate.getId() + '/';
+			let url = this._url || paella.player.config.standalone.repository;
+			return (/\/$/.test(url) ? url:url + '/') + paella.initDelegate.getId() + '/';
 		}
 	}
 
@@ -60,6 +61,7 @@ class DefaultVideoLoader extends paella.VideoLoader {
 
 	loadVideo(onSuccess) {
 		let loadVideoDelegate = paella.initDelegate.initParams.loadVideo;
+		let url = this._url || this.getDataUrl();
 
 		if (this._data) {
 			this.loadVideoData(this._data, onSuccess);
@@ -70,7 +72,7 @@ class DefaultVideoLoader extends paella.VideoLoader {
 				this.loadVideoData(this._data, onSuccess);
 			});
 		}
-		else if (this._url) {
+		else if (url) {
 			var This = this;
 			base.ajax.get({ url:this.getDataUrl() },
 				function(data,type,err) {
