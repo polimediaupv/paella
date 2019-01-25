@@ -1042,7 +1042,7 @@ class VideoContainer extends paella.VideoContainerBase {
 	}
 
 	masterVideo() {
-		return this.streamProvider.mainVideoPlayer || this.audioPlayer;º
+		return this.streamProvider.mainVideoPlayer || this.audioPlayer;
 	}
 
 	getVideoRect(videoIndex) {
