@@ -778,7 +778,9 @@ class Html5Video extends paella.VideoElementBase {
 
 		
 		$(this.video).bind('emptied', (evt) => {
-			(this._resumeCurrentTime) ? this.video.currentTime = this._resumeCurrentTime: this.video.currentTime = 0;
+			if (this._resumeCurrentTime) {
+				this.video.currentTime = this._resumeCurrentTime;
+			}
 		});
 		
 		// Fix safari setQuelity bug
@@ -1251,18 +1253,18 @@ class ImageVideo extends paella.VideoElementBase {
 	},*/
 
 	getVideoData() {
-		let This = this;
 		return new Promise((resolve) => {
-			this._deferredAction(function() {
+			this._deferredAction(() => {
+				let imgStream = this._stream.sources.image[this._currentQuality];
 				var videoData = {
-					duration: This._duration,
-					currentTime: This._currentTime,
+					duration: this._duration,
+					currentTime: this._currentTime,
 					volume: 0,
-					paused: This._paused,
-					ended: This._ended,
+					paused: this._paused,
+					ended: this._ended,
 					res: {
-						w: This.imgStream.res.w,
-						h: This.imgStream.res.h
+						w: imgStream.res.w,
+						h: imgStream.res.h
 					}
 				};
 				resolve(videoData);

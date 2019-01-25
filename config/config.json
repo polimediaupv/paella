@@ -21,7 +21,20 @@
       { "factory":"WebmVideoFactory", "enabled":true },
       { "factory":"Html5VideoFactory", "enabled":true },
       { "factory":"MpegDashVideoFactory", "enabled":true },
-      { "factory":"HLSVideoFactory", "enabled":true },
+      {
+        "factory":"HLSVideoFactory",
+        "enabled":true,
+        "config": {
+          "*** You can add more hls.js settings here": "",
+          "https://github.com/video-dev/hls.js/blob/master/docs/API.md": "",
+          "maxBufferLength": 30,
+				  "maxMaxBufferLength": 600,
+				  "maxBufferSize": 60000000,
+				  "maxBufferHole": 0.5,
+				  "lowBufferWatchdogPeriod": 0.5,
+          "highBufferWatchdogPeriod": 3
+        }
+      },
       { "factory":"RTMPVideoFactory", "enabled":true },
       { "factory":"ImageVideoFactory", "enabled":true },
       { "factory":"YoutubeVideoFactory", "enabled":true },
@@ -159,7 +172,7 @@
 
       "//****  User Tracking Saver Plugins": "",
       "es.upv.paella.usertracking.elasticsearchSaverPlugin": { "enabled": false, "url": "http://my.elastic.server"},
-      "es.upv.paella.usertracking.GoogleAnalyticsSaverPlugIn": { "enabled": false, "trackingID": "UA-XXXXXXXX-Y" },
+      "es.upv.paella.usertracking.GoogleAnalyticsSaverPlugin": { "enabled": false, "trackingID": "UA-XXXXXXXX-Y" },
       "es.upv.paella.usertracking.piwikSaverPlugIn": { "enabled": false, "tracker":"http://localhost/piwik/", "siteId": "1" },
       "org.opencast.usertracking.MatomoSaverPlugIn": {
         "enabled": false,
