@@ -1,0 +1,35 @@
+version: 6.0.x
+index: 'introduction.md'
+
+content:
+- Introduction: 
+  - What is Paella Player?: 'introduction.md'
+  - Paella Player FAQ: 'faq.md'
+  - Changelog: 'changelog.md'  
+  - Upgrade: 'upgrade.md'  
+- User documentation:
+  - Paella Player usage and features guide: users/usage_guide.md
+- Adopters documentation:
+  - How to install and configure paella player: adopters/setup.md
+  - Skining. Change the paella look and feel: adopters/skining.md
+  - Analytics:
+    - Setup Google Analytics: adopters/analytics_google.md
+    - Setup a local elasticsearch: adopters/analytics_elasticsearch.md
+  - data.json file format: adopters/integrate_datajson.md
+  - Plugins List: adopters/plugins.md
+  - Encoding. Info about compatible video formats: adopters/encoding.md
+  - Browser compatibility issues: adopters/browser_compability.md
+- Developers documentation:
+  - Introduction: developers/introduction.md
+  - Plugins:
+    - Plugin Types: developers/plugin_types.md
+    - Develop a plugin: developers/plugin_creation.md
+    - Plugin configuration: developers/plugin_config.md
+  - Paella DataDelegates: developers/paella_data.md
+  - API changes:
+    - Paella 5.3 plugin migration: developers/api_changes/paella_5_3_plugin_migration.md
+- Code Examples Cookbook:
+  - Button plugin example: examples/button_plugin.md
+  - PopUp button plugin example: examples/popup_plugin.md
+  - Time line button plugin example: examples/timeline_plugin.md
+  - Video extension plugins: examples/video_plugin.md
