@@ -19,47 +19,8 @@
 		-->
 
 		<link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css" type="text/css" media="screen" charset="utf-8">
-		
-		<script>
-
-			// Sample implementation of the authentication URL callback.
-			// Put the callback name in config.json, auth.authCallbackName
-			function authenticationUrl(redirect) {
-				redirect = redirect ? "?redirect=" + encodeURIComponent(redirect): "";
-				return "https://www.upv.es/auth" + redirect;
-			}
-
-			// Sample implementation of the user data callback
-			// Put the callback name in config,json, auth.userDataCallbackName
-			function videoData(onSuccess) {
-				onSuccess({
-					permissions: {
-						canRead: true,
-						canContribute: false,
-						canWrite: false,
-						loadError: false,
-						isAnonymous: true
-					},
-					userData: {
-						username: 'anonymous',
-						name: 'Anonymous',
-						avatar: 'resources/images/default_avatar.png'
-					}
-				});
-			}
-
-			// Sample configuration to use this callbacks:
-			/*
-
-			 "auth":{
-			 	"authCallbackName":"authenticationUrl",
-			 	"userDataCallbackName":"videoData"
-			 }
-			 */
-		</script>
 	</head>
-<!--	<body id="body" onload="loadStandalonePaella('playerContainer');"> -->
-    <body id="body" onload="paella.load('playerContainer',{ url:'../repository/' });">
+    <body id="body" onload="paella.load('playerContainer',{});">
 		<div id="playerContainer" style="display:block;width:100%">
 		</div>
 	</body>
