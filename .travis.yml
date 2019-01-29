@@ -32,6 +32,9 @@ deploy:
   - provider: script
     script: sh ./.publish_scripts/publish.sh
     skip_cleanup: true
+    on:
+      all_branches: true
+      condition: $TRAVIS_BRANCH =~ ^(([0-9]+\.[0-9]+\.x)|(develop))$
   - provider: releases
     skip_cleanup: true
     api_key:
