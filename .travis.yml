@@ -30,7 +30,7 @@ before_deploy:
 
 deploy:
   - provider: script
-    script: sh ./.publish_scripts/publish.sh
+    script: ./.publish_scripts/publish.sh
     skip_cleanup: true
     on:
       all_branches: true
