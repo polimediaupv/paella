@@ -9,7 +9,7 @@ node_js:
   - "lts/*"
   
 before_install:
-  - apt-get install jq
+  - sudo apt-get install -y jq
   - npm install -g gulp
   - npm install
 
