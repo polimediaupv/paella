@@ -126,9 +126,9 @@ if [ -f "${SRC_PAELLA_FOLDER}/doc/toc.yml" ] ; then
 
     git add ./*
     git status
-    git commit -m "Update documentation for version ${VERSION}"
+    git commit -m "Update documentation for version ${VERSION}" || true
     
-    git push https://${GITHUB_WEBPAGE_TOKEN}@github.com/${GITHUB_WEBPAGE_REPO}.git gh-pages
+    git push https://${GITHUB_WEBPAGE_TOKEN}@github.com/${GITHUB_WEBPAGE_REPO}.git gh-pages || true
     popd > /dev/null
 fi
 

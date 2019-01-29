@@ -136,9 +136,9 @@ pushd $TMP_FOLDER > /dev/null
 
     git add ./*
     git status
-    git commit -m "Add paella player ${VERSION}"
+    git commit -m "Add paella player ${VERSION}" || true
 
-    git push --tags https://${GITHUB_WEBPAGE_TOKEN}@github.com/${GITHUB_WEBPAGE_REPO}.git gh-pages    
+    git push --tags https://${GITHUB_WEBPAGE_TOKEN}@github.com/${GITHUB_WEBPAGE_REPO}.git gh-pages || true  
 popd > /dev/null
 
 echo "[INFO] Removing remporal folder"
