@@ -39,7 +39,7 @@ elif [ ! -z "${TRAVIS_BRANCH}" ]; then
 		echo "[ERROR] No publication for branch ${TRAVIS_BRANCH}"
 	else
 		echo "[INFO] Publishing on branch ${TRAVIS_BRANCH} (VERSION=${VERSION})"
-		echo ./$SCRIPT_FOLDER/webpage/publish_player.sh -v $VERSION -f `pwd` -r $GITHUB_WEBPAGE_REPO -n "$POLIMEDIA_NAME" -e "$POLIMEDIA_EMAIL" -c $GITHUB_AUTH_TOKEN -y
-		echo ./$SCRIPT_FOLDER/webpage/publish_doc.sh -v $VERSION -f `pwd` -r $GITHUB_WEBPAGE_REPO -n "$POLIMEDIA_NAME" -e "$POLIMEDIA_EMAIL" -c $GITHUB_AUTH_TOKEN
+		./$SCRIPT_FOLDER/webpage/publish_player.sh -v $VERSION -f `pwd` -r $GITHUB_WEBPAGE_REPO -n "$POLIMEDIA_NAME" -e "$POLIMEDIA_EMAIL" -c $GITHUB_AUTH_TOKEN -y
+		./$SCRIPT_FOLDER/webpage/publish_doc.sh -v $VERSION -f `pwd` -r $GITHUB_WEBPAGE_REPO -n "$POLIMEDIA_NAME" -e "$POLIMEDIA_EMAIL" -c $GITHUB_AUTH_TOKEN
 	fi
 fi
