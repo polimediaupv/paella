@@ -9,6 +9,7 @@ node_js:
   - "lts/*"
   
 before_install:
+  - apt-get install jq
   - npm install -g gulp
   - npm install
 
@@ -31,8 +32,6 @@ deploy:
   - provider: script
     script: sh ./.publish_scripts/publish.sh
     skip_cleanup: true
-    on:
-      tags: true
   - provider: releases
     skip_cleanup: true
     api_key:
