@@ -571,7 +571,7 @@ class ButtonPlugin extends paella.UIPlugin {
 
 	static BuildPluginButton(plugin,id) {
 		plugin.subclass = plugin.getSubclass();
-		var elem = document.createElement('div');
+		var elem = document.createElement('button');
 		elem.className = plugin.getClassName();
 		elem.id = id;
 		elem.innerHTML = '<span class="button-text">' + paella.AntiXSS.htmlEscape(plugin.getText()) + '</span>';

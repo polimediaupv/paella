@@ -59,10 +59,31 @@ div {
     user-select: none;
 }
 
-i.button-icon {
+button.buttonPlugin {
+    cursor: pointer;
+    padding-right: 0px;
+    padding-left: 0px;
+    background-origin: border-box;
+    position: relative;
+    display: block;
+    float: left;
+    align-items: stretch;
+    background-color: transparent;
+    border: none;
+    box-sizing: border-box;
+
+    width: unit(@playbackBarButtonWidthPx - @playbackBarButtonPadding * 2,px);
+    height: unit(@playbackBarButtonHeightPx - @playbackBarButtonPadding * 2, px);
+    
+    margin-left: @playbackBarButtonPadding;
+    margin-right: @playbackBarButtonPadding;
+    margin-top: @playbackBarButtonPadding;
+    color: @icon_text_color;
+}
+
+button i.button-icon {
     color: @paella_icons_color;
     font-size: unit(@paellaIconsFontSizePx,px);
-    padding-left: unit(@paellaIconsPaddingLeftPx,px);
     line-height: unit(@paellaIconsLineHeightPx,px);
 }
 
@@ -156,19 +177,6 @@ i.button-icon.icon-screen {
 
 .playbackBarFull.disabled {
     opacity: 0.2;
-}
-
-.buttonPlugin {
-    width: unit(@playbackBarButtonWidthPx - @playbackBarButtonPadding * 2,px);
-    height: unit(@playbackBarButtonHeightPx - @playbackBarButtonPadding * 2, px);
-    cursor: pointer;
-    /*background-image: @paella_icons_image;
-    background-size: @paella_icons_bkg_size;
-    background-position: 0px 0px;*/
-    margin-left: @playbackBarButtonPadding;
-    margin-right: @playbackBarButtonPadding;
-    margin-top: @playbackBarButtonPadding;
-    color: @icon_text_color;
 }
 
 .buttonPlugin.left {

@@ -498,7 +498,7 @@ paella.data = null;
 			modalContainer.style.right = '0px';
 			modalContainer.style.bottom = '0px';
 			modalContainer.style.zIndex = 999999;
-	
+
 			var messageContainer = document.createElement('div');
 			messageContainer.className = this.frameClassName;
 			modalContainer.appendChild(messageContainer);
@@ -644,6 +644,12 @@ paella.data = null;
 				this._messageContainer.appendChild(closeButton);
 				closeButton.className = 'paella_messageContainer_closeButton icon-cancel-circle';
 				$(closeButton).click((event) => this.onCloseButtonClick());
+				$(window).keyup((evt) => {
+					if (evt.keyCode == 27) {
+						this.onCloseButtonClick();
+					}
+				});
+		
 			}
 		}
 		
