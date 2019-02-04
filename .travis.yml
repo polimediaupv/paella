@@ -20,23 +20,16 @@ install:
 jobs:
   include:
     - stage: Tests
-      env: name=doc
       script:
         - npm run markdownlint
 
-    - stage: build
-      env: name=build
+    - stage: build and deploy
       script:
         - npm run build
         #- gulp build.debug
         #- docker run -d --name paella-test-nginx -v `pwd`/build:/usr/share/nginx/html:ro nginx:alpine
         #- docker run -d --name paella-test-selenium --link paella-test-nginx:paella -p 4444:4444 selenium/standalone-chrome:3.3.0
         #- gulp test:local
-
-    - stage: deployment
-      env: name= deployment
-      install: skip
-      script: skip
       before_deploy:
         - export PRERELEASE=$(bash ./.publish_scripts/is_prerelease_version.sh ${TRAVIS_TAG})
       deploy:
