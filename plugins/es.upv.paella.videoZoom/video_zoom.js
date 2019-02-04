@@ -32,7 +32,7 @@ paella.addPlugin(function() {
         let wrapper = videoPlayer.parent;
         let wrapperDom = wrapper.domElement;
 
-        let zoomButton = document.createElement('button');
+        let zoomButton = document.createElement('div');
         wrapperDom.appendChild(zoomButton);
         zoomButton.className = "videoZoomButton btn zoomIn";
         zoomButton.innerHTML = '<i class="glyphicon glyphicon-zoom-in"></i>'
@@ -44,7 +44,7 @@ paella.addPlugin(function() {
             setTimeout(() => paella.player.videoContainer.enablePlayOnClick(),10);
         });
 
-        zoomButton = document.createElement('button');
+        zoomButton = document.createElement('div');
         wrapperDom.appendChild(zoomButton);
         zoomButton.className = "videoZoomButton btn zoomOut";
         zoomButton.innerHTML = '<i class="glyphicon glyphicon-zoom-out"></i>'

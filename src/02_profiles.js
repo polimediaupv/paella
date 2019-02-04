@@ -114,7 +114,7 @@
                     backgroundSize: '100% 100%',
                     display: 'block'
                 };
-                let logoNode = this.container.addNode(new paella.DomNode('button',btn.id,style));
+                let logoNode = this.container.addNode(new paella.DomNode('div',btn.id,style));
                 logoNode.domElement.className = "paella-profile-button";
                 logoNode.domElement.data = {
                     action: btn.onClick,

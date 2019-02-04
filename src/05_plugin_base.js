@@ -514,7 +514,12 @@ class ButtonPlugin extends paella.UIPlugin {
 		return paella.ButtonPlugin.type.actionButton;
 		
 	}
+
 	getText() {
+		return "";
+	}
+
+	getAriaLabel() {
 		return "";
 	}
 	
@@ -571,13 +576,20 @@ class ButtonPlugin extends paella.UIPlugin {
 
 	static BuildPluginButton(plugin,id) {
 		plugin.subclass = plugin.getSubclass();
-		var elem = document.createElement('button');
+		var elem = document.createElement('div');
+		let ariaLabel = plugin.getAriaLabel();
+		if (ariaLabel!="") {
+			elem = document.createElement('button');
+		}
 		elem.className = plugin.getClassName();
 		elem.id = id;
 		elem.innerHTML = '<span class="button-text">' + paella.AntiXSS.htmlEscape(plugin.getText()) + '</span>';
-		elem.setAttribute("tabindex", 1000+plugin.getIndex());
+		if (ariaLabel) {
+			elem.setAttribute("tabindex", 1000 + plugin.getIndex());
+			elem.setAriaLabel("aria-label",ariaLabel);
+		}	
 		elem.setAttribute("alt", "");
-		elem.setAttribute("role", "button");
+
 		elem.plugin = plugin;
 		plugin.button = elem;
 		plugin.container = elem;
@@ -646,6 +658,10 @@ class VideoOverlayButtonPlugin extends paella.ButtonPlugin {
 
 	getName() {
 		return "VideoOverlayButtonPlugin";
+	}
+
+	get tabIndex() {
+		return -1;
 	}
 }
 

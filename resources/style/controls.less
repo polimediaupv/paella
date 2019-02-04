@@ -59,7 +59,7 @@ div {
     user-select: none;
 }
 
-button.buttonPlugin {
+.buttonPlugin {
     cursor: pointer;
     padding-right: 0px;
     padding-left: 0px;
@@ -79,9 +79,10 @@ button.buttonPlugin {
     margin-right: @playbackBarButtonPadding;
     margin-top: @playbackBarButtonPadding;
     color: @icon_text_color;
+    text-align: center;
 }
 
-button i.button-icon {
+button,div i.button-icon {
     color: @paella_icons_color;
     font-size: unit(@paellaIconsFontSizePx,px);
     line-height: unit(@paellaIconsLineHeightPx,px);
