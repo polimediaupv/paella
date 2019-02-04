@@ -7,7 +7,7 @@ This plugin goes forward in the time line.
 
 ![](images/flexSkipPlugin.jpg)
 
-## Plugin Type:
+## Plugin Type
 
 - [paella.ButtonPlugin](../developer/plugin_types.md)
 
@@ -16,7 +16,7 @@ This plugin goes forward in the time line.
 [**edu.harvard.dce.paella.flexSkipPlugin**](edu.harvard.dce.paella.flexSkipPlugin.md)
 
 
-## Config Example:
+## Config Example
 
 Here's are the config lines for this plugin:
 

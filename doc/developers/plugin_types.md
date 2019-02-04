@@ -7,6 +7,7 @@ Paella player can be extended using plugins. There are diferent types of plugins
 what functionality you want to add.
 
 ## Interact with the user
+
 There are 3 main plugins types to interact with the user giving him control over
 the plugin and its funcionalities.
 
@@ -32,8 +33,8 @@ the plugin and its funcionalities.
   The tabbar plugin is an old plugin type. This plugin was use in the extint paella-extended version.
   From Paella 4.1 paella-extended is extinted, but we build a new button plugin that allow old TabBar
   plugins to countinue working.
-  
-##  Interact with the player
+
+## Interact with the player
 
 - Event Driven Plugins
 
@@ -64,6 +65,7 @@ the plugin and its funcionalities.
   [elasticsearchSaverPlugin](../adopters/plugins/es.upv.paella.usertracking.elasticsearchSaverPlugin.md)
 
 ## Video plugins
+
 A video plugin is the basic element that is able to manage (play, pause, stop, ...) a single video.
 A video plugin shoud inherit from a `paella.VideoElementBase` class or any other class that inherit from it.
 

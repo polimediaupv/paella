@@ -7,25 +7,26 @@ This plugin is responsible of control the volume pop-up plugin in the paella pla
 
 ![](images/volumeRangePlugin.jpg)
 
-## Plugin Type:
-- [paella.ButtonPlugin](../developer/plugin_types.md)
+## Plugin Type
+
+* [paella.ButtonPlugin](../developer/plugin_types.md)
 
 ## Configuration Parameters
 
 
 * **showMasterVolume**
 
-	Option to control and show Master volume slider volume controller.
-	- default value: true
-	- range: true | false
+    Option to control and show Master volume slider volume controller.
+    - default value: true
+    - range: true | false
 
 * **showSlaveVolume**
 
-	Option to control and show Slave volume slider volume controller.
-	- default value: false
-	- range: true | false
+    Option to control and show Slave volume slider volume controller.
+    - default value: false
+    - range: true | false
 
-## Config Example:
+## Config Example
 
 Here's are the config lines for this plugin:
 

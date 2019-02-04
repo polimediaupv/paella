@@ -7,8 +7,9 @@ This plugin controls the visualization mode related to the Master and the Slave 
 
 ![](images/viewModePlugin.jpg)
 
-## Plugin Type:
-- [paella.ButtonPlugin](../developer/plugin_types.md)
+## Plugin Type
+
+* [paella.ButtonPlugin](../developer/plugin_types.md)
 
 ## Related Plugins
 
@@ -19,15 +20,15 @@ This plugin controls the visualization mode related to the Master and the Slave 
 
 * **activeProfiles**
 
-	List of profiles to show
-	- default value: null
-	- range: [...]
-	- available profiles: "s_p_blackboard2", "slide_professor", "professor_slide", "professor", "slide", "slide_over_professor", "slide_over_professor_right", "professor_over_slide", "professor_over_slide_right"
+    List of profiles to show
+    - default value: null
+    - range: [...]
+    - available profiles: "s_p_blackboard2", "slide_professor", "professor_slide", "professor", "slide", "slide_over_professor", "slide_over_professor_right", "professor_over_slide", "professor_over_slide_right"
 
 
 
 
-## Config Example:
+## Config Example
 
 ```json
 {
