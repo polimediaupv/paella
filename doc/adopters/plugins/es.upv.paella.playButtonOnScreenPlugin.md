@@ -6,11 +6,12 @@
 This plugin show a play button on the screen to start the video
 
 
-## Plugin Type:
+## Plugin Type
+
 - [paella.EventDrivenPlugin](../developer/plugin_types.md)
 
 
-## Config Example:
+## Config Example
 
 ```json
 {

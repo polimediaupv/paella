@@ -36,10 +36,13 @@ Look the code below related to the plugins, used for enable or disable plugins, 
 		}
 	},
 ```
+
 when we are inside a plugin we can acces this variables using:
 
 ```javascript
 this.config.<variable>
 ```
 
-### More about [Plugin Creation](plugin_creation.md) and [Plugin Types](plugin_types.md)
+## Continue reading
+
+More about [Plugin Creation](plugin_creation.md) and [Plugin Types](plugin_types.md)

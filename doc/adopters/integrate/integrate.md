@@ -39,7 +39,7 @@ information needed.
 To know more about this, please read [How to integrate paella in your portal: the advanced way](integrate_advanced.md)
 
 
-# Some adapters to use Paella in other portals.
+# Some adapters to use Paella in other portals
 
 There are some implementation to integrate Paella in third party portals:
 

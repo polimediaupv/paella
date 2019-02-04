@@ -5,10 +5,11 @@
 
 This plugins shows a info related to the loading time of the player.
 
-## Plugin Type:
+## Plugin Type
+
 - [paella.EventDrivenPlugin](../developer/plugin_types.md)
 
-## Config Example:
+## Config Example
 
 Here's are the config lines for this plugin:
 

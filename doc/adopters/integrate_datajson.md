@@ -12,9 +12,11 @@ To make easier the use of paella from third parties we have created a [JSON sche
 To make this even easier we made this [tool](https://rawgit.com/polimediaupv/paella/develop/tools/mediapackagecreator/jsoncreateutil.html) to define our JSONs 
  
 ## JSON Structure
- We will detail the JSON structure from the root
- ```json
- {
+
+We will detail the JSON structure from the root
+
+```json
+{
   "streams": [],
   "frameList": [],
   "metadata": {}
@@ -22,7 +24,9 @@ To make this even easier we made this [tool](https://rawgit.com/polimediaupv/pae
 ```
 
 ### streams
+
 This will hold an array with the diferent video streams that the player will play, the max length of this array should be 2, since paella by default can only play 2 video streams.
+
 ```json
 {
   "streams": [
@@ -39,17 +43,20 @@ This will hold an array with the diferent video streams that the player will pla
 ```
 
 #### stream
+
 Each stream in the stream array will have:
+
 * preview: url containing the image that will be used as preview for the stream
 * sources: source or sources of the data stream 
 * content: a tag that describes the content of the video.
 
 ##### About the stream content
+
 The `content` attribute is a tag used to determine where the video will be displayed in a multi-stream video. To determine the position of each video in multi-stream videos, Paella Player uses layout plugins. The valid tag values for the `content` property are determined in the plugin configuration, in `config.json`:
 
 Paella Player will use all the configurations that can be linked with the layout plugin settings, matching the `content` property of the stream with the `content` property of the plugin settings. For example, if you have a video with three streams:
 
-```
+```javascript
 "streams": [
   {
     "sources": { ... }
@@ -68,7 +75,7 @@ Paella Player will use all the configurations that can be linked with the layout
 
 And using the following configuration:
 
-```
+```javascript
 "//**** Video profile plugins": "",
 "es.upv.paella.singleStreamProfilePlugin": {
   "enabled": true,
@@ -95,15 +102,15 @@ And using the following configuration:
 
 Paella Player will allow to set the following layouts:
 
-- Single stream layout, stream "presenter"
-- Single stream layout, stream "presentation"
-- Dual stream layout, streams "presenter" and "presentation"
-- Dual stream layout, streams "presenter-2" and "presentation"
-- Triple stream layout, streams "presenter", "presentation" and "presentation-2"
+* Single stream layout, stream "presenter"
+* Single stream layout, stream "presentation"
+* Dual stream layout, streams "presenter" and "presentation"
+* Dual stream layout, streams "presenter-2" and "presentation"
+* Triple stream layout, streams "presenter", "presentation" and "presentation-2"
 
 If you want to add a setting to show the "presenter" and "presenter-2" videos, you can add a `videoSet` to the dualStreamProfilePlugin with the following settings:
 
-```
+```javascript
   "es.upv.paella.singleStreamProfilePlugin": {
     "enabled": true,
     "videoSets": [
@@ -115,7 +122,7 @@ If you want to add a setting to show the "presenter" and "presenter-2" videos, y
 
 And if you want to add a single stream to show the "presenter-2" video, you can add a `videoSet` to the singleStreamProfilePlugin settings:
 
-```
+```javascript
   "es.upv.paella.singleStreamProfilePlugin": {
     "enabled": true,
     "videoSets": [
@@ -127,9 +134,11 @@ And if you want to add a single stream to show the "presenter-2" video, you can 
 
 
 #### source
+
 The admites source types are mp4,ogg,webm,flv,rtmp & image, since all the source types but image share the same JSON structure we will diferenciate between video-source and image-source 
 
 #### video-source
+
 A video-source consist in an array with the videos that forms the diferent resoultions and qualities of the stream, in the example below we have an mp4 source but any of the video types uses this format.
 
 ```json
@@ -161,10 +170,11 @@ A video-source consist in an array with the videos that forms the diferent resou
 * src: The url of the video
 * mimetype: mimetype that corresponds to the source
 * res: the resolution of the source
-    * w:widht
-    * h:height
+    - w: widht
+    - h: height
         
 #### image-source
+
 When we use an image array as source of the video stream the way this should be represented in the JSON is this:
 
 ```json
@@ -205,10 +215,11 @@ When we use an image array as source of the video stream the way this should be 
 * count: number of images that compounds the image stream
 * duration: the duration of the image stream
 * res: the resolution of the source
-    * w:widht
-    * h:height
+    - w: widht
+    - h: height
         
 ### frameList
+
 The storyboard uses an array of images wich is defined in the JSON in the frameList
 
 ```json
@@ -261,16 +272,17 @@ The storyboard uses an array of images wich is defined in the JSON in the frameL
 ```
 
 ### metadata
+
 here we store custom info about the videos that we will play
- 
- ```json
- {
+
+```json
+{
   "metadata": {
     "title": "",
     "duration": 0
   }
 }
 ```
- 
+
 * title: title of the video
 * duration: duration of the video

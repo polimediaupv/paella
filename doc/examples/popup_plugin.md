@@ -2,11 +2,13 @@
 ---
 
 # PopUp button plugin example
+
 ## es.upv.paella.themeChooser
 
 Check [button plugin creation](button_plugin.html) document before continue.
 
 ### Create the plugin
+
 A button plugin implements three different types of button. By default is a plugin that calls the
 action() function when the user press it, as you can see [here](button_plugin.md). But also you can
 overwrite the getButtonType() function to change this behavior:
@@ -22,9 +24,10 @@ You can also return [paella.ButtonPlugin.type.timeLineButton](timeline_plugin.md
 that have the same width as the time line.
 
 ### Pop up contents
+
 To fill in the pop up contents, overwrite the buildContent() function. This function receive the pop up
 dom element. You only need to attach to this element whatever you want to show in the pop up.
-		
+
 ```javascript
 buildContent:function(domElement) {
 	var This = this;

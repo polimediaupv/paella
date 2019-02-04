@@ -2,6 +2,7 @@
 ---
 
 # Build Paella from source
+
 ## Dependencies
 
 In addition to Node.js and Bower, Paella Player uses [Gulp](http://gulp.com/) as a task runner and build system. You can use npm to install Gulp in your system:
@@ -34,7 +35,7 @@ To build paella player you need to open a terminal and go to the paella folder, 
 ```shell
 gulp build.release
 ```
-	
+
 A new folder (named `build`) will be created with the player and a test repository. You will find paella at `build/player`.
 
 

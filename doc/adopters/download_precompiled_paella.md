@@ -11,6 +11,7 @@ You can download paella from [github releases](https://github.com/polimediaupv/p
 or latest stable version from [https://github.com/polimediaupv/paella/releases/latest](https://github.com/polimediaupv/paella/releases/latest)
 
 ## Download from npm
+
 ### Dependencies
 
 If you want to use a stable version of Paella Player, you can download it using `npm`. To do it, you'll need to install [Node.js](https://nodejs.org). Download and install it following the instructions for your specific platform:

@@ -7,10 +7,11 @@ This is the main control of the TabAdapterPlugin wich contains a selection of pl
 
 ![](images/extendedTabAdapterPlugin.jpg)
 
-## Plugin Type:
+## Plugin Type
+
 - [paella.ButtonPlugin](../developer/plugin_types.md)
 
-## Config Example:
+## Config Example
 
 Here's are the config lines for this plugin:
 

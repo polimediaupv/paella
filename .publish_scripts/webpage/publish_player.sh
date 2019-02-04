@@ -126,7 +126,7 @@ pushd $TMP_FOLDER > /dev/null
     fi
 
     cp -r ${SRC_PAELLA_FOLDER}/build/player ${TMP_FOLDER}/paella/player-${VERSION}
-    jq '.standalone.repository = "//paellaplayer.upv.es/demo/repository/"' ${TMP_FOLDER}/paella/player-${VERSION}/config/config.json > ${TMP_FOLDER}/paella/player-${VERSION}/config/config.json.tmp
+    jq '.standalone.repository = "//repository.paellaplayer.upv.es/"' ${TMP_FOLDER}/paella/player-${VERSION}/config/config.json > ${TMP_FOLDER}/paella/player-${VERSION}/config/config.json.tmp
     mv ${TMP_FOLDER}/paella/player-${VERSION}/config/config.json.tmp ${TMP_FOLDER}/paella/player-${VERSION}/config/config.json
     
 

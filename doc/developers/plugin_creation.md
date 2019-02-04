@@ -10,22 +10,25 @@ You can create plugin for your purposes at local installation using the **'vendo
 For explain better the plugin creation steps we are going to use the current "helpPlugin" as an example. This plugin shows a popup window with help to the final user.
 
 ### Step #1 
+
 - Create a folder under Paella-Project/Plugin.
 
 All files/directories under the new folder will be inserted in Paella for his use.
 
 ### Step #2
+
 - Create files and direcories inside our new directory with this structure.
 
-    - /localization
-    - /resources
-    - myPluginName.js
-    - myPluginName.less
+    * /localization
+    * /resources
+    * myPluginName.js
+    * myPluginName.less
 
 
-Inside <b>LOCALIZATION</b> we going to make a json for translate the text showed in the tooltip of our plugin button. The name of the json must be using the ISO 3166-1. 
+Inside **LOCALIZATION** we going to make a json for translate the text showed in the tooltip of our plugin button. The name of the json must be using the ISO 3166-1. 
 
-example: /localizacion/<b>es</b>.json
+example: /localizacion/**es**.json
+
 ```javascript
 {
 	"Show help": "Mostrar ayuda",
@@ -33,29 +36,33 @@ example: /localizacion/<b>es</b>.json
 }
 ```
 
-<b>RESOURCES</b> Use this directory for keep all resources that we are going to use in our plugin.
+**RESOURCES** Use this directory for keep all resources that we are going to use in our plugin.
 
-<b>myPluginName.js</b> This will be our plugin main core file.
+**myPluginName.js** This will be our plugin main core file.
 
-<b>myPluginName.less</b>This will be our plugin main style file.
+**myPluginName.less** This will be our plugin main style file.
 
 ### Step #3
+
 - Select your plugin [TYPE](plugin_types.md)
 - Create your plugin class.
 
 example: helpPlugin.js (buttonPlugin)
+
 ```javascript
 Class ("paella.plugins.HelpPlugin",paella.ButtonPlugin, {...});
 
 ```
 
 example: zoomPlugin.js (EventDrivenPlugin)
+
 ```javascript
 Class ("paella.ZoomPlugin", paella.EventDrivenPlugin,{...});
 
 ```
 
 ### Step #4
+
 Using the main methods:
 
 example: helpPlugin.js (buttonPlugin)
@@ -125,7 +132,7 @@ example: zoomPlugin.js (EventDrivenPlugin)
 
 example: zoomPlugin.less
 
-```
+```css
 .buttonPlugin.helpButton {
 	background-position: -520px 0px;
 }

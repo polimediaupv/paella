@@ -6,32 +6,33 @@
 This plugin loads the video captions from the [translectures project](https://www.translectures.eu/)
 
 
-## Plugin Type:
-- [paella.EventDrivenPlugin](../developer/plugin_types.md)
+## Plugin Type
+
+* [paella.EventDrivenPlugin](../developer/plugin_types.md)
 
 ## Configuration Parameters
 
 * **tLServer**
 
-	URL to translectures server.
-	- required
+    URL to translectures server.
+    - required
 
 * **tLdb**
 
-	translectures DB
-	- required
+    translectures DB
+    - required
 
 * **tLEdit**
 
-	URL to edit the captions
-	- optional. If defined, the player lets you to edit the captions.
+    URL to edit the captions
+    - optional. If defined, the player lets you to edit the captions.
 
-	  Some variables can be use in the URL
-	  - ${videoId}: the video identifier
-	  - ${tl.lang.code}: language to edit
+        Some variables can be use in the URL
+        + ${videoId}: the video identifier
+        + ${tl.lang.code}: language to edit
 
 
-## Config Example:
+## Config Example
 
 ```json
 {

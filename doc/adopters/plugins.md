@@ -48,7 +48,8 @@ To know more about this, you can read the [Plugin types](developer/plugin_types.
 * [es.upv.paella.windowTitlePlugin](plugins/es.upv.paella.windowTitlePlugin.md)	
 * [es.upv.paella.visualAnnotationPlugin](plugins/es.upv.paella.visualAnnotationPlugin.md)	
 
-## Captions Parser Plugins	
+## Captions Parser Plugins
+
 * [es.upv.paella.captions.DFXPParserPlugin](plugins/es.upv.paella.captions.DFXPParserPlugin.md)	
 
 ## Search Service Plugins	

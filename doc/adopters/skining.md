@@ -51,10 +51,11 @@ The icons used in the navigation bar and other elements, are generated using a c
 
 Example:
 
-```
+```html
  <div>
     <span class="icon-photo"></span>
     <span>icon-photo</span>
 </div>
 ```
+
  ![](icon-photo-sample.jpg)
