@@ -2,6 +2,7 @@
 ---
 
 # Video extension plugins
+
 ## es.upv.paella.mpegDashPlayer
 
 This plugin adds support for MPEG-Dash sources. To create a video extension plugin, you must to
@@ -9,8 +10,8 @@ implement two classes:
 
 - The player class: extend a paella.VideoElementBase class or subclass.
 - The factory class: Create a class insode paella.videoFactories with two functions:
-    - isStreamCompatible(streamData): Returns true if the video player can playback the source specified in streamData
-    - getVideoObject(id,streamData,rect): This is the factory method that will create the video player instance.
+    * isStreamCompatible(streamData): Returns true if the video player can playback the source specified in streamData
+    * getVideoObject(id,streamData,rect): This is the factory method that will create the video player instance.
 
 You can add third party dependencies to the "deps" folder, inside the plugin folder. In this case, the plugin
 includes a reference to the MPEG-Dash reference player:
@@ -95,7 +96,7 @@ load:function() {
 },
 ```
 
-## getQualities():
+## getQualities()
 
 This function is used to get the available qualities.
 

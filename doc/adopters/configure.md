@@ -97,8 +97,9 @@ Take a look to the [Integrate Paella section](integrate.md)
 ## Can I choose when a plugin is shown depending on the play mode ( embed, fullScreen, standard .. etc )?
 
 Inside config file at plugins section you can set the mode for show the plugin using:
+
 ```javascript
 "es.upv.paella.xxx":{"enabled":true,......,"visibleOn":['standard', 'fullscreen', 'embed']},
 ```
+
 Remember that this only works with ButtonPlugins.
-	

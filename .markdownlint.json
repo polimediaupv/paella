@@ -1,0 +1,14 @@
+{
+    "default": true,
+    "headers": { "style": "atx" },
+    "indentation": { "indent": 4 },
+    "line_length": { "line_length": true },
+    "no-trailing-punctuation": { "punctuation": ".,;:" },
+    "ul-style": { "style": "sublist" },
+    "ol-prefix": false,
+    "no-hard-tabs": false,
+
+    
+    "no-alt-text": false,
+    "whitespace": false
+  }

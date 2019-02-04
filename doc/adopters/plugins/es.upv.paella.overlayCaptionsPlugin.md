@@ -7,7 +7,8 @@ This plugins listens the "captionsPlugin" that throws the events for activate or
 
 ![](images/overlayCaptionsPlugin.jpg)
 
-## Plugin Type:
+## Plugin Type
+
 - [paella.EventDrivenPlugin](../developer/plugin_types.md)
 
 ## Related Plugins
@@ -16,7 +17,7 @@ This plugins listens the "captionsPlugin" that throws the events for activate or
 - [**es.upv.paella.captions.DFXPParserPlugin**](es.upv.paella.captions.DFXPParserPlugin.md)
 
 
-## Config Example:
+## Config Example
 
 Here's are the config lines for this plugin:
 

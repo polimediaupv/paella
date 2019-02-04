@@ -6,15 +6,17 @@
 This is a DXFP Captions Parser
 
 
-## Plugin Type:
+## Plugin Type
+
 - [paella.CaptionParserPlugIn](../developer/plugin_types.md)
 
-## Related Plugins:
+## Related Plugins
+
 - [**es.upv.paella.captionsPlugin**](es.upv.paella.captionsPlugin.md)
 - [**es.upv.paella.captionsButtonPlugin**](es.upv.paella.captionsButtonPlugin.md)
 
 
-## Config Example:
+## Config Example
 
 ```json
 {

@@ -114,15 +114,15 @@ The paella.load function accepts two parameters
 paella.load(containerId, options)
 ```
 
-- containedId
+* containedId
 
   This is the ID of the div container where paella will load
   
-- options
+* options
 
   options is an object that can accept different parameters:
   
-  * url
+    - url
     
     The URL of the repository. If a repository URL is passed here, paella will ignore the url 
     specified in the `config.json` file.
@@ -131,7 +131,7 @@ paella.load(containerId, options)
     paella.load(containerId, { url:'../repository/' });
     ```
 
-  * data
+    - data
   
     A data object with the video information. To know more about the data format, please read
     the [data.json format](integrate_datajson.md) section.

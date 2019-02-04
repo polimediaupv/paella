@@ -35,6 +35,7 @@ As higher profiles and levels are decoding intensive, they are not supported by 
 ease their processor workload.
 
 When posible encode your videos with:
+
 * Baseline Profile
 * Level 3.0
 * 1 reference frame

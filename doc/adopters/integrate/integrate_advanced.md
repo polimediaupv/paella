@@ -205,7 +205,7 @@ To write and read data to and from your server, you must to implement your speci
 - The default contexts for which the data delegate is to be used.
 - A callback that returns the data delegate class.
 
-```
+```javascript
 paella.addDataDelegate(['context1','context2',...'contextn'], () => {
 	return MyDataDelegate
 }) 
@@ -213,7 +213,7 @@ paella.addDataDelegate(['context1','context2',...'contextn'], () => {
 
 The data delegate is implemented extending the paella.DataDelegate class:
 
-```
+```javascript
 paella.addDataDelegate(['context1','context2',...'contextn'], () => {
 	class MyDataDelegate extends paella.DataDelegate {
 		read(context,params,onSuccess) {

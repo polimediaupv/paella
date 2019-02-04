@@ -5,7 +5,7 @@
 
 This plugin controls the player trimming feature.
 
-## Plugin Type:
+## Plugin Type
 
 - [paella.EventDrivenPlugin](../developer/plugin_types.md)
 
@@ -14,7 +14,7 @@ This plugin controls the player trimming feature.
 [**es.upv.paella.editor.trimmingTrackPlugin**](es.upv.paella.editor.trimmingTrackPlugin.md)
 
 
-## Config Example:
+## Config Example
 
 ```json
 {

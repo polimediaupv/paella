@@ -5,7 +5,7 @@
 
 In Paella 5.2.x, the plugins were registered by instantiating their class:
 
-```
+```javascript
 Class ("paella.plugins.PlayPauseButtonPlugin",paella.ButtonPlugin, {
     ....
 });
@@ -22,7 +22,7 @@ when the plugin must be instantiated.
 
 Also, the plugins code must be defined using the new ECMAScript 2015 standard.
 
-```
+```javascript
 paella.addPlugin(function() {
 	return class PlayPauseButtonPlugin extends paella.ButtonPlugin {
 		constructor() {
@@ -51,7 +51,7 @@ the context that will use the data delegate by default, without having to do it 
 You still can use the configuration file to define the data delegate context, and the parameters defined in the configuration
 files are more priority than those defined in the code.
 
-```
+```javascript
 paella.addDataDelegate("context",() => {
     return class MyDataDelegate extends paella.DataDelegate {
         read(context,params,onSuccess) { ... }
@@ -65,7 +65,7 @@ paella.addDataDelegate("context",() => {
 
 You can also define more than one context in the code using an array instead of a string.
 
-```
+```javascript
 paella.addDataDelegate(["context1","context2"],() => {
     return class MyDataDelegate extends paella.DataDelegate {
         read(context,params,onSuccess) { ... }

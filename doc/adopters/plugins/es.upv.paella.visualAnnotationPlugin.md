@@ -2,6 +2,7 @@
 ---
 
 # Introduction
+
 Paella has inherited the use of annotations from matterhorn, and they are used
 to keep a track of some functionality of the video, like breaks and trimming.
 This plugin integrates the use of annotations, and brings the visual annotations
@@ -12,20 +13,22 @@ This brings to paella the capability to create more interactive videos, update i
 and add correction notes to old videos and more cool functionality to the already
 awesome player.
 
-## Plugin Type:
-- [paella.userTracking.EventDrivenPlugin](../developer/plugin_types.md)
+## Plugin Type
+
+* [paella.userTracking.EventDrivenPlugin](../developer/plugin_types.md)
 
 ## Data delegate definition
-- "visualAnnotations": "VisualAnnotationsDataDelegate"
+
+* "visualAnnotations": "VisualAnnotationsDataDelegate"
 
 ## Configuration Parameters
 
 * **url**
 
-	URL to the data server.
-	- required
+    URL to the data server.
+    - required
 
-## Config Example:
+## Config Example
 
 ```json
 {
@@ -37,6 +40,7 @@ awesome player.
 ```
 
 ## Annotation plugin
+
 An anotation is defined with a json format that paella player will read from its
 data delegate. Each annotation has the following elements.
 
@@ -48,16 +52,16 @@ data delegate. Each annotation has the following elements.
 5. **time** (int) starting time to appear the annotation in seconds
 6. **duration** (int) duration in wich the annotation will be shown
 7. **content** (mixed) defines the content this may vary depending on the annotation
-type. Here we will define de standar data stored here for visual annotations.
- * **Data** (obj) Stores the content for each language of the annotation with
- html5. We have to define a subelement for each language named like the language
- abreviation name.
- * **pauser** (bool) defines if the annotation pauses paella once its duration
- expires
- * **profile** (string) when the annotation appears it may change paella profile
- this defines the profile that will be active during the annotation, this may be blank
- in case we dont desire this behaviour
- * **style** defines the css style that will be applied to the annotation content
+   type. Here we will define de standar data stored here for visual annotations.
+8. **Data** (obj) Stores the content for each language of the annotation with
+   html5. We have to define a subelement for each language named like the language
+   abreviation name.
+9. **pauser** (bool) defines if the annotation pauses paella once its duration
+   expires
+10. **profile** (string) when the annotation appears it may change paella profile
+   this defines the profile that will be active during the annotation, this may be blank
+   in case we dont desire this behaviour
+11. **style** defines the css style that will be applied to the annotation content
 
 An example of an annotation json will be like
 
@@ -77,20 +81,21 @@ An example of an annotation json will be like
 ### Annotation types
 
 We defined a set of visual annotation types depending on the use of the annotation.
+
 * **AD** Used to announce video channels, websites and other stuff. This kind
-of annotation will be set at the bottom left of the player as default in a small
-layout
+  of annotation will be set at the bottom left of the player as default in a small
+  layout
 * **BANNER** A bigger layout than the **AD** that covers all the bottom of the video
-can be used to include bigger banners and subtitle like annotations.
+  can be used to include bigger banners and subtitle like annotations.
 * **NOTE** This will be using a quarter of the video size and set on the left.
-Could be used to add notes that adds value to the video itself.
+  Could be used to add notes that adds value to the video itself.
 * **MEMO** Using the vertical left half of the screen this kind of annotation
-benefits with the profile change feature and we can include inline problems,
-even replace video slides shown in the video second channel.
+  benefits with the profile change feature and we can include inline problems,
+  even replace video slides shown in the video second channel.
 * **FULL** A full screen annotation that will be set over the video, ideal to
-show that info that need more room, like an opening / ending banner with links
-to another videos or a big annotation explaining in text what video is telling you
-in the background, even a pdf file that you'll like to link to.
+  show that info that need more room, like an opening / ending banner with links
+  to another videos or a big annotation explaining in text what video is telling you
+  in the background, even a pdf file that you'll like to link to.
 
 Even since we let the user insert and create annotations with any style values,
 we have defined for each of the types of visual annotation a set of predefined styles
