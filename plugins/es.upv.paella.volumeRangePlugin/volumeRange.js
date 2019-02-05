@@ -8,6 +8,7 @@ paella.addPlugin(function() {
 		//getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
 		getDefaultToolTip() { return base.dictionary.translate("Volume"); }
 		getIndex() {return 120;}
+		getAriaLabel() { return base.dictionary.translate("Volume"); }
 
 		
 		//closeOnMouseOut() { return true; }

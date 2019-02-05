@@ -607,7 +607,7 @@ class ButtonPlugin extends paella.UIPlugin {
 		elem.appendChild(buttonText);
 		if (ariaLabel) {
 			elem.setAttribute("tabindex", 1000 + plugin.getIndex());
-			elem.setAriaLabel("aria-label",ariaLabel);
+			elem.setAttribute("aria-label",ariaLabel);
 		}	
 		elem.setAttribute("alt", "");
 
