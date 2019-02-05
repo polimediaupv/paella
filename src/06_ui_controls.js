@@ -497,8 +497,19 @@ class PlaybackControl extends paella.DomNode {
 		var id = 'buttonPlugin' + this.buttonPlugins.length;
 		this.buttonPlugins.push(plugin);
 		var button = paella.ButtonPlugin.BuildPluginButton(plugin,id);
+		button.plugin = plugin;
+		let expand = paella.ButtonPlugin.BuildPluginExpand(plugin,id);
 		plugin.button = button;
+		plugin._expandElement = expand;
 		this.pluginsContainer.domElement.appendChild(button);
+		if (expand) {
+			let This = this;
+			$(button).mouseover(function(evt) {
+				evt.target.plugin.expand();
+				This._expandedPlugin = evt.target.plugin;
+			});
+			this.pluginsContainer.domElement.appendChild(expand);
+		}
 		$(button).hide();
 		plugin.checkEnabled((isEnabled) => {
 			var parent;
@@ -551,6 +562,13 @@ class PlaybackControl extends paella.DomNode {
 		this.addNode(new paella.PlaybackBar(this.playbackBarId));
 
 		paella.pluginManager.setTarget('button',this);
+
+		$(window).mousemove((evt) => {
+			if (this._expandedPlugin && ($(window).height() - evt.clientY)> 50) {
+				this._expandedPlugin.contract();
+				this._expandPlugin = null;
+			}
+		});
 	}
 
 	get popUpPluginContainer() {

@@ -574,6 +574,22 @@ class ButtonPlugin extends paella.UIPlugin {
 		return (this.button.popUpIdentifier == this.containerManager.currentContainerId);
 	}
 
+	getExpandableContent() {
+		return null;
+	}
+
+	expand() {
+		if (this._expand) {
+			$(this._expand).show();
+		}
+	}
+
+	contract() {
+		if (this._expand) {
+			$(this._expand).hide();
+		}
+	}
+
 	static BuildPluginButton(plugin,id) {
 		plugin.subclass = plugin.getSubclass();
 		var elem = document.createElement('div');
@@ -583,7 +599,12 @@ class ButtonPlugin extends paella.UIPlugin {
 		}
 		elem.className = plugin.getClassName();
 		elem.id = id;
-		elem.innerHTML = '<span class="button-text">' + paella.AntiXSS.htmlEscape(plugin.getText()) + '</span>';
+
+		let buttonText = document.createElement('span');
+		buttonText.className = "button-text";
+		buttonText.innerHTML = paella.AntiXSS.htmlEscape(plugin.getText());
+		buttonText.plugin = plugin;
+		elem.appendChild(buttonText);
 		if (ariaLabel) {
 			elem.setAttribute("tabindex", 1000 + plugin.getIndex());
 			elem.setAriaLabel("aria-label",ariaLabel);
@@ -598,6 +619,7 @@ class ButtonPlugin extends paella.UIPlugin {
 
 		let icon = document.createElement('i');
 		icon.className = 'button-icon ' + plugin.getIconClass();
+		icon.plugin = plugin;
 		elem.appendChild(icon);
 		plugin._i = icon;
 			
@@ -615,6 +637,20 @@ class ButtonPlugin extends paella.UIPlugin {
 			}
 		});
 		return elem;
+	}
+
+	static BuildPluginExpand(plugin,id) {
+		let expandContent = plugin.getExpandableContent();
+		if (expandContent) {
+			let expand = document.createElement('span');
+			expand.plugin = plugin;
+			expand.className = 'expandable-content ' + plugin.getClassName();
+			plugin._expand = expand;
+			expand.appendChild(expandContent);
+			$(plugin._expand).hide();
+			return expand;
+		}
+		return null;
 	}
 
 	static BuildPluginPopUp(parent,plugin,id) {

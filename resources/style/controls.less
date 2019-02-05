@@ -72,7 +72,7 @@ div {
     border: none;
     box-sizing: border-box;
 
-    width: unit(@playbackBarButtonWidthPx - @playbackBarButtonPadding * 2,px);
+    min-width: unit(@playbackBarButtonWidthPx - @playbackBarButtonPadding * 2,px);
     height: unit(@playbackBarButtonHeightPx - @playbackBarButtonPadding * 2, px);
     
     margin-left: @playbackBarButtonPadding;
@@ -86,6 +86,21 @@ button,div i.button-icon {
     color: @paella_icons_color;
     font-size: unit(@paellaIconsFontSizePx,px);
     line-height: unit(@paellaIconsLineHeightPx,px);
+    position: absolute;
+    top: 0px;
+    left: @playbackBarButtonPadding;
+}
+
+
+span.expandable-content {
+    color: @icon_text_color;
+    width: 80px;
+    display: block;
+    float: left;
+}
+
+.buttonPlugin.expandable-content {
+    background-color: transparent !important;
 }
 
 .buttonPlugin {

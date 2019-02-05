@@ -750,6 +750,7 @@ class Html5Video extends paella.VideoElementBase {
 
 		this.video.preload = "auto";
 		this.video.setAttribute("playsinline","");
+		this.video.setAttribute("tabindex","-1");
 
 		function onProgress(event) {
 			if (!this._ready && this.video.readyState==4) {
