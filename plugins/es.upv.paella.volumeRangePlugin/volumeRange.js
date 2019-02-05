@@ -29,6 +29,8 @@ paella.addPlugin(function() {
 			paella.events.bind(paella.events.singleVideoReady,function(event,params) {self.loadStoredVolume(params);});
 
 			paella.events.bind(paella.events.setVolume, function(evt,par){ self.updateVolumeOnEvent(par);});
+
+			this._preMutedVolume = 1;
 		}
 
 		updateVolumeOnEvent(volume){
@@ -58,6 +60,19 @@ paella.addPlugin(function() {
 				paella.player.videoContainer.setVolume(this._tempMasterVolume);
 			}
 			this._storedValue = false;
+		}
+
+		action(button) {
+			paella.player.videoContainer.volume()
+				.then((v) => {
+					if (v==0) {
+						paella.player.videoContainer.setVolume(this._preMutedVolume);
+					}
+					else {
+						this._preMutedVolume = v;
+						paella.player.videoContainer.setVolume(0);
+					}
+				});
 		}
 
 		getExpandableContent() {
