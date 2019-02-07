@@ -11,6 +11,9 @@ paella.addPlugin(function() {
             if (video && video.webkitSetPresentationMode) {
                 onSuccess(true);
             }
+            else if (video && 'pictureInPictureEnabled' in document) {
+                onSuccess(true);
+            }
             else {
                 onSuccess(false);
             }
@@ -18,17 +21,27 @@ paella.addPlugin(function() {
         getDefaultToolTip() { return base.dictionary.translate("Set picture-in-picture mode."); }
 
         setup() {
-            
+
         }
 
         action(button) {
             var video = paella.player.videoContainer.masterVideo().video;
-            if (video.webkitPresentationMode=="picture-in-picture") {
-                video.webkitSetPresentationMode("inline");
+            if (video.webkitSetPresentationMode) {
+                if (video.webkitPresentationMode=="picture-in-picture") {
+                    video.webkitSetPresentationMode("inline");
+                }
+                else {
+                    video.webkitSetPresentationMode("picture-in-picture");
+                }
             }
-            else {
-                video.webkitSetPresentationMode("picture-in-picture");
+            else if ('pictureInPictureEnabled' in document) {
+                if (video !== document.pictureInPictureElement) {
+                    video.requestPictureInPicture();
+                } else {
+                    document.exitPictureInPicture();
+                }
             }
+
         }
     }
 });
