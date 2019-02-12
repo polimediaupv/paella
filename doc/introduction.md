@@ -7,7 +7,7 @@ Paella (pronounced 'paeja') Player is the new *HTML 5 multistream player*{:style
 
 Paella Player is capable of playing multiple audio & video streams synchronously and can be integrated into almost any video platform using it's powerfull and easy to use plugin's architecture.
 
-![Paella Player screenshot](http://paellaplayer.upv.es/images/capture_player.jpg){: .img-responsive }
+![Paella Player screenshot](/assets/images/capture_player.jpg){: .img-responsive }
 
 ## How it works ?
 
