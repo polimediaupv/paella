@@ -13,7 +13,7 @@ To add Paella Player to your portal, you need to do some easy steps:
   If you want to use the test data provided with paella, then you need to capy also the repository folder.
 
 3. Test
-  If you have copied the repository folder, http://<your_server>/<document_root>/player?id=belmar-multiresolution-remote should work. Note that all folder names in repository/ should work as ?id=<folder_name>
+  If you have copied the repository folder, `http://<your_server_name>/<your_document_root>/player?id=belmar-multiresolution-remote` should work. Note that all folder names in repository/ should work as ?id=<folder_name>
   
 4. Configure Paella
   
