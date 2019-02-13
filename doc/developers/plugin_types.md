@@ -19,20 +19,20 @@ the plugin and its funcionalities.
   [multipleQualitiesPlugin](../adopters/plugins/es.upv.paella.multipleQualitiesPlugin.md),
   [helpPlugin](../adopters/plugins/es.upv.paella.helpPlugin.md)
   
-  
-  
-  
+    
 - Video Overlay Button Plugin
 
   This plugin type is like a button plugin, but it is located at the top-right part over the paella player.
   
   Plugin example: [liveStramingIndicatorPlugin](../adopters/plugins/es.upv.paella.liveStramingIndicatorPlugin.md)
 
-- TabBar Plugin
+- Video Player Plugins
 
-  The tabbar plugin is an old plugin type. This plugin was use in the extint paella-extended version.
-  From Paella 4.1 paella-extended is extinted, but we build a new button plugin that allow old TabBar
-  plugins to countinue working.
+ This type of plugin allows you to extend the capabilities of playing new video formats.
+
+ Plugin example: [hlsPlugin](plugins/es.upv.paella.hlsPlayer.md)
+ 
+
 
 ## Interact with the player
 
