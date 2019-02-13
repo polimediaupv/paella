@@ -11,6 +11,6 @@ You can take your first contact with Paella going to [Paella Player Web Page](ht
 
 ## Build and Install ##
 
-To build Paella, please read the [documentation](doc/README.md).
+To build Paella, please read the [documentation](https://paellaplayer.upv.es/docs/).
 
 [![Build Status](https://travis-ci.org/polimediaupv/paella.svg?branch=master)](https://travis-ci.org/polimediaupv/paella)
