@@ -15,7 +15,7 @@ We test Paella in Chrome, Safari, Internet Explorer and Firefox.
 
 ## How works the XXX plugin?
 
-It should be written on the [Paella Player Plugin Documentation](adopter_doc/plugins.md).
+It should be written on the [Paella Player Plugin Documentation](adopters/plugins.md).
 
 ## I have a RTMP streaming server. Will Paella work?
 
