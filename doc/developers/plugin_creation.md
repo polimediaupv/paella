@@ -3,7 +3,7 @@
 
 # Plugin creation
 
-You can create plugin for your purposes at local installation using the **'vendor/'** directory, but if you want to create a new plugin and integrate it with paella make the new plugin under **'plugins/'** directory and send us a pull request when its done for integrate your functionality with our system.
+You can create plugin for your purposes under **'plugins/'** directory and send us a pull request when its done for integrate your functionality with our system.
 
 ## Creation
 
@@ -45,98 +45,82 @@ example: /localizacion/**es**.json
 ### Step #3
 
 - Select your plugin [TYPE](plugin_types.md)
-- Create your plugin class.
+- Register your plugin with `paella.addPlugin`function. Para registrar el plugin, you have to call `paella.addPlugin()` function passing as parameter a closure that has to return the class that implements your plugin.
 
 example: helpPlugin.js (buttonPlugin)
-
 ```javascript
-Class ("paella.plugins.HelpPlugin",paella.ButtonPlugin, {...});
-
-```
-
-example: zoomPlugin.js (EventDrivenPlugin)
-
-```javascript
-Class ("paella.ZoomPlugin", paella.EventDrivenPlugin,{...});
-
+paella.addPlugin(() => {
+  return class HelpPlugin extends paella.ButtonPlugin {
+    // plugin implementation
 ```
 
 ### Step #4
 
-Using the main methods:
+- Implement your plugin
 
 example: helpPlugin.js (buttonPlugin)
-
 ```javascript
-{
-	getIndex:function() { return 509; }, // PLUGIN LOAD PRIORITY (LESS BETTER)
-	getAlignment:function() { return 'right'; },
-	getSubclass:function() { return "helpButton"; },
-	getName:function() { return "es.upv.paella.helpPlugin"; },
-	
-	getDefaultToolTip:function() { return base.dictionary.translate("Show help") + ' (' + base.dictionary.translate("Paella version:") + ' ' + paella.version + ')'; },
-
-    setup:function(){
-    // THIS FUNCTION IS EXECUTED AFTER A TRUE ON CHECKENABLED METHOD 
-    }
-    
-	checkEnabled:function(onSuccess) { // SHOWS THE PLUGIN IF THIS METHOD RETURNS TRUE
-		var availableLangs = (this.config && this.config.langs) || [];
-		onSuccess(availableLangs.length>0); 
-	},
-	
-	action:function(button) { // PLUGIN BUTTON PRESSED
-		var mylang = base.dictionary.currentLanguage();
-		
-		var availableLangs = (this.config && this.config.langs) || [];
-		var idx = availableLangs.indexOf(mylang);
-		if (idx < 0) { idx = 0; }
-						
-		//paella.messageBox.showFrame("http://paellaplayer.upv.es/?page=usage");
-		paella.messageBox.showFrame("resources/style/help/help_" + availableLangs[idx] + ".html");
-	}
-});  
-	paella.plugins.helpPlugin = new paella.plugins.HelpPlugin(); // INSTANTIATE
-
-```
-
-example: zoomPlugin.js (EventDrivenPlugin)
-
-```javascript
-...
-    getEvents:function() { // LISTEN EVENTS
-		return[
-			paella.events.timeUpdate,
-			paella.events.setComposition,
-			paella.events.loadPlugins,
-			paella.events.play
-		];
-    },
-
-    onEvent:function(event, params){ // EVENT TRIGGER
-    	var self = this;
-    	switch(event){
-    		case paella.events.timeUpdate: this.imageUpdate(event,params); break;
-    		case paella.events.setComposition: this.compositionChanged(event,params); break;
-    		case paella.events.loadPlugins: this.loadPlugin(event,params); break;
-			case paella.events.play: this.exitPhotoMode(); break;
-    	}
-    },
-...
-
+  // plugin implementation
+  getIndex() { return 509; }
+  getAlignment() { return 'right'; }
+  getSubclass() { return "helpButton"; }
+  getIconClass() { return 'icon-help'; }
+  getName() { return "es.upv.paella.helpPlugin"; }
+  getMinWindowSize() { return 650; }
+  
+  getDefaultToolTip() {
+	return base.dictionary.translate("Show help") + ' (' +
+		   base.dictionary.translate("Paella version:") +
+		   ' ' + paella.version + ')';
+  }
+  
+  
+  checkEnabled(onSuccess) { 
+  	var availableLangs = (this.config && this.config.langs) || [];
+  	onSuccess(availableLangs.length>0); 
+  }
+  
+  action(button) {
+  	var mylang = base.dictionary.currentLanguage();
+  	var availableLangs = (this.config && this.config.langs) || [];
+  	var idx = availableLangs.indexOf(mylang);
+	if (idx < 0) { idx = 0; }
+	myLang = availableLangs[idx];
+	  
+  	let url = `resources/style/help/help_${ availableLangs[idx] }.html`;
+  	if (base.userAgent.browser.IsMobileVersion) {
+  	  window.open(url);
+  	}
+  	else {
+  	  paella.messageBox.showFrame(url);
+  	}
+  }
+}); 
 ```
 
 ### Step #5
 
-- Define a style using myPluginName.less
-
-example: zoomPlugin.less
-
-```css
-.buttonPlugin.helpButton {
-	background-position: -520px 0px;
-}
+- Define a style using myPluginName.less, if required. It's important that you use the predefined `less` attributes for the colors and styles of Paella Player, so that your plugin is integrated into the skins definition system. You can use the following `less` attributes:
 
 ```
+@fontFamily
+@linkColor
+@linkHoverColor
+@linkActiveColor
+@mainColor
+@hoverBackgroundColor
+@backgroundColor
+@shadowColor
+@icon_text_color
+@popup_text_color
+@playbackBarButtonHeightPx
+@playbackBarButtonWidthPx
+@paellaIconsFontSizePx
+@paellaIconsPaddingLeftPx
+@paellaIconsLineHeightPx
+@playbackBarButtonPadding
+@playbackControlHeightPx
+@playbackBarFontSize: 12px;
+```
 
-
+For more information, the documentation about the [skining system](../adopters/skining.md)

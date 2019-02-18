@@ -16,7 +16,7 @@ How they works, and how to make a new one.
 - [Button plugin.](../examples/button_plugin.md)
 - [PopUp button plugin.](../examples/popup_plugin.md)
 - [Time line button plugin.](../examples/timeline_plugin.md)
-- [Video format extensions plugin](../examples/video_plugin.md)
+- [Video format extensions plugin](../examples/es.upv.paella.hlsPlayer.md)
 
 ## paella.Data
 
