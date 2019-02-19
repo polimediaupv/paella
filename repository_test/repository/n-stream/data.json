@@ -8,7 +8,7 @@
 			"sources": {
 				"mp4": [
 					{
-						"src": "http://paellaplayer.upv.es/demo/repository/n-stream/video-1.m4v",
+						"src": "https://repository.paellaplayer.upv.es/n-stream/video-1.m4v",
 						"mimetype": "video/mp4",
 						"res": {
 							"w": "1920",
@@ -24,7 +24,7 @@
 			"sources": {
 				"mp4": [
 					{
-						"src": "http://paellaplayer.upv.es/demo/repository/n-stream/video-2.m4v",
+						"src": "https://repository.paellaplayer.upv.es/n-stream/video-2.m4v",
 						"mimetype": "video/mp4",
 						"res": {
 							"w": "1920",
@@ -40,7 +40,7 @@
 			"sources": {
 				"mp4": [
 					{
-						"src": "http://paellaplayer.upv.es/demo/repository/n-stream/video-3.m4v",
+						"src": "https://repository.paellaplayer.upv.es/n-stream/video-3.m4v",
 						"mimetype": "video/mp4",
 						"res": {
 							"w": "1920",
@@ -56,7 +56,7 @@
 			"sources": {
 				"mp4": [
 					{
-						"src": "http://paellaplayer.upv.es/demo/repository/n-stream/video-4.m4v",
+						"src": "https://repository.paellaplayer.upv.es/n-stream/video-4.m4v",
 						"mimetype": "video/mp4",
 						"res": {
 							"w": "1920",
