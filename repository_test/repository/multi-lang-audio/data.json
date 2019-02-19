@@ -8,7 +8,7 @@
 			"sources": {
 				"mp4": [
 					{
-						"src": "http://paellaplayer.upv.es/demo/repository/multi-lang-audio/presenter.mp4",
+						"src": "https://repository.paellaplayer.upv.es/multi-lang-audio/presenter.mp4",
 						"mimetype": "video/mp4",
 						"res": {
 							"w": "1920",
@@ -25,7 +25,7 @@
 			"sources": {
 				"audio": [
 					{
-						"src": "http://paellaplayer.upv.es/demo/repository/multi-lang-audio/audio-es.m4a"
+						"src": "https://repository.paellaplayer.upv.es/multi-lang-audio/audio-es.m4a"
 					}
 				]
 			},
@@ -37,7 +37,7 @@
 			"sources": {
 				"audio": [
 					{
-						"src": "http://paellaplayer.upv.es/demo/repository/multi-lang-audio/audio-en.m4a"
+						"src": "https://repository.paellaplayer.upv.es/multi-lang-audio/audio-en.m4a"
 					}
 				]
 			},

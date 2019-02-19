@@ -8,7 +8,7 @@
 			"sources": {
 				"video360": [
 					{
-						"src": "http://paellaplayer.upv.es/demo/repository/video360/video360.mp4",
+						"src": "https://repository.paellaplayer.upv.es/video360/video360.mp4",
 						"mimetype": "video/mp4",
 						"res": {
 							"w": "4096",
@@ -17,7 +17,7 @@
 					}
 				]
 			},
-			"preview": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/preview/presenter_cut.jpg",
+			"preview": "https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/presenter_cut.jpg",
 			"content":"presenter"
 		}
 	],
