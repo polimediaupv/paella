@@ -80,7 +80,7 @@ paella.addPlugin(() => {
 			videoContainer.volume().then(function(volume){
 				volume += 0.1;
 				volume = (volume>1) ? 1.0:volume;
-				paella.player.videoContainer.setVolume({ master:volume, slave: 0});			
+				paella.player.videoContainer.setVolume(volume);
 			});
 		}
 	
@@ -89,7 +89,7 @@ paella.addPlugin(() => {
 			videoContainer.volume().then(function(volume){
 				volume -= 0.1;
 				volume = (volume<0) ? 0.0:volume;
-				paella.player.videoContainer.setVolume({ master:volume, slave: 0});
+				paella.player.videoContainer.setVolume(volume);
 			});
 		}
     };
