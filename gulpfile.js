@@ -236,27 +236,27 @@ gulp.task("build", gulp.series("compile","styles","dictionary","copy"));
 gulp.task("buildDebug", gulp.series("compileDebug","styles","dictionary","copy"));
 gulp.task("buildBower", gulp.series("setupBower","build"));
 
-gulp.task("watch", function() {
-	return gulp.watch([
+function watchFiles() {
+	gulp.watch([
 		'index.html',
 		'config/**',
 		'plugins/**',
 		'vendor/plugins/**',
 		'src/*.js'
-	],["build"]);
-});
+	],gulp.series("build"));
+}
 
-gulp.task("watchDebug", function() {
-	return gulp.watch([
-		'index.html',
-		'resources/**',
-		'repository_test/**',
-		'config/**',
-		'plugins/**',
-		'vendor/plugins/**',
-		'src/*.js'
-	],["buildDebug"]);
-});
+function watchFilesDebug() {
+	gulp.watch([
+		'./index.html',
+		'./resources/**',
+		'./repository_test/**',
+		'./config/**',
+		'./plugins/**',
+		'./vendor/plugins/**',
+		'./src/*.js'
+	],gulp.series('buildDebug'));
+}
 
 gulp.task("tools", function() {
 	let p = [
@@ -270,11 +270,11 @@ gulp.task("tools", function() {
 });
 
 gulp.task("default", gulp.series("build"));
-gulp.task("serve", gulp.series("buildDebug","webserver","tools","watchDebug"));
+gulp.task("serve", gulp.parallel("buildDebug","webserver","tools",watchFilesDebug));
 
 // Compatibility
-gulp.task("server.release", gulp.series("build","webserver","tools","watch"));
-gulp.task("server.debug", gulp.series("buildDebug","webserver","tools","watchDebug"));
+gulp.task("server.release", gulp.parallel("build","webserver","tools",watchFiles));
+gulp.task("server.debug", gulp.parallel("buildDebug","webserver","tools",watchFilesDebug));
 gulp.task("build.debug", gulp.series("buildDebug"));
 gulp.task("build.release", gulp.series("build"));
 

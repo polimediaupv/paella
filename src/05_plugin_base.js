@@ -630,9 +630,9 @@ class ButtonPlugin extends paella.UIPlugin {
 		
 		$(elem).click(function(event) {
 			onAction(this);
-			console.log("click");
 		});
 		$(elem).keyup(function(event) {
+
 			event.preventDefault();
 		});
 		$(elem).focus(function(event) {
