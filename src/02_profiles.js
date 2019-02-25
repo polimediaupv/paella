@@ -9,6 +9,9 @@
                 if (typeof(profileData.onApply)!="function") {
                     profileData.onApply = function() { }
                 }
+                if (typeof(profileData.onDeactivte)!="function") {
+                    profileData.onDeactivate = function() {}
+                }
 				paella.events.trigger(paella.events.profileListChanged, { profileData:profileData });
 			}
 		});
@@ -18,6 +21,9 @@
         cb().then((profileData) => {
             if (typeof(profileData.onApply)!="function") {
                 profileData.onApply = function() {  }
+            }
+            if (typeof(profileData.onDeactivte)!="function") {
+                profileData.onDeactivate = function() {}
             }
             g_monostreamProfile = profileData;
         })
@@ -280,6 +286,10 @@
 
         setProfile(profileName,animate) {
             animate = base.userAgent.browser.Explorer ? false:animate;
+            if (this.currentProfile) {
+                this.currentProfile.onDeactivate();
+            }
+
             if (!paella.player.videoContainer.ready) {
                 return false;	// Nothing to do, the video is not loaded
             }
@@ -298,7 +308,14 @@
         }
 
         getProfile(profileName) {
-
+            let result = null;
+            this.profileList.some((p) => {
+                if (p.id==profileName) {
+                    result = p;
+                    return true;
+                }
+            })
+            return result;
         }
 
         placeVideos() {
