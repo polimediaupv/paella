@@ -7,8 +7,7 @@ To play new types of video that are currently not supported, you can implement a
 
 The video format plugins are not part of the standard life cycle of the plugins, as they are only loaded if necessary, depending on the capabilities of the browser and the characteristics of the video.
 
-## Example: HLS player
-
+## Example: hls player
 
 ### Video class
 
@@ -23,7 +22,7 @@ Depending on the capabilities you want to support in your video plugin, you can 
 - supportAutoplay(): return true if your player supports autoplay
 - getVideoData(): Returns a promise with the video data structure, that must include at least the following data:
 
-```
+```json
 duration: total video duration
 currentTime: current playback time
 volume: audio volume
@@ -34,7 +33,7 @@ res: {
     h: video height size in pixels
 }
 ```
-	
+
 - play(): Returns a promise that must be accepted when the video begins to play.
 
 - pause(): Returns a promise that must to be accepted when the video is paused.
@@ -57,7 +56,7 @@ res: {
 
 - getQualities(): Returns a promise accepted with an array containint the list of available qualities in the video. Each element in the array must include at least the following data:
 
-```
+```javascript
 index: quality index, from 0 to number of quality objects - 1
 res: {
     w: quality width in pixels
@@ -81,7 +80,7 @@ compare:function(q2) a function that compares this quality object with the one s
 
 - enable(isMainAudioPlayer): This function is called when this video is shown again after being hidden. Note that `enable()` and `disable()` functions must be executed synchronously.
 
-```
+```javascript
 class HLSPlayer extends paella.Html5Video {
     get config() {
         let config = {
@@ -356,7 +355,7 @@ A video factory must implement two methods:
 - getVideoObject(id,streamData,rect): returns an instance of your video player plugin.
 
 
-```
+```javascript
 class HLSVideoFactory extends paella.VideoFactory {
     isStreamCompatible(streamData) {
         if (paella.videoFactories.HLSVideoFactory.s_instances===undefined) {
@@ -392,7 +391,7 @@ paella.videoFactories.HLSVideoFactory = HLSVideoFactory;
 
 The last step to use a new video format plugin is to register it in the configuration file. The factories are registered in the `player.methods` array. To register the factory, you only have to add a new object with the name of your factory class and the settings. If there are more than one suitable factorires, Paella Player will choose the first one in the `player.methods` array.
 
-```
+```javascript
     Extracted from config.json:
 
     "methods":[

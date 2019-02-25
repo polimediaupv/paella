@@ -16,9 +16,10 @@ the plugin and its funcionalities.
   A button plugin allow you to add a button to the paella bar.
   
   Regarding the action done when the user click on the button, a button plugin can implement three subtypes:
-    - Push button: [playPauseButtonPlugin](../examples/button_plugin.md)
-    - Pop up button: [multipleQualitiesPlugin](../examples/popup_plugin.md)
-    - Time line button: [helpPlugin](../adopters/plugins/es.upv.paella.helpPlugin.md)
+
+    * Push button: [playPauseButtonPlugin](../examples/button_plugin.md)
+    * Pop up button: [multipleQualitiesPlugin](../examples/popup_plugin.md)
+    * Time line button: [helpPlugin](../adopters/plugins/es.upv.paella.helpPlugin.md)
   
 - Video Overlay Button Plugin
 

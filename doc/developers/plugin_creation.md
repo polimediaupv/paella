@@ -48,6 +48,7 @@ example: /localizacion/**es**.json
 - Register your plugin with `paella.addPlugin`function. Para registrar el plugin, you have to call `paella.addPlugin()` function passing as parameter a closure that has to return the class that implements your plugin.
 
 example: helpPlugin.js (buttonPlugin)
+
 ```javascript
 paella.addPlugin(() => {
   return class HelpPlugin extends paella.ButtonPlugin {
@@ -59,6 +60,7 @@ paella.addPlugin(() => {
 - Implement your plugin
 
 example: helpPlugin.js (buttonPlugin)
+
 ```javascript
   // plugin implementation
   getIndex() { return 509; }
@@ -102,7 +104,7 @@ example: helpPlugin.js (buttonPlugin)
 
 - Define a style using myPluginName.less, if required. It's important that you use the predefined `less` attributes for the colors and styles of Paella Player, so that your plugin is integrated into the skins definition system. You can use the following `less` attributes:
 
-```
+```less
 @fontFamily
 @linkColor
 @linkHoverColor
