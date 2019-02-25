@@ -8,30 +8,23 @@ what functionality you want to add.
 
 ## Interact with the user
 
-There are 3 main plugins types to interact with the user giving him control over
+There are two main plugins types to interact with the user giving him control over
 the plugin and its funcionalities.
 
 - Button Plugin
   
   A button plugin allow you to add a button to the paella bar.
   
-  Plugin examples: [playPauseButtonPlugin](../adopters/plugins/es.upv.paella.playPauseButtonPlugin.md),
-  [multipleQualitiesPlugin](../adopters/plugins/es.upv.paella.multipleQualitiesPlugin.md),
-  [helpPlugin](../adopters/plugins/es.upv.paella.helpPlugin.md)
+  Regarding the action done when the user click on the button, a button plugin can implement three subtypes:
+    - Push button: [playPauseButtonPlugin](../examples/button_plugin.md)
+    - Pop up button: [multipleQualitiesPlugin](../examples/popup_plugin.md)
+    - Time line button: [helpPlugin](../adopters/plugins/es.upv.paella.helpPlugin.md)
   
-    
 - Video Overlay Button Plugin
 
-  This plugin type is like a button plugin, but it is located at the top-right part over the paella player.
+  This type of plugin is similar to a button plugin, but it is located above the video container.
   
-  Plugin example: [liveStramingIndicatorPlugin](../adopters/plugins/es.upv.paella.liveStramingIndicatorPlugin.md)
-
-- Video Player Plugins
-
- This type of plugin allows you to extend the capabilities of playing new video formats.
-
- Plugin example: [hlsPlugin](plugins/es.upv.paella.hlsPlayer.md)
- 
+  Plugin example: [liveStramingIndicatorPlugin](../adopters/plugins/es.upv.paella.liveStramingIndicatorPlugin.md) 
 
 
 ## Interact with the player
@@ -66,10 +59,9 @@ the plugin and its funcionalities.
 
 ## Video plugins
 
-A video plugin is the basic element that is able to manage (play, pause, stop, ...) a single video.
-A video plugin shoud inherit from a `paella.VideoElementBase` class or any other class that inherit from it.
+This type of plugin allows you to extend the capabilities of playing new video formats.
 
-Plugin Examples: [es.upv.paella.rtmpPlayer](../examples/video_plugin.md)
+Plugin Examples: [hlsPlugin](plugins/es.upv.paella.hlsPlayer.md)
 
 ## Video layouts
 
