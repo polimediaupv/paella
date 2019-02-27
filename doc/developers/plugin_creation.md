@@ -45,7 +45,7 @@ example: /localizacion/**es**.json
 ### Step #3
 
 - Select your plugin [TYPE](plugin_types.md)
-- Register your plugin with `paella.addPlugin`function. Para registrar el plugin, you have to call `paella.addPlugin()` function passing as parameter a closure that has to return the class that implements your plugin.
+- Register your plugin: function. To register the plugin, you have to call `paella.addPlugin()` function passing as parameter a closure that has to return the class that implements your plugin.
 
 example: helpPlugin.js (buttonPlugin)
 

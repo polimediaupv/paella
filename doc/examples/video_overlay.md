@@ -4,7 +4,7 @@
 
 # Video overlay plugin example
 
-## es.upv.paella.liveStreamingIndicatorPlugin
+## es.upv.paella.liveStreamingIndicatorPlugin
 
 Video overlay plugins are used to add user interface elements to the video contanier. They are similar to the [button plugin](button_plugin.md), but they are placed over the video area, rather than inside the playback bar, and will be hidden at the same time as the playback bar is hidden.
 

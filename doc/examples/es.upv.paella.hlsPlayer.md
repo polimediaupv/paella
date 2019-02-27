@@ -55,17 +55,44 @@ res: {
 - playbackRate(): Returns a promise that is accepted with the current playback rate of the video.
 
 - getQualities(): Returns a promise accepted with an array containint the list of available qualities in the video. Each element in the array must include at least the following data:
+    * index: quality index, from 0 to number of quality objects - 1
+    * res.w and res.h: quality width and height in pixels
+    * src: the quality object url, if applicable
+    * toString: a function that returns a quality object human readable identifier.
+    * shortLabel: the same as toString, but is used as a label for the quality selector button, so it should probably be a shorter label than toString.
+    * compare: a function that compares this quality object with the other specified in the q2 parameter. Is used to let the player know which is the higher quality element.
 
 ```javascript
-index: quality index, from 0 to number of quality objects - 1
-res: {
-    w: quality width in pixels
-    h: quality height in pixels
+        index: 0,
+        res: {
+            w: 1280,
+            h: 720
+        },
+        src: 'http://myvideoserver.com/source_url.mp4',
+        toString:function() { return this.w + "x" this.h; },
+        shortLabel:function() { return this.h + "p"; },
+        compare:function(q2) { return (this.res.w*this.res.h) - (q2.res.w*q2.res.h); }
+```
+
+Note: You can use the helper function `_getQualityObject()`, defined in `paella.HTML5Video`, if your video format plugin extends this class:
+
+```javascript
+_getQualityObject(qualityIndex, sourceData) {
+  return {
+    index: qualityIndex,
+    res: sourceData.res,
+    src: sourceData.src,
+    toString: function() {
+      return this.res.w==0 ? "auto" : this.res.w + "x" + this.res.h;
+    },
+    shortLabel: function() {
+      return this.res.w==0 ? "auto" : this.res.h + "p";
+    },
+    compare: function(q2) {
+      return this.res.w*this.res.h - q2.res.w*q2.res.h;
+    }
+  };
 }
-src: video source
-toString:function() a function that returns the label for this quality element, for example "1280x720"
-shortLabel:function() a function that returns a short label, to put in the quality selector icon, for example "720p"
-compare:function(q2) a function that compares this quality object with the one specified in the q2 parameter. Is used to let the player know which is the higher quality element.
 ```
 
 - setQuality(index): Sets the quality of the video to that specified by the `index` parameter. Returns a promise that is accepted when the video quality has been changed.
