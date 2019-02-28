@@ -91,7 +91,7 @@ Use "defaultProfile" for set the default video composition.
 
 ## How to set/modify data delegates?
 
-Take a look to the [DataDelegate](developers/paella_data.md) page.
+Take a look to the [DataDelegate](../developers/paella_data.md) page.
 
 
 ## Can I choose when a plugin is shown depending on the play mode ( embed, fullScreen, standard .. etc )?
