@@ -37,7 +37,7 @@ This is not a bug, is a feature ;-). Try to embed on a larger space or tune up w
 
 ## I serve my recordings through RTMP and progressive download. Can I choose the preference order?
 
-Yes. By default Paella tries to do it by RTMP, then by HTML5 `<video>` tag and as the last option through flash. You can change the order of these options in the config file, as described in the [Paella Player configuration guide](config.md).
+Yes. By default Paella tries to do it by RTMP, then by HTML5 `<video>` tag and as the last option through flash. You can change the order of these options in the config file, as described in the [Paella Player configuration guide](adopters/configure.md).
 
 ## Do Paella player support Live Streaming?
 
