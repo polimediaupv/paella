@@ -39,7 +39,7 @@ This is code from the themechoose plugin.
 
 ### Colors
 
-Under [`/resources/style/skins`](../../resources/style/skins) you have all `*.less` files for change the colors of the current installed skins. 
+Under [`/resources/style/skins`](https://github.com/polimediaupv/paella/tree/6.0.x/resources/style/skins) you have all `*.less` files for change the colors of the current installed skins. 
 
 If you want to create new one, just make a new ".less" with the name of your skin.
 
