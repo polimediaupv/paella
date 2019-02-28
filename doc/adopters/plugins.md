@@ -4,7 +4,7 @@
 # Paella player plugin list	
 
 There are diferent types of plugins depending what functionality you want to add.	
-To know more about this, you can read the [Plugin types](../developer/plugin_types.md) page from the [developer section](../developer/developer.md).	
+To know more about this, you can read the [Plugin types](../developers/plugin_types.md) page from the [developer section](../developers/introduction.md).	
 
 ## Button Plugins	
 
