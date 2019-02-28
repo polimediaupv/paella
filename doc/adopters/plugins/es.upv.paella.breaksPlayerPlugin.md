@@ -7,7 +7,7 @@ This plugin controls the player breaks feature.
 
 ## Plugin Type
 
-- [paella.EventDrivenPlugin](../developers/plugin_types.md)
+- [paella.EventDrivenPlugin](../../developers/plugin_types.md)
 
 
 ## Config Example
