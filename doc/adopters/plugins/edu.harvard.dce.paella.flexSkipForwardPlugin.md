@@ -9,7 +9,7 @@ This plugin goes forward in the time line.
 
 ## Plugin Type
 
-- [paella.ButtonPlugin](../developer/plugin_types.md)
+- [paella.ButtonPlugin](../../developers/plugin_types.md)
 
 ## Related Plugins 
 

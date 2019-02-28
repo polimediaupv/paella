@@ -28,7 +28,7 @@ paella.addPlugin(function() {
 ### Pop up content
 
 To specify the pop up content you only need to overwrite the buildContent() function,
-[as you do it with a regular pop up button plugin](pupup_plugin.md)
+[as you do it with a regular pop up button plugin](popup_plugin.md)
 
 ```javascript
 buildContent:function(domElement) {
