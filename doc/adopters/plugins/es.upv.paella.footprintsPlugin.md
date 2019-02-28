@@ -9,7 +9,7 @@ This plugin shows a statistics bar above the timeline, for give the info about w
 
 ## Plugin Type
 
-* [paella.ButtonPlugin](../developer/plugin_types.md)
+* [paella.ButtonPlugin](../../developers/plugin_types.md)
 
 ## Configuration Parameters
 

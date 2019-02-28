@@ -51,5 +51,3 @@ If you want to use Paella as a engage player for [opencast](http://opencast.org/
 ## Paella & OpenEDX
 
 Paella can be integrated into [edX](https://open.edx.org/) with an XBlock.  Please go to the [Paella Xblock](https://github.com/polimediaupv/paellaXBlock-v2) project to read how to use it.
-
-There is a [demo server](http://demo.edx.upv.es/courses/demo/Tests/2014-002/about) where you can view it working.

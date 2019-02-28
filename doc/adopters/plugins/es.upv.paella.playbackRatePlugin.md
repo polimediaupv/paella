@@ -9,7 +9,7 @@ Button Plugin in charge set the speed of the source.
 
 ## Plugin Type
 
-* [paella.ButtonPlugin](../developer/plugin_types.md)
+* [paella.ButtonPlugin](../../developers/plugin_types.md)
 
 ## Configuration Parameters
 

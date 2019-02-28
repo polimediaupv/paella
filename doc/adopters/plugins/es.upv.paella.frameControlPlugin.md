@@ -9,7 +9,7 @@ This plugin adds the functionability of jump to any time in the timeline where t
 
 ## Plugin Type
 
-* [paella.ButtonPlugin](../developer/plugin_types.md)
+* [paella.ButtonPlugin](../../developers/plugin_types.md)
 
 ## Configuration Parameters
 

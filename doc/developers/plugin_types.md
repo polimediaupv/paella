@@ -69,4 +69,4 @@ the plugin and its funcionalities.
 A video plugin is the basic element that is able to manage (play, pause, stop, ...) a single video.
 A video plugin shoud inherit from a `paella.VideoElementBase` class or any other class that inherit from it.
 
-Plugin Examples: [es.upv.paella.rtmpPlayer](../adopters/plugins/es.upv.paella.rtmpPlayer), [es.upv.paella.mpegDashPlayer](../adopters/plugins/es.upv.paella.mpegDashPlayer)
+Plugin Examples: [es.upv.paella.rtmpPlayer](../adopters/plugins/es.upv.paella.rtmpPlayer.md), [es.upv.paella.mpegDashPlayer](../adopters/plugins/es.upv.paella.mpegDashPlayer.md)

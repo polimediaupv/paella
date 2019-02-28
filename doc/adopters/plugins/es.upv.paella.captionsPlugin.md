@@ -9,7 +9,7 @@ This plugins activates the subtitles bar below the video with the default browse
 
 ## Plugin Type
 
-* [paella.ButtonPlugin](../developer/plugin_types.md)
+* [paella.ButtonPlugin](../../developers/plugin_types.md)
 
 ## Related Plugins
 

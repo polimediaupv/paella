@@ -7,7 +7,7 @@ This plugin saves the usertracking events to the [Piwik](https://matomo.org/) se
 
 ## Plugin Type
 
-* [paella.userTracking.SaverPlugIn](../developer/plugin_types.md)
+* [paella.userTracking.SaverPlugIn](../../developers/plugin_types.md)
 
 ## Configuration Parameters
 
