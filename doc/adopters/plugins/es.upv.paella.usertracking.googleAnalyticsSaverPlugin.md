@@ -7,7 +7,7 @@ This plugin saves the usertracking events to the [Google Analitycs](https://www.
 
 ## Plugin Type
 
-* [paella.userTracking.SaverPlugIn](../developer/plugin_types.md)
+* [paella.userTracking.SaverPlugIn](../../developers/plugin_types.md)
 
 ## Configuration Parameters
 
