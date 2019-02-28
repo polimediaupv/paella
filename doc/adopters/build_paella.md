@@ -5,7 +5,7 @@
 
 ## Dependencies
 
-In addition to Node.js and Bower, Paella Player uses [Gulp](http://gulp.com/) as a task runner and build system. You can use npm to install Gulp in your system:
+In addition to Node.js and Bower, Paella Player uses [Gulp](http://gulpjs.com/) as a task runner and build system. You can use npm to install Gulp in your system:
 
 ### macOS / Linux / Unix
 
