@@ -9,7 +9,7 @@ This plugin was made for let the user enter/exit in fullscreen mode.
 
 ## Plugin Type
 
-* [paella.ButtonPlugin](../developer/plugin_types.md)
+* [paella.ButtonPlugin](../../developers/plugin_types.md)
 
 
 ## Configuration Parameters

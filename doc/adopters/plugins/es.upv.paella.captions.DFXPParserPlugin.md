@@ -8,7 +8,7 @@ This is a DXFP Captions Parser
 
 ## Plugin Type
 
-- [paella.CaptionParserPlugIn](../developers/plugin_types.md)
+- [paella.CaptionParserPlugIn](../../developers/plugin_types.md)
 
 ## Related Plugins
 

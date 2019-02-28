@@ -9,7 +9,7 @@ This plugin adds the functionability of jump to the next/privoius slide change.
 
 ## Plugin Type
 
-* [paella.EventDrivenPlugin](../developer/plugin_types.md)
+* [paella.EventDrivenPlugin](../../developers/plugin_types.md)
 
 ## Configuration Parameters
 

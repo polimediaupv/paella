@@ -9,7 +9,7 @@ Button Plugin in charge of start / pause paella player.
 
 ## Plugin Type
 
-- [paella.ButtonPlugin](../developer/plugin_types.md)
+- [paella.ButtonPlugin](../../developers/plugin_types.md)
 
 
 ## Config Example

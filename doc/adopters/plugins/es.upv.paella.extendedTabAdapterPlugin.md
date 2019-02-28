@@ -9,7 +9,7 @@ This is the main control of the TabAdapterPlugin wich contains a selection of pl
 
 ## Plugin Type
 
-- [paella.ButtonPlugin](../developer/plugin_types.md)
+- [paella.ButtonPlugin](../../developers/plugin_types.md)
 
 ## Config Example
 
