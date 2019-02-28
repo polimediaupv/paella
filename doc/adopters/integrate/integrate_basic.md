@@ -12,7 +12,7 @@ To add Paella Player to your portal, you need to do some easy steps:
 2. Configure Paella
   
   To configure paella you need to edit the ´config/config.json´ file. You can read how to configure paella
-  in the [configuration page](configure.md)
+  in the [configuration page](../configure.md)
 
   In the `config/config.json` file you need to modify the `standalone.reposiroty` parameter to point to your
   repository folder. This value can be a relative URL or an absolute URL.
