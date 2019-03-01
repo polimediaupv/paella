@@ -45,9 +45,7 @@ If you want to create new one, just make a new ".less" with the name of your ski
 
 ### Icons
 
-The icons used in the navigation bar and other elements, are generated using a customized text font, and defined in the file `resources/style/icons.css`. You can view the available icons and the CSS class to use them here:
-
-[resources/style/icon-index.html](../../resources/style/icon-index.html)
+The icons used in the navigation bar and other elements, are generated using a customized text font, and defined in the file `resources/style/icons.css`. You can view the available icons and the CSS class to use them opening the HTML file `resources/style/icon-index.html` in the [paella repository](https://github.com/polimediaupv/paella)
 
 Example:
 
