@@ -3,7 +3,7 @@
 
 # Time line button plugin example
 
-Check [button plugin creation](button_plugin.html) and [popup plugin creation](popup_plugin.html) documents before continue.
+Check [button plugin creation](button_plugin.md) and [popup plugin creation](popup_plugin.md) documents before continue.
 
 ## es.upv.paella.frameControlPlugin
 
