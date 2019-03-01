@@ -6,7 +6,7 @@
 ## Index of contents
 
 - [Basic Usage](#basic-usage)
-- [Play & Pause](#play-&-pause)
+- [Play & Pause](#play-and-pause)
 - [Volume Control](#volume-control)
 - [Repeat](#repeat)
 - [Speed Control](#speed-control)
@@ -18,7 +18,7 @@
 - [Composition](#composition)
 - [Slides](#slides)
 - [Editor](#editor)
-- [Zoom](#<oom>)
+- [Zoom](#zoom)
 
 ![](images/player_zoom.jpg){: .img-responsive }
 
@@ -30,7 +30,7 @@ by pressing the play button on top of the video window or in the control bar.
 
 ![](images/player_main.jpg){: .img-responsive }
 
-## Play & Pause
+## Play and Pause
 
 Button for play and pause the video source. If you click outside the controls bar also stops/plays the player.
 
