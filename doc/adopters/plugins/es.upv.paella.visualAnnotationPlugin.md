@@ -15,7 +15,7 @@ awesome player.
 
 ## Plugin Type
 
-* [paella.userTracking.EventDrivenPlugin](../developer/plugin_types.md)
+* [paella.userTracking.EventDrivenPlugin](../../developers/plugin_types.md)
 
 ## Data delegate definition
 

@@ -7,7 +7,7 @@ This plugins shows a info related to the loading time of the player.
 
 ## Plugin Type
 
-- [paella.EventDrivenPlugin](../developer/plugin_types.md)
+- [paella.EventDrivenPlugin](../../developers/plugin_types.md)
 
 ## Config Example
 

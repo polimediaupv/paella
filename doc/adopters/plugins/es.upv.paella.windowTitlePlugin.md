@@ -7,7 +7,7 @@ This plugin shows the video title over the player.
 
 ## Plugin Type
 
-- [paella.EventDrivenPlugin](../developer/plugin_types.md)
+- [paella.EventDrivenPlugin](../../developers/plugin_types.md)
 
 
 ## Config Example

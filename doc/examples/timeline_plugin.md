@@ -3,7 +3,7 @@
 
 # Time line button plugin example
 
-Check [button plugin creation](button_plugin.html) and [popup plugin creation](popup_plugin.html) documents before continue.
+Check [button plugin creation](button_plugin.md) and [popup plugin creation](popup_plugin.md) documents before continue.
 
 ## es.upv.paella.frameControlPlugin
 
@@ -28,7 +28,7 @@ paella.addPlugin(function() {
 ### Pop up content
 
 To specify the pop up content you only need to overwrite the buildContent() function,
-[as you do it with a regular pop up button plugin](pupup_plugin.md)
+[as you do it with a regular pop up button plugin](popup_plugin.md)
 
 ```javascript
 buildContent:function(domElement) {

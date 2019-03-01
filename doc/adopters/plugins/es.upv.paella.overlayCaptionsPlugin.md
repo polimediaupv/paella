@@ -9,7 +9,7 @@ This plugins listens the "captionsPlugin" that throws the events for activate or
 
 ## Plugin Type
 
-- [paella.EventDrivenPlugin](../developer/plugin_types.md)
+- [paella.EventDrivenPlugin](../../developers/plugin_types.md)
 
 ## Related Plugins
 

@@ -9,7 +9,7 @@ This plugin shows to the user a pop-up with the end user help.
 
 ## Plugin Type
 
-- [paella.ButtonPlugin](../developer/plugin_types.md)
+- [paella.ButtonPlugin](../../developers/plugin_types.md)
 
 ## Config Example
 

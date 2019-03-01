@@ -39,15 +39,13 @@ This is code from the themechoose plugin.
 
 ### Colors
 
-Under [`/resources/style/skins`](../../resources/style/skins) you have all `*.less` files for change the colors of the current installed skins. 
+Under [`/resources/style/skins`](https://github.com/polimediaupv/paella/tree/6.0.x/resources/style/skins) you have all `*.less` files for change the colors of the current installed skins. 
 
 If you want to create new one, just make a new ".less" with the name of your skin.
 
 ### Icons
 
-The icons used in the navigation bar and other elements, are generated using a customized text font, and defined in the file `resources/style/icons.css`. You can view the available icons and the CSS class to use them here:
-
-[resources/style/icon-index.html](../../resources/style/icon-index.html)
+The icons used in the navigation bar and other elements, are generated using a customized text font, and defined in the file `resources/style/icons.css`. You can view the available icons and the CSS class to use them opening the HTML file `resources/style/icon-index.html` in the [paella repository](https://github.com/polimediaupv/paella)
 
 Example:
 

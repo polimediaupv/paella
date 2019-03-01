@@ -7,7 +7,7 @@ This plugin allow users to add comments to the videos. It is **experimental** an
 
 ## Plugin Type
 
-- [paella.TabBarPlugin](../developer/plugin_types.md)
+- [paella.TabBarPlugin](../../developers/plugin_types.md)
 
 ## Related Plugins 
 

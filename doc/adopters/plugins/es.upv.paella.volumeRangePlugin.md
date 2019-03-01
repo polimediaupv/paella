@@ -9,7 +9,7 @@ This plugin is responsible of control the volume pop-up plugin in the paella pla
 
 ## Plugin Type
 
-* [paella.ButtonPlugin](../developer/plugin_types.md)
+* [paella.ButtonPlugin](../../developers/plugin_types.md)
 
 ## Configuration Parameters
 

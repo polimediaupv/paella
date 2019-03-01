@@ -9,7 +9,7 @@ This plugin is used to rewind the timeline back in time 10 seconds by default.
 
 ## Plugin Type
 
-- [paella.ButtonPlugin](../developer/plugin_types.md)
+- [paella.ButtonPlugin](../../developers/plugin_types.md)
 
 ## Related Plugins 
 

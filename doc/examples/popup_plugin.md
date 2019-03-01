@@ -5,7 +5,7 @@
 
 ## es.upv.paella.themeChooser
 
-Check [button plugin creation](button_plugin.html) document before continue.
+Check [button plugin creation](button_plugin.md) document before continue.
 
 ### Create the plugin
 

@@ -5,7 +5,7 @@
 
 ## Dependencies
 
-In addition to Node.js and Bower, Paella Player uses [Gulp](http://gulp.com/) as a task runner and build system. You can use npm to install Gulp in your system:
+In addition to Node.js and Bower, Paella Player uses [Gulp](http://gulpjs.com/) as a task runner and build system. You can use npm to install Gulp in your system:
 
 ### macOS / Linux / Unix
 
@@ -47,6 +47,6 @@ You can test Paella by running the command:
 gulp server.release
 ```
 
-This command will build paella and launch a local server with paella. You can open a browser and navigate to [http://localhost:8000](http://localhost:8000).
+This command will build paella and launch a local server with paella. You can open a browser and navigate to `http://localhost:8000`.
 
 This command also is watching for changes in paella sorce code and if any file changes, rebuild paella itself. It's very usefull while developing paella or any plugin.

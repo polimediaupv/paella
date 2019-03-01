@@ -9,7 +9,7 @@ This plugin add the functionality to swap between video resolutions.
 
 ## Plugin Type
 
-* [paella.ButtonPlugin](../developer/plugin_types.md)
+* [paella.ButtonPlugin](../../developers/plugin_types.md)
 
 ## Configuration Parameters
 

@@ -8,7 +8,7 @@ This plugin was made for add the zoom functionality to paella player for be able
 
 ## Plugin Type
 
-* [paella.VideoOverlayButtonPlugin](../developer/plugin_types.md)
+* [paella.VideoOverlayButtonPlugin](../../developers/plugin_types.md)
 
 ## Configuration Parameters
 

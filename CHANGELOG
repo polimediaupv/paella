@@ -240,7 +240,7 @@ CHANGELOG
 
   * Fixed bug setting attributes to video tag (iOS bug only)
   * Fixed bug in footprints plugin duration returns promise)
-  * Fixed some bugs in javascript "strict mode" (thanks to @ppetit)
+  * Fixed some bugs in javascript "strict mode" (thanks to @ppettit)
 
 * Paella 5.1.5
 

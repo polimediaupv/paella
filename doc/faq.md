@@ -15,7 +15,7 @@ We test Paella in Chrome, Safari, Internet Explorer and Firefox.
 
 ## How works the XXX plugin?
 
-It should be written on the [Paella Player Plugin Documentation](adopter_doc/plugins.md).
+It should be written on the [Paella Player Plugin Documentation](adopters/plugins.md).
 
 ## I have a RTMP streaming server. Will Paella work?
 
@@ -29,29 +29,29 @@ If your users can have those problems you should think on a streaming server.
 
 ## Will Paella work on my iPad/Android?
 
-Yes, but with some limitations. HTML5 multistream video playing is restricted on mobile devices. So, Paella player shows a images slideview instead a video for the slides video, and the original video for the presenter video. Take a llok at the [browser compatibility issues](adopter_doc/browser_compability.md) documentation.
+Yes, but with some limitations. HTML5 multistream video playing is restricted on mobile devices. So, Paella player shows a images slideview instead a video for the slides video, and the original video for the presenter video. Take a llok at the [browser compatibility issues](adopters/browser_compability.md) documentation.
 
 ## When embedding some tools disappear
 
-This is not a bug, is a feature ;-). Try to embed on a larger space or tune up what icons should disappear. Please refer to the [adopters's guides](adopter_doc/README.md).
+This is not a bug, is a feature ;-). Try to embed on a larger space or tune up what icons should disappear.
 
 ## I serve my recordings through RTMP and progressive download. Can I choose the preference order?
 
-Yes. By default Paella tries to do it by RTMP, then by HTML5 `<video>` tag and as the last option through flash. You can change the order of these options in the config file, as described in the [Paella Player configuration guide](config.md).
+Yes. By default Paella tries to do it by RTMP, then by HTML5 `<video>` tag and as the last option through flash. You can change the order of these options in the config file, as described in the [Paella Player configuration guide](adopters/configure.md).
 
 ## Do Paella player support Live Streaming?
 
-Yes, Since Paella 3.1 we support RTMP Live Streaming. Go to the [adopters's guides](adopter_doc/README.md) form more information.
+Yes, Since Paella 3.1 we support RTMP Live Streaming.
 
 ## Can I integrate Paella Player in my website?
 
-Yes, and if you need info about how, read the [adopters's guides](adopter_doc/README.md)
+Yes, and if you need info about how, read the [How to install and configure paella player](adopters/setup.md) page.
 
 ## Can I change the visual aspect of Paella Player?
 
 Yes, you can change all visual details since css, images, icons.. etc.
-Read more about how to do it in [skining documentation.](adopter_doc/skining.md)
+Read more about how to do it in [skining documentation.](adopters/skining.md)
 
 ## Can I change default configuration of Paella?
 
-Yes, all about configuration is explained in the [adopters's guides](adopter_doc/README.md)
+Yes, all about configuration is explained in the [configuration guide](adopters/configure.md)

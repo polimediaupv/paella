@@ -134,7 +134,7 @@ paella.load(containerId, options)
     - data
   
     A data object with the video information. To know more about the data format, please read
-    the [data.json format](integrate_datajson.md) section.
+    the [data.json format](../integrate_datajson.md) section.
 
     ``` js
     var data = { ... } // a data.json object
