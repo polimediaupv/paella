@@ -45,8 +45,15 @@ If you want to create new one, just make a new ".less" with the name of your ski
 
 ### Icons
 
-Icons used for the skins are located at /resources/images
+The icons used in the navigation bar and other elements, are generated using a customized text font, and defined in the file `resources/style/icons.css`. You can view the available icons and the CSS class to use them opening the HTML file `resources/style/icon-index.html` in the [paella repository](https://github.com/polimediaupv/paella)
 
- ![](../../resources/images/paella_icons_dark.png)
+Example:
 
-We use one image with all icons for precharge all icons at same time and we use them using css (`background-image` and `background-size`), the icons are made for high resolution screens.
+```html
+ <div>
+    <span class="icon-photo"></span>
+    <span>icon-photo</span>
+</div>
+```
+
+ ![](icon-photo-sample.jpg)
