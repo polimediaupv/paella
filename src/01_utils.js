@@ -388,7 +388,9 @@ paella.utils = {
 paella.addDataDelegate(["default","trimming"], () => {
 	paella.dataDelegates.DefaultDataDelegate = class CookieDataDelegate extends paella.DataDelegate {
 		serializeKey(context,params) {
-			if (typeof(params)=='object') params = JSON.stringify(params);
+			if (typeof(params)=='object') {
+				params = JSON.stringify(params);
+			}
 			return context + '|' + params;
 		}
 	
@@ -407,7 +409,9 @@ paella.addDataDelegate(["default","trimming"], () => {
 	
 		write(context,params,value,onSuccess) {
 			var key = this.serializeKey(context,params);
-			if (typeof(value)=='object') value = JSON.stringify(value);
+			if (typeof(value)=='object') {
+				value = JSON.stringify(value);
+			}
 			value = escape(value);
 			base.cookies.set(key,value);
 			if(typeof(onSuccess)=='function') {
@@ -417,7 +421,9 @@ paella.addDataDelegate(["default","trimming"], () => {
 	
 		remove(context,params,onSuccess) {
 			var key = this.serializeKey(context,params);
-			if (typeof(value)=='object') value = JSON.stringify(value);
+			if (typeof(value)=='object') {
+				value = JSON.stringify(value);
+			}
 			base.cookies.set(key,'');
 			if(typeof(onSuccess)=='function') {
 				onSuccess({},true);

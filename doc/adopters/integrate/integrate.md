@@ -31,7 +31,7 @@ If you don't want to have a repository folder or you want to embed Paella into y
 read [How to integrate paella in your portal: the intermediate way](integrate_intermediate.md)
 
 
-## The advanced way
+## The advanced way: JavaScript APIs to load Paella Player
 
 However, You can program (in javascript) some adaptors that Paella can use to obtain all the
 information needed.
