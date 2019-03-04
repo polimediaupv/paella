@@ -107,11 +107,11 @@ fi
 
 echo "[INFO] Publishing paella player version=$VERSION to webpage"
 
-TMP_FOLDER=$(mktemp -d -t deploy-doc.XXXXXX)
+TMP_FOLDER=$(mktemp -d -t deploy-player.XXXXXX)
 echo "[INFO] Using $TMP_FOLDER as temporal folder"
 
 git clone https://${GITHUB_WEBPAGE_TOKEN}@github.com/${GITHUB_WEBPAGE_REPO}.git --branch gh-pages $TMP_FOLDER
-
+COMMIT_AUTHOR=$(git --no-pager show -s --format='%an <%ae>' ${TRAVIS_COMMIT})
 
 pushd $TMP_FOLDER > /dev/null
 
@@ -135,12 +135,18 @@ pushd $TMP_FOLDER > /dev/null
     git config --local user.name "$GIT_NAME"
 
     git add ./*
-    git status
-    git commit -m "Update paella player ${VERSION}" || true
+    git status    
+    GIT_COMMITTER_NAME="${GIT_NAME}" GIT_COMMITTER_EMAIL="${GIT_EMAIL}" git commit --author "${COMMIT_AUTHOR}"  \
+        -m "Update paella player ${VERSION}" \
+        -m "Triggered by https://github.com/${TRAVIS_REPO_SLUG}/commit/${TRAVIS_COMMIT}" \
+    || true
 
-    git push --tags https://${GITHUB_WEBPAGE_TOKEN}@github.com/${GITHUB_WEBPAGE_REPO}.git gh-pages || true  
+
+
+
+    #git push --tags https://${GITHUB_WEBPAGE_TOKEN}@github.com/${GITHUB_WEBPAGE_REPO}.git gh-pages || true  
 popd > /dev/null
 
 echo "[INFO] Removing remporal folder"
-rm -rf $TMP_FOLDER
+echo rm -rf $TMP_FOLDER
 echo "[INFO] Done!"
