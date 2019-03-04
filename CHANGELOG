@@ -8,6 +8,7 @@ CHANGELOG
   * Improvements in accesibility.
   * Improvements in usability: fold-out button plugin (see volume button plugin).
   * Support for audio + images streams.
+  * Add support for video Picture-in-Picture in Chrome (#389)
   * Breaking changes:
     - The index.html file now includes paella_player_es2015.js. If you plan to support
       Internet Explorer, you will need to modify the index.html file to add the legacy scripts.
