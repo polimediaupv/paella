@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 6.0.5
+
+  * Improved video stability on slow networks.
+
 * Paella 6.0.4
 
   * Fix issues in stream video profiles
