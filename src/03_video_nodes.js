@@ -541,6 +541,7 @@ class VideoElementBase extends paella.VideoRect {
 		super(id, containerType, left, top, width, height);
 		
 		this._stream = stream;
+
 		this._ready = false;
 		this._autoplay = false;
 		this._videoQualityStrategy = null;
@@ -779,21 +780,20 @@ class Html5Video extends paella.VideoElementBase {
 
 
 		$(this.video).bind('emptied', (evt) => {
-			if (this._resumeCurrentTime) {
-				this.video.currentTime = this._resumeCurrentTime;
-			}
+			this._resumeCurrentTime && (this.video.currentTime = this._resumeCurrentTime);
 		});
 		
 		// Fix safari setQuelity bug
 		if (paella.utils.userAgent.browser.Safari) {
 			$(this.video).bind('canplay canplaythrough', (evt) => {
-				this.video.currentTime = this._resumeCurrentTime;
+				this._resumeCurrentTime && (this.video.currentTime = this._resumeCurrentTime);
 			});
 		}
 	}
-
 	
 	get video() { return this.domElement; }
+
+	get ready() { return this.video.readyState>=3; }
 
 
 	_deferredAction(action) {
@@ -813,7 +813,6 @@ class Html5Video extends paella.VideoElementBase {
 			}
 			else {
 				$(this.video).bind('canplay',() => {
-					this._ready = true;
 					processResult(action());
 				});
 			}
@@ -1011,7 +1010,7 @@ class Html5Video extends paella.VideoElementBase {
 
 	setCurrentTime(time) {
 		return this._deferredAction(() => {
-			this.video.currentTime = time;
+			time && !isNaN(time) && (this.video.currentTime = time);
 		});
 	}
 
