@@ -301,9 +301,18 @@
             }
             else {
                 let profileData = this.loadProfile(profileName) || (g_profiles.length>0 && g_profiles[0]);
-                this._currentProfileName = profileName;
-                applyProfileWithJson.apply(paella.player.videoContainer,[profileData,animate]);
-                return true;
+                if (!profileData && g_profiles.length==0) {
+                    // Try to load the profile again later, maybe the profiles are not loaded yet
+                    setTimeout(() => {
+                        this.setProfile(profileName,animate);
+                    },100);
+                    return false;
+                }
+                else {
+                    this._currentProfileName = profileName;
+                    applyProfileWithJson.apply(paella.player.videoContainer,[profileData,animate]);
+                    return true;
+                }
             }
         }
 
