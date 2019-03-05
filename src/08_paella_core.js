@@ -165,7 +165,7 @@
 			}
 		}
 
-		get repoUrl() { return paella.player.videoLoader._url || ""; }
+		get repoUrl() { return paella.player.videoLoader._url || paella.player.config.standalone && paella.player.config.standalone.repository; }
 		get videoUrl() { return paella.player.videoLoader.getVideoUrl(); }
 		get dataUrl() { return paella.player.videoLoader.getDataUrl(); }
 		get videoId() { return paella.initDelegate.getId(); }
@@ -233,10 +233,16 @@
 					this.initParams[key] = params[key];
 				}
 			}
+
+			if (!this.initParams.getId) {
+				this.initParams.getId = function() {
+					return base.parameters.get('id') || "noid";
+				} 
+			}
 		}
 	
 		getId() {
-			return base.parameters.get('id') || "noid";
+			return this.initParams.getId();
 		}
 	
 		loadDictionary() {
