@@ -1,303 +1,178 @@
 ---
 ---
 
-# Integrate Paella in your portal: the advanced way
+# JavaScript APIs to load Paella Player
 
 To integrate Paella Player in your portal, you must to suply a series of data about the video streams and the user account. 
 Some of these data are optional, but if aren't supplied is possible that some features are disabled.
 
-The basic data is supplied by implementing the classes paella.AccessControl and paella.VideoLoader, and passing an instance of both of them to the paella.initDelegate:
+# Video data
 
-Paella Player:
+All the information about a particular video is stored in the video manifest file [video manifest file](../integrate_datajson.md). The video loading APIs are used to get the video manifest.
 
-``` js
-function loadPaella(containerId) {
-	var initDelegate = new paella.InitDelegate({
-		accessControl:new MyAccessControl(),
-		videoLoader:new MyVideoLoader()
-	});
+# Loading API
 
-	initPaellaEngage(containerId,initDelegate);
+There are many options for loading Paella Player. Let's see several examples starting from the following code:
+
+``` HTML
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8;">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Paella Engage Example</title>
+
+  <script type="text/javascript" src="javascript/swfobject.js"></script>
+  <script type="text/javascript" src="javascript/base.js"></script>
+  <script type="text/javascript" src="javascript/jquery.js"></script>
+  <script type="text/javascript" src="javascript/lunr.min.js"></script>
+  <script type="text/javascript" src="javascript/require.js"></script>
+  <script type="text/javascript" src="javascript/paella_player_es2015.js"></script>
+  
+  <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css" type="text/css" media="screen" charset="utf-8">
+
+  <script>
+    function loadMyPlayer(containerId) {
+	  // Load paella player here
+	}
+  </script>
+</head>
+<body onload="loadMyPlayer('playerContainer)">
+  <div id="playerContainer" style="display:block;width:100%"></div>
+</body>
+</html>
+```
+
+## Load Paella Player from a repository
+
+This is the most convenient method to load Paella Player if you can offer a backend where the manifests are accesible:
+
+```javascript
+function loadMyPlayer(containerId) {
+  paella.load('playerContainer', { });
 }
 ```
 
-
-## User login, data and permissions: paella.AccessControl
-
-1. Extend paella.AccessControl and implement the checkAccess method:
- 
-	``` js
-	var MyAccessControl = Class.create(paella.AccessControl,{
-		checkAccess:function(onSuccess) {		
-	```
-
-2. Fill-in the this.permissions object, specifying the privileges that the current user have. You can get this data asynchronously if you want, because Paella Player will be waiting until you call the onSuccess callback. There are two objects that you must to fill-in: permissions and userData:
-
-	``` js
-	this.permissions.canRead = true;
-	this.permissions.canWrite = true;
-	this.permissions.canContribute = true;
-	this.permissions.loadError = false;
-	this.permissions.isAnonymous = true;
-	
-	this.userData.login = 'anonymous';
-	this.userData.name = 'Anonymous';
-	this.userData.avatar = 'resources/images/default_avatar.png';
-	```
-
-3. Call onSuccess when you end loading all the data, and pass the permissions and userData objects to it:
-
-	``` js
-			onSuccess(this.permissions,this.userData);
-		}
-	});
-	```
- 
-
-
-## Video data: paella.VideoLoader
-
-1. Extend paella.VideoLoader and implement the loadVideo function:
- 
-	``` js
-	var MyVideoLoader = Class.create(paella.VideoLoader, {
-		loadVideo:function(videoId,onSuccess) {		
-	```
-
-2. Setup the video stream data:
-
-	``` js
-	var url = videoId;
-	if (url) {
-		var stream = examplePresenterSources;	// See below
-		stream.sources.mp4[0].src = url + stream.sources.mp4[0].src;
-		stream.preview = url + stream.preview;
-		this.streams.push(stream);
-	
-		stream = exampleSlidesSources;			// See below
-		stream.sources.mp4[0].src = url + stream.sources.mp4[0].src;
-		stream.preview = url + stream.preview;
-		for (var key in stream.sources.image.frames) {
-			stream.sources.image.frames[key] = url + stream.sources.image.frames[key];
-		}
-	this.streams.push(stream);
-	```		
-
-3. Setup the video thumbnails:
- 
-	``` js
-		this.frameList = exampleFrameList;	// See below
-		for (var key in this.frameList) {
-			this.frameList[key].url = url + this.frameList[key].url;
-			this.frameList[key].thumb = url + this.frameList[key].thumb;
-		}
-	}
-	```
-
-4. Set this.loadStatus = true if all went Ok and call onSuccess:
- 
-	``` js
-			// Callback
-			this.loadStatus = true;
-			onSuccess();
-		}
-	}
-	```
-
-## Video and frame thumnail data
-
-Paella Player supports one or multiple video streams (but it only can play up to two streams at the same time). It also support several video formats. If you want to take advantage of this features, you must to supply all this data. You can add the stream data in the loadVideo function using the this.streams array:
-
-``` js
-	this.streams.push(myStreamInfo)
-```
-
-The first stream will be the master stream (presenter video), the second stream will be the slave (slides video), and all the other streams will be ignored, but you can implement plugins to use them:
-
-``` js
-myStreamInfo: {
-	// mp4 video source
-	mp4:[
-		{ src:'/presentation.mp4', type:"video/mp4", res:{w:1024,h:768} },	// 1024x768 video
-		{ src:'/presentation2.mp4', type:"video/mp4", res:{w:640,h:480} }	// 640x480 video
-	],
-	// hls video source
-	hls: [
-		{ src: "https://hls-server.com/playlist.m3u8", mimetype: "video/mp4" }
-	],
-	// mpeg-dash video source
-	mpd: [
-		{ src: "http://mpeg-dash-server.com/manifest.mpd", mimetype: "video/mp4" }
-	],
-	// ogg video sourve
-	ogg:[
-		{ src:'/presentation.ogv', type:"video/ogg", res:{w:1024,h:768} },	// 1024x768 video
-		{ src:'/presentation2.mp4', type:"video/ogg", res:{w:640,h:480} }	// 640x480 video
-	],
-	// Images video:
-	image:[ {
-		frames:{
-			frame_0:'/image/frame_0.jpg',
-			frame_8:'/image/frame_8.jpg',
-			frame_24:'/image/frame_24.jpg',
-			frame_48:'/image/frame_48.jpg',
-			frame_67:'/image/frame_67.jpg',
-			frame_79:'/image/frame_79.jpg',
-			frame_145:'/image/frame_145.jpg',
-			frame_204:'/image/frame_204.jpg',
-			frame_275:'/image/frame_275.jpg',
-			frame_314:'/image/frame_314.jpg',
-			frame_333:'/image/frame_333.jpg',
-			frame_352:'/image/frame_352.jpg',
-			frame_382:'/image/frame_382.jpg',
-			frame_419:'/image/frame_419.jpg',
-			frame_464:'/image/frame_464.jpg',
-			frame_496:'/image/frame_496.jpg',
-			frame_505:'/image/frame_505.jpg',
-			frame_512:'/image/frame_512.jpg',
-			frame_521:'/image/frame_521.jpg',
-			frame_542:'/image/frame_542.jpg',
-			frame_585:'/image/frame_585.jpg',
-			frame_593:'/image/frame_593.jpg',
-			frame_599:'/image/frame_599.jpg',
-			frame_612:'/image/frame_612.jpg',
-			frame_613:'/image/frame_613.jpg',
-			frame_658:'/image/frame_658.jpg'
-		},
-		type:"image/jpeg",
-		duration:928,
-		res:{w:1024,h:768}
-	} ],
-	// flv video sourve
-	flv:[
-		{ src:'/presentation.flv', type:"video/x-flv", res:{w:1024,h:768} },	// 1024x768 video
-		{ src:'/presentation2.flv', type:"video/x-flv", res:{w:640,h:480} }	// 640x480 video
-	],
-	// rtmp stream
-	rtmp:[
-		{src:"rtmp://server.com/endpoint/url1.mp4",type="video/mp4 | video/x-flv", res:{w:1024,h:768} },
-		{src:"rtmp://server.com/endpoint/url2.mp4",type="video/mp4 | video/x-flv", res:{w:640,h:480} }
-	],
-}
-```
-
-## Other data: paella.Data
-
-### paella.Data
-
-Provides with a homogeneous mechanism to write and read persistent data. paella.Data is implemented based on the Delegate design pattern. It delegates the reading and writting operations on an object that knows where read from and write to data. To setup the delegate objects, you must to implement them and use the paella player's `config.json` file to register them.
-
-``` js
-paella.data.write("myContext","key",{data:"my data"},function(response,status) {
-	if (status) console.log("data successfully writted");
-	else console.log("error writting data");
-});
-
-paella.data.read("myContext","key",function(data) {
-	console.log(data);
-});
-```
-
-### paella.DataDelegate
-
-To write and read data to and from your server, you must to implement your specific dataDelegates. You can register your data delegate using he method `paella.addDataDelegate()`, The function receives two parameters:
-
-- The default contexts for which the data delegate is to be used.
-- A callback that returns the data delegate class.
+The manifest files will be searched in the default path, which is specified in the config.json file.
 
 ```javascript
-paella.addDataDelegate(['context1','context2',...'contextn'], () => {
-	return MyDataDelegate
-}) 
-```
-
-The data delegate is implemented extending the paella.DataDelegate class:
-
-```javascript
-paella.addDataDelegate(['context1','context2',...'contextn'], () => {
-	class MyDataDelegate extends paella.DataDelegate {
-		read(context,params,onSuccess) {
-			let readedData = readMyData(params);
-			onSuccess(readedData);
-		}
-
-		write(context,params,value,onSuccess) {
-			writeMyData(params,value);
-			onSuccess({},true);
-		}
-
-		remove(context,params,onSuccess) {
-			deleteMyData(params);
-			onSuccess();
-		}
-	}
-
-	return MyDataDelegate
-}) 
-```
-
-Example: cookie-based reader and writter delegate
-
-``` js
-paella.addDataDelegate(["default","trimming"], () => {
-	paella.dataDelegates.DefaultDataDelegate = class CookieDataDelegate extends paella.DataDelegate {
-		serializeKey(context,params) {
-			if (typeof(params)=='object') params = JSON.stringify(params);
-			return context + '|' + params;
-		}
-	
-		read(context,params,onSuccess) {
-			var key = this.serializeKey(context,params);
-			var value = base.cookies.get(key);
-			try {
-				value = unescape(value);
-				value = JSON.parse(value);
-			}
-			catch (e) {}
-			if (typeof(onSuccess)=='function') {
-				onSuccess(value,true);
-			}
-		}
-	
-		write(context,params,value,onSuccess) {
-			var key = this.serializeKey(context,params);
-			if (typeof(value)=='object') value = JSON.stringify(value);
-			value = escape(value);
-			base.cookies.set(key,value);
-			if(typeof(onSuccess)=='function') {
-				onSuccess({},true);
-			}
-		}
-	
-		remove(context,params,onSuccess) {
-			var key = this.serializeKey(context,params);
-			if (typeof(value)=='object') value = JSON.stringify(value);
-			base.cookies.set(key,'');
-			if(typeof(onSuccess)=='function') {
-				onSuccess({},true);
-			}
-		}
-	}
-
-	return paella.dataDelegates.DefaultDataDelegate;
-})
-```
-
-In the config.json file, you can override the default data delegate for a context.
-
-``` js
 {
-	...
-	"data":{
-		"enabled":true,
-		"dataDelegates":{
-			"default":"CookieDataDelegate",
-			"myContext":"CookieDataDelegate"
-		}
-	}
+  ...
+  "standalone" : {
+    "repository": "../repository/"
+  },
+  ...
 }
 ```
 
-Each context is related with a service that your server can provide. This contexts usually are handled by different plugins: for example, the "annotations" service is handled by the Paella Player Annotations plugin, to show annotations in the video canvas, and also are handled by the Paella Editor Annotation plugin to create and modify annotations. In a particular case, the server may supply these annotations by using files, and in other case may supply them using a REST API. The way in wich you must to implement your DataDelegate class will depend on the way your server provide the data.
+But optionally, you can set the Paella Player repository path dinamically using the `url` parameter:
 
-The data format that you will receive and send in your DataDelegate will depend on the particular context: for example, the "captions" context may expect a format, and the "annotations" context may expect a different one. Refer to the specific context documentation to know more about its data format.
+```javascript
+function loadMyPlayer(containerId) {
+  paella.load('playerContainer', { url:'../repository/' });
+}
+```
+
+If the `url` is specified in the `paella.load()` parameters, the `repository` attribute in the configuration file will  be ignored. Note that the `url` path has to end with a slash `/`.
+
+The final video manifest path will be generated as follows:
+
+`[repositoryUrl]/[videoId]/data.json`
+
+## The video identifier
+
+By default, Paella Player gets the video identifier from the URL:
+
+`http://yourvideoplayersite.com/index.html?id=yourVideoIdentifier`
+
+But you can use the `getId` parameter to override this behavior:
+
+```javascript
+function loadMyPlayer(containerId) {
+  paella.load('playerContainer', { getId: () => "my-video-id" });
+}
+```
+
+## Video manifest path customization
+
+It's possible to customize the way in which the path of the video manifest is generated using the `videoUrl` and `dataUrl` parameters. Both parameters have to be functions that return the video manifest base path and the full path of the video manifest file respectively. By default, the `dataUrl` function calls the `videoUrl` function. Depending on what you want to do, you will have to override one, the other or both.
+
+```javascript
+function loadMyPlayer(containerId) {
+  paella.load('playerContainer', { dataUrl: function() {
+	  return "full/video/manifest/path";
+  }});
+}
+```
+
+To access these functions from your code, Paella Player exposes them through the following APIs:
+
+```javascript
+// `url` initialization parameter, or the content of
+// standalone.repository in config.json
+paella.player.repoUrl
+
+// Result of `getId()` init parameter
+paella.player.videoId
+
+// Result of `videoUrl()` init parameter
+paella.player.videoUrl
+
+// Result of `dataUrl()` init parameter
+paella.player.dataUrl
+```
+
+In the following example you can see an implementation that emulates the default behavior of Paella Player, using `getId`, `dataUrl` and `videoUrl``
+
+```javascript
+function myLoadPaella(containerId) {
+  paella.load(containerId, {
+    getId:() => {
+     return base.parameters.get("id");
+    },
+    videoUrl: () => {
+     return `${ paella.player.repoUrl }${ paella.player.videoId }/`;
+    },
+    dataUrl: () => {
+     return `${ paella.player.videoUrl }/data.json`;
+    }
+  });
+}
+```
+
+## Specify the configuration options
+
+By default, the Paella Player configuratio is obtained from the configuration file, which can be found in `paellaPlayerPath/config/config.json`. But you have two options change the configuration file origin.
+
+### Option 1: change the configuration file path
+
+Yo can use the `configUrl` parameter in the `paella.load()` function to set the path of the configuration file:
+
+```javascript
+function loadMyPlayer(containerId) {
+  paella.load(containerId, { configUrl:'otherConfigPath/config.json' });
+}
+```
+
+### Option 2: set the configuration by yourself
+
+You can get the configuration on your own and pass it to Paella Player with the parameter `config`:
+
+```javascript
+function loadMyPlayer(containerId) {
+  fetch('my_rest_api/player/config')
+	.then((response) => {
+	  return response.json();
+	})
+	.then((config) => {
+	  paella.load(containerId, { config:config });
+	})
+	.catch((err) => {
+	  console.error(err.message);
+	});
+}
+```
+
+# Upload and download data from your server
+
+Paella provides a homogeneous mechanism to write and read persistent data. You can see how it works [here](../../developers/paella_data.md)
