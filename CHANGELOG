@@ -16,6 +16,11 @@ CHANGELOG
       tabindex. if you have a plugin that is relevant for screen readers, you must implement
       this function in your plugin.
 
+* Paella 6.0.5
+
+  * Improved video stability on slow networks.
+  * Bug fixed on first video layout load.
+
 * Paella 6.0.4
 
   * Fix issues in stream video profiles
@@ -111,6 +116,11 @@ CHANGELOG
   * Use 16/9 aspect ratio for audio sources
   * New plugin: Usertracking xAPI plugin (@dpeite)
   * New plugin: Usertracking Piwik plugin
+
+* Paella 5.2.19
+
+  * Bug fixed in blackboard high resolution photo plugin
+  * Bug fixed in HTML 5 video element when the buffer is empty
 
 * Paella 5.2.18
 

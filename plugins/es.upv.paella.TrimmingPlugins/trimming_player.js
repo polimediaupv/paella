@@ -28,9 +28,9 @@ paella.addPlugin(function() {
 			var videoId = paella.initDelegate.getId();
 			paella.data.read('trimming',{id:videoId},function(data,status) {
 				if (data && status && data.end>0) {
-					paella.player.videoContainer
-						.setTrimming(data.start, data.end)
-						.then(() => paella.player.videoContainer.enableTrimming() )
+					paella.player.videoContainer.enableTrimming();
+					paella.player.videoContainer.setTrimming(data.start, data.end)
+						.then(() => {})
 					
 				}
 				else {
@@ -38,9 +38,9 @@ paella.addPlugin(function() {
 					var startTime =  base.parameters.get('start');
 					var endTime = base.parameters.get('end');
 					if (startTime && endTime) {
-						paella.player.videoContainer
-							.setTrimming(startTime, endTime)
-							.then(() => paella.player.videoContainer.enableTrimming() )
+						paella.player.videoContainer.enableTrimming();
+						paella.player.videoContainer.setTrimming(startTime, endTime)
+							.then(() => {} )
 					}
 				}
 			});
