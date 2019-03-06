@@ -8,7 +8,7 @@
 			"sources": {
 				"mp4": [
 					{
-						"src": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/media/240-presenter.mp4",
+						"src": "https://repository.paellaplayer.upv.es/belmar-multiresolution/media/240-presenter.mp4",
 						"mimetype": "video/mp4",
 						"res": {
 							"w": "426",
@@ -16,7 +16,7 @@
 						}
 					},
 					{
-						"src": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/media/480-presenter.mp4",
+						"src": "https://repository.paellaplayer.upv.es/belmar-multiresolution/media/480-presenter.mp4",
 						"mimetype": "video/mp4",
 						"res": {
 							"w": "852",
@@ -24,7 +24,7 @@
 						}
 					},
 					{
-						"src": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/media/720-presenter.mp4",
+						"src": "https://repository.paellaplayer.upv.es/belmar-multiresolution/media/720-presenter.mp4",
 						"mimetype": "video/mp4",
 						"res": {
 							"w": "1280",
@@ -32,7 +32,7 @@
 						}
 					},
 					{
-						"src": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/media/720-presenter.mp4",
+						"src": "https://repository.paellaplayer.upv.es/belmar-multiresolution/media/720-presenter.mp4",
 						"mimetype": "video/mp4",
 						"res": {
 							"w": "1920",
@@ -41,7 +41,7 @@
 					}
 				]
 			},
-			"preview": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/preview/presenter_cut.jpg"
+			"preview": "https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/presenter_cut.jpg"
 		}
 	],
 	"frameList": [

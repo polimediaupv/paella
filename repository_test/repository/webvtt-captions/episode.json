@@ -4,7 +4,7 @@
             {
                 "mimetype": "image/jpeg",
                 "thumb": {
-                    "url": "http://paellaplayer.upv.es/demo/repository/pm-be0c7738-039d-9445-8237-8b85f37cd303/slides/thumb_0.jpg",
+                    "url": "https://repository.paellaplayer.upv.es/pm-be0c7738-039d-9445-8237-8b85f37cd303/slides/thumb_0.jpg",
                     "resolution": ""
                 },
                 "time": "00:00:00"
@@ -35,26 +35,26 @@
                 {
                     "mimetype": "video/mp4",
                     "tags": [],
-                    "url": "http://paellaplayer.upv.es/demo/repository/pm-be0c7738-039d-9445-8237-8b85f37cd303/video/720p.mp4",
+                    "url": "https://repository.paellaplayer.upv.es/pm-be0c7738-039d-9445-8237-8b85f37cd303/video/720p.mp4",
                     "mediainfo": {
                         "video": {
                             "resolution": "1280x720"
                         }
                     },
-                    "preview": "http://paellaplayer.upv.es/demo/repository/pm-be0c7738-039d-9445-8237-8b85f37cd303/slides/thumb_0.jpg",
+                    "preview": "https://repository.paellaplayer.upv.es/pm-be0c7738-039d-9445-8237-8b85f37cd303/slides/thumb_0.jpg",
                     "type": "presentation/delivery",
                     "id": "video-1"
                 },
                 {
                     "mimetype": "video/mp4",
                     "tags": [],
-                    "url": "http://paellaplayer.upv.es/demo/repository/pm-be0c7738-039d-9445-8237-8b85f37cd303/video/360p.mp4",
+                    "url": "https://repository.paellaplayer.upv.es/pm-be0c7738-039d-9445-8237-8b85f37cd303/video/360p.mp4",
                     "mediainfo": {
                         "video": {
                             "resolution": "640x360"
                         }
                     },
-                    "preview": "http://paellaplayer.upv.es/demo/repository/pm-be0c7738-039d-9445-8237-8b85f37cd303/slides/thumb_0.jpg",
+                    "preview": "https://repository.paellaplayer.upv.es/pm-be0c7738-039d-9445-8237-8b85f37cd303/slides/thumb_0.jpg",
                     "type": "presentation/delivery",
                     "id": "video-1"
                 }
