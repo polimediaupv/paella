@@ -793,7 +793,9 @@ Class ("paella.Html5Video", paella.VideoElementBase,{
 
 
 		$(this.video).bind('emptied', (evt) => {
-			this._resumeCurrentTime && (this.video.currentTime = this._resumeCurrentTime);
+			if (this._resumeCurrentTime && !isNaN(this._resumeCurrentTime)) {
+				this.video.currentTime = this._resumeCurrentTime;
+			}
 		});
 		
 		// Fix safari setQuelity bug

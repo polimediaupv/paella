@@ -102,6 +102,11 @@ CHANGELOG
   * New plugin: Usertracking xAPI plugin (@dpeite)
   * New plugin: Usertracking Piwik plugin
 
+* Paella 5.2.19
+
+  * Bug fixed in blackboard high resolution photo plugin
+  * Bug fixed in HTML 5 video element when the buffer is empty
+
 * Paella 5.2.18
 
   * Full screen support on iPad iOS 12
