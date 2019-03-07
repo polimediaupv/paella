@@ -279,6 +279,10 @@
         get currentProfileName() { return this._currentProfileName; }
 
         setProfile(profileName,animate) {
+            if (!profileName) {
+                return false;
+            }
+            
             animate = base.userAgent.browser.Explorer ? false:animate;
             if (!paella.player.videoContainer.ready) {
                 return false;	// Nothing to do, the video is not loaded
