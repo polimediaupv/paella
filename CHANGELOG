@@ -16,6 +16,10 @@ CHANGELOG
       tabindex. if you have a plugin that is relevant for screen readers, you must implement
       this function in your plugin.
 
+* Paella 6.0.6
+
+  * Bug fixed setting video profile
+
 * Paella 6.0.5
 
   * Improved video stability on slow networks.
