@@ -285,6 +285,10 @@
         get currentProfileName() { return this._currentProfileName; }
 
         setProfile(profileName,animate) {
+            if (!profileName) {
+                return false;
+            }
+            
             animate = base.userAgent.browser.Explorer ? false:animate;
             if (this.currentProfile) {
                 this.currentProfile.onDeactivate();
