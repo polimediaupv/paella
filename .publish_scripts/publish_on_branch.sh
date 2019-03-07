@@ -23,7 +23,7 @@ usage() {
     echo
 }
 
-while getopts ":d:v:" opt; do
+while getopts ":d:b:" opt; do
     case $opt in
         d)
             DEBUG=1
