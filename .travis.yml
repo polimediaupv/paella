@@ -34,11 +34,17 @@ jobs:
         - export PRERELEASE=$(bash ./.publish_scripts/is_prerelease_version.sh ${TRAVIS_TAG})
       deploy:
         - provider: script
-          script: ./.publish_scripts/publish.sh
+          script: ./.publish_scripts/publish_on_branch.sh -b ${TRAVIS_BRANCH}
           skip_cleanup: true
           on:
             all_branches: true
             condition: $TRAVIS_BRANCH =~ ^(([0-9]+\.[0-9]+\.x)|(develop))$
+        - provider: script
+          script: ./.publish_scripts/publish_on_tag.sh -v ${TRAVIS_TAG}
+          skip_cleanup: true
+          on:
+            repo: polimediaupv/paella
+            tags: true
         - provider: releases
           skip_cleanup: true
           api_key:
