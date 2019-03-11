@@ -48,7 +48,9 @@ data delegate. Each annotation has the following elements.
 2. **user** (string) will contain the user that created the annotation
 3. **video** (string) will contain the videoid where the annotation is included
 4. **type** (string) defines the type of annotation this plugin handles
-* AD, BANNER, NOTE, MEMO, FULL, VCUSTOM
+
+   - AD, BANNER, NOTE, MEMO, FULL, VCUSTOM
+
 5. **time** (int) starting time to appear the annotation in seconds
 6. **duration** (int) duration in wich the annotation will be shown
 7. **content** (mixed) defines the content this may vary depending on the annotation
