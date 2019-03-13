@@ -86,7 +86,7 @@
 		_loadDeps() {
 			return new Promise((resolve,reject) => {
 				if (!window.$paella_hls) {
-					require(['resources/deps/hls.min.js'],function(hls) {
+					require([paella.baseUrl +'resources/deps/hls.min.js'],function(hls) {
 						window.$paella_hls = hls;
 						resolve(window.$paella_hls);
 					});

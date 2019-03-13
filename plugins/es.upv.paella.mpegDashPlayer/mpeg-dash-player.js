@@ -12,7 +12,7 @@ class MpegDashVideo extends paella.Html5Video {
 	_loadDeps() {
 		return new Promise((resolve,reject) => {
 			if (!window.$paella_mpd) {
-				require(['resources/deps/dash.all.js'],function() {
+				require([paella.baseUrl +'resources/deps/dash.all.js'],function() {
 					window.$paella_mpd = true;
 					resolve(window.$paella_mpd);
 				});
