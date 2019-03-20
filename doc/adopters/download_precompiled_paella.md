@@ -41,8 +41,15 @@ If you don't have a web server to test you ned to download one ([nginx](https://
 
 Run this command from the paella folder and navigate to `http://localhost:8000`
 
+Python 3.X
+
+```shell
+python -m http.server 8000
+```
+
+Python 2.X
+
 ```shell
 python -m SimpleHTTPServer 8000
 ```
-
 
