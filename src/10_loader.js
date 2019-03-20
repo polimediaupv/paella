@@ -43,7 +43,7 @@ class DefaultVideoLoader extends paella.VideoLoader {
 				paella.initDelegate.initParams.videoUrl;
 		}
 		else {
-			let url = this._url || paella.player.config.standalone.repository;
+			let url = this._url || (paella.player.config.standalone && paella.player.config.standalone.repository) || '';
 			return (/\/$/.test(url) ? url:url + '/') + paella.initDelegate.getId() + '/';
 		}
 	}
