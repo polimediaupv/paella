@@ -147,6 +147,6 @@ pushd $TMP_FOLDER > /dev/null
     git push --tags https://${GITHUB_WEBPAGE_TOKEN}@github.com/${GITHUB_WEBPAGE_REPO}.git gh-pages || true  
 popd > /dev/null
 
-echo "[INFO] Removing remporal folder"
+echo "[INFO] Removing temporal folder"
 rm -rf $TMP_FOLDER
 echo "[INFO] Done!"
