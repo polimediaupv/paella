@@ -128,7 +128,7 @@ if [ -f "${SRC_PAELLA_FOLDER}/doc/toc.yml" ] ; then
     git add ./*
     git status    
     GIT_COMMITTER_NAME="${GIT_NAME}" GIT_COMMITTER_EMAIL="${GIT_EMAIL}" git commit --author "${COMMIT_AUTHOR}" \
-        -m "Update paella player ${VERSION}" \
+        -m "Update documentation for paella ${VERSION}" \
         -m "Triggered by https://github.com/${TRAVIS_REPO_SLUG}/commit/${TRAVIS_COMMIT}" \
     || true
 
@@ -137,6 +137,6 @@ if [ -f "${SRC_PAELLA_FOLDER}/doc/toc.yml" ] ; then
     popd > /dev/null
 fi
 
-echo "[INFO] Removing remporal folder"
+echo "[INFO] Removing temporal folder"
 rm -rf $TMP_FOLDER
 echo "[INFO] Done!"

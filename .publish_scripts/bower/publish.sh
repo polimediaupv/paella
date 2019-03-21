@@ -13,15 +13,15 @@ usage() {
     echo "                 [-f FOLDER]"
     echo "                 [-r GITHUB_BOWER_REPO]"
     echo "                 [-c GITHUB_BOWER_TOKEN]"
-    echo "                 [-n GIT_BOWER_NAME]"
-    echo "                 [-e GIT_BOWER_EMAIL]"
+    echo "                 [-n GIT_NAME]"
+    echo "                 [-e GIT_EMAIL]"
     echo
 }
 
 ## MAIN
 DEPLOY_FOLDER="."
-GIT_BOWER_EMAIL="travis@travis-ci.org"
-GIT_BOWER_NAME="Travis CI"
+GIT_EMAIL="travis@travis-ci.org"
+GIT_NAME="Travis CI"
 
 while getopts ":du:v:f:r:c:n:e:" opt; do
     case $opt in
@@ -41,10 +41,10 @@ while getopts ":du:v:f:r:c:n:e:" opt; do
             GIT_BOWER_TOKEN="$OPTARG"
             ;;
         n)
-            GIT_BOWER_NAME="$OPTARG"
+            GIT_NAME="$OPTARG"
             ;;
         e)
-            GIT_BOWER_EMAIL="$OPTARG"
+            GIT_EMAIL="$OPTARG"
             ;;
         \?)
             set +x
@@ -105,6 +105,8 @@ fi
 
 echo "[INFO] Publishing bower package version=$VERSION"
 
+COMMIT_AUTHOR=$(git --no-pager show -s --format='%an <%ae>' ${TRAVIS_COMMIT})
+
 TMP_FOLDER=$(mktemp -d -t deploy-bower.XXXXXX)
 echo "[INFO] Using $TMP_FOLDER as temporal folder"
 
@@ -123,17 +125,20 @@ fi
 
 pushd $TMP_FOLDER > /dev/null
 
-echo "[INFO] Setup git name=$GIT_BOWER_NAME email=$GIT_BOWER_EMAIL"
-git config --local user.email "$GIT_BOWER_EMAIL"
-git config --local user.name "$GIT_BOWER_NAME"
+echo "[INFO] Setup git name=$GIT_NAME email=$GIT_EMAIL"
+git config --local user.email "$GIT_EMAIL"
+git config --local user.name "$GIT_NAME"
 
 git add -A
-git commit -q -m "[automated publishing] version $VERSION" 
+GIT_COMMITTER_NAME="${GIT_NAME}" GIT_COMMITTER_EMAIL="${GIT_EMAIL}" git commit --author "${COMMIT_AUTHOR}" \
+    -m "[automated publishing] version ${VERSION}" \
+    -m "Triggered by https://github.com/${TRAVIS_REPO_SLUG}/commit/${TRAVIS_COMMIT}" \
+|| true
 git tag $VERSION
 git push --tags https://${GIT_BOWER_TOKEN}@github.com/${GIT_BOWER_REPO}.git master
 
 popd > /dev/null
 
-echo "[INFO] Removing remporal folder"
+echo "[INFO] Removing temporal folder"
 rm -rf $TMP_FOLDER
 echo "[INFO] Done!"
