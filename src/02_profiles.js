@@ -297,7 +297,7 @@
             if (!paella.player.videoContainer.ready) {
                 return false;	// Nothing to do, the video is not loaded
             }
-            else if (paella.player.videoContainer.streamProvider.videoStreams.length==1) {
+            else if (!paella.player.editingCaptions && paella.player.videoContainer.streamProvider.videoStreams.length==1) {
                 let profileData = this.loadMonostreamProfile();  
                 this._currentProfileName = profileName;
                 applyProfileWithJson.apply(paella.player.videoContainer,[profileData,animate]);

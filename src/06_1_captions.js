@@ -121,6 +121,14 @@ paella.captions = {
 		}
 		return undefined;			
 	},
+
+	getClosestCaptionAtTime: function(cid, time) {
+		var c = this.getCaptions(cid);		
+		if (c != undefined) {
+			return c.getClosestCaptionAtTime(time);
+		}
+		return undefined;			
+	},
 	
 	search: function(text, next) {
 		var self = this;
@@ -222,6 +230,51 @@ class Caption {
 	getCaptions() {
 		return this._captions;	
 	}
+
+	setCaptionById(id, obj) {
+		if (this._captions != undefined) {
+			for (var i=0; i<this._captions.length; ++i) {			
+				let l_cap = this._captions[i];
+				if (l_cap.id == id) {
+					if ("begin" in obj) this._captions[i]["begin"] = obj.begin;
+					if ("end" in obj) this._captions[i]["end"] = obj.end;
+					if ("content" in obj) this._captions[i]["content"] = obj.content;
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	setCaptionByIndex(index, obj) {
+		if (this._captions != undefined && this._captions.length > index) {
+			if ("begin" in obj) this._captions[index]["begin"] = obj.begin;
+			if ("end" in obj) this._captions[index]["end"] = obj.end;
+			if ("content" in obj) this._captions[index]["content"] = obj.content;
+			return true;
+		}
+		return false;
+	}
+
+	deleteCaptionById(id) {
+		if (this._captions != undefined) {
+			for (var i=0; i<this._captions.length; ++i) {			
+				let l_cap = this._captions[i];
+				if (l_cap.id == id) {
+					return this.deleteCaptionByIndex(i);
+				}
+			}
+		}
+		return false;
+	}
+
+	deleteCaptionByIndex(index) {
+		if (this._captions != undefined && this._captions.length > index) {
+			this._captions.splice(index, 1);
+			return true;
+		}
+		return false;
+	}
 	
 	getCaptionAtTime(time) {
 		if (this._captions != undefined) {
@@ -231,6 +284,17 @@ class Caption {
 					return l_cap;
 				}
 			}
+		}
+		return undefined;		
+	}
+
+	getClosestCaptionAtTime(time) {
+		if (this._captions != undefined) {
+			for (var i=0; i<this._captions.length; ++i) {
+				if (time <= this._captions[i].end) return this._captions[i];
+			}
+			if (this._captions.length)
+				return this._captions[this._captions.length-1];
 		}
 		return undefined;		
 	}

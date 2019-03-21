@@ -1,0 +1,13 @@
+{
+	"Subtitles":"Subtítulos",
+	"Edit subtitles":"Editar subtítulos",
+	"None":"Ninguno",
+	"Save":"Guardar",
+	"Import":"Importar",
+	"Export":"Exportar",
+	"Exit":"Salir",
+	"Close":"Salir",
+	"Saving your changes, please wait...":"Guardando los cambios, espere por favor...",
+	"Your changes couldn't be saved: captions server timeout":"No se pudieron guardar los cambios: el servidor de subtitulado no responde",
+	"Supported formats":"Formatos soportados"
+}

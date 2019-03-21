@@ -81,6 +81,7 @@
       "edu.harvard.dce.paella.flexSkipPlugin": {"enabled":true, "direction": "Rewind", "seconds": 10},
       "edu.harvard.dce.paella.flexSkipForwardPlugin": {"enabled":true, "direction": "Forward", "seconds": 30},
       "es.upv.paella.captionsPlugin": {"enabled":true, "searchOnCaptions":true},
+      "es.upv.paella.captionsEditorPlugin": {"enabled":true, "showSaveButton":true},
       "es.upv.paella.extendedTabAdapterPlugin": {"enabled":true},
       "es.upv.paella.footprintsPlugin": {"enabled":false},
       "es.upv.paella.frameControlPlugin":  {"enabled": true, "showFullPreview": "auto", "showCaptions":true},
@@ -107,7 +108,7 @@
       "es.upv.paella.showEditorPlugin":{"enabled":true,"alwaysVisible":true},
       "es.upv.paella.arrowSlidesNavigatorPlugin": {"enabled": true, "showArrowsIn": "slave"},
       "es.upv.paella.videoDataPlugin": {
-        "enabled": true,
+        "enabled": false,
         "excludeLocations":[
           "paellaplayer.upv.es"
         ],
@@ -130,7 +131,8 @@
       "es.upv.paella.blackBoardPlugin": {"enabled": true},
       "es.upv.paella.breaksPlayerPlugin": {"enabled": true},
       "es.upv.paella.overlayCaptionsPlugin": {"enabled": true},
-      "es.upv.paella.playButtonOnScreenPlugin": {"enabled":true},
+      "es.upv.paella.playButtonOnScreenPlugin": {"enabled":false},
+      "es.upv.paella.playButtonOnScreenPlugin_captionsEditor": {"enabled":true},
       "es.upv.paella.test.videoLoadPlugin": {"enabled":false},
       "es.upv.paella.translecture.captionsPlugin": {"enabled":true},
       "es.upv.paella.trimmingPlayerPlugin": {"enabled":true},
@@ -147,7 +149,8 @@
           ]
 
       },
-      "es.upv.paella.dualStreamProfilePlugin": { "enabled":true,
+      "es.upv.paella.dualStreamProfilePlugin": { 
+        "enabled":true,
         "videoSets": [
           { "icon":"slide_professor_icon.svg", "id":"presenter_presentation", "content":["presenter","presentation"] },
           { "icon":"slide_professor_icon.svg", "id":"presenter2_presentation", "content":["presenter-2","presentation"] },
