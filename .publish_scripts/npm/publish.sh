@@ -123,6 +123,6 @@ echo "[INFO] Publishing npm package version=$VERSION tag=$NPM_TAG"
 npm publish --tag $NPM_TAG
 popd > /dev/null
 
-echo "[INFO] Removing remporal folder"
+echo "[INFO] Removing temporal folder"
 rm -rf $TMP_FOLDER
 echo "[INFO] Done!"
