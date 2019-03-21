@@ -8,7 +8,13 @@ paella.addPlugin(function() {
 		getName() { return "es.upv.paella.airPlayPlugin"; }
 		checkEnabled(onSuccess) {
 			this._visible = false;
-			onSuccess(window.WebKitPlaybackTargetAvailabilityEvent);
+			// PIP is only available with single stream videos
+            if (paella.player.videoContainer.streamProvider.videoStreams.length!=1) {
+                onSuccess(false);
+            }
+            else {
+				onSuccess(window.WebKitPlaybackTargetAvailabilityEvent);
+			}
 		}
 		getDefaultToolTip() { return base.dictionary.translate("Emit to AirPlay."); }
 	
