@@ -65,7 +65,7 @@
 			let pluginConfig = {};
 			paella.player.config.player.methods.some((methodConfig) => {
 				if (methodConfig.factory=="HLSVideoFactory") {
-					pluginConfig = methodConfig.config;
+					pluginConfig = methodConfig.config || {};
 					return true;
 				}
 			});
