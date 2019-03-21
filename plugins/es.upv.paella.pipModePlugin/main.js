@@ -8,7 +8,12 @@ paella.addPlugin(function() {
         checkEnabled(onSuccess) {
             var mainVideo = paella.player.videoContainer.masterVideo();
             var video = mainVideo.video;
-            if (video && video.webkitSetPresentationMode) {
+
+            // PIP is only available with single stream videos
+            if (paella.player.videoContainer.streamProvider.videoStreams.length!=1) {
+                onSuccess(false);
+            }
+            else if (video && video.webkitSetPresentationMode) {
                 onSuccess(true);
             }
             else if (video && 'pictureInPictureEnabled' in document) {
