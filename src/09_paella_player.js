@@ -322,25 +322,22 @@ Class ("paella.PaellaPlayer", paella.PlayerBase,{
 	},
 
 	isLiveStream:function() {
-		if (this._isLiveStream===undefined) {
-			var loader = paella.initDelegate.initParams.videoLoader;
-			var checkSource = function(sources,index) {
-				if (sources.length>index) {
-					var source = sources[index];
-					for (var key in source.sources) {
-						if (typeof(source.sources[key])=="object") {
-							for (var i=0; i<source.sources[key].length; ++i) {
-								var stream = source.sources[key][i];
-								if (stream.isLiveStream) return true;
-							}
+		var loader = paella.initDelegate.initParams.videoLoader;
+		var checkSource = function(sources,index) {
+			if (sources.length>index) {
+				var source = sources[index];
+				for (var key in source.sources) {
+					if (typeof(source.sources[key])=="object") {
+						for (var i=0; i<source.sources[key].length; ++i) {
+							var stream = source.sources[key][i];
+							if (stream.isLiveStream) return true;
 						}
 					}
 				}
-				return false;
-			};
-			this._isLiveStream = checkSource(loader.streams,0) || checkSource(loader.streams,1);
-		}
-		return this._isLiveStream;
+			}
+			return false;
+		};
+		return checkSource(loader.streams,0) || checkSource(loader.streams,1);
 	},
 
 	loadPreviews:function() {
