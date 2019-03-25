@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 6.0.8
+
+  * Bug fixed in live streams videos
+
 * Paella 6.0.7
 
   * Bug fixed when no "standalone" property exists in config.json
