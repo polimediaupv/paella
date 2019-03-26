@@ -18,7 +18,7 @@ paella.addPlugin(function() {
 			this.defaultRate = null;
 			this._domElement = null;
 			this.available_rates =  null;
-			var enabled = (!base.userAgent.browser.IsMobileVersion && dynamic_cast("paella.Html5Video",paella.player.videoContainer.masterVideo())!=null);
+			var enabled = (!base.userAgent.browser.IsMobileVersion && paella.player.videoContainer.masterVideo() instanceof paella.Html5Video);
 			onSuccess(enabled);
 		}
 
