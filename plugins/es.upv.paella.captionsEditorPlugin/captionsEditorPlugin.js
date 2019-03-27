@@ -739,15 +739,21 @@ paella.addPlugin(function() {
 
 			self.showDialog(base.dictionary.translate("Saving your changes, please wait..."));
 
+			// DataDelegate: check for implemented DataDelegate
+			if (typeof paella.dataDelegates.CaptionsEditorDataDelegate === 'undefined') {
+				self.onSaveCallback(null, base.dictionary.translate("Subtitle saving is not implemented"));
+			}
 			// DataDelegate: wait for implemented DataDelegate response
-			paella.data.write('captionsEditor', {id:paella.initDelegate.getId()}, self._activeCaptionsToSaveObject(), (response,status) => {
-				if (status) {
-					self.onSaveCallback((typeof response === 'object' ? JSON.stringify(response) : response), null, nextActiveCaptions);
-				}
-				else {
-					self.onSaveCallback(null, base.dictionary.translate("Your subtitle changes couldn't be saved: no response from the subtitling service"), nextActiveCaptions);
-				}
-			});
+			else {
+				paella.data.write('captionsEditor', {id:paella.initDelegate.getId()}, self._activeCaptionsToSaveObject(), (response,status) => {
+					if (status) {
+						self.onSaveCallback((typeof response === 'object' ? JSON.stringify(response) : response), null, nextActiveCaptions);
+					}
+					else {
+						self.onSaveCallback(null, base.dictionary.translate("Your subtitle changes couldn't be saved: no response from the subtitling service"), nextActiveCaptions);
+					}
+				});
+			}
 		}
 
 		onSaveCallback(response, error, nextActiveCaptions) {
@@ -968,7 +974,8 @@ paella.addDataDelegate("captionsEditor", () => {
 	return class CaptionsEditorDataDelegate extends paella.DataDelegate {
 		write(context, videoMetadata, captionsObject, onSuccess) {			
 			if (typeof(onSuccess)=='function') {
-				onSuccess(base.dictionary.translate("Subtitle saving is not implemented"), true);
+				// response message, error message || false
+				onSuccess(base.dictionary.translate("Your subtitle changes have been saved"), false);
 			}
 		}
 	};

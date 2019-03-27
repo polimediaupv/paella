@@ -10,6 +10,8 @@
 	"Close":"Salir",
 	"Saving your changes, please wait...":"Guardando los cambios, espere por favor...",
 	"Your changes couldn't be saved: captions server timeout":"No se pudieron guardar los cambios: el servidor de subtitulado no responde",
+	"Subtitle saving is not implemented":"El guardado de cambios no está implementado",
+	"Your subtitle changes have been saved":"Los cambios han sido guardados",
 	"Supported formats":"Formatos soportados",
 	"Shortcuts":"Atajos de teclado",
 	"Edit/Confirm current segment":"Editar/Confirmar subtítulo",
