@@ -6,8 +6,15 @@
 	"Import":"Importar",
 	"Export":"Exportar",
 	"Exit":"Salir",
+	"Help":"Ayuda",
 	"Close":"Salir",
 	"Saving your changes, please wait...":"Guardando los cambios, espere por favor...",
 	"Your changes couldn't be saved: captions server timeout":"No se pudieron guardar los cambios: el servidor de subtitulado no responde",
-	"Supported formats":"Formatos soportados"
+	"Supported formats":"Formatos soportados",
+	"Shortcuts":"Atajos de teclado",
+	"Edit/Confirm current segment":"Editar/Confirmar subtítulo",
+	"Play/Pause":"Play/Pause",
+	"Replay current segment":"Reproducir subtítulo actual",
+	"Go to next segment":"Siguiente subtítulo",
+	"Go to previous segment":"Anterior subtítulo"
 }

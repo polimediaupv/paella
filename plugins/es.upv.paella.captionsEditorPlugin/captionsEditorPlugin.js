@@ -342,6 +342,40 @@ paella.addPlugin(function() {
 				$('.CaptionsOnScreen').css('opacity', 0);
 			}
 		}
+
+		replayCurrentSegment() {
+			var self = this;
+			if (self._currentSegment) {
+				paella.player.videoContainer.seekToTime(self._currentSegment.begin);
+				paella.player.playing().then(function(res) {
+					if (!res) paella.player.play();
+				});
+			}
+		}
+
+		goToNextSegment() {
+			var self = this;
+			if (self._activeCaptions && self._currentSegment) {
+				let currentIndex = self._activeCaptions._captions.findIndex(c => c.id == self._currentSegment.id);
+				if (currentIndex && currentIndex >= 0 && currentIndex != self._activeCaptions._captions.length-1) {
+					paella.player.videoContainer.seekToTime(self._activeCaptions._captions[currentIndex+1].begin);
+					return true;
+				}
+			}
+			return false;
+		}
+
+		goToPrevSegment() {
+			var self = this;
+			if (self._activeCaptions && self._currentSegment) {
+				let currentIndex = self._activeCaptions._captions.findIndex(c => c.id == self._currentSegment.id);
+				if (currentIndex && currentIndex > 0) {
+					paella.player.videoContainer.seekToTime(self._activeCaptions._captions[currentIndex-1].begin);
+					return true;
+				}
+			}
+			return false;
+		}
 	
 		action() {
 			var self = this;
@@ -376,6 +410,26 @@ paella.addPlugin(function() {
 							paella.plugins.overlayCaptionsPlugin.hideContent();
 
 						paella.events.trigger('paella:showCaptionsEditor');
+
+						// Register global shortcuts
+						$(document).on("keydown.paellaCaptionsEditor", function(e) {
+							if (e.keyCode == 38) { // Up arrow
+								if (!self._isEditingSegment) {
+									self.goToPrevSegment();
+									e.stopPropagation();
+									e.preventDefault();
+									return false;
+								}
+							}
+							if (e.keyCode == 40) { // Down arrow
+								if (!self._isEditingSegment) {
+									self.goToNextSegment();
+									e.stopPropagation();
+									e.preventDefault();
+									return false;
+								}
+							}
+						});
 					}
 					break;
 			
@@ -403,6 +457,10 @@ paella.addPlugin(function() {
 					//paella.player.videoContainer.enablePlayOnClick();
 
 					paella.events.trigger('paella:hideCaptionsEditor');
+
+					// Global shortcuts
+					$(document).unbind(".paellaCaptionsEditor");
+
 					break;
 			}
 		}
@@ -428,32 +486,6 @@ paella.addPlugin(function() {
 			self._body = document.createElement('div');
 			self._body.className = 'captionsEditorPluginBody';
 			self._container.appendChild(self._body);
-	
-			//SELECT
-			/*
-			self._select = document.createElement("select");
-			self._select.className = "captionsSelector";
-			
-			var defOption = document.createElement("option"); // NO ONE SELECT
-			defOption.text = base.dictionary.translate("None");
-			defOption.value = "";
-			self._select.add(defOption);
-	
-			paella.captions.getAvailableLangs().forEach(function(l){
-				var option = document.createElement("option");
-				option.text = l.lang.txt;
-				option.value = l.id;
-				self._select.add(option);
-			});
-	
-			self._bar.appendChild(self._select);
-			self._parent.appendChild( self._bar);
-	
-			//jQuery SELECT
-			$(self._select).change(function(){
-			   self.changeSelection();
-			});
-			*/
 	
 			self._parent.appendChild(self._container);
 			if (self._activeCaptions)
@@ -563,12 +595,7 @@ paella.addPlugin(function() {
 						return false;
 					}
 					if (e.shiftKey && e.keyCode == 9) { // Shift+TAB
-						if (self._currentSegment) {
-							paella.player.videoContainer.seekToTime(self._currentSegment.begin);
-							paella.player.playing().then(function(res) {
-								if (!res) paella.player.play();
-							});
-						}
+						self.replayCurrentSegment();
 						e.stopPropagation();
 						e.preventDefault();
 						return false;
@@ -653,6 +680,18 @@ paella.addPlugin(function() {
 					return false;
 				};
 				self._toolbar.appendChild(exitButton);
+
+				// Help button
+				let helpButton = document.createElement('button');
+				helpButton.className = 'captionsEditorToolbarButton';
+				helpButton.innerText = base.dictionary.translate("Help");
+				helpButton.onclick = function(e) {
+					self.showHelp();
+					e.stopPropagation();
+					e.preventDefault();
+					return false;
+				};
+				self._toolbar.appendChild(helpButton);
 			}
 
 			self.onResize();
@@ -812,14 +851,14 @@ paella.addPlugin(function() {
 	    	var self = this;
 
 	    	// Pause if playing
-			paella.player.playing().then(function(res) {
-				if (res) paella.player.pause();
-				else paella.player.play();
-			});
+				paella.player.playing().then(function(res) {
+					if (res) paella.player.pause();
+					else paella.player.play();
+				});
 
 	    	let htmlStr = '\
-			<h5>Select the subtitles format:</h5>\
-			<div class="select">\
+					<h5>Select the subtitles format:</h5>\
+					<div class="select">\
 	            <select id="captionsEditorExportFormat">\
 	              <option value="srt">SubRip (srt)</option>\
 	              <option value="vtt">WebVTT (vtt)</option>\
@@ -828,15 +867,12 @@ paella.addPlugin(function() {
 	            </select>\
 	            <div class="select__arrow"></div>\
 	        </div>';
-            let htmlButtons = '<button id="captionsEditorDialogExportButton" class="captionsEditorButton">Descargar</button>';
-            this.showDialog(htmlStr, htmlButtons);
-            $('#captionsEditorDialogExportButton').click(function(e) {
-            	self.export($('#captionsEditorExportFormat').val());
-            	self.closeAllDialogs();
-            });
-            $('#captionsEditorDialogExitButton').click(function(e) {
-            	self.closeAllDialogs();
-            });
+				let htmlButtons = '<button id="captionsEditorDialogExportButton" class="captionsEditorButton">Descargar</button>';
+				this.showDialog(htmlStr, htmlButtons);
+				$('#captionsEditorDialogExportButton').click(function(e) {
+					self.export($('#captionsEditorExportFormat').val());
+					self.closeAllDialogs();
+				});
 	    }
 
 		import(file) {
@@ -889,6 +925,21 @@ paella.addPlugin(function() {
 			});
 		}
 
+		showHelp() {
+			var self = this;
+			let htmlStr = '\
+			<h3>' + base.dictionary.translate("Shortcuts") + '</h3>\
+			<ul>\
+			  <li>' + base.dictionary.translate("Edit/Confirm current segment") + ': <strong>Enter</strong></li>\
+				<li>' + base.dictionary.translate("Play/Pause") + ': <strong>TAB</strong></li>\
+				<li>' + base.dictionary.translate("Replay current segment") + ': <strong>Shift + TAB</strong></li>\
+				<li>' + base.dictionary.translate("Go to previous segment") + ': <strong>&uarr;</strong></li>\
+				<li>' + base.dictionary.translate("Go to next segment") + ': <strong>&darr;</strong></li>\
+			</ul>\
+			';
+			this.showDialog(htmlStr);
+		}
+
 		showDialog(htmlString, buttons) {
 			var self = this;
 
@@ -896,13 +947,13 @@ paella.addPlugin(function() {
 
 			// Add buttons
 			htmlString += '<div style="text-align: right; margin-top: 10px;">' + (buttons ? buttons : '') + '\
-              <button id="captionsEditorDialogExitButton" class="captionsEditorButton">Cerrar</button>\
-            </div>';
+					<button id="captionsEditorDialogExitButton" class="captionsEditorButton"> ' + base.dictionary.translate("Close") + '</button>\
+				</div>';
 
 			$('<div class="captionsEditorDialog"><div class="captionsEditorDialogBody">' + htmlString + '</div></div>').appendTo(document.body);
 			$('#captionsEditorDialogExitButton').click(function(e) {
-            	self.closeAllDialogs();
-            });
+				self.closeAllDialogs();
+			});
 		}
 
 		closeAllDialogs() {
