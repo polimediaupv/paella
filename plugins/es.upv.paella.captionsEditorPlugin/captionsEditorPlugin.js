@@ -210,7 +210,7 @@ paella.addPlugin(function() {
 			});
 
 			let profileVideosObject = [{
-				content:content[0],
+				content: (content.length > 0 ? content[0] : "presenter"),
 				rect:[
 					{ aspectRatio:"16/9",left:0,top:0,width:640,height:360 },
 				],
@@ -429,6 +429,29 @@ paella.addPlugin(function() {
 									return false;
 								}
 							}
+							if (e.keyCode == 13) { // Enter
+								if (!self._isEditingSegment) {
+									$(".captionsEditorSegment.current .captionsEditorSegmentText").trigger("focus");
+									e.stopPropagation();
+									e.preventDefault();
+									return false;
+								}
+							}
+							if (e.shiftKey && e.keyCode == 9) { // Shift+TAB
+								self.replayCurrentSegment();
+								e.stopPropagation();
+								e.preventDefault();
+								return false;
+							}
+							if (e.keyCode == 9) { // TAB
+								paella.player.playing().then(function(res) {
+									if (res) paella.player.pause();
+									else paella.player.play();
+								});
+								e.stopPropagation();
+								e.preventDefault();
+								return false;
+							}
 						});
 					}
 					break;
@@ -590,21 +613,6 @@ paella.addPlugin(function() {
 				$(segmentText).on("keydown", function(e) {
 					if (e.keyCode == 13) { // Enter
 						$(this).trigger("blur");
-						e.stopPropagation();
-						e.preventDefault();
-						return false;
-					}
-					if (e.shiftKey && e.keyCode == 9) { // Shift+TAB
-						self.replayCurrentSegment();
-						e.stopPropagation();
-						e.preventDefault();
-						return false;
-					}
-					if (e.keyCode == 9) { // TAB
-						paella.player.playing().then(function(res) {
-							if (res) paella.player.pause();
-							else paella.player.play();
-						});
 						e.stopPropagation();
 						e.preventDefault();
 						return false;
