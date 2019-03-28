@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+* Paella 6.2.0
+
+  * Breaking changes:
+    - Monostream profile APIs removed. This may break monostream videos if the streams
+      in `data.json` does not include the `content` attribute.
+
 * Paella 6.1.0
 
   * All the core classes migrated to ECMAScript 2015.
