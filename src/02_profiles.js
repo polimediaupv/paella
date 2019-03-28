@@ -267,15 +267,6 @@
             if (!paella.player.videoContainer.ready) {
                 return false;	// Nothing to do, the video is not loaded
             }
-<<<<<<< HEAD
-            else if (!paella.player.editingCaptions && paella.player.videoContainer.streamProvider.videoStreams.length==1) {
-                let profileData = this.loadMonostreamProfile();  
-                this._currentProfileName = profileName;
-                applyProfileWithJson.apply(paella.player.videoContainer,[profileData,animate]);
-                return true;
-            }
-=======
->>>>>>> 8ab8da184ff82da02c099aaceb6fd18c8330e4e2
             else {
                 let profileData = this.loadProfile(profileName) || (g_profiles.length>0 && g_profiles[0]);
                 if (!profileData && g_profiles.length==0) {
