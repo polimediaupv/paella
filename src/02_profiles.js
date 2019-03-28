@@ -1,6 +1,5 @@
 (function() {
     let g_profiles = [];
-    let g_monostreamProfile = null;
 
 	paella.addProfile = function(cb) {
 		cb().then((profileData) => {
@@ -17,18 +16,6 @@
 		});
     }
     
-    paella.setMonostreamProfile = function(cb) {
-        cb().then((profileData) => {
-            if (typeof(profileData.onApply)!="function") {
-                profileData.onApply = function() {  }
-            }
-            if (typeof(profileData.onDeactivte)!="function") {
-                profileData.onDeactivate = function() {}
-            }
-            g_monostreamProfile = profileData;
-        })
-    }
-
     // Utility functions
     function hideBackground() {
         let bkgNode = this.container.getNode("videoContainerBackground");
@@ -206,37 +193,24 @@
         profileData && showBackground.apply(this,[profileData.background]);
         hideButtons.apply(this);
         profileData && showButtons.apply(this,[profileData.buttons, profileData]);
-        if (this.streamProvider.videoStreams.length==1) {
-            let profile = paella.profiles.loadMonostreamProfile();
-            profile = profile && profile.videos && profile.videos.length>0 && profile.videos[0];
-            let player = this.streamProvider.videoPlayers[0];
-            let videoWrapper = this.videoWrappers[0];
+        
+        this.streamProvider.videoStreams.forEach((streamData,index) => {
+            let profile = getProfile(streamData.content);
+            let player = this.streamProvider.videoPlayers[index];
+            let videoWrapper = this.videoWrappers[index];
             if (profile) {
                 player.getVideoData()
                     .then((data) => {
                         applyVideoRect(profile,data,videoWrapper,player);
-                    })
+                    });
             }
-        }
-        else {
-            this.streamProvider.videoStreams.forEach((streamData,index) => {
-                let profile = getProfile(streamData.content);
-                let player = this.streamProvider.videoPlayers[index];
-                let videoWrapper = this.videoWrappers[index];
-                if (profile) {
-                    player.getVideoData()
-                        .then((data) => {
-                            applyVideoRect(profile,data,videoWrapper,player);
-                        });
+            else if (videoWrapper) {
+                videoWrapper.setVisible(false,animate);
+                if (paella.player.videoContainer.streamProvider.mainAudioPlayer!=player) {
+                    player.disable();
                 }
-                else if (videoWrapper) {
-                    videoWrapper.setVisible(false,animate);
-                    if (paella.player.videoContainer.streamProvider.mainAudioPlayer!=player) {
-                        player.disable();
-                    }
-                }
-            });
-        }
+            }
+        });
     }
 
 	class Profiles {
@@ -276,10 +250,6 @@
             return result;
         }
 
-        loadMonostreamProfile() {
-            return g_monostreamProfile;
-        }
-
         get currentProfile() { return this.getProfile(this._currentProfileName); }
 
         get currentProfileName() { return this._currentProfileName; }
@@ -296,12 +266,6 @@
 
             if (!paella.player.videoContainer.ready) {
                 return false;	// Nothing to do, the video is not loaded
-            }
-            else if (paella.player.videoContainer.streamProvider.videoStreams.length==1) {
-                let profileData = this.loadMonostreamProfile();  
-                this._currentProfileName = profileName;
-                applyProfileWithJson.apply(paella.player.videoContainer,[profileData,animate]);
-                return true;
             }
             else {
                 let profileData = this.loadProfile(profileName) || (g_profiles.length>0 && g_profiles[0]);
