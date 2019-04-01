@@ -638,9 +638,7 @@ class ButtonPlugin extends paella.UIPlugin {
 		$(elem).focus(function(event) {
 			plugin.expand();
 		});
-		$(elem).focusout(function(event) {
-			plugin.contract();
-		});
+
 		return elem;
 	}
 
