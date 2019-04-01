@@ -6,6 +6,10 @@ CHANGELOG
   * Breaking changes:
     - Monostream profile APIs removed. This may break monostream videos if the streams
       in `data.json` does not include the `content` attribute.
+      
+* Paella 6.1.1
+
+  * Bug fixed in volume range plugin
 
 * Paella 6.1.0
 
