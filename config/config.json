@@ -105,7 +105,7 @@
       "//***** Video Overlay Button Plugins": "",
       "es.upv.paella.liveStreamingIndicatorPlugin":  { "enabled": true },
       "es.upv.paella.showEditorPlugin":{"enabled":true,"alwaysVisible":true},
-      "es.upv.paella.arrowSlidesNavigatorPlugin": {"enabled": true, "showArrowsIn": "slave"},
+      "es.upv.paella.arrowSlidesNavigatorPlugin": {"enabled": true, "content":["presentation","presenter"] },
       "es.upv.paella.videoDataPlugin": {
         "enabled": true,
         "excludeLocations":[

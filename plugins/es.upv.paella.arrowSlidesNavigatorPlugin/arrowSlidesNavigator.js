@@ -69,31 +69,48 @@ paella.addPlugin(function() {
 				overlayContainer.removeElement(this.container);
 			}
 
-			// TODO: Make compatible with n-streams
 			let rect = null;
 			let element = null;
-			switch (self._showArrowsIn) {
-				case 'full':
-					this.container = overlayContainer.addLayer();
-					this.container.style.marginRight = "0";
-					this.container.style.marginLeft = "0";			
-					this.arrows.style.marginTop = "25%";
-					break;
-				case 'master':
-					element = document.createElement('div');
-					rect = overlayContainer.getVideoRect(0);
-					this.container = overlayContainer.addElement(element,rect);
-					this.visible = rect.visible;
-					this.arrows.style.marginTop = "23%";
-					break;
-				case 'slave':
-					element = document.createElement('div');
-					rect = overlayContainer.getVideoRect(1);
-					this.container = overlayContainer.addElement(element,rect);
-					this.visible = rect.visible;
-					this.arrows.style.marginTop = "35%";
-					
-					break;
+			
+			if (!paella.profiles.currentProfile) {
+				return null;
+			}
+
+			this.config.content = this.config.content || ["presentation"];
+			let profilesContent = [];
+			paella.profiles.currentProfile.videos.forEach((profileData) => {
+				profilesContent.push(profileData.content);
+			});
+
+			// Default content, if the "content" setting is not set in the configuration file
+			let selectedContent = profilesContent.length==1 ? profilesContent[0] : (profilesContent.length>1 ? profilesContent[1] : "");
+
+			this.config.content.some((preferredContent) => {
+				if (profilesContent.indexOf(preferredContent)!=-1) {
+					selectedContent = preferredContent;
+					return true;
+				}
+			})
+
+
+			if (!selectedContent) {
+				this.container = overlayContainer.addLayer();
+				this.container.style.marginRight = "0";
+				this.container.style.marginLeft = "0";			
+				this.arrows.style.marginTop = "25%";
+			}
+			else {
+				let videoIndex = 0;
+				paella.player.videoContainer.streamProvider.streams.forEach((stream,index) => {
+					if (stream.type=="video" && selectedContent==stream.content) {
+						videoIndex = index;
+					}
+				});
+				element = document.createElement('div');
+				rect = overlayContainer.getVideoRect(videoIndex);	// content
+				this.container = overlayContainer.addElement(element,rect);
+				this.visible = rect.visible;
+				this.arrows.style.marginTop = "33%";
 			}
 			
 			this.container.appendChild(this.arrows);
