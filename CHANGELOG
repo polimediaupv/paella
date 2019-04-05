@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 6.1.2
+
+  * Support for n-streams implemented in arrow slide navigation plugin (Fix #406)
+
 * Paella 6.1.1
 
   * Bug fixed in volume range plugin
