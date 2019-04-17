@@ -302,6 +302,7 @@
 						})
 						.catch((error) => {
 							console.log(error);
+							paella.messageBox.showError(base.dictionary.translate("Could not load the video"));
 						});
 				});
 			}
