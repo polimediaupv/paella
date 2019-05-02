@@ -175,6 +175,9 @@ gulp.task("copy", function() {
 			.pipe(gulp.dest(`${config.outDir}player/`)),
 	
 		gulp.src('node_modules/@babel/polyfill/dist/polyfill.min.js')
+			.pipe(gulp.dest(`${config.outDir}player/javascript`)),
+
+		gulp.src('node_modules/bg2engine/js/bg2e-es2015.js')
 			.pipe(gulp.dest(`${config.outDir}player/javascript`))
 	];
 

@@ -303,7 +303,7 @@ class Video360Theta extends paella.VideoElementBase {
 	_loadDeps() {
 		return new Promise((resolve,reject) => {
 			if (!window.$paella_bg2e) {
-				paella.require(paella.baseUrl + 'resources/deps/bg2e.js')
+				paella.require(paella.baseUrl + 'javascript/bg2e-es2015.js')
 					.then(() => {
 						window.$paella_bg2e = bg;
 						resolve(window.$paella_bg2e);

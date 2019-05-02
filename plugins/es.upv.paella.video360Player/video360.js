@@ -41,20 +41,25 @@ function buildVideo360Canvas(stream, canvas) {
 				let sphereNode = new bg.scene.Node(this.gl);
 				sphereNode.addComponent(sphere);
 				sphere.getMaterial(0).texture = texture;
-				sphere.getMaterial(0).lightEmission = 1.0;
-				sphere.getMaterial(0).lightEmissionMaskInvert = true;
+				sphere.getMaterial(0).lightEmission = 0.0;
+				sphere.getMaterial(0).lightEmissionMaskInvert = false;
 				sphere.getMaterial(0).cullFace = false;
+				sphereNode.addComponent(new bg.scene.Transform(bg.Matrix4.Scale(1,-1,1)));
 				this._root.addChild(sphereNode);
-				this.postRedisplay();
 			});
 		
 		let lightNode = new bg.scene.Node(this.gl,"Light");
+		let l = new bg.base.Light();
+		l.ambient = bg.Color.White();
+		l.diffuse = bg.Color.Black();
+		l.specular = bg.Color.Black();
+		lightNode.addComponent(new bg.scene.Light(l));
 		this._root.addChild(lightNode);
 		
 		this._camera = new bg.scene.Camera();
 		let cameraNode = new bg.scene.Node("Camera");
 		cameraNode.addComponent(this._camera);			
-		cameraNode.addComponent(new bg.scene.Transform());
+		cameraNode.addComponent(new bg.scene.Transform(bg.Matrix4.Translation(0,0,0)));
 		let oc = new bg.manipulation.OrbitCameraController();
 		cameraNode.addComponent(oc);
 		oc.maxPitch = 90;
@@ -79,6 +84,7 @@ function buildVideo360Canvas(stream, canvas) {
 			this.texture.update();
 		}
 		this._renderer.frame(this._root, delta);
+		this.postReshape();
 	}
 	
 	display() { this._renderer.display(this._root, this._camera); }
@@ -189,25 +195,6 @@ class Video360 extends paella.VideoElementBase {
         $(this.video).bind('canplay',evtCallback);
 		$(this.video).bind('oncanplay',evtCallback);
 	}
-
-	_loadDeps() {
-		return new Promise((resolve,reject) => {
-			if (!window.$paella_bg2e) {
-				paella.require(paella.baseUrl + 'resources/deps/bg2e.js')
-					.then(() => {
-						window.$paella_bg2e = bg;
-						resolve(window.$paella_bg2e);
-					})
-					.catch((err) => {
-						console.error(err.message);
-						reject();
-					});
-			}
-			else {
-				defer.resolve(window.$paella_bg2e);
-			}	
-		});
-	}
 	
 	_deferredAction(action) {
 		return new Promise((resolve,reject) => {
@@ -272,29 +259,72 @@ class Video360 extends paella.VideoElementBase {
 	load() {
 		var This = this;
 		return new Promise((resolve,reject) => {
-			this._loadDeps() 
-				.then(() => {
-					var sources = this._stream.sources[this._streamName];
-					if (this._currentQuality===null && this._videoQualityStrategy) {
-						this._currentQuality = this._videoQualityStrategy.getQualityIndex(sources);
-					}
+			let sources = this._stream.sources[this._streamName];
+			if (this._currentQuality===null && this._videoQualityStrategy) {
+				this._currentQuality = this._videoQualityStrategy.getQualityIndex(sources);
+			}
 
-					var stream = this._currentQuality<sources.length ? sources[this._currentQuality]:null;
+			let stream = this._currentQuality<sources.length ? sources[this._currentQuality]:null;
+			paella.getVideoCanvas()
+				.then((WebGLVideoCanvas) => {
+					class MyWebGLVideoCanvas extends WebGLVideoCanvas {
+
+						buildVideoSurface(sceneRoot,videoTexture) {
+							let sphere = bg.scene.PrimitiveFactory.Sphere(this.gl,1,50);
+							let sphereNode = new bg.scene.Node(this.gl);
+							sphereNode.addComponent(sphere);
+							sphere.getMaterial(0).texture = videoTexture;
+							sphere.getMaterial(0).lightEmission = 0;
+							sphere.getMaterial(0).lightEmissionMaskInvert = false;
+							sphere.getMaterial(0).cullFace = false;
+							sphereNode.addComponent(new bg.scene.Transform(bg.Matrix4.Scale(1,-1,1)));
+							sceneRoot.addChild(sphereNode);
+						}
+						
+						mouseWheel(evt) {
+							console.log(evt);
+							let proj = this.camera && this.camera.projectionStrategy;
+							if (proj) {
+								let minFocalLength = 30;
+								let maxFocalLength = 200;
+								proj.focalLength = proj.focalLength + evt.delta;
+								if (proj.focalLength<minFocalLength) {
+									proj.focalLength = minFocalLength;
+								}
+								else if (proj.focalLength>maxFocalLength) {
+									proj.focalLength = maxFocalLength;
+								}
+								this.postRedisplay();
+							}
+						}
+					};
+
+					
 					this.video = null;
 					if (stream) {
 						this.canvasController = null;
-						buildVideo360Canvas(stream,this.domElement)
-							.then((canvasController) => {
-								this.canvasController = canvasController;
-								this.video = canvasController.video;
-								this.video.pause();
-								this.disableEventCapture();
-								resolve(stream);
-							});
+
+						let controller = new MyWebGLVideoCanvas(stream);
+						let mainLoop = bg.app.MainLoop.singleton;
+
+						mainLoop.updateMode = bg.app.FrameUpdate.AUTO;
+						mainLoop.canvas = this.domElement;
+						mainLoop.run(controller);
+
+						return controller.loaded();
 					}
 					else {
 						reject(new Error("Could not load video: invalid quality stream index"));
 					}
+				})
+
+				.then((canvasController) => {
+					this.canvasController = canvasController;
+
+					this.video = canvasController.video;
+					this.video.pause();
+					this.disableEventCapture();
+					resolve(stream);
 				});
 		});
 	}
