@@ -154,6 +154,10 @@ class DefaultVideoLoader extends paella.VideoLoader {
 			stream.preview = This.getVideoUrl() + stream.preview;
 		}
 
+		if (!stream.sources) {
+			return;
+		}
+
 		if (stream.sources.image) {
 			stream.sources.image.forEach(function(image) {
 				if (image.frames.forEach) {

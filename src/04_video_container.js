@@ -1084,6 +1084,10 @@ class VideoContainer extends paella.VideoContainerBase {
 			});
 
 			this.streamProvider.loadVideos()
+				.catch((err) => {
+					reject(err)
+				})
+
 				.then(() => {
 					return this.setAudioTag(this.audioTag);
 				})
