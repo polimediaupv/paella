@@ -3,6 +3,10 @@
 
 # Paella player usage guide
 
+Here is a summary of the tools available in paella player. Keep in mind that some tools may appear disappear depending on the content (e.g the captions plugin will not appear if the video has no captions) and/or the tools that have been enabled by the site owner.
+
+![](images/paella_tools.jpg){: .img-responsive }
+
 ## Index of contents
 
 - [Basic Usage](#basic-usage)
