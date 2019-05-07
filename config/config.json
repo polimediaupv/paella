@@ -134,7 +134,6 @@
       "es.upv.paella.test.videoLoadPlugin": {"enabled":false},
       "es.upv.paella.translecture.captionsPlugin": {"enabled":true},
       "es.upv.paella.trimmingPlayerPlugin": {"enabled":true},
-      "es.upv.paella.zoomPlugin": {"enabled": false},
       "es.upv.paella.windowTitlePlugin": {"enabled": true},
       "es.upv.paella.track4kPlugin": { "enabled":true },
 
