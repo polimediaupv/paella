@@ -274,15 +274,31 @@
 	
 	
 	class HLSVideoFactory extends paella.VideoFactory {
+		get config() {
+			let hlsConfig = null;
+			paella.player.config.player.methods.some((methodConfig) => {
+				if (methodConfig.factory=="HLSVideoFactory") {
+					hlsConfig = methodConfig;
+				}
+				return hlsConfig!=null;
+			});
+			return hlsConfig || {
+				iOSMaxStreams: 1,
+				androidMaxStreams: 1
+			};
+		}
+
 		isStreamCompatible(streamData) {
 			if (paella.videoFactories.HLSVideoFactory.s_instances===undefined) {
 				paella.videoFactories.HLSVideoFactory.s_instances = 0;
 			}
 			try {
-				if (paella.videoFactories.HLSVideoFactory.s_instances>0 && 
-					base.userAgent.system.iOS)
-			//	In old iOS devices, playing more than one HLS stream may cause that the browser tab crash
-			//		&& (paella.utils.userAgent.system.Version.major<=10 && paella.utils.userAgent.system.Version.minor<3))
+				let cfg = this.config;
+				if ((base.userAgent.system.iOS &&
+					paella.videoFactories.HLSVideoFactory.s_instances>=cfg.iOSMaxStreams) ||
+					(base.userAgent.system.Android &&
+					paella.videoFactories.HLSVideoFactory.s_instances>=cfg.androidMaxStreams))
+			//	In some old mobile devices, playing a high number of HLS streams may cause that the browser tab crash
 				{
 					return false;
 				}

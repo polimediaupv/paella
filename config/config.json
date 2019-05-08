@@ -33,7 +33,9 @@
 				  "maxBufferHole": 0.5,
 				  "lowBufferWatchdogPeriod": 0.5,
           "highBufferWatchdogPeriod": 3
-        }
+        },
+        "iOSMaxStreams": 2,
+        "androidMaxStreams": 2
       },
       { "factory":"RTMPVideoFactory", "enabled":true },
       { "factory":"ImageVideoFactory", "enabled":true },
@@ -131,10 +133,8 @@
       "es.upv.paella.breaksPlayerPlugin": {"enabled": true},
       "es.upv.paella.overlayCaptionsPlugin": {"enabled": true},
       "es.upv.paella.playButtonOnScreenPlugin": {"enabled":true},
-      "es.upv.paella.test.videoLoadPlugin": {"enabled":false},
       "es.upv.paella.translecture.captionsPlugin": {"enabled":true},
       "es.upv.paella.trimmingPlayerPlugin": {"enabled":true},
-      "es.upv.paella.zoomPlugin": {"enabled": false},
       "es.upv.paella.windowTitlePlugin": {"enabled": true},
       "es.upv.paella.track4kPlugin": { "enabled":true },
 
