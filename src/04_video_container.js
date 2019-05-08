@@ -416,25 +416,24 @@ class VideoContainerBase extends paella.DomNode {
 	setTrimming(start,end) {
 		return new Promise((resolve) => {
 			let currentTime = 0;
-			let duration = 0;
 
-			this.currentTime()
+			this.currentTime(true)
 				.then((c) => {
 					currentTime = c;
 					return this.duration();
 				})
 
-				.then((d) => {
-					duration = d;
+				.then((duration) => {
 					this._trimming.start = Math.floor(start);
 					this._trimming.end = Math.floor(end);
-					if (currentTime<this._trimming.start) {
-						this.setCurrentTime(this._trimming.start);
-					}
-					if (currentTime>this._trimming.end) {
-						this.setCurrentTime(this._trimming.end);
-					}
 					if(this._trimming.enabled){
+						if (currentTime<this._trimming.start) {
+							this.setCurrentTime(0);
+						}
+						if (currentTime>this._trimming.end) {
+							this.setCurrentTime(duration);
+						}
+
 						let cap=paella.captions.getActiveCaptions();
 						if(cap!==undefined) paella.plugins.captionsPlugin.buildBodyContent(cap._captions,"list");
 					}
