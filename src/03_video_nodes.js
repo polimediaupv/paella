@@ -581,6 +581,11 @@ class VideoElementBase extends paella.VideoRect {
 		return true;
 	}
 
+	// Video canvas functions
+	videoCanvas() {
+		return Promise.reject(new Error("VideoElementBase::videoCanvas(): Not implemented in child class."));
+	}
+
 	// Playback functions
 	getVideoData() {
 		return paella_DeferredNotImplemented();
@@ -877,6 +882,11 @@ class Html5Video extends paella.VideoElementBase {
 		}
 	}
 
+	videoCanvas() {
+		let canvasType = this._stream.canvas || ["video"];
+		return paella.getVideoCanvas(canvasType);
+	}
+
 	load() {
 		var This = this;
 		var sources = this._stream.sources[this._streamName];
@@ -886,6 +896,27 @@ class Html5Video extends paella.VideoElementBase {
 
 		var stream = this._currentQuality<sources.length ? sources[this._currentQuality]:null;
 		this.video.innerText = "";
+		this.videoCanvas()
+			.then((CanvasClass) => {
+				let canvasInstance = new CanvasClass(stream);
+				
+				if (canvasInstance.context) {
+					// WebGL canvas
+					let mainLoop = bg.app.MainLoop.singleton;
+
+					mainLoop.updateMode = bg.app.FrameUpdate.AUTO;
+
+					// TODO: replace this.domElement with a canvas
+					mainLoop.canvas = this.domElement;
+					mainLoop.run(controller);
+				}
+				else {
+					// Normal canvas
+				}
+			});
+
+
+		
 		if (stream) {
 			var sourceElem = this.video.querySelector('source');
 			if (!sourceElem) {

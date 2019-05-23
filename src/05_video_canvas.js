@@ -1,15 +1,33 @@
 (function() {
 
+    function initCanvas() {
+        if (!paella.VideoCanvas) {
+
+
+            class VideoCanvas {
+                constructor(stream) {
+                    this._stream = stream;
+                }
+            }
+
+            paella.VideoCanvas = VideoCanvas;
+
+            class WebGLCanvas extends bg.app.WindowController {
+                constructor(stream) {
+                    super();
+                }
+            }
+
+            paella.WebGLCanvas = WebGLCanvas;
+        }
+    }
+
     function buildVideoCanvas(stream) {
         if (!paella.WebGLCanvas) {
             class WebGLCanvas extends bg.app.WindowController {
                 constructor(stream) {
                     super();
                     this._stream = stream;
-                }
-
-                get canvasType() {
-                    return "video360";
                 }
 
                 get stream() { return this._stream; }
@@ -160,19 +178,72 @@
     }
 
     let g_canvasCallbacks = {};
-    let g_canvasClasses = {};
 
-    paella.addCanvasPlugin = function(canvasType, canvasPluginCallback) {
-        g_canvasCallbacks[canvasType] = canvasPluginCallback;
+    paella.addCanvasPlugin = function(canvasType, webglSupport, canvasPluginCallback) {
+        g_canvasCallbacks[canvasType] = {
+            callback: canvasPluginCallback,
+            webglSupport: webglSupport            
+        };
     }
 
-    function loadCanvasPlugins() {
-        for (let canvasType in g_canvasCallbacks) {
-            g_canvasClasses[canvasType] = g_canvasCallbacks[canvasType]();
-        }
+    function loadWebGLDeps() {
+        return new Promise((resolve) => {
+            if (!window.$paella_bg) {
+                paella.require(`${ paella.baseUrl }javascript/bg2e-es2015.js`)
+                    .then(() => {
+                        window.$paella_bg = bg;
+                        buildVideoCanvas();
+                        resolve(window.$paella_bg);
+                    })
+            }
+            else {
+                resolve(window.$paella_bg);
+            }
+        });
     }
 
+    function loadCanvasPlugin(canvasType) {
+        return new Promise((resolve,reject) => {
+            let callbackData = g_canvasCallbacks[canvasType];
+            if (callbackData) {
+                (callbackData.webglSupport ? loadWebGLDeps() : Promise.resolve())
+                    .then(() => {
+                        resolve(callbackData.callback());
+                    })
+
+                    .catch((err) => {
+                        reject(err);
+                    });
+            }
+            else {
+                reject(new Error(`No such canvas type: "${canvasType}"`));
+            }
+        });
+    }
+
+    paella.getVideoCanvas = function(type) {
+        return new Promise((resolve,reject) => {
+            let canvasData = g_canvasCallbacks[type];
+            if (!canvasData) {
+                reject(new Error("No such canvas type: " + type));
+            }
+            else {
+                if (canvasData.webglSupport) {
+                    loadWebGLDeps()
+                        .then(() => {
+                            resolve(canvasData.callback());
+                        });
+                }
+                else {
+                    resolve(canvasData.callback());
+                }
+            }
+        })
+    }
+    /*
+    
     paella.getVideoCanvas = function(type, stream) {
+        console.log("TODO: Remove paella.getVideoCanvas() function");
         return new Promise((resolve,reject) => {
             if (!window.$paella_bg) {
                 paella.require(`${ paella.baseUrl }javascript/bg2e-es2015.js`)
@@ -191,5 +262,6 @@
             }
         });
     }
+    */
     
 })();
