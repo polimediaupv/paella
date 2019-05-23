@@ -6,7 +6,17 @@
 	"streams": [
 		{
 			"sources": {
-				"video360": [
+				"mp4": [
+					{
+						"src": "https://repository.paellaplayer.upv.es/video360/video360.mp4",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "4096",
+							"h": "2046"
+						}
+					}
+				],
+				"-video360": [
 					{
 						"src": "https://repository.paellaplayer.upv.es/video360/video360.mp4",
 						"mimetype": "video/mp4",
@@ -18,7 +28,8 @@
 				]
 			},
 			"preview": "https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/presenter_cut.jpg",
-			"content":"presenter"
+			"content":"presenter",
+			"canvas":["video360"]
 		}
 	],
 	"frameList": []
