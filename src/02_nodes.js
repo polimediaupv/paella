@@ -56,9 +56,28 @@
 	
 	class DomNode extends paella.Node {
 		get domElement() { return this._domElement; }
+		
+		get domElementType() { return this._elementType; }
+		set domElementType(newType) {
+			this._elementType = newType;
+			let oldElement = this._domElement;
+			let parent = oldElement.parentNode;
+			let newElement = document.createElement(newType);
+			parent.removeChild(oldElement);
+			parent.appendChild(newElement);
+			this._domElement = newElement;
+			newElement.innerHTML = oldElement.innerHTML;
+			for (let i = 0; i<oldElement.attributes.length; ++i) {
+				let attr = oldElement.attributes[i];
+				newElement.setAttribute(attr.name,attr.value);
+			}
+		}
+
+
 	
 		constructor(elementType,id,style) {
 			super(id);
+			this._elementType = elementType;
 			this._domElement = document.createElement(elementType);
 			this.domElement.id = id;
 			if (style) this.style = style;
