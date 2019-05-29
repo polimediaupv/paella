@@ -38,9 +38,9 @@ paella.addPlugin(function() {
 					var startTime =  base.parameters.get('start');
 					var endTime = base.parameters.get('end');
 					if (startTime && endTime) {
-						paella.player.videoContainer.enableTrimming();
-						paella.player.videoContainer.setTrimming(startTime, endTime)
-							.then(() => {} )
+						paella.player.videoContainer.setTrimming(startTime, endTime).then(function() {
+							return paella.player.videoContainer.enableTrimming();
+						});
 					}
 				}
 			});
