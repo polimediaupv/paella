@@ -100,9 +100,6 @@ paella.addPlugin(function() {
                     })
                 })
             }
-<<<<<<< HEAD
-            
-=======
 
             function initTranslate(language, funcSuccess, funcError) {
                 base.log.debug('X5GON: selecting language ' + language.slice(0,2));
@@ -133,7 +130,6 @@ paella.addPlugin(function() {
                 return (translations[str] != undefined) ? translations[str] : strIfNotFound;
             }
 
->>>>>>> 5706a94... added translation incl texts
             function isTrackingPermission() {
                 if (checkDoNotTrackStatus() || !trackingPermission) {
                     return false;
@@ -157,14 +153,6 @@ paella.addPlugin(function() {
                 trackX5gon();
             };
 
-<<<<<<< HEAD
-            //TODO: Übersetzung implementieren
-
-            //TODO: console.log() überall entfernen
-
-            initCookieNotification();
-            trackX5gon(); 
-=======
             initTranslate(navigator.language, function () {
                 base.log.debug('X5GON: Successfully translated.');
                 initCookieNotification();
@@ -174,7 +162,6 @@ paella.addPlugin(function() {
             });
 
             trackX5gon();
->>>>>>> 5706a94... added translation incl texts
 
             onSuccess(true);
         };
