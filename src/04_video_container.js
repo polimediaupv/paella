@@ -1077,6 +1077,21 @@ class VideoContainer extends paella.VideoContainerBase {
 		return new Promise((resolve,reject) => {
 			this.streamProvider.init(videoData);
 
+			let streamDataAudioTag = null;
+			videoData.forEach((video) => {
+				if (video.audioTag && streamDataAudioTag==null) {
+					streamDataAudioTag = video.audioTag;
+				}
+
+				if (video.audioTag==this._audioTag) {
+					streamDataAudioTag = this._audioTag;
+				}
+			});
+
+			if (streamDataAudioTag!=this._audioTag && streamDataAudioTag!=null) {
+				this._audioTag = streamDataAudioTag;
+			}
+
 			this.streamProvider.videoPlayers.forEach((player,index) => {
 				addVideoWrapper.apply(this,['videoPlayerWrapper_' + index,player]);
 				player.setAutoplay(this.autoplay());
