@@ -798,7 +798,15 @@ class Html5Video extends paella.VideoElementBase {
 		}
 	}
 	
-	get video() { return this.domElement; }
+	get video() {
+		if (this.domElementType=='video') {
+			return this.domElement;
+		}
+		else {
+			this._video = this._video || document.createElement('video');
+			return this._video;
+		}
+	}
 
 	get ready() { return this.video.readyState>=3; }
 
@@ -888,57 +896,50 @@ class Html5Video extends paella.VideoElementBase {
 	}
 
 	load() {
-		var This = this;
-		var sources = this._stream.sources[this._streamName];
-		if (this._currentQuality===null && this._videoQualityStrategy) {
-			this._currentQuality = this._videoQualityStrategy.getQualityIndex(sources);
-		}
-
-		var stream = this._currentQuality<sources.length ? sources[this._currentQuality]:null;
-		this.video.innerText = "";
-		this.videoCanvas()
-			.then((CanvasClass) => {
-				let canvasInstance = new CanvasClass(stream);
-				
-				if (canvasInstance.context) {
-					// WebGL canvas
-					let mainLoop = bg.app.MainLoop.singleton;
-
-					mainLoop.updateMode = bg.app.FrameUpdate.AUTO;
-
-					// TODO: replace this.domElement with a canvas
-					mainLoop.canvas = this.domElement;
-					mainLoop.run(controller);
-				}
-				else {
-					// Normal canvas
-				}
-			});
-
-
-		
-		if (stream) {
-			var sourceElem = this.video.querySelector('source');
-			if (!sourceElem) {
-				sourceElem = document.createElement('source');
-				this.video.appendChild(sourceElem);
+		return new Promise((resolve,reject) => {
+			var sources = this._stream.sources[this._streamName];
+			if (this._currentQuality===null && this._videoQualityStrategy) {
+				this._currentQuality = this._videoQualityStrategy.getQualityIndex(sources);
 			}
-			if (this._posterFrame) {
-				this.video.setAttribute("poster",this._posterFrame);
-			}
+	
+			var stream = this._currentQuality<sources.length ? sources[this._currentQuality]:null;
+			this.video.innerText = "";
+			this.videoCanvas()
+				.then((CanvasClass) => {
+					let canvasInstance = new CanvasClass(stream);
 
-			sourceElem.src = stream.src;
-			sourceElem.type = stream.type;
-			this.video.load();
-			this.video.playbackRate = this._playbackRate;
+					if (bg && bg.app && canvasInstance instanceof bg.app.WindowController) {
+						// WebGL canvas
+						this.domElementType = 'canvas';
+						let video = this.video;
 
-			return this._deferredAction(function() {
-				return stream;
-			});
-		}
-		else {
-			return paella_DeferredRejected(new Error("Could not load video: invalid quality stream index"));
-		}
+						if (stream) {
+							this.canvasController = null;
+							let mainLoop = bg.app.MainLoop.singleton;
+
+							mainLoop.updateMode = bg.app.FrameUpdate.AUTO;
+							mainLoop.canvas = this.domElement;
+							mainLoop.run(canvasInstance);
+							return canvasInstance.loadVideo(this,stream);
+						}
+						else {
+							Promise.reject(new Error("Invalid stream data."));
+						}
+					}
+					else {
+						return canvasInstance.loadVideo(this,stream);
+					}
+					
+				})
+	
+				.then(() => {
+					resolve(stream);
+				})
+	
+				.catch((err) => {
+					reject(err);
+				});
+		});
 	}
 
 	disable(isMainAudioPlayer) {

@@ -72,8 +72,6 @@
 				newElement.setAttribute(attr.name,attr.value);
 			}
 		}
-
-
 	
 		constructor(elementType,id,style) {
 			super(id);

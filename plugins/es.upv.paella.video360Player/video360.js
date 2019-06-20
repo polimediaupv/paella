@@ -521,6 +521,20 @@ paella.addCanvasPlugin("video360", true, () => {
 			super(stream);
 		}
 
+		loadVideo(videoPlugin,stream) {
+			return new Promise((resolve,reject) => {
+				let checkLoaded = () => {
+					if (this.video) {
+						resolve(this);
+					}
+					else {
+						setTimeout(checkLoaded,100);
+					}
+				}
+				checkLoaded();
+			});
+		}
+
 		buildVideoSurface(sceneRoot,videoTexture) {
 			let sphere = bg.scene.PrimitiveFactory.Sphere(this.gl,1,50);
 			let sphereNode = new bg.scene.Node(this.gl);
@@ -535,7 +549,7 @@ paella.addCanvasPlugin("video360", true, () => {
 
 		buildCamera() {
 			let cameraNode = new bg.scene.Node(this.gl,"Camera");
-			let camera = new bg.scene.Camera();
+			let camera = new bg.scene.Camera()
 			cameraNode.addComponent(camera);
 			cameraNode.addComponent(new bg.scene.Transform());
 			let projection = new bg.scene.OpticalProjectionStrategy();
