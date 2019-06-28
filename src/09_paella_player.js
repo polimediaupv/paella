@@ -22,7 +22,7 @@
 				return paella.PaellaPlayer.mode.fullscreen;
 			}
 			else if (window.self !== window.top) {
-				return paella.PaellaPlayer.mode.embed;
+				return paella.PaellaPlayer.mode.embed
 			}
 	
 			return paella.PaellaPlayer.mode.standard;
@@ -296,7 +296,9 @@
 							paella.events.trigger(paella.events.loadComplete);
 							This.addFullScreenListeners();
 							This.onresize();
-							if (This.videoContainer.autoplay()) {
+							// If the player has been loaded using lazyLoad, the video should be
+							// played as soon as it loads
+							if (This.videoContainer.autoplay() || g_lazyLoadInstance!=null) {
 								This.play();
 							}
 						})
@@ -427,6 +429,78 @@
 		fullscreen: 'fullscreen',
 		embed: 'embed'
 	};
+
+	class LazyThumbnailContainer extends paella.DomNode {
+		constructor(src) {
+			super('img','lazyLoadThumbnailContainer',{});
+			this.domElement.src = src;
+			this.domElement.alt = "";
+		}
+
+		setImage(url) {
+			this.domElement.src = url;
+		}
+
+		onClick(closure) {
+			this.domElement.onclick = closure;
+		}
+	}
+
+	
+	let g_lazyLoadInstance = null;
+	class PaellaPlayerLazy extends PaellaPlayer {
+		constructor(playerId,initDelegate) {
+			super(playerId,initDelegate);
+			g_lazyLoadInstance = this;
+		}
+
+		set onPlay(closure) {
+			this._onPlayClosure = closure;
+
+		}
+
+		loadComplete(event,params) {
+		}
+
+		onLoadConfig(configData) {
+			paella.data = new paella.Data(configData);
+	
+			this.config = configData;
+			this.videoIdentifier = paella.initDelegate.getId();
+	
+			if (this.videoIdentifier) {
+				$(window).resize(function(event) { paella.player.onresize(); });
+				this.onload();
+			}
+		}
+
+		loadVideo() {
+			if (this.videoIdentifier) {
+				var This = this;
+				var loader = paella.player.videoLoader;
+				this.onresize();
+				loader.loadVideo(() => {
+					if (!loader.metadata.preview) {
+						paella.load(this.playerId,paella.loaderFunctionParams);
+						g_lazyLoadInstance = null;	// Lazy load is disabled when the video has no preview
+					}
+					else {
+						this.lazyLoadContainer = new LazyThumbnailContainer(loader.metadata.preview);
+						document.body.appendChild(this.lazyLoadContainer.domElement);
+						this.lazyLoadContainer.onClick(() => {
+							document.body.removeChild(this.lazyLoadContainer.domElement);
+							this._onPlayClosure && this._onPlayClosure();
+						});
+						paella.events.trigger(paella.events.loadComplete);
+					}
+				});
+			}
+		}
+
+		onresize() {}
+	}
+
+	paella.PaellaPlayerLazy = PaellaPlayerLazy;
 	
 	/* Initializer function */
 	window.initPaellaEngage = function(playerId,initDelegate) {

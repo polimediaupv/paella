@@ -243,17 +243,7 @@ class DefaultInitDelegate extends paella.InitDelegate {
 
 paella.DefaultInitDelegate = DefaultInitDelegate;
 
-/*
- *	playerContainer	Player DOM container id
- *	params.configUrl		Url to the config json file
- *	params.config			Use this configuration file
- *	params.data				Paella video data schema
- *	params.url				Repository URL
- */
-paella.load = function(playerContainer, params) {
-	var auth = (params && params.auth) || {};
-
-	// Build custom init data using url parameters
+function getManifestFromParameters(params) {
 	let master = null;
 	if (master = paella.utils.parameters.get('video')) {
 		let slave = paella.utils.parameters.get('videoSlave');
@@ -292,13 +282,32 @@ paella.load = function(playerContainer, params) {
 							src:slave,
 							mimetype:"video/mp4",
 							res:{ w:0, h:0 }
-						}
+						} 
 					]
 				},
 				preview:slavePreview
 			});
 		}
 
+		return data;
+	}
+	return null;
+}
+
+/*
+ *	playerContainer	Player DOM container id
+ *	params.configUrl		Url to the config json file
+ *	params.config			Use this configuration file
+ *	params.data				Paella video data schema
+ *	params.url				Repository URL
+ */
+paella.load = function(playerContainer, params) {
+	paella.loaderFunctionParams = params;
+	var auth = (params && params.auth) || {};
+
+	// Build custom init data using url parameters
+	let data = getManifestFromParameters(params);
+	if (data) {
 		params.data = data;
 	}
 
@@ -309,6 +318,36 @@ paella.load = function(playerContainer, params) {
 	new PaellaPlayer(playerContainer,paella.initDelegate);
 };
 
+
+paella.lazyLoad = function(playerContainer, params) {
+	paella.loaderFunctionParams = params;
+	var auth = (params && params.auth) || {};
+
+	// Check autoplay. If autoplay is enabled, this function must call paella.load()
+	paella.Html5Video.IsAutoplaySupported()
+		.then((supported) => {
+			if (supported) {
+				// Build custom init data using url parameters
+				let data = getManifestFromParameters(params);
+				if (data) {
+					params.data = data;
+				}
+
+				var initObjects = params;
+				initObjects.videoLoader = new paella.DefaultVideoLoader(params.data || params.url);
+
+				paella.initDelegate = new paella.DefaultInitDelegate(initObjects);
+				let lazyLoad = new paella.PaellaPlayerLazy(playerContainer,paella.initDelegate);
+				lazyLoad.onPlay = () => {
+					$('#' + playerContainer).innerHTML = "";
+					paella.load(playerContainer,params);
+				};
+			}
+			else {
+				paella.load(playerContainer,params);
+			}
+		});
+}
 
 })();
 
