@@ -3,6 +3,7 @@ CHANGELOG
 
 * Paella 6.2.0
 
+  * Lazy load: Paella Player will load the minimum resources requrired until the user press play. See the documentation for more information about how to enabler it.
   * Breaking changes:
     - Monostream profile APIs removed. This may break monostream videos if the streams
       in `data.json` does not include the `content` attribute.
