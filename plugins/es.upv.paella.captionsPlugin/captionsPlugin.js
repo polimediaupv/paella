@@ -39,7 +39,7 @@ paella.addPlugin(function() {
 		}
 	
 		setup() {
-			var self = this;
+			
 	
 			// HIDE UI IF NO Captions
 			if(!paella.captions.getAvailableLangs().length){
@@ -47,33 +47,33 @@ paella.addPlugin(function() {
 			}
 	
 			//BINDS
-			paella.events.bind(paella.events.captionsEnabled,function(event,params){
-				self.onChangeSelection(params);
+			paella.events.bind(paella.events.captionsEnabled,(event,params)=> {
+				onChangeSelection(params);
 			});
 	
-			paella.events.bind(paella.events.captionsDisabled,function(event,params){
-				self.onChangeSelection(params);
+			paella.events.bind(paella.events.captionsDisabled,(event,params)=>{
+				onChangeSelection(params);
 			});
 	
-			paella.events.bind(paella.events.captionAdded,function(event,params){
-				self.onCaptionAdded(params);
+			paella.events.bind(paella.events.captionAdded,(event,params)=>{
+				onCaptionAdded(params);
 				paella.plugins.captionsPlugin.showUI();
 			});
 	
-			paella.events.bind(paella.events.timeUpdate, function(event,params){
-				if(self._searchOnCaptions){
-					self.updateCaptionHiglighted(params);				
+			paella.events.bind(paella.events.timeUpdate, (event,params)=>{
+				if(_searchOnCaptions){
+					updateCaptionHiglighted(params);				
 				}
 	
 			});
 	
-			paella.events.bind(paella.events.controlBarWillHide, function(evt) {
-				self.cancelHideBar();
+			paella.events.bind(paella.events.controlBarWillHide, (evt)=>{
+				cancelHideBar();
 			});
 	
-			self._activeCaptions = paella.captions.getActiveCaptions();
+			_activeCaptions = paella.captions.getActiveCaptions();
 	
-			self._searchOnCaptions = self.config.searchOnCaptions || false;
+			_searchOnCaptions = config.searchOnCaptions || false;
 		}
 	
 		cancelHideBar() {
@@ -120,6 +120,7 @@ paella.addPlugin(function() {
 			var t = $(".bodyInnerContainer").slice(0,id);
 			t = t.toArray();
 	
+			// CANT CHANGE THIS LINE
 			t.forEach(function(l){
 				var i = $(l).outerHeight(true);
 				resul += i;
@@ -180,117 +181,119 @@ paella.addPlugin(function() {
 		}
 	
 		action() {
-			var self = this;
-			self._browserLang = base.dictionary.currentLanguage();
-			self._autoScroll = true;
+			
+			_browserLang = base.dictionary.currentLanguage();
+			_autoScroll = true;
 	
-			switch(self._open){
+			switch(_open){
 				case 0:
-					if(self._browserLang && paella.captions.getActiveCaptions()==undefined){
-						self.selectDefaultBrowserLang(self._browserLang);
+					if(_browserLang && paella.captions.getActiveCaptions()==undefined){
+						selectDefaultBrowserLang(_browserLang);
 					}
-					self._open = 1;
+					_open = 1;
 					paella.keyManager.enabled = false;
 					break;
 			
 				case 1: 
 					paella.keyManager.enabled = true;
-					self._open = 0;
+					_open = 0;
 					break;
 			}
 		}
 	
 		buildContent(domElement) {
-			var thisClass = this;
+			//var thisClass = this;
 	
 			//captions CONTAINER
-			thisClass._parent = document.createElement('div');
-			thisClass._parent.className = 'captionsPluginContainer';  
+			_parent = document.createElement('div');
+			_parent.className = 'captionsPluginContainer';  
 			//captions BAR
-			   thisClass._bar = document.createElement('div');
-			thisClass._bar.className = 'captionsBar';
+			 _bar = document.createElement('div');
+			_bar.className = 'captionsBar';
 			//captions BODY
-			if(thisClass._searchOnCaptions){
-				thisClass._body = document.createElement('div');
-				thisClass._body.className = 'captionsBody';
-				thisClass._parent.appendChild(thisClass._body);
+			if(_searchOnCaptions){
+				_body = document.createElement('div');
+				_body.className = 'captionsBody';
+				_parent.appendChild(thisClass._body);
 				 //BODY JQUERY
-				$(thisClass._body).scroll(function(){
-					thisClass._autoScroll = false;
+				$(_body).scroll(()=>{
+					_autoScroll = false;
 				});
 	
 				//INPUT
-				thisClass._input = document.createElement("input");
-				thisClass._input.className = "captionsBarInput";
-				thisClass._input.type = "text";
-				thisClass._input.id ="captionsBarInput";
-				thisClass._input.name = "captionsString";
-				thisClass._input.placeholder = base.dictionary.translate("Search captions");
-				thisClass._bar.appendChild(thisClass._input);
+				_input = document.createElement("input");
+				_input.className = "captionsBarInput";
+				_input.type = "text";
+				_input.id ="captionsBarInput";
+				_input.name = "captionsString";
+				_input.placeholder = base.dictionary.translate("Search captions");
+				_bar.appendChild(_input);
 	
 				//INPUT jQuery
-				 $(thisClass._input).change(function(){
-					var text = $(thisClass._input).val();
+				 $(_input).change(()=>{
+					var text = $(_input).val();
 					thisClass.doSearch(text);
 				});
 	
-				$(thisClass._input).keyup(function(){
-					var text = $(thisClass._input).val();
-					if(thisClass._searchTimer != null){
-						thisClass._searchTimer.cancel();
+				$(_input).keyup(()=>{
+					var text = $(_input).val();
+					if(_searchTimer != null){
+						_searchTimer.cancel();
 					}
-					thisClass._searchTimer = new base.Timer(function(timer) {
-						thisClass.doSearch(text);
-					}, thisClass._searchTimerTime);			
+					_searchTimer = new base.Timer((timer)=> {
+						doSearch(text);
+					}, _searchTimerTime);			
 				});
 			}
 	
 				
 	
 			//SELECT
-			thisClass._select = document.createElement("select");
-			thisClass._select.className = "captionsSelector";
+			_select = document.createElement("select");
+			_select.className = "captionsSelector";
 			
 			var defOption = document.createElement("option"); // NO ONE SELECT
 			defOption.text = base.dictionary.translate("None");
 			defOption.value = "";
-			thisClass._select.add(defOption);
+			_select.add(defOption);
 	
+	// CANT CHANGE THIS LINE
 			paella.captions.getAvailableLangs().forEach(function(l){
 				var option = document.createElement("option");
 				option.text = l.lang.txt;
 				option.value = l.id;
-				thisClass._select.add(option);
+				_select.add(option);
 			});
 	
-			 thisClass._bar.appendChild(thisClass._select);
-			 thisClass._parent.appendChild( thisClass._bar);
+			_bar.appendChild(thisClass._select);
+			_parent.appendChild( thisClass._bar);
 	
 			//jQuery SELECT
-			$(thisClass._select).change(function(){
-			   thisClass.changeSelection();
+			$(_select).change(()=> {
+			changeSelection();
 			});
 	
 			//BUTTON EDITOR
-			thisClass._editor = document.createElement("button");
-			thisClass._editor.className = "editorButton";
-			thisClass._editor.innerText = "";
-			thisClass._bar.appendChild(thisClass._editor);
+			_editor = document.createElement("button");
+			_editor.className = "editorButton";
+			_editor.innerText = "";
+			_bar.appendChild(thisClass._editor);
 	
 			//BUTTON jQuery
-			$(thisClass._editor).prop("disabled",true);
-			$(thisClass._editor).click(function(){
+			$(_editor).prop("disabled",true);
+			$(_editor).click(()=>{
 				var c = paella.captions.getActiveCaptions();        	
 				paella.userTracking.log("paella:caption:edit", {id: c._captionsProvider + ':' + c._id, lang: c._lang});
 				c.goToEdit();
 			});
 	
-			domElement.appendChild(thisClass._parent);
+			domElement.appendChild(_parent);
 		}
 	
 		selectDefaultBrowserLang(code) {
 			var thisClass = this;
 			var provider = null;
+			//cant change this line
 			paella.captions.getAvailableLangs().forEach(function(l){
 				if(l.lang.code == code){ provider = l.id; }
 			});
@@ -312,7 +315,7 @@ paella.addPlugin(function() {
 			if(c){
 				if(text==""){thisClass.buildBodyContent(paella.captions.getActiveCaptions()._captions,"list");}
 				else{
-					c.search(text,function(err,resul){
+					c.search(text,(err,resul)=>{
 						if(!err){
 							thisClass.buildBodyContent(resul,"search");
 						}
@@ -329,7 +332,7 @@ paella.addPlugin(function() {
 			   if(c!=null){
 				   $(thisClass._select).width('39%');
 				
-				c.canEdit(function(err, r){res=r;});
+				c.canEdit((err,resul)=>{res=r;});
 				if(res){
 					$(editor).prop("disabled",false);
 					$(editor).show();
@@ -357,6 +360,7 @@ paella.addPlugin(function() {
 				.then((trimming)=>{
 					var thisClass = this;
 					$(thisClass._body).empty();
+					//cant change this line
 					obj.forEach(function(l){
 						if(trimming.enabled && (l.end<trimming.start || l.begin>trimming.end)){
 							return;
@@ -377,14 +381,14 @@ paella.addPlugin(function() {
 	
 						//JQUERY
 						$(thisClass._inner).hover(
-							function(){ 
+							()=>{ 
 								$(this).css('background-color','rgba(250, 161, 102, 0.5)');	           		
 							},
-							function(){ 
+							()=>{ 
 								$(this).removeAttr('style');
 							}
 						);
-						$(thisClass._inner).click(function(){ 
+						$(thisClass._inner).click(()=>{ 
 								var secBegin = $(this).attr("sec-begin");
 								paella.player.videoContainer.trimming()
 									.then((trimming) => {
