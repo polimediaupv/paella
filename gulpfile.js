@@ -3,16 +3,15 @@ const	gulp = require('gulp'),
 		concat = require('gulp-concat'),
 		connect = require('gulp-connect'),
 		replace = require('gulp-replace'),
-		less = require('gulp-less'),		
+		less = require('gulp-less'),
 		babel = require('gulp-babel'),
 		merge = require('gulp-merge-json'),
-		fs = require('fs'),		
+		fs = require('fs'),
 		uglify = require('gulp-uglify-es').default,
 		path = require('path'),
 
 		exec = require('child_process').execSync,
 
-		runSequence = require('run-sequence'),
 		nightwatch = require('gulp-nightwatch'),
 		glob = require('glob-all');		;
 
@@ -20,17 +19,24 @@ var config = {
 	outDir:'build/'
 };
 
+gulp.task('test:nightwatch:local:start-server', function(done) {
+	connect.server({
+		port: 8000,
+		root: 'build'
+	});
+	done();
+});
 
-gulp.task("test:nightwatch:local:run", function(){
-	return gulp.src('')
+gulp.task('test:nightwatch:local:run', function() {
+	return gulp.src('gulpfile.js')
 	.pipe(nightwatch({
 		configFile: 'tests/nightwatch/nightwatch.js'
 	}));
 });
 
-
-gulp.task("test:local", function(cb){
-	runSequence('test:nightwatch:local:run', cb)
+gulp.task('test:nightwatch:local:stop-server', function(done) {
+	connect.serverClose();
+	done();
 });
 
 
@@ -173,7 +179,7 @@ gulp.task("copy", function() {
 
 		gulp.src(['*.html'])
 			.pipe(gulp.dest(`${config.outDir}player/`)),
-	
+
 		gulp.src('node_modules/@babel/polyfill/dist/polyfill.min.js')
 			.pipe(gulp.dest(`${config.outDir}player/javascript`)),
 
@@ -272,6 +278,12 @@ gulp.task("tools", function() {
 
 gulp.task("default", gulp.series("build"));
 gulp.task("serve", gulp.parallel("buildDebug","webserver","tools",watchFilesDebug));
+
+gulp.task('test:local', gulp.series(
+	'build',
+	'test:nightwatch:local:start-server',
+	'test:nightwatch:local:run',
+	'test:nightwatch:local:stop-server'));
 
 // Compatibility
 gulp.task("server.release", gulp.parallel("build","webserver","tools",watchFiles));

@@ -9,8 +9,13 @@ install:
 jobs:
   include:
     - stage: tests
+      addons:
+        chrome: stable
+      before_install:
+        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
       script:
         - npm run markdownlint
+        - npm run test
 
     - stage: build and deploy
       script:
