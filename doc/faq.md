@@ -5,7 +5,7 @@
 
 ## Can I use Paella Player for free?
 
-Paella Player is licensed as GPLv3. So, yes, you can use Paella Player for free, but keep in mind that license restrictions still apply.
+Paella Player is licensed under the terms of the Educational Community License, Version 2.0 (ECL-2.0). So, yes, you can use Paella Player for free, but keep in mind that license restrictions still apply.
 
 ## What browsers are supported in Paella?
 
