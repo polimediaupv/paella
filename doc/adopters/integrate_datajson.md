@@ -33,6 +33,21 @@ The preview image is an url containing the image that will be used as preview fo
 
 If a preview image is defined, and the browser also supports autoplay, it is possible to configure Paella Player to perform a deferred load when the user clicks on the preview.
 
+
+```json
+{
+  "metadata": {
+    "title": "this is the title",
+    "duration": 60,
+    "preview": "preview.jpg"
+  }
+}
+```
+
+* title: title of the video
+* duration: duration of the video (in seconds)
+* preview: preview image is an url containing the image that will be used as preview for all the video streams
+
 ### streams
 
 This will hold an array with the diferent video streams that the player will play, the max length of this array should be 2, since paella by default can only play 2 video streams.
@@ -276,19 +291,3 @@ The storyboard uses an array of images wich is defined in the JSON in the frameL
 	]
 }
 ```
-
-### metadata
-
-here we store custom info about the videos that we will play
-
-```json
-{
-  "metadata": {
-    "title": "",
-    "duration": 0
-  }
-}
-```
-
-* title: title of the video
-* duration: duration of the video
