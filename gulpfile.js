@@ -168,6 +168,19 @@ gulp.task("copy", function() {
 		gulp.src('javascript/*')
 			.pipe(gulp.dest(`${config.outDir}player/javascript/`)),
 
+		gulp.src('node_modules/jquery/dist/jquery.min.js')
+			.pipe(gulp.dest(`${config.outDir}player/javascript/`)),
+		gulp.src('node_modules/jquery/dist/jquery.min.js')
+			.pipe(gulp.dest(`${config.outDir}tools/layout_calculator/javascript/`)),
+		gulp.src('node_modules/jquery/dist/jquery.min.js')
+			.pipe(gulp.dest(`${config.outDir}tools/rtmp-test/`)),
+
+		gulp.src('node_modules/requirejs/require.js')
+			.pipe(gulp.dest(`${config.outDir}player/javascript/`)),
+
+		gulp.src('node_modules/lunr/lunr.min.js')
+			.pipe(gulp.dest(`${config.outDir}player/javascript/`)),
+
 		gulp.src('resources/bootstrap/**')
 			.pipe(gulp.dest(`${config.outDir}player/resources/bootstrap`)),
 
