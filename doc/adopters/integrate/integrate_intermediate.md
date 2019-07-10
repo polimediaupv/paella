@@ -32,7 +32,7 @@ Add the paella css and js dependecies:
 
 		<script type="text/javascript" src="javascript/swfobject.js"></script>
 		<script type="text/javascript" src="javascript/base.js"></script>
-		<script type="text/javascript" src="javascript/jquery.js"></script>
+		<script type="text/javascript" src="javascript/jquery.min.js"></script>
 		<script type="text/javascript" src="javascript/lunr.min.js"></script>
 		<script type="text/javascript" src="javascript/require.js"></script>
 		<script type="text/javascript" src="javascript/traceur-runtime.min.js"></script>
@@ -59,7 +59,7 @@ Then add the container where paella is going to be loaded:
 
 		<script type="text/javascript" src="javascript/swfobject.js"></script>
 		<script type="text/javascript" src="javascript/base.js"></script>
-		<script type="text/javascript" src="javascript/jquery.js"></script>
+		<script type="text/javascript" src="javascript/jquery.min.js"></script>
 		<script type="text/javascript" src="javascript/lunr.min.js"></script>
 		<script type="text/javascript" src="javascript/require.js"></script>
 		<script type="text/javascript" src="javascript/traceur-runtime.min.js"></script>
@@ -87,7 +87,7 @@ Finally load Paella using that container:
 
 		<script type="text/javascript" src="javascript/swfobject.js"></script>
 		<script type="text/javascript" src="javascript/base.js"></script>
-		<script type="text/javascript" src="javascript/jquery.js"></script>
+		<script type="text/javascript" src="javascript/jquery.min.js"></script>
 		<script type="text/javascript" src="javascript/lunr.min.js"></script>
 		<script type="text/javascript" src="javascript/require.js"></script>
 		<script type="text/javascript" src="javascript/traceur-runtime.min.js"></script>

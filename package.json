@@ -35,6 +35,9 @@
     "markdownlint": "markdownlint ./doc/"
   },
   "dependencies": {
-    "bg2engine": "^1.3.21"
+    "bg2engine": "^1.3.21",
+    "jquery": "^3.4.1",
+    "lunr": "^2.3.6",
+    "requirejs": "^2.3.6"
   }
 }

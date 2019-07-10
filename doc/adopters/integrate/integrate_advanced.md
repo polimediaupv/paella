@@ -24,7 +24,7 @@ There are many options for loading Paella Player. Let's see several examples sta
 
   <script type="text/javascript" src="javascript/swfobject.js"></script>
   <script type="text/javascript" src="javascript/base.js"></script>
-  <script type="text/javascript" src="javascript/jquery.js"></script>
+  <script type="text/javascript" src="javascript/jquery.min.js"></script>
   <script type="text/javascript" src="javascript/lunr.min.js"></script>
   <script type="text/javascript" src="javascript/require.js"></script>
   <script type="text/javascript" src="javascript/paella_player_es2015.js"></script>
