@@ -301,6 +301,10 @@
 							if (This.videoContainer.autoplay() || g_lazyLoadInstance!=null) {
 								This.play();
 							}
+							else if (loader.metadata.preview) {
+								This.lazyLoadContainer = new LazyThumbnailContainer(loader.metadata.preview);
+								document.body.appendChild(This.lazyLoadContainer.domElement);
+							}
 						})
 						.catch((error) => {
 							console.log(error);
@@ -387,6 +391,9 @@
 		}
 	
 		play() {
+			if (this.lazyLoadContainer) {
+				document.body.removeChild(this.lazyLoadContainer.domElement);
+			}
 			return new Promise((resolve,reject) => {
 				this.videoContainer.play()
 					.then(() => {

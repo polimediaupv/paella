@@ -4,6 +4,7 @@ CHANGELOG
 * Paella 6.2.0
 
   * Lazy load: Paella Player will load the minimum resources requrired until the user press play. See the documentation for more information about how to enabler it.
+  * Preview improvements: it is possible to configure a preview image in the "metadata" section of the "data.json" file, independently of the preview of video streams.
   * Breaking changes:
     - Monostream profile APIs removed. This may break monostream videos if the streams
       in `data.json` does not include the `content` attribute.

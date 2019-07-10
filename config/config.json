@@ -60,7 +60,6 @@
     "enabled":true,
     "dataDelegates":{
       "trimming":"CookieDataDelegate",
-      "visualAnnotations": "VisualAnnotationsDataDelegate",
       "metadata":"VideoManifestMetadataDataDelegate",
       "cameraTrack":"TrackCameraDataDelegate"
     }

@@ -17,11 +17,21 @@ We will detail the JSON structure from the root
 
 ```json
 {
+  "metadata": {},
   "streams": [],
   "frameList": [],
   "metadata": {}
 }
 ```
+
+
+### metadata
+
+This section holds the basic video information: the video title, the duration and the preview image.
+
+The preview image is an url containing the image that will be used as preview for all the video streams. This image must have an aspect ratio of 16:9, that is the default aspect ratio of the Paella Player video container.
+
+If a preview image is defined, and the browser also supports autoplay, it is possible to configure Paella Player to perform a deferred load when the user clicks on the preview.
 
 ### streams
 
@@ -32,7 +42,6 @@ This will hold an array with the diferent video streams that the player will pla
   "streams": [
     {
       "sources": {},
-      "preview": "",
       "content": "stream content"
     },
     .
@@ -46,7 +55,6 @@ This will hold an array with the diferent video streams that the player will pla
 
 Each stream in the stream array will have:
 
-* preview: url containing the image that will be used as preview for the stream
 * sources: source or sources of the data stream 
 * content: a tag that describes the content of the video.
 
@@ -160,7 +168,6 @@ A video-source consist in an array with the videos that forms the diferent resou
           .
         ],
       },
-      "preview": "",
       "content": "presenter"
     }
   ]
@@ -203,7 +210,6 @@ When we use an image array as source of the video stream the way this should be 
           }
         ]
       },
-      "preview": "",
       "content": "presentation"
     }
   ]

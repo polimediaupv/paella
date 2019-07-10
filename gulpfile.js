@@ -92,7 +92,7 @@ gulp.task("compileES5", function() {
 		.pipe(concat("paella_player.js"))
 		.pipe(babel())
 		.pipe(replace(/@version@/,getVersion()))
-		.pipe(uglify())
+		//.pipe(uglify())
 		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
 });
 
@@ -102,7 +102,7 @@ gulp.task("compileES2015", function() {
 	return gulp.src(files)
 		.pipe(concat("paella_player_es2015.js"))
 		.pipe(replace(/@version@/,getVersion()))
-		.pipe(uglify())
+		//.pipe(uglify())
 		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
 });
 
