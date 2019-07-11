@@ -19,8 +19,7 @@ We will detail the JSON structure from the root
 {
   "metadata": {},
   "streams": [],
-  "frameList": [],
-  "metadata": {}
+  "frameList": []
 }
 ```
 
