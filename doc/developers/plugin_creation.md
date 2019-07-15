@@ -68,7 +68,6 @@ example: helpPlugin.js (buttonPlugin)
   getSubclass() { return "helpButton"; }
   getIconClass() { return 'icon-help'; }
   getName() { return "es.upv.paella.helpPlugin"; }
-  getMinWindowSize() { return 650; }
   
   getDefaultToolTip() {
 	return base.dictionary.translate("Show help") + ' (' +

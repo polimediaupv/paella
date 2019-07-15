@@ -192,9 +192,6 @@ paella.addPlugin(function() {
         getSubclass() { return "videoZoomToolbar"; }
         getIconClass() { return 'icon-screen'; }
         getIndex() { return 2030; }
-        getMinWindowSize() { return (paella.player.config.player &&
-                                    paella.player.config.player.videoZoom &&
-                                    paella.player.config.player.videoZoom.minWindowSize) || 600; }
         getName() { return "es.upv.paella.videoZoomToolbarPlugin"; }
         getDefaultToolTip() { return base.dictionary.translate("Set video zoom"); }
         getButtonType() { return paella.ButtonPlugin.type.popUpButton; }

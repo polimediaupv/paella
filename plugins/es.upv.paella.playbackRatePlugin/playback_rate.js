@@ -6,7 +6,6 @@ paella.addPlugin(function() {
 		getSubclass() { return "showPlaybackRateButton"; }
 		getIconClass() { return 'icon-screen'; }
 		getIndex() { return 140; }
-		getMinWindowSize() { return 500; }
 		getName() { return "es.upv.paella.playbackRatePlugin"; }
 		getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
 		getDefaultToolTip() { return base.dictionary.translate("Set playback rate"); }

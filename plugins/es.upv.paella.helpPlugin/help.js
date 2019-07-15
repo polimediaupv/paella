@@ -6,7 +6,6 @@ paella.addPlugin(function() {
 		getSubclass() { return "helpButton"; }
 		getIconClass() { return 'icon-help'; }
 		getName() { return "es.upv.paella.helpPlugin"; }
-		getMinWindowSize() { return 650; }
 
 		getDefaultToolTip() { return base.dictionary.translate("Show help") + ' (' + base.dictionary.translate("Paella version:") + ' ' + paella.version + ')'; }
 

@@ -485,7 +485,7 @@ class ButtonPlugin extends paella.UIPlugin {
 	}
 
 	getMinWindowSize() {
-		return 0;
+		return this.config.minWindowSize || 0;
 	}
 
 	buildContent(domElement) {

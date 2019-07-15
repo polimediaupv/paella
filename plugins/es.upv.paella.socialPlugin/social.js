@@ -4,7 +4,6 @@ paella.addPlugin(function() {
 		getSubclass() { return "showSocialPluginButton"; }
 		getIconClass() { return 'icon-social'; }
 		getIndex() { return 560; }
-		getMinWindowSize() { return 600; }
 		getName() { return "es.upv.paella.socialPlugin"; }
 		checkEnabled(onSuccess) { onSuccess(true); }
 		getDefaultToolTip() { return base.dictionary.translate("Share this video"); }

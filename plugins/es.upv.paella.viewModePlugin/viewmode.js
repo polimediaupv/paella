@@ -6,7 +6,6 @@ paella.addPlugin(function() {
 		getSubclass() { return "showViewModeButton"; }
 		getIconClass() { return 'icon-presentation-mode'; }
 		getIndex() { return 540; }
-		getMinWindowSize() { return 300; }
 		getName() { return "es.upv.paella.viewModePlugin"; }
 		getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
 		getDefaultToolTip() { return base.dictionary.translate("Change video layout"); }		
