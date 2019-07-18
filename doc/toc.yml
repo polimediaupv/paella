@@ -1,4 +1,4 @@
-version: develop
+version: 6.2.x
 index: 'introduction.md'
 
 content:
