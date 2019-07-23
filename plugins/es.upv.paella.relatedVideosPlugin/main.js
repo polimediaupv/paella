@@ -1,10 +1,25 @@
 
+
+paella.addDataDelegate("relatedVideos",() => {
+    return class RelatedVideoDataDelegate extends paella.DataDelegate {
+        read(context,params,onSuccess) {
+            let videoMetadata = paella.player.videoLoader.getMetadata();
+            if (videoMetadata.related) {
+                onSuccess(videoMetadata.related);
+            }
+        }
+    }
+});
+
 paella.addPlugin(() => {
     return class RelatedVideoPlugin extends paella.EventDrivenPlugin {
         getName() { return "es.upv.paella.relatedVideosPlugin"; }
 
         checkEnabled(onSuccess) {
-            onSuccess(true);
+            paella.data.read('relatedVideos', {id:paella.player.videoIdentifier}, (data) => {
+                this._relatedVideos = data;
+                onSuccess(Array.isArray(this._relatedVideos) &&  this._relatedVideos.length > 0);
+            });
         }
 
         setup() {
@@ -12,12 +27,74 @@ paella.addPlugin(() => {
         }
 
         getEvents() { return [
-            paella.events.endVideo,
-            paella.events.timeUpdate
+            paella.events.ended,
+            paella.events.timeUpdate,
+            paella.events.play,
+            paella.events.seekTo,
+            paella.events.seekToTime,
         ];}
 
         onEvent(eventType, params) {
-            console.log(eventType);
+            if (eventType == paella.events.ended) {
+                this.showRelatedVideos();
+            }
+            else {
+                this.hideRelatedVideos();
+            }
+        }
+
+        showRelatedVideos() {
+            let container = document.createElement('div');
+            container.className = "related-video-container";
+
+            function getRelatedVideoLink(data,className) {
+                let linkContainer = document.createElement("a");
+                linkContainer.className = "related-video-link " + className;
+                linkContainer.innerHTML = `
+                <img src="${ data.thumb }" alt="">
+                <p>${ data.title }</p>
+                `;
+                linkContainer.href = data.url;
+                return linkContainer;
+            }
+
+            this._messageContainer = paella.player.videoContainer.overlayContainer.addElement(container, {
+                left: 0,
+                right: 0,
+                width: 1280,
+                height: 720
+            });
+            switch (this._relatedVideos.length) {
+            case 1:
+                container.appendChild(getRelatedVideoLink(this._relatedVideos[0],'related-video-single'));
+                break;
+            case 2:
+            default:
+                container.appendChild(getRelatedVideoLink(this._relatedVideos[0],'related-video-dual-1'));
+                container.appendChild(getRelatedVideoLink(this._relatedVideos[1],'related-video-dual-2'));
+                break;
+            }
+
+            // Blur filter
+            Array.from(paella.player.videoContainer.container.domElement.children).forEach((ch) => {
+                if (ch.id != "overlayContainer") {
+                    ch.style.filter = 'blur(8px)';
+                }
+            });            
+        }
+
+        hideRelatedVideos() {
+            if (this._messageContainer) {
+                paella.player.videoContainer.overlayContainer.removeElement(this._messageContainer);
+                this._messageContainer = null;
+
+                // Remove blur filter
+                Array.from(paella.player.videoContainer.container.domElement.children).forEach((ch) => {
+                    if (ch.id != "overlayContainer") {
+                        ch.style.filter = 'none';
+                    }
+                });
+            }
         }
     }
 });

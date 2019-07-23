@@ -1,7 +1,19 @@
 {
 	"metadata": {
 		"duration": 909.13,
-		"title": "Belmar 15 minutes (multiresolution)"
+		"title": "Belmar 15 minutes (multiresolution)",
+		"related": [
+			{
+				"title":"Multiresolution",
+				"url":"index.html?id=belmar-multiresolution-remote",
+				"thumb":"https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/belmar-preview.jpg"
+			},
+			{
+				"title":"HLS video stream",
+				"url":"index.html?id=hls",
+				"thumb":"https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/belmar-preview.jpg"
+			}
+		]
 	},
 	"streams": [
 		{
