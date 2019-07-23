@@ -1130,6 +1130,7 @@ class VideoContainer extends paella.VideoContainerBase {
 							paella.events.trigger(paella.events.timeupdate, { videoContainer:this, currentTime:current, duration:duration });
 							if (current>=duration) {
 								this.streamProvider.callPlayerFunction('pause');
+								paella.events.trigger(paella.events.ended);
 							}
 						})
 					});
