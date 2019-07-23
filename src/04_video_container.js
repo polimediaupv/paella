@@ -252,6 +252,17 @@ class VideoContainerBase extends paella.DomNode {
 				paella.player.controls.restartHideTimer();
 			}
 		});
+
+		let endedTimer = null;
+		paella.events.bind(paella.events.endVideo,(event) => {
+			if (endedTimer) {
+				clearTimeout(endedTimer);
+				endedTimer = null;
+			}
+			endedTimer = setTimeout(() => {
+				paella.events.trigger(paella.events.ended);
+			}, 1000);
+		});
 	}
 
 	get seekDisabled() { return this._seekDisabled; }

@@ -47,7 +47,8 @@ paella.events = {
 	timeupdate:"paella:timeupdate",
 	timeUpdate:"paella:timeupdate",
 	seekTo:"paella:setseek",
-	endVideo:"paella:endvideo",
+	endVideo:"paella:endvideo",			// Triggered when a single video stream ends (once per video)
+	ended:"paella:ended",				// Triggered when the video ends 
 	seekToTime:"paella:seektotime",
 	setTrim:"paella:settrim",
 	setPlaybackRate:"paella:setplaybackrate",

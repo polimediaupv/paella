@@ -778,6 +778,9 @@ class Html5Video extends paella.VideoElementBase {
 			this._resumeCurrentTime = this.video.currentTime;
 		});
 
+		$(this.video).bind('ended',(evt) => {
+			paella.events.trigger(paella.events.endVideo);
+		});
 
 		$(this.video).bind('emptied', (evt) => {
 			if (this._resumeCurrentTime && !isNaN(this._resumeCurrentTime)) {
