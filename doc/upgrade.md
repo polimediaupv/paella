@@ -1,12 +1,11 @@
 ---
 ---
 
-# Upgrading from paella 6.0.x to 6.1.x
+# Upgrading from paella 6.1.x to 6.2.x
 
-*Breaking changes*: 
+*Optional changes*: 
 
-- The index.html file now includes `paella_player_es2015.js`. If you plan to support
-  Internet Explorer, you will need to modify the `index.html` file to add the legacy scripts.
-- The button plugins now must implement the method `getAriaLabel()` to be included in the
-  tabindex. if you have a plugin that is relevant for screen readers, you must implement
-  this function in your plugin.
+In principle it is not necessary to do anything to upgrade from version 6.1.x to version 6.2.x, but if you want to use the new lazy load feature you have to modify the `load` function by `lazyLoad`, in the `index.html` file.
+
+NOTE: if the browser does not support autoplay in the videos, the lazyLoad function will not be activated.
+
