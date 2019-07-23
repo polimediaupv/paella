@@ -135,6 +135,7 @@
       "es.upv.paella.trimmingPlayerPlugin": {"enabled":true},
       "es.upv.paella.windowTitlePlugin": {"enabled": true},
       "es.upv.paella.track4kPlugin": { "enabled":false },
+      "es.upv.paella.relatedVideosPlugin": { "enabled":true },
 
       "//**** Video profile plugins": "",
       "es.upv.paella.singleStreamProfilePlugin": {
