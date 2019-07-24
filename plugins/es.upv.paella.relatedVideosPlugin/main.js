@@ -44,6 +44,7 @@ paella.addPlugin(() => {
         }
 
         showRelatedVideos() {
+            this.hideRelatedVideos();
             let container = document.createElement('div');
             container.className = "related-video-container";
 
