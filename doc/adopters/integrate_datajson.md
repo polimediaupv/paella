@@ -9,7 +9,7 @@ To make easier the use of paella from third parties we have created a [JSON sche
  paella.load('playerContainer',{ data:dataJSON })
 ```
 
-To make this even easier we made this [tool](https://rawgit.com/polimediaupv/paella/develop/tools/mediapackagecreator/jsoncreateutil.html) to define our JSONs 
+We made a [tool](https://raw.githack.com/polimediaupv/paella/develop/tools/mediapackagecreator/index.html) as a playground to define our own JSONs. While some newbies find it useful, usually it is better to have a look to the examples in the /repository/repository_test folder, as they have all the available features and updates.    
  
 ## JSON Structure
 
