@@ -393,6 +393,7 @@
 		play() {
 			if (this.lazyLoadContainer) {
 				document.body.removeChild(this.lazyLoadContainer.domElement);
+				this.lazyLoadContainer = null;
 			}
 			return new Promise((resolve,reject) => {
 				this.videoContainer.play()
@@ -470,7 +471,7 @@
 		}
 
 		onLoadConfig(configData) {
-			paella.data = new paella.Data(configData);
+			//paella.data = new paella.Data(configData);
 	
 			this.config = configData;
 			this.videoIdentifier = paella.initDelegate.getId();
@@ -496,6 +497,7 @@
 						document.body.appendChild(this.lazyLoadContainer.domElement);
 						this.lazyLoadContainer.onClick(() => {
 							document.body.removeChild(this.lazyLoadContainer.domElement);
+							this.lazyLoadContainer = null;
 							this._onPlayClosure && this._onPlayClosure();
 						});
 						paella.events.trigger(paella.events.loadComplete);

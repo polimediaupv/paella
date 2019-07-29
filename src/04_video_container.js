@@ -1118,6 +1118,7 @@ class VideoContainer extends paella.VideoContainerBase {
 				})
 
 				.then(() => {
+					let endedTimer = null;
 					let eventBindingObject = this.masterVideo().video || this.masterVideo().audio;
 					$(eventBindingObject).bind('timeupdate', (evt) => {
 						this.trimming().then((trimmingData) => {
@@ -1130,7 +1131,13 @@ class VideoContainer extends paella.VideoContainerBase {
 							paella.events.trigger(paella.events.timeupdate, { videoContainer:this, currentTime:current, duration:duration });
 							if (current>=duration) {
 								this.streamProvider.callPlayerFunction('pause');
-								paella.events.trigger(paella.events.ended);
+								if (endedTimer) {
+									clearTimeout(endedTimer);
+									endedTimer = null;
+								}
+								endedTimer = setTimeout(() => {
+									paella.events.trigger(paella.events.ended);
+								}, 1000);
 							}
 						})
 					});
