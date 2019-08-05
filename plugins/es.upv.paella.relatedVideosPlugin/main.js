@@ -75,13 +75,8 @@ paella.addPlugin(() => {
                 container.appendChild(getRelatedVideoLink(this._relatedVideos[1],'related-video-dual-2'));
                 break;
             }
-
-            // Blur filter
-            Array.from(paella.player.videoContainer.container.domElement.children).forEach((ch) => {
-                if (ch.id != "overlayContainer") {
-                    ch.style.filter = 'blur(8px)';
-                }
-            });            
+            
+            paella.player.videoContainer.attenuationEnabled = true;
         }
 
         hideRelatedVideos() {
@@ -89,12 +84,7 @@ paella.addPlugin(() => {
                 paella.player.videoContainer.overlayContainer.removeElement(this._messageContainer);
                 this._messageContainer = null;
 
-                // Remove blur filter
-                Array.from(paella.player.videoContainer.container.domElement.children).forEach((ch) => {
-                    if (ch.id != "overlayContainer") {
-                        ch.style.filter = 'none';
-                    }
-                });
+                paella.player.videoContainer.attenuationEnabled = false;
             }
         }
     }

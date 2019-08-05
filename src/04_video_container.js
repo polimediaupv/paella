@@ -239,6 +239,7 @@ class VideoContainerBase extends paella.DomNode {
 		this._seekDisabled =  false;
 		this._seekType = paella.SeekType.FULL;
 		this._seekTimeLimit = 0;
+		this._attenuationEnabled = false;
 		
 		$(this.domElement).click((evt) => {
 			if (this.firstClick && base.userAgent.browser.IsMobileVersion) return;
@@ -271,6 +272,26 @@ class VideoContainerBase extends paella.DomNode {
 				paella.events.trigger(paella.events.ended);
 			}, 1000);
 		});
+	}
+
+	set attenuationEnabled(att) {
+		this._attenuationEnabled = att;
+
+		Array.from(paella.player.videoContainer.container.domElement.children).forEach((ch) => {
+			if (ch.id == "overlayContainer") {
+				return;
+			}
+			if (att) {
+				$(ch).addClass("dimmed-element");
+			}
+			else {
+				$(ch).removeClass("dimmed-element");
+			}
+		});
+	}
+
+	get attenuationEnabled() {
+		return this._attenuationEnabled;
 	}
 
 	set seekType(type) {
