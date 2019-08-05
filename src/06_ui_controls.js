@@ -124,7 +124,7 @@ class PlaybackBar extends paella.DomNode {
 		}
 
 		paella.events.bind(paella.events.seekAvailabilityChanged, (e,data) => {
-			if (data.enabled) {
+			if (data.type!=paella.SeekType.DISABLED) {
 				$(playbackFull.domElement).removeClass("disabled");
 			}
 			else {
