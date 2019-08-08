@@ -758,6 +758,10 @@ class Html5Video extends paella.VideoElementBase {
 		this.video.setAttribute("playsinline","");
 		this.video.setAttribute("tabindex","-1");
 
+		this._configureVideoEvents(this.video);
+	}
+
+	_configureVideoEvents(videoElement) {
 		function onProgress(event) {
 			if (!this._ready && this.video.readyState==4) {
 				this._ready = true;
@@ -922,10 +926,12 @@ class Html5Video extends paella.VideoElementBase {
 				.then((CanvasClass) => {
 					let canvasInstance = new CanvasClass(stream);
 
-					if (window.bg && bg.app && canvasInstance instanceof bg.app.WindowController) {
+					if (window.$paella_bg && bg.app && canvasInstance instanceof bg.app.WindowController) {
 						// WebGL canvas
 						this.domElementType = 'canvas';
 						let video = this.video;
+						// Restore video events
+						//this._configureVideoEvents(video);
 
 						if (stream) {
 							this.canvasController = null;
@@ -946,7 +952,11 @@ class Html5Video extends paella.VideoElementBase {
 					
 				})
 	
-				.then(() => {
+				.then((canvas) => {
+					if (canvas && paella.WebGLCanvas && canvas instanceof paella.WebGLCanvas) {
+						this._video = canvas.video;
+						this._configureVideoEvents(this.video);
+					}
 					resolve(stream);
 				})
 	
