@@ -6,7 +6,6 @@ paella.addPlugin(function() {
 		getSubclass() { return "showMultipleQualitiesPlugin"; }
 		getIconClass() { return 'icon-screen'; }
 		getIndex() { return 2030; }
-		getMinWindowSize() { return 550; }
 		getName() { return "es.upv.paella.multipleQualitiesPlugin"; }
 		getDefaultToolTip() { return base.dictionary.translate("Change video quality"); }
 		

@@ -3,7 +3,6 @@ paella.addPlugin(function() {
 		getAlignment() { return 'right'; }
 		getSubclass() { return 'searchButton'; }
 		getIconClass() { return 'icon-binoculars'; }
-		getMinWindowSize() { return 550; }
 		getName() { return "es.upv.paella.searchPlugin"; }
 		getButtonType() { return paella.ButtonPlugin.type.popUpButton; }	
 		getDefaultToolTip() { return base.dictionary.translate("Search"); }

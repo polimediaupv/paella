@@ -9,7 +9,7 @@ To make easier the use of paella from third parties we have created a [JSON sche
  paella.load('playerContainer',{ data:dataJSON })
 ```
 
-To make this even easier we made this [tool](https://rawgit.com/polimediaupv/paella/develop/tools/mediapackagecreator/jsoncreateutil.html) to define our JSONs 
+We made a [tool](https://raw.githack.com/polimediaupv/paella/develop/tools/mediapackagecreator/index.html) as a playground to define our own JSONs. While some newbies find it useful, usually it is better to have a look to the examples in the /repository/repository_test folder, as they have all the available features and updates.    
  
 ## JSON Structure
 
@@ -17,11 +17,35 @@ We will detail the JSON structure from the root
 
 ```json
 {
+  "metadata": {},
   "streams": [],
-  "frameList": [],
-  "metadata": {}
+  "frameList": []
 }
 ```
+
+
+### metadata
+
+This section holds the basic video information: the video title, the duration and the preview image.
+
+The preview image is an url containing the image that will be used as preview for all the video streams. This image must have an aspect ratio of 16:9, that is the default aspect ratio of the Paella Player video container.
+
+If a preview image is defined, and the browser also supports autoplay, it is possible to configure Paella Player to perform a deferred load when the user clicks on the preview.
+
+
+```json
+{
+  "metadata": {
+    "title": "this is the title",
+    "duration": 60,
+    "preview": "preview.jpg"
+  }
+}
+```
+
+* title: title of the video
+* duration: duration of the video (in seconds)
+* preview: preview image is an url containing the image that will be used as preview for all the video streams
 
 ### streams
 
@@ -32,7 +56,6 @@ This will hold an array with the diferent video streams that the player will pla
   "streams": [
     {
       "sources": {},
-      "preview": "",
       "content": "stream content"
     },
     .
@@ -46,7 +69,6 @@ This will hold an array with the diferent video streams that the player will pla
 
 Each stream in the stream array will have:
 
-* preview: url containing the image that will be used as preview for the stream
 * sources: source or sources of the data stream 
 * content: a tag that describes the content of the video.
 
@@ -160,7 +182,6 @@ A video-source consist in an array with the videos that forms the diferent resou
           .
         ],
       },
-      "preview": "",
       "content": "presenter"
     }
   ]
@@ -203,7 +224,6 @@ When we use an image array as source of the video stream the way this should be 
           }
         ]
       },
-      "preview": "",
       "content": "presentation"
     }
   ]
@@ -270,19 +290,3 @@ The storyboard uses an array of images wich is defined in the JSON in the frameL
 	]
 }
 ```
-
-### metadata
-
-here we store custom info about the videos that we will play
-
-```json
-{
-  "metadata": {
-    "title": "",
-    "duration": 0
-  }
-}
-```
-
-* title: title of the video
-* duration: duration of the video

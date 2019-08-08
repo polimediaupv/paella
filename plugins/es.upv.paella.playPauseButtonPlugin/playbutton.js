@@ -35,6 +35,12 @@ paella.addPlugin(function() {
 				this.changeSubclass(this.playSubclass);
 				this.setToolTip(paella.dictionary.translate("Play"));
 			});
+
+			paella.events.bind(paella.events.ended,(event) => {
+				this.changeIconClass(this.playIconClass);
+				this.changeSubclass(this.playSubclass);
+				this.setToolTip(paella.dictionary.translate("Play"));
+			});
 		}
 	
 		action(button) {

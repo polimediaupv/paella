@@ -783,6 +783,9 @@ class Html5Video extends paella.VideoElementBase {
 			this._resumeCurrentTime = this.video.currentTime;
 		});
 
+		$(this.video).bind('ended',(evt) => {
+			paella.events.trigger(paella.events.endVideo);
+		});
 
 		$(this.video).bind('emptied', (evt) => {
 			if (this._resumeCurrentTime && !isNaN(this._resumeCurrentTime)) {
@@ -808,7 +811,17 @@ class Html5Video extends paella.VideoElementBase {
 		}
 	}
 
-	get ready() { return this.video.readyState>=3; }
+	get ready() {
+		// Fix Firefox specific issue when video reaches the end
+		if (paella.utils.userAgent.browser.Firefox &&
+			this.video.currentTime==this.video.duration &&
+			this.video.readyState==2)
+		{
+			this.video.currentTime = 0;
+		}
+
+		return this.video.readyState>=3;
+	}
 
 
 	_deferredAction(action) {
@@ -829,6 +842,7 @@ class Html5Video extends paella.VideoElementBase {
 			else {
 				$(this.video).bind('canplay',() => {
 					processResult(action());
+					$(this.video).unbind('canplay');
 				});
 			}
 		});
@@ -908,7 +922,7 @@ class Html5Video extends paella.VideoElementBase {
 				.then((CanvasClass) => {
 					let canvasInstance = new CanvasClass(stream);
 
-					if (bg && bg.app && canvasInstance instanceof bg.app.WindowController) {
+					if (window.bg && bg.app && canvasInstance instanceof bg.app.WindowController) {
 						// WebGL canvas
 						this.domElementType = 'canvas';
 						let video = this.video;

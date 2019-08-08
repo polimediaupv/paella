@@ -48,7 +48,6 @@ paella.addPlugin(function() {
 		getSubclass() { return "frameControl"; }
 		getIconClass() { return 'icon-photo'; }
 		getIndex() { return 510; }
-		getMinWindowSize() { return 450; }
 		getName() { return "es.upv.paella.frameControlPlugin"; }
 		getButtonType() { return paella.ButtonPlugin.type.timeLineButton; }
 		getDefaultToolTip() { return base.dictionary.translate("Navigate by slides"); }

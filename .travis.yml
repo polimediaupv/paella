@@ -1,35 +1,25 @@
-sudo: required
-
-services:
-  - docker
-  
 language: node_js
 
 node_js:
   - "lts/*"
-  
-before_install:
-
 
 install:
-  - sudo apt-get install -y jq
-  - npm install -g gulp
   - npm install
-
 
 jobs:
   include:
-    - stage: Tests
+    - stage: tests
+      addons:
+        chrome: stable
+      before_install:
+        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
       script:
         - npm run markdownlint
+        - npm run test
 
     - stage: build and deploy
       script:
         - npm run build
-        #- gulp build.debug
-        #- docker run -d --name paella-test-nginx -v `pwd`/build:/usr/share/nginx/html:ro nginx:alpine
-        #- docker run -d --name paella-test-selenium --link paella-test-nginx:paella -p 4444:4444 selenium/standalone-chrome:3.3.0
-        #- gulp test:local
       before_deploy:
         - export PRERELEASE=$(bash ./.publish_scripts/is_prerelease_version.sh ${TRAVIS_TAG})
       deploy:

@@ -1,0 +1,43 @@
+
+.related-video-container {
+    z-index: 5;
+    background-color: rgba(255,255,255,0.7);
+}
+
+.related-video-container .related-video-link {
+    width: 30%;
+    overflow: hidden;
+    display: block;
+    background-color: white;
+    padding: 3px;
+    box-shadow: 1px 1px 3px 0px black;
+    position: absolute;
+    pointer-events: all;
+}
+
+.related-video-container .related-video-link.related-video-single {
+    width: 50%;
+    left: 25%;
+    top: 30%;
+}
+
+.related-video-container .related-video-link.related-video-dual-1 {
+    width: 30%;
+    left: 10%;
+    top: 30%;
+}
+
+.related-video-container .related-video-link.related-video-dual-2 {
+    width: 30%;
+    right: 10%;
+    top: 30%;
+}
+
+.related-video-container .related-video-link img {
+    width: 100%;
+}
+
+.related-video-container .related-video-link p {
+    width: 100%;
+    text-align: center;
+}

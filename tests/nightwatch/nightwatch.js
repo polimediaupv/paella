@@ -5,11 +5,20 @@ module.exports = {
 	"custom_assertions_path" : "",
 	"page_objects_path" : "",
 	"globals_path" : "",
-	
-	
+
+	"webdriver" : {
+		"start_process": true,
+		"server_path": "node_modules/.bin/chromedriver",
+		"cli_args": [
+			"--verbose"
+		],
+		"port": 9515
+	},
+
+
 	"test_settings" : {
 		"default" : {
-			"launch_url" : "http://paella",
+			"launch_url" : "http://localhost:8000",
 			"selenium_host"  : "localhost",
 			"selenium_port"  : 4444,
 			"silent": true,
@@ -19,7 +28,9 @@ module.exports = {
 			},
 			"desiredCapabilities": {
 				"browserName": "chrome",
-				"marionette": false
+				"chromeOptions" : {
+					"args" : ["disable-web-security", "ignore-certificate-errors", "headless"],
+				}
 			}
 		}
 	}

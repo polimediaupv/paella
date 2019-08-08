@@ -4,7 +4,6 @@ paella.addPlugin(function() {
 		getSubclass() { return "themeChooserPlugin"; }
 		getIconClass() { return 'icon-paintbrush'; }
 		getIndex() { return 2030; }
-		getMinWindowSize() { return 600; }
 		getName() { return "es.upv.paella.themeChooserPlugin"; }	
 		getDefaultToolTip() { return base.dictionary.translate("Change theme"); }	
 		getButtonType() { return paella.ButtonPlugin.type.popUpButton; }

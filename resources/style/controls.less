@@ -488,3 +488,16 @@ video::-webkit-media-controls-enclosure {
 video::-webkit-media-controls-panel {
     width: calc(100% + 8px); /* Adjust as needed */
 }
+
+#lazyLoadThumbnailContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    z-index: 20;    /* Over the video contaniner and video layout buttons, but under the play button */
+}
+
+.dimmed-element {
+    filter: blur(4px);
+}

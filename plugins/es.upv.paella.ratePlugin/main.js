@@ -6,7 +6,6 @@ paella.addPlugin(function() {
 		getSubclass() { return "rateButtonPlugin"; }
 		getIconClass() { return 'icon-star'; }
 		getIndex() { return 540; }
-		getMinWindowSize() { return 500; }
 		getName() { return "es.upv.paella.ratePlugin"; }
 		getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
 		getDefaultToolTip() { return base.dictionary.translate("Rate this video"); }		
