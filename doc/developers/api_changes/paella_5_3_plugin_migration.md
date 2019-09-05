@@ -1,7 +1,9 @@
 ---
 ---
 
-# Paella 5.3 API changes
+# Paella 5.3
+
+## API changes
 
 In Paella 5.2.x, the plugins were registered by instantiating their class:
 
@@ -38,7 +40,7 @@ paella.addPlugin(function() {
 });
 ```
 
-# Data delegates
+## Data delegates
 
 The data delegate definition has been modified using an identical approach as the new plugin definition system, but
 in this case, the new system is backward compatible. Anyway, the old data delegate definition system has been deprecated,

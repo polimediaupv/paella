@@ -1,16 +1,18 @@
 ---
 ---
 
-# JavaScript APIs to load Paella Player
+# Integration (Advanced)
+
+## JavaScript APIs to load Paella Player
 
 To integrate Paella Player in your portal, you must to suply a series of data about the video streams and the user account. 
 Some of these data are optional, but if aren't supplied is possible that some features are disabled.
 
-# Video data
+## Video data
 
 All the information about a particular video is stored in the video manifest file [video manifest file](../integrate_datajson.md). The video loading APIs are used to get the video manifest.
 
-# Loading API
+## Loading API
 
 There are many options for loading Paella Player. Let's see several examples starting from the following code:
 
@@ -173,6 +175,6 @@ function loadMyPlayer(containerId) {
 }
 ```
 
-# Upload and download data from your server
+## Upload and download data from your server
 
 Paella provides a homogeneous mechanism to write and read persistent data. You can see how it works [here](../../developers/paella_data.md)

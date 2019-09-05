@@ -23,10 +23,10 @@
     "gulp-replace": "^1.0.0",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-uglify-es": "^1.0.0",
-    "markdownlint-cli": "^0.17.0",
+    "markdownlint-cli": "^0.18.0",
     "natives": "^1.1.6",
     "nightwatch": "^1.1.13",
-    "chromedriver": "^75.0.1"
+    "chromedriver": "^76.0.0"
   },
   "scripts": {
     "test": "gulp test:local",
