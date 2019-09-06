@@ -116,6 +116,7 @@ class VideoRect extends paella.DomNode {
 		let eventCapture = document.createElement('div');
 		setTimeout(() => this.domElement.parentElement.appendChild(eventCapture), 10);
 
+		eventCapture.id = id + "EventCapture";
 		eventCapture.style.position = "absolute";
 		eventCapture.style.top = "0px";
 		eventCapture.style.left = "0px";
@@ -478,8 +479,14 @@ class VideoRect extends paella.DomNode {
 		}
 	}
 
+	get canvasData() {
+		let canvasType = Array.isArray(this._stream.canvas) && this._stream.canvas[0];
+		let canvasData = canvasType && paella.getVideoCanvasData(this._stream.canvas[0]) || { mouseEventsSupport: false, webglSupport: false };
+		return canvasData;
+	}
+
 	allowZoom() {
-		return true;
+		return !this.canvasData.mouseEventsSupport;
 	}
 
 	setZoom(zoom,left,top,tween=0) {
@@ -547,6 +554,10 @@ class VideoElementBase extends paella.VideoRect {
 		this._videoQualityStrategy = null;
 		
 		if (this._stream.preview) this.setPosterFrame(this._stream.preview);
+
+		if (this.canvasData.mouseEventsSupport) {
+			this.disableEventCapture();
+		}
 	}
 
 	get ready() { return this._ready; }
@@ -925,14 +936,11 @@ class Html5Video extends paella.VideoElementBase {
 			this.videoCanvas()
 				.then((CanvasClass) => {
 					let canvasInstance = new CanvasClass(stream);
+					this._zoomAvailable = canvasInstance.allowZoom();
 
 					if (window.$paella_bg && bg.app && canvasInstance instanceof bg.app.WindowController) {
 						// WebGL canvas
 						this.domElementType = 'canvas';
-						let video = this.video;
-						// Restore video events
-						//this._configureVideoEvents(video);
-
 						if (stream) {
 							this.canvasController = null;
 							let mainLoop = bg.app.MainLoop.singleton;
@@ -955,6 +963,7 @@ class Html5Video extends paella.VideoElementBase {
 				.then((canvas) => {
 					if (canvas && paella.WebGLCanvas && canvas instanceof paella.WebGLCanvas) {
 						this._video = canvas.video;
+						this._video.pause();
 						this._configureVideoEvents(this.video);
 					}
 					resolve(stream);

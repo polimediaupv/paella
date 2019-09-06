@@ -345,9 +345,6 @@ class Video360Theta extends paella.VideoElementBase {
 	}
 
 	// Initialization functions
-	allowZoom() {
-		return false;
-	}
 	
 	getVideoData() {
 		var This = this;

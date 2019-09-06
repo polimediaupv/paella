@@ -195,10 +195,6 @@ class HLSPlayer extends paella.Html5Video {
         });
     }
 
-    allowZoom() {
-        return true;
-    }
-    
     load() {
         if (this._posterFrame) {
             this.video.setAttribute("poster",this._posterFrame);

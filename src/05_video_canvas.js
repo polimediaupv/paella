@@ -8,6 +8,10 @@
         loadVideo(videoPlugin,stream) {
             return Promise.reject(new Error("Not implemented"));
         }
+
+        allowZoom() {
+            return true;
+        }
     }
 
     paella.VideoCanvas = VideoCanvas;
@@ -45,6 +49,10 @@
 
                 loadVideo(videoPlugin,stream) {
                     return Promise.reject(new Error("Not implemented"));
+                }
+
+                allowZoom() {
+                    return false;
                 }
 
                 // WebGL engine functions
@@ -187,6 +195,10 @@
 
                 get texture() { return this._texture; }
 
+                allowZoom() {
+                    return false;
+                }
+
                 loaded() {
                     return new Promise((resolve) => {
                         let checkLoaded = () => {
@@ -328,10 +340,11 @@
 
     let g_canvasCallbacks = {};
 
-    paella.addCanvasPlugin = function(canvasType, webglSupport, canvasPluginCallback) {
+    paella.addCanvasPlugin = function(canvasType, webglSupport, mouseEventsSupport, canvasPluginCallback) {
         g_canvasCallbacks[canvasType] = {
             callback: canvasPluginCallback,
-            webglSupport: webglSupport            
+            webglSupport: webglSupport,
+            mouseEventsSupport: mouseEventsSupport
         };
     }
 
@@ -391,8 +404,12 @@
         })
     }
 
+    paella.getVideoCanvasData = function(type) {
+        return g_canvasCallbacks[type];
+    }
+
     // Standard <video> canvas
-    paella.addCanvasPlugin("video", false, () => {
+    paella.addCanvasPlugin("video", false, false, () => {
         return class VideoCanvas extends paella.VideoCanvas {
             constructor(stream) {
                 super(stream);

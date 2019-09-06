@@ -268,9 +268,6 @@
 		}
 	
 		// Initialization functions
-		allowZoom() {
-			return false;
-		}
 		
 		getVideoData() {
 			var This = this;

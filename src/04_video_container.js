@@ -246,6 +246,11 @@ class VideoContainerBase extends paella.DomNode {
 			if (this.firstClick && !this._playOnClickEnabled) return;
 			paella.player.videoContainer.paused()
 				.then((paused) => {
+					// If some player needs mouse events support, the click is ignored
+					if (this.firstClick && this.streamProvider.videoPlayers.some((p) => p.canvasData.mouseEventsSupport)) {
+						return;
+					}
+
 					this.firstClick = true;
 					if (paused) {
 						paella.player.play();

@@ -96,11 +96,7 @@
 				}	
 			});
 		}
-	
-		allowZoom() {
-			return true;
-		}
-		
+			
 		load() {
 			if (this._posterFrame) {
 				this.video.setAttribute("poster",this._posterFrame);
