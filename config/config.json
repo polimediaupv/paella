@@ -6,7 +6,7 @@
     "videoQualityStrategyParams":{ "maxAutoQualityRes":720 },
     "reloadOnFullscreen": true,
     "videoZoom": {
-      "enabled":false,
+      "enabled":true,
       "max":800
     },
 
