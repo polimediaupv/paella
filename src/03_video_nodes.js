@@ -480,7 +480,7 @@ class VideoRect extends paella.DomNode {
 	}
 
 	get canvasData() {
-		let canvasType = Array.isArray(this._stream.canvas) && this._stream.canvas[0];
+		let canvasType = this._stream && Array.isArray(this._stream.canvas) && this._stream.canvas[0];
 		let canvasData = canvasType && paella.getVideoCanvasData(this._stream.canvas[0]) || { mouseEventsSupport: false, webglSupport: false };
 		return canvasData;
 	}
