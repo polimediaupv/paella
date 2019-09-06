@@ -132,7 +132,8 @@ paella.addPlugin(function() {
 			if ((this.enabled && this.isPlaying) || !this.enabled || !this.showIcon) {
 				$(this.container).hide();
 			}
-			else {
+			// Only show play button if none of the video players require mouse events
+			else if (!paella.player.videoContainer.streamProvider.videoPlayers.every((p) => p.canvasData.mouseEventsSupport)) {
 				$(this.container).show();
 			}
 		}	
