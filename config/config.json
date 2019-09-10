@@ -45,10 +45,7 @@
     "audioMethods":[
       { "factory":"MultiformatAudioFactory", "enabled":true }
     ],
-        "rtmpSettings":{
-            "bufferTime":5,
-      "requiresSubscription": false
-        },
+    "defaultAudioTag": "en",
     "slidesMarks":{
       "enabled":true,
       "color":"gray"
