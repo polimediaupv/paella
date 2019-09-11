@@ -45,7 +45,7 @@
     "audioMethods":[
       { "factory":"MultiformatAudioFactory", "enabled":true }
     ],
-    "defaultAudioTag": "en",
+    "defaultAudioTag": "",
     "slidesMarks":{
       "enabled":true,
       "color":"gray"
