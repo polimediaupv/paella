@@ -9,70 +9,79 @@ In this file we have all the setups concerning plugins.. streams.. compositions.
 
 ```javascript
 {
-	"player":{
-		"accessControlClass":"paella.AccessControl",
-		"profileFrameStrategy": "paella.ProfileFrameStrategy",
-		"videoQualityStrategy": "paella.BestFitVideoQualityStrategy",
-		"reloadOnFullscreen": false,
-
-		"methods":[
-			{ "factory":"ChromaVideoFactory", "enabled":true },
-			{ "factory":"WebmVideoFactory", "enabled":true },
-			{ "factory":"Html5VideoFactory", "enabled":true },
-			{ "factory":"MpegDashVideoFactory", "enabled":true },
-			{ "factory":"HLSVideoFactory", "enabled":true },
-			{ "factory":"RTMPVideoFactory", "enabled":true },
-			{ "factory":"ImageVideoFactory", "enabled":true },
-			{ "factory":"YoutubeVideoFactory", "enabled":true }
-		],
-		"audioMethods":[
-			{ "factory":"MultiformatAudioFactory", "enabled":true }
-		],
-	   	"audio": {
-	   		"master": 1.0
-	    },
-	    "rtmpSettings":{
-	    	"bufferTime":5,
-	    	"requiresSubscription": false
-       },
-		"slidesMarks":{
-			"enabled":true,
-			"color":"gray"
-		}
-	},
-	"defaultProfile":"slide_professor",
-	"data":{
-		"enabled":true,
-		"dataDelegates":{
-			"default":"CookieDataDelegate",
-			"trimming":"CookieDataDelegate",
-			"userInfo": "UserDataDelegate",
-			"visualAnnotations": "VisualAnnotationsDataDelegate"
-		}
-	},
-	"folders": {
-		"profiles": "config/profiles",
-		"resources": "resources",
-		"skins": "resources/style"
-	},
-	"experimental":{
-		"autoplay":true
-	},
-	"plugins":{
-		"enablePluginsByDefault": false,		
-
-		"//**** Instructions: Disable any individual plugin by setting its enable property to false": {"enabled": false},
-		"//**** For a list of available plugins and configuration, go to": "https://github.com/polimediaupv/paella/blob/master/doc/plugins.md",
-		"list":{
-			"audioMethods":[
-			{ "factory":"MultiformatAudioFactory", "enabled":true }
-		],
-        }
-	},
-    "standalone" : {
-        "repository": "../repository/"
+  "player":{
+    "accessControlClass":"paella.AccessControl",
+    "profileFrameStrategy": "paella.ProfileFrameStrategy",
+    "videoQualityStrategy": "paella.LimitedBestFitVideoQualityStrategy",
+    "videoQualityStrategyParams":{ "maxAutoQualityRes":720 },
+    "reloadOnFullscreen": true,
+    "videoZoom": {
+      "enabled":true,
+      "max":800
+    },
+    "methods":[
+      { "factory":"Html5VideoFactory", "enabled":true },
+      { "factory":"MpegDashVideoFactory", "enabled":true },
+      {
+        "factory":"HLSVideoFactory",
+        "enabled":true,
+        "config": {
+        	"maxBufferLength": 30,
+			"maxMaxBufferLength": 600,
+			"maxBufferSize": 60000000,
+			"maxBufferHole": 0.5,
+			"lowBufferWatchdogPeriod": 0.5,
+        	"highBufferWatchdogPeriod": 3
+        },
+        "iOSMaxStreams": 2,
+        "androidMaxStreams": 2
+      },
+      { "factory":"ImageVideoFactory", "enabled":true },
+      { "factory":"YoutubeVideoFactory", "enabled":true }
+    ],
+    "audioMethods":[
+      { "factory":"MultiformatAudioFactory", "enabled":true }
+    ],
+    "defaultAudioTag": "",
+    "slidesMarks":{
+      "enabled":true,
+      "color":"gray"
     }
+  },
+  "data":{
+    "enabled":true,
+    "dataDelegates":{
+      "trimming":"CookieDataDelegate",
+      "metadata":"VideoManifestMetadataDataDelegate",
+      "cameraTrack":"TrackCameraDataDelegate"
+    }
+  },
+  "folders": {
+    "profiles": "config/profiles",
+    "resources": "resources",
+    "skins": "resources/style"
+  },
+  "plugins":{
+    "enablePluginsByDefault": false,
+
+    "list": {
+      "es.upv.paella.playPauseButtonPlugin": {"enabled":true},
+      "other.plugin": { "enabled": true, "other":"plugin configuration" }
+    }
+  },
+  "standalone" : {
+    "repository": "../repository/"
+  },
+  "skin": {
+    "available": [
+      "dark",
+      "dark_small",
+      "light",
+      "light_small"
+    ]
+  }
 }
+
 
 
 ```
@@ -92,6 +101,10 @@ Use "defaultProfile" for set the default video composition.
 ## How to set/modify data delegates?
 
 Take a look to the [DataDelegate](../developers/paella_data.md) page.
+
+## How to specify the default audio tag?
+
+Use the "defaultAudioTag" property. If this property is not set, the default audio tag is the current language code of the browser.
 
 
 ## Can I choose when a plugin is shown depending on the play mode ( embed, fullScreen, standard .. etc )?
