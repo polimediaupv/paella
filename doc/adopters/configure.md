@@ -1,7 +1,9 @@
 ---
 ---
 
-# Configuration File in Paella Player
+# Configuration
+
+## Configuration File in Paella Player
 
 The core file for configure Paella Player is under the config folder and its called "config.json". 
 In this file we have all the setups concerning plugins.. streams.. compositions.. skins.. 
@@ -86,19 +88,19 @@ In this file we have all the setups concerning plugins.. streams.. compositions.
 
 ```
 
-# How To ?
+## How To ?
 
-## How to set streaming method priority?
+### How to set streaming method priority?
 
 In "player" : { "methods" } We can set the priority of streaming method.
 
 
-## How set the default composition?
+### How set the default composition?
 
 Use "defaultProfile" for set the default video composition.
 
 
-## How to set/modify data delegates?
+### How to set/modify data delegates?
 
 Take a look to the [DataDelegate](../developers/paella_data.md) page.
 
@@ -107,7 +109,7 @@ Take a look to the [DataDelegate](../developers/paella_data.md) page.
 Use the "defaultAudioTag" property. If this property is not set, the default audio tag is the current language code of the browser.
 
 
-## Can I choose when a plugin is shown depending on the play mode ( embed, fullScreen, standard .. etc )?
+### Can I choose when a plugin is shown depending on the play mode ( embed, fullScreen, standard .. etc )?
 
 Inside config file at plugins section you can set the mode for show the plugin using:
 
