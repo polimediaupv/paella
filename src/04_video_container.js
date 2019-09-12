@@ -897,7 +897,8 @@ class VideoContainer extends paella.VideoContainerBase {
 		this.setProfileFrameStrategy(paella.ProfileFrameStrategy.Factory());
 		this.setVideoQualityStrategy(paella.VideoQualityStrategy.Factory());
 
-		this._audioTag = paella.dictionary.currentLanguage();
+		this._audioTag = paella.player.config.player.defaultAudioTag ||
+						 paella.dictionary.currentLanguage();
 		this._audioPlayer = null;
 		this._volume = 1;
 	}

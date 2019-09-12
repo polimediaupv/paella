@@ -16,14 +16,6 @@ paella.addPlugin(function() {
 					onSuccess(tags.length>1);
 				});
 		}
-			
-		setup() {
-			var This = this;
-			this.setTagLabel();
-			paella.events.bind(paella.events.audioTagChanged, () => {
-				this.setTagLabel();
-			});
-		}
 
 		getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
 		
@@ -36,7 +28,7 @@ paella.addPlugin(function() {
 		getItemButton(lang) {
 			var elem = document.createElement('div');
 			let currentTag = paella.player.videoContainer.audioTag;
-			let label = paella.dictionary.translate(lang);
+			let label = lang.replace(/[-\_]/g," ");
 			elem.className = this.getButtonItemClass(label,lang==currentTag);
 			elem.id = "audioTagSelectorItem_" + lang;
 			elem.innerText = label;
@@ -60,10 +52,6 @@ paella.addPlugin(function() {
 
 		getButtonItemClass(tag,selected) {
 			return 'videoAudioTrackItem ' + tag  + ((selected) ? ' selected':'');
-		}
-
-		setTagLabel() {
-			this.setText(paella.player.videoContainer.audioTag);
 		}
 	}
 });

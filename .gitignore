@@ -10,3 +10,4 @@ repository_test/repository/local*
 tests/nightwatch/reports/*
 \.vscode/
 .eslintrc
+chromedriver.log

@@ -1,6 +1,19 @@
 CHANGELOG
 =========
 
+* Paella 6.3.0
+
+  * New feature: video canvas
+
+
+* Paella 6.2.1
+
+  * New setting added to configure the default audio tag to use.
+  * The video zoom is now enabled by default.
+  * Improvements in the processing of the video end event
+  * Other bug fixes
+  
+
 * Paella 6.2.0
 
   * Lazy load: Paella Player will load the minimum resources requrired until the user press play. See the documentation for more information about how to enabler it.
