@@ -151,10 +151,7 @@ class Caption {
 		this._format = format;
 		this._url = url;
 		this._captions = undefined;
-		this._index = lunr(function () {
-			this.ref('id');
-			this.field('content', {boost: 10});
-		});
+		this._index = undefined;
 		
 		if (typeof(lang) == "string") { lang = {code: lang, txt: lang}; }
 		this._lang = lang;
@@ -201,17 +198,21 @@ class Caption {
 				parser.parse(dataRaw, self._lang.code, function(err, c) {
 					if (!err) {
 						self._captions = c;
-						
-						self._captions.forEach(function(cap){
-							self._index.add({
-								id: cap.id,
-								content: cap.content,
-							});				
-						});							
+						self._index = lunr(function () {
+							var thisLunr = this;
+							thisLunr.ref('id');
+							thisLunr.field('content', {boost: 10});
+							self._captions.forEach(function(cap){
+								thisLunr.add({
+									id: cap.id,
+									content: cap.content,
+								});
+							});
+						});
 					}
-					if (next) { next(err); }						
+					if (next) { next(err); }
 				});
-			}			
+			}
 		})
 		.fail(function(error){
 			base.log.debug("Error loading captions: " + self._url);
