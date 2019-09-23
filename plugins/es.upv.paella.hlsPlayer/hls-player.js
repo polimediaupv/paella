@@ -1,6 +1,8 @@
 
 (() => {
 
+	let s_preventVideoDump = [];
+
 	class HLSPlayer extends paella.Html5Video {
 		get config() {
 			let config = {
@@ -96,72 +98,114 @@
 				}	
 			});
 		}
-			
-		load() {
-			if (this._posterFrame) {
-				this.video.setAttribute("poster",this._posterFrame);
-			}
-			
-			if (base.userAgent.system.iOS)// ||
-			//	base.userAgent.browser.Safari)
-			{
-				return super.load();
-			}
-			else {
-				let This = this;
-				return new Promise((resolve,reject) => {
-					var source = this._stream.sources.hls;
-					if (source && source.length>0) {
-						source = source[0];
-						this._loadDeps()
-							.then(function(Hls) {
-								if(Hls.isSupported()) {
-									let cfg = This.config;
-									This._hls = new Hls(cfg);
-									This._hls.loadSource(source.src);
-									This._hls.attachMedia(This.video);
-									This.autoQuality = true;
 	
-									This._hls.on(Hls.Events.LEVEL_SWITCHED, function(ev, data) {
-										This._qualities = This._qualities || [];
-										This.qualityIndex = This.autoQuality ? This._qualities.length - 1 : data.level;
-										paella.events.trigger(paella.events.qualityChanged,{});
-										if (console && console.log) console.log(`HLS: quality level changed to ${ data.level }`);
-									});
-									
-									This._hls.on(Hls.Events.ERROR, function (event, data) {
-										//deal with nonfatal media errors that might come from redirects after session expiration
-										if (data.fatal) {
-											switch(data.type) {
-											case Hls.ErrorTypes.NETWORK_ERROR:
-												base.log.error("paella.HLSPlayer: Fatal network error encountered, try to recover");
-												This._hls.startLoad();
-												break;
-											case Hls.ErrorTypes.MEDIA_ERROR:
-												base.log.error("paella.HLSPlayer: Fatal media error encountered, try to recover");
-												This._hls.recoverMediaError();
-												break;
-											default:
-												base.log.error("paella.HLSPlayer: Fatal Error. Can not recover");
-												This._hls.destroy();
-												reject(new Error("invalid media"));
-												break;
-											}
-										}
-									});
-									This._hls.on(Hls.Events.MANIFEST_PARSED,function() {
-										This._deferredAction(function() {
-											resolve();
-										});
-									});
+		webGlDidLoad() {
+			// Register a new video loader in the webgl engine, to enable the
+			// hls compatibility in webgl canvas
+			bg.utils.HTTPResourceProvider.AddVideoLoader('m3u8', (url,onSuccess,onFail) => {
+				var video = document.createElement("video");
+				s_preventVideoDump.push(video);
+				this._loadDeps()
+					.then((Hls) => {
+						if (Hls.isSupported()) {
+							let cfg = this.config;
+							this._hls = new Hls(cfg);
+							this._hls.loadSource(url);
+							this._hls.attachMedia(video);
+							this.autoQuality = true;
+
+							this._hls.on(Hls.Events.LEVEL_SWITCHED, (ev,data) => {
+								this._qualities = this._qualities || [];
+								this._qualityIndex = this.autoQuality ? this._qualities.length - 1 : data.level;
+								paella.events.trigger(paella.events.qualityChanged,{});
+								if (console && console.log) console.log(`HLS: quality level changed to ${ data.level }`);
+							});
+
+							this._hls.on(Hls.Events.ERROR, (event, data) => {
+								if (data.fatal) {
+									switch (data.type) {
+									case Hls.ErrorTypes.NETWORK_ERROR:
+										console.error("paella.HLSPlayer: Fatal network error encountered, try to recover");
+										this._hls.startLoad();
+										break;
+									case Hls.ErrorTypes.MEDIA_ERROR:
+										console.error("paella.HLSPlayer: Fatal media error encountered, try to recover");
+										this._hls.recoverMediaError();
+										break;
+									default:
+										console.error("paella.HLSPlayer: Fatal error. Can not recover");
+										this._hls.destroy();
+										onFail(new Errro("Invalid media"));
+										break;
+									}
 								}
 							});
-					}
-					else {
-						reject(new Error("Invalid source"));
-					}
+
+							this._hls.on(Hls.Events.MANIFEST_PARSED, () => {
+								//this._deferredAction(function() {
+									onSuccess(video);
+								//});
+							});
+						}
+						else {
+							onFail(new Error("HLS not supported"));
+						}
+					})
+			});
+			return Promise.resolve();
+		}
+
+		loadVideoStream(canvasInstance,stream) {
+			return canvasInstance.loadVideo(this,stream,(videoElem) => {
+				return new Promise((resolve,reject) => {
+					this._loadDeps()
+						.then((Hls) => {
+							if (Hls.isSupported()) {
+								let cfg = this.config;
+								this._hls = new Hls(cfg);
+								this._hls.loadSource(stream.src);
+								this._hls.attachMedia(videoElem);
+								this.autoQuality = true;
+
+								this._hls.on(Hls.Events.LEVEL_SWITCHED, (ev,data) => {
+									this._qualities = this._qualities || [];
+									this._qualityIndex = this.autoQuality ? this._qualities.length - 1 : data.level;
+									paella.events.trigger(paella.events.qualityChanged,{});
+									if (console && console.log) console.log(`HLS: quality level changed to ${ data.level }`);
+								});
+
+								this._hls.on(Hls.Events.ERROR, (event, data) => {
+									if (data.fatal) {
+										switch (data.type) {
+										case Hls.ErrorTypes.NETWORK_ERROR:
+											console.error("paella.HLSPlayer: Fatal network error encountered, try to recover");
+											this._hls.startLoad();
+											break;
+										case Hls.ErrorTypes.MEDIA_ERROR:
+											console.error("paella.HLSPlayer: Fatal media error encountered, try to recover");
+											this._hls.recoverMediaError();
+											break;
+										default:
+											console.error("paella.HLSPlayer: Fatal error. Can not recover");
+											this._hls.destroy();
+											reject(new Errro("Invalid media"));
+											break;
+										}
+									}
+								});
+
+								this._hls.on(Hls.Events.MANIFEST_PARSED, () => {
+									this._deferredAction(function() {
+										resolve();
+									});
+								});
+							}
+							else {
+								reject(new Error("HLS not supported"));
+							}
+						})
 				});
-			}
+			});
 		}
 	
 		getQualities() {
