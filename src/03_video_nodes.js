@@ -924,6 +924,10 @@ class Html5Video extends paella.VideoElementBase {
 		return paella.getVideoCanvas(canvasType);
 	}
 
+	webGlDidLoad() {
+		return Promise.resolve();
+	}
+
 	load() {
 		return new Promise((resolve,reject) => {
 			var sources = this._stream.sources[this._streamName];
@@ -942,22 +946,33 @@ class Html5Video extends paella.VideoElementBase {
 						// WebGL canvas
 						this.domElementType = 'canvas';
 						if (stream) {
-							this.canvasController = null;
-							let mainLoop = bg.app.MainLoop.singleton;
 
-							mainLoop.updateMode = bg.app.FrameUpdate.AUTO;
-							mainLoop.canvas = this.domElement;
-							mainLoop.run(canvasInstance);
-							return canvasInstance.loadVideo(this,stream);
+							// WebGL engine load callback
+							return new Promise((webglResolve,webglReject) => {
+								this.webGlDidLoad()
+									.then(() => {
+										this.canvasController = null;
+										let mainLoop = bg.app.MainLoop.singleton;
+
+										mainLoop.updateMode = bg.app.FrameUpdate.AUTO;
+										mainLoop.canvas = this.domElement;
+										mainLoop.run(canvasInstance);
+										return this.loadVideoStream(canvasInstance,stream);
+									})
+
+									.then((canvas) => {
+										webglResolve(canvas);
+									})
+									.catch((err) => webglReject(err));
+							});
 						}
 						else {
 							Promise.reject(new Error("Invalid stream data."));
 						}
 					}
 					else {
-						return canvasInstance.loadVideo(this,stream);
+						return this.loadVideoStream(canvasInstance,stream);
 					}
-					
 				})
 	
 				.then((canvas) => {
@@ -973,6 +988,10 @@ class Html5Video extends paella.VideoElementBase {
 					reject(err);
 				});
 		});
+	}
+
+	loadVideoStream(canvasInstance,stream) {
+		return canvasInstance.loadVideo(this,stream);
 	}
 
 	disable(isMainAudioPlayer) {

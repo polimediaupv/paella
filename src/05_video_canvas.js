@@ -415,24 +415,30 @@
                 super(stream);
             }
 
-            loadVideo(videoPlugin,stream) {
+            loadVideo(videoPlugin,stream,doLoadCallback = null) {
                 return new Promise((resolve,reject) => {
-                    let video = videoPlugin.video;
-                    var sourceElem = video.querySelector('source');
-                    if (!sourceElem) {
-                        sourceElem = document.createElement('source');
-                        video.appendChild(sourceElem);
-                    }
-                    if (video._posterFrame) {
-                        video.setAttribute("poster",video._posterFrame);
-                    }
-        
-                    sourceElem.src = stream.src;
-                    sourceElem.type = stream.type;
-                    video.load();
-                    video.playbackRate = video._playbackRate || 1;
+                    doLoadCallback = doLoadCallback || function(video) {
+                        return new Promise((cbResolve,cbReject) => {
+                            var sourceElem = video.querySelector('source');
+                            if (!sourceElem) {
+                                sourceElem = document.createElement('source');
+                                video.appendChild(sourceElem);
+                            }
+                            if (video._posterFrame) {
+                                video.setAttribute("poster",video._posterFrame);
+                            }
+                
+                            sourceElem.src = stream.src;
+                            sourceElem.type = stream.type;
+                            video.load();
+                            video.playbackRate = video._playbackRate || 1;
+                            cbResolve();
+                        })
+                    };
 
-                    resolve(stream);
+                    doLoadCallback(videoPlugin.video).then(() => {
+                        resolve(stream);
+                    });
                 });
             }
         }
