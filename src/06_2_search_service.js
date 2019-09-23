@@ -90,5 +90,6 @@ class SearchServicePlugIn extends paella.FastLoadPlugin {
 }
 
 paella.SearchServicePlugIn = SearchServicePlugIn;
+searchServiceManager.initialize();
 
 }());
