@@ -99,12 +99,8 @@
 			});
 		}
 	
-		webGlDidLoad() {
-			// Register a new video loader in the webgl engine, to enable the
-			// hls compatibility in webgl canvas
-			bg.utils.HTTPResourceProvider.AddVideoLoader('m3u8', (url,onSuccess,onFail) => {
-				var video = document.createElement("video");
-				s_preventVideoDump.push(video);
+		setupHls(video,url) {
+			return new Promise((resolve,reject) => {
 				this._loadDeps()
 					.then((Hls) => {
 						if (Hls.isSupported()) {
@@ -135,7 +131,7 @@
 									default:
 										console.error("paella.HLSPlayer: Fatal error. Can not recover");
 										this._hls.destroy();
-										onFail(new Errro("Invalid media"));
+										reject(new Errro("Invalid media"));
 										break;
 									}
 								}
@@ -143,68 +139,33 @@
 
 							this._hls.on(Hls.Events.MANIFEST_PARSED, () => {
 								//this._deferredAction(function() {
-									onSuccess(video);
+									resolve(video);
 								//});
 							});
 						}
 						else {
-							onFail(new Error("HLS not supported"));
+							reject(new Error("HLS not supported"));
 						}
 					})
+			});
+		}
+
+		webGlDidLoad() {
+			// Register a new video loader in the webgl engine, to enable the
+			// hls compatibility in webgl canvas
+			bg.utils.HTTPResourceProvider.AddVideoLoader('m3u8', (url,onSuccess,onFail) => {
+				var video = document.createElement("video");
+				s_preventVideoDump.push(video);
+				this.setupHls(video,url)
+					.then(() => onSuccess(video))
+					.catch(() => onFail());
 			});
 			return Promise.resolve();
 		}
 
 		loadVideoStream(canvasInstance,stream) {
 			return canvasInstance.loadVideo(this,stream,(videoElem) => {
-				return new Promise((resolve,reject) => {
-					this._loadDeps()
-						.then((Hls) => {
-							if (Hls.isSupported()) {
-								let cfg = this.config;
-								this._hls = new Hls(cfg);
-								this._hls.loadSource(stream.src);
-								this._hls.attachMedia(videoElem);
-								this.autoQuality = true;
-
-								this._hls.on(Hls.Events.LEVEL_SWITCHED, (ev,data) => {
-									this._qualities = this._qualities || [];
-									this._qualityIndex = this.autoQuality ? this._qualities.length - 1 : data.level;
-									paella.events.trigger(paella.events.qualityChanged,{});
-									if (console && console.log) console.log(`HLS: quality level changed to ${ data.level }`);
-								});
-
-								this._hls.on(Hls.Events.ERROR, (event, data) => {
-									if (data.fatal) {
-										switch (data.type) {
-										case Hls.ErrorTypes.NETWORK_ERROR:
-											console.error("paella.HLSPlayer: Fatal network error encountered, try to recover");
-											this._hls.startLoad();
-											break;
-										case Hls.ErrorTypes.MEDIA_ERROR:
-											console.error("paella.HLSPlayer: Fatal media error encountered, try to recover");
-											this._hls.recoverMediaError();
-											break;
-										default:
-											console.error("paella.HLSPlayer: Fatal error. Can not recover");
-											this._hls.destroy();
-											reject(new Errro("Invalid media"));
-											break;
-										}
-									}
-								});
-
-								this._hls.on(Hls.Events.MANIFEST_PARSED, () => {
-									this._deferredAction(function() {
-										resolve();
-									});
-								});
-							}
-							else {
-								reject(new Error("HLS not supported"));
-							}
-						})
-				});
+				return this.setupHls(videoElem,stream.src);
 			});
 		}
 	
