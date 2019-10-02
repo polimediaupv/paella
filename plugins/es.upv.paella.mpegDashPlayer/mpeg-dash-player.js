@@ -4,7 +4,7 @@
 class MpegDashVideo extends paella.Html5Video {
 
 	constructor(id,stream,left,top,width,height) {
-		super(id,stream,left,top,width,height);
+		super(id,stream,left,top,width,height,'mpd');
 		this._posterFrame = null;
 		this._player = null;
 	}
@@ -38,37 +38,79 @@ class MpegDashVideo extends paella.Html5Video {
 		};
 	}
 
-	load() {
+	webGlDidLoad() {
+		// Register a new video loader in the webgl engine, to enable the
+		// hls compatibility in webgl canvas
+		bg.utils.HTTPResourceProvider.AddVideoLoader('mpd', (url,onSuccess,onFail) => {
+			var video = document.createElement("video");
+			s_preventVideoDump.push(video);
+			// this.setupHls(video,url)
+			// 	.then(() => onSuccess(video))
+			// 	.catch(() => onFail());
+		});
+		return Promise.resolve();
+	}
+
+	loadVideoStream(canvasInstance,stream) {
 		let This = this;
-		return new Promise((resolve,reject) => {
-			var source = this._stream.sources.mpd;
-			if (source && source.length>0) {
-				source = source[0];
+		return canvasInstance.loadVideo(this,stream,(videoElem) => {
+			return new Promise((resolve,reject) => {
 				this._loadDeps()
-					.then(function() {
-						var context = dashContext;
+					.then(() => {
+						
 						var player = dashjs.MediaPlayer().create();
-						var dashContext = context;
-						player.initialize(This.video,source.src,true);
+						player.initialize(videoElem,stream.src,true);
 						player.getDebug().setLogToBrowserConsole(false);
-						This._player = player;
-						player.on(dashjs.MediaPlayer.events.STREAM_INITIALIZED,function(a,b) {
+						this._player = player;
+
+						
+						player.on(dashjs.MediaPlayer.events.STREAM_INITIALIZED, function(a,b) {
 							var bitrates = player.getBitrateInfoListFor("video");
 							This._deferredAction(function() {
 								if (!This._firstPlay) {
 									This._player.pause();
-									This._firstPlay = true;	
+									This._firstPlay = true;
 								}
 								resolve();
 							});
 						});
+				
 					});
-			}
-			else {
-				reject(new Error("Invalid source"));
-			}
-		});
+				});
+		}); 
 	}
+
+	// load() {
+	// 	let This = this;
+	// 	return new Promise((resolve,reject) => {
+	// 		var source = this._stream.sources.mpd;
+	// 		if (source && source.length>0) {
+	// 			source = source[0];
+	// 			this._loadDeps()
+	// 				.then(function() {
+	// 					var context = dashContext;
+	// 					var player = dashjs.MediaPlayer().create();
+	// 					var dashContext = context;
+	// 					player.initialize(This.video,source.src,true);
+	// 					player.getDebug().setLogToBrowserConsole(false);
+	// 					This._player = player;
+	// 					player.on(dashjs.MediaPlayer.events.STREAM_INITIALIZED,function(a,b) {
+	// 						var bitrates = player.getBitrateInfoListFor("video");
+	// 						This._deferredAction(function() {
+	// 							if (!This._firstPlay) {
+	// 								This._player.pause();
+	// 								This._firstPlay = true;	
+	// 							}
+	// 							resolve();
+	// 						});
+	// 					});
+	// 				});
+	// 		}
+	// 		else {
+	// 			reject(new Error("Invalid source"));
+	// 		}
+	// 	});
+	// }
 
 	supportAutoplay() {
 		return true;
