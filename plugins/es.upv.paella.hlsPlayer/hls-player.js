@@ -196,14 +196,17 @@
 								index: index,
 								res: { w:q.width, h:q.height },
 								bitrate: q.bitrate
-							}));						
-						});					
-						This._qualities.push(
-							This._getQualityObject(This._qualities.length, {
-								index:This._qualities.length,
-								res: { w:0, h:0 },
-								bitrate: 0
-							}));
+							}));					
+						});
+						if (this._qualities.length>1) {
+							// If there is only one quality level, don't add the "auto" option
+							This._qualities.push(
+								This._getQualityObject(This._qualities.length, {
+									index:This._qualities.length,
+									res: { w:0, h:0 },
+									bitrate: 0
+								}));
+						}
 					}
 					This.qualityIndex = This._qualities.length - 1;
 					resolve(This._qualities);

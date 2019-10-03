@@ -7,7 +7,7 @@ paella.addPlugin(function() {
 		getName() { return "es.upv.paella.volumeRangePlugin"; }
 		//getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
 		getDefaultToolTip() { return base.dictionary.translate("Volume"); }
-		getIndex() {return 120;}
+		getIndex() {return 9999;}
 		getAriaLabel() { return base.dictionary.translate("Volume"); }
 
 		

@@ -18,7 +18,7 @@ paella.addPlugin(function() {
 			this._domElement = null;
 			this.available_rates =  null;
 			var enabled = (!base.userAgent.browser.IsMobileVersion && paella.player.videoContainer.masterVideo() instanceof paella.Html5Video);
-			onSuccess(enabled);
+			onSuccess(enabled && !paella.player.videoContainer.streamProvider.isLiveStreaming);
 		}
 
 		closeOnMouseOut() { return true; }
