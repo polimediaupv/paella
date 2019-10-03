@@ -8,7 +8,7 @@
 			"sources": {
 				"hls": [
 					{
-						"src": "http://158.42.9.94:1935/VODTestMau/smil:belmar-demo.smil/playlist.m3u8",
+						"src": "https://streaming.upv.es/test-media/smil:soloUnaResolucion.smil/playlist.m3u8",
                         "mimetype": "video/mp4",
                         "isLiveStream": true
                     }
@@ -16,19 +16,6 @@
 			},
             "preview": "",
 			"content":"presenter"
-		},
-		{
-			"sources": {
-				"hls": [
-					{
-						"src": "http://158.42.9.94:1935/VODTestMau/smil:belmar-demo.smil/playlist.m3u8",
-                        "mimetype": "video/mp4",
-                        "isLiveStream": true
-                    }
-                ]
-			},
-            "preview": "",
-			"content":"presentation"
 		}
 	],
 	"frameList": [
