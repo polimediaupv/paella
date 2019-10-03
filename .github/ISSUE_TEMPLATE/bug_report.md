@@ -5,40 +5,27 @@ labels: bug
 
 ---
 
-**Describe the bug**
+# Describe the bug
 A clear and concise description of what the bug is.
 
-**To Reproduce**
+# To Reproduce
 Steps to reproduce the behavior:
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
 4. See error
 
-**Actual Behavior**
-A clear and concise description of the actual behavior.
+# Workaround (if any)
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+# Environment Information
+ - OS: [e.g. Windows, MacOS, iOS 8.1, CentOS 7]
+ - Browser [e.g. Safari, Chrome]
+ - Browser Version [e.g. 22]
+ - Paella version [e.g. 6.0.0, 6.2.2, 6.2.x if using a branch]
 
-**Workaround (if any)**
-
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
-
-**Desktop (please complete the following information):**
- - OS: [e.g. Windows, MacOS, iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
-
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
-
-**Additional context**
+# Additional context
 Add any other context about the problem here.
 
+If applicable, add screenshots to help explain your problem.
 
 Thank you for contributing!

@@ -1,4 +1,6 @@
 
+// Change this data delegate to read the related videos form an external source
+// Default behaviour is to get the related videos from the data.json file
 
 paella.addDataDelegate("relatedVideos",() => {
     return class RelatedVideoDataDelegate extends paella.DataDelegate {
