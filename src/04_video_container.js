@@ -240,7 +240,14 @@ class VideoContainerBase extends paella.DomNode {
 		this._seekType = paella.SeekType.FULL;
 		this._seekTimeLimit = 0;
 		this._attenuationEnabled = false;
-		
+		this._maxSyncDelay = 0.3;
+		this._videoSyncTimeMillis = 5000;
+
+		setTimeout(function() {
+			let repeat = true;
+			paella.player.videoContainer.syncVideos(repeat);
+		}, this._videoSyncTimeMillis);
+
 		$(this.domElement).click((evt) => {
 			if (this.firstClick && base.userAgent.browser.IsMobileVersion) return;
 			if (this.firstClick && !this._playOnClickEnabled) return;
@@ -322,6 +329,40 @@ class VideoContainerBase extends paella.DomNode {
 	}
 
 	get seekType() { return this._seekType; }
+
+	/**
+	* Synchronize the current time of the video container players
+	* @param {booloean} [repeat] default is False: to not set a timer to call syncVideos.
+	*                   set to True: to set the timer to call syncVideos again as last step.
+	*/
+	syncVideos(repeat) {
+	  repeat = repeat || false;
+	  let self = this;
+	  paella.player.videoContainer.masterVideo().getVideoData().then(function (videoData) {
+			let currentTime = videoData.currentTime;
+			let streams = paella.player.videoContainer.streamProvider.videoPlayers;
+			let promises = [];
+			let updated = [];
+			streams.forEach(v => {
+				let diff = Math.abs(v.video.currentTime - currentTime);
+				if (v !== paella.player.videoContainer.streamProvider.mainAudioPlayer
+					&& !v.video.paused && diff > self._maxSyncDelay) {
+				  let shorttime = parseFloat(currentTime).toFixed(3);
+				  base.log.debug(`Sync video=${v.video.id}, paused=${v.video.paused}, timediff=${shorttime}`);
+				  updated.push(v);
+				  promises.push(v.setCurrentTime(shorttime));
+				}
+			});
+			Promise.all(promises).then(function() {
+				base.log.debug(`Synced ${updated.length} videos`);
+				if (repeat) {
+					setTimeout(function() {
+						paella.player.videoContainer.syncVideos(true);
+					}, self._videoSyncTimeMillis);
+				}
+			});
+		});
+	}
 
 	triggerTimeupdate() {
 		var paused = 0;
