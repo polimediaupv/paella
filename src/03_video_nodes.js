@@ -1002,13 +1002,15 @@ class Html5Video extends paella.VideoElementBase {
 	}
 
 	enable(isMainAudioPlayer) {
-		//if (isMainAudioPlayer) return;
+		//if (isMainAudioPlayer || !this._isDisabled) return;
 		//this._isDisabled = false;
 		//let This = this;
 		//paella.player.videoContainer.masterVideo().getVideoData().then(function (videoData) {
 		//	let currentTime = videoData.currentTime;
 		//	let paused = videoData.paused;
-		//	paella.player.videoContainer.seekToTime(currentTime);
+		//	let shorttime = parseFloat(currentTime).toFixed(3);
+		//	if (shorttime < 0.1) shorttime = 0.1; //iOS protection
+		//	paella.player.videoContainer.seekToTime(shorttime);
 		//	if (paused) {
 		//		if (This._playState) {
 		//			base.log.debug(`Video '${This.video.id}' was playing, but leaving it in paused state like the main video.`)

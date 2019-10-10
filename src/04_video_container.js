@@ -336,30 +336,34 @@ class VideoContainerBase extends paella.DomNode {
 	*                   set to True: to set the timer to call syncVideos again as last step.
 	*/
 	syncVideos(repeat) {
-	  repeat = repeat || false;
-	  let self = this;
-	  paella.player.videoContainer.masterVideo().getVideoData().then(function (videoData) {
+		repeat = repeat || false;
+		let self = this;
+		paella.player.videoContainer.masterVideo().getVideoData().then(function (videoData) {
 			let currentTime = videoData.currentTime;
 			let streams = paella.player.videoContainer.streamProvider.videoPlayers;
 			let promises = [];
 			let updated = [];
+			let shorttime = 0.1;
 			streams.forEach(v => {
 				let diff = Math.abs(v.video.currentTime - currentTime);
-				if (v !== paella.player.videoContainer.streamProvider.mainAudioPlayer
-					&& !v.video.paused && diff > self._maxSyncDelay) {
-				  let shorttime = parseFloat(currentTime).toFixed(3);
-				  base.log.debug(`Sync video=${v.video.id}, paused=${v.video.paused}, timediff=${shorttime}`);
-				  updated.push(v);
-				  promises.push(v.setCurrentTime(shorttime));
+				base.log.debug(`About to test sync video=${v.video.id}, content=${v._stream.content}, paused=${v.video.paused}, timediff=${diff}`);
+				if ((v !== paella.player.videoContainer.streamProvider.mainAudioPlayer)
+					&& (!v.video.paused) && (diff > self._maxSyncDelay)) {
+					shorttime = (shorttime > currentTime ? shorttime: parseFloat(currentTime).toFixed(3));
+					base.log.debug(`Syncing video=${v.video.id}, content=${v._stream.content}, paused=${v.video.paused}, timediff=${diff}, settingToTime=${shorttime}`);
+					updated.push(v);
+					promises.push(v.setCurrentTime(shorttime));
 				}
 			});
 			Promise.all(promises).then(function() {
-				base.log.debug(`Synced ${updated.length} videos`);
+				base.log.debug(`Synced ${updated.length} videos to ${shorttime}`);
 				if (repeat) {
 					setTimeout(function() {
 						paella.player.videoContainer.syncVideos(true);
 					}, self._videoSyncTimeMillis);
 				}
+			}).catch(error => {
+				base.log.debug(`Unable to synch video(s) to time '${shorttime}': ${error.message}`);
 			});
 		});
 	}
