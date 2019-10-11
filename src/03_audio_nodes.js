@@ -4,8 +4,15 @@
         constructor(id,stream) {
             super('div',id);
             this._stream = stream;
-
+            this._ready = false;
         }
+
+        get ready() { return this._ready; } 
+
+        get currentTimeSync() { return null; }
+        get volumeSync() { return null; }
+        get pausedSync() { return null; }
+        get durationSync() { return null; }
 
         get stream() { return this._stream; }
         setAutoplay() {return Promise.reject(new Error("no such compatible video player"));}
@@ -129,6 +136,22 @@ class MultiformatAudioElement extends paella.AudioElementBase {
     }
 
     get audio() { return this._audio; }
+
+    get currentTimeSync() {
+		return this.ready ? this.audio.currentTimeSync : null;
+	}
+
+	get volumeSync() {
+		return this.ready ? this.audio.volumeSync : null;
+	}
+
+	get pausedSync() {
+		return this.ready ? this.audio.pausedSync : null;
+	}
+
+	get durationSync() {
+		return this.ready ? this.audio.durationSync : null;
+	}
 
     setAutoplay(ap) {
         this.audio.autoplay = ap;

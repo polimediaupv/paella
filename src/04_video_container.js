@@ -667,6 +667,26 @@ class LimitedSizeProfileFrameStrategy extends ProfileFrameStrategy {
 
 paella.LimitedSizeProfileFrameStrategy = LimitedSizeProfileFrameStrategy;
 
+function startVideoSync() {
+	let maxDiff = 0.3;
+	let sync = () => {
+		this.mainAudioPlayer.currentTime()
+			.then((t) => {
+				this.players.forEach((player) => {
+					if (player!=this.mainAudioPlayer &&
+						player.currentTimeSync!=null &&
+						Math.abs(player.currentTimeSync-t)>maxDiff) {
+						player.setCurrentTime(t);
+					}
+				});
+				
+			});
+		setTimeout(() => sync(), 1000);
+	};
+
+	setTimeout(() => sync(), 1000);
+}
+
 class StreamProvider {
 	constructor(videoData) {
 		this._mainStream = null;
@@ -738,6 +758,8 @@ class StreamProvider {
 				this._players.push(player);
 			}
 		});
+
+		startVideoSync.apply(this);
 	}
 
 	loadVideos() {
