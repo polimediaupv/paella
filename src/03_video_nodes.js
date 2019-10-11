@@ -556,6 +556,13 @@ class VideoElementBase extends paella.VideoRect {
 		return null;
 	}
 
+	// Synchronous functions: returns null if the resource is not loaded. Use only if 
+	// the resource is loaded.
+	get currentTimeSync() { return null; }
+	get volumeSync() { return null; }
+	get pausedSync() { return null; }
+	get durationSync() { return null; }
+
 	// Initialization functions
 	setVideoQualityStrategy(strategy) {
 		this._videoQualityStrategy = strategy;
@@ -797,6 +804,23 @@ class Html5Video extends paella.VideoElementBase {
 
 	get ready() { return this.video.readyState>=3; }
 
+	// Synchronous functions: returns null if the resource is not loaded. Use only if 
+	// the resource is loaded.
+	get currentTimeSync() {
+		return this.ready ? this.video.currentTime : null;
+	}
+
+	get volumeSync() {
+		return this.ready ? this.video.volume : null;
+	}
+
+	get pausedSync() {
+		return this.ready ? this.video.paused : null;
+	}
+
+	get durationSync() {
+		return this.ready ? this.video.duration : null;
+	}
 
 	_deferredAction(action) {
 		return new Promise((resolve,reject) => {
