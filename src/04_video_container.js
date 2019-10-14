@@ -214,6 +214,12 @@ class VideoWrapper extends paella.DomNode {
 
 paella.VideoWrapper = VideoWrapper;
 
+paella.SeekType = {
+	FULL: 1,
+	BACKWARDS_ONLY: 2,
+	FORWARD_ONLY: 3,
+	DISABLED: 4
+};
 
 class VideoContainerBase extends paella.DomNode {
 	
@@ -231,6 +237,9 @@ class VideoContainerBase extends paella.DomNode {
 		this._force = false;
 		this._playOnClickEnabled =  true;
 		this._seekDisabled =  false;
+		this._seekType = paella.SeekType.FULL;
+		this._seekTimeLimit = 0;
+		this._attenuationEnabled = false;
 		
 		$(this.domElement).click((evt) => {
 			if (this.firstClick && base.userAgent.browser.IsMobileVersion) return;
@@ -265,23 +274,49 @@ class VideoContainerBase extends paella.DomNode {
 		});
 	}
 
-	get seekDisabled() { return this._seekDisabled; }
-	set seekDisabled(v) {
-		let changed = v!=this._seekDisabled;
-		this._seekDisabled = v;
-		if (changed) {
-			paella.events.trigger(paella.events.seekAvailabilityChanged, { disabled:this._seekDisabled, enabled:!this._seekDisabled })
+	set attenuationEnabled(att) {
+		this._attenuationEnabled = att;
+
+		Array.from(paella.player.videoContainer.container.domElement.children).forEach((ch) => {
+			if (ch.id == "overlayContainer") {
+				return;
+			}
+			if (att) {
+				$(ch).addClass("dimmed-element");
+			}
+			else {
+				$(ch).removeClass("dimmed-element");
+			}
+		});
+	}
+
+	get attenuationEnabled() {
+		return this._attenuationEnabled;
+	}
+
+	set seekType(type) {
+		switch (type) {
+		case paella.SeekType.FULL:
+		case paella.SeekType.BACKWARDS_ONLY:
+		case paella.SeekType.FORWARD_ONLY:
+		case paella.SeekType.DISABLED:
+			this._seekType = type;
+			paella.events.trigger(paella.events.seekAvailabilityChanged, {
+				type: type,
+				enabled: type==paella.SeekType.FULL,
+				disabled: type!=paella.SeekType.FULL
+			});
+			break;
+		default:
+			throw new Error(`Invalid seekType. Allowed seek types:
+				paella.SeekType.FULL
+				paella.SeekType.BACKWARDS_ONLY
+				paella.SeekType.FORWARD_ONLY
+				paella.SeekType.DISABLED`);
 		}
 	}
 
-	get seekEnabled() { return !this._seekDisabled; }
-	set seekEnabled(v) {
-		let changed = v==this._seekDisabled;
-		this._seekDisabled = !v;
-		if (changed) {
-			paella.events.trigger(paella.events.seekAvailabilityChanged, { disabled:this._seekDisabled, enabled:!this._seekDisabled })
-		}
-	}
+	get seekType() { return this._seekType; }
 
 	triggerTimeupdate() {
 		var paused = 0;
@@ -299,6 +334,7 @@ class VideoContainerBase extends paella.DomNode {
 
 			.then((currentTime) => {
 				if (!paused || this._force) {
+					this._seekTimeLimit = currentTime>this._seekTimeLimit ? currentTime:this._seekTimeLimit;
 					this._force = false;
 					paella.events.trigger(paella.events.timeupdate, {
 						videoContainer: this,
@@ -336,6 +372,7 @@ class VideoContainerBase extends paella.DomNode {
 	}
 
 	play() {
+		this.streamProvider.startVideoSync(this.audioPlayer);
 		this.startTimeupdate();
 		setTimeout(() => paella.events.trigger(paella.events.play), 50)
 	}
@@ -343,36 +380,92 @@ class VideoContainerBase extends paella.DomNode {
 	pause() {
 		paella.events.trigger(paella.events.pause);
 		this.stopTimeupdate();
+		this.streamProvider.stopVideoSync();
 	}
 
 	seekTo(newPositionPercent) {
-		if (this._seekDisabled) {
-			console.log("Warning: Seek is disabled");
-			return;
-		}
-		var thisClass = this;
-		this.setCurrentPercent(newPositionPercent)
-			.then((timeData) => {
-				thisClass._force = true;
-				this.triggerTimeupdate();
-				paella.events.trigger(paella.events.seekToTime,{ newPosition:timeData.time });
-				paella.events.trigger(paella.events.seekTo,{ newPositionPercent:newPositionPercent });
-			});
+		return new Promise((resolve, reject) => {
+			let time = 0;
+			paella.player.videoContainer.currentTime()
+				.then((t) => {
+					time = t;
+					return paella.player.videoContainer.duration()			
+				})
+
+				.then((duration) => {
+					if (this._seekTimeLimit>0 && this._seekType==paella.SeekType.BACKWARDS_ONLY) {
+						time = this._seekTimeLimit;
+					}
+					let currentPercent = time / duration * 100;
+					switch (this._seekType) {
+					case paella.SeekType.FULL:
+						break;
+					case paella.SeekType.BACKWARDS_ONLY:
+						if (newPositionPercent>currentPercent) {
+							reject(new Error("Warning: Seek is disabled"));
+							return;
+						}
+						break;
+					case paella.SeekType.FORWARD_ONLY:
+						if (newPositionPercent<currentPercent) {
+							reject(new Error("Warning: Seek is disabled"));
+							return;
+						}
+						break;
+					case paella.SeekType.DISABLED:
+						reject(new Error("Warning: Seek is disabled"));
+						return;
+					}
+
+					this.setCurrentPercent(newPositionPercent)
+						.then((timeData) => {
+							this._force = true;
+							this.triggerTimeupdate();
+							paella.events.trigger(paella.events.seekToTime,{ newPosition:timeData.time });
+							paella.events.trigger(paella.events.seekTo,{ newPositionPercent:newPositionPercent });
+							resolve();
+						});
+				})
+		});
 	}
 
 	seekToTime(time) {
-		if (this._seekDisabled) {
-			console.log("Seek is disabled");
-			return;
-		}
-		this.setCurrentTime(time)
-			.then((timeData) => {
-				this._force = true;
-				this.triggerTimeupdate();
-				let percent = timeData.time * 100 / timeData.duration;
-				paella.events.trigger(paella.events.seekToTime,{ newPosition:timeData.time });
-				paella.events.trigger(paella.events.seekTo,{ newPositionPercent:percent });
-			});
+		return new Promise((resolve, reject) => {
+			paella.player.videoContainer.currentTime()
+				.then((currentTime) => {
+					if (this._seekTimeLimit && this._seekType==paella.SeekType.BACKWARDS_ONLY) {
+						currentTime = this._seekTimeLimit;
+					}
+					switch (this._seekType) {
+					case paella.SeekType.FULL:
+						break;
+					case paella.SeekType.BACKWARDS_ONLY:
+						if (time>currentTime) {
+							reject(new Error("Warning: Seek is disabled"));
+							return;
+						}
+						break;
+					case paella.SeekType.FORWARD_ONLY:
+						if (time<currentTime) {
+							reject(new Error("Warning: Seek is disabled"));
+							return;
+						}
+						break;
+					case paella.SeekType.DISABLED:
+						reject(new Error("Warning: Seek is disabled"));
+						return;
+					}
+
+					this.setCurrentTime(time)
+						.then((timeData) => {
+							this._force = true;
+							this.triggerTimeupdate();
+							let percent = timeData.time * 100 / timeData.duration;
+							paella.events.trigger(paella.events.seekToTime,{ newPosition:timeData.time });
+							paella.events.trigger(paella.events.seekTo,{ newPositionPercent:percent });
+						});
+				});
+		});
 	}
 
 	setPlaybackRate(params) {
@@ -571,26 +664,6 @@ class LimitedSizeProfileFrameStrategy extends ProfileFrameStrategy {
 
 paella.LimitedSizeProfileFrameStrategy = LimitedSizeProfileFrameStrategy;
 
-function startVideoSync() {
-	let maxDiff = 0.3;
-	let sync = () => {
-		this.mainAudioPlayer.currentTime()
-			.then((t) => {
-				this.players.forEach((player) => {
-					if (player!=this.mainAudioPlayer &&
-						player.currentTimeSync!=null &&
-						Math.abs(player.currentTimeSync-t)>maxDiff) {
-						player.setCurrentTime(t);
-					}
-				});
-				
-			});
-		setTimeout(() => sync(), 1000);
-	};
-
-	setTimeout(() => sync(), 1000);
-}
-
 class StreamProvider {
 	constructor(videoData) {
 		this._mainStream = null;
@@ -662,8 +735,42 @@ class StreamProvider {
 				this._players.push(player);
 			}
 		});
+	}
 
-		startVideoSync.apply(this);
+	startVideoSync(syncProviderPlayer) {
+		this._syncProviderPlayer = syncProviderPlayer;
+		this.stopVideoSync();
+		
+		console.debug("Start sync to player:");
+		console.debug(this._syncProviderPlayer);
+		let maxDiff = 0.3;
+		let sync = () => {
+			this._syncProviderPlayer.currentTime()
+				.then((t) => {
+					this.players.forEach((player) => {
+						if (player!=syncProviderPlayer &&
+							player.currentTimeSync!=null &&
+							Math.abs(player.currentTimeSync-t)>maxDiff)
+						{
+							console.debug(`Sync player current time: ${ player.currentTimeSync } to time ${ t }`);
+							console.debug(player);	
+							player.setCurrentTime(t);
+						}
+					});
+					
+				});
+			this._syncTimer = setTimeout(() => sync(), 1000);
+		};
+	
+		this._syncTimer = setTimeout(() => sync(), 1000);
+	}
+
+	stopVideoSync() {
+		if (this._syncTimer) {
+			console.debug("Stop video sync");
+			clearTimeout(this._syncTimer);
+			this._syncTimer = null;
+		}
 	}
 
 	loadVideos() {
@@ -1023,6 +1130,7 @@ class VideoContainer extends paella.VideoContainerBase {
 	}
 
 	setAudioTag(lang) {
+		this.streamProvider.stopVideoSync();
 		return new Promise((resolve) => {
 			let audioSet = false;
 			let firstAudioPlayer = null;
@@ -1054,6 +1162,7 @@ class VideoContainer extends paella.VideoContainerBase {
 			.then(() => {
 				this._audioTag = this._audioPlayer.stream.audioTag;
 				paella.events.trigger(paella.events.audioTagChanged);
+				this.streamProvider.startVideoSync(this.audioPlayer);
 				resolve();
 			});
 		})
