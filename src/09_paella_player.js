@@ -439,67 +439,31 @@
 	};
 
 	class LazyThumbnailContainer extends paella.DomNode {
+
+		static GetIconElement() {
+			let container = document.createElement('div');
+			container.className = "play-button-on-screen";
+			container.style.width = "100%";
+			container.style.height = "100%";
+			container.style.pointerEvents = "none";
+		
+			let icon = document.createElement('div');
+			icon['className'] = 'play-icon';
+			container.appendChild(icon);
+
+			return container;
+		}
+
+
 		constructor(src) {
 			super('img','lazyLoadThumbnailContainer',{});
 			this.domElement.src = src;
 			this.domElement.alt = "";
 
-			var thisClass = this;
-			let container = document.createElement('div');
-			container.className = "playButtonOnScreen";
-			container.style.width = "100%";
-			container.style.height = "100%";
-			container.style.pointerEvents = "none";
-			document.body.appendChild(container);
-			this.container = container;
-	
-			var icon = document.createElement('canvas');
-			icon.style.width = "100%";
-			icon.style.height = "300px";
-			icon.style.display = "block";
-			icon.style.cursor = "pointer"
-			container.appendChild(icon);
-	
-			function repaintCanvas(){
-				var width = jQuery(container).innerWidth();
-				var height = jQuery(container).innerHeight();
-				icon.style.marginTop = `${ window.innerHeight / 2 - 150 }px`;
-	
-				icon.width = width;
-				icon.height = height;
-	
-				let ratio = width/height;
-				var iconWidth = (width<height) ? width/3 : height/3;
-				let iconHeight = iconWidth;
-	
-				var ctx = icon.getContext('2d');
-				// Play Icon size: 300x300
-				ctx.translate((width-iconWidth)/2, (height-iconHeight)/2);
-	
-				ctx.beginPath();
-				ctx.arc(iconWidth/2, iconHeight/2 ,iconWidth/2, 0, 2*Math.PI, true);
-				ctx.closePath();
-	
-				ctx.strokeStyle = 'white';
-				ctx.lineWidth = 10;
-				ctx.stroke();
-				ctx.fillStyle = '#8f8f8f';
-				ctx.fill();
-	
-				ctx.beginPath();
-				ctx.moveTo(iconWidth/3, iconHeight/4);
-				ctx.lineTo(3*iconWidth/4, iconHeight/2);
-				ctx.lineTo(iconWidth/3, 3*iconHeight/4);
-				ctx.lineTo(iconWidth/3, iconHeight/4);
-	
-				ctx.closePath();
-				ctx.fillStyle = 'white';
-				ctx.fill();
-	
-				ctx.stroke();
+			this.container = LazyThumbnailContainer.GetIconElement();
+			if (!paella.player.videoContainer) {
+				document.body.appendChild(this.container);
 			}
-			//paella.events.bind(paella.events.resize,repaintCanvas);
-			repaintCanvas();
 		}
 
 		setImage(url) {
@@ -515,6 +479,8 @@
 			document.body.removeChild(this.container);
 		}
 	}
+
+	paella.LazyThumbnailContainer = LazyThumbnailContainer;
 
 	
 	let g_lazyLoadInstance = null;
