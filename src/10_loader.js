@@ -318,15 +318,22 @@ paella.load = function(playerContainer, params) {
 	new PaellaPlayer(playerContainer,paella.initDelegate);
 };
 
-
-paella.lazyLoad = function(playerContainer, params) {
+/*
+ *	playerContainer	Player DOM container id
+ *	params.configUrl		Url to the config json file
+ *	params.config			Use this configuration file
+ *	params.data				Paella video data schema
+ *	params.url				Repository URL
+ *  forceLazyLoad			Use lazyLoad even if your browser does not allow automatic playback of the video
+ */
+paella.lazyLoad = function(playerContainer, params, forceLazyLoad = true) {
 	paella.loaderFunctionParams = params;
 	var auth = (params && params.auth) || {};
 
 	// Check autoplay. If autoplay is enabled, this function must call paella.load()
 	paella.Html5Video.IsAutoplaySupported()
 		.then((supported) => {
-			if (supported) {
+			if (supported || forceLazyLoad) {
 				// Build custom init data using url parameters
 				let data = getManifestFromParameters(params);
 				if (data) {
