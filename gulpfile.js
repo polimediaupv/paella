@@ -202,9 +202,9 @@ gulp.task("copy", function() {
 
 	function addPlugins(pluginPath) {
 		fs.readdirSync(pluginPath).forEach((dir) => {
-			var fullDir = path.join('plugins',dir);
-			var resourcesDir = path.join(fullDir,'resources/**');
-			var depsDir = path.join(fullDir,'deps/**');
+			var fullDir = `plugins/${ dir }`;
+			var resourcesDir = `${ fullDir }/resources/**`;
+			var depsDir = `${ fullDir }/deps/**`;
 			p.push(gulp.src(resourcesDir)
 				.pipe(gulp.dest(`${config.outDir}player/resources/style`)));
 			p.push(gulp.src(depsDir)
