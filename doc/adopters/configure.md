@@ -68,7 +68,9 @@ In this file we have all the setups concerning plugins.. streams.. compositions.
 
     "list": {
       "es.upv.paella.playPauseButtonPlugin": {"enabled":true},
-      "other.plugin": { "enabled": true, "other":"plugin configuration" }
+      "other.plugin_1": { "enabled": true, "minWindowSize": 400, "other":"plugin configuration" },
+      "other.plugin_2": { "enabled": true },
+      "other.plugin_3": { "enabled": false }
     }
   },
   "standalone" : {
