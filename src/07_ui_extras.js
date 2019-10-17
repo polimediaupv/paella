@@ -104,7 +104,10 @@
 	
 		loadComplete(event,params) {
 			var thisClass = this;
-			paella.events.bind("keyup",function(event) { thisClass.keyUp(event); });
+			let eventHandler = function(event) {
+				thisClass.keyUp(event);
+			};
+			paella.events.bind("keyup",eventHandler);
 		}
 	
 		onPlay() {

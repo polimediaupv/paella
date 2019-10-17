@@ -68,11 +68,17 @@ paella.addPlugin(() => {
 	
 		mute() {
 			var videoContainer = paella.player.videoContainer;
-			videoContainer.volume().then(function(volume){
-				var newVolume = 0;
-				if (volume==0) { newVolume = 1.0; }
-				paella.player.videoContainer.setVolume({ master:newVolume, slave: 0});
-			});
+			if (videoContainer.muted) {
+				videoContainer.unmute();
+			}
+			else {
+				videoContainer.mute();
+			}
+			// videoContainer.volume().then(function(volume){
+			// 	var newVolume = 0;
+			// 	if (volume==0) { newVolume = 1.0; }
+			// 	paella.player.videoContainer.setVolume({ master:newVolume, slave: 0});
+			// });
 		}
 	
 		volumeUp() {
