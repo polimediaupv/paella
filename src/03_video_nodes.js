@@ -1120,7 +1120,7 @@ class Html5Video extends paella.VideoElementBase {
 
 	setCurrentTime(time) {
 		return this._deferredAction(() => {
-			time && !isNaN(time) && (this.video.currentTime = time);
+			(time == 0 || time) && !isNaN(time) && (this.video.currentTime = time);
 		});
 	}
 
