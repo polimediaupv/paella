@@ -5,14 +5,10 @@ paella.addPlugin(function() {
 		getSubclass() { return 'volumeRangeButton'; }
 		getIconClass() { return 'icon-volume-high'; }
 		getName() { return "es.upv.paella.volumeRangePlugin"; }
-		//getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
 		getDefaultToolTip() { return base.dictionary.translate("Volume"); }
 		getIndex() {return 9999;}
 		getAriaLabel() { return base.dictionary.translate("Volume"); }
 
-		
-		//closeOnMouseOut() { return true; }
-		
 		checkEnabled(onSuccess) {
 			this._tempMasterVolume = 0;
 			this._inputMaster = null;
@@ -30,8 +26,6 @@ paella.addPlugin(function() {
 			paella.events.bind(paella.events.singleVideoReady,function(event,params) {self.loadStoredVolume(params);});
 
 			paella.events.bind(paella.events.setVolume, function(evt,par){ self.updateVolumeOnEvent(par);});
-
-			this._preMutedVolume = 1;
 		}
 
 		updateVolumeOnEvent(volume){
@@ -64,16 +58,12 @@ paella.addPlugin(function() {
 		}
 
 		action(button) {
-			paella.player.videoContainer.volume()
-				.then((v) => {
-					if (v==0) {
-						paella.player.videoContainer.setVolume(this._preMutedVolume);
-					}
-					else {
-						this._preMutedVolume = v;
-						paella.player.videoContainer.setVolume(0);
-					}
-				});
+			if (paella.player.videoContainer.muted) {
+				paella.player.videoContainer.unmute();
+			}
+			else {
+				paella.player.videoContainer.mute();
+			}
 		}
 
 		getExpandableContent() {

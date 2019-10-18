@@ -75,6 +75,7 @@
 
 	paella.KeyPlugin = KeyPlugin;
 
+	let g_keyboardEventSet = false;
 	class KeyManager {
 		get isPlaying() { return this._isPlaying; }
 		set isPlaying(p) { this._isPlaying = p; }
@@ -103,8 +104,13 @@
 		}
 	
 		loadComplete(event,params) {
-			var thisClass = this;
-			paella.events.bind("keyup",function(event) { thisClass.keyUp(event); });
+			if (g_keyboardEventSet) {
+				return;
+			}
+			paella.events.bind("keyup",(event) => {
+				this.keyUp(event);
+			});
+			g_keyboardEventSet = true;
 		}
 	
 		onPlay() {

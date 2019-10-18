@@ -477,6 +477,14 @@ class VideoContainerBase extends paella.DomNode {
 		paella.events.trigger(paella.events.setPlaybackRate, { rate: params });
 	}
 
+	mute() {
+
+	}
+
+	unmute() {
+
+	}
+
 	setVolume(params) {
 	}
 
@@ -938,7 +946,10 @@ class VideoContainer extends paella.VideoContainerBase {
 		this._audioTag = paella.player.config.player.defaultAudioTag ||
 						 paella.dictionary.currentLanguage();
 		this._audioPlayer = null;
+
+		// Initial volume level
 		this._volume = 1;
+		this._muted = false;
 	}
 
 	// Playback and status functions
@@ -1023,13 +1034,43 @@ class VideoContainer extends paella.VideoContainerBase {
 		super.setPlaybackRate(rate);
 	}
 
+	mute() {
+		return new Promise((resolve) => {
+			this._muted = true;
+			this._audioPlayer.setVolume(0)
+				.then(() => {
+					paella.events.trigger(paella.events.setVolume, { master: 0 });
+					resolve();
+				});
+		});
+	}
+
+	unmute() {
+		return new Promise((resolve) => {
+			this._muted = false;
+			this._audioPlayer.setVolume(this._volume)
+				.then(() => {
+					paella.events.trigger(paella.events.setVolume, { master: this._volume });
+					resolve();
+				});
+		});
+	}
+
+	get muted() {
+		return this._muted;
+	}
+
 	setVolume(params) {
 		if (typeof(params)=='object') {
 			console.warn("videoContainer.setVolume(): set parameter as object is deprecated");
 			return Promise.resolve();
 		}
+		else if (params==0) {
+			return this.mute();
+		}
 		else {
 			return new Promise((resolve,reject) => {
+				this._volume = params;
 				this._audioPlayer.setVolume(params)
 					.then(() => {
 						paella.events.trigger(paella.events.setVolume, { master:params });
