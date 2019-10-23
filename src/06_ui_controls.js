@@ -109,15 +109,41 @@ class PlaybackBar extends paella.DomNode {
 		this.addNode(new paella.TimeControl(this.timeControlId));
 		var thisClass = this;
 		paella.events.bind(paella.events.timeupdate,function(event,params) { thisClass.onTimeUpdate(params); });
-		$(this.domElement).bind('mousedown',function(event) { paella.utils.mouseManager.down(thisClass,event); event.stopPropagation(); });
-		$(playbackFull.domElement).bind('mousedown',function(event) { paella.utils.mouseManager.down(thisClass,event); event.stopPropagation();  });
+		$(this.domElement).bind('mousedown',function(event) {
+			paella.utils.mouseManager.down(thisClass,event); event.stopPropagation();
+		});
+		$(playbackFull.domElement).bind('mousedown',function(event) {
+			paella.utils.mouseManager.down(thisClass,event); event.stopPropagation();
+		});
 		if (!base.userAgent.browser.IsMobileVersion) {
-			$(this.domElement).bind('mousemove',function(event) { thisClass.movePassive(event); paella.utils.mouseManager.move(event); });
-			$(playbackFull.domElement).bind('mousemove',function(event) { paella.utils.mouseManager.move(event); });
-			$(this.domElement).bind("mouseout",function(event) { thisClass.mouseOut(event); });
+			$(this.domElement).bind('mousemove',function(event) {
+				thisClass.movePassive(event); paella.utils.mouseManager.move(event);
+			});
+			$(playbackFull.domElement).bind('mousemove',function(event) {
+				paella.utils.mouseManager.move(event);
+			});
+			$(this.domElement).bind("mouseout",function(event) {
+				thisClass.mouseOut(event);
+			});
 		}
-		$(this.domElement).bind('mouseup',function(event) { paella.utils.mouseManager.up(event); });
-		$(playbackFull.domElement).bind('mouseup',function(event) { paella.utils.mouseManager.up(event); });
+		
+		this.domElement.addEventListener('touchstart',(event) => {
+			paella.utils.mouseManager.down(thisClass,event); event.stopPropagation();
+		}, false);
+		this.domElement.addEventListener('touchmove',(event) => {
+			thisClass.movePassive(event);
+			paella.utils.mouseManager.move(event);
+		}, false);
+		this.domElement.addEventListener('touchend',(event) => {
+			paella.utils.mouseManager.up(event);
+		}, false);
+	
+		$(this.domElement).bind('mouseup',function(event) {
+			paella.utils.mouseManager.up(event);
+		});
+		$(playbackFull.domElement).bind('mouseup',function(event) {
+			paella.utils.mouseManager.up(event);
+		});
 
 		if (paella.player.isLiveStream()) {
 			$(this.domElement).hide();
