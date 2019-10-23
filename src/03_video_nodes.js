@@ -405,8 +405,44 @@ class VideoRect extends paella.DomNode {
 				paella.events.trigger(paella.events.videoZoomChanged,{ video:this });
 			}
 
+			let altScrollMessageContainer = document.createElement('div');
+			altScrollMessageContainer.className = "alt-scroll-message-container";
+			altScrollMessageContainer.innerHTML = "<p>" + paella.dictionary.translate("Use Alt+Scroll to zoom the video") + "</p>";
+			eventCapture.appendChild(altScrollMessageContainer);
+			$(altScrollMessageContainer).css({ opacity: 0.0 });
+			let altScrollMessageTimer = null;
+			function clearAltScrollMessage(animate = true) {
+				animate ? 
+					$(altScrollMessageContainer).animate({ opacity: 0.0 }) :
+					$(altScrollMessageContainer).css({ opacity: 0.0 });
+			}
+			function showAltScrollMessage() {
+				if (altScrollMessageTimer) {
+					clearTimeout(altScrollMessageTimer);
+					altScrollMessageTimer = null;
+				}
+				else {
+					$(altScrollMessageContainer).css({ opacity: 1.0 });
+				}
+				altScrollMessageTimer = setTimeout(() => {
+					clearAltScrollMessage();
+					altScrollMessageTimer = null;
+				}, 500);
+			}
+
 			$(eventCapture).on('mousewheel wheel',(evt) => {
 				if (!this.allowZoom() || !this._zoomAvailable) return;
+				if (!evt.altKey) {
+					showAltScrollMessage();
+					return;
+				}
+				else {
+					clearAltScrollMessage(false);
+					if (altScrollMessageTimer) {
+						clearTimeout(altScrollMessageTimer);
+						altScrollMessageTimer = null;
+					}
+				}
 				let mouse = mousePos(evt);
 				let wheel = wheelDelta(evt);
 				if (this._zoom>=this._maxZoom && wheel>0) return;
