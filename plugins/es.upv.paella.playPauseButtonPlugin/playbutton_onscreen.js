@@ -12,6 +12,11 @@ paella.addPlugin(function() {
 		}
 	
 		checkEnabled(onSuccess) {
+			this.showOnEnd = true;
+			paella.data.read('relatedVideos', {id:paella.player.videoIdentifier}, (data) => {
+                this.showOnEnd = !Array.isArray(data) ||  data.length == 0;
+			});
+			
 			onSuccess(!paella.player.isLiveStream() || base.userAgent.system.Android 
 				|| base.userAgent.system.iOS || !paella.player.videoContainer.supportAutoplay());
 		}
@@ -56,7 +61,7 @@ paella.addPlugin(function() {
 	
 		endVideo() {
 			this.isPlaying = false;
-			this.showIcon = true;
+			this.showIcon = this.showOnEnd;
 			this.checkStatus();
 		}
 	
