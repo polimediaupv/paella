@@ -7,6 +7,8 @@ CHANGELOG
 
     * video canvas.
     * mute/unmute through paella.player.videoContainer, which retains the previous volume value.
+    * related videos: allows you to add links to two related videos, which appear at the end of the current video.
+    * related videos data delegate: by default, related video data is placed in the video manifest, but it is possible to customize this data with a new DataDelegate.
 
   * Improvements in video zoom UX: now it is necessary to press the ALT key to make the video zoom work.
   * Oter minor UX improvements.
