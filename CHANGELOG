@@ -5,6 +5,11 @@ CHANGELOG
 
   * Fix a bug in the search service
 
+* Paella 6.2.2
+
+  * LazyLoad mode enhancements.
+  * Refactoring: play on screen icon.
+
 * Paella 6.2.1
 
   * New setting added to configure the default audio tag to use.
