@@ -56,6 +56,7 @@ paella.addPlugin(function() {
 	
 		endVideo() {
 			this.isPlaying = false;
+			this.showIcon = true;
 			this.checkStatus();
 		}
 	
