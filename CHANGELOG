@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+* Paella 6.1.6
+
+  * Improved synchronization between video and audio streams
+  * Syncrhonous query functions added to video and audio elements
+
 * Paella 6.1.5
 
   * Bug fixed and improvements in breaks plugin
