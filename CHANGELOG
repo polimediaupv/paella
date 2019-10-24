@@ -3,7 +3,14 @@ CHANGELOG
 
 * Paella 6.3.0
 
-  * New feature: video canvas
+  * New feature:
+
+    * video canvas.
+    * mute/unmute through paella.player.videoContainer, which retains the previous volume value.
+
+  * Improvements in video zoom UX: now it is necessary to press the ALT key to make the video zoom work.
+  * Oter minor UX improvements.
+
 
 * Paella 6.2.2
 
