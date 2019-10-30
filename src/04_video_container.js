@@ -752,6 +752,7 @@ class StreamProvider {
 
 	startVideoSync(syncProviderPlayer) {
 		this._syncProviderPlayer = syncProviderPlayer;
+		this._audioPlayer = syncProviderPlayer; // The player that provides the synchronization is also used as main audio player.
 		this.stopVideoSync();
 		
 		console.debug("Start sync to player:");
