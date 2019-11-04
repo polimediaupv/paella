@@ -91,6 +91,7 @@ paella.addPlugin(function() {
 				rangeInput.value = params.master;
 				this.updateClass();
 			});
+			this.updateClass();
 
 			return rangeInput;
 		}
