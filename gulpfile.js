@@ -9,6 +9,7 @@ const	gulp = require('gulp'),
 		fs = require('fs'),
 		uglify = require('gulp-uglify-es').default,
 		path = require('path'),
+		rename = require("gulp-rename"),
 
 		exec = require('child_process').execSync,
 
@@ -178,7 +179,9 @@ gulp.task("copy", function() {
 		gulp.src('node_modules/requirejs/require.js')
 			.pipe(gulp.dest(`${config.outDir}player/javascript/`)),
 
-		gulp.src('node_modules/lunr/lunr.min.js')
+		gulp.src('node_modules/lunr/lunr.js')
+			.pipe(rename('lunr.min.js'))
+			.pipe(uglify())
 			.pipe(gulp.dest(`${config.outDir}player/javascript/`)),
 
 		gulp.src('resources/bootstrap/**')
