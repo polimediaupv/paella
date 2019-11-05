@@ -11,7 +11,7 @@ CHANGELOG
     * related videos data delegate: by default, related video data is placed in the video manifest, but it is possible to customize this data with a new DataDelegate.
 
   * Improvements in video zoom UX: now it is necessary to press the ALT key to make the video zoom work.
-  * Oter minor UX improvements.
+  * Other minor UX improvements.
 
 * Paella 6.2.3
 
