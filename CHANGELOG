@@ -11,7 +11,13 @@ CHANGELOG
     * related videos data delegate: by default, related video data is placed in the video manifest, but it is possible to customize this data with a new DataDelegate.
 
   * Improvements in video zoom UX: now it is necessary to press the ALT key to make the video zoom work.
-  * Oter minor UX improvements.
+  * Other minor UX improvements.
+
+* Paella 6.2.4
+
+  * Update dependencies
+  * Don't use the minimified version of lunr (olivernn/lunr.js#420, opencast/opencast#1131)
+  * The stream provider main audio player is now configured in the startVideoSync function. Fix #441
 
 * Paella 6.2.3
 
