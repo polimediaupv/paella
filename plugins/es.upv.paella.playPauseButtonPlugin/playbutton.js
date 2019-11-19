@@ -4,6 +4,7 @@ paella.addPlugin(function() {
 		constructor() {
 			super();
 			this.playIconClass = 'icon-play';
+			this.replayIconClass = 'icon-loop2';
 			this.pauseIconClass = 'icon-pause';
 			this.playSubclass = 'playButton';
 			this.pauseSubclass = 'pauseButton';
@@ -24,6 +25,7 @@ paella.addPlugin(function() {
 			if (paella.player.playing()) {
 				this.changeIconClass(this.playIconClass);
 			}
+			
 			paella.events.bind(paella.events.play,(event) => {
 				this.changeIconClass(this.pauseIconClass);
 				this.changeSubclass(this.pauseSubclass);
@@ -37,7 +39,7 @@ paella.addPlugin(function() {
 			});
 
 			paella.events.bind(paella.events.ended,(event) => {
-				this.changeIconClass(this.playIconClass);
+				this.changeIconClass(this.replayIconClass);
 				this.changeSubclass(this.playSubclass);
 				this.setToolTip(paella.dictionary.translate("Play"));
 			});
