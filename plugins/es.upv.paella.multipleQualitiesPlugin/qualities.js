@@ -29,8 +29,10 @@ paella.addPlugin(function() {
 		
 		buildContent(domElement) {
 			this._available.forEach((q) => {
-				var title = q.shortLabel();
-				domElement.appendChild(this.getItemButton(q));
+				let resH = q.res && q.res.h || 0;
+				if (resH>=this.config.minVisibleQuality || resH<=0) {
+					domElement.appendChild(this.getItemButton(q));
+				}
 			});
 		}
 
