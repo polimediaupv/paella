@@ -206,9 +206,7 @@
             }
             else if (videoWrapper) {
                 videoWrapper.setVisible(false,animate);
-                if (paella.player.videoContainer.streamProvider.mainAudioPlayer!=player) {
-                    player.disable();
-                }
+                player.disable(paella.player.videoContainer.streamProvider.mainAudioPlayer==player);
             }
         });
     }

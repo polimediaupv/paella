@@ -100,11 +100,13 @@
 		}
 	
 		setupHls(video,url) {
+			let initialQualityLevel = this.config.initialQualityLevel !== undefined ? this.config.initialQualityLevel : 1;
 			return new Promise((resolve,reject) => {
 				this._loadDeps()
 					.then((Hls) => {
 						if (Hls.isSupported()) {
 							let cfg = this.config;
+							//cfg.autoStartLoad = false;
 							this._hls = new Hls(cfg);
 							this._hls.loadSource(url);
 							this._hls.attachMedia(video);
@@ -138,9 +140,14 @@
 							});
 
 							this._hls.on(Hls.Events.MANIFEST_PARSED, () => {
-								//this._deferredAction(function() {
-									resolve(video);
-								//});
+								if (!cfg.autoStartLoad) {
+									this._hls.startLoad();
+								}
+								// Fixes hls.js problems when loading the initial quality level
+								this._hls.currentLevel = this._hls.levels.length>=initialQualityLevel ? initialQualityLevel : -1;
+								setTimeout(() => this._hls.currentLevel = -1, 1000);
+								
+								resolve(video);
 							});
 						}
 						else {
@@ -213,7 +220,23 @@
 				});
 			}
 		}
-		
+
+		disable(isMainAudioPlayer) {
+			if (base.userAgent.system.iOS) {
+				return;
+			}
+			
+			this._currentQualityIndex = this._qualityIndex;
+			this._hls.currentLevel = 0;
+		}
+	
+		enable(isMainAudioPlayer) {
+			if (this._currentQualityIndex !== undefined && this._currentQualityIndex !== null) {
+				this.setQuality(this._currentQualityIndex);
+				this._currentQualityIndex = null;
+			}
+		}
+
 		printQualityes() {
 			return new Promise((resolve,reject) => {
 				this.getCurrentQuality()
