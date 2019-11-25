@@ -99,6 +99,54 @@
 			});
 		}
 	
+		_deferredAction(action) {
+			return new Promise((resolve,reject) => {
+				function processResult(actionResult) {
+					if (actionResult instanceof Promise) {
+						actionResult.then((p) => resolve(p))
+							.catch((err) => reject(err));
+					}
+					else {
+						resolve(actionResult);
+					}
+				}
+	
+				if (this.ready) {
+					processResult(action());
+				}
+				else {
+					let eventFunction = () => {
+						processResult(action());
+						$(this.video).unbind('canplay');
+						$(this.video).unbind('loadedmetadata');
+						if (timer) {
+							clearTimeout(timer);
+							timer = null;
+						}
+					};
+					$(this.video).bind('canplay',eventFunction);
+					$(this.video).bind('loadedmetadata',eventFunction);
+					let timerFunction = () => {
+						if (!this.ready) {
+							console.debug("HLS video resume failed. Trying to recover.");
+							if (this._hls) {
+								this._hls.recoverMediaError();
+							}
+							else {
+								// iOS
+								this.video.play();
+							}
+							timer = setTimeout(timerFunction, 1000);
+						}
+						else {
+							eventFunction();
+						}
+					}
+					let timer = setTimeout(timerFunction, 1000);
+				}
+			});
+		}
+
 		setupHls(video,url) {
 			let initialQualityLevel = this.config.initialQualityLevel !== undefined ? this.config.initialQualityLevel : 1;
 			return new Promise((resolve,reject) => {
@@ -158,6 +206,9 @@
 		}
 
 		webGlDidLoad() {
+			if (base.userAgent.system.iOS) {
+				return super.webGlDidLoad();
+			}
 			// Register a new video loader in the webgl engine, to enable the
 			// hls compatibility in webgl canvas
 			bg.utils.HTTPResourceProvider.AddVideoLoader('m3u8', (url,onSuccess,onFail) => {
@@ -171,6 +222,10 @@
 		}
 
 		loadVideoStream(canvasInstance,stream) {
+			if (base.userAgent.system.iOS) {
+				return super.loadVideoStream(canvasInstance,stream);
+			}
+
 			return canvasInstance.loadVideo(this,stream,(videoElem) => {
 				return this.setupHls(videoElem,stream.src);
 			});
