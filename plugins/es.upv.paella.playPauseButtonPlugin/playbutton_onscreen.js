@@ -31,11 +31,19 @@ paella.addPlugin(function() {
 		}
 	
 		getEvents() {
-			return [paella.events.endVideo,paella.events.play,paella.events.pause,paella.events.showEditor,paella.events.hideEditor];
+			return [
+				paella.events.ended,
+				paella.events.endVideo,
+				paella.events.play,
+				paella.events.pause,
+				paella.events.showEditor,
+				paella.events.hideEditor
+			];
 		}
 	
 		onEvent(eventType,params) {
 			switch (eventType) {
+				case paella.events.ended:
 				case paella.events.endVideo:
 					this.endVideo();
 					break;
@@ -60,9 +68,16 @@ paella.addPlugin(function() {
 		}
 	
 		endVideo() {
-			this.isPlaying = false;
-			this.showIcon = this.showOnEnd;
-			this.checkStatus();
+			paella.player.videoContainer.ended()
+			.then(ended => {
+				if (ended) {
+					this.isPlaying = false;
+					this.showIcon = this.showOnEnd;
+					this.checkStatus();
+				} else {
+					base.log.debug(`BTN ON SCREEN: The player is not currently in ended state, not changing button state.`);
+				}
+			});
 		}
 	
 		play() {
