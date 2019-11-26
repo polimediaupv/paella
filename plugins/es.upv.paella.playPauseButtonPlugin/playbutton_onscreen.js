@@ -75,7 +75,7 @@ paella.addPlugin(function() {
 					this.showIcon = this.showOnEnd;
 					this.checkStatus();
 				} else {
-					base.log.debug(`BTN ON SCREEN: The player is not currently in ended state, not changing button state.`);
+					base.log.debug(`BTN ON SCREEN: The player is no longer in ended state.`);
 				}
 			});
 		}
