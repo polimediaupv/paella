@@ -14,8 +14,12 @@ module.exports = {
         .waitForElementVisible('#buttonPlugin9_container')
         .assert.visible('#buttonPlugin9_container')
 
-        //Más?
+        .useXpath()
+        .waitForElementVisible("//div[@class='rateContainerHeader']/div/h4")
+        .assert.visible("//div[@class='rateContainerHeader']/div/h4")
+        .useCss()
 
         .end();
     }
   };
+
