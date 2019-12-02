@@ -14,6 +14,10 @@ module.exports = {
         .waitForElementVisible('.tabsContentContainer')
         .assert.visible('.tabsContentContainer')
 
+        .click('#buttonPlugin14')
+        .waitForElementNotVisible('.tabsContentContainer')
+        .assert.hidden('.tabsContentContainer')
+
         .end();
     }
   };
