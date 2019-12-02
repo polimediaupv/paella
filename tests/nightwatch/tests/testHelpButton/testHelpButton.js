@@ -14,6 +14,13 @@ module.exports = {
         .waitForElementVisible('.frameContainer')
         .assert.visible('.frameContainer')
 
+        .useXpath()
+        .frame(0)
+        .waitForElementVisible("//h1[contains(text(), 'Paella Player')]")
+        .assert.visible("//h1[contains(text(), 'Paella Player')]")
+        .frame(null)
+        .useCss()
+
         .end();
     }
   };
