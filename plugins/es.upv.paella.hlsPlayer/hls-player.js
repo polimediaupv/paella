@@ -134,6 +134,11 @@
 							}
 							else {
 								// iOS
+								// In this way the recharge is forced, and it is possible to recover errors.
+								let src = this.video.innerHTML;
+								this.video.innerHTML = "";
+								this.video.innerHTML = src;
+								this.video.load();
 								this.video.play();
 							}
 							timer = setTimeout(timerFunction, 1000);

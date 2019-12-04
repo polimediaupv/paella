@@ -242,7 +242,7 @@ class VideoContainerBase extends paella.DomNode {
 		this._attenuationEnabled = false;
 		
 		$(this.domElement).click((evt) => {
-			if (this.firstClick && base.userAgent.browser.IsMobileVersion) return;
+			//if (this.firstClick && base.userAgent.browser.IsMobileVersion) return;
 			if (this.firstClick && !this._playOnClickEnabled) return;
 			paella.player.videoContainer.paused()
 				.then((paused) => {
