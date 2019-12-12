@@ -130,7 +130,7 @@
 
       "//**** Video profile plugins": "",
       "es.upv.paella.singleStreamProfilePlugin": {
-        "enabled": true,
+        "enabled": false,
         "videoSets": [
           {
             "icon": "professor_icon.svg",
@@ -149,7 +149,7 @@
         ]
       },
       "es.upv.paella.dualStreamProfilePlugin": {
-        "enabled": true,
+        "enabled": false,
         "videoSets": [
           {
             "icon": "slide_professor_icon.svg",
@@ -178,6 +178,79 @@
         ]
       },
       "es.upv.paella.tripleStreamProfilePlugin": {
+        "enabled": false,
+        "videoSets": [
+          {
+            "icon": "three_streams_icon.svg",
+            "id": "presenter_presentation_presenter2",
+            "content": [
+              "presenter",
+              "presentation",
+              "presenter-2"
+            ]
+          },
+          {
+            "icon": "three_streams_icon.svg",
+            "id": "presenter_presentation_presenter3",
+            "content": [
+              "presenter",
+              "presentation",
+              "presenter-3"
+            ]
+          }
+        ]
+      },
+
+      
+      "ch.ethz.paella.singleStreamProfilePlugin": {
+        "enabled": true,
+        "videoSets": [
+          {
+            "icon": "professor_icon.svg",
+            "id": "presenter",
+            "content": [
+              "presenter"
+            ]
+          },
+          {
+            "icon": "slide_icon.svg",
+            "id": "presentation",
+            "content": [
+              "presentation"
+            ]
+          }
+        ]
+      },
+      "ch.ethz.paella.dualStreamProfilePlugin": {
+        "enabled": true,
+        "videoSets": [
+          {
+            "icon": "slide_professor_icon.svg",
+            "id": "presenter_presentation",
+            "content": [
+              "presenter",
+              "presentation"
+            ]
+          },
+          {
+            "icon": "slide_professor_icon.svg",
+            "id": "presenter2_presentation",
+            "content": [
+              "presenter-2",
+              "presentation"
+            ]
+          },
+          {
+            "icon": "slide_professor_icon.svg",
+            "id": "presenter3_presentation",
+            "content": [
+              "presenter-3",
+              "presentation"
+            ]
+          }
+        ]
+      },
+      "ch.ethz.paella.tripleStreamProfilePlugin": {
         "enabled": true,
         "videoSets": [
           {

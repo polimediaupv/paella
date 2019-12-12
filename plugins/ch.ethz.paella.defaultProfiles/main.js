@@ -64,4 +64,276 @@ paella.addPlugin(function() {
             })
         }
     }
-})
+});
+
+paella.addPlugin(function() {
+	return class DualStreamProfilePlugin extends paella.EventDrivenPlugin {
+		
+		getName() {
+			return "ch.ethz.paella.dualStreamProfilePlugin";
+		}
+		
+		checkEnabled(onSuccess) {
+            let config = this.config;
+            config.videoSets.forEach((videoSet,index) => {
+                let validContent = videoSet.content
+                if (validContent.length==2) {
+                    let streamCount = 0;
+                    paella.player.videoContainer.streamProvider.videoStreams.forEach((v) => {
+                        if (validContent.indexOf(v.content)!=-1) {
+                            streamCount++
+                        }
+                    })
+                    if (streamCount>=2) {
+                        onSuccess(true)
+                        paella.addProfile(() => {
+                            return new Promise((resolve,reject) => {
+                                resolve({
+                                    id:videoSet.id,
+                                    name:{es:"Dos streams con posición dinámica"},
+                                    hidden:false,
+                                    icon:videoSet.icon,
+                                    videos: [
+                                        {
+                                            content:validContent[0],
+                                            rect:[
+                                                {aspectRatio:"16/9",left:712,top:302,width:560,height:315},
+                                                {aspectRatio:"16/10",left:712,top:267,width:560,height:350},
+                                                {aspectRatio:"4/3",left:712,top:198,width:560,height:420},
+                                                {aspectRatio:"5/3",left:712,top:281,width:560,height:336},
+                                                {aspectRatio:"5/4",left:712,top:169,width:560,height:448}
+                                            ],
+                                            visible:true,
+                                            layer:1
+                                        },
+                                        {
+                                            content:validContent[1],
+                                            rect:[
+                                                {aspectRatio:"16/9",left:10,top:225,width:695,height:390},
+                                                {aspectRatio:"16/10",left:10,top:183,width:695,height:434},
+                                                {aspectRatio:"4/3",left:10,top:96,width:695,height:521},
+                                                {aspectRatio:"5/3",left:10,top:200,width:695,height:417},
+                                                {aspectRatio:"5/4",left:10,top:62,width:695,height:556}
+                                            ],
+                                            visible:true,
+                                            layer:"1"
+                                        }
+                                    ],
+                                    background:{content:"slide_professor_paella.jpg",zIndex:5,rect:{left:0,top:0,width:1280,height:720},visible:true,layer:0},
+                                    logos:[],
+                                    buttons: [
+                                        {
+                                            rect: { left: 682, top: 565, width: 45, height: 45 },
+                                            onClick: function(event) { this.switch(); },
+                                            label:"Switch",
+                                            icon:"icon_rotate.svg",
+                                            layer: 2
+                                        },
+                                        {
+                                            rect: { left: 682, top: 515, width: 45, height: 45 },
+                                            onClick: function(event) { this.switchMinimize(); },
+                                            label:"Minimize",
+                                            icon:"minimize.svg",
+                                            layer: 2
+                                        }
+                                    ],
+                                    onApply: function() {
+                                    },
+                                    switch: function() {
+                                        let v0 = this.videos[0].content;
+                                        let v1 = this.videos[1].content;
+                                        this.videos[0].content = v1;
+                                        this.videos[1].content = v0;
+                                        paella.profiles.placeVideos();
+                                    },
+                                    switchMinimize: function() {
+                                        if (this.minimized) {
+                                            this.minimized = false;
+                                            this.videos = [
+                                                {
+                                                    content:validContent[0],
+                                                    rect:[
+                                                        {aspectRatio:"16/9",left:712,top:302,width:560,height:315},
+                                                        {aspectRatio:"16/10",left:712,top:267,width:560,height:350},
+                                                        {aspectRatio:"4/3",left:712,top:198,width:560,height:420},
+                                                        {aspectRatio:"5/3",left:712,top:281,width:560,height:336},
+                                                        {aspectRatio:"5/4",left:712,top:169,width:560,height:448}
+                                                    ],
+                                                    visible:true,
+                                                    layer:1
+                                                },
+                                                {
+                                                    content:validContent[1],
+                                                    rect:[
+                                                        {aspectRatio:"16/9",left:10,top:225,width:695,height:390},
+                                                        {aspectRatio:"16/10",left:10,top:183,width:695,height:434},
+                                                        {aspectRatio:"4/3",left:10,top:96,width:695,height:521},
+                                                        {aspectRatio:"5/3",left:10,top:200,width:695,height:417},
+                                                        {aspectRatio:"5/4",left:10,top:62,width:695,height:556}
+                                                    ],
+                                                    visible:true,
+                                                    layer:2
+                                                }
+                                            ];
+                                            this.buttons = [
+                                                {
+                                                    rect: { left: 682, top: 565, width: 45, height: 45 },
+                                                    onClick: function(event) { this.switch(); },
+                                                    label:"Switch",
+                                                    icon:"icon_rotate.svg",
+                                                    layer: 2
+                                                },
+                                                {
+                                                    rect: { left: 682, top: 515, width: 45, height: 45 },
+                                                    onClick: function(event) { this.switchMinimize(); },
+                                                    label:"Minimize",
+                                                    icon:"minimize.svg",
+                                                    layer: 2
+                                                }
+                                            ];
+                                        }
+                                        else {
+                                            this.minimized = true;
+                                            this.videos = [
+                                                {
+                                                    content:validContent[0],rect:[
+                                                        {aspectRatio:"16/9",left:0,top:0,width:1280,height:720},
+                                                        {aspectRatio:"16/10",left:64,top:0,width:1152,height:720},
+                                                        {aspectRatio:"5/3",left:40,top:0,width:1200,height:720},
+                                                        {aspectRatio:"5/4",left:190,top:0,width:900,height:720},
+                                                        {aspectRatio:"4/3",left:160,top:0,width:960,height:720}
+                                                    ],
+                                                    visible:true,
+                                                    layer:1
+                                                },
+                                                {
+                                                    content:validContent[1],rect:[
+                                                        {aspectRatio:"16/9",left:50,top:470,width:350,height:197},
+                                                        {aspectRatio:"16/10",left:50,top:448,width:350,height:219},
+                                                        {aspectRatio:"5/3",left:50,top:457,width:350,height:210},
+                                                        {aspectRatio:"5/4",left:50,top:387,width:350,height:280},
+                                                        {aspectRatio:"4/3",left:50,top:404,width:350,height:262}
+                                                    ],
+                                                    visible:true,
+                                                    layer:2
+                                                }
+                                            ];
+                                            this.buttons = [
+                                                {
+                                                    rect: { left: 388, top: 465, width: 45, height: 45 },
+                                                    onClick: function(event) { this.switch(); },
+                                                    label:"Switch",
+                                                    icon:"icon_rotate.svg",
+                                                    layer: 2
+                                                },
+                                                {
+                                                    rect: { left: 388, top: 415, width: 45, height: 45 },
+                                                    onClick: function(event) { this.switchMinimize(); },
+                                                    label:"Switch",
+                                                    icon:"minimize.svg",
+                                                    layer: 2
+                                                }
+                                            ];
+                                        }
+                                        paella.profiles.placeVideos();
+                                    }
+                                })
+                            })
+                        });
+                    }
+                    else {
+                        onSuccess(false);
+                    }
+                }
+            })
+        }
+	};
+});
+
+paella.addPlugin(function() {
+	return class TripleStreamProfilePlugin extends paella.EventDrivenPlugin {
+		
+		getName() {
+			return "ch.ethz.paella.tripleStreamProfilePlugin";
+		}
+		
+		checkEnabled(onSuccess) {
+            let config = this.config;
+            config.videoSets.forEach((videoSet,index) => {
+                let validContent = videoSet.content
+                if (validContent.length==3) {
+                    let streamCount = 0;
+                    paella.player.videoContainer.streamProvider.videoStreams.forEach((v) => {
+                        if (validContent.indexOf(v.content)!=-1) {
+                            streamCount++
+                        }
+                    })
+                    if (streamCount>=3) {
+                        onSuccess(true);
+                        paella.addProfile(() => {
+                            return new Promise((resolve,reject) => {
+                                resolve({
+                                    id:videoSet.id,
+                                    name:{es:"Tres streams posición dinámica"},
+                                    hidden:false,
+                                    icon:videoSet.icon,
+                                    videos: [
+                                        {
+                                            content: validContent[0],
+                                            rect:[
+                                                { aspectRatio:"16/9",left:239, top:17, width:803, height:451 }
+                                            ],
+                                            visible:true,
+                                            layer:1
+                                        },
+                                        {
+                                            content:  validContent[1],
+                                            rect:[
+                                                { aspectRatio:"16/9",left:44, top:482, width:389, height:218 }
+                                            ],
+                                            visible:true,
+                                            layer:1
+                                        },
+                                        {
+                                            content:  validContent[2],
+                                            rect:[
+                                                { aspectRatio:"16/9",left:847, top:482, width:389, height:218 }
+                                            ],
+                                            visible:true,
+                                            layer:1
+                                        }
+                                    ],
+                                    background: {content:"slide_professor_paella.jpg",zIndex:5,rect: { left:0,top:0,width:1280,height:720},visible: true,layer:0},
+                                    logos: [],
+                                    buttons: [
+                                        {
+                                            rect: { left: 618, top: 495, width: 45, height: 45 },
+                                            onClick: function(event) { this.rotate(); },
+                                            label:"Rotate",
+                                            icon:"icon_rotate.svg",
+                                            layer: 2
+                                        }
+                                    ],
+                                    onApply: function() {
+                                    },
+                                    rotate: function() {
+                                        let v0 = this.videos[0].content;
+                                        let v1 = this.videos[1].content;
+                                        let v2 = this.videos[2].content;
+                                        this.videos[0].content = v2;
+                                        this.videos[1].content = v0;
+                                        this.videos[2].content = v1;
+                                        paella.profiles.placeVideos();
+                                    }
+                                })
+                            })
+                        });
+                    }
+                    else {
+                        onSuccess(false);
+                    }
+                }
+            })
+        }
+	};
+});
