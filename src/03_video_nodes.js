@@ -918,10 +918,6 @@ class Html5Video extends paella.VideoElementBase {
 					processResult(action());
 					$(this.video).unbind('canplay');
 					$(this.video).unbind('loadedmetadata');
-					if (timer) {
-						clearTimeout(timer);
-						timer = null;
-					}
 				});
 			}
 		});
