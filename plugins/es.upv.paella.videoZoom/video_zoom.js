@@ -76,8 +76,9 @@ paella.addPlugin(function() {
             function checkVisibility() {
                 let buttons = $('.videoZoomButton');
                 let thumbs = $('.videoZoom');
+                let showButtons = this.config.showButtons!==undefined ? this.config.showButtons : true;
                 if (this._visible && this._available) {
-                    buttons.show();    
+                    showButtons ? buttons.show() : buttons.hide();
                     thumbs.show();
                 }
                 else {
