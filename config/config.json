@@ -93,7 +93,7 @@
       "es.upv.paella.volumeRangePlugin":{"enabled":true, "showMasterVolume": true, "showSlaveVolume": false },
       "es.upv.paella.pipModePlugin": { "enabled":true },
       "es.upv.paella.ratePlugin": { "enabled":true, "minWindowSize": 500 },
-      "es.upv.paella.videoZoomPlugin": { "enabled":true },
+      "es.upv.paella.videoZoomPlugin": { "enabled":true, "showButtons":true },
       "es.upv.paella.audioSelector": { "enabled":true, "minWindowSize": 400 },
       "es.upv.paella.videoZoomToolbarPlugin": { "enabled":false, "targetStreamIndex":0, "minWindowSize": 500 },
       "es.upv.paella.videoZoomTrack4kPlugin": { "enabled":true, "targetStreamIndex":0, "autoModeByDefault":false, "minWindowSize": 500 },
