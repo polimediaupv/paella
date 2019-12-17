@@ -119,7 +119,7 @@
 			"edu.harvard.dce.paella.flexSkipForwardPlugin": {"enabled":false, "direction": "Forward", "seconds": 30},
       "es.upv.paella.frameControlPlugin":  {"enabled": true, "showFullPreview": "auto", "showCaptions": false},      
 			"es.upv.paella.fullScreenButtonPlugin": {"enabled":true, "reloadOnFullscreen":{ "enabled":true, "keepUserSelection":true }},
-      "es.upv.paella.multipleQualitiesPlugin": {"enabled":true, "minVerticalRes": 720, "visibleOn": ["standard", "fullscreen", "extended"], "showWidthRes":false, "minWindowSize": 600},      
+      "es.upv.paella.multipleQualitiesPlugin": {"enabled":true, "minVerticalRes": 720, "visibleOn": ["standard", "fullscreen"], "showWidthRes":false, "minWindowSize": 600},      
 			"es.upv.paella.playbackRatePlugin": {"enabled":true, "availableRates": [1, 1.25, 1.5, 1.75], "minWindowSize": 600 },			
 			"es.upv.paella.playButtonOnScreenPlugin": {"enabled":true},										
       "es.upv.paella.playPauseButtonPlugin": {"enabled":true},
