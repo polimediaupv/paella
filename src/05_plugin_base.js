@@ -593,7 +593,7 @@ class ButtonPlugin extends paella.UIPlugin {
 	static BuildPluginButton(plugin,id) {
 		plugin.subclass = plugin.getSubclass();
 		var elem = document.createElement('div');
-		let ariaLabel = plugin.getAriaLabel();
+		let ariaLabel = plugin.getAriaLabel() || base.dictionary.translate(plugin.config.ariaLabel) || "";
 		if (ariaLabel!="") {
 			elem = document.createElement('button');
 		}
