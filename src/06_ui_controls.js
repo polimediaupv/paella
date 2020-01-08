@@ -304,16 +304,15 @@ class PlaybackBar extends paella.DomNode {
 			}
 		}
 
+		let duration = 0;
 		paella.player.videoContainer.duration()
-			let duration = 0;
-			paella.player.videoContainer.duration()
-				.then(function(d) {
-					duration = d;
-					return paella.player.videoContainer.trimming();
-				})
-				.then(function(trimming) {
-					updateTimePreview(duration,trimming);
-				});
+			.then(function(d) {
+				duration = d;
+				return paella.player.videoContainer.trimming();
+			})
+			.then(function(trimming) {
+				updateTimePreview(duration,trimming);
+			});
 	}
 
 	imageSetup(){
