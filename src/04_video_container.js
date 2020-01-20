@@ -241,24 +241,46 @@ class VideoContainerBase extends paella.DomNode {
 		this._seekTimeLimit = 0;
 		this._attenuationEnabled = false;
 		
-		$(this.domElement).click((evt) => {
-			//if (this.firstClick && base.userAgent.browser.IsMobileVersion) return;
-			if (this.firstClick && !this._playOnClickEnabled) return;
-			paella.player.videoContainer.paused()
-				.then((paused) => {
-					// If some player needs mouse events support, the click is ignored
-					if (this.firstClick && this.streamProvider.videoPlayers.some((p) => p.canvasData.mouseEventsSupport)) {
-						return;
-					}
+		$(this.domElement).dblclick((evt) => {
+			if (this.firstClick) {
+				paella.player.isFullScreen() ? paella.player.exitFullScreen() : paella.player.goFullScreen();
+			}
+		});
 
-					this.firstClick = true;
-					if (paused) {
-						paella.player.play();
-					}
-					else {
-						paella.player.pause();
-					}
-				});
+		let dblClickTimer = null;
+		$(this.domElement).click((evt) => {
+			let doClick = () => {
+				if (this.firstClick && !this._playOnClickEnabled) return;
+				paella.player.videoContainer.paused()
+					.then((paused) => {
+						// If some player needs mouse events support, the click is ignored
+						if (this.firstClick && this.streamProvider.videoPlayers.some((p) => p.canvasData.mouseEventsSupport)) {
+							return;
+						}
+	
+						this.firstClick = true;
+						if (paused) {
+							paella.player.play();
+						}
+						else {
+							paella.player.pause();
+						}
+					});
+			};
+
+			// the dblClick timer prevents the single click from running when the user double clicks
+			if (dblClickTimer) {
+				clearTimeout(dblClickTimer);
+				dblClickTimer = null;
+			}
+			else {
+				dblClickTimer = setTimeout(() => {
+					dblClickTimer = null;
+					doClick();
+				}, 200);
+			}
+			
+			
 		});
 
 		this.domElement.addEventListener("touchstart",(event) => {
