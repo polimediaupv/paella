@@ -5,6 +5,7 @@
 
 In this section we are going to introduce the main concepts about Paella Player for developers, to understand and develop features for Paella Player.
 
+
 ## Plugins
 
 How they works, and how to make a new one.
@@ -23,3 +24,9 @@ How they works, and how to make a new one.
 Paella provides a homogeneous mechanism to write and read persistent data.
 
 - [paella.Data](paella_data.md)
+
+## URL Parameters
+
+An easy way to provide information to the Paella Player is through the parameters of the URL:
+
+- [paella.UrlParammeters](url_parameters.md)
