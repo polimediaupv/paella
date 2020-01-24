@@ -24,9 +24,5 @@ There is a way to generate a video manifest from the URL parameters, with up to 
 Plugins can access the default parameters, and new ones, using the following function:
 
 ```javascript
-myplayer.com/?id=myvideo
-
-...
-
-paella.utils.parameters.get('myvideo')   // Returns 'myvideo'
+paella.utils.parameters.get(paramName)
 ```
