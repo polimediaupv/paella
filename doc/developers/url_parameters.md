@@ -13,6 +13,7 @@ By default, Paella Player accepts the following parameters in the URL:
 - `log`: Log level by the console (`error`, `warn`, `debug`, `log`)
 
 There is a way to generate a video manifest from the URL parameters, with up to two streams, using the following parameters:
+
 - `video`: main video URL.
 - `videoSlave`: secondary video URL.
 - `preview`: main video preview image.
@@ -26,3 +27,4 @@ Plugins can access the default parameters, and new ones, using the following fun
 ```javascript
 paella.utils.parameters.get(paramName)
 ```
+
