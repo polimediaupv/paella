@@ -57,7 +57,17 @@ paella.addPlugin(() => {
                 <img src="${ data.thumb }" alt="">
                 <p>${ data.title }</p>
                 `;
-                linkContainer.href = data.url;
+                linkContainer.addEventListener("click", function() {
+                    try {
+                        if (window.self !== window.top) {
+                            window.parent.document.dispatchEvent(new CustomEvent('paella-change-video', { detail: data }));
+                        }
+                    }
+                    catch (e) {
+
+                    }
+                    location.href = data.url;
+                });
                 return linkContainer;
             }
 

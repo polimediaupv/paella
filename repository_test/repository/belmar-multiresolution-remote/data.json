@@ -7,12 +7,14 @@
 			{
 				"title":"Video with independent audio",
 				"url":"index.html?id=dual-video-audio",
-				"thumb":"https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/belmar-preview.jpg"
+				"thumb":"https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/belmar-preview.jpg",
+				"id":"dual-video-audio"
 			},
 			{
 				"title":"HLS video stream",
 				"url":"index.html?id=hls",
-				"thumb":"https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/belmar-preview.jpg"
+				"thumb":"https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/belmar-preview.jpg",
+				"id":"hls"
 			}
 		]
 	},
