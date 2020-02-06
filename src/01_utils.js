@@ -446,11 +446,18 @@ paella.data = null;
 		if (!g_requiredScripts[path]) {
 			g_requiredScripts[path] = new Promise((resolve,reject) => {
 				let script = document.createElement("script");
+				script.onload = script.onreadystatechange = function() {
+					if (!this.readyState ||
+						this.readyState == "loaded" ||
+						this.readyState == "complete")
+					{
+						resolve();
+					}
+				}
 				if (path.split(".").pop()=='js') {
 					script.src = path;
 					script.async = false;
 					document.head.appendChild(script);
-					setTimeout(() => resolve(), 100);
 				}
 				else {
 					reject(new Error("Unexpected file type"));
