@@ -54,7 +54,7 @@ paella.addPlugin(() => {
 			paella.player.videoContainer.trimming()
 				.then((trimming) => {
 					if (trimming.enabled) {
-						paella.player.videoContainer.seekToTime(time + trimming.start);
+						paella.player.videoContainer.seekToTime(time - trimming.start);
 					}
 					else {
 						paella.player.videoContainer.seekToTime(time);
