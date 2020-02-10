@@ -22,6 +22,11 @@ CHANGELOG
   * Improvements in video zoom UX: now it is necessary to press the ALT key to make the video zoom work.
   * Other minor UX improvements.
 
+* Paella 6.2.5
+
+  * Bug fixed in breaks plugin
+  
+
 * Paella 6.2.4
 
   * Update dependencies
