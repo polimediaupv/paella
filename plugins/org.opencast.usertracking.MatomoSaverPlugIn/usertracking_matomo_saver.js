@@ -71,8 +71,7 @@ paella.addPlugin(function() {
 
     loadTitle() {
       var title = paella.player.videoLoader.getMetadata() && paella.player.videoLoader.getMetadata().title;
-      document.title = title || document.title;
-      return document.title;
+      return title;
     }
 
     log(event, params) {
