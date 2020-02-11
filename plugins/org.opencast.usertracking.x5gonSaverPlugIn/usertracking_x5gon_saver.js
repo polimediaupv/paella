@@ -1,8 +1,8 @@
-paella.addPlugin(function() {
+paella.addPlugin(function () {
     var self = this;
     return class X5gonTracking extends paella.userTracking.SaverPlugIn {
-        getName() { 
-            return "org.opencast.usertracking.x5gonSaverPlugIn"; 
+        getName() {
+            return "org.opencast.usertracking.x5gonSaverPlugIn";
         };
 
         checkEnabled(onSuccess) {
@@ -13,14 +13,14 @@ paella.addPlugin(function() {
                 testingEnvironment = this.config.testing_environment,
                 trackingPermission,
                 tracked;
-           
+
             function trackX5gon() {
                 base.log.debug("X5GON: trackX5gon permission check [trackingPermission " + trackingPermission + "] [tracked " + tracked + "]");
                 if (isTrackingPermission() && !tracked) {
                     if (!token) {
                         base.log.debug("X5GON: token missing! Disabling X5gon PlugIn");
                         onSuccess(false);
-                        }
+                    }
                     else {
                         // load x5gon lib from remote server
                         base.log.debug("X5GON: trackX5gon loading x5gon-snippet, token: " + token);
@@ -30,7 +30,7 @@ paella.addPlugin(function() {
                                 x5gonActivityTracker(token, testingEnvironment);
                                 base.log.debug("X5GON: send data to X5gon servers");
                                 tracked = true;
-                            }                                             
+                            }
                         });
                     }
                     onSuccess(true);
@@ -46,23 +46,23 @@ paella.addPlugin(function() {
                     window.cookieconsent.initialise({
                         "palette": {
                             "popup": {
-                                "background": "#1d8a8a"
+                                "background": "#343a40"
                             },
                             "button": {
-                                "background": "#62ffaa"
+                                "background": "#3ab769"
                             }
                         },
                         "type": "opt-in",
                         "position": "top",
                         "content": {
-                            "message": translate('x5_message', "On this site the X5gon service can be included, to provide personalized Open Educational Ressources."),
+                            "message": translate('x5_message', "On this site the XGON service (EU project) can be included, to provide personalized Open Educational Ressources."),
                             "allow": translate('x5_accept', "Accept"),
                             "deny": translate('x5_deny', "Deny"),
                             "link": translate('x5_more_info', "More information"),
                             "policy": translate('x5_policy', "Cookie Policy"),
                             // link to the X5GON platform privacy policy - describing what are we collecting
                             // through the platform
-                            "href": "https://platform.x5gon.org/privacy-policy"
+                            "href": "https://platform.x5gon.org/policy"
                         },
                         onInitialise: function (status) {
                             var type = this.options.type;
@@ -102,8 +102,8 @@ paella.addPlugin(function() {
             }
 
             function initTranslate(language, funcSuccess, funcError) {
-                base.log.debug('X5GON: selecting language ' + language.slice(0,2));
-                var jsonstr = window.location.origin + '/player/localization/paella_' + language.slice(0,2) + '.json';
+                base.log.debug('X5GON: selecting language ' + language.slice(0, 2));
+                var jsonstr = window.location.origin + '/player/localization/paella_' + language.slice(0, 2) + '.json';
                 $.ajax({
                     url: jsonstr,
                     dataType: 'json',
@@ -134,8 +134,8 @@ paella.addPlugin(function() {
                 if (checkDoNotTrackStatus() || !trackingPermission) {
                     return false;
                 } else {
-                    return true;   
-                }  
+                    return true;
+                }
             }
 
             function checkDoNotTrackStatus() {
@@ -174,7 +174,7 @@ paella.addPlugin(function() {
 
                 try {
                     label = JSON.stringify(params);
-                } catch (e) {}
+                } catch (e) { }
             }
         };
     };
