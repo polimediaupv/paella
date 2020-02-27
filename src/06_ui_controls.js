@@ -553,6 +553,11 @@ class PlaybackControl extends paella.DomNode {
 					var timeLineContent = paella.ButtonPlugin.BuildPluginPopUp(parent, plugin,id + '_timeline');
 					this.timeLinePluginContainer.registerContainer(plugin.getName(),timeLineContent,button,plugin);
 				}
+				else if (plugin.getButtonType()==paella.ButtonPlugin.type.menuButton) {
+					parent = this.popUpPluginContainer.domElement;
+					var popUpContent = paella.ButtonPlugin.BuildPluginMenu(parent,plugin,id + '_container');
+					this.popUpPluginContainer.registerContainer(plugin.getName(),popUpContent,button,plugin);
+				}
 			}
 			else {
 				this.pluginsContainer.domElement.removeChild(plugin.button);

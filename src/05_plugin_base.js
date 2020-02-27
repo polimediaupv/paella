@@ -492,6 +492,10 @@ class ButtonPlugin extends paella.UIPlugin {
 		// Override if your plugin
 	}
 
+	getMenuContent() {
+		return [];
+	}
+
 	willShowContent() {
 		base.log.debug(this.getName() + " willDisplayContent");
 	}
@@ -666,6 +670,21 @@ class ButtonPlugin extends paella.UIPlugin {
 		plugin.buildContent(elem);
 		return elem;
 	}
+
+	static BuildPluginMenu(parent,plugin,id) {
+		plugin.subclass = plugin.getSubclass();
+		var elem = document.createElement('div');
+		parent.appendChild(elem);
+		elem.className = plugin.getContainerClassName();
+		elem.id = id;
+		elem.plugin = plugin;
+		// TODO: Build plugin menu content
+		let menuContent = plugin.getMenuContent();
+		menuContent.forEach((menuItem) => {
+			console.log(menuItem);
+		});
+		return elem;
+	}
 }
 
 paella.ButtonPlugin = ButtonPlugin;
@@ -680,7 +699,8 @@ paella.ButtonPlugin.kTimeLineClassName = 'buttonTimeLine';
 paella.ButtonPlugin.type = {
 	actionButton:1,
 	popUpButton:2,
-	timeLineButton:3
+	timeLineButton:3,
+	menuButton:4
 };
 	
 class VideoOverlayButtonPlugin extends paella.ButtonPlugin {
