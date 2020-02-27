@@ -515,6 +515,7 @@ class ButtonPlugin extends paella.UIPlugin {
 	getButtonType() {
 		//return paella.ButtonPlugin.type.popUpButton;
 		//return paella.ButtonPlugin.type.timeLineButton;
+		//return paella.ButtonPlugin.type.menuButton;
 		return paella.ButtonPlugin.type.actionButton;
 		
 	}
@@ -562,6 +563,9 @@ class ButtonPlugin extends paella.UIPlugin {
 		}
 		else if (this.getButtonType()==paella.ButtonPlugin.type.popUpButton) {
 			return paella.ButtonPlugin.kPopUpClassName + ' ' + this.getSubclass();
+		}
+		else if (this.getButtonType()==paella.ButtonPlugin.type.menuButton) {
+			return paella.ButtonPlugin.kPopUpClassName + ' menuContainer ' + this.getSubclass();
 		}
 	}
 
@@ -678,11 +682,37 @@ class ButtonPlugin extends paella.UIPlugin {
 		elem.className = plugin.getContainerClassName();
 		elem.id = id;
 		elem.plugin = plugin;
-		// TODO: Build plugin menu content
+		plugin._domElement = elem;
+
+		function getButtonItem(itemData) {
+			var elem = document.createElement('div');
+			elem.className = itemData.className +  " menuItem";
+			if(itemData.default) {
+				elem.className += " selected";
+			}
+
+			elem.id = itemData.id;
+			elem.innerText = itemData.title;
+			elem.data = {
+				itemData: itemData,
+				plugin: plugin
+			};
+			$(elem).click(function(event) {
+				this.data.plugin.menuItemSelected(this.data.itemData);
+				let buttons = this.parentElement.children;
+				for (let i=0; i<buttons.length; ++i) {
+					$(buttons[i]).removeClass('selected');
+				}
+				$(this).addClass('selected');
+			});
+			return elem;
+		}
+
 		let menuContent = plugin.getMenuContent();
 		menuContent.forEach((menuItem) => {
-			console.log(menuItem);
+			elem.appendChild(getButtonItem(menuItem));
 		});
+
 		return elem;
 	}
 }

@@ -292,6 +292,28 @@ i.button-icon.icon-screen {
     bottom: -@playbackControlOuterHeight;
 }
 
+.buttonPluginPopUp.menuContainer .menuItem {
+    font-size: 19px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+    cursor: pointer;
+    white-space: nowrap;
+    display: block;
+    width: 100%;
+}
+
+.buttonPluginPopUp.menuContainer .menuItem:hover {
+    background-color: @hoverBackgroundColor;
+}
+
+.buttonPluginPopUp.menuContainer .menuItem.selected {
+    color:@mainColor;
+}
+
+.buttonPluginPopUp.menuContainer .menuItem.selected:hover {
+    color:@popup_text_color;
+}
+
 .timelinePluginContainer {
     position: absolute;
     left:0px;
