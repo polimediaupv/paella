@@ -453,6 +453,7 @@ class ButtonPlugin extends paella.UIPlugin {
 		this.subclass = '';
 		this.container = null;
 		this.containerManager = null;
+		this._domElement = null;
 	} 
 
 	getAlignment() {
@@ -682,9 +683,22 @@ class ButtonPlugin extends paella.UIPlugin {
 		elem.className = plugin.getContainerClassName();
 		elem.id = id;
 		elem.plugin = plugin;
-		plugin._domElement = elem;
+		plugin.menuContent = elem;
+		plugin.rebuildMenu(elem);
 
-		function getButtonItem(itemData) {
+		return elem;
+	}
+
+	set menuContent(domElem) {
+		this._domElement = domElem;
+	}
+
+	get menuContent() {
+		return this._domElement;
+	}
+
+	rebuildMenu() {
+		function getButtonItem(itemData,plugin) {
 			var elem = document.createElement('div');
 			elem.className = itemData.className +  " menuItem";
 			if(itemData.default) {
@@ -708,12 +722,11 @@ class ButtonPlugin extends paella.UIPlugin {
 			return elem;
 		}
 
-		let menuContent = plugin.getMenuContent();
+		let menuContent = this.getMenuContent();
+		this.menuContent.innerHTML = "";
 		menuContent.forEach((menuItem) => {
-			elem.appendChild(getButtonItem(menuItem));
-		});
-
-		return elem;
+			this.menuContent.appendChild(getButtonItem(menuItem,this));
+		})
 	}
 }
 

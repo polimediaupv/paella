@@ -25,20 +25,20 @@ paella.addPlugin(function() {
 	
 			var Keys = {Tab:9,Return:13,Esc:27,End:35,Home:36,Left:37,Up:38,Right:39,Down:40};
 	
-		  paella.events.bind(paella.events.setProfile,function(event,params) {
-			  thisClass.onProfileChange(params.profileName);
-		  });
-	
+			paella.events.bind(paella.events.setProfile,function(event,params) {
+				thisClass.onProfileChange(params.profileName);
+			});
+		
 			$(this.button).keyup(function(event) {
 				if (thisClass.isPopUpOpen()){
 					if (event.keyCode == Keys.Up) {
-					   if(thisClass.selected_button>0){
+					if(thisClass.selected_button>0){
 							if(thisClass.selected_button<thisClass.buttons.length)
 								thisClass.buttons[thisClass.selected_button].className = 'viewModeItemButton '+thisClass.buttons[thisClass.selected_button].data.profile;
 	
 							thisClass.selected_button--;
 							thisClass.buttons[thisClass.selected_button].className = thisClass.buttons[thisClass.selected_button].className+' selected';
-						   }
+						}
 					}
 					else if (event.keyCode == Keys.Down) {
 						if( thisClass.selected_button < thisClass.buttons.length-1){
@@ -46,7 +46,7 @@ paella.addPlugin(function() {
 								thisClass.buttons[thisClass.selected_button].className = 'viewModeItemButton '+thisClass.buttons[thisClass.selected_button].data.profile;
 	
 							thisClass.selected_button++;
-							   thisClass.buttons[thisClass.selected_button].className = thisClass.buttons[thisClass.selected_button].className+' selected';
+							thisClass.buttons[thisClass.selected_button].className = thisClass.buttons[thisClass.selected_button].className+' selected';
 						}
 					}
 					else if (event.keyCode == Keys.Return) {
