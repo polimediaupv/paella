@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "bg2e-js": "=1.3.31",
+    "hls.js": "^0.13.2",
     "jquery": "^3.4.1",
     "lunr": "^2.3.8",
     "requirejs": "^2.3.6"
