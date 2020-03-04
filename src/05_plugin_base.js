@@ -707,13 +707,17 @@ class ButtonPlugin extends paella.UIPlugin {
 
 			elem.id = itemData.id;
 			elem.innerText = itemData.title;
+			if (itemData.icon) {
+				elem.style.backgroundImage = `url(${ itemData.icon })`;
+				$(elem).addClass('icon');
+			}
 			elem.data = {
 				itemData: itemData,
 				plugin: plugin
 			};
 			$(elem).click(function(event) {
 				this.data.plugin.menuItemSelected(this.data.itemData);
-				let buttons = this.parentElement.children;
+				let buttons = this.parentElement ? this.parentElement.children : [];
 				for (let i=0; i<buttons.length; ++i) {
 					$(buttons[i]).removeClass('selected');
 				}

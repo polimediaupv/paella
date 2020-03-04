@@ -23,9 +23,6 @@ paella.addPlugin(function() {
 		setup() {
 			this.setQualityLabel();
 			paella.events.bind(paella.events.qualityChanged, (event) => this.setQualityLabel());
-			setTimeout(() => {
-				this.rebuildMenu();
-			}, 2000);
 		}
 
 		getButtonType() { return paella.ButtonPlugin.type.menuButton; }
