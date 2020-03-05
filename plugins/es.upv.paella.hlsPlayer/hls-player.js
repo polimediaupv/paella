@@ -176,8 +176,15 @@
 								if (data.fatal) {
 									switch (data.type) {
 									case Hls.ErrorTypes.NETWORK_ERROR:
-										console.error("paella.HLSPlayer: Fatal network error encountered, try to recover");
-										this._hls.startLoad();
+										if (data.details == Hls.ErrorDetails.MANIFEST_LOAD_ERROR) {
+											// TODO: Manifest file not found
+											console.error("paella.HLSPlayer: unrecoverable error in HLS Player. The video is not available.");
+											reject(new Error("No such HLS stream: the video is not available"));
+										}
+										else {
+											console.error("paella.HLSPlayer: Fatal network error encountered, try to recover");
+											this._hls.startLoad();
+										}
 										break;
 									case Hls.ErrorTypes.MEDIA_ERROR:
 										console.error("paella.HLSPlayer: Fatal media error encountered, try to recover");
