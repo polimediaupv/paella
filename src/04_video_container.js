@@ -200,7 +200,7 @@ class VideoWrapper extends paella.DomNode {
 			$(this.domElement).show();
 		}
 		else if (!visible && animate) {
-			$(this.domElement).animate({opacity:0.0},300);
+			$(this.domElement).animate({opacity:0.0},300, () => $(this.domElement).hide());
 		}
 		else if (!visible && !animate) {
 			$(this.domElement).hide();
