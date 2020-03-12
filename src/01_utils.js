@@ -699,6 +699,49 @@ paella.data = null;
 	paella.MessageBox = MessageBox;
 	paella.messageBox = new paella.MessageBox();
 
+	paella.tabIndex = new (class TabIndexManager {
+		constructor() {
+			this._last = 0;
+		}
+
+		get next() {
+			return this._last++;
+		}
+
+		get last() {
+			return this._last;
+		}
+
+		get tabIndexElements() {
+			return Array.from($('[tabindex]'));
+		}
+
+		// Insert 'count' tabindexes after domElem.tabIndex, and displace the 
+		// tabIndex of the following elements 'count' units.
+		insertAfter(domElem,count = 1) {
+			if (!domElem.tabIndex) {
+				return this.next;
+			}
+			else if (domElem.tabIndex==-1) {
+				let result = this._last;
+				this._last += count;
+				return result;
+			}
+			else {
+				let target = domElem.tabIndex;
+				this.tabIndexElements.forEach((elem) => {
+					if (elem.tabIndex>=(target + count)) {
+						elem.tabIndex += count;
+					}
+					if (elem.tabIndex>=this._last) {
+						this._last++;
+					}
+				});
+				return target + 1;
+			}
+		}
+	})();
+
 })();
 
 paella.AntiXSS = {
