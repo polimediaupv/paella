@@ -615,7 +615,8 @@ class ButtonPlugin extends paella.UIPlugin {
 		buttonText.plugin = plugin;
 		elem.appendChild(buttonText);
 		if (ariaLabel) {
-			elem.setAttribute("tabindex", 1000 + plugin.getIndex());
+			let tabIndex = paella.tabIndex.next;
+			elem.setAttribute("tabindex", tabIndex);
 			elem.setAttribute("aria-label",ariaLabel);
 		}	
 		elem.setAttribute("alt", "");
@@ -642,6 +643,10 @@ class ButtonPlugin extends paella.UIPlugin {
 		});
 		$(elem).keyup(function(event) {
 
+			event.preventDefault();
+		});
+		$(elem).keypress(function(event) {
+			onAction(this);
 			event.preventDefault();
 		});
 		$(elem).focus(function(event) {
@@ -723,6 +728,9 @@ class ButtonPlugin extends paella.UIPlugin {
 				}
 				$(this).addClass('selected');
 			});
+			$(elem).keypress(function(event) {
+				//
+			});
 			return elem;
 		}
 
@@ -730,7 +738,7 @@ class ButtonPlugin extends paella.UIPlugin {
 		this.menuContent.innerHTML = "";
 		menuContent.forEach((menuItem) => {
 			this.menuContent.appendChild(getButtonItem(menuItem,this));
-		})
+		});
 	}
 }
 
