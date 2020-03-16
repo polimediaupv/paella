@@ -740,6 +740,13 @@ paella.data = null;
 				return target + 1;
 			}
 		}
+
+		// Remove the tab indexes in the array and displace the rest of the indexes
+		removeTabIndex(tabIndexes) {
+			this.tabIndexElements.forEach((elem) => {
+				
+			});
+		}
 	})();
 
 })();

@@ -230,6 +230,56 @@ paella.FastLoadPlugin = FastLoadPlugin;
 paella.EarlyLoadPlugin = EarlyLoadPlugin;
 paella.DeferredLoadPlugin = DeferredLoadPlugin;
 
+function addMenuItemTabindex(plugin) {
+	let menuItemCount = plugin.menuContent.children.length;
+	let firstIndex = paella.tabIndex.insertAfter(plugin.button,menuItemCount);
+	Array.from(plugin.menuContent.children).forEach((menuItem,index) => {
+		menuItem.setAttribute("tabindex",firstIndex + index);
+	});
+}
+
+function removeMenuItemTabindexplugin(plugin) {
+	let tabIndexes = [];
+	Array.from(plugin.menuContent.children).forEach((menuItem) => {
+		tabIndexes.push(menuItem.tabindex);
+	});
+	paella.tabIndex.removeTabIndex(tabIndexes);
+}
+
+function hideContainer(identifier,container) {
+	paella.events.trigger(paella.events.hidePopUp,{container:container});
+	container.plugin.willHideContent();
+	// if (container.plugin.getButtonType() == paella.ButtonPlugin.type.menuButton) {
+	// 	removeMenuItemTabindexplugin(container.plugin);
+	// }
+	$(container.element).hide();
+	$(this.domElement).css({width:'0px'});
+	container.button.className = container.button.className.replace(' selected','');
+	this.currentContainerId = -1;
+	container.plugin.didHideContent();
+}
+
+function showContainer(identifier,container,button) {
+	paella.events.trigger(paella.events.showPopUp,{container:container});
+	container.plugin.willShowContent();
+	container.button.className = container.button.className + ' selected';
+	$(container.element).show();
+	// if (container.plugin.getButtonType() == paella.ButtonPlugin.type.menuButton) {
+	// 	addMenuItemTabindex(container.plugin);
+	// }
+	let width = $(container.element).width();
+	if (container.plugin.getAlignment() == 'right') {
+		var right = $(button.parentElement).width() - $(button).position().left - $(button).width();
+		$(this.domElement).css({width:width + 'px', right:right + 'px', left:''});				
+	}
+	else {
+		var left = $(button).position().left;
+		$(this.domElement).css({width:width + 'px', left:left + 'px', right:''});						
+	}			
+	this.currentContainerId = identifier;
+	container.plugin.didShowContent();			
+}
+
 class PopUpContainer extends paella.DomNode {
 
 	constructor(id,className) {
@@ -246,60 +296,21 @@ class PopUpContainer extends paella.DomNode {
 
 	hideContainer(identifier,button) {
 		var container = this.containers[identifier];
-		if (container && this.currentContainerId==identifier) {
-			container.identifier = identifier;
-			paella.events.trigger(paella.events.hidePopUp,{container:container});
-			container.plugin.willHideContent();
-			$(container.element).hide();
-			container.button.className = container.button.className.replace(' selected','');
-			$(this.domElement).css({width:'0px'});
-			this.currentContainerId = -1;
-			container.plugin.didHideContent();
-		}
+		hideContainer.apply(this,[identifier,container]);
 	}
 
 	showContainer(identifier, button) {
-		var thisClass = this;
-		var width = 0;
-		
-		function hideContainer(container) {
-			paella.events.trigger(paella.events.hidePopUp,{container:container});
-			container.plugin.willHideContent();
-			$(container.element).hide();
-			$(thisClass.domElement).css({width:'0px'});
-			container.button.className = container.button.className.replace(' selected','');
-			thisClass.currentContainerId = -1;
-			container.plugin.didHideContent();			
-		}
-		function showContainer(container) {
-			paella.events.trigger(paella.events.showPopUp,{container:container});
-			container.plugin.willShowContent();
-			container.button.className = container.button.className + ' selected';
-			$(container.element).show();
-			width = $(container.element).width();			
-			if (container.plugin.getAlignment() == 'right') {
-				var right = $(button.parentElement).width() - $(button).position().left - $(button).width();
-				$(thisClass.domElement).css({width:width + 'px', right:right + 'px', left:''});				
-			}
-			else {
-				var left = $(button).position().left;
-				$(thisClass.domElement).css({width:width + 'px', left:left + 'px', right:''});						
-			}			
-			thisClass.currentContainerId = identifier;
-			container.plugin.didShowContent();			
-		}
-		
 		var container = this.containers[identifier];
 		if (container && this.currentContainerId!=identifier && this.currentContainerId!=-1) {
 			var prevContainer = this.containers[this.currentContainerId];
-			hideContainer(prevContainer);
-			showContainer(container);
+			hideContainer.apply(this,[this.currentContainerId,prevContainer]);
+			showContainer.apply(this,[identifier,container,button]);
 		}
 		else if (container && this.currentContainerId==identifier) {
-			hideContainer(container);
+			hideContainer.apply(this,[identifier,container]);
 		}
 		else if (container) {
-			showContainer(container);
+			showContainer.apply(this,[identifier,container,button]);
 		}
 	}
 
@@ -332,9 +343,15 @@ class PopUpContainer extends paella.DomNode {
 				paella.player.controls.playbackControl().hidePopUp(this.popUpIdentifier,this);
 			}
 		});
-		$(button).keyup(function(event) {
+		$(button).keypress(function(event) {
 			if ( (event.keyCode == 13) && (!this.plugin.isPopUpOpen()) ){
-				paella.player.controls.playbackControl().showPopUp(this.popUpIdentifier,this);
+				if (this.plugin.isPopUpOpen()) {
+					paella.player.controls.playbackControl().hidePopUp(this.popUpIdentifier,this);
+				}
+				else {
+					paella.player.controls.playbackControl().showPopUp(this.popUpIdentifier,this);
+				}
+				event.preventDefault();
 			}
 			else if ( (event.keyCode == 27)){
 				paella.player.controls.playbackControl().hidePopUp(this.popUpIdentifier,this);
@@ -638,17 +655,16 @@ class ButtonPlugin extends paella.UIPlugin {
 			self.plugin.action(self);
 		}
 		
-		$(elem).click(function(event) {
-			onAction(this);
-		});
-		$(elem).keyup(function(event) {
+		if (plugin.getButtonType() == paella.ButtonPlugin.type.actionButton) {
+			$(elem).click(function(event) {
+				onAction(this);
+			});
+			$(elem).keypress(function(event) {
+				 onAction(this);
+				 event.preventDefault();
+			});
+		}
 
-			event.preventDefault();
-		});
-		$(elem).keypress(function(event) {
-			onAction(this);
-			event.preventDefault();
-		});
 		$(elem).focus(function(event) {
 			plugin.expand();
 		});
