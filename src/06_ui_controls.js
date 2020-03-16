@@ -73,7 +73,7 @@ class PlaybackBar extends paella.DomNode {
 		this.domElement.setAttribute("aria-valuemin", "0");
 		this.domElement.setAttribute("aria-valuemax", "100");
 		this.domElement.setAttribute("aria-valuenow", "0");
-		this.domElement.setAttribute("tabindex", "1100");
+		this.domElement.setAttribute("tabindex", paella.tabIndex.next);
 		$(this.domElement).keyup((event) => {
 			var currentTime = 0;
 			var duration = 0;

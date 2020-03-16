@@ -701,7 +701,7 @@ paella.data = null;
 
 	paella.tabIndex = new (class TabIndexManager {
 		constructor() {
-			this._last = 0;
+			this._last = 1;
 		}
 
 		get next() {
@@ -709,42 +709,48 @@ paella.data = null;
 		}
 
 		get last() {
-			return this._last;
+			return this._last - 1;
 		}
 
 		get tabIndexElements() {
-			return Array.from($('[tabindex]'));
+			let result = Array.from($('[tabindex]'));
+
+			// Sort by tabIndex
+			result.sort((a,b) => {
+				return a.tabIndex-b.tabIndex;
+			});
+
+			return result;
 		}
 
-		// Insert 'count' tabindexes after domElem.tabIndex, and displace the 
-		// tabIndex of the following elements 'count' units.
-		insertAfter(domElem,count = 1) {
-			if (!domElem.tabIndex) {
-				return this.next;
+		insertAfter(target,elements) {
+			if (target.tabIndex==null || target.tabIndex==-1) {
+				throw Error("Insert tab index: the target element does not have a valid tabindex.");
 			}
-			else if (domElem.tabIndex==-1) {
-				let result = this._last;
-				this._last += count;
-				return result;
-			}
-			else {
-				let target = domElem.tabIndex;
-				this.tabIndexElements.forEach((elem) => {
-					if (elem.tabIndex>=(target + count)) {
-						elem.tabIndex += count;
-					}
-					if (elem.tabIndex>=this._last) {
-						this._last++;
-					}
-				});
-				return target + 1;
-			}
+
+			let targetIndex = -1;
+			let newTabIndexElements = this.tabIndexElements;
+			newTabIndexElements.some((elem,i) => {
+				if (elem==target) {
+					targetIndex = i;
+					return true;
+				}
+			});
+			newTabIndexElements.splice(targetIndex + 1, 0, ...elements);
+			newTabIndexElements.forEach((elem,index) => {
+				elem.tabIndex = index; + 1
+			});
+			this._last = newTabIndexElements.length;
 		}
 
-		// Remove the tab indexes in the array and displace the rest of the indexes
-		removeTabIndex(tabIndexes) {
-			this.tabIndexElements.forEach((elem) => {
-				
+		removeTabIndex(elements) {
+			Array.from(elements).forEach((e) => {
+				e.removeAttribute("tabindex");
+			});
+
+			this.tabIndexElements.forEach((elem,index) => {
+				elem.tabIndex = index + 1;
+				this._last = elem.tabIndex + 1;
 			});
 		}
 	})();

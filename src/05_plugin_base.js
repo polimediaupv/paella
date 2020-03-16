@@ -231,27 +231,19 @@ paella.EarlyLoadPlugin = EarlyLoadPlugin;
 paella.DeferredLoadPlugin = DeferredLoadPlugin;
 
 function addMenuItemTabindex(plugin) {
-	let menuItemCount = plugin.menuContent.children.length;
-	let firstIndex = paella.tabIndex.insertAfter(plugin.button,menuItemCount);
-	Array.from(plugin.menuContent.children).forEach((menuItem,index) => {
-		menuItem.setAttribute("tabindex",firstIndex + index);
-	});
+	paella.tabIndex.insertAfter(plugin.button,plugin.menuContent.children);
 }
 
 function removeMenuItemTabindexplugin(plugin) {
-	let tabIndexes = [];
-	Array.from(plugin.menuContent.children).forEach((menuItem) => {
-		tabIndexes.push(menuItem.tabindex);
-	});
-	paella.tabIndex.removeTabIndex(tabIndexes);
+	paella.tabIndex.removeTabIndex(plugin.menuContent.children);
 }
 
 function hideContainer(identifier,container) {
 	paella.events.trigger(paella.events.hidePopUp,{container:container});
 	container.plugin.willHideContent();
-	// if (container.plugin.getButtonType() == paella.ButtonPlugin.type.menuButton) {
-	// 	removeMenuItemTabindexplugin(container.plugin);
-	// }
+	if (container.plugin.getButtonType() == paella.ButtonPlugin.type.menuButton) {
+		removeMenuItemTabindexplugin(container.plugin);
+	}
 	$(container.element).hide();
 	$(this.domElement).css({width:'0px'});
 	container.button.className = container.button.className.replace(' selected','');
@@ -264,9 +256,9 @@ function showContainer(identifier,container,button) {
 	container.plugin.willShowContent();
 	container.button.className = container.button.className + ' selected';
 	$(container.element).show();
-	// if (container.plugin.getButtonType() == paella.ButtonPlugin.type.menuButton) {
-	// 	addMenuItemTabindex(container.plugin);
-	// }
+	if (container.plugin.getButtonType() == paella.ButtonPlugin.type.menuButton) {
+	 	addMenuItemTabindex(container.plugin);
+	}
 	let width = $(container.element).width();
 	if (container.plugin.getAlignment() == 'right') {
 		var right = $(button.parentElement).width() - $(button).position().left - $(button).width();
