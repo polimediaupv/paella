@@ -231,11 +231,15 @@ paella.EarlyLoadPlugin = EarlyLoadPlugin;
 paella.DeferredLoadPlugin = DeferredLoadPlugin;
 
 function addMenuItemTabindex(plugin) {
-	paella.tabIndex.insertAfter(plugin.button,plugin.menuContent.children);
+	if (plugin.button.tabIndex>0) {
+		paella.tabIndex.insertAfter(plugin.button,plugin.menuContent.children);
+	}
 }
 
 function removeMenuItemTabindexplugin(plugin) {
-	paella.tabIndex.removeTabIndex(plugin.menuContent.children);
+	if (plugin.button.tabIndex>0) {
+		paella.tabIndex.removeTabIndex(plugin.menuContent.children);
+	}
 }
 
 function hideContainer(identifier,container,swapFocus) {
