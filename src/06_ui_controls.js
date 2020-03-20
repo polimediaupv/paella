@@ -617,14 +617,14 @@ class PlaybackControl extends paella.DomNode {
 		return this._timeLinePluginContainer;
 	}
 
-	showPopUp(identifier,button) {
-		this.popUpPluginContainer.showContainer(identifier,button);
-		this.timeLinePluginContainer.showContainer(identifier,button);
+	showPopUp(identifier,button,swapFocus=false) {
+		this.popUpPluginContainer.showContainer(identifier,button,swapFocus);
+		this.timeLinePluginContainer.showContainer(identifier,button,swapFocus);
 	}
 
-	hidePopUp(identifier,button) {
-		this.popUpPluginContainer.hideContainer(identifier,button);
-		this.timeLinePluginContainer.hideContainer(identifier,button);
+	hidePopUp(identifier,button,swapFocus=true) {
+		this.popUpPluginContainer.hideContainer(identifier,button,swapFocus);
+		this.timeLinePluginContainer.hideContainer(identifier,button,swapFocus);
 	}
 
 	playbackBar() {
