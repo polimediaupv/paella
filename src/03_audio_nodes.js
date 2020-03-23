@@ -135,6 +135,10 @@ class MultiformatAudioElement extends paella.AudioElementBase {
         this.domElement.appendChild(this._audio);
     }
 
+    get buffered() {
+		return this.audio && this.audio.buffered;
+    }
+    
     get audio() { return this._audio; }
 
     get currentTimeSync() {

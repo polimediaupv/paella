@@ -858,6 +858,10 @@ class Html5Video extends paella.VideoElementBase {
 		}
 	}
 	
+	get buffered() {
+		return this.video && this.video.buffered;
+	}
+
 	get video() {
 		if (this.domElementType=='video') {
 			return this.domElement;

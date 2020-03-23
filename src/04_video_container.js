@@ -702,6 +702,21 @@ class LimitedSizeProfileFrameStrategy extends ProfileFrameStrategy {
 
 paella.LimitedSizeProfileFrameStrategy = LimitedSizeProfileFrameStrategy;
 
+function updateBuffers() {
+	// Initial implementation: use the mainStream buffered property
+	let mainBuffered = this.mainPlayer && this.mainPlayer.buffered;
+	if (mainBuffered) {
+		this._bufferedData = [];
+
+		for (let i = 0; i<mainBuffered.length; ++i) {
+			this._bufferedData.push({
+				start: mainBuffered.start(i),
+				end: mainBuffered.end(i)
+			});
+		}
+	}
+}
+
 class StreamProvider {
 	constructor(videoData) {
 		this._mainStream = null;
@@ -716,6 +731,35 @@ class StreamProvider {
 
 		this._autoplay = base.parameters.get('autoplay')=='true' || this.isLiveStreaming;
 		this._startTime = 0;
+
+		this._bufferedData = [];
+		let streamProvider = this;
+		this._buffered = {
+			start: function(index) {
+				if (index<0 || index>=streamProvider._bufferedData.length) {
+					throw new Error("Buffered index out of bounds.");
+				}		
+				return streamProvider._bufferedData[index].start;
+			},
+
+			end: function(index) {
+				if (index<0 || index>=streamProvider._bufferedData.length) {
+					throw new Error("Buffered index out of bounds.");
+				}
+				return streamProvider._bufferedData[index].end;
+			}
+		}
+
+		Object.defineProperty(this._buffered, "length", {
+			get: function() {
+				return streamProvider._bufferedData.length;
+			}
+		});
+	}
+
+	get buffered() {
+		updateBuffers.apply(this);
+		return this._buffered;
 	}
 
 	init(videoData) {
@@ -898,6 +942,10 @@ class StreamProvider {
 
 	get mainAudioPlayer() {
 		return this._audioPlayer;
+	}
+
+	get mainPlayer() {
+		return this.mainVideoPlayer || this.mainAudioPlayer;
 	}
 
 	get isLiveStreaming() {
