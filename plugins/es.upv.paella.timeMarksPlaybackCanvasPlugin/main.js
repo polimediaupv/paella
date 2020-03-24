@@ -6,13 +6,14 @@ paella.addPlugin(() => {
 		get playbackBarCanvas() { return this._playbackBarCanvas; }
 
 		setup() {
+            console.log(this.config);
 			this._frameList = paella.initDelegate.initParams.videoLoader.frameList;
 			this._frameKeys = Object.keys(this._frameList);
 			if( !this._frameList || !this._frameKeys.length) {
 				this._hasSlides = false;
 			}
 			else {
-				this._hasSlides = paella.player.config.player.slidesMarks.enabled;
+				this._hasSlides = true;
 				this._frameKeys = this._frameKeys.sort((a, b) => parseInt(a)-parseInt(b));
 			}
 		}
@@ -38,7 +39,7 @@ paella.addPlugin(() => {
 		}
 
 		drawTimeMark(ctx,left,height){
-			ctx.fillStyle = paella.player.config.player.slidesMarks.color;
+			ctx.fillStyle = this.config.color;
 			ctx.fillRect(left,0,1,height);	
 		}
 	}
