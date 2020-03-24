@@ -45,19 +45,35 @@ class TimeControl extends paella.DomNode {
 
 paella.TimeControl = TimeControl;
 
+class PlaybackCanvasPlugin extends paella.DeferredLoadPlugin {
+	get type() { return 'playbackCanvas'; }
+
+	constructor() {
+		super();
+	}
+
+	drawCanvas(context,width,height) {
+
+	}
+}
+paella.PlaybackCanvasPlugin = PlaybackCanvasPlugin;
+
 class PlaybackBarCanvas {
 	constructor(canvasElem) {
 		this._parent = canvasElem;
+		this._plugins = [];
 
-		this._frameList = paella.initDelegate.initParams.videoLoader.frameList;
-		this._frameKeys = Object.keys(this._frameList);
-		if( !this._frameList || !this._frameKeys.length) {
-			this._hasSlides = false;
-		}
-		else {
-			this._hasSlides = paella.player.config.player.slidesMarks.enabled;
-			this._frameKeys = this._frameKeys.sort((a, b) => parseInt(a)-parseInt(b));
-		}
+		paella.pluginManager.setTarget('playbackCanvas', this);
+	}
+
+	addPlugin(plugin) {
+		plugin._playbackBarCanvas = this;
+		plugin.checkEnabled((isEnabled) => {
+			if (isEnabled) {
+				plugin.setup();
+				this._plugins.push(plugin);
+			}
+		});
 	}
 
 	get parent() { return this._parent; }
@@ -83,30 +99,13 @@ class PlaybackBarCanvas {
 	}
 
 	drawCanvas(){
-		let duration = 0;
-		paella.player.videoContainer.duration(true)
-			.then((d) => {
-				duration = d;
-				return paella.player.videoContainer.trimming();
-			})
-			.then((trimming) => {
-				this.clearCanvas();
-				if (this._hasSlides) {
-					this._frameKeys.forEach((l) => {
-						let timeInstant = parseInt(l) - trimming.start;
-						if (timeInstant>0) {
-							this.drawTimeMark((timeInstant * $(this.parent).width()) / duration);
-						}
-					});
-				}
-			});
-	}
-
-	drawTimeMark(sec){
-		let height = $(this.parent).height();
 		let ctx = this.context;
-		ctx.fillStyle = paella.player.config.player.slidesMarks.color;
-		ctx.fillRect(sec,0,1,height);	
+		let w = this.canvas.width;
+		let h = this.canvas.height;
+		this.clearCanvas();
+		this._plugins.forEach((plugin) => {
+			plugin.drawCanvas(ctx,w,h);
+		});
 	}
 
 	clearCanvas() {
