@@ -97,7 +97,7 @@
       "es.upv.paella.airPlayPlugin": { "enabled":true },
 
       "es.upv.paella.timeMarksPlaybackCanvasPlugin": { "enabled": true, "color": "gray" },
-      "es.upv.paella.BufferedPlaybackCanvasPlugin": { "enabled": true, "color": "rgba(0,0,0,0.2)" },
+      "es.upv.paella.BufferedPlaybackCanvasPlugin": { "enabled": true, "color": "rgba(0,0,0,0.4)" },
 
       "//***** Video Overlay Button Plugins": "",
       "es.upv.paella.liveStreamingIndicatorPlugin":  { "enabled": true },
