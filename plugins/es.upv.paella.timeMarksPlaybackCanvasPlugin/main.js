@@ -27,9 +27,12 @@ paella.addPlugin(() => {
 				})
 				.then((trimming) => {
 					if (this._hasSlides) {
+						if (trimming.enabled) {
+							duration = trimming.end - trimming.start;
+						}
 						this._frameKeys.forEach((l) => {
 							let timeInstant = parseInt(l) - trimming.start;
-							if (timeInstant>0) {
+							if (timeInstant>0 && timeInstant<duration) {
 								let left = timeInstant * width / duration;
 								this.drawTimeMark(context, left, height);
 							}
