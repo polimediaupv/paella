@@ -90,21 +90,47 @@ class PlaybackBarCanvas {
 
 	get canvas() {
 		if (!this._canvas) {
-			this._canvas = document.createElement("canvas");
-			this._canvas.className = "playerContainer_controls_playback_playbackBar_canvas";
-			this._canvas.id = "playerContainer_controls_playback_playbackBar_canvas";
-			this._canvas.width = $(this.parent).width();
-			this._canvas.height = $(this.parent).height();
-			$(this._parent).prepend(this._canvas);
+			let createCanvas = (index) => {
+				let result = document.createElement("canvas");
+				result.className = "playerContainer_controls_playback_playbackBar_canvas layer_" + index;
+				result.id = "playerContainer_controls_playback_playbackBar_canvas_" + index;
+				result.width = $(this.parent).width();
+				result.height = $(this.parent).height();
+				return result;
+			}
+			this._canvas = [
+				createCanvas(0),
+				createCanvas(1)
+			];
+			$(this._parent).prepend(this._canvas[0]);
+			$(this._parent).append(this._canvas[1]);
 		}
 		return this._canvas;
 	}
 
-	get context() { return this.canvas.getContext("2d"); }
+	get context() {
+		if (!this._context) {
+			this._context = [
+				this.canvas[0].getContext("2d"),
+				this.canvas[1].getContext("2d")
+			]
+		}
+		return this._context;
+	}
+
+	get width() {
+		return this.canvas[0].width;
+	}
+
+	get height() {
+		return this.canvas[0].height;
+	}
 
 	resize(w,h) {
-		this.canvas.width = w;
-		this.canvas.height = h;
+		this.canvas[0].width = w;
+		this.canvas[0].height = h;
+		this.canvas[1].width = w;
+		this.canvas[1].height = h;
 		this.drawCanvas();
 	}
 
@@ -131,8 +157,8 @@ class PlaybackBarCanvas {
 					}
 				}
 				let ctx = this.context;
-				let w = this.canvas.width;
-				let h = this.canvas.height;
+				let w = this.width;
+				let h = this.height;
 				this.clearCanvas();
 				this._plugins.forEach((plugin) => {
 					plugin.drawCanvas(ctx,w,h,videoData);
@@ -141,8 +167,11 @@ class PlaybackBarCanvas {
 	}
 
 	clearCanvas() {
-		var ctx = this.context;
-		ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+		let clear = (ctx,w,h) => {
+			ctx.clearRect(0, 0, w, h);
+		}
+		clear(this.context[0],this.width,this.height);
+		clear(this.context[1],this.width,this.height);
 	}
 }
 

@@ -30,8 +30,8 @@ paella.addPlugin(() => {
 		}
 
 		drawTimeMark(ctx,left,height){
-			ctx.fillStyle = this.config.color;
-			ctx.fillRect(left,0,1,height);	
+			ctx[1].fillStyle = this.config.color;
+			ctx[1].fillRect(left,0,1,height);	
 		}
 	}
 });

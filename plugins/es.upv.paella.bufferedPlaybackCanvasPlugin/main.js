@@ -22,8 +22,8 @@ paella.addPlugin(() => {
         }
 
         drawBuffer(context,start,end,height) {
-            context.fillStyle = this.config.color;
-            context.fillRect(start, 0, end, height);
+            context[0].fillStyle = this.config.color;
+            context[0].fillRect(start, 0, end, height);
         }
     }
 })
