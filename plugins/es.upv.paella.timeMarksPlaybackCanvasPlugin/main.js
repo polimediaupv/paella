@@ -3,8 +3,6 @@ paella.addPlugin(() => {
 	return class TimeMarksPlaybackCanvasPlugin extends paella.PlaybackCanvasPlugin {
 		getName() { return "es.upv.paella.timeMarksPlaybackCanvasPlugin"; }
 
-		get playbackBarCanvas() { return this._playbackBarCanvas; }
-
 		setup() {
             console.log(this.config);
 			this._frameList = paella.initDelegate.initParams.videoLoader.frameList;

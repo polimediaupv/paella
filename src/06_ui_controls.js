@@ -48,6 +48,8 @@ paella.TimeControl = TimeControl;
 class PlaybackCanvasPlugin extends paella.DeferredLoadPlugin {
 	get type() { return 'playbackCanvas'; }
 
+	get playbackBarCanvas() { return this._playbackBarCanvas; }
+	
 	constructor() {
 		super();
 	}
