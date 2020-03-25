@@ -4,7 +4,6 @@ paella.addPlugin(() => {
 		getName() { return "es.upv.paella.timeMarksPlaybackCanvasPlugin"; }
 
 		setup() {
-            console.log(this.config);
 			this._frameList = paella.initDelegate.initParams.videoLoader.frameList;
 			this._frameKeys = Object.keys(this._frameList);
 			if( !this._frameList || !this._frameKeys.length) {
@@ -16,27 +15,18 @@ paella.addPlugin(() => {
 			}
 		}
 
-		drawCanvas(context,width,height) {
-			let duration = 0;
-			paella.player.videoContainer.duration(true)
-				.then((d) => {
-					duration = d;
-					return paella.player.videoContainer.trimming();
-				})
-				.then((trimming) => {
-					if (this._hasSlides) {
-						if (trimming.enabled) {
-							duration = trimming.end - trimming.start;
-						}
-						this._frameKeys.forEach((l) => {
-							let timeInstant = parseInt(l) - trimming.start;
-							if (timeInstant>0 && timeInstant<duration) {
-								let left = timeInstant * width / duration;
-								this.drawTimeMark(context, left, height);
-							}
-						});
+		drawCanvas(context,width,height,videoData) {
+			if (this._hasSlides) {
+				this._frameKeys.forEach((l) => {
+					l = parseInt(l);
+					let timeInstant = videoData.trimming.enabled ? l - videoData.trimming.start : l;
+					if (timeInstant>0 && timeInstant<videoData.trimming.duration) {
+						let left = timeInstant * width / videoData.trimming.duration;
+						this.drawTimeMark(context, left, height);
 					}
-				});
+
+				})
+			}
 		}
 
 		drawTimeMark(ctx,left,height){

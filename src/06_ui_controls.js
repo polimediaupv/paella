@@ -49,13 +49,21 @@ class PlaybackCanvasPlugin extends paella.DeferredLoadPlugin {
 	get type() { return 'playbackCanvas'; }
 
 	get playbackBarCanvas() { return this._playbackBarCanvas; }
-	
+
 	constructor() {
 		super();
 	}
 
-	drawCanvas(context,width,height) {
-
+	drawCanvas(context,width,height,videoData) {
+		// videoData: {
+		//		duration: fullDuration,
+		//		trimming: {
+		//			enabled: true | false,
+		//			start: trimmingStart,
+		//			end: trimmingEnd,
+		//			duration: trimmedDuration | duration if trimming is not enabled
+		//		}
+		//	}
 	}
 }
 paella.PlaybackCanvasPlugin = PlaybackCanvasPlugin;
@@ -101,13 +109,35 @@ class PlaybackBarCanvas {
 	}
 
 	drawCanvas(){
-		let ctx = this.context;
-		let w = this.canvas.width;
-		let h = this.canvas.height;
-		this.clearCanvas();
-		this._plugins.forEach((plugin) => {
-			plugin.drawCanvas(ctx,w,h);
-		});
+		let duration = 0;
+		paella.player.videoContainer.duration(true)
+			.then((d) => {
+				duration = d;
+				return paella.player.videoContainer.trimming();
+			})
+
+			.then((trimming) => {
+				let trimmedDuration = 0;
+				if (trimming.enabled) {
+					trimmedDuration = trimming.end - trimming.start;
+				}
+				let videoData = {
+					duration: duration,
+					trimming: {
+						enabled: trimming.enabled,
+						start: trimming.start,
+						end: trimming.end,
+						duration: trimming.enabled ? trimming.end - trimming.start : duration
+					}
+				}
+				let ctx = this.context;
+				let w = this.canvas.width;
+				let h = this.canvas.height;
+				this.clearCanvas();
+				this._plugins.forEach((plugin) => {
+					plugin.drawCanvas(ctx,w,h,videoData);
+				});
+			})
 	}
 
 	clearCanvas() {
