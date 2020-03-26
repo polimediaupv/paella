@@ -27,6 +27,11 @@ the plugin and its funcionalities.
   
   Plugin example: [Video overlay plugin](../examples/video_overlay.md) 
 
+- Playback bar canvas plugin: The playback bar, which shows the progress of the video, includes a canvas with two layers where you can display information. Layer 0 is drawn below the elapsed time marker, and layer 1 is drawn above it.
+
+  Plugin example: [Buffered playback bar canvas plugin](../examples/buffered_playback_canvas.md)
+
+
 
 ## Interact with the player
 
