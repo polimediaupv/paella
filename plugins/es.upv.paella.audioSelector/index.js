@@ -17,29 +17,32 @@ paella.addPlugin(function() {
 				});
 		}
 
-		getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
-		
-		buildContent(domElement) {
-			this._tags.forEach((tag) => {
-				domElement.appendChild(this.getItemButton(tag));
-			});
+		getButtonType() { return paella.ButtonPlugin.type.menuButton; }
+
+		setup() {
+			
+			
 		}
 
-		getItemButton(lang) {
-			var elem = document.createElement('div');
-			let currentTag = paella.player.videoContainer.audioTag;
-			let label = lang.replace(/[-\_]/g," ");
-			elem.className = this.getButtonItemClass(label,lang==currentTag);
-			elem.id = "audioTagSelectorItem_" + lang;
-			elem.innerText = label;
-			elem.data = lang;
-			$(elem).click(function(event) {
-				$('.videoAudioTrackItem').removeClass('selected');
-				$('.videoAudioTrackItem.' + this.data).addClass('selected');
-				paella.player.videoContainer.setAudioTag(this.data);
+		getMenuContent() {
+			let buttonItems = [];
+
+			this._tags.forEach((tag,index) => {
+				buttonItems.push({
+					id: index,
+					title: tag,
+					value: tag,
+					icon: "",
+					className: this.getButtonItemClass(tag),
+					default: tag == paella.player.videoContainer.audioTag
+				});
 			});
 
-			return elem;
+			return buttonItems;
+		}
+
+		menuItemSelected(itemData) {
+			paella.player.videoContainer.setAudioTag(itemData.value);
 		}
 		
 		setQualityLabel() {
@@ -49,9 +52,9 @@ paella.addPlugin(function() {
 					This.setText(q.shortLabel());
 				});
 		}
-
-		getButtonItemClass(tag,selected) {
-			return 'videoAudioTrackItem ' + tag  + ((selected) ? ' selected':'');
+		
+		getButtonItemClass(tag) {
+			return 'videoAudioTrackItem ' + tag;
 		}
 	}
 });
