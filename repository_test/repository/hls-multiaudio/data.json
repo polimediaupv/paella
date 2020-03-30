@@ -29,7 +29,8 @@
 				]
 			},
 			"preview": "",
-			"content":"presenter"
+			"content":"presenter",
+			"role": "master"
 		}
 	],
 	"frameList": [
