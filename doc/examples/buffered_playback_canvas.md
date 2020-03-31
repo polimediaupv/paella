@@ -12,13 +12,13 @@ The playback bar consists of three layers. The background layer and the front la
 
 The `drawCanvas(context, width, height, videoData)` function is called every time the playback bar needs to be updated.
 
-- context: array with two elements corresponding to the two layers:
-    - context[0]: bottom layer
-    - context[1]: top layer
-- width, height: size of the canvas
-- videoData: an object that contains the relevant information of the video:
-    - duration: full duration of the video, ignoring the trimming
-    - trimming
+* context: array with two elements corresponding to the two layers:
+    1. context[0]: bottom layer
+    2. context[1]: top layer
+* width, height: size of the canvas
+* videoData: an object that contains the relevant information of the video:
+    1. duration: full duration of the video, ignoring the trimming
+    2. trimming
         - enabled: true | false
         - start: trimming start
         - end: trimming end
