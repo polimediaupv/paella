@@ -1,8 +1,8 @@
 {
 	"metadata": {
-		"duration": 888,
-        "title": "HLS multi audio",
-		"preview": "blender-foundation-sintel.jpg",
+		"duration": 228,
+        "title": "HLS multiaudio",
+		"preview": "https://repository.paellaplayer.upv.es/hls-multiaudio/preview.jpg",
 		"related": [
 			{
 				"title":"Video with independent audio",
@@ -23,7 +23,8 @@
 			"sources": {
 				"hls": [
 					{
-						"src": "https://bitmovin-a.akamaihd.net/content/sintel/hls/playlist.m3u8",
+						"src": "https://repository.paellaplayer.upv.es/hls-multiaudio/presenter.m3u8",
+						"src_test": "https://bitmovin-a.akamaihd.net/content/sintel/hls/playlist.m3u8",
 						"mimetype": "video/mp4"
 					}
 				]
