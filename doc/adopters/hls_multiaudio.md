@@ -72,7 +72,7 @@ The audio selection plugin `en.upv.paella.audioSelector` is able to automaticall
 
 ## An example implementation
 
-It is recommended to serve the HLS videos via a streaming server, such as Wowza, but it is also possible to generate the files of a m3u8 playlist so that they can be served directly on an HTTP server. Below are the steps to do this test from a video with several associated audio files.
+It is recommended to serve the HLS videos via a streaming server, such as [Wowza](https://www.wowza.com) ([you can see here instructions on how to generate a smil file with multiple audios](https://www.wowza.com/docs/how-to-use-alternative-audio-or-video-tracks-with-apple-hls-streams)), but it is also possible to generate the files of a m3u8 playlist so that they can be served directly on an HTTP server. Below are the steps to do this test from a video with several associated audio files.
 
 ### Use ffmpeg to generate the m3u8 playlists
 
