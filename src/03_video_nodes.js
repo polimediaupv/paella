@@ -640,6 +640,23 @@ class VideoElementBase extends paella.VideoRect {
 		return Promise.reject(new Error("VideoElementBase::videoCanvas(): Not implemented in child class."));
 	}
 
+	// Multi audio functions
+	supportsMultiaudio() {
+		return Promise.resolve(false);
+	}
+
+	getAudioTracks() {
+		return Promise.resolve([]);
+	}
+
+	setCurrentAudioTrack(trackId) {
+		return Promise.resolve(false);
+	}
+
+	getCurrentAudioTrack() {
+		return Promise.resolve(-1);
+	}
+
 	// Playback functions
 	getVideoData() {
 		return paella_DeferredNotImplemented();

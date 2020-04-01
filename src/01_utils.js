@@ -755,6 +755,59 @@ paella.data = null;
 		}
 	})();
 
+	paella.URL = class PaellaURL {
+		constructor(urlText) {
+			this._urlText = urlText;
+		}
+
+		get text() {
+			return this._urlText;
+		}
+
+		get isAbsolute() {
+			return new RegExp('^([a-z]+://|//)', 'i').test(this._urlText) ||
+					/^\//.test(this._urlText);	// We consider that the URLs starting with / are absolute and local to this server
+		}
+
+		get isExternal() {
+			let thisUrl = new URL(this.absoluteUrl);
+			let localUrl = new URL(location.href);
+			return thisUrl.hostname != localUrl.hostname;
+		}
+
+		get absoluteUrl() {
+			let result = "";
+			if (new RegExp('^([a-z]+://|//)', 'i').test(this._urlText)) {
+				result = this._urlText;
+			}
+			else if (/^\//.test(this._urlText)) {
+				result = `${ location.origin }${ this._urlText }`
+			}
+			else {
+				let pathname = location.pathname;
+				if (pathname.lastIndexOf(".")>pathname.lastIndexOf("/")) {
+					pathname = pathname.substring(0,pathname.lastIndexOf("/")) + '/';
+				}
+				result = `${ location.origin }${ pathname }${ this._urlText }`;
+			}
+			result = (new URL(result)).href;
+			return result;
+		}
+
+		appendPath(text) {
+			if (this._urlText.endsWith("/") && text.startsWith("/")) {
+				this._urlText += text.substring(1,text.length);
+			}
+			else if (this._urlText.endsWith("/") || text.startsWith("/")) {
+				this._urlText += text;
+			}
+			else {
+				this._urlText += "/" + text;
+			}
+			return this;
+		}
+	}
+	
 })();
 
 paella.AntiXSS = {

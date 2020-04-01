@@ -242,6 +242,78 @@
 				return this.setupHls(videoElem,stream.src);
 			});
 		}
+
+		supportsMultiaudio() {
+			return this._deferredAction(() => {
+				if (base.userAgent.system.iOS) {
+					return this.video.audioTracks.length>1;
+				}
+				else {
+					return this._hls.audioTracks.length>1;
+				}
+			});
+		}
+	
+		getAudioTracks() {
+			return this._deferredAction(() => {
+				if (base.userAgent.system.iOS) {
+					return this.video.audioTracks;
+				}
+				else {
+					return this._hls.audioTracks;
+				}
+			});
+		}
+
+		setCurrentAudioTrack(trackId) {
+			return this._deferredAction(() => {
+				if (base.userAgent.system.iOS) {
+					if (this.video.audioTracks.some((track) => track.id==trackId)) {
+						this.video.audioTrack = trackId;
+						return true;
+					}
+					else {
+
+						return false;
+					}
+				}
+				else {
+					if (this._hls.audioTracks.some((track) => track.id==trackId)) {
+						this._hls.audioTrack = trackId;
+						return true;
+					}
+					else {
+
+						return false;
+					}
+				}
+			});
+		}
+
+		getCurrentAudioTrack() {
+			return this._deferredAction(() => {
+				if (base.userAgent.system.iOS) {
+					let result = null;
+					this.video.audioTracks.some((t) => {
+						if (t.id==this.video.audioTrack) {
+							result = t;
+							return true;
+						}
+					});
+					return result;
+				}
+				else {
+					let result = null;
+					this._hls.audioTracks.some((t) => {
+						if (t.id==this._hls.audioTrack) {
+							result = t;
+							return true;
+						}
+					});
+					return result;
+				}
+			})
+		}
 	
 		getQualities() {
 			if (base.userAgent.system.iOS)// ||
