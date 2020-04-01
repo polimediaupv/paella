@@ -31,3 +31,6 @@ An easy way to provide information to the Paella Player is through the parameter
 
 - [paella.UrlParammeters](url_parameters.md)
 
+## Important note about multi audio support in Paella Player 6.4
+
+See the documentation about the [support of multiple audios from Paella Player 6.4](../adopters/hls_multiaudio.md)
