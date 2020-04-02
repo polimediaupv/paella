@@ -30,3 +30,6 @@ In principle it should not be necessary to modify anything to upgrade to version
 	],
 ```
 
+# Multi audio support in Paella 6.4.x
+
+As of version 6.4.0 a new system based on HLS playlists is used to supply various audio streams. You can see the documentation about it in [this link](adopters/hls_multiaudio.md)
