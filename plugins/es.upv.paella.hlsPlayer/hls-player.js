@@ -257,7 +257,16 @@
 		getAudioTracks() {
 			return this._deferredAction(() => {
 				if (base.userAgent.system.iOS) {
-					return this.video.audioTracks;
+					let result = [];
+					Array.from(this.video.audioTracks).forEach((t) => {
+						result.push({
+							id: t.id,
+							groupId: "",
+							name: t.label,
+							lang: t.language
+						});
+					})
+					return result;
 				}
 				else {
 					return this._hls.audioTracks;
@@ -268,14 +277,17 @@
 		setCurrentAudioTrack(trackId) {
 			return this._deferredAction(() => {
 				if (base.userAgent.system.iOS) {
-					if (this.video.audioTracks.some((track) => track.id==trackId)) {
-						this.video.audioTrack = trackId;
-						return true;
-					}
-					else {
-
-						return false;
-					}
+					let found = false;
+					Array.from(this.video.audioTracks).forEach((track) => {
+						if (track.id==trackId) {
+							found = true;
+							track.enabled = true;
+						}
+						else {
+							track.enabled = false;
+						}
+					});
+					return found;
 				}
 				else {
 					if (this._hls.audioTracks.some((track) => track.id==trackId)) {
@@ -294,8 +306,8 @@
 			return this._deferredAction(() => {
 				if (base.userAgent.system.iOS) {
 					let result = null;
-					this.video.audioTracks.some((t) => {
-						if (t.id==this.video.audioTrack) {
+					Array.from(this.video.audioTracks).some((t) => {
+						if (t.enabled) {
 							result = t;
 							return true;
 						}
