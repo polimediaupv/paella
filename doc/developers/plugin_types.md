@@ -20,6 +20,7 @@ the plugin and its funcionalities.
     * Push button: [playPauseButtonPlugin](../examples/button_plugin.md)
     * Pop up button: [popup plugin](../examples/popup_plugin.md)
     * Time line button: [timeline plugin](../examples/timeline_plugin.md)
+    * Menu button: [multiple quality plugin](../examples/multi_quality_plugin.md)
   
 - Video Overlay Button Plugin
 
