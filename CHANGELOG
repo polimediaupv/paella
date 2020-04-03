@@ -11,6 +11,7 @@ CHANGELOG
   * Buffered video API added to streamProvider.
   * Slide time marks moved to a playback bar canvas plugin.
   * Buffered video playback bar canvas plugin added.
+  * New button plugin type: menu button.
   * New multi audio API and HLS playlist multi audio compatibility. To use the new multi audio API:
     - The new API is supported in HLS playlists. Configure your HLS server to provide the different audio streams in one (and only one) video stream.
     - All other video streams must not contain any audio tracks.
