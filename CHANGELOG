@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 6.4.1
+
+  * Bug fixed in iOS audio selector plugin.
+
 * Paella 6.4.0
 
   * Playback bar canvas plugins: allows you to draw information in the playback bar area.
