@@ -252,7 +252,7 @@ function getManifestFromParameters(params) {
 		masterPreview = masterPreview && decodeURIComponent(masterPreview);
 		let slavePreview = paella.utils.parameters.get('previewSlave');
 		slavePreview = slavePreview && decodeURIComponent(slavePreview);
-		let title = paella.utils.parameters.get('preview') || "Untitled Video";
+		let title = paella.utils.parameters.get('title') || "Untitled Video";
 		
 		let data = {
 			metadata: {
@@ -269,9 +269,12 @@ function getManifestFromParameters(params) {
 							}
 						]
 					},
-					preview:masterPreview
+					preview:masterPreview,
+					type: "video",
+					content: "presenter"
 				}
-			]
+			],
+			frameList: []
 		}
 
 		if (slave) {
@@ -285,7 +288,9 @@ function getManifestFromParameters(params) {
 						} 
 					]
 				},
-				preview:slavePreview
+				preview:slavePreview,
+				type: "video",
+				content: "presentation"
 			});
 		}
 
