@@ -29,11 +29,7 @@ paella.version = "@version@";
 		paella.baseUrl = window.paella_debug_baseUrl;
 	}
 	else {
-		var scripts = document.getElementsByTagName('script');
-		var script = scripts[scripts.length-1].src.split("/");
-		script.pop(); // Remove javascript file name
-		script.pop(); // Remove javascript/ folder name
-		paella.baseUrl = script.join("/") + '/';
+		paella.baseUrl = location.href.replace(/[^/]*$/, '');
 	}
 })();
 
