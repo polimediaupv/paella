@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 6.4.2
+
+  * Fixed a bug in HLS videos that occurs when the connection is slow.
+
 * Paella 6.4.1
 
   * Bug fixed in iOS audio selector plugin.
