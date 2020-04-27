@@ -215,7 +215,7 @@
 		}
 
 		webGlDidLoad() {
-			if (base.userAgent.system.iOS) {
+			if (paella.utils.userAgent.system.iOS) {
 				return super.webGlDidLoad();
 			}
 			// Register a new video loader in the webgl engine, to enable the
@@ -231,7 +231,7 @@
 		}
 
 		loadVideoStream(canvasInstance,stream) {
-			if (base.userAgent.system.iOS) {
+			if (paella.utils.userAgent.system.iOS) {
 				return super.loadVideoStream(canvasInstance,stream);
 			}
 
@@ -242,7 +242,7 @@
 
 		supportsMultiaudio() {
 			return this._deferredAction(() => {
-				if (base.userAgent.system.iOS) {
+				if (paella.utils.userAgent.system.iOS) {
 					return this.video.audioTracks.length>1;
 				}
 				else {
@@ -253,7 +253,7 @@
 	
 		getAudioTracks() {
 			return this._deferredAction(() => {
-				if (base.userAgent.system.iOS) {
+				if (paella.utils.userAgent.system.iOS) {
 					let result = [];
 					Array.from(this.video.audioTracks).forEach((t) => {
 						result.push({
@@ -273,7 +273,7 @@
 
 		setCurrentAudioTrack(trackId) {
 			return this._deferredAction(() => {
-				if (base.userAgent.system.iOS) {
+				if (paella.utils.userAgent.system.iOS) {
 					let found = false;
 					Array.from(this.video.audioTracks).forEach((track) => {
 						if (track.id==trackId) {
@@ -301,7 +301,7 @@
 
 		getCurrentAudioTrack() {
 			return this._deferredAction(() => {
-				if (base.userAgent.system.iOS) {
+				if (paella.utils.userAgent.system.iOS) {
 					let result = null;
 					Array.from(this.video.audioTracks).some((t) => {
 						if (t.enabled) {
@@ -325,8 +325,8 @@
 		}
 	
 		getQualities() {
-			if (base.userAgent.system.iOS)// ||
-		//		base.userAgent.browser.Safari)
+			if (paella.utils.userAgent.system.iOS)// ||
+		//		paella.utils.userAgent.browser.Safari)
 			{
 				return new Promise((resolve,reject) => {
 					resolve([
@@ -370,7 +370,7 @@
 		}
 
 		disable(isMainAudioPlayer) {
-			if (base.userAgent.system.iOS) {
+			if (paella.utils.userAgent.system.iOS) {
 				return;
 			}
 			
@@ -398,8 +398,8 @@
 		}
 		
 		setQuality(index) {
-			if (base.userAgent.system.iOS)// ||
-				//base.userAgent.browser.Safari)
+			if (paella.utils.userAgent.system.iOS)// ||
+				//paella.utils.userAgent.browser.Safari)
 			{
 				return Promise.resolve();
 			}
@@ -432,8 +432,8 @@
 		}
 		
 		getCurrentQuality() {
-			if (base.userAgent.system.iOS)// ||
-				//base.userAgent.browser.Safari)
+			if (paella.utils.userAgent.system.iOS)// ||
+				//paella.utils.userAgent.browser.Safari)
 			{
 				return Promise.resolve(0);
 			}
@@ -469,9 +469,9 @@
 			}
 			try {
 				let cfg = this.config;
-				if ((base.userAgent.system.iOS &&
+				if ((paella.utils.userAgent.system.iOS &&
 					paella.videoFactories.HLSVideoFactory.s_instances>=cfg.iOSMaxStreams) ||
-					(base.userAgent.system.Android &&
+					(paella.utils.userAgent.system.Android &&
 					paella.videoFactories.HLSVideoFactory.s_instances>=cfg.androidMaxStreams))
 			//	In some old mobile devices, playing a high number of HLS streams may cause that the browser tab crash
 				{

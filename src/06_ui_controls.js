@@ -244,7 +244,7 @@ class PlaybackBar extends paella.DomNode {
 		$(playbackFull.domElement).bind('mousedown',function(event) {
 			paella.utils.mouseManager.down(thisClass,event); event.stopPropagation();
 		});
-		if (!base.userAgent.browser.IsMobileVersion) {
+		if (!paella.utils.userAgent.browser.IsMobileVersion) {
 			$(this.domElement).bind('mousemove',function(event) {
 				thisClass.movePassive(event); paella.utils.mouseManager.move(event);
 			});
@@ -859,7 +859,7 @@ class ControlsContainer extends paella.DomNode {
 
 		paella.events.trigger(paella.events.controlBarWillHide);
 		if (this._doHide) {
-			if (!base.userAgent.browser.IsMobileVersion && !base.userAgent.browser.Explorer) {			
+			if (!paella.utils.userAgent.browser.IsMobileVersion && !paella.utils.userAgent.browser.Explorer) {			
 				$(this.domElement).animate({opacity:0.0},{duration:300, complete: hideIfNotCanceled});
 			}
 			else {
@@ -964,7 +964,7 @@ class ControlsContainer extends paella.DomNode {
 		this.showControls();
 		this.clearAutohideTimer();
 		var thisClass = this;
-		this.autohideTimer = new base.Timer(function(timer) {
+		this.autohideTimer = new paella.utils.Timer(function(timer) {
 			thisClass.autohideTimeout();
 		},this.hideControlsTimeMillis);
 	}

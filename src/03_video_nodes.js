@@ -1321,7 +1321,7 @@ class Html5VideoFactory {
 	isStreamCompatible(streamData) {
 		try {
 			if (paella.videoFactories.Html5VideoFactory.s_instances>0 && 
-				base.userAgent.system.iOS &&
+				paella.utils.userAgent.system.iOS &&
 				(paella.utils.userAgent.system.Version.major<=10 && paella.utils.userAgent.system.Version.minor<3))
 			{
 				return false;
@@ -1523,7 +1523,7 @@ class ImageVideo extends paella.VideoElementBase {
 	play() {
 		let This = this;
 		return this._deferredAction(() => {
-			This._playTimer = new base.Timer(function() {
+			This._playTimer = new paella.utils.Timer(function() {
 				This._currentTime += 0.25 * This._playbackRate;
 				This._loadCurrentFrame();
 			}, 250);

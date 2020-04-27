@@ -362,7 +362,7 @@ class VideoContainerBase extends paella.DomNode {
 	}
 
 	startTimeupdate() {
-		this.timeupdateEventTimer = new Timer((timer) => {
+		this.timeupdateEventTimer = new paella.utils.Timer((timer) => {
 			this.triggerTimeupdate();
 		}, this.timeupdateInterval);
 		this.timeupdateEventTimer.repeat = true;

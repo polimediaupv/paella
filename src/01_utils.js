@@ -267,6 +267,67 @@ paella.utils.objectFromString = (str) => {
 	return fn;
 }
 
+(() => {
+
+	class TimerManager {
+		constructor() {
+			this.timerArray = [];
+			this.lastId = 0;
+		}
+	
+		setupTimer(timer,time) {
+			this.lastId++;
+			timer.timerId = this.lastId;
+			timer.timeout = time;
+			this.timerArray[this.lastId] = timer;
+			timer.jsTimerId = setTimeout(() => {
+				timerManager.executeTimerCallback(this.lastId);	
+			}, time);
+		}
+	
+		executeTimerCallback(timerId) {
+			var timer = this.timerArray[timerId];
+			if (timer && timer.callback) {
+				timer.callback(timer,timer.params);
+			}
+			if (timer.repeat) {
+				timer.jsTimerId = setTimeout(() => {
+					timerManager.executeTimerCallback(timer.timerId);
+				}, timer.timeout);
+			}
+		}
+	}
+
+	const timerManager = new TimerManager();
+
+	class Timer {
+		static sleep(milliseconds) {
+			let start = new Date().getTime();
+			for (let i = 0; i<1e7; ++i) {
+				if ((new Date().getTime() - start) > milliseconds) {
+					break;
+				}
+			}
+		}
+
+		constructor(callback,time,params) {
+			this.callback = callback;
+			this.params = params;
+			this._repeat = false;
+			timerManager.setupTimer(this,time);
+		}
+
+		get repeat() { return this._repeat; }
+		set repeat(r) { this._repeat = r; } 
+
+		cancel() {
+			clearTimeout(this.jsTimerId);
+		}
+	}
+
+	paella.utils.Timer = Timer;
+})();
+
 (function() {
 	let g_delegateCallbacks = {};
 	let g_dataDelegates = [];

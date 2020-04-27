@@ -52,11 +52,6 @@ DeprecatedClass("paella.JSONCallback", "base.JSONCallback", base.JSONCallback);
 DeprecatedClass("paella.DictionaryCallback", "base.DictionaryCallback", base.DictionaryCallback);
 DeprecatedClass("paella.AsyncLoader", "base.AsyncLoader", base.AsyncLoader);
 
-// Paella Timer
-///////////////////////////////////////////////////////
-DeprecatedClass("paella.Timer", "base.Timer", base.Timer);
-DeprecatedClass("paella.utils.Timer", "base.Timer", base.Timer);
-
 
 // Paella Ajax
 ///////////////////////////////////////////////////////

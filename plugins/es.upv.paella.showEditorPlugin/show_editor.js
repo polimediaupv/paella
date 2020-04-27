@@ -13,7 +13,7 @@ paella.addPlugin(function() {
 			if (this.config.editorUrl) {
 				paella.initDelegate.initParams.accessControl.canWrite()
 				.then((canWrite)=>{
-					var enabled = (canWrite); // && !base.userAgent.browser.IsMobileVersion && !paella.player.isLiveStream());					
+					var enabled = (canWrite); // && !paella.utils.userAgent.browser.IsMobileVersion && !paella.player.isLiveStream());					
 					onSuccess(enabled);
 				});	
 			}

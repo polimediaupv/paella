@@ -24,7 +24,7 @@ paella.addPlugin(function() {
 							
 			//paella.messageBox.showFrame("http://paellaplayer.upv.es/?page=usage");
 			let url = "resources/style/help/help_" + availableLangs[idx] + ".html";
-			if (base.userAgent.browser.IsMobileVersion) {
+			if (paella.utils.userAgent.browser.IsMobileVersion) {
 				window.open(url);
 			}
 			else {

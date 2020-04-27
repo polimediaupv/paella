@@ -215,7 +215,7 @@ paella.MpegDashVideo = MpegDashVideo;
 class MpegDashVideoFactory extends paella.VideoFactory {
 	isStreamCompatible(streamData) {
 		try {
-			if (base.userAgent.system.iOS) {
+			if (paella.utils.userAgent.system.iOS) {
 				return false;
 			}
 			for (var key in streamData.sources) {

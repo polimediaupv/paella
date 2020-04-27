@@ -17,8 +17,8 @@ paella.addPlugin(function() {
                 this.showOnEnd = !Array.isArray(data) ||  data.length == 0;
 			});
 			
-			onSuccess(!paella.player.isLiveStream() || base.userAgent.system.Android 
-				|| base.userAgent.system.iOS || !paella.player.videoContainer.supportAutoplay());
+			onSuccess(!paella.player.isLiveStream() || paella.utils.userAgent.system.Android 
+				|| paella.utils.userAgent.system.iOS || !paella.player.videoContainer.supportAutoplay());
 		}
 	
 		getIndex() { return 1010; }

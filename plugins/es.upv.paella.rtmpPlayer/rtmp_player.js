@@ -405,7 +405,7 @@ paella.RTMPVideo = RTMPVideo;
 class RTMPVideoFactory extends paella.VideoFactory {
 	isStreamCompatible(streamData) {
 		try {
-			if (base.userAgent.system.iOS || base.userAgent.system.Android) {
+			if (paella.utils.userAgent.system.iOS || paella.utils.userAgent.system.Android) {
 				return false;
 			}
 			for (var key in streamData.sources) {

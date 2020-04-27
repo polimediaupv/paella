@@ -47,7 +47,7 @@ class PluginManager {
 			this.loadPlugins("paella.DeferredLoadPlugin");
 		});
 		
-		var timer = new base.Timer(() => {
+		var timer = new paella.utils.Timer(() => {
 			if (paella.player && paella.player.controls && this.doResize) paella.player.controls.onresize();
 		}, 1000);
 		timer.repeat = true;

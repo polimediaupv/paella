@@ -13,7 +13,7 @@ paella.addPlugin(function() {
 			this._inputMaster = null;
 			this._control_NotMyselfEvent = true;
 			this._storedValue = false;
-			var enabled = !base.userAgent.browser.IsMobileVersion;
+			var enabled = !paella.utils.userAgent.browser.IsMobileVersion;
 			onSuccess(enabled);
 		}
 

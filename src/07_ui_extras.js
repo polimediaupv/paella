@@ -37,7 +37,7 @@
 			this.loader.domElement.className = "icon-spinner";
 	
 			paella.events.bind(paella.events.loadComplete,(event,params) => { this.loadComplete(params); });
-			this.timer = new base.Timer((timer) => {
+			this.timer = new paella.utils.Timer((timer) => {
 				//thisClass.loaderPosition -= 128;
 				
 				//thisClass.loader.domElement.style.backgroundPosition = thisClass.loaderPosition + 'px';

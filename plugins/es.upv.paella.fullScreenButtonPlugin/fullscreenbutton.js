@@ -24,7 +24,7 @@ paella.addPlugin(function() {
 			if (paella.player.isFullScreen()) {
 				paella.player.exitFullScreen();
 			}
-			else if ((!paella.player.checkFullScreenCapability() || base.userAgent.browser.Explorer) && window.location !== window.parent.location) {
+			else if ((!paella.player.checkFullScreenCapability() || paella.utils.userAgent.browser.Explorer) && window.location !== window.parent.location) {
 				// Iframe and no fullscreen support
 				var url = window.location.href;
 	

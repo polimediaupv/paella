@@ -507,7 +507,7 @@
 					return false;
 				}
 				if (paella.videoFactories.Html5VideoFactory.s_instances>0 && 
-					base.userAgent.system.iOS)
+					paella.utils.userAgent.system.iOS)
 				{
 					return false;
 				}

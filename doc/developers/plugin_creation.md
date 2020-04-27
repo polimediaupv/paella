@@ -89,7 +89,7 @@ example: helpPlugin.js (buttonPlugin)
 	myLang = availableLangs[idx];
 	  
   	let url = `resources/style/help/help_${ availableLangs[idx] }.html`;
-  	if (base.userAgent.browser.IsMobileVersion) {
+  	if (paella.utils.userAgent.browser.IsMobileVersion) {
   	  window.open(url);
   	}
   	else {

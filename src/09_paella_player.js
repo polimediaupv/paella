@@ -88,7 +88,7 @@
 
 		goFullScreen() {
 			if (!this.isFullScreen()) {
-				if (base.userAgent.system.iOS &&
+				if (paella.utils.userAgent.system.iOS &&
 					(paella.utils.userAgent.browser.Version.major<12 ||
 					 !paella.utils.userAgent.system.iPad))
 				{

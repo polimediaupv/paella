@@ -263,40 +263,6 @@ String.prototype.trim = function () {
 /* Part 3: base.js library */
 var base = {};
 
-
-Class ("base.Timer",{
-	timerId:0,
-	callback:null,
-	params:null,
-	jsTimerId:0,
-	repeat:false,
-	timeout:0,
-
-	initialize:function(callback,time,params) {
-		this.callback = callback;
-		this.params = params;
-		base.timerManager.setupTimer(this,time);
-	},
-
-	cancel:function() {
-		clearTimeout(this.jsTimerId);
-	}
-});
-
-// Deprecated
-var TimerManager = base.TimerManager
-var timerManager = base.timerManager
-var Timer = base.Timer;
-
-base.Timer.sleep = function(milliseconds) {
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e7; i++) {
-	if ((new Date().getTime() - start) > milliseconds){
-	  break;
-	}
-  }
-}
-
 base.cookies = {
 	set:function(name,value) {
 		document.cookie = name + "=" + value;

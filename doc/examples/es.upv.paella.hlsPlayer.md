@@ -200,8 +200,8 @@ class HLSPlayer extends paella.Html5Video {
             this.video.setAttribute("poster",this._posterFrame);
         }
         
-        if (base.userAgent.system.iOS)// ||
-        //	base.userAgent.browser.Safari)
+        if (paella.utils.userAgent.system.iOS)// ||
+        //	paella.utils.userAgent.browser.Safari)
         {
             return super.load();
         }
@@ -263,8 +263,8 @@ class HLSPlayer extends paella.Html5Video {
     }
 
     getQualities() {
-        if (base.userAgent.system.iOS)// ||
-    //		base.userAgent.browser.Safari)
+        if (paella.utils.userAgent.system.iOS)// ||
+    //		paella.utils.userAgent.browser.Safari)
         {
             return new Promise((resolve,reject) => {
                 resolve([
@@ -317,8 +317,8 @@ class HLSPlayer extends paella.Html5Video {
     }
     
     setQuality(index) {
-        if (base.userAgent.system.iOS)// ||
-            //base.userAgent.browser.Safari)
+        if (paella.utils.userAgent.system.iOS)// ||
+            //paella.utils.userAgent.browser.Safari)
         {
             return Promise.resolve();
         }
@@ -351,8 +351,8 @@ class HLSPlayer extends paella.Html5Video {
     }
     
     getCurrentQuality() {
-        if (base.userAgent.system.iOS)// ||
-            //base.userAgent.browser.Safari)
+        if (paella.utils.userAgent.system.iOS)// ||
+            //paella.utils.userAgent.browser.Safari)
         {
             return Promise.resolve(0);
         }
@@ -386,7 +386,7 @@ class HLSVideoFactory extends paella.VideoFactory {
         }
         try {
             if (paella.videoFactories.HLSVideoFactory.s_instances>0 && 
-                base.userAgent.system.iOS)
+                paella.utils.userAgent.system.iOS)
         //	In old iOS devices, playing more than one HLS stream may cause that the browser tab crash
         //		&& (paella.utils.userAgent.system.Version.major<=10 && paella.utils.userAgent.system.Version.minor<3))
             {
