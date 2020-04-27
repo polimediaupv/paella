@@ -87,185 +87,185 @@
 	document.head.appendChild(link);
 })();
 
-paella.utils = {	
-	mouseManager: new paella.MouseManager(),
-	
-	folders: {
-		get: function(folder) {
-			if (paella.player && paella.player.config && paella.player.config.folders && paella.player.config.folders[folder]) {
-				return paella.player.config.folders[folder];	
-			}
-			return undefined;			
-		},
-		
-		profiles: function() {
-			return paella.baseUrl + (paella.utils.folders.get("profiles") || "config/profiles");
-		},
-		
-		resources: function() {
-			return paella.baseUrl + (paella.utils.folders.get("resources") || "resources");
-		},
-		
-		skins: function() {
-			return paella.baseUrl + (paella.utils.folders.get("skins") || paella.utils.folders.get("resources") + "/style");
-		}
-	},
-	
-	styleSheet: {
-		removeById:function(id) {
-			var outStyleSheet = $(document.head).find('#' + id)[0];
-			if (outStyleSheet) {
-				document.head.removeChild(outStyleSheet);
-			}
-		},
-		
-		remove:function(fileName) {
-			var links = document.head.getElementsByTagName('link');
-			for (var i =0; i<links.length; ++i) {
-				if (links[i].href) {
-					document.head.removeChild(links[i]);
-					break;
-				}
-			}
-		},
-		
-		add:function(fileName,id) {
-			var link = document.createElement('link');
-			link.rel = 'stylesheet';
-			link.href = fileName;
-			link.type = 'text/css';
-			link.media = 'screen';
-			link.charset = 'utf-8';
-			if (id) link.id = id;
-			document.head.appendChild(link);
-		},
-		
-		swap:function(outFile,inFile) {
-			this.remove(outFile);
-			this.add(inFile);
-		}
-	},
-	
-	skin: {
-		set:function(skinName) {
-			var skinId = 'paellaSkin';
-			paella.utils.styleSheet.removeById(skinId);
-			paella.utils.styleSheet.add(paella.utils.folders.skins() + '/style_' + skinName + '.css');
-			base.cookies.set("skin",skinName);
-		},
-		
-		restore:function(defaultSkin) {
-			var storedSkin = base.cookies.get("skin");
-			if (storedSkin && storedSkin!="") {
-				this.set(storedSkin);
-			}
-			else {
-				this.set(defaultSkin);
-			}
-		}
-	},
+paella.utils = paella.utils || {};
 
-	timeParse:{
-		timeToSeconds:function(timeString) {
-			var hours = 0;
-			var minutes = 0;
-			var seconds =0;
-			if (/([0-9]+)h/i.test(timeString)) {
-				hours = parseInt(RegExp.$1) * 60 * 60;
-			}
-			if (/([0-9]+)m/i.test(timeString)) {
-				minutes = parseInt(RegExp.$1) * 60;
-			}
-			if (/([0-9]+)s/i.test(timeString)) {
-				seconds = parseInt(RegExp.$1);
-			}
-			return hours + minutes + seconds;
-		},
-	
-		secondsToTime:function(seconds) {
-			var hrs = ~~ (seconds / 3600);
-			if (hrs<10) hrs = '0' + hrs;
-			var mins = ~~ ((seconds % 3600) / 60);
-			if (mins<10) mins = '0' + mins;
-			var secs = Math.floor(seconds % 60);
-			if (secs<10) secs = '0' + secs;
-			return hrs + ':' + mins + ':' + secs;
-		},
-		secondsToText:function(secAgo) {
-			// Seconds
-			if (secAgo <= 1) {
-				return base.dictionary.translate("1 second ago");
-			}
-			if (secAgo < 60) {
-				return base.dictionary.translate("{0} seconds ago").replace(/\{0\}/g, secAgo);
-			}
-			// Minutes
-			var minAgo = Math.round(secAgo/60);
-			if (minAgo <= 1) {
-				return base.dictionary.translate("1 minute ago");
-			}
-			if (minAgo < 60) {
-				return base.dictionary.translate("{0} minutes ago").replace(/\{0\}/g, minAgo);
-			}
-			//Hours
-			var hourAgo = Math.round(secAgo/(60*60));
-			if (hourAgo <= 1) {
-				return base.dictionary.translate("1 hour ago");
-			}
-			if (hourAgo < 24) {
-				return base.dictionary.translate("{0} hours ago").replace(/\{0\}/g, hourAgo);
-			}
-			//Days
-			var daysAgo = Math.round(secAgo/(60*60*24));
-			if (daysAgo <= 1) {
-				return base.dictionary.translate("1 day ago");
-			}
-			if (daysAgo < 24) {
-				return base.dictionary.translate("{0} days ago").replace(/\{0\}/g, daysAgo);
-			}
-			//Months
-			var monthsAgo = Math.round(secAgo/(60*60*24*30));
-			if (monthsAgo <= 1) {
-				return base.dictionary.translate("1 month ago");
-			}
-			if (monthsAgo < 12) {
-				return base.dictionary.translate("{0} months ago").replace(/\{0\}/g, monthsAgo);
-			}
-			//Years
-			var yearsAgo = Math.round(secAgo/(60*60*24*365));
-			if (yearsAgo <= 1) {
-				return base.dictionary.translate("1 year ago");
-			}
-			return base.dictionary.translate("{0} years ago").replace(/\{0\}/g, yearsAgo);
-		},
-		matterhornTextDateToDate: function(mhdate) {
-			var d = new Date();
-			d.setFullYear(parseInt(mhdate.substring(0, 4), 10));
-			d.setMonth(parseInt(mhdate.substring(5, 7), 10) - 1);
-			d.setDate(parseInt(mhdate.substring(8, 10), 10));
-			d.setHours(parseInt(mhdate.substring(11, 13), 10));
-			d.setMinutes(parseInt(mhdate.substring(14, 16), 10));
-			d.setSeconds(parseInt(mhdate.substring(17, 19), 10));
+paella.utils.mouseManager = new paella.MouseManager();
 
-			return d;
+paella.utils.folders = {
+	get: function(folder) {
+		if (paella.player && paella.player.config && paella.player.config.folders && paella.player.config.folders[folder]) {
+			return paella.player.config.folders[folder];	
+		}
+		return undefined;			
+	},
+	
+	profiles: function() {
+		return paella.baseUrl + (paella.utils.folders.get("profiles") || "config/profiles");
+	},
+	
+	resources: function() {
+		return paella.baseUrl + (paella.utils.folders.get("resources") || "resources");
+	},
+	
+	skins: function() {
+		return paella.baseUrl + (paella.utils.folders.get("skins") || paella.utils.folders.get("resources") + "/style");
+	}
+}
+	
+paella.utils.styleSheet = {
+	removeById:function(id) {
+		var outStyleSheet = $(document.head).find('#' + id)[0];
+		if (outStyleSheet) {
+			document.head.removeChild(outStyleSheet);
 		}
 	},
-
-	objectFromString: function(str) {
-	  var arr = str.split(".");
 	
-	  var fn = (window || this);
-	  for (var i = 0, len = arr.length; i < len; i++) {
-		fn = fn[arr[i]];
-	  }
+	remove:function(fileName) {
+		var links = document.head.getElementsByTagName('link');
+		for (var i =0; i<links.length; ++i) {
+			if (links[i].href) {
+				document.head.removeChild(links[i]);
+				break;
+			}
+		}
+	},
 	
-	  if (typeof fn !== "function") {
-		throw new Error("constructor not found");
-	  }
+	add:function(fileName,id) {
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.href = fileName;
+		link.type = 'text/css';
+		link.media = 'screen';
+		link.charset = 'utf-8';
+		if (id) link.id = id;
+		document.head.appendChild(link);
+	},
 	
-	  return fn;
+	swap:function(outFile,inFile) {
+		this.remove(outFile);
+		this.add(inFile);
 	}
 };
+	
+paella.utils.skin = {
+	set:function(skinName) {
+		var skinId = 'paellaSkin';
+		paella.utils.styleSheet.removeById(skinId);
+		paella.utils.styleSheet.add(paella.utils.folders.skins() + '/style_' + skinName + '.css');
+		base.cookies.set("skin",skinName);
+	},
+	
+	restore:function(defaultSkin) {
+		var storedSkin = base.cookies.get("skin");
+		if (storedSkin && storedSkin!="") {
+			this.set(storedSkin);
+		}
+		else {
+			this.set(defaultSkin);
+		}
+	}
+};
+
+paella.utils.timeParse = {
+	timeToSeconds:function(timeString) {
+		var hours = 0;
+		var minutes = 0;
+		var seconds =0;
+		if (/([0-9]+)h/i.test(timeString)) {
+			hours = parseInt(RegExp.$1) * 60 * 60;
+		}
+		if (/([0-9]+)m/i.test(timeString)) {
+			minutes = parseInt(RegExp.$1) * 60;
+		}
+		if (/([0-9]+)s/i.test(timeString)) {
+			seconds = parseInt(RegExp.$1);
+		}
+		return hours + minutes + seconds;
+	},
+
+	secondsToTime:function(seconds) {
+		var hrs = ~~ (seconds / 3600);
+		if (hrs<10) hrs = '0' + hrs;
+		var mins = ~~ ((seconds % 3600) / 60);
+		if (mins<10) mins = '0' + mins;
+		var secs = Math.floor(seconds % 60);
+		if (secs<10) secs = '0' + secs;
+		return hrs + ':' + mins + ':' + secs;
+	},
+	secondsToText:function(secAgo) {
+		// Seconds
+		if (secAgo <= 1) {
+			return base.dictionary.translate("1 second ago");
+		}
+		if (secAgo < 60) {
+			return base.dictionary.translate("{0} seconds ago").replace(/\{0\}/g, secAgo);
+		}
+		// Minutes
+		var minAgo = Math.round(secAgo/60);
+		if (minAgo <= 1) {
+			return base.dictionary.translate("1 minute ago");
+		}
+		if (minAgo < 60) {
+			return base.dictionary.translate("{0} minutes ago").replace(/\{0\}/g, minAgo);
+		}
+		//Hours
+		var hourAgo = Math.round(secAgo/(60*60));
+		if (hourAgo <= 1) {
+			return base.dictionary.translate("1 hour ago");
+		}
+		if (hourAgo < 24) {
+			return base.dictionary.translate("{0} hours ago").replace(/\{0\}/g, hourAgo);
+		}
+		//Days
+		var daysAgo = Math.round(secAgo/(60*60*24));
+		if (daysAgo <= 1) {
+			return base.dictionary.translate("1 day ago");
+		}
+		if (daysAgo < 24) {
+			return base.dictionary.translate("{0} days ago").replace(/\{0\}/g, daysAgo);
+		}
+		//Months
+		var monthsAgo = Math.round(secAgo/(60*60*24*30));
+		if (monthsAgo <= 1) {
+			return base.dictionary.translate("1 month ago");
+		}
+		if (monthsAgo < 12) {
+			return base.dictionary.translate("{0} months ago").replace(/\{0\}/g, monthsAgo);
+		}
+		//Years
+		var yearsAgo = Math.round(secAgo/(60*60*24*365));
+		if (yearsAgo <= 1) {
+			return base.dictionary.translate("1 year ago");
+		}
+		return base.dictionary.translate("{0} years ago").replace(/\{0\}/g, yearsAgo);
+	},
+	matterhornTextDateToDate: function(mhdate) {
+		var d = new Date();
+		d.setFullYear(parseInt(mhdate.substring(0, 4), 10));
+		d.setMonth(parseInt(mhdate.substring(5, 7), 10) - 1);
+		d.setDate(parseInt(mhdate.substring(8, 10), 10));
+		d.setHours(parseInt(mhdate.substring(11, 13), 10));
+		d.setMinutes(parseInt(mhdate.substring(14, 16), 10));
+		d.setSeconds(parseInt(mhdate.substring(17, 19), 10));
+
+		return d;
+	}
+};
+
+paella.utils.objectFromString = (str) => {
+	var arr = str.split(".");
+
+	var fn = (window || this);
+	for (var i = 0, len = arr.length; i < len; i++) {
+		fn = fn[arr[i]];
+	}
+
+	if (typeof fn !== "function") {
+		throw new Error("constructor not found");
+	}
+
+	return fn;
+}
 
 (function() {
 	let g_delegateCallbacks = {};

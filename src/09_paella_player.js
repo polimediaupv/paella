@@ -34,7 +34,7 @@
 			if ((fs.webkitRequestFullScreen) || (fs.mozRequestFullScreen) || (fs.msRequestFullscreen) || (fs.requestFullScreen)) {
 				return true;
 			}
-			if (base.userAgent.browser.IsMobileVersion && paella.player.videoContainer.isMonostream) {
+			if (paella.utils.userAgent.browser.IsMobileVersion && paella.player.videoContainer.isMonostream) {
 				return true;
 			}		
 			return false;

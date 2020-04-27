@@ -93,7 +93,6 @@ paella.utils.require = base.require;
 paella.utils.importStylesheet = base.importStylesheet;
 paella.utils.language = base.dictionary.currentLanguage;
 paella.utils.uuid = base.uuid;
-paella.utils.userAgent = base.userAgent;
 
 
 

@@ -257,7 +257,7 @@
                 return false;
             }
             
-            animate = base.userAgent.browser.Explorer ? false:animate;
+            animate = paella.utils.userAgent.browser.Explorer ? false:animate;
             if (this.currentProfile) {
                 this.currentProfile.onDeactivate();
             }

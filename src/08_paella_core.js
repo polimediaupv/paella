@@ -105,13 +105,14 @@
 			if (base.parameters.get('ignoreBrowserCheck')) {
 				return true;
 			}
-			if (base.userAgent.browser.IsMobileVersion) return true;
-			let isCompatible =	base.userAgent.browser.Chrome ||
-								base.userAgent.browser.Safari ||
-								base.userAgent.browser.Firefox ||
-								base.userAgent.browser.Opera ||
-								base.userAgent.browser.Edge ||
-								(base.userAgent.browser.Explorer && base.userAgent.browser.Version.major>=9);
+			if (paella.utils.userAgent.browser.IsMobileVersion) return true;
+			let isCompatible =	paella.utils.userAgent.browser.Chrome ||
+								paella.utils.userAgent.browser.EdgeChromium ||
+								paella.utils.userAgent.browser.Safari ||
+								paella.utils.userAgent.browser.Firefox ||
+								paella.utils.userAgent.browser.Opera ||
+								paella.utils.userAgent.browser.Edge ||
+								(paella.utils.userAgent.browser.Explorer && paella.utils.userAgent.browser.Version.major>=9);
 			if (isCompatible) {
 				return true;
 			}
