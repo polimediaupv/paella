@@ -102,7 +102,7 @@
 		
 		checkCompatibility() {
 			let message = "";
-			if (base.parameters.get('ignoreBrowserCheck')) {
+			if (paella.utils.parameters.get('ignoreBrowserCheck')) {
 				return true;
 			}
 			if (paella.utils.userAgent.browser.IsMobileVersion) return true;
@@ -134,28 +134,28 @@
 			this.controls = null;
 			this.accessControl = null;
 	
-			if (base.parameters.get('log') != undefined) {
+			if (paella.utils.parameters.get('log') != undefined) {
 				var log = 0;
-				switch(base.parameters.get('log')) {
+				switch(paella.utils.parameters.get('log')) {
 					case "error":
-						log = base.Log.kLevelError;
+						log = paella.log.kLevelError;
 						break;					
 					case "warn":
-						log = base.Log.kLevelWarning;
+						log = paella.log.kLevelWarning;
 						break;					
 					case "debug":
-						log = base.Log.kLevelDebug;
+						log = paella.log.kLevelDebug;
 						break;					
 					case "log":
 					case "true":
-						log = base.Log.kLevelLog;
+						log = paella.log.kLevelLog;
 						break;
 				}
-				base.log.setLevel(log);
+				paella.log.setLevel(log);
 			}		
 				
 			if (!this.checkCompatibility()) {
-				base.log.debug('It seems that your browser is not HTML 5 compatible');
+				paella.log.debug('It seems that your browser is not HTML 5 compatible');
 			}
 			else {
 				paella.player = this;
@@ -237,7 +237,7 @@
 
 			if (!this.initParams.getId) {
 				this.initParams.getId = function() {
-					return base.parameters.get('id') || "noid";
+					return paella.utils.parameters.get('id') || "noid";
 				} 
 			}
 		}

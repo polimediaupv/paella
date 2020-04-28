@@ -27,10 +27,10 @@ class CaptionParserManager {
 			ext = [ext]; 
 		}
 		if (ext.length == 0) {
-			base.log.debug("No extension provided by the plugin " + plugin.getName());
+			paella.log.debug("No extension provided by the plugin " + plugin.getName());
 		}
 		else {
-			base.log.debug("New captionParser added: " + plugin.getName());		
+			paella.log.debug("New captionParser added: " + plugin.getName());		
 			ext.forEach(function(f){
 				self._formats[f] = plugin;
 			});
@@ -182,7 +182,7 @@ class Caption {
 		.then(function(dataRaw){
 			var parser = captionParserManager._formats[self._format];			
 			if (parser == undefined) {
-				base.log.debug("Error adding captions: Format not supported!");
+				paella.log.debug("Error adding captions: Format not supported!");
 				paella.player.videoContainer.duration(true)
 				.then((duration)=>{
 					self._captions = [{
@@ -215,7 +215,7 @@ class Caption {
 			}
 		})
 		.fail(function(error){
-			base.log.debug("Error loading captions: " + self._url);
+			paella.log.debug("Error loading captions: " + self._url);
 				if (next) { next(true); }
 		});
 	}

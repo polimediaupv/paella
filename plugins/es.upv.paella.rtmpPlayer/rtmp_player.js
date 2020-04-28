@@ -32,15 +32,15 @@ class RTMPVideo extends paella.VideoElementBase {
 			if (eventName=="progress") {
 				try { This.flashVideo.setVolume(This._volume); }
 				catch(e) {}
-				base.log.debug("Flash video event: " + eventName + ", progress: " + This.flashVideo.currentProgress());
+				paella.log.debug("Flash video event: " + eventName + ", progress: " + This.flashVideo.currentProgress());
 			}
 			else if (eventName=="ended") {
-				base.log.debug("Flash video event: " + eventName);
+				paella.log.debug("Flash video event: " + eventName);
 				paella.events.trigger(paella.events.pause);
 				paella.player.controls.showControls();
 			}
 			else {
-				base.log.debug("Flash video event: " + eventName);
+				paella.log.debug("Flash video event: " + eventName);
 			}
 		};
 
@@ -235,7 +235,7 @@ class RTMPVideo extends paella.VideoElementBase {
 				if (this._autoplay) {
 					parameters.autoplay = this._autoplay;
 				}
-				if (base.parameters.get('debug')=="true") {
+				if (paella.utils.parameters.get('debug')=="true") {
 					parameters.debugMode = true;
 				}
 

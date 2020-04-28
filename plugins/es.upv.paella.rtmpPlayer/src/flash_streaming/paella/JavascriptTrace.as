@@ -10,7 +10,7 @@ public class JavascriptTrace {
 	public static function log(message:String):void {
 		debugToCanvas('LOG:' + message);
 		if (paella.External.available) {
-			paella.External.call("base.log.log", message);
+			paella.External.call("paella.log.log", message);
 		}
 		else {
 			trace(message);
@@ -20,7 +20,7 @@ public class JavascriptTrace {
 	public static function error(message:String):void {
 		debugToCanvas('ERROR:' + message);
 		if (paella.External.available) {
-			paella.External.call("base.log.error", message);
+			paella.External.call("paella.log.error", message);
 		}
 		else {
 			trace(message);
@@ -30,7 +30,7 @@ public class JavascriptTrace {
 	public static function warning(message:String):void {
 		debugToCanvas('WARNING:' + message);
 		if (paella.External.available) {
-			paella.External.call("base.log.warning", message);
+			paella.External.call("paella.log.warning", message);
 		}
 		else {
 			trace(message);
@@ -40,7 +40,7 @@ public class JavascriptTrace {
 	public static function debug(message:String):void {
 		debugToCanvas('DEBUG:' + message);
 		if (paella.External.available) {
-			paella.External.call("base.log.debug", message);
+			paella.External.call("paella.log.debug", message);
 		}
 		else {
 			trace(message);

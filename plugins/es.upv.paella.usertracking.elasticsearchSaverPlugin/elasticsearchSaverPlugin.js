@@ -11,7 +11,7 @@ paella.addPlugin(function() {
 			var enabled = true;
 			if (this._url == undefined){
 				enabled = false;
-				base.log.debug("No ElasticSearch URL found in config file. Disabling ElasticSearch PlugIn");
+				paella.log.debug("No ElasticSearch URL found in config file. Disabling ElasticSearch PlugIn");
 			}
 			
 			onSuccess(enabled);

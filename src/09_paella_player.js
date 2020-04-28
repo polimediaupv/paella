@@ -133,7 +133,7 @@
 			if (paella.profiles.setProfile(profileName,animate)) {
 				let profileData = paella.player.getProfile(profileName);
 				if (profileData && !paella.player.videoContainer.isMonostream) {
-					base.cookies.set('lastProfile', profileName);
+					paella.utils.cookies.set('lastProfile', profileName);
 				}
 				paella.events.trigger(paella.events.setProfile,{profileName:profileName});
 			}
@@ -202,7 +202,7 @@
 						videoQualityStrategy = new ClassObject();
 					}
 					catch(e) {
-						base.log.warning("Error selecting video quality strategy: strategy not found");
+						paella.log.warning("Error selecting video quality strategy: strategy not found");
 					}
 					this.videoContainer.setVideoQualityStrategy(videoQualityStrategy);
 					

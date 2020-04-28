@@ -15,20 +15,20 @@ paella.addPlugin(function() {
                 tracked;
            
             function trackX5gon() {
-                base.log.debug("X5GON: trackX5gon permission check [trackingPermission " + trackingPermission + "] [tracked " + tracked + "]");
+                paella.log.debug("X5GON: trackX5gon permission check [trackingPermission " + trackingPermission + "] [tracked " + tracked + "]");
                 if (isTrackingPermission() && !tracked) {
                     if (!token) {
-                        base.log.debug("X5GON: token missing! Disabling X5gon PlugIn");
+                        paella.log.debug("X5GON: token missing! Disabling X5gon PlugIn");
                         onSuccess(false);
                         }
                     else {
                         // load x5gon lib from remote server
-                        base.log.debug("X5GON: trackX5gon loading x5gon-snippet, token: " + token);
+                        paella.log.debug("X5GON: trackX5gon loading x5gon-snippet, token: " + token);
                         require(["https://platform.x5gon.org/api/v1/snippet/latest/x5gon-log.min.js"], function (x5gon) {
-                            base.log.debug("X5GON: external x5gon snippet loaded");
+                            paella.log.debug("X5GON: external x5gon snippet loaded");
                             if (typeof x5gonActivityTracker !== 'undefined') {
                                 x5gonActivityTracker(token, testingEnvironment);
-                                base.log.debug("X5GON: send data to X5gon servers");
+                                paella.log.debug("X5GON: send data to X5gon servers");
                                 tracked = true;
                             }                                             
                         });
@@ -42,7 +42,7 @@ paella.addPlugin(function() {
             function initCookieNotification() {
                 // load cookieconsent lib from remote server
                 require([urlCookieconsentJS], function (cookieconsent) {
-                    base.log.debug("X5GON: external cookie consent lib loaded");
+                    paella.log.debug("X5GON: external cookie consent lib loaded");
                     window.cookieconsent.initialise({
                         "palette": {
                             "popup": {
@@ -102,7 +102,7 @@ paella.addPlugin(function() {
             }
 
             function initTranslate(language, funcSuccess, funcError) {
-                base.log.debug('X5GON: selecting language ' + language.slice(0,2));
+                paella.log.debug('X5GON: selecting language ' + language.slice(0,2));
                 var jsonstr = window.location.origin + '/player/localization/paella_' + language.slice(0,2) + '.json';
                 $.ajax({
                     url: jsonstr,
@@ -140,24 +140,24 @@ paella.addPlugin(function() {
 
             function checkDoNotTrackStatus() {
                 if (window.navigator.doNotTrack == 1 || window.navigator.msDoNotTrack == 1) {
-                    base.log.debug("X5GON: Browser DoNotTrack: true");
+                    paella.log.debug("X5GON: Browser DoNotTrack: true");
                     return true;
                 }
-                base.log.debug("X5GON: Browser DoNotTrack: false");
+                paella.log.debug("X5GON: Browser DoNotTrack: false");
                 return false;
             }
 
             function setTrackingPermission(permissionStatus) {
                 trackingPermission = permissionStatus;
-                base.log.debug("X5GON: trackingPermissions: " + permissionStatus);
+                paella.log.debug("X5GON: trackingPermissions: " + permissionStatus);
                 trackX5gon();
             };
 
             initTranslate(navigator.language, function () {
-                base.log.debug('X5GON: Successfully translated.');
+                paella.log.debug('X5GON: Successfully translated.');
                 initCookieNotification();
             }, function () {
-                base.log.debug('X5gon: Error translating.');
+                paella.log.debug('X5gon: Error translating.');
                 initCookieNotification();
             });
 

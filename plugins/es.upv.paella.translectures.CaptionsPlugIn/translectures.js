@@ -116,7 +116,7 @@ Class ("paella.plugins.translectures.CaptionsPlugIn", paella.EventDrivenPlugin, 
 		var video_id = paella.player.videoIdentifier;
 				
 		if ((this.config.tLServer == undefined) || (this.config.tLdb == undefined)){
-			base.log.warning(this.getName() + " plugin not configured!");
+			paella.log.warning(this.getName() + " plugin not configured!");
 			onSuccess(false);
 		}
 		else {
@@ -154,12 +154,12 @@ Class ("paella.plugins.translectures.CaptionsPlugIn", paella.EventDrivenPlugin, 
 						onSuccess(false);
 					}
 					else {
-						base.log.debug("Error getting available captions from translectures: " + langs_url);
+						paella.log.debug("Error getting available captions from translectures: " + langs_url);
 						onSuccess(false);
 					}
 				},						
 				function(data, contentType, returnCode) {
-					base.log.debug("Error getting available captions from translectures: " + langs_url);
+					paella.log.debug("Error getting available captions from translectures: " + langs_url);
 					onSuccess(false);
 				}
 			);			

@@ -715,7 +715,7 @@ class PlaybackControl extends paella.DomNode {
 
 	onresize() {
 		var windowSize = $(this.domElement).width();
-		base.log.debug("resize playback bar (width=" + windowSize + ")");
+		paella.log.debug("resize playback bar (width=" + windowSize + ")");
 
 		for (var i=0;i<this.buttonPlugins.length;++i) {
 			var plugin = this.buttonPlugins[i];

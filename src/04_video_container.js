@@ -608,30 +608,30 @@ class VideoContainerBase extends paella.DomNode {
 	}
 
 	setCurrentTime(time) {
-		base.log.debug("VideoContainerBase.setCurrentTime(" +  time + ")");
+		paella.log.debug("VideoContainerBase.setCurrentTime(" +  time + ")");
 	}
 
 	currentTime() {
-		base.log.debug("VideoContainerBase.currentTime()");
+		paella.log.debug("VideoContainerBase.currentTime()");
 		return 0;
 	}
 
 	duration() {
-		base.log.debug("VideoContainerBase.duration()");
+		paella.log.debug("VideoContainerBase.duration()");
 		return 0;
 	}
 
 	paused() {
-		base.log.debug("VideoContainerBase.paused()");
+		paella.log.debug("VideoContainerBase.paused()");
 		return true;
 	}
 
 	setupVideo(onSuccess) {
-		base.log.debug("VideoContainerBase.setupVide()");
+		paella.log.debug("VideoContainerBase.setupVide()");
 	}
 
 	isReady() {
-		base.log.debug("VideoContainerBase.isReady()");
+		paella.log.debug("VideoContainerBase.isReady()");
 		return true;
 	}
 
@@ -729,7 +729,7 @@ class StreamProvider {
 		this._audioPlayers = [];
 		this._players = [];
 
-		this._autoplay = base.parameters.get('autoplay')=='true' || this.isLiveStreaming;
+		this._autoplay = paella.utils.parameters.get('autoplay')=='true' || this.isLiveStreaming;
 		this._startTime = 0;
 
 		this._bufferedData = [];
@@ -1327,8 +1327,8 @@ class VideoContainer extends paella.VideoContainerBase {
 	}
 
 	setStreamData(videoData) {
-		var urlParamTime = base.parameters.get("time");
-		var hashParamTime = base.hashParams.get("time");
+		var urlParamTime = paella.utils.parameters.get("time");
+		var hashParamTime = paella.utils.hashParams.get("time");
 		var timeString = hashParamTime ? hashParamTime:urlParamTime ? urlParamTime:"0s";
 		var startTime = paella.utils.timeParse.timeToSeconds(timeString);
 		if (startTime) {
@@ -1414,8 +1414,8 @@ class VideoContainer extends paella.VideoContainerBase {
 
 					this._ready = true;
 					paella.events.trigger(paella.events.videoReady);
-					let profileToUse = base.parameters.get('profile') ||
-										base.cookies.get('profile') ||
+					let profileToUse = paella.utils.parameters.get('profile') ||
+										paella.utils.cookies.get('profile') ||
 										paella.profiles.getDefaultProfile();
 
 					if (paella.profiles.setProfile(profileToUse, false)) {

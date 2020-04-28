@@ -13,7 +13,7 @@ paella.addPlugin(function() {
       if (server && site_id){
         if (server.substr(-1) != '/') server += '/';
         require([server + "piwik.js"], function(matomo) {
-          base.log.debug("Matomo Analytics Enabled");
+          paella.log.debug("Matomo Analytics Enabled");
           paella.userTracking.matomotracker = Piwik.getAsyncTracker( server + "piwik.php", site_id );
           paella.userTracking.matomotracker.client_id = thisClass.config.client_id;
           if (heartbeat && heartbeat > 0) paella.userTracking.matomotracker.enableHeartBeatTimer(heartbeat);
@@ -26,7 +26,7 @@ paella.addPlugin(function() {
         });
         onSuccess(true);
       }	else {
-        base.log.debug("No Matomo Site ID found in config file. Disabling Matomo Analytics PlugIn");
+        paella.log.debug("No Matomo Site ID found in config file. Disabling Matomo Analytics PlugIn");
         onSuccess(false);
       }
     }
@@ -76,7 +76,7 @@ paella.addPlugin(function() {
 
     log(event, params) {
       if (paella.userTracking.matomotracker === undefined) {
-        base.log.debug("Matomo Tracker is missing");
+        paella.log.debug("Matomo Tracker is missing");
         return;
       }
       if ((this.config.category === undefined) || (this.config.category ===true)) {

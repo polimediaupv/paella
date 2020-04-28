@@ -130,7 +130,7 @@ In the following example you can see an implementation that emulates the default
 function myLoadPaella(containerId) {
   paella.load(containerId, {
     getId:() => {
-     return base.parameters.get("id");
+     return paella.utils.parameters.get("id");
     },
     videoUrl: () => {
      return `${ paella.player.repoUrl }${ paella.player.videoId }/`;

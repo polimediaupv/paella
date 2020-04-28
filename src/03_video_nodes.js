@@ -42,7 +42,7 @@ paella.Profiles = {
 				profileData = data[defaultProfile];
 			} else {
 				// Unable to find or map defaultProfile in profiles.json
-				base.log.debug("Error loading the default profile. Check your Paella Player configuration");
+				paella.log.debug("Error loading the default profile. Check your Paella Player configuration");
 				return false;
 			}
 			onSuccessFunction(profileData);
@@ -62,7 +62,7 @@ paella.Profiles = {
 					onSuccessFunction(thisClass.profileList);
 				},
 				function(data,mimetype,code) {
-					base.log.debug("Error loading video profiles. Check your Paella Player configuration");
+					paella.log.debug("Error loading video profiles. Check your Paella Player configuration");
 				}
 			);
 		}
@@ -616,7 +616,7 @@ class VideoElementBase extends paella.VideoRect {
 	}
 
 	setPosterFrame(url) {
-		base.log.debug("TODO: implement setPosterFrame() function");
+		paella.log.debug("TODO: implement setPosterFrame() function");
 	}
 
 	setAutoplay(autoplay) {
@@ -663,52 +663,52 @@ class VideoElementBase extends paella.VideoRect {
 	}
 	
 	play() {
-		base.log.debug("TODO: implement play() function in your VideoElementBase subclass");
+		paella.log.debug("TODO: implement play() function in your VideoElementBase subclass");
 		return paella_DeferredNotImplemented();
 	}
 
 	pause() {
-		base.log.debug("TODO: implement pause() function in your VideoElementBase subclass");
+		paella.log.debug("TODO: implement pause() function in your VideoElementBase subclass");
 		return paella_DeferredNotImplemented();
 	}
 
 	isPaused() {
-		base.log.debug("TODO: implement isPaused() function in your VideoElementBase subclass");
+		paella.log.debug("TODO: implement isPaused() function in your VideoElementBase subclass");
 		return paella_DeferredNotImplemented();
 	}
 
 	duration() {
-		base.log.debug("TODO: implement duration() function in your VideoElementBase subclass");
+		paella.log.debug("TODO: implement duration() function in your VideoElementBase subclass");
 		return paella_DeferredNotImplemented();
 	}
 
 	setCurrentTime(time) {
-		base.log.debug("TODO: implement setCurrentTime() function in your VideoElementBase subclass");
+		paella.log.debug("TODO: implement setCurrentTime() function in your VideoElementBase subclass");
 		return paella_DeferredNotImplemented();
 	}
 
 	currentTime() {
-		base.log.debug("TODO: implement currentTime() function in your VideoElementBase subclass");
+		paella.log.debug("TODO: implement currentTime() function in your VideoElementBase subclass");
 		return paella_DeferredNotImplemented();
 	}
 
 	setVolume(volume) {
-		base.log.debug("TODO: implement setVolume() function in your VideoElementBase subclass");
+		paella.log.debug("TODO: implement setVolume() function in your VideoElementBase subclass");
 		return paella_DeferredNotImplemented();
 	}
 
 	volume() {
-		base.log.debug("TODO: implement volume() function in your VideoElementBase subclass");
+		paella.log.debug("TODO: implement volume() function in your VideoElementBase subclass");
 		return paella_DeferredNotImplemented();
 	}
 
 	setPlaybackRate(rate) {
-		base.log.debug("TODO: implement setPlaybackRate() function in your VideoElementBase subclass");
+		paella.log.debug("TODO: implement setPlaybackRate() function in your VideoElementBase subclass");
 		return paella_DeferredNotImplemented();
 	}
 
 	playbackRate() {
-		base.log.debug("TODO: implement playbackRate() function in your VideoElementBase subclass");
+		paella.log.debug("TODO: implement playbackRate() function in your VideoElementBase subclass");
 		return paella_DeferredNotImplemented();
 	}
 

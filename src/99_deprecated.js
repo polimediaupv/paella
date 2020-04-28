@@ -24,7 +24,7 @@
 function DeprecatedClass(name, replacedBy, p) {
 	Class (name, p, {
 		initialize: function() {
-			base.log.warning(name +  " is deprecated, use " + replacedBy + " instead.");
+			paella.log.warning(name +  " is deprecated, use " + replacedBy + " instead.");
 			this.parent.apply(this, arguments);
 		}
 	});
@@ -32,7 +32,7 @@ function DeprecatedClass(name, replacedBy, p) {
 
 function DeprecatedFunc(name, replacedBy, func) {
 	function ret(){
-		base.log.warning(name +  " is deprecated, use " + replacedBy + " instead.");
+		paella.log.warning(name +  " is deprecated, use " + replacedBy + " instead.");
 		func.apply(this, arguments);
 	}
 	
@@ -82,23 +82,9 @@ paella.ui.Container = function(params) {
 // paella.utils
 ///////////////////////////////////////////////////////
 paella.utils.ajax = base.ajax;
-paella.utils.cookies = base.cookies;
-paella.utils.parameters = base.parameters;
 paella.utils.require = base.require;
 paella.utils.importStylesheet = base.importStylesheet;
 paella.utils.language = base.dictionary.currentLanguage;
 paella.utils.uuid = base.uuid;
-
-
-
-
-// paella.debug
-///////////////////////////////////////////////////////
-paella.debug = {
-	log:function(msg) {
-		base.log.warning("paella.debug.log is deprecated, use base.debug.[error/warning/debug/log] instead.");
-		base.log.log(msg);
-	}
-};
 
 paella.debugReady = true;

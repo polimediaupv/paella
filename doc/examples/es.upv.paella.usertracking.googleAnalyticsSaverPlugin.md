@@ -23,7 +23,7 @@ To initialize the tracking service you can use the `setup()` function, the `chec
     var trackingID = this.config.trackingID;
     var domain = this.config.domain || "auto";
     if (trackingID){
-      base.log.debug("Google Analitycs Enabled");
+      paella.log.debug("Google Analitycs Enabled");
       /* jshint ignore:start */
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments);},i[r].l=1*new Date();a=s.createElement(o),
@@ -35,7 +35,7 @@ To initialize the tracking service you can use the `setup()` function, the `chec
       onSuccess(true);
     }		
     else {
-      base.log.debug("No Google Tracking ID found in config file. Disabling Google Analitycs PlugIn");
+      paella.log.debug("No Google Tracking ID found in config file. Disabling Google Analitycs PlugIn");
       onSuccess(false);
     }				
   }

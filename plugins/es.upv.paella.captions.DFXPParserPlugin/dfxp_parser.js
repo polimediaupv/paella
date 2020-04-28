@@ -18,7 +18,7 @@ paella.addPlugin(function() {
 				var l_lang = ll.attr("xml:lang");
 				if ((l_lang == undefined) || (l_lang == "")){
 					if ((g_lang == undefined) || (g_lang == "")) {
-						base.log.debug("No xml:lang found! Using '" + lang + "' lang instead.");
+						paella.log.debug("No xml:lang found! Using '" + lang + "' lang instead.");
 						l_lang = lang;
 					}
 					else {

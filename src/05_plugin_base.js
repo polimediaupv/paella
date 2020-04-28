@@ -97,7 +97,7 @@ class PluginManager {
 				if (plugin.isLoaded()) return;
 				if (eval("plugin instanceof " + pluginBaseClass)) {
 					if (config.enabled) {
-						base.log.debug("Load plugin (" + pluginBaseClass + "): " + plugin.getName());
+						paella.log.debug("Load plugin (" + pluginBaseClass + "): " + plugin.getName());
 						plugin.config = config;							
 						plugin.load(This);
 					}				
@@ -526,19 +526,19 @@ class ButtonPlugin extends paella.UIPlugin {
 	}
 
 	willShowContent() {
-		base.log.debug(this.getName() + " willDisplayContent");
+		paella.log.debug(this.getName() + " willDisplayContent");
 	}
 
 	didShowContent() {
-		base.log.debug(this.getName() + " didDisplayContent");
+		paella.log.debug(this.getName() + " didDisplayContent");
 	}
 
 	willHideContent() {
-		base.log.debug(this.getName() + " willHideContent");
+		paella.log.debug(this.getName() + " willHideContent");
 	}
 
 	didHideContent() {
-		base.log.debug(this.getName() + " didHideContent");
+		paella.log.debug(this.getName() + " didHideContent");
 	}
 
 	getButtonType() {

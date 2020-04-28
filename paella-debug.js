@@ -43,7 +43,7 @@ function loadPaellaDebug(playerContainer,params) {
     function doLoad() {
 
         // Fill in the video selector field
-        let currentVideoId = base.parameters.get('id');
+        let currentVideoId = paella.utils.parameters.get('id');
         let selectField = document.getElementById('videoSelector');
         fs.readdirSync(__dirname + '/repository_test/repository').forEach((videoId) => {
             let option = document.createElement('option');

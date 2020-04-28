@@ -232,15 +232,15 @@ class HLSPlayer extends paella.Html5Video {
                                     if (data.fatal) {
                                         switch(data.type) {
                                         case Hls.ErrorTypes.NETWORK_ERROR:
-                                            base.log.error("paella.HLSPlayer: Fatal network error encountered, try to recover");
+                                            paella.log.error("paella.HLSPlayer: Fatal network error encountered, try to recover");
                                             This._hls.startLoad();
                                             break;
                                         case Hls.ErrorTypes.MEDIA_ERROR:
-                                            base.log.error("paella.HLSPlayer: Fatal media error encountered, try to recover");
+                                            paella.log.error("paella.HLSPlayer: Fatal media error encountered, try to recover");
                                             This._hls.recoverMediaError();
                                             break;
                                         default:
-                                            base.log.error("paella.HLSPlayer: Fatal Error. Can not recover");
+                                            paella.log.error("paella.HLSPlayer: Fatal Error. Can not recover");
                                             This._hls.destroy();
                                             reject(new Error("invalid media"));
                                             break;

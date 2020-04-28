@@ -127,7 +127,7 @@ paella.addDataDelegate(["default","trimming"], () => {
 	
 		read(context,params,onSuccess) {
 			var key = this.serializeKey(context,params);
-			var value = base.cookies.get(key);
+			var value = paella.utils.cookies.get(key);
 			try {
 				value = unescape(value);
 				value = JSON.parse(value);
@@ -144,7 +144,7 @@ paella.addDataDelegate(["default","trimming"], () => {
 				value = JSON.stringify(value);
 			}
 			value = escape(value);
-			base.cookies.set(key,value);
+			paella.utils.cookies.set(key,value);
 			if(typeof(onSuccess)=='function') {
 				onSuccess({},true);
 			}
@@ -155,7 +155,7 @@ paella.addDataDelegate(["default","trimming"], () => {
 			if (typeof(value)=='object') {
 				value = JSON.stringify(value);
 			}
-			base.cookies.set(key,'');
+			paella.utils.cookies.set(key,'');
 			if(typeof(onSuccess)=='function') {
 				onSuccess({},true);
 			}
