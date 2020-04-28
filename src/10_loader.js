@@ -74,7 +74,7 @@ class DefaultVideoLoader extends paella.VideoLoader {
 		}
 		else if (url) {
 			var This = this;
-			base.ajax.get({ url:this.getDataUrl() },
+			paella.utils.ajax.get({ url:this.getDataUrl() },
 				function(data,type,err) {
 					if (typeof(data)=="string") {
 						try {

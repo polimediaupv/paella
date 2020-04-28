@@ -121,7 +121,7 @@ Class ("paella.plugins.translectures.CaptionsPlugIn", paella.EventDrivenPlugin, 
 		}
 		else {
 			var langs_url = (this.config.tLServer + "/langs?db=${tLdb}&id=${videoId}").replace(/\$\{videoId\}/ig, video_id).replace(/\$\{tLdb\}/ig, this.config.tLdb);
-			base.ajax.get({url: langs_url},
+			paella.utils.ajax.get({url: langs_url},
 				function(data, contentType, returnCode, dataRaw) {					
 					if (data.scode == 0) {
 						data.langs.forEach(function(l){

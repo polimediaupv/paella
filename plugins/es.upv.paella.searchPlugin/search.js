@@ -254,7 +254,7 @@ paella.addPlugin(function() {
 							thisClass._searchTimer.cancel();
 						}
 						if(text!=""){
-							thisClass._searchTimer = new base.Timer(function(timer) {
+							thisClass._searchTimer = new paella.utils.Timer(function(timer) {
 								thisClass.doSearch(text, searchBody);
 							}, thisClass._searchTimerTime);
 						}

@@ -239,7 +239,7 @@ paella.addPlugin(function() {
 					if(thisClass._searchTimer != null){
 						thisClass._searchTimer.cancel();
 					}
-					thisClass._searchTimer = new base.Timer(function(timer) {
+					thisClass._searchTimer = new paella.utils.Timer(function(timer) {
 						thisClass.doSearch(text);
 					}, thisClass._searchTimerTime);			
 				});

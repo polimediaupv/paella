@@ -403,54 +403,6 @@ base.dom = {
 	}
 }
 
-// This class requires jquery
-base.ajax = {
-	// onSuccess/onFail(data,type,returnCode,rawData)
-	send:function(type,params,onSuccess,onFail) {
-		this.assertParams(params);
-
-		var ajaxObj = jQuery.ajax({
-			url:params.url,
-			data:params.params,
-			type:type
-		});
-
-		if (typeof(onSuccess)=='function') {
-			ajaxObj.done(function(data,textStatus,jqXHR) {
-				var contentType = jqXHR.getResponseHeader('content-type')
-				onSuccess(data,contentType,jqXHR.status,jqXHR.responseText);
-			});
-		}
-
-		if (typeof(onFail)=='function') {
-			ajaxObj.fail(function(jqXHR,textStatus,error) {
-				onFail(textStatus + ' : ' + error,'text/plain',jqXHR.status,jqXHR.responseText);
-			});
-		}
-	},
-
-	assertParams:function(params) {
-		if (!params.url) throw new Error("base.ajax.send: url parameter not found");
-		if (!params.params) params.params = {}
-	}
-}
-
-base.ajax["get"] = function(params,onSuccess,onFail) {
-	base.ajax.send('get',params,onSuccess,onFail);
-}
-
-base.ajax["post"] = function(params,onSuccess,onFail) {
-	base.ajax.send('post',params,onSuccess,onFail);
-}
-
-base.ajax["put"] = function(params,onSuccess,onFail) {
-	base.ajax.send('put',params,onSuccess,onFail);
-}
-
-base.ajax["delete"] = function(params,onSuccess,onFail) {
-	base.ajax.send('delete',params,onSuccess,onFail);
-}
-
 Class ("base.AsyncLoaderCallback", {
 	name:"",
 	prevCb:null,
@@ -503,7 +455,7 @@ Class ("base.AjaxCallback", base.AsyncLoaderCallback,{
 	load:function(onSuccess,onError) {
 		var This = this;
 		if (typeof(this.willLoad)=='function') this.willLoad(this);
-		base.ajax.send(this.type,this.getParams(),
+		paella.utils.ajax.send(this.type,this.getParams(),
 			function(data,type,code,rawData) {
 				var status = true;
 				This.data = data;

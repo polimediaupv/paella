@@ -54,7 +54,7 @@ paella.Profiles = {
 		if (this.profileList == null) {
 			var params = { url: paella.utils.folders.profiles() + "/profiles.json" };
 	
-			base.ajax.get(params,function(data,mimetype,code) {
+			paella.utils.ajax.get(params,function(data,mimetype,code) {
 					if (typeof(data)=="string") {
 						data = JSON.parse(data);
 					}

@@ -53,17 +53,6 @@ DeprecatedClass("paella.DictionaryCallback", "base.DictionaryCallback", base.Dic
 DeprecatedClass("paella.AsyncLoader", "base.AsyncLoader", base.AsyncLoader);
 
 
-// Paella Ajax
-///////////////////////////////////////////////////////
-paella.ajax = {};
-paella.ajax['send'] = DeprecatedFunc("paella.ajax.send", "base.ajax.send", base.ajax.send);
-paella.ajax['get'] = DeprecatedFunc("paella.ajax.get", "base.ajax.get", base.ajax.get);
-paella.ajax['put'] = DeprecatedFunc("paella.ajax.put", "base.ajax.put", base.ajax.put);
-paella.ajax['post'] = DeprecatedFunc("paella.ajax.post", "base.ajax.post", base.ajax.post);
-paella.ajax['delete'] = DeprecatedFunc("paella.ajax.delete", "base.ajax.delete", base.ajax.send);
-
-
-
 // Paella UI
 ///////////////////////////////////////////////////////
 paella.ui = {};
@@ -81,7 +70,6 @@ paella.ui.Container = function(params) {
 
 // paella.utils
 ///////////////////////////////////////////////////////
-paella.utils.ajax = base.ajax;
 paella.utils.require = base.require;
 paella.utils.importStylesheet = base.importStylesheet;
 paella.utils.language = base.dictionary.currentLanguage;

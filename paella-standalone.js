@@ -72,7 +72,7 @@ paella.standalone.StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 		}
 		else{
 			var mpUrl = repo + videoId + '/episode.json';
-			base.ajax.get({url:mpUrl, params:{}},
+			paella.utils.ajax.get({url:mpUrl, params:{}},
 				function(data,contentType,code) {
 					if (typeof(data)=='string') {
 						try {

@@ -248,7 +248,7 @@
 	
 		loadDictionary() {
 			return new Promise((resolve) => {
-				base.ajax.get({ url:this.initParams.dictionaryUrl + "_" + base.dictionary.currentLanguage() + '.json' }, function(data,type,returnCode) {
+				paella.utils.ajax.get({ url:this.initParams.dictionaryUrl + "_" + base.dictionary.currentLanguage() + '.json' }, function(data,type,returnCode) {
 					base.dictionary.addDictionary(data);
 					resolve(data);
 				},
@@ -287,7 +287,7 @@
 					var configUrl = this.initParams.configUrl;
 					var params = {};
 					params.url = configUrl;
-					base.ajax.get(params,(data,type,returnCode) => {
+					paella.utils.ajax.get(params,(data,type,returnCode) => {
 							try {
 								data = JSON.parse(data);
 							}

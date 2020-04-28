@@ -25,7 +25,7 @@
                     // previous parameter is null or undefined
                     loadConfig: function(defaultConfigUrl) {
                         return new Promise((resolve) => {
-                            base.ajax.get({ url:defaultConfigUrl }, (data,type,returnCode) => {
+                            paella.utils.ajax.get({ url:defaultConfigUrl }, (data,type,returnCode) => {
                                 resolve(data);
                             })
                         });
@@ -47,7 +47,7 @@
                     loadVideo: function() {
                         return new Promise((resolve) => {
                             let url = paella.player.dataUrl;
-                            base.ajax.get({ url:url },
+                            paella.utils.ajax.get({ url:url },
                                 function(data,type,err) {
                                     if (typeof(data)=="string") {
                                         try {

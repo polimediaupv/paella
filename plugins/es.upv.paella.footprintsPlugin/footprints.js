@@ -98,7 +98,7 @@ paella.addPlugin(function() {
 		willShowContent() {
 			var thisClass = this;
 			this.loadFootprints();
-			this.footPrintsTimer = new base.Timer(function(timer) {
+			this.footPrintsTimer = new paella.utils.Timer(function(timer) {
 				thisClass.loadFootprints();
 			},5000);
 			this.footPrintsTimer.repeat = true;
