@@ -77,8 +77,8 @@ exampleFrameList[613] = {id:'frame_613', mimetype:'image/jpg', time:613, url:'/i
 exampleFrameList[658] = {id:'frame_658', mimetype:'image/jpg', time:658, url:'/image/frame_658.jpg', thumb:'/image/frame_658.jpg'};
 
 
-var MyAccessControl = Class.create(paella.AccessControl,{
-	checkAccess:function(onSuccess) {
+class MyAccessControl extends paella.AccessControl {
+	checkAccess(onSuccess) {
 		this.permissions.canRead = true;
 		this.permissions.canWrite = true;
 		this.permissions.canContribute = true;
@@ -89,11 +89,11 @@ var MyAccessControl = Class.create(paella.AccessControl,{
 		this.userData.avatar = 'resources/images/default_avatar.png';
 		onSuccess(this.permissions);
 	}
-});
+}
 
 // Dual MP4 progressive download
-var DualMP4VideoLoader = Class.create(paella.VideoLoader, {
-	loadVideo:function(videoId,onSuccess) {
+class DualMP4VideoLoader extends paella.VideoLoader {
+	loadVideo(videoId,onSuccess) {
 		var url = videoId;
 		if (url) {
 			var stream = examplePresenterSources;
@@ -126,12 +126,12 @@ var DualMP4VideoLoader = Class.create(paella.VideoLoader, {
 		this.loadStatus = true;
 		onSuccess();
 	}
-});
+}
 
 
 // Dual Live RTMP Stream
-var DualLiveRTMPStreamVideoLoader = Class.create(paella.VideoLoader, {
-	loadVideo:function(videoId,onSuccess) {
+class DualLiveRTMPStreamVideoLoader extends paella.VideoLoader {
+	loadVideo(videoId,onSuccess) {
 		var stream = {
 			sources:{
 				rtmp:[ { src:'rtmp://melpomene.upv.es/live/PRUEBAS', type:'video/x-flv', res:{w:1280,h:720}, isLiveStream:true} ]
@@ -150,11 +150,11 @@ var DualLiveRTMPStreamVideoLoader = Class.create(paella.VideoLoader, {
 		this.loadStatus = true;
 		onSuccess();
 	}
-});
+}
 
 // Live RTMP Stream
-var LiveRTMPStreamVideoLoader = Class.create(paella.VideoLoader, {
-	loadVideo:function(videoId,onSuccess) {
+class LiveRTMPStreamVideoLoader extends paella.VideoLoader {
+	loadVideo(videoId,onSuccess) {
 		var stream = {
 			sources:{
 				rtmp:[ { src:'rtmp://melpomene.upv.es/live/PRUEBAS', type:'video/x-flv', res:{w:1280,h:720}, isLiveStream:true} ]
@@ -166,11 +166,11 @@ var LiveRTMPStreamVideoLoader = Class.create(paella.VideoLoader, {
 		this.loadStatus = true;
 		onSuccess();
 	}
-});
+}
 
 // RTMP/mp4 stream
-var Mp4RTMPStreamVideoLoader = Class.create(paella.VideoLoader, {
-	loadVideo:function(videoId,onSuccess) {
+class Mp4RTMPStreamVideoLoader extends paella.VideoLoader {
+	loadVideo(videoId,onSuccess) {
 		var stream = {
 			sources:{
 				rtmp:[ { src:'rtmp://polimedia.upv.es/vod/mp4:link/cursos/Profesores_POLIMEDIA_I/M98/B14/polimedia_muxed.mp4', type:'video/mp4', res:{w:1280,h:720}, isLiveStream:false}]
@@ -182,11 +182,11 @@ var Mp4RTMPStreamVideoLoader = Class.create(paella.VideoLoader, {
 		this.loadStatus = true;
 		onSuccess();
 	}
-});
+}
 
 // RTMP/flv stream
-var FlvRTMPStreamVideoLoader = Class.create(paella.VideoLoader, {
-	loadVideo:function(videoId,onSuccess) {
+class FlvRTMPStreamVideoLoader extends paella.VideoLoader {
+	loadVideo(videoId,onSuccess) {
 		var stream = {
 			sources:{
 				rtmp:[ { src:'rtmp://mhopencast.ethz.ch/matterhorn-engage/engage-player/1e6fdeaf-a28b-453e-ba7c-44eb62040eb8/ab72ddbe-10f3-4cb0-8261-e5567b8c242c/CAMERA', type:'video/x-flv', res:{w:1280,h:720}, isLiveStream:false} ]
@@ -198,12 +198,12 @@ var FlvRTMPStreamVideoLoader = Class.create(paella.VideoLoader, {
 		this.loadStatus = true;
 		onSuccess();
 	}
-});
+}
 
 
 // Dual rtmp streams
-var DualRTMPVideoLoader = Class.create(paella.VideoLoader, {
-	loadVideo:function(videoId,onSuccess) {
+class DualRTMPVideoLoader extends paella.VideoLoader {
+	loadVideo(videoId,onSuccess) {
 		var stream = {
 			sources:{
 				rtmp:[ { src:'rtmp://mhopencast.ethz.ch/matterhorn-engage/engage-player/1e6fdeaf-a28b-453e-ba7c-44eb62040eb8/ab72ddbe-10f3-4cb0-8261-e5567b8c242c/CAMERA', type:'video/x-flv', res:{w:1280,h:720}, isLiveStream:false} ]
@@ -222,7 +222,7 @@ var DualRTMPVideoLoader = Class.create(paella.VideoLoader, {
 		this.loadStatus = true;
 		onSuccess();
 	}
-});
+}
 
 
 function loadPaella(containerId) {
@@ -242,11 +242,11 @@ function loadPaellaExtended(containerId) {
 	initPaellaExtended({containerId:containerId,initDelegate:initDelegate});
 }
 
-paella.dataDelegates.UserDataDelegate = Class.create(paella.DataDelegate,{
-    initialize:function() {
-    },
+class UserDataDelegate extends paella.DataDelegate {
+    constructor() {
+    }
 
-    read:function(context, params, onSuccess) {
+    read(context, params, onSuccess) {
     	var value = {
 			userName:"userName",
 			name: "Name",
@@ -256,5 +256,6 @@ paella.dataDelegates.UserDataDelegate = Class.create(paella.DataDelegate,{
 
         if (typeof(onSuccess)=='function') { onSuccess(value,true); }
     }
+}
 
-});
+paella.dataDelegates.UserDataDelegate = UserDataDelegate;

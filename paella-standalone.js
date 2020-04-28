@@ -7,8 +7,8 @@ paella.standalone = {}
 // Standalone Access Control
 //
 // By default read/write access
-paella.standalone.StandaloneAccessControl = Class.create(paella.AccessControl,{
-	checkAccess:function(onSuccess) {
+class StandaloneAccessControl extends paella.AccessControl {
+	checkAccess(onSuccess) {
 		this.permissions.canRead = true;
 		this.permissions.canWrite = true;
 		this.permissions.canContribute = true;
@@ -19,13 +19,15 @@ paella.standalone.StandaloneAccessControl = Class.create(paella.AccessControl,{
 		this.userData.avatar = 'resources/images/default_avatar.png';
 		onSuccess(this.permissions);
 	}
-});
+}
+
+paella.standalone.StandaloneAccessControl = StandaloneAccessControl;
 
 
 // Standalone Video Loader
 //
-paella.standalone.StandAloneVideoLoader = Class.create(paella.VideoLoader, {
-	initialize:function(arg1,arg2) {
+class StandAloneVideoLoader extends paella.VideoLoader {
+	initialize(arg1,arg2) {
 		/*
 			([video1],[video2])
 			(repoFolder)
@@ -49,17 +51,17 @@ paella.standalone.StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 		this._video2 = video2;
 		this._repoFolder = repoFolder;
 		//this.parent();
-	},
+	}
 
-	loadVideo:function(videoId, onSuccess) {
+	loadVideo(videoId, onSuccess) {
 		if (this._video1) {
 			// There Are Videos
 			paella.debug.log("[WARN] Feature not implemented!")
 		}
 		this.loadVideoFromRepository(videoId, onSuccess);
-	},
+	}
 
-	loadVideoFromRepository:function(videoId, onSuccess) {
+	loadVideoFromRepository(videoId, onSuccess) {
 		var This = this;
 
 		try {
@@ -90,9 +92,9 @@ paella.standalone.StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 				}
 			);
 		}
-	},
+	}
 
-	getRepository: function() {
+	getRepository() {
 		if (this._repoFolder != undefined) {
 			return this._repoFolder;
 		}
@@ -104,12 +106,13 @@ paella.standalone.StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 				return "";
 			}
 		}
-	},
-	isStreaming:function(trackUrl) {
-		return /rtmp:\/\//.test(trackUrl);
-	},
+	}
 
-	getStreamSource:function(track) {
+	isStreaming(trackUrl) {
+		return /rtmp:\/\//.test(trackUrl);
+	}
+
+	getStreamSource(track) {
         if(track.mediainfo && (track.mediainfo.video instanceof Object)) {
 		    var res = track.mediainfo.video.resolution.split('x');
         } else {
@@ -129,9 +132,9 @@ paella.standalone.StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 			}
 
 		return source;
-	},
+	}
 
-	parseEpisode: function(onSuccess) {
+	parseEpisode(onSuccess) {
 		var streams = {};
 		var tracks = paella.standalone.episode.mediapackage.media.tracks;
 		var slides = paella.standalone.episode.mediapackage.slides;
@@ -298,21 +301,23 @@ paella.standalone.StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 		
 		onSuccess();
 	}
-});
+}
+
+paella.standalone.StandAloneVideoLoader = StandAloneVideoLoader;
 
 
 
-paella.standalone.StandaloneInitDelegate = Class.create(paella.InitDelegate, {
-	initialize:function(config, params) {
+class StandaloneInitDelegate extends paella.InitDelegate {
+	initialize(config, params) {
 		if (!params) {
 			params = config;
 			config = null;
 		}
 		this._config = config;
 		this.parent(params);
-	},
+	}
 
-	loadConfig: function(onSuccess) {
+	loadConfig(onSuccess) {
 		if (this._config) {
 			onSuccess(this._config);
 		}
@@ -320,7 +325,9 @@ paella.standalone.StandaloneInitDelegate = Class.create(paella.InitDelegate, {
 			this.parent(onSuccess);
 		}
 	}
-});
+}
+
+paella.standalone.StandaloneInitDelegate = StandaloneInitDelegate;
 
 
 // Functions to load Paella
@@ -374,11 +381,11 @@ function loadStandalonePaellaExtended(containerId, config, arg1, arg2) {
 
 // Data delegates
 //
-paella.dataDelegates.UserDataDelegate = Class.create(paella.DataDelegate,{
-    initialize:function() {
-    },
+class UserDataDelegate extends paella.DataDelegate {
+    initialize() {
+    }
 
-    read:function(context, params, onSuccess) {
+    read(context, params, onSuccess) {
     	var value = {
 				userName:"userName",
 				name: "Name",
@@ -388,16 +395,15 @@ paella.dataDelegates.UserDataDelegate = Class.create(paella.DataDelegate,{
 
       if (typeof(onSuccess)=='function') { onSuccess(value,true); }
     }
-});
+}
 
+paella.dataDelegates.UserDataDelegate = UserDataDelegate;
 
-
- 
-paella.dataDelegates.StandaloneCaptionsDataDelegate = Class.create(paella.DataDelegate,{	
-	initialize:function() {
-	},
+class StandaloneCaptionsDataDelegate extends paella.DataDelegate {	
+	initialize() {
+	}
 	
-	read:function(context, params, onSuccess) {
+	read(context, params, onSuccess) {
 		var thisClass = this;
 		var id = params.id;
 		var captions;
@@ -445,16 +451,16 @@ paella.dataDelegates.StandaloneCaptionsDataDelegate = Class.create(paella.DataDe
 		else {
 			if (onSuccess) { onSuccess({error: true}, false); }			
 		}
-	},
+	}
 	
-	write:function(context,params,value,onSuccess) {
-		if (onSuccess) { onSuccess({}, false); }
-	},
-	
-	remove:function(context,params,onSuccess) {
+	write(context,params,value,onSuccess) {
 		if (onSuccess) { onSuccess({}, false); }
 	}
-});
+	
+	remove(context,params,onSuccess) {
+		if (onSuccess) { onSuccess({}, false); }
+	}
+}
 
-
+paella.dataDelegates.StandaloneCaptionsDataDelegate = StandaloneCaptionsDataDelegate;
 

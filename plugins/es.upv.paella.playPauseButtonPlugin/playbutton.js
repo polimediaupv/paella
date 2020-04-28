@@ -1,4 +1,4 @@
-//paella.plugins.PlayPauseButtonPlugin = Class.create(paella.ButtonPlugin, {
+
 paella.addPlugin(function() {
 	return class PlayPauseButtonPlugin extends paella.ButtonPlugin {
 		constructor() {

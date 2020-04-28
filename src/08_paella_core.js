@@ -260,7 +260,7 @@
 	
 		loadConfig() {
 			let loadAccessControl = (data) => {
-				var AccessControlClass = Class.fromString(data.player.accessControlClass || "paella.AccessControl");
+				var AccessControlClass = paella.utils.objectFromString(data.player.accessControlClass || "paella.AccessControl");
 				this.initParams.accessControl = new AccessControlClass();
 			};
 	

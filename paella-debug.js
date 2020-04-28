@@ -58,7 +58,7 @@ function loadPaellaDebug(playerContainer,params) {
             location.href = location.pathname + '?id=' + event.target.value;
         });
 
-        if (!window.paella || !paella.debugReady) {
+        if (!window.paella) {
             setTimeout(() => doLoad(),100);
         }
         else {

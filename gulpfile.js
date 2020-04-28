@@ -166,9 +166,6 @@ gulp.task("copy", function() {
 		gulp.src('repository_test/**')
 			.pipe(gulp.dest(`${config.outDir}`)),
 
-		gulp.src('javascript/*')
-			.pipe(gulp.dest(`${config.outDir}player/javascript/`)),
-
 		gulp.src('node_modules/jquery/dist/jquery.min.js')
 			.pipe(gulp.dest(`${config.outDir}player/javascript/`)),
 		gulp.src('node_modules/jquery/dist/jquery.min.js')
