@@ -32,7 +32,7 @@ var searchServiceManager = {
 };
 
 
-class SearchCallback extends base.AsyncLoaderCallback {
+class SearchCallback extends paella.utils.AsyncLoaderCallback {
 	constructor(plugin, text) {
 		super();
 		this.name = "searchCallback";
@@ -57,7 +57,7 @@ class SearchCallback extends base.AsyncLoaderCallback {
 paella.searchService = {
 	
 	search: function(text, next) {
-		let asyncLoader = new base.AsyncLoader();
+		let asyncLoader = new paella.utils.AsyncLoader();
 		
 		paella.userTracking.log("paella:searchService:search", text);
 		

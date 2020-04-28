@@ -19,7 +19,7 @@ paella.addPlugin(function() {
 		getIconClass() { return 'icon-folder'; }
 		getIndex() { return 2030; }
 		getName() { return "es.upv.paella.extendedTabAdapterPlugin"; }
-		getDefaultToolTip() { return base.dictionary.translate("Extended Tab Adapter"); }
+		getDefaultToolTip() { return paella.utils.dictionary.translate("Extended Tab Adapter"); }
 		getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
 		
 		buildContent(domElement) {

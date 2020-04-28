@@ -45,7 +45,7 @@ class CaptionParserManager {
 
 let captionParserManager = new CaptionParserManager();
 
-class SearchCallback extends base.AsyncLoaderCallback {
+class SearchCallback extends paella.utils.AsyncLoaderCallback {
 	constructor(caption, text) {
 		super();
 		this.name = "captionSearchCallback";
@@ -124,7 +124,7 @@ paella.captions = {
 	
 	search: function(text, next) {
 		var self = this;
-		var asyncLoader = new base.AsyncLoader();
+		var asyncLoader = new paella.utils.AsyncLoader();
 		
 		this.getAvailableLangs().forEach(function(l) {			
 			asyncLoader.addCallback(new SearchCallback(self.getCaptions(l.id), text));
@@ -189,7 +189,7 @@ class Caption {
 						id: 0,
 		            	begin: 0,
 		            	end: duration,
-		            	content: base.dictionary.translate("Error! Captions format not supported.")
+		            	content: paella.utils.dictionary.translate("Error! Captions format not supported.")
 					}];
 					if (next) { next(true); }
 				});

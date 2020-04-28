@@ -7,7 +7,7 @@ paella.addPlugin(function() {
 		getIconClass() { return 'icon-screen'; }
 		getIndex() { return 2030; }
 		getName() { return "es.upv.paella.multipleQualitiesPlugin"; }
-		getDefaultToolTip() { return base.dictionary.translate("Change video quality"); }
+		getDefaultToolTip() { return paella.utils.dictionary.translate("Change video quality"); }
 		
 		closeOnMouseOut() { return true; }
 		

@@ -1018,7 +1018,7 @@ class VideoContainer extends paella.VideoContainerBase {
 		this.setVideoQualityStrategy(paella.VideoQualityStrategy.Factory());
 
 		this._audioTag = paella.player.config.player.defaultAudioTag ||
-						 paella.dictionary.currentLanguage();
+						 paella.utils.dictionary.currentLanguage();
 		this._audioPlayer = null;
 
 		// Initial volume level

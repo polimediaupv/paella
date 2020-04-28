@@ -20,10 +20,10 @@ paella.addPlugin(function() {
 	
 		getSubclass() { return "showCommentsTabBar"; }
 		getName() { return "es.upv.paella.commentsPlugin"; }
-		getTabName() { return base.dictionary.translate("Comments"); }
+		getTabName() { return paella.utils.dictionary.translate("Comments"); }
 		checkEnabled(onSuccess) { onSuccess(true); }
 		getIndex() { return 40; }
-		getDefaultToolTip() { return base.dictionary.translate("Comments"); }
+		getDefaultToolTip() { return paella.utils.dictionary.translate("Comments"); }
 						
 		action(tab) {
 			this.loadContent();
@@ -100,7 +100,7 @@ paella.addPlugin(function() {
 					thisClass.addComment();
 				}
 			};
-			btnAddComment.innerText = base.dictionary.translate("Publish");
+			btnAddComment.innerText = paella.utils.dictionary.translate("Publish");
 			
 			this.publishCommentButtons.appendChild(btnAddComment);
 			
@@ -291,7 +291,7 @@ paella.addPlugin(function() {
 				//var btnRplyComment = document.createElement('button');
 				var btnRplyComment = document.createElement('div');
 				btnRplyComment.className = "reply_button";
-				btnRplyComment.innerText = base.dictionary.translate("Reply");
+				btnRplyComment.innerText = paella.utils.dictionary.translate("Reply");
 				
 				btnRplyComment.id = rootID+"_comment_reply_button";
 				btnRplyComment.onclick = function(){
@@ -413,7 +413,7 @@ paella.addPlugin(function() {
 					thisClass.addReply(annotationID,textArea.id);
 				}
 			};
-			btnAddComment.innerText = base.dictionary.translate("Reply");
+			btnAddComment.innerText = paella.utils.dictionary.translate("Reply");
 			
 			this.publishCommentButtons.appendChild(btnAddComment);
 			

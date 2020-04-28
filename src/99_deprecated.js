@@ -39,17 +39,11 @@ function DeprecatedFunc(name, replacedBy, func) {
 	return ret;
 }
 
-// Pella Dictionary
-///////////////////////////////////////////////////////
-DeprecatedClass("paella.Dictionary", "base.Dictionary", base.Dictionary);
-paella.dictionary = base.dictionary;
-
 // Paella AsyncLoader
 ///////////////////////////////////////////////////////
 DeprecatedClass("paella.AsyncLoaderCallback", "base.AsyncLoaderCallback", base.AsyncLoaderCallback);
 DeprecatedClass("paella.AjaxCallback", "base.AjaxCallback", base.AjaxCallback);
 DeprecatedClass("paella.JSONCallback", "base.JSONCallback", base.JSONCallback);
-DeprecatedClass("paella.DictionaryCallback", "base.DictionaryCallback", base.DictionaryCallback);
 DeprecatedClass("paella.AsyncLoader", "base.AsyncLoader", base.AsyncLoader);
 
 
@@ -72,7 +66,7 @@ paella.ui.Container = function(params) {
 ///////////////////////////////////////////////////////
 paella.utils.require = base.require;
 paella.utils.importStylesheet = base.importStylesheet;
-paella.utils.language = base.dictionary.currentLanguage;
+paella.utils.language = paella.utils.dictionary.currentLanguage;
 paella.utils.uuid = base.uuid;
 
 paella.debugReady = true;

@@ -29,7 +29,7 @@ As with [button type plugins](button_plugin.md), by overriding the action functi
 ```javascript
     ...
     action(button) {
-      paella.messageBox.showMessage(base.dictionary.translate("Live streaming mode: This is a live video, so, some capabilities of the player are disabled"));
+      paella.messageBox.showMessage(paella.utils.dictionary.translate("Live streaming mode: This is a live video, so, some capabilities of the player are disabled"));
    }
   }
 });

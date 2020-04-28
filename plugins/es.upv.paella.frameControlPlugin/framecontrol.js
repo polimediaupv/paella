@@ -50,7 +50,7 @@ paella.addPlugin(function() {
 		getIndex() { return 510; }
 		getName() { return "es.upv.paella.frameControlPlugin"; }
 		getButtonType() { return paella.ButtonPlugin.type.timeLineButton; }
-		getDefaultToolTip() { return base.dictionary.translate("Navigate by slides"); }
+		getDefaultToolTip() { return paella.utils.dictionary.translate("Navigate by slides"); }
 
 		checkEnabled(onSuccess) {
 			this._img = null;

@@ -407,7 +407,7 @@ class VideoRect extends paella.DomNode {
 
 			let altScrollMessageContainer = document.createElement('div');
 			altScrollMessageContainer.className = "alt-scroll-message-container";
-			altScrollMessageContainer.innerHTML = "<p>" + paella.dictionary.translate("Use Alt+Scroll to zoom the video") + "</p>";
+			altScrollMessageContainer.innerHTML = "<p>" + paella.utils.dictionary.translate("Use Alt+Scroll to zoom the video") + "</p>";
 			eventCapture.appendChild(altScrollMessageContainer);
 			$(altScrollMessageContainer).css({ opacity: 0.0 });
 			let altScrollMessageTimer = null;

@@ -195,49 +195,49 @@ paella.utils.timeParse = {
 	secondsToText:function(secAgo) {
 		// Seconds
 		if (secAgo <= 1) {
-			return base.dictionary.translate("1 second ago");
+			return paella.utils.dictionary.translate("1 second ago");
 		}
 		if (secAgo < 60) {
-			return base.dictionary.translate("{0} seconds ago").replace(/\{0\}/g, secAgo);
+			return paella.utils.dictionary.translate("{0} seconds ago").replace(/\{0\}/g, secAgo);
 		}
 		// Minutes
 		var minAgo = Math.round(secAgo/60);
 		if (minAgo <= 1) {
-			return base.dictionary.translate("1 minute ago");
+			return paella.utils.dictionary.translate("1 minute ago");
 		}
 		if (minAgo < 60) {
-			return base.dictionary.translate("{0} minutes ago").replace(/\{0\}/g, minAgo);
+			return paella.utils.dictionary.translate("{0} minutes ago").replace(/\{0\}/g, minAgo);
 		}
 		//Hours
 		var hourAgo = Math.round(secAgo/(60*60));
 		if (hourAgo <= 1) {
-			return base.dictionary.translate("1 hour ago");
+			return paella.utils.dictionary.translate("1 hour ago");
 		}
 		if (hourAgo < 24) {
-			return base.dictionary.translate("{0} hours ago").replace(/\{0\}/g, hourAgo);
+			return paella.utils.dictionary.translate("{0} hours ago").replace(/\{0\}/g, hourAgo);
 		}
 		//Days
 		var daysAgo = Math.round(secAgo/(60*60*24));
 		if (daysAgo <= 1) {
-			return base.dictionary.translate("1 day ago");
+			return paella.utils.dictionary.translate("1 day ago");
 		}
 		if (daysAgo < 24) {
-			return base.dictionary.translate("{0} days ago").replace(/\{0\}/g, daysAgo);
+			return paella.utils.dictionary.translate("{0} days ago").replace(/\{0\}/g, daysAgo);
 		}
 		//Months
 		var monthsAgo = Math.round(secAgo/(60*60*24*30));
 		if (monthsAgo <= 1) {
-			return base.dictionary.translate("1 month ago");
+			return paella.utils.dictionary.translate("1 month ago");
 		}
 		if (monthsAgo < 12) {
-			return base.dictionary.translate("{0} months ago").replace(/\{0\}/g, monthsAgo);
+			return paella.utils.dictionary.translate("{0} months ago").replace(/\{0\}/g, monthsAgo);
 		}
 		//Years
 		var yearsAgo = Math.round(secAgo/(60*60*24*365));
 		if (yearsAgo <= 1) {
-			return base.dictionary.translate("1 year ago");
+			return paella.utils.dictionary.translate("1 year ago");
 		}
-		return base.dictionary.translate("{0} years ago").replace(/\{0\}/g, yearsAgo);
+		return paella.utils.dictionary.translate("{0} years ago").replace(/\{0\}/g, yearsAgo);
 	},
 	matterhornTextDateToDate: function(mhdate) {
 		var d = new Date();

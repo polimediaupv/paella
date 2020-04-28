@@ -16,7 +16,7 @@ paella.addPlugin(function() {
 				onSuccess(window.WebKitPlaybackTargetAvailabilityEvent);
 			}
 		}
-		getDefaultToolTip() { return base.dictionary.translate("Emit to AirPlay."); }
+		getDefaultToolTip() { return paella.utils.dictionary.translate("Emit to AirPlay."); }
 	
 		setup() {
 			let video = paella.player.videoContainer.masterVideo().video;

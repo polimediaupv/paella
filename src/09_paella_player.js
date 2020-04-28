@@ -233,21 +233,21 @@
 					}
 					else if (userData.isAnonymous) {
 						var redirectUrl = paella.initDelegate.initParams.accessControl.getAuthenticationUrl("player/?id=" + paella.player.videoIdentifier);
-						var message = '<div>' + base.dictionary.translate("You are not authorized to view this resource") + '</div>';
+						var message = '<div>' + paella.utils.dictionary.translate("You are not authorized to view this resource") + '</div>';
 						if (redirectUrl) {
-							message += '<div class="login-link"><a href="' + redirectUrl + '">' + base.dictionary.translate("Login") + '</a></div>';
+							message += '<div class="login-link"><a href="' + redirectUrl + '">' + paella.utils.dictionary.translate("Login") + '</a></div>';
 						}
 						thisClass.unloadAll(message);
 					}
 					else {
-						let errorMessage = base.dictionary.translate("You are not authorized to view this resource");
+						let errorMessage = paella.utils.dictionary.translate("You are not authorized to view this resource");
 						thisClass.unloadAll(errorMessage);
 						paella.events.trigger(paella.events.error,{error:errorMessage});
 					}
 				})
 	
 				.catch((error) => {
-					let errorMessage = base.dictionary.translate(error);
+					let errorMessage = paella.utils.dictionary.translate(error);
 					thisClass.unloadAll(errorMessage);
 					paella.events.trigger(paella.events.error,{error:errorMessage});
 				});
@@ -309,7 +309,7 @@
 						.catch((error) => {
 							console.error(error);
 							let msg = error.message || "Could not load the video";
-							paella.messageBox.showError(base.dictionary.translate(msg));
+							paella.messageBox.showError(paella.utils.dictionary.translate(msg));
 						});
 				});
 			}

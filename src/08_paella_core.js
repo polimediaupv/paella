@@ -117,10 +117,10 @@
 				return true;
 			}
 			else {
-				var errorMessage = base.dictionary.translate("It seems that your browser is not HTML 5 compatible");
+				var errorMessage = paella.utils.dictionary.translate("It seems that your browser is not HTML 5 compatible");
 				paella.events.trigger(paella.events.error,{error:errorMessage});
 				message = errorMessage + '<div style="display:block;width:470px;height:140px;margin-left:auto;margin-right:auto;font-family:Verdana,sans-sherif;font-size:12px;"><a href="http://www.google.es/chrome" style="color:#004488;float:left;margin-right:20px;"><img src="'+paella.utils.folders.resources()+'images/chrome.png" style="width:80px;height:80px" alt="Google Chrome"></img><p>Google Chrome</p></a><a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home" style="color:#004488;float:left;margin-right:20px;"><img src="'+paella.utils.folders.resources()+'images/explorer.png" style="width:80px;height:80px" alt="Internet Explorer 9"></img><p>Internet Explorer 9</p></a><a href="http://www.apple.com/safari/" style="float:left;margin-right:20px;color:#004488"><img src="'+paella.utils.folders.resources()+'images/safari.png" style="width:80px;height:80px" alt="Safari"></img><p>Safari 5</p></a><a href="http://www.mozilla.org/firefox/" style="float:left;color:#004488"><img src="'+paella.utils.folders.resources()+'images/firefox.png" style="width:80px;height:80px" alt="Firefox"></img><p>Firefox 12</p></a></div>';
-				message += '<div style="margin-top:30px;"><a id="ignoreBrowserCheckLink" href="#" onclick="window.location = window.location + \'&ignoreBrowserCheck=true\'">' + base.dictionary.translate("Continue anyway") + '</a></div>';
+				message += '<div style="margin-top:30px;"><a id="ignoreBrowserCheckLink" href="#" onclick="window.location = window.location + \'&ignoreBrowserCheck=true\'">' + paella.utils.dictionary.translate("Continue anyway") + '</a></div>';
 				paella.messageBox.showError(message,{height:'40%'});
 			}
 			return false;
@@ -248,8 +248,8 @@
 	
 		loadDictionary() {
 			return new Promise((resolve) => {
-				paella.utils.ajax.get({ url:this.initParams.dictionaryUrl + "_" + base.dictionary.currentLanguage() + '.json' }, function(data,type,returnCode) {
-					base.dictionary.addDictionary(data);
+				paella.utils.ajax.get({ url:this.initParams.dictionaryUrl + "_" + paella.utils.dictionary.currentLanguage() + '.json' }, function(data,type,returnCode) {
+					paella.utils.dictionary.addDictionary(data);
 					resolve(data);
 				},
 				function(data,type,returnCode) {
@@ -296,7 +296,7 @@
 							resolve(data);
 						},
 						function(data,type,returnCode) {
-							paella.messageBox.showError(base.dictionary.translate("Error! Config file not found. Please configure paella!"));
+							paella.messageBox.showError(paella.utils.dictionary.translate("Error! Config file not found. Please configure paella!"));
 							//onSuccess({});
 						});
 				});

@@ -5,7 +5,7 @@ paella.addPlugin(function() {
 		getIconClass() { return 'icon-binoculars'; }
 		getName() { return "es.upv.paella.searchPlugin"; }
 		getButtonType() { return paella.ButtonPlugin.type.popUpButton; }	
-		getDefaultToolTip() { return base.dictionary.translate("Search"); }
+		getDefaultToolTip() { return paella.utils.dictionary.translate("Search"); }
 		getIndex() {return 510;}
 		
 		closeOnMouseOut() { return true; }
@@ -106,14 +106,14 @@ paella.addPlugin(function() {
 			parent.appendChild(loadingResults);
 			var sBodyText = document.createElement('p');
 			sBodyText.className = 'sBodyText';
-			sBodyText.innerText = base.dictionary.translate("Searching") + "...";
+			sBodyText.innerText = paella.utils.dictionary.translate("Searching") + "...";
 			parent.appendChild(sBodyText);
 		}
 
 		createNotResultsFound(parent){
 			var noResults = document.createElement('div');
 			noResults.className = "noResults";
-			noResults.innerText = base.dictionary.translate("Sorry! No results found.");
+			noResults.innerText = paella.utils.dictionary.translate("Sorry! No results found.");
 			parent.appendChild(noResults);
 		}
 
@@ -234,7 +234,7 @@ paella.addPlugin(function() {
 				input.type = "text";
 				input.id ="searchBarInput";
 				input.name = "searchString";
-				input.placeholder = base.dictionary.translate("Search");
+				input.placeholder = paella.utils.dictionary.translate("Search");
 				searchBar.appendChild(input);
 
 				$(input).change(function(){

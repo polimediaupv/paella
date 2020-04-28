@@ -4,7 +4,7 @@ paella.addPlugin(function() {
 		getIndex() {return 10; }
 		getAlignment() { return 'right'; }
 		getSubclass() { return "blackBoardButton2"; }
-		getDefaultToolTip() { return base.dictionary.translate("BlackBoard"); }
+		getDefaultToolTip() { return paella.utils.dictionary.translate("BlackBoard"); }
 	
 		checkEnabled(onSuccess) {
 			this._blackBoardProfile = "s_p_blackboard2";

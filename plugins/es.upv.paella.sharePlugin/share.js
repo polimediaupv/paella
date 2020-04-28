@@ -7,7 +7,7 @@ paella.addPlugin(function() {
 		getIndex() { return 560; }
 		getName() { return 'es.upv.paella.sharePlugin'; }
 		getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
-		getDefaultToolTip() { return base.dictionary.translate('Share this video'); }
+		getDefaultToolTip() { return paella.utils.dictionary.translate('Share this video'); }
 		
 		checkEnabled(onSuccess) { onSuccess(true); }
 		closeOnMouseOut() { return false; }
@@ -23,12 +23,12 @@ paella.addPlugin(function() {
 				<div>
 					<div class="form-group">
 						<label class="control-label">
-							<input id="share-video-responsive" type="checkbox" value="3" name="mailId[]" > ${ base.dictionary.translate('Responsive design') }
+							<input id="share-video-responsive" type="checkbox" value="3" name="mailId[]" > ${ paella.utils.dictionary.translate('Responsive design') }
 						</label>
 					</div>
 
 					<div id="share-video-block-size" class="form-group">
-						<label class="control-label"> ${ base.dictionary.translate('Video resolution') } </label>
+						<label class="control-label"> ${ paella.utils.dictionary.translate('Video resolution') } </label>
 						
 						<div class="row">
 							<div class="col-sm-6">
@@ -39,7 +39,7 @@ paella.addPlugin(function() {
 									<option value="1920x1080">1080p (Full HD)</option>
 									<option value="2560x1440">1440p (2.5K)</option>
 									<option value="3840x2160">2160p (4K UHD)</option>
-									<option value="custom">${ base.dictionary.translate('Custom size') }</option>
+									<option value="custom">${ paella.utils.dictionary.translate('Custom size') }</option>
 								</select>
 							</div>
 							<div class="col-sm-3">
@@ -52,7 +52,7 @@ paella.addPlugin(function() {
 					</div>	
 
 					<div id="share-video-block-resp" class="form-group" style="display:none;">
-						<label class="control-label"> ${ base.dictionary.translate('Video resolution') } </label>
+						<label class="control-label"> ${ paella.utils.dictionary.translate('Video resolution') } </label>
 						
 						<select id="share-video-size-resp" class="form-control input-sm">
 							<option value="25">25%</option>
@@ -65,7 +65,7 @@ paella.addPlugin(function() {
 					</div>						
 					
 					<div class="form-group">
-						<label class="control-label">${ base.dictionary.translate('Embed code') }</label>
+						<label class="control-label">${ paella.utils.dictionary.translate('Embed code') }</label>
 						
 						<div id="share-video-embed" class="alert alert-share">
 						</div>
@@ -117,7 +117,7 @@ paella.addPlugin(function() {
 			social.innerHTML = `
 				<div>
 					<div class="form-group">
-						<label class="control-label">${ base.dictionary.translate('Share on social networks') }</label>
+						<label class="control-label">${ paella.utils.dictionary.translate('Share on social networks') }</label>
 						<div class="row" style="margin:0;">	
 							<span id="share-btn-facebook" class="share-button button-icon icon-facebook" ></span>
 							<span id="share-btn-twitter" class="share-button button-icon icon-twitter" ></span>

@@ -7,7 +7,7 @@ paella.addPlugin(function() {
 		getIconClass() { return 'icon-pencil'; }
 		getAlignment() { return 'right'; }
 		getIndex() {return 10;}
-		getDefaultToolTip() { return base.dictionary.translate("Enter editor mode"); }
+		getDefaultToolTip() { return paella.utils.dictionary.translate("Enter editor mode"); }
 
 		checkEnabled(onSuccess) {			
 			if (this.config.editorUrl) {

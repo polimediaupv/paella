@@ -177,7 +177,7 @@ paella.addPlugin(function() {
         }
 
         action(button) {
-            //paella.messageBox.showMessage(base.dictionary.translate("Live streaming mode: This is a live video, so, some capabilities of the player are disabled"));
+            //paella.messageBox.showMessage(paella.utils.dictionary.translate("Live streaming mode: This is a live video, so, some capabilities of the player are disabled"));
         }
 
         getName() {
@@ -194,7 +194,7 @@ paella.addPlugin(function() {
         getIconClass() { return 'icon-screen'; }
         getIndex() { return 2030; }
         getName() { return "es.upv.paella.videoZoomToolbarPlugin"; }
-        getDefaultToolTip() { return base.dictionary.translate("Set video zoom"); }
+        getDefaultToolTip() { return paella.utils.dictionary.translate("Set video zoom"); }
         getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
 
         checkEnabled(onSuccess) {

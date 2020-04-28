@@ -42,7 +42,7 @@ Class ("paella.captions.translectures.Caption", paella.captions.Caption, {
 
 		var messageBoxTitle = document.createElement('div');
 		messageBoxTitle.className = "title";
-		messageBoxTitle.innerText = base.dictionary.translate("You are trying to modify the transcriptions, but you are not Logged in!");		
+		messageBoxTitle.innerText = paella.utils.dictionary.translate("You are trying to modify the transcriptions, but you are not Logged in!");		
 		messageBoxElem.appendChild(messageBoxTitle);
 
 		var messageBoxAuthContainer = document.createElement('div');
@@ -66,7 +66,7 @@ Class ("paella.captions.translectures.Caption", paella.captions.Caption, {
 		messageBoxAuthLink.appendChild(messageBoxAuthLinkImg);
 
 		var messageBoxAuthLinkText = document.createElement('p');
-		messageBoxAuthLinkText.innerText = base.dictionary.translate("Continue editing the transcriptions anonymously");
+		messageBoxAuthLinkText.innerText = paella.utils.dictionary.translate("Continue editing the transcriptions anonymously");
 		messageBoxAuthLink.appendChild(messageBoxAuthLinkText);
 
 		$(messageBoxAuthLink).click(function() {
@@ -90,7 +90,7 @@ Class ("paella.captions.translectures.Caption", paella.captions.Caption, {
 		messageBoxAuthLink.appendChild(messageBoxAuthLinkImg);
 
 		messageBoxAuthLinkText = document.createElement('p');
-		messageBoxAuthLinkText.innerText = base.dictionary.translate("Log in and edit the transcriptions");
+		messageBoxAuthLinkText.innerText = paella.utils.dictionary.translate("Log in and edit the transcriptions");
 		messageBoxAuthLink.appendChild(messageBoxAuthLinkText);
 
 
@@ -141,10 +141,10 @@ Class ("paella.plugins.translectures.CaptionsPlugIn", paella.EventDrivenPlugin, 
 							var l_txt = l.value;
 				            switch(l.type){
 						    	case 0:
-						    		l_txt += " (" + paella.dictionary.translate("Auto") + ")";
+						    		l_txt += " (" + paella.utils.dictionary.translate("Auto") + ")";
 						    		break;
 						    	case 1:
-						    		l_txt += " (" + paella.dictionary.translate("Under review") + ")";
+						    		l_txt += " (" + paella.utils.dictionary.translate("Under review") + ")";
 						    		break;
 						    }
 														

@@ -23,7 +23,7 @@ paella.addPlugin(function() {
                 onSuccess(false);
             }
         }
-        getDefaultToolTip() { return base.dictionary.translate("Set picture-in-picture mode."); }
+        getDefaultToolTip() { return paella.utils.dictionary.translate("Set picture-in-picture mode."); }
 
         setup() {
 

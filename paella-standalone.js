@@ -68,7 +68,7 @@ paella.standalone.StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 		catch(e){}
 
 		if (!repo || repo == "") {
-			paella.player.unloadAll(base.dictionary.translate("Error! Repository not defined. Please configure paella!"));
+			paella.player.unloadAll(paella.utils.dictionary.translate("Error! Repository not defined. Please configure paella!"));
 		}
 		else{
 			var mpUrl = repo + videoId + '/episode.json';
@@ -79,14 +79,14 @@ paella.standalone.StandAloneVideoLoader = Class.create(paella.VideoLoader, {
 							data = JSON.parse(data);
 						}
 						catch (e) {
-							paella.player.unloadAll(base.dictionary.translate("Error parsing episode.json."));
+							paella.player.unloadAll(paella.utils.dictionary.translate("Error parsing episode.json."));
 						}
 					}
 					paella.standalone.episode = data;
 					This.parseEpisode(onSuccess);
 				},
 				function(data,contentType,code) {
-					paella.player.unloadAll(base.dictionary.translate("Error loading video."));
+					paella.player.unloadAll(paella.utils.dictionary.translate("Error loading video."));
 				}
 			);
 		}

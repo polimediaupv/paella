@@ -6,7 +6,7 @@ paella.addPlugin(function() {
 		getSubclass() { return 'flexSkip_Rewind_10'; }
 		getIconClass() { return 'icon-back-10-s'; }
 		formatMessage() { return 'Rewind 10 seconds'; }
-		getDefaultToolTip() { return base.dictionary.translate(this.formatMessage()); }
+		getDefaultToolTip() { return paella.utils.dictionary.translate(this.formatMessage()); }
 	
 		checkEnabled(onSuccess) {
 			onSuccess(!paella.player.isLiveStream());
