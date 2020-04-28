@@ -193,6 +193,8 @@
         }
     
         load(onSuccess,onError) {
+            console.warn("paella.utils.AsyncLoader is deprecated. Consider to replace it with JavaScript promises.");
+            
             var This = this;
             if (this.currentCb) {
                 this.currentCb.load(function() {
