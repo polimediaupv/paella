@@ -9,7 +9,8 @@ paella.addPlugin(function() {
 		parse(content, lang, next) {
 			var captions = [];
 			var self = this;
-			var xml = $(content);
+			var xmlDoc = $.parseXML(content);
+			var xml = $(xmlDoc);
 			var g_lang = xml.attr("xml:lang");
 			
 			var lls = xml.find("div");
