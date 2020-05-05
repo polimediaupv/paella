@@ -88,10 +88,11 @@
 		_loadDeps() {
 			return new Promise((resolve,reject) => {
 				if (!window.$paella_hls) {
-					require([paella.baseUrl +'javascript/hls.min.js'],function(hls) {
-						window.$paella_hls = hls;
-						resolve(window.$paella_hls);
-					});
+					paella.require(paella.baseUrl +'javascript/hls.min.js')
+						.then((hls) => {
+							window.$paella_hls = hls;
+							resolve(window.$paella_hls);
+						});
 				}
 				else {
 					resolve(window.$paella_hls);

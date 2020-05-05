@@ -30,11 +30,8 @@ Add the paella css and js dependecies:
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Paella Engage Example</title>
 
-		<script type="text/javascript" src="javascript/swfobject.js"></script>
-		<script type="text/javascript" src="javascript/base.js"></script>
 		<script type="text/javascript" src="javascript/jquery.min.js"></script>
 		<script type="text/javascript" src="javascript/lunr.min.js"></script>
-		<script type="text/javascript" src="javascript/require.js"></script>
 		<script type="text/javascript" src="javascript/traceur-runtime.min.js"></script>
 		<script type="text/javascript" src="javascript/paella_player.js"></script>
 
@@ -57,11 +54,8 @@ Then add the container where paella is going to be loaded:
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Paella Engage Example</title>
 
-		<script type="text/javascript" src="javascript/swfobject.js"></script>
-		<script type="text/javascript" src="javascript/base.js"></script>
 		<script type="text/javascript" src="javascript/jquery.min.js"></script>
 		<script type="text/javascript" src="javascript/lunr.min.js"></script>
-		<script type="text/javascript" src="javascript/require.js"></script>
 		<script type="text/javascript" src="javascript/traceur-runtime.min.js"></script>
 		<script type="text/javascript" src="javascript/paella_player.js"></script>
 
@@ -85,11 +79,8 @@ Finally load Paella using that container:
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Paella Engage Example</title>
 
-		<script type="text/javascript" src="javascript/swfobject.js"></script>
-		<script type="text/javascript" src="javascript/base.js"></script>
 		<script type="text/javascript" src="javascript/jquery.min.js"></script>
 		<script type="text/javascript" src="javascript/lunr.min.js"></script>
-		<script type="text/javascript" src="javascript/require.js"></script>
 		<script type="text/javascript" src="javascript/traceur-runtime.min.js"></script>
 		<script type="text/javascript" src="javascript/paella_player.js"></script>
 

@@ -343,23 +343,29 @@ paella.utils.uuid = function() {
 	paella.require = function(path) {
 		if (!g_requiredScripts[path]) {
 			g_requiredScripts[path] = new Promise((resolve,reject) => {
-				let script = document.createElement("script");
-				script.onload = script.onreadystatechange = function() {
-					if (!this.readyState ||
-						this.readyState == "loaded" ||
-						this.readyState == "complete")
-					{
-						resolve();
+				paella.utils.ajax.get({url: path}, (data) => {
+					try {
+						let module = {
+							exports: null
+						};
+						let exports = null;
+						eval(data);
+						if (module && module.exports) {
+							resolve(module.exports);
+						}
+						else {
+							let geval = eval;
+							geval(data);
+							resolve();
+						}
 					}
-				}
-				if (path.split(".").pop()=='js') {
-					script.src = path;
-					script.async = false;
-					document.head.appendChild(script);
-				}
-				else {
-					reject(new Error("Unexpected file type"));
-				}
+					catch(err) {
+						reject(err);
+					}
+				},
+				(err) => {
+					reject(err);
+				});
 			});
 		}
 		return g_requiredScripts[path];

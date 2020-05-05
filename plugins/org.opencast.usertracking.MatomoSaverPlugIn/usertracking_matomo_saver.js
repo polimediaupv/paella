@@ -12,18 +12,19 @@ paella.addPlugin(function() {
 
       if (server && site_id){
         if (server.substr(-1) != '/') server += '/';
-        require([server + "piwik.js"], function(matomo) {
-          paella.log.debug("Matomo Analytics Enabled");
-          paella.userTracking.matomotracker = Piwik.getAsyncTracker( server + "piwik.php", site_id );
-          paella.userTracking.matomotracker.client_id = thisClass.config.client_id;
-          if (heartbeat && heartbeat > 0) paella.userTracking.matomotracker.enableHeartBeatTimer(heartbeat);
-          if (Piwik && Piwik.MediaAnalytics) {
-            paella.events.bind(paella.events.videoReady, () => {
-              Piwik.MediaAnalytics.scanForMedia();
-            });
-          }
-          thisClass.registerVisit();
-        });
+        paella.require(server + "piwik.js")
+          .then((matomo) => {
+            paella.log.debug("Matomo Analytics Enabled");
+            paella.userTracking.matomotracker = Piwik.getAsyncTracker( server + "piwik.php", site_id );
+            paella.userTracking.matomotracker.client_id = thisClass.config.client_id;
+            if (heartbeat && heartbeat > 0) paella.userTracking.matomotracker.enableHeartBeatTimer(heartbeat);
+            if (Piwik && Piwik.MediaAnalytics) {
+              paella.events.bind(paella.events.videoReady, () => {
+                Piwik.MediaAnalytics.scanForMedia();
+              });
+            }
+            thisClass.registerVisit();
+          });
         onSuccess(true);
       }	else {
         paella.log.debug("No Matomo Site ID found in config file. Disabling Matomo Analytics PlugIn");

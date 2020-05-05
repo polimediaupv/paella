@@ -120,17 +120,13 @@ paella.addPlugin(function() {
 
     _loadDeps() {
       return new Promise((resolve,reject) => {
-        if (!window.$paella_mpd) {
-          require(['resources/deps/xapiwrapper.min.js'],function() {
-            require(['resources/deps/random_name_generator.js'],function() {
-              window.$paella_bg2e = true;
-              resolve(window.$paella_bg2e);
-            });
+        paella.require('resources/deps/xapiwrapper.min.js')
+          .then(() => {
+            return paella.require('resources/deps/random_name_generator.js')
+          })
+          .then(() => {
+            resolve();
           });
-        }
-        else {
-          defer.resolve(window.$paella_mpd);
-        }
       });
     }
 
