@@ -1,9 +1,10 @@
 CHANGELOG
 =========
 
-* TBD
+* Paella 6.4.3
 
-  * DFXP caption parse fix for jQuery 5.3.0 upgrade
+  * DFXP caption parse fix for jQuery 3.5.0 upgrade
+  * jQuery 3.5.1 upgrade
 
 * Paella 6.4.2
 
