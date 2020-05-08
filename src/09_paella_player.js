@@ -392,29 +392,39 @@
 		}
 	
 		play() {
-			if (this.lazyLoadContainer) {
+			if (!this.videoContainer) {
+				// play() is called from lazyLoadContainer
+				this.lazyLoadContainer.destroyElements();
+				this.lazyLoadContainer = null;
+				this._onPlayClosure && this._onPlayClosure();
+			}
+			else if (this.lazyLoadContainer) {
+				// play() has been called by a user interaction
 				document.body.removeChild(this.lazyLoadContainer.domElement);
 				this.lazyLoadContainer = null;
 			}
-			return new Promise((resolve,reject) => {
-				this.videoContainer.play()
-					.then(() => {
-						if (paella.initDelegate.initParams.disableUserInterface()) {
-							resolve();
-						}
-						else if (!this.controls) {
-							if (!this.controls) {
-								this.showPlaybackBar();
-								paella.events.trigger(paella.events.controlBarLoaded);
-								this.controls.onresize();
+
+			if (this.videoContainer) {
+				return new Promise((resolve,reject) => {
+					this.videoContainer.play()
+						.then(() => {
+							if (paella.initDelegate.initParams.disableUserInterface()) {
+								resolve();
 							}
-							resolve();
-						}
-					})
-					.catch((err) => {
-						reject(err);
-					});
-			});
+							else if (!this.controls) {
+								if (!this.controls) {
+									this.showPlaybackBar();
+									paella.events.trigger(paella.events.controlBarLoaded);
+									this.controls.onresize();
+								}
+								resolve();
+							}
+						})
+						.catch((err) => {
+							reject(err);
+						});
+				});
+			}
 		}
 	
 		pause() {
