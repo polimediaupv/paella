@@ -399,12 +399,17 @@
 			return new Promise((resolve,reject) => {
 				this.videoContainer.play()
 					.then(() => {
-						if (!this.controls) {
-							this.showPlaybackBar();
-							paella.events.trigger(paella.events.controlBarLoaded);
-							this.controls.onresize();
+						if (paella.initDelegate.initParams.disableUserInterface()) {
+							resolve();
 						}
-						resolve();
+						else if (!this.controls) {
+							if (!this.controls) {
+								this.showPlaybackBar();
+								paella.events.trigger(paella.events.controlBarLoaded);
+								this.controls.onresize();
+							}
+							resolve();
+						}
 					})
 					.catch((err) => {
 						reject(err);

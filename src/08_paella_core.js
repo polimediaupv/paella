@@ -211,7 +211,9 @@
 					dictionaryUrl:paella.baseUrl + 'localization/paella',
 					accessControl:null,
 					videoLoader:null,
-			
+					disableUserInterface: function() {
+						return /true/i.test(paella.utils.parameters.get("disable-ui"));
+					}
 					// Other parameters set externally:
 					//	config: json containing the configuration file
 					//	loadConfig: function(defaultConfigUrl). Returns a promise with the config.json data
@@ -219,6 +221,7 @@
 					//	videoUrl: function. Returns the base URL of the video (example: baseUrl + videoID)
 					//	dataUrl: function. Returns the full URL to get the data.json file
 					//	loadVideo: Function. Returns a promise with the data.json file content
+					//  disableUserInterface: Function. Returns true if the user interface should be disabled (only shows the video container)
 				};
 			}
 			return this._initParams;
