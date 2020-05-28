@@ -198,7 +198,7 @@
 					var videoQualityStrategy = new paella.BestFitVideoQualityStrategy();
 					try {
 						var StrategyClass = this.config.player.videoQualityStrategy;
-						var ClassObject = paella.utils.classFromString(StrategyClass);
+						var ClassObject = paella.utils.objectFromString(StrategyClass);
 						videoQualityStrategy = new ClassObject();
 					}
 					catch(e) {
