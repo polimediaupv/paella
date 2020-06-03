@@ -29,6 +29,10 @@ CHANGELOG
     - Be sure to add the `es.upv.paella.timeMarksPlaybackCanvasPlugin` plugin settings so that the slide marks are drawn on the timeline.
     - Note that the "audioTag" multi audio API is now deprecated, because it is not compatible with iOS devices. It will continue to work in the same way as it has so far, but will no longer be maintained due to incompatibility with iOS devices.
     
+* Paella 6.3.4
+
+  * webgl engine updated
+
 * Paella 6.3.3
 
   * Bug fixes from the 6.2.x branch.
