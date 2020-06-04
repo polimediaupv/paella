@@ -127,7 +127,7 @@
       "es.upv.paella.blackBoardPlugin": {"enabled": true},
       "es.upv.paella.breaksPlayerPlugin": {"enabled": true},
       "es.upv.paella.overlayCaptionsPlugin": {"enabled": true},
-      "es.upv.paella.playButtonOnScreenPlugin": {"enabled":true},
+      "es.upv.paella.playButtonOnScreenPlugin": {"enabled":true, "showOnPause":true },
       "es.upv.paella.translecture.captionsPlugin": {"enabled":true},
       "es.upv.paella.trimmingPlayerPlugin": {"enabled":true},
       "es.upv.paella.windowTitlePlugin": {"enabled": true},
