@@ -91,7 +91,7 @@ paella.addPlugin(function() {
 	
 		pause() {
 			this.isPlaying = false;
-			this.showIcon = true;
+			this.showIcon = this.config.showOnPause;
 			this.checkStatus();
 		}
 	
