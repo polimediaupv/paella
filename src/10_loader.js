@@ -338,7 +338,8 @@ paella.lazyLoad = function(playerContainer, params, forceLazyLoad = true) {
 	// Check autoplay. If autoplay is enabled, this function must call paella.load()
 	paella.Html5Video.IsAutoplaySupported()
 		.then((supported) => {
-			if (supported || forceLazyLoad) {
+			let disableUI = /true/i.test(paella.utils.parameters.get("disable-ui"));
+			if ((supported || forceLazyLoad) && !disableUI) {
 				// Build custom init data using url parameters
 				let data = getManifestFromParameters(params);
 				if (data) {
