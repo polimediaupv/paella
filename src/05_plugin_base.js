@@ -666,15 +666,13 @@ class ButtonPlugin extends paella.UIPlugin {
 			self.plugin.action(self);
 		}
 		
-		if (plugin.getButtonType() == paella.ButtonPlugin.type.actionButton) {
-			$(elem).click(function(event) {
-				onAction(this);
-			});
-			$(elem).keypress(function(event) {
-				 onAction(this);
-				 event.preventDefault();
-			});
-		}
+		$(elem).click(function(event) {
+			onAction(this);
+		});
+		$(elem).keypress(function(event) {
+			 onAction(this);
+			 event.preventDefault();
+		});
 
 		$(elem).focus(function(event) {
 			plugin.expand();
