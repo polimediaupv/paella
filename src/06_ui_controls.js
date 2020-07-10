@@ -699,6 +699,26 @@ class PlaybackControl extends paella.DomNode {
 	showPopUp(identifier,button,swapFocus=false) {
 		this.popUpPluginContainer.showContainer(identifier,button,swapFocus);
 		this.timeLinePluginContainer.showContainer(identifier,button,swapFocus);
+		this.hideCrossTimelinePopupButtons(identifier,this.popUpPluginContainer,this.timeLinePluginContainer,button,swapFocus);
+	}
+
+	// Hide popUpPluginContainer when a timeLinePluginContainer popup opens, and visa versa
+	hideCrossTimelinePopupButtons(identifier, popupContainer, timelineContainer, button, swapFocus=true) {
+		var containerToHide = null;
+		if (popupContainer.containers[identifier]
+			&& timelineContainer.containers[timelineContainer.currentContainerId]) {
+			containerToHide = timelineContainer;
+		} else if (timelineContainer.containers[identifier]
+			&& popupContainer.containers[popupContainer.currentContainerId]) {
+			containerToHide = popupContainer;
+		}
+		if (containerToHide) {
+			var hideId = containerToHide.currentContainerId;
+			var hidePugin = paella.pluginManager.getPlugin(containerToHide.currentContainerId);
+			if (hidePugin) {
+				containerToHide.hideContainer(hideId,hidePugin.button,swapFocus);
+			}
+		}
 	}
 
 	hidePopUp(identifier,button,swapFocus=true) {
