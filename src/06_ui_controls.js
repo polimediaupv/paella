@@ -714,7 +714,7 @@ class PlaybackControl extends paella.DomNode {
 		}
 		if (containerToHide) {
 			var hideId = containerToHide.currentContainerId;
-			var hidePugin = paella.pluginManager.getPlugin(containerToHide.currentContainerId);
+			var hidePugin = paella.pluginManager.getPlugin(hideId);
 			if (hidePugin) {
 				containerToHide.hideContainer(hideId,hidePugin.button,swapFocus);
 			}
