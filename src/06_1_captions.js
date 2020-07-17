@@ -180,9 +180,13 @@ class Caption {
 			dataType: "text"
 		})
 		.then(function(dataRaw){
-			var parser = captionParserManager._formats[self._format];			
+			var parser = captionParserManager._formats[self._format];
 			if (parser == undefined) {
 				paella.log.debug("Error adding captions: Format not supported!");
+				if (!paella.player.videoContainer) {
+					paella.log.debug("Video container is not ready, delaying parse until next reload");
+					return;
+				}
 				paella.player.videoContainer.duration(true)
 				.then((duration)=>{
 					self._captions = [{
