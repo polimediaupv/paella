@@ -1263,8 +1263,16 @@ class VideoContainer extends paella.VideoContainerBase {
 		this.streamProvider.stopVideoSync();
 		return new Promise((resolve) => {
 			let audioSet = false;
-			let firstAudioPlayer = null;
 			let promises = [];
+			// Allow the firstAudioPlayer to be the player that matches the audio lang
+			let firstAudioPlayer = this.streamProvider.players.find((player) => {
+				if (player.stream.audioTag == lang) {
+					audioSet = true;
+					this._audioPlayer = player;
+				}
+				return player.stream.audioTag == lang;
+			});
+                        // Otherwise, let the firstAudioPlayer be different than this._audioPlayer
 			this.streamProvider.players.forEach((player) => {
 				if (!firstAudioPlayer) {
 					firstAudioPlayer = player;
