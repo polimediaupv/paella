@@ -303,7 +303,9 @@ class PopUpContainer extends paella.DomNode {
 
 	hideContainer(identifier, button, swapFocus = false) {
 		var container = this.containers[identifier];
-		hideContainer.apply(this,[identifier,container,swapFocus]);
+		if (container) {
+			hideContainer.apply(this,[identifier,container,swapFocus]);
+		}
 	}
 
 	showContainer(identifier, button, swapFocus = false) {
