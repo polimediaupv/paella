@@ -1023,8 +1023,7 @@ class VideoContainer extends paella.VideoContainerBase {
 
 		// Initial volume level
 		this._volume = paella.utils.cookies.get("volume") ? Number(paella.utils.cookies.get("volume")) : 1;
-		if (/true/.test(paella.utils.parameters.get("muted")) ||
-			/1/.test(paella.utils.parameters.get("muted")))
+		if (paella.player.startMuted)
 		{
 			this._volume = 0;
 		}

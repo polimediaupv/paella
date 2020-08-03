@@ -170,6 +170,7 @@
 		get videoUrl() { return paella.player.videoLoader.getVideoUrl(); }
 		get dataUrl() { return paella.player.videoLoader.getDataUrl(); }
 		get videoId() { return paella.initDelegate.getId(); }
+		get startMuted() { return /true/.test(paella.utils.parameters.get("muted")); }
 	
 		loadComplete(event,params) {
 	
