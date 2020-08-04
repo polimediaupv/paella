@@ -98,11 +98,11 @@ paella.addPlugin(function() {
                                         {
                                             content:validContent[0],
                                             rect:[
-                                                {aspectRatio:"16/9",left:712,top:302,width:560,height:315},
-                                                {aspectRatio:"16/10",left:712,top:267,width:560,height:350},
-                                                {aspectRatio:"4/3",left:712,top:198,width:560,height:420},
-                                                {aspectRatio:"5/3",left:712,top:281,width:560,height:336},
-                                                {aspectRatio:"5/4",left:712,top:169,width:560,height:448}
+                                                {aspectRatio:"16/9",width:560,height:315,top:198,left:712},
+                                                {aspectRatio:"16/10",width:560,height:350,top:186,left:712},
+                                                {aspectRatio:"4/3",width:560,height:420,top:153,left:712},
+                                                {aspectRatio:"5/3",width:560,height:336,top:186,left:712},
+                                                {aspectRatio:"5/4",width:560,height:448,top:140,left:712}
                                             ],
                                             visible:true,
                                             layer:1
@@ -110,11 +110,11 @@ paella.addPlugin(function() {
                                         {
                                             content:validContent[1],
                                             rect:[
-                                                {aspectRatio:"16/9",left:10,top:225,width:695,height:390},
-                                                {aspectRatio:"16/10",left:10,top:183,width:695,height:434},
-                                                {aspectRatio:"4/3",left:10,top:96,width:695,height:521},
-                                                {aspectRatio:"5/3",left:10,top:200,width:695,height:417},
-                                                {aspectRatio:"5/4",left:10,top:62,width:695,height:556}
+                                                {aspectRatio:"16/9",width:688,height:387,top:166,left:10},
+                                                {aspectRatio:"16/10",width:688,height:430,top:148,left:10},
+                                                {aspectRatio:"4/3",width:688,height:516,top:111,left:10},
+                                                {aspectRatio:"5/3",width:690,height:414,top:154,left:10},
+                                                {aspectRatio:"5/4",width:690,height:552,top:96,left:10}
                                             ],
                                             visible:true,
                                             layer:"1"
@@ -154,11 +154,11 @@ paella.addPlugin(function() {
                                                 {
                                                     content:validContent[0],
                                                     rect:[
-                                                        {aspectRatio:"16/9",left:712,top:302,width:560,height:315},
-                                                        {aspectRatio:"16/10",left:712,top:267,width:560,height:350},
-                                                        {aspectRatio:"4/3",left:712,top:198,width:560,height:420},
-                                                        {aspectRatio:"5/3",left:712,top:281,width:560,height:336},
-                                                        {aspectRatio:"5/4",left:712,top:169,width:560,height:448}
+                                                        {aspectRatio:"16/9",width:560,height:315,top:198,left:712},
+                                                        {aspectRatio:"16/10",width:560,height:350,top:186,left:712},
+                                                        {aspectRatio:"4/3",width:560,height:420,top:153,left:712},
+                                                        {aspectRatio:"5/3",width:560,height:336,top:186,left:712},
+                                                        {aspectRatio:"5/4",width:560,height:448,top:140,left:712}
                                                     ],
                                                     visible:true,
                                                     layer:1
@@ -166,14 +166,14 @@ paella.addPlugin(function() {
                                                 {
                                                     content:validContent[1],
                                                     rect:[
-                                                        {aspectRatio:"16/9",left:10,top:225,width:695,height:390},
-                                                        {aspectRatio:"16/10",left:10,top:183,width:695,height:434},
-                                                        {aspectRatio:"4/3",left:10,top:96,width:695,height:521},
-                                                        {aspectRatio:"5/3",left:10,top:200,width:695,height:417},
-                                                        {aspectRatio:"5/4",left:10,top:62,width:695,height:556}
+                                                        {aspectRatio:"16/9",width:688,height:387,top:166,left:10},
+                                                        {aspectRatio:"16/10",width:688,height:430,top:148,left:10},
+                                                        {aspectRatio:"4/3",width:688,height:516,top:111,left:10},
+                                                        {aspectRatio:"5/3",width:690,height:414,top:154,left:10},
+                                                        {aspectRatio:"5/4",width:690,height:552,top:96,left:10}
                                                     ],
                                                     visible:true,
-                                                    layer:2
+                                                    layer:"1"
                                                 }
                                             ];
                                             this.buttons = [
