@@ -68,12 +68,15 @@ paella.addPlugin(function() {
 		play() {
 			this.isPlaying = true;
 			this.showIcon = false;
+			if (!/dimmed/.test(this.container.className)) {
+				this.container.className += " dimmed";
+			}
 			this.checkStatus();
 		}
 	
 		pause() {
 			this.isPlaying = false;
-			this.showIcon = true;
+			this.showIcon = this.config.showOnPause;
 			this.checkStatus();
 		}
 	

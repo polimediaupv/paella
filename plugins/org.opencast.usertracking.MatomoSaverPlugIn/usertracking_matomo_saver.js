@@ -69,6 +69,11 @@ paella.addPlugin(function() {
       }
     }
 
+    loadTitle() {
+      var title = paella.player.videoLoader.getMetadata() && paella.player.videoLoader.getMetadata().title;
+      return title;
+    }
+
     log(event, params) {
       if (paella.userTracking.matomotracker === undefined) {
         base.log.debug("Matomo Tracker is missing");
@@ -84,28 +89,28 @@ paella.addPlugin(function() {
 
         switch (event) {
           case paella.events.play:
-            paella.userTracking.matomotracker.trackEvent("Player.Controls","Play");
+            paella.userTracking.matomotracker.trackEvent("Player.Controls","Play", this.loadTitle());
             break;
           case paella.events.pause:
-            paella.userTracking.matomotracker.trackEvent("Player.Controls","Pause");
+            paella.userTracking.matomotracker.trackEvent("Player.Controls","Pause", this.loadTitle());
             break;
           case paella.events.endVideo:
-            paella.userTracking.matomotracker.trackEvent("Player.Status","Ended");
+            paella.userTracking.matomotracker.trackEvent("Player.Status","Ended", this.loadTitle());
             break;
           case paella.events.showEditor:
-            paella.userTracking.matomotracker.trackEvent("Player.Editor","Show");
+            paella.userTracking.matomotracker.trackEvent("Player.Editor","Show", this.loadTitle());
             break;
           case paella.events.hideEditor:
-            paella.userTracking.matomotracker.trackEvent("Player.Editor","Hide");
+            paella.userTracking.matomotracker.trackEvent("Player.Editor","Hide", this.loadTitle());
             break;
           case paella.events.enterFullscreen:
-            paella.userTracking.matomotracker.trackEvent("Player.View","Fullscreen");
+            paella.userTracking.matomotracker.trackEvent("Player.View","Fullscreen", this.loadTitle());
             break;
           case paella.events.exitFullscreen:
-            paella.userTracking.matomotracker.trackEvent("Player.View","ExitFullscreen");
+            paella.userTracking.matomotracker.trackEvent("Player.View","ExitFullscreen", this.loadTitle());
             break;
           case paella.events.loadComplete:
-            paella.userTracking.matomotracker.trackEvent("Player.Status","LoadComplete");
+            paella.userTracking.matomotracker.trackEvent("Player.Status","LoadComplete", this.loadTitle());
             break;
           case paella.events.showPopUp:
             paella.userTracking.matomotracker.trackEvent("Player.PopUp","Show", value);

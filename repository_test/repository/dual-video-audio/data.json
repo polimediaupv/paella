@@ -6,12 +6,14 @@
 			{
 				"title":"Multiresolution",
 				"url":"index.html?id=belmar-multiresolution-remote",
-				"thumb":"https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/belmar-preview.jpg"
+				"thumb":"https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/belmar-preview.jpg",
+				"id":"belmar-multiresolution-remote"
 			},
 			{
 				"title":"HLS video stream",
 				"url":"index.html?id=hls",
-				"thumb":"https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/belmar-preview.jpg"
+				"thumb":"https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/belmar-preview.jpg",
+				"id":"hls"
 			}
 		]
 	},

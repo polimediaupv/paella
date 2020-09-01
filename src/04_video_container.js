@@ -200,7 +200,7 @@ class VideoWrapper extends paella.DomNode {
 			$(this.domElement).show();
 		}
 		else if (!visible && animate) {
-			$(this.domElement).animate({opacity:0.0},300);
+			$(this.domElement).animate({opacity:0.0},300, () => $(this.domElement).hide());
 		}
 		else if (!visible && !animate) {
 			$(this.domElement).hide();
@@ -241,41 +241,52 @@ class VideoContainerBase extends paella.DomNode {
 		this._seekTimeLimit = 0;
 		this._attenuationEnabled = false;
 		
-		$(this.domElement).click((evt) => {
-			if (this.firstClick && base.userAgent.browser.IsMobileVersion) return;
-			if (this.firstClick && !this._playOnClickEnabled) return;
-			paella.player.videoContainer.paused()
-				.then((paused) => {
-					// If some player needs mouse events support, the click is ignored
-					if (this.firstClick && this.streamProvider.videoPlayers.some((p) => p.canvasData.mouseEventsSupport)) {
-						return;
-					}
+		$(this.domElement).dblclick((evt) => {
+			if (this.firstClick) {
+				paella.player.isFullScreen() ? paella.player.exitFullScreen() : paella.player.goFullScreen();
+			}
+		});
 
-					this.firstClick = true;
-					if (paused) {
-						paella.player.play();
-					}
-					else {
-						paella.player.pause();
-					}
-				});
+		let dblClickTimer = null;
+		$(this.domElement).click((evt) => {
+			let doClick = () => {
+				if (this.firstClick && !this._playOnClickEnabled) return;
+				paella.player.videoContainer.paused()
+					.then((paused) => {
+						// If some player needs mouse events support, the click is ignored
+						if (this.firstClick && this.streamProvider.videoPlayers.some((p) => p.canvasData.mouseEventsSupport)) {
+							return;
+						}
+	
+						this.firstClick = true;
+						if (paused) {
+							paella.player.play();
+						}
+						else {
+							paella.player.pause();
+						}
+					});
+			};
+
+			// the dblClick timer prevents the single click from running when the user double clicks
+			if (dblClickTimer) {
+				clearTimeout(dblClickTimer);
+				dblClickTimer = null;
+			}
+			else {
+				dblClickTimer = setTimeout(() => {
+					dblClickTimer = null;
+					doClick();
+				}, 200);
+			}
+			
+			
 		});
 
 		this.domElement.addEventListener("touchstart",(event) => {
 			if (paella.player.controls) {
 				paella.player.controls.restartHideTimer();
 			}
-		});
-
-		let endedTimer = null;
-		paella.events.bind(paella.events.endVideo,(event) => {
-			if (endedTimer) {
-				clearTimeout(endedTimer);
-				endedTimer = null;
-			}
-			endedTimer = setTimeout(() => {
-				paella.events.trigger(paella.events.ended);
-			}, 1000);
 		});
 	}
 
@@ -626,6 +637,20 @@ class VideoContainerBase extends paella.DomNode {
 
 	onresize() { super.onresize(onresize);
 	}
+
+	ended() {
+		return new Promise((resolve) => {
+			let duration = 0;
+			this.duration()
+				.then((d) => {
+					duration = d;
+					return this.currentTime();
+				})
+				.then((currentTime) => {
+					resolve(Math.floor(duration) <= Math.ceil(currentTime));
+				});
+		});
+	}
 }
 
 paella.VideoContainerBase = VideoContainerBase;
@@ -677,6 +702,21 @@ class LimitedSizeProfileFrameStrategy extends ProfileFrameStrategy {
 
 paella.LimitedSizeProfileFrameStrategy = LimitedSizeProfileFrameStrategy;
 
+function updateBuffers() {
+	// Initial implementation: use the mainStream buffered property
+	let mainBuffered = this.mainPlayer && this.mainPlayer.buffered;
+	if (mainBuffered) {
+		this._bufferedData = [];
+
+		for (let i = 0; i<mainBuffered.length; ++i) {
+			this._bufferedData.push({
+				start: mainBuffered.start(i),
+				end: mainBuffered.end(i)
+			});
+		}
+	}
+}
+
 class StreamProvider {
 	constructor(videoData) {
 		this._mainStream = null;
@@ -691,6 +731,35 @@ class StreamProvider {
 
 		this._autoplay = base.parameters.get('autoplay')=='true' || this.isLiveStreaming;
 		this._startTime = 0;
+
+		this._bufferedData = [];
+		let streamProvider = this;
+		this._buffered = {
+			start: function(index) {
+				if (index<0 || index>=streamProvider._bufferedData.length) {
+					throw new Error("Buffered index out of bounds.");
+				}		
+				return streamProvider._bufferedData[index].start;
+			},
+
+			end: function(index) {
+				if (index<0 || index>=streamProvider._bufferedData.length) {
+					throw new Error("Buffered index out of bounds.");
+				}
+				return streamProvider._bufferedData[index].end;
+			}
+		}
+
+		Object.defineProperty(this._buffered, "length", {
+			get: function() {
+				return streamProvider._bufferedData.length;
+			}
+		});
+	}
+
+	get buffered() {
+		updateBuffers.apply(this);
+		return this._buffered;
 	}
 
 	init(videoData) {
@@ -875,6 +944,10 @@ class StreamProvider {
 		return this._audioPlayer;
 	}
 
+	get mainPlayer() {
+		return this.mainVideoPlayer || this.mainAudioPlayer;
+	}
+
 	get isLiveStreaming() {
 		return paella.player.isLiveStream();
 	}
@@ -956,8 +1029,17 @@ class VideoContainer extends paella.VideoContainerBase {
 	// Playback and status functions
 	play() {
 		return new Promise((resolve,reject) => {
-			this.streamProvider.startTime = this._startTime;
-			this.streamProvider.callPlayerFunction('play')
+			this.ended()
+				.then((ended) => {
+					if (ended) {
+						this._streamProvider.startTime = 0;
+						this.seekToTime(0);
+					}
+					else {
+						this.streamProvider.startTime = this._startTime;
+					}
+					return this.streamProvider.callPlayerFunction('play')
+				})
 				.then(() => {
 					super.play();
 					resolve();
@@ -1299,6 +1381,17 @@ class VideoContainer extends paella.VideoContainerBase {
 
 				.then(() => {
 					let endedTimer = null;
+					let setupEndEventTimer = () => {
+						this.stopTimeupdate();
+						if (endedTimer) {
+							clearTimeout(endedTimer);
+							endedTimer = null;
+						}
+						endedTimer = setTimeout(() => {
+							paella.events.trigger(paella.events.ended);
+						}, 1000);
+					}
+
 					let eventBindingObject = this.masterVideo().video || this.masterVideo().audio;
 					$(eventBindingObject).bind('timeupdate', (evt) => {
 						this.trimming().then((trimmingData) => {
@@ -1308,18 +1401,15 @@ class VideoContainer extends paella.VideoContainerBase {
 								current -= trimmingData.start;
 								duration = trimmingData.end - trimmingData.start;
 							}
-							paella.events.trigger(paella.events.timeupdate, { videoContainer:this, currentTime:current, duration:duration });
 							if (current>=duration) {
 								this.streamProvider.callPlayerFunction('pause');
-								if (endedTimer) {
-									clearTimeout(endedTimer);
-									endedTimer = null;
-								}
-								endedTimer = setTimeout(() => {
-									paella.events.trigger(paella.events.ended);
-								}, 1000);
+								setupEndEventTimer();
 							}
 						})
+					});
+					
+					paella.events.bind(paella.events.endVideo,(event) => {
+						setupEndEventTimer();
 					});
 
 					this._ready = true;
@@ -1374,6 +1464,50 @@ class VideoContainer extends paella.VideoContainerBase {
 			this.resizePortrait();
 		}
 		//paella.profiles.setProfile(paella.player.selectedProfile,false)
+	}
+
+	// the duration and the current time are returned taking into account the trimming, for example:
+	//	trimming: { enabled: true, start: 10, end: 110 } 
+	//	currentTime: 0,	> the actual time is 10
+	//	duration: 100 > the actual duration is (at least) 110
+	getVideoData() {
+		return new Promise((resolve,reject) => {
+			let videoData = {
+				currentTime: 0,
+				volume: 0,
+				muted: this.muted,
+				duration: 0,
+				paused: false,
+				audioTag: this.audioTag,
+				trimming: {
+					enabled: false,
+					start: 0,
+					end: 0
+				}
+			}
+			this.currentTime()
+				.then((currentTime) => {
+					videoData.currentTime = currentTime;
+					return this.volume();
+				})
+				.then((v) => {
+					videoData.volume = v;
+					return this.duration();
+				})
+				.then((d) => {
+					videoData.duration = d;
+					return this.paused();
+				})
+				.then((p) => {
+					videoData.paused = p;
+					return this.trimming();
+				})
+				.then((trimming) => {
+					videoData.trimming = trimming;
+					resolve(videoData);
+				})
+				.catch((err) => reject(err));
+		});
 	}
 }
 

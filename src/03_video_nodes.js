@@ -640,6 +640,23 @@ class VideoElementBase extends paella.VideoRect {
 		return Promise.reject(new Error("VideoElementBase::videoCanvas(): Not implemented in child class."));
 	}
 
+	// Multi audio functions
+	supportsMultiaudio() {
+		return Promise.resolve(false);
+	}
+
+	getAudioTracks() {
+		return Promise.resolve([]);
+	}
+
+	setCurrentAudioTrack(trackId) {
+		return Promise.resolve(false);
+	}
+
+	getCurrentAudioTrack() {
+		return Promise.resolve(-1);
+	}
+
 	// Playback functions
 	getVideoData() {
 		return paella_DeferredNotImplemented();
@@ -809,7 +826,7 @@ class Html5Video extends paella.VideoElementBase {
 
 		this.video.preload = "auto";
 		this.video.setAttribute("playsinline","");
-		this.video.setAttribute("tabindex","-1");
+		//this.video.setAttribute("tabindex","-1");
 
 		this._configureVideoEvents(this.video);
 	}
@@ -858,6 +875,10 @@ class Html5Video extends paella.VideoElementBase {
 		}
 	}
 	
+	get buffered() {
+		return this.video && this.video.buffered;
+	}
+
 	get video() {
 		if (this.domElementType=='video') {
 			return this.domElement;
@@ -917,6 +938,7 @@ class Html5Video extends paella.VideoElementBase {
 				$(this.video).bind('canplay',() => {
 					processResult(action());
 					$(this.video).unbind('canplay');
+					$(this.video).unbind('loadedmetadata');
 				});
 			}
 		});

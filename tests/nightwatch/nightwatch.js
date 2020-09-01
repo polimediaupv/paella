@@ -1,4 +1,4 @@
-module.exports = {
+let nightwatch = {
 	"src_folders" : ["tests/nightwatch/tests"],
 	"output_folder" : "tests/nightwatch/reports",
 	"custom_commands_path" : "",
@@ -35,3 +35,9 @@ module.exports = {
 		}
 	}
 };
+
+if (process.platform=="win32") {
+	nightwatch.webdriver.server_path = "node_modules/chromedriver/lib/chromedriver/chromedriver.exe";
+}
+
+module.exports = nightwatch;

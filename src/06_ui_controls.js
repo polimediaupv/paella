@@ -45,6 +45,136 @@ class TimeControl extends paella.DomNode {
 
 paella.TimeControl = TimeControl;
 
+class PlaybackCanvasPlugin extends paella.DeferredLoadPlugin {
+	get type() { return 'playbackCanvas'; }
+
+	get playbackBarCanvas() { return this._playbackBarCanvas; }
+
+	constructor() {
+		super();
+	}
+
+	drawCanvas(context,width,height,videoData) {
+		// videoData: {
+		//		duration: fullDuration,
+		//		trimming: {
+		//			enabled: true | false,
+		//			start: trimmingStart,
+		//			end: trimmingEnd,
+		//			duration: trimmedDuration | duration if trimming is not enabled
+		//		}
+		//	}
+	}
+}
+paella.PlaybackCanvasPlugin = PlaybackCanvasPlugin;
+
+class PlaybackBarCanvas {
+	constructor(canvasElem) {
+		this._parent = canvasElem;
+		this._plugins = [];
+
+		paella.pluginManager.setTarget('playbackCanvas', this);
+	}
+
+	addPlugin(plugin) {
+		plugin._playbackBarCanvas = this;
+		plugin.checkEnabled((isEnabled) => {
+			if (isEnabled) {
+				plugin.setup();
+				this._plugins.push(plugin);
+			}
+		});
+	}
+
+	get parent() { return this._parent; }
+
+	get canvas() {
+		if (!this._canvas) {
+			let createCanvas = (index) => {
+				let result = document.createElement("canvas");
+				result.className = "playerContainer_controls_playback_playbackBar_canvas layer_" + index;
+				result.id = "playerContainer_controls_playback_playbackBar_canvas_" + index;
+				result.width = $(this.parent).width();
+				result.height = $(this.parent).height();
+				return result;
+			}
+			this._canvas = [
+				createCanvas(0),
+				createCanvas(1)
+			];
+			$(this._parent).prepend(this._canvas[0]);
+			$(this._parent).append(this._canvas[1]);
+		}
+		return this._canvas;
+	}
+
+	get context() {
+		if (!this._context) {
+			this._context = [
+				this.canvas[0].getContext("2d"),
+				this.canvas[1].getContext("2d")
+			]
+		}
+		return this._context;
+	}
+
+	get width() {
+		return this.canvas[0].width;
+	}
+
+	get height() {
+		return this.canvas[0].height;
+	}
+
+	resize(w,h) {
+		this.canvas[0].width = w;
+		this.canvas[0].height = h;
+		this.canvas[1].width = w;
+		this.canvas[1].height = h;
+		this.drawCanvas();
+	}
+
+	drawCanvas(){
+		let duration = 0;
+		paella.player.videoContainer.duration(true)
+			.then((d) => {
+				duration = d;
+				return paella.player.videoContainer.trimming();
+			})
+
+			.then((trimming) => {
+				let trimmedDuration = 0;
+				if (trimming.enabled) {
+					trimmedDuration = trimming.end - trimming.start;
+				}
+				let videoData = {
+					duration: duration,
+					trimming: {
+						enabled: trimming.enabled,
+						start: trimming.start,
+						end: trimming.end,
+						duration: trimming.enabled ? trimming.end - trimming.start : duration
+					}
+				}
+				let ctx = this.context;
+				let w = this.width;
+				let h = this.height;
+				this.clearCanvas();
+				this._plugins.forEach((plugin) => {
+					plugin.drawCanvas(ctx,w,h,videoData);
+				});
+			})
+	}
+
+	clearCanvas() {
+		let clear = (ctx,w,h) => {
+			ctx.clearRect(0, 0, w, h);
+		}
+		clear(this.context[0],this.width,this.height);
+		clear(this.context[1],this.width,this.height);
+	}
+}
+
 class PlaybackBar extends paella.DomNode {
 
 	constructor(id) {
@@ -55,7 +185,6 @@ class PlaybackBar extends paella.DomNode {
 		this.updatePlayBar = true;
 		this.timeControlId = '';
 		this._images = null;
-		this._keys = null;
 		this._prev = null;
 		this._next = null;
 		this._videoLength = null;
@@ -73,7 +202,7 @@ class PlaybackBar extends paella.DomNode {
 		this.domElement.setAttribute("aria-valuemin", "0");
 		this.domElement.setAttribute("aria-valuemax", "100");
 		this.domElement.setAttribute("aria-valuenow", "0");
-		this.domElement.setAttribute("tabindex", "1100");
+		this.domElement.setAttribute("tabindex", paella.tabIndex.next);
 		$(this.domElement).keyup((event) => {
 			var currentTime = 0;
 			var duration = 0;
@@ -136,6 +265,7 @@ class PlaybackBar extends paella.DomNode {
 		}, false);
 		this.domElement.addEventListener('touchend',(event) => {
 			paella.utils.mouseManager.up(event);
+			thisClass.clearTimeOverlay();
 		}, false);
 	
 		$(this.domElement).bind('mouseup',function(event) {
@@ -157,73 +287,21 @@ class PlaybackBar extends paella.DomNode {
 				$(playbackFull.domElement).addClass("disabled");
 			}
 		});
+
+		this._canvas = new PlaybackBarCanvas(this.domElement);
 	}
 
 	mouseOut(event){
+		this.clearTimeOverlay();
+	}
+
+	clearTimeOverlay() {
 		if(this._hasSlides) {
 			$("#divTimeImageOverlay").remove();
 		}
 		else {
 			$("#divTimeOverlay").remove();
 		}
-	}
-
-	drawTimeMarks(){
-		let trimming = {};
-		paella.player.videoContainer.trimming()
-			.then((t) => {
-				trimming = t;
-				return this.imageSetup();
-			})
-			
-			.then(() => {
-				// Updated duration value. The duration may change during playback, because it's
-				// possible to set the trimming during playback (for instance, using a plugin)
-				let duration = trimming.enabled ? trimming.end - trimming.start : this._videoLength;
-				let parent = $("#playerContainer_controls_playback_playbackBar");
-				this.clearCanvas();
-				if (this._keys && paella.player.config.player.slidesMarks.enabled) {
-					this._keys.forEach((l) => {
-						let timeInstant = parseInt(l) - trimming.start;
-						if (timeInstant>0) {
-							var aux = (timeInstant * parent.width()) / this._videoLength; // conversion to canvas
-							this.drawTimeMark(aux);
-						}
-					});
-				}
-			});
-	}
-
-	drawTimeMark(sec){
-		var ht = 12; //default height value
-		var ctx = this.getCanvasContext();
-		ctx.fillStyle = paella.player.config.player.slidesMarks.color;
-		ctx.fillRect(sec,0,1,ht);	
-	}
-
-	clearCanvas() {
-		if (this._canvas) {
-			var ctx = this.getCanvasContext();
-			ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
-		}
-	}
-
-	getCanvas(){
-		if (!this._canvas) {
-			var parent = $("#playerContainer_controls_playback_playbackBar");
-			var canvas = document.createElement("canvas");
-			canvas.className = "playerContainer_controls_playback_playbackBar_canvas";
-			canvas.id = ("playerContainer_controls_playback_playbackBar_canvas");
-			canvas.width = parent.width();
-			var ht = canvas.height = parent.height();
-			parent.prepend(canvas);
-			this._canvas = document.getElementById("playerContainer_controls_playback_playbackBar_canvas");
-		}
-		return this._canvas;
-	}
-
-	getCanvasContext(){
-		return this.getCanvas().getContext("2d");
 	}
 
 	movePassive(event){
@@ -235,7 +313,8 @@ class PlaybackBar extends paella.DomNode {
 			var pos = p.offset();
 
 			var width = p.width();
-			var left = (event.clientX-pos.left);
+			let clientX = event.touches ? event.touches[0].clientX : event.clientX;
+			var left = (clientX-pos.left);
 			left = (left < 0) ? 0 : left;
 			var position = left * 100 / width; // GET % OF THE STREAM
 
@@ -278,11 +357,11 @@ class PlaybackBar extends paella.DomNode {
 			// UPDATE POSITION IMAGE OVERLAY
 			if (This._hasSlides) {
 				var ancho = $("#divTimeImageOverlay").width();
-				var posx = event.clientX-(ancho/2);
-				if(event.clientX > (ancho/2 + pos.left)  &&  event.clientX < (pos.left+width - ancho/2) ) { // LEFT
+				var posx = clientX-(ancho/2);
+				if(clientX > (ancho/2 + pos.left)  &&  clientX < (pos.left+width - ancho/2) ) { // LEFT
 					$("#divTimeImageOverlay").css("left",posx); // CENTER THE DIV HOVER THE MOUSE
 				}
-				else if(event.clientX < width / 2)
+				else if(clientX < width / 2)
 					$("#divTimeImageOverlay").css("left",pos.left);
 				else
 					$("#divTimeImageOverlay").css("left",pos.left + width - ancho);
@@ -290,11 +369,11 @@ class PlaybackBar extends paella.DomNode {
 
 			// UPDATE POSITION TIME OVERLAY
 			var ancho2 = $("#divTimeOverlay").width();
-			var posx2 = event.clientX-(ancho2/2);
-			if(event.clientX > ancho2/2 + pos.left  && event.clientX < (pos.left+width - ancho2/2) ){
+			var posx2 = clientX-(ancho2/2);
+			if(clientX > ancho2/2 + pos.left  && clientX < (pos.left+width - ancho2/2) ){
 				$("#divTimeOverlay").css("left",posx2); // CENTER THE DIV HOVER THE MOUSE
 			}
-			else if(event.clientX < width / 2)
+			else if(clientX < width / 2)
 				$("#divTimeOverlay").css("left",pos.left);
 			else
 				$("#divTimeOverlay").css("left",pos.left + width - ancho2-2);
@@ -304,16 +383,15 @@ class PlaybackBar extends paella.DomNode {
 			}
 		}
 
+		let duration = 0;
 		paella.player.videoContainer.duration()
-			let duration = 0;
-			paella.player.videoContainer.duration()
-				.then(function(d) {
-					duration = d;
-					return paella.player.videoContainer.trimming();
-				})
-				.then(function(trimming) {
-					updateTimePreview(duration,trimming);
-				});
+			.then(function(d) {
+				duration = d;
+				return paella.player.videoContainer.trimming();
+			})
+			.then(function(trimming) {
+				updateTimePreview(duration,trimming);
+			});
 	}
 
 	imageSetup(){
@@ -509,9 +587,9 @@ class PlaybackBar extends paella.DomNode {
 	}
 
 	onresize() {
-		let playbackBar = $("#playerContainer_controls_playback_playbackBar");
-		this.getCanvas().width = playbackBar.width();
-		this.drawTimeMarks();
+		this.imageSetup();
+		let elem = $(this.domElement);
+		this._canvas.resize(elem.width(),elem.height());
 	}
 }
 
@@ -553,6 +631,11 @@ class PlaybackControl extends paella.DomNode {
 					parent = this.timeLinePluginContainer.domElement;
 					var timeLineContent = paella.ButtonPlugin.BuildPluginPopUp(parent, plugin,id + '_timeline');
 					this.timeLinePluginContainer.registerContainer(plugin.getName(),timeLineContent,button,plugin);
+				}
+				else if (plugin.getButtonType()==paella.ButtonPlugin.type.menuButton) {
+					parent = this.popUpPluginContainer.domElement;
+					var popUpContent = paella.ButtonPlugin.BuildPluginMenu(parent,plugin,id + '_container');
+					this.popUpPluginContainer.registerContainer(plugin.getName(),popUpContent,button,plugin);
 				}
 			}
 			else {
@@ -613,14 +696,14 @@ class PlaybackControl extends paella.DomNode {
 		return this._timeLinePluginContainer;
 	}
 
-	showPopUp(identifier,button) {
-		this.popUpPluginContainer.showContainer(identifier,button);
-		this.timeLinePluginContainer.showContainer(identifier,button);
+	showPopUp(identifier,button,swapFocus=false) {
+		this.popUpPluginContainer.showContainer(identifier,button,swapFocus);
+		this.timeLinePluginContainer.showContainer(identifier,button,swapFocus);
 	}
 
-	hidePopUp(identifier,button) {
-		this.popUpPluginContainer.hideContainer(identifier,button);
-		this.timeLinePluginContainer.hideContainer(identifier,button);
+	hidePopUp(identifier,button,swapFocus=true) {
+		this.popUpPluginContainer.hideContainer(identifier,button,swapFocus);
+		this.timeLinePluginContainer.hideContainer(identifier,button,swapFocus);
 	}
 
 	playbackBar() {

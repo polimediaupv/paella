@@ -6,7 +6,7 @@
 	"streams": [
 		{
 			"sources": {
-				"_mp4": [
+				"mp4": [
 					{
 						"src": "https://repository.paellaplayer.upv.es/video360/video360.mp4",
 						"mimetype": "video/mp4",
@@ -16,17 +16,7 @@
 						}
 					}
 				],
-				"-video360": [
-					{
-						"src": "https://repository.paellaplayer.upv.es/video360/video360.mp4",
-						"mimetype": "video/mp4",
-						"res": {
-							"w": "4096",
-							"h": "2046"
-						}
-					}
-				],
-				"hls": [
+				"hls_disabled": [
 					{
 						"src": "https://streaming.upv.es/paellaplayerdemo/_definst_/smil:belmar-hls/belmar/playlist.m3u8",
 						"mimetype": "video/mp4"

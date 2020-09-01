@@ -15,17 +15,23 @@ the plugin and its funcionalities.
   
   A button plugin allow you to add a button to the paella bar.
   
-  Regarding the action done when the user click on the button, a button plugin can implement three subtypes:
+  Regarding the action done when the user click on the button, a button plugin can implement four subtypes:
 
-    * Push button: [playPauseButtonPlugin](../examples/button_plugin.md)
-    * Pop up button: [popup plugin](../examples/popup_plugin.md)
-    * Time line button: [timeline plugin](../examples/timeline_plugin.md)
+    * Push button: Example [playPauseButtonPlugin](../examples/button_plugin.md)
+    * Pop up button: Example [popup plugin](../examples/popup_plugin.md)
+    * Timeline button: Example [timeline plugin](../examples/timeline_plugin.md)
+    * Menu button: Example [multiple quality plugin](../examples/multi_quality_plugin.md)
   
 - Video Overlay Button Plugin
 
   This type of plugin is similar to a button plugin, but it is located above the video container.
   
   Plugin example: [Video overlay plugin](../examples/video_overlay.md) 
+
+- Playback bar canvas plugin: The playback bar, which shows the progress of the video, includes a canvas with two layers where you can display information. Layer 0 is drawn below the elapsed time marker, and layer 1 is drawn above it.
+
+  Plugin example: [Buffered playback bar canvas plugin](../examples/buffered_playback_canvas.md)
+
 
 
 ## Interact with the player

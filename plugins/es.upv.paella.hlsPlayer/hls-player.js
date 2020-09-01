@@ -88,7 +88,7 @@
 		_loadDeps() {
 			return new Promise((resolve,reject) => {
 				if (!window.$paella_hls) {
-					require([paella.baseUrl +'resources/deps/hls.min.js'],function(hls) {
+					require([paella.baseUrl +'javascript/hls.min.js'],function(hls) {
 						window.$paella_hls = hls;
 						resolve(window.$paella_hls);
 					});
@@ -99,12 +99,64 @@
 			});
 		}
 	
+		_deferredAction(action) {
+			return new Promise((resolve,reject) => {
+				function processResult(actionResult) {
+					if (actionResult instanceof Promise) {
+						actionResult.then((p) => resolve(p))
+							.catch((err) => reject(err));
+					}
+					else {
+						resolve(actionResult);
+					}
+				}
+	
+				if (this.ready) {
+					processResult(action());
+				}
+				else {
+					let eventFunction = () => {
+						processResult(action());
+						$(this.video).unbind('canplay');
+						$(this.video).unbind('loadedmetadata');
+						if (timer) {
+							clearTimeout(timer);
+							timer = null;
+						}
+					};
+					$(this.video).bind('canplay',eventFunction);
+					$(this.video).bind('loadedmetadata',eventFunction);
+					let timerFunction = () => {
+						if (!this.ready) {
+							if (!this._hls) {
+								// iOS
+								// In this way the recharge is forced, and it is possible to recover errors.
+								console.debug("HLS video resume failed. Trying to recover.");
+								let src = this.video.innerHTML;
+								this.video.innerHTML = "";
+								this.video.innerHTML = src;
+								this.video.load();
+								this.video.play();
+							}
+							timer = setTimeout(timerFunction, 1000);
+						}
+						else {
+							eventFunction();
+						}
+					}
+					let timer = setTimeout(timerFunction, 1000);
+				}
+			});
+		}
+
 		setupHls(video,url) {
+			let initialQualityLevel = this.config.initialQualityLevel !== undefined ? this.config.initialQualityLevel : 1;
 			return new Promise((resolve,reject) => {
 				this._loadDeps()
 					.then((Hls) => {
 						if (Hls.isSupported()) {
 							let cfg = this.config;
+							//cfg.autoStartLoad = false;
 							this._hls = new Hls(cfg);
 							this._hls.loadSource(url);
 							this._hls.attachMedia(video);
@@ -121,8 +173,15 @@
 								if (data.fatal) {
 									switch (data.type) {
 									case Hls.ErrorTypes.NETWORK_ERROR:
-										console.error("paella.HLSPlayer: Fatal network error encountered, try to recover");
-										this._hls.startLoad();
+										if (data.details == Hls.ErrorDetails.MANIFEST_LOAD_ERROR) {
+											// TODO: Manifest file not found
+											console.error("paella.HLSPlayer: unrecoverable error in HLS Player. The video is not available.");
+											reject(new Error("No such HLS stream: the video is not available"));
+										}
+										else {
+											console.error("paella.HLSPlayer: Fatal network error encountered, try to recover");
+											this._hls.startLoad();
+										}
 										break;
 									case Hls.ErrorTypes.MEDIA_ERROR:
 										console.error("paella.HLSPlayer: Fatal media error encountered, try to recover");
@@ -138,9 +197,14 @@
 							});
 
 							this._hls.on(Hls.Events.MANIFEST_PARSED, () => {
-								//this._deferredAction(function() {
-									resolve(video);
-								//});
+								if (!cfg.autoStartLoad) {
+									this._hls.startLoad();
+								}
+								// Fixes hls.js problems when loading the initial quality level
+								this._hls.currentLevel = this._hls.levels.length>=initialQualityLevel ? initialQualityLevel : -1;
+								setTimeout(() => this._hls.currentLevel = -1, 1000);
+								
+								resolve(video);
 							});
 						}
 						else {
@@ -151,6 +215,9 @@
 		}
 
 		webGlDidLoad() {
+			if (base.userAgent.system.iOS) {
+				return super.webGlDidLoad();
+			}
 			// Register a new video loader in the webgl engine, to enable the
 			// hls compatibility in webgl canvas
 			bg.utils.HTTPResourceProvider.AddVideoLoader('m3u8', (url,onSuccess,onFail) => {
@@ -164,9 +231,97 @@
 		}
 
 		loadVideoStream(canvasInstance,stream) {
+			if (base.userAgent.system.iOS) {
+				return super.loadVideoStream(canvasInstance,stream);
+			}
+
 			return canvasInstance.loadVideo(this,stream,(videoElem) => {
 				return this.setupHls(videoElem,stream.src);
 			});
+		}
+
+		supportsMultiaudio() {
+			return this._deferredAction(() => {
+				if (base.userAgent.system.iOS) {
+					return this.video.audioTracks.length>1;
+				}
+				else {
+					return this._hls.audioTracks.length>1;
+				}
+			});
+		}
+	
+		getAudioTracks() {
+			return this._deferredAction(() => {
+				if (base.userAgent.system.iOS) {
+					let result = [];
+					Array.from(this.video.audioTracks).forEach((t) => {
+						result.push({
+							id: t.id,
+							groupId: "",
+							name: t.label,
+							lang: t.language
+						});
+					})
+					return result;
+				}
+				else {
+					return this._hls.audioTracks;
+				}
+			});
+		}
+
+		setCurrentAudioTrack(trackId) {
+			return this._deferredAction(() => {
+				if (base.userAgent.system.iOS) {
+					let found = false;
+					Array.from(this.video.audioTracks).forEach((track) => {
+						if (track.id==trackId) {
+							found = true;
+							track.enabled = true;
+						}
+						else {
+							track.enabled = false;
+						}
+					});
+					return found;
+				}
+				else {
+					if (this._hls.audioTracks.some((track) => track.id==trackId)) {
+						this._hls.audioTrack = trackId;
+						return true;
+					}
+					else {
+
+						return false;
+					}
+				}
+			});
+		}
+
+		getCurrentAudioTrack() {
+			return this._deferredAction(() => {
+				if (base.userAgent.system.iOS) {
+					let result = null;
+					Array.from(this.video.audioTracks).some((t) => {
+						if (t.enabled) {
+							result = t;
+							return true;
+						}
+					});
+					return result;
+				}
+				else {
+					let result = null;
+					this._hls.audioTracks.some((t) => {
+						if (t.id==this._hls.audioTrack) {
+							result = t;
+							return true;
+						}
+					});
+					return result;
+				}
+			})
 		}
 	
 		getQualities() {
@@ -213,7 +368,23 @@
 				});
 			}
 		}
-		
+
+		disable(isMainAudioPlayer) {
+			if (base.userAgent.system.iOS) {
+				return;
+			}
+			
+			this._currentQualityIndex = this._qualityIndex;
+			this._hls.currentLevel = 0;
+		}
+	
+		enable(isMainAudioPlayer) {
+			if (this._currentQualityIndex !== undefined && this._currentQualityIndex !== null) {
+				this.setQuality(this._currentQualityIndex);
+				this._currentQualityIndex = null;
+			}
+		}
+
 		printQualityes() {
 			return new Promise((resolve,reject) => {
 				this.getCurrentQuality()

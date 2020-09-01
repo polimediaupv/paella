@@ -446,11 +446,18 @@ paella.data = null;
 		if (!g_requiredScripts[path]) {
 			g_requiredScripts[path] = new Promise((resolve,reject) => {
 				let script = document.createElement("script");
+				script.onload = script.onreadystatechange = function() {
+					if (!this.readyState ||
+						this.readyState == "loaded" ||
+						this.readyState == "complete")
+					{
+						resolve();
+					}
+				}
 				if (path.split(".").pop()=='js') {
 					script.src = path;
 					script.async = false;
 					document.head.appendChild(script);
-					setTimeout(() => resolve(), 100);
 				}
 				else {
 					reject(new Error("Unexpected file type"));
@@ -692,6 +699,115 @@ paella.data = null;
 	paella.MessageBox = MessageBox;
 	paella.messageBox = new paella.MessageBox();
 
+	paella.tabIndex = new (class TabIndexManager {
+		constructor() {
+			this._last = 1;
+		}
+
+		get next() {
+			return this._last++;
+		}
+
+		get last() {
+			return this._last - 1;
+		}
+
+		get tabIndexElements() {
+			let result = Array.from($('[tabindex]'));
+
+			// Sort by tabIndex
+			result.sort((a,b) => {
+				return a.tabIndex-b.tabIndex;
+			});
+
+			return result;
+		}
+
+		insertAfter(target,elements) {
+			if (target.tabIndex==null || target.tabIndex==-1) {
+				throw Error("Insert tab index: the target element does not have a valid tabindex.");
+			}
+
+			let targetIndex = -1;
+			let newTabIndexElements = this.tabIndexElements;
+			newTabIndexElements.some((elem,i) => {
+				if (elem==target) {
+					targetIndex = i;
+					return true;
+				}
+			});
+			newTabIndexElements.splice(targetIndex + 1, 0, ...elements);
+			newTabIndexElements.forEach((elem,index) => {
+				elem.tabIndex = index; + 1
+			});
+			this._last = newTabIndexElements.length;
+		}
+
+		removeTabIndex(elements) {
+			Array.from(elements).forEach((e) => {
+				e.removeAttribute("tabindex");
+			});
+
+			this.tabIndexElements.forEach((elem,index) => {
+				elem.tabIndex = index + 1;
+				this._last = elem.tabIndex + 1;
+			});
+		}
+	})();
+
+	paella.URL = class PaellaURL {
+		constructor(urlText) {
+			this._urlText = urlText;
+		}
+
+		get text() {
+			return this._urlText;
+		}
+
+		get isAbsolute() {
+			return new RegExp('^([a-z]+://|//)', 'i').test(this._urlText) ||
+					/^\//.test(this._urlText);	// We consider that the URLs starting with / are absolute and local to this server
+		}
+
+		get isExternal() {
+			let thisUrl = new URL(this.absoluteUrl);
+			let localUrl = new URL(location.href);
+			return thisUrl.hostname != localUrl.hostname;
+		}
+
+		get absoluteUrl() {
+			let result = "";
+			if (new RegExp('^([a-z]+://|//)', 'i').test(this._urlText)) {
+				result = this._urlText;
+			}
+			else if (/^\//.test(this._urlText)) {
+				result = `${ location.origin }${ this._urlText }`
+			}
+			else {
+				let pathname = location.pathname;
+				if (pathname.lastIndexOf(".")>pathname.lastIndexOf("/")) {
+					pathname = pathname.substring(0,pathname.lastIndexOf("/")) + '/';
+				}
+				result = `${ location.origin }${ pathname }${ this._urlText }`;
+			}
+			result = (new URL(result)).href;
+			return result;
+		}
+
+		appendPath(text) {
+			if (this._urlText.endsWith("/") && text.startsWith("/")) {
+				this._urlText += text.substring(1,text.length);
+			}
+			else if (this._urlText.endsWith("/") || text.startsWith("/")) {
+				this._urlText += text;
+			}
+			else {
+				this._urlText += "/" + text;
+			}
+			return this;
+		}
+	}
+	
 })();
 
 paella.AntiXSS = {

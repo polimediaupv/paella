@@ -1,0 +1,39 @@
+{
+	"metadata": {
+		"duration": 228,
+        "title": "HLS multiaudio",
+		"preview": "https://repository.paellaplayer.upv.es/hls-multiaudio/preview.jpg",
+		"related": [
+			{
+				"title":"Video with independent audio",
+				"url":"index.html?id=dual-video-audio",
+				"thumb":"https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/belmar-preview.jpg",
+				"id":"dual-video-audio"
+			},
+			{
+				"title":"Multiresolution",
+				"url":"index.html?id=belmar-multiresolution-remote",
+				"thumb":"https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/belmar-preview.jpg",
+				"id":"belmar-multiresolution-remote"
+			}
+		]
+	},
+	"streams": [
+		{
+			"sources": {
+				"hls": [
+					{
+						"src": "https://repository.paellaplayer.upv.es/hls-multiaudio/presenter.m3u8",
+						"src_test": "https://bitmovin-a.akamaihd.net/content/sintel/hls/playlist.m3u8",
+						"mimetype": "video/mp4"
+					}
+				]
+			},
+			"preview": "",
+			"content":"presenter",
+			"role": "master"
+		}
+	],
+	"frameList": [
+	]
+}

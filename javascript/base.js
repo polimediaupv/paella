@@ -283,7 +283,7 @@ Class ("base.UserAgent",{
 		this.system.Windows = /Windows/.test(userAgentString);
 		this.system.iPhone = /iPhone/.test(userAgentString);
 		this.system.iPodTouch = /iPod/.test(userAgentString);
-		this.system.iPad = /iPad/.test(userAgentString);
+		this.system.iPad = /iPad/.test(userAgentString) || /FxiOS/.test(userAgentString);
 		this.system.iOS = this.system.iPhone || this.system.iPad || this.system.iPodTouch;
 		this.system.Android = /Android/.test(userAgentString);
 		this.system.Linux = (this.system.Android) ? false:/Linux/.test(userAgentString);
@@ -342,6 +342,14 @@ Class ("base.UserAgent",{
 
 		this.browser.Firefox = /Gecko\/[\d\.]+ Firefox\/([\d\.]+)/.test(userAgentString);
 		if (this.browser.Firefox) {
+			this.browser.Name = "Firefox";
+			this.browser.Vendor = "Mozilla Foundation";
+			this.browser.Version.versionString = RegExp.$1;
+		}
+
+		let firefoxIOS = this.browser.Firefox || /FxiOS\/(\d+\.\d+)/.test(userAgentString);
+		if (firefoxIOS) {
+			this.browser.Firefox = true;
 			this.browser.Name = "Firefox";
 			this.browser.Vendor = "Mozilla Foundation";
 			this.browser.Version.versionString = RegExp.$1;
@@ -519,6 +527,7 @@ Class ("base.UserAgent",{
 
 	parseIOSVersion:function(userAgentString) {
 		this.system.Version = {};
+
 		if (/iPhone OS (\d+)_(\d+)_*(\d*)/i.test(userAgentString) || /iPad; CPU OS (\d+)_(\d+)_*(\d*)/i.test(userAgentString)) {
 			this.system.Version.major = Number(RegExp.$1);
 			this.system.Version.minor = Number(RegExp.$2);

@@ -27,7 +27,7 @@
         hideBackground.apply(this);
         this.backgroundData = bkgData;
         let style = {
-            backgroundImage: `url(${paella.utils.folders.get("resources")}/style/${ bkgData.content })`,
+            backgroundImage: `url(${paella.baseUrl}${paella.utils.folders.get("resources")}/style/${ bkgData.content })`,
             backgroundSize: "100% 100%",
             zIndex: bkgData.layer,
             position: 'absolute',
@@ -59,7 +59,7 @@
             if (!logoNode) {
                 style = {};
                 logoNode = this.container.addNode(new paella.DomNode('img',logoId,style));
-                logoNode.domElement.setAttribute('src', `${paella.utils.folders.get("resources")}/style/${logo.content}`);
+                logoNode.domElement.setAttribute('src', `${paella.baseUrl}${paella.utils.folders.get("resources")}/style/${logo.content}`);
             }
             else {
                 $(logoNode.domElement).show();
@@ -103,7 +103,7 @@
                     height:percentHeight,
                     position:'absolute',
                     zIndex:btn.layer,
-                    backgroundImage: `url(${paella.utils.folders.get("resources")}/style/${ btn.icon })`,
+                    backgroundImage: `url(${paella.baseUrl}${paella.utils.folders.get("resources")}/style/${ btn.icon })`,
                     backgroundSize: '100% 100%',
                     display: 'block'
                 };
@@ -206,9 +206,7 @@
             }
             else if (videoWrapper) {
                 videoWrapper.setVisible(false,animate);
-                if (paella.player.videoContainer.streamProvider.mainAudioPlayer!=player) {
-                    player.disable();
-                }
+                player.disable(paella.player.videoContainer.streamProvider.mainAudioPlayer==player);
             }
         });
     }

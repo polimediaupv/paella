@@ -7,7 +7,8 @@ paella.addPlugin(function() {
 		getIconClass() { return 'icon-presentation-mode'; }
 		getIndex() { return 540; }
 		getName() { return "es.upv.paella.viewModePlugin"; }
-		getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
+		//getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
+		getButtonType() { return paella.ButtonPlugin.type.menuButton; }
 		getDefaultToolTip() { return base.dictionary.translate("Change video layout"); }		
 		checkEnabled(onSuccess) {
 			this.buttonItems =null;
@@ -25,20 +26,20 @@ paella.addPlugin(function() {
 	
 			var Keys = {Tab:9,Return:13,Esc:27,End:35,Home:36,Left:37,Up:38,Right:39,Down:40};
 	
-		  paella.events.bind(paella.events.setProfile,function(event,params) {
-			  thisClass.onProfileChange(params.profileName);
-		  });
-	
+			paella.events.bind(paella.events.setProfile,function(event,params) {
+				thisClass.onProfileChange(params.profileName);
+			});
+		
 			$(this.button).keyup(function(event) {
 				if (thisClass.isPopUpOpen()){
 					if (event.keyCode == Keys.Up) {
-					   if(thisClass.selected_button>0){
+					if(thisClass.selected_button>0){
 							if(thisClass.selected_button<thisClass.buttons.length)
 								thisClass.buttons[thisClass.selected_button].className = 'viewModeItemButton '+thisClass.buttons[thisClass.selected_button].data.profile;
 	
 							thisClass.selected_button--;
 							thisClass.buttons[thisClass.selected_button].className = thisClass.buttons[thisClass.selected_button].className+' selected';
-						   }
+						}
 					}
 					else if (event.keyCode == Keys.Down) {
 						if( thisClass.selected_button < thisClass.buttons.length-1){
@@ -46,7 +47,7 @@ paella.addPlugin(function() {
 								thisClass.buttons[thisClass.selected_button].className = 'viewModeItemButton '+thisClass.buttons[thisClass.selected_button].data.profile;
 	
 							thisClass.selected_button++;
-							   thisClass.buttons[thisClass.selected_button].className = thisClass.buttons[thisClass.selected_button].className+' selected';
+							thisClass.buttons[thisClass.selected_button].className = thisClass.buttons[thisClass.selected_button].className+' selected';
 						}
 					}
 					else if (event.keyCode == Keys.Return) {
@@ -56,86 +57,51 @@ paella.addPlugin(function() {
 			});
 		}
 
-		rebuildProfileList() {
-			this.buttonItems = {};
-			this.domElement.innerText = "";
-			paella.profiles.profileList.forEach((profileData) => {
+		getMenuContent() {
+			let buttonItems = [];
+			paella.profiles.profileList.forEach((profileData,index) => {
 				if (profileData.hidden) return;
 				if (this.active_profiles) {
-					var active = false;
-					this.active_profiles.forEach(function(ap) {
-						if (ap == profile) {active = true;}
+					let active = false;
+					this.active_profiles.some((ap) => {
+						if (ap == profile) {
+							active = ap;
+							return true;
+						}
 					});
-					if (active == false) {
+					if (!active) {
 						return;
 					}
 				}
 
-				var buttonItem = this.getProfileItemButton(profileData.id, profileData);
-				this.buttonItems[profileData.id] = buttonItem;
-				this.domElement.appendChild(buttonItem);
-				this.buttons.push(buttonItem);
-				if(paella.player.selectedProfile == profileData.id){
-					this.buttonItems[profileData.id].className = this.getButtonItemClass(profileData.id, true);
-				}
-			});
-			this.selected_button = this.buttons.length;
-		}
 	
-		buildContent(domElement) {
-			var thisClass = this;
-			this.domElement = domElement;
-			this.rebuildProfileList();
+				let current = paella.profiles.currentProfileName;
 
-			paella.events.bind(paella.events.profileListChanged,() => {
-				this.rebuildProfileList();
-			});
+				let url = this.getButtonItemIcon(profileData);
+				url = url.replace(/\\/ig,'/');
+				buttonItems.push({
+					id: profileData.id + "_button",
+					title: "",
+					value: profileData.id,
+					icon: url,
+					className: this.getButtonItemClass(profileData.id),
+					default: current == profileData.id
+				})
+			})
+			return buttonItems;
 		}
-	
-		getProfileItemButton(profile,profileData) {
-			var elem = document.createElement('div');
-			elem.className = this.getButtonItemClass(profile,false);
-			let url = this.getButtonItemIcon(profileData);
-			url = url.replace(/\\/ig,'/');
-			elem.style.backgroundImage = `url(${ url })`;
-			elem.id = profile + '_button';
-			elem.data = {
-				profile:profile,
-				profileData:profileData,
-				plugin:this
-			};
-			$(elem).click(function(event) {
-				this.data.plugin.onItemClick(this,this.data.profile,this.data.profileData);
-			});
-			return elem;
-		}
-	
-		onProfileChange(profileName) {
-			var thisClass = this;
-			var ButtonItem = this.buttonItems[profileName];
 
-			var n = this.buttonItems;
-			var arr = Object.keys(n);
-			arr.forEach(function(i){
-					thisClass.buttonItems[i].className = thisClass.getButtonItemClass(i,false);
-			});
-	
-			if(ButtonItem) {
-				ButtonItem.className = thisClass.getButtonItemClass(profileName,true);
-			}
-		}
-	
-		onItemClick(button,profile,profileData) {
-			var ButtonItem = this.buttonItems[profile];
-	
-			if (ButtonItem) {
-				paella.player.setProfile(profile);
-			}
+		menuItemSelected(itemData) {
+			paella.player.setProfile(itemData.value);
 			paella.player.controls.hidePopUp(this.getName());
 		}
+
+		onProfileChange(profileName) {
+			this.rebuildMenu();
+		}
 	
-		getButtonItemClass(profileName,selected) {
-			return 'viewModeItemButton ' + profileName  + ((selected) ? ' selected':'');
+		getButtonItemClass(profileName) {
+			return 'viewModeItemButton ' + profileName;
 		}
 
 		getButtonItemIcon(profileData) {

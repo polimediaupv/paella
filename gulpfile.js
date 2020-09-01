@@ -200,7 +200,10 @@ gulp.task("copy", function() {
 			.pipe(gulp.dest(`${config.outDir}player/javascript`)),
 
 		gulp.src('node_modules/bg2e-js/js/bg2e-es2015.js')
-			.pipe(gulp.dest(`${config.outDir}player/javascript`))
+			.pipe(gulp.dest(`${config.outDir}player/javascript`)),
+
+		gulp.src('node_modules/hls.js/dist/hls.min.js')
+			.pipe(gulp.dest(`${config.outDir}/player/javascript`))
 	];
 
 	function addPlugins(pluginPath) {

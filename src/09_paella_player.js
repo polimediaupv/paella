@@ -307,8 +307,9 @@
 							}
 						})
 						.catch((error) => {
-							console.log(error);
-							paella.messageBox.showError(base.dictionary.translate("Could not load the video"));
+							console.error(error);
+							let msg = error.message || "Could not load the video";
+							paella.messageBox.showError(base.dictionary.translate(msg));
 						});
 				});
 			}
@@ -457,7 +458,13 @@
 
 		constructor(src) {
 			super('img','lazyLoadThumbnailContainer',{});
-			this.domElement.src = src;
+			let url = new paella.URL(src);
+			if (!url.isAbsolute) {
+				url = (new paella.URL(paella.player.repoUrl))
+					.appendPath(paella.player.videoIdentifier)
+					.appendPath(src);
+			}
+			this.domElement.src = url.absoluteUrl;
 			this.domElement.alt = "";
 
 			this.container = LazyThumbnailContainer.GetIconElement();

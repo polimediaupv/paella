@@ -25,38 +25,35 @@ paella.addPlugin(function() {
 			paella.events.bind(paella.events.qualityChanged, (event) => this.setQualityLabel());
 		}
 
-		getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
+		getButtonType() { return paella.ButtonPlugin.type.menuButton; }
 		
-		buildContent(domElement) {
-			this._available.forEach((q) => {
-				var title = q.shortLabel();
-				domElement.appendChild(this.getItemButton(q));
+		getMenuContent() {
+			let buttonItems = [];
+
+			this._available.forEach((q,index) => {
+				let resH = q.res && q.res.h || 0;
+				if (resH>=this.config.minVisibleQuality || resH<=0) {
+					buttonItems.push({
+						id: q.shortLabel(),
+						title: q.shortLabel(),
+						value: index,
+						icon: "",
+						className: this.getButtonItemClass(q.shortLabel()),
+						default: false
+					});
+				}
 			});
+			return buttonItems;
 		}
 
-		getItemButton(quality) {
-			var elem = document.createElement('div');
-			let This = this;
-			paella.player.videoContainer.getCurrentQuality()
-				.then((currentIndex,currentData) => {
-					var label = quality.shortLabel();
-					elem.className = this.getButtonItemClass(label,quality.index==currentIndex);
-					elem.id = label;
-					elem.innerText = label;
-					elem.data = quality;
-					$(elem).click(function(event) {
-						$('.multipleQualityItem').removeClass('selected');
-						$('.multipleQualityItem.' + this.data.toString()).addClass('selected');
-						paella.player.videoContainer.setQuality(this.data.index)
-							.then(() => {
-								paella.player.controls.hidePopUp(This.getName());
-								This.setQualityLabel();
-							});
-					});
+		menuItemSelected(itemData) {
+			paella.player.videoContainer.setQuality(itemData.value)
+				.then(() => {
+					paella.player.controls.hidePopUp(this.getName());
+					this.setQualityLabel();
 				});
-			return elem;
 		}
-		
+
 		setQualityLabel() {
 			paella.player.videoContainer.getCurrentQuality()
 				.then((q) => {
@@ -64,8 +61,8 @@ paella.addPlugin(function() {
 				});
 		}
 
-		getButtonItemClass(profileName,selected) {
-			return 'multipleQualityItem ' + profileName  + ((selected) ? ' selected':'');
+		getButtonItemClass(profileName) {
+			return 'multipleQualityItem ' + profileName;
 		}
 	}
 });

@@ -1,6 +1,42 @@
 CHANGELOG
 =========
 
+* Paella 6.4.3
+
+  * DFXP caption parse fix for jQuery 3.5.0 upgrade
+  * jQuery 3.5.1 upgrade
+
+* Paella 6.4.2
+
+  * Fixed a bug in HLS videos that occurs when the connection is slow.
+
+* Paella 6.4.1
+
+  * Bug fixed in iOS audio selector plugin.
+
+* Paella 6.4.0
+
+  * Playback bar canvas plugins: allows you to draw information in the playback bar area.
+  * Buffered video API added to streamProvider.
+  * Slide time marks moved to a playback bar canvas plugin.
+  * Buffered video playback bar canvas plugin added.
+  * New button plugin type: menu button.
+  * New multi audio API and HLS playlist multi audio compatibility. To use the new multi audio API:
+    - The new API is supported in HLS playlists. Configure your HLS server to provide the different audio streams in one (and only one) video stream.
+    - All other video streams must not contain any audio tracks.
+    - Set the property "role": "master" in the "data.json" manifest in the stream that contains the audio tracks.
+  * Breaking changes:
+    - Be sure to add the `es.upv.paella.timeMarksPlaybackCanvasPlugin` plugin settings so that the slide marks are drawn on the timeline.
+    - Note that the "audioTag" multi audio API is now deprecated, because it is not compatible with iOS devices. It will continue to work in the same way as it has so far, but will no longer be maintained due to incompatibility with iOS devices.
+    
+* Paella 6.3.4
+
+  * webgl engine updated
+
+* Paella 6.3.3
+
+  * Bug fixes from the 6.2.x branch.
+
 * Paella 6.3.2
 
   * Zoom plugin enhancements
@@ -21,6 +57,16 @@ CHANGELOG
 
   * Improvements in video zoom UX: now it is necessary to press the ALT key to make the video zoom work.
   * Other minor UX improvements.
+
+* 6.2.7
+
+  * Update Build Dependencies
+  * Update jQuery to 5.3.1
+  * DFXP caption parse fix for jQuery 5.3.0 upgrade
+
+* Paella 6.2.6
+
+  * Fixed a bug with hiding videos in the profile manager
 
 * Paella 6.2.5
 

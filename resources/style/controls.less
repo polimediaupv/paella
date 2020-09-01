@@ -107,6 +107,21 @@ span.expandable-content {
     position: relative;
 }
 
+.menuItem.icon {
+	background-image: @paella_icons_image;
+	width: 80px !important;
+	height: 40px;
+	cursor: pointer;
+	background-size: 100% 100% !important;
+	background-position: 0px 0px ! important;
+	background-color: white;
+	margin-right: 0px;
+}
+
+.menuItem.icon.selected {
+    background-color: @mainColor;
+}
+
 .button-text {
     position: absolute;
     left: 0px;
@@ -251,6 +266,8 @@ i.button-icon.icon-screen {
     height: @playbackControlFullHeight;
     background-color: @mainColor;
     background: @playbackBarBackground;
+    position: absolute;
+    top: 0px;
 }
 
 .playbackBarFull.disabled {
@@ -268,6 +285,7 @@ i.button-icon.icon-screen {
 .buttonPlugin:hover {
     background-color: @hoverBackgroundColor;
 }
+
 
 .buttonPlugin:focus {
     box-shadow: inset 0px 0px 5px 0px @hoverBackgroundColor;
@@ -290,6 +308,28 @@ i.button-icon.icon-screen {
     background-color: @backgroundColor;
     position: absolute;
     bottom: -@playbackControlOuterHeight;
+}
+
+.buttonPluginPopUp.menuContainer .menuItem {
+    font-size: 19px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+    cursor: pointer;
+    white-space: nowrap;
+    display: block;
+    width: 100%;
+}
+
+.buttonPluginPopUp.menuContainer .menuItem:hover {
+    background-color: @hoverBackgroundColor;
+}
+
+.buttonPluginPopUp.menuContainer .menuItem.selected {
+    color:@mainColor;
+}
+
+.buttonPluginPopUp.menuContainer .menuItem.selected:hover {
+    color:@popup_text_color;
 }
 
 .timelinePluginContainer {
@@ -329,7 +369,7 @@ i.button-icon.icon-screen {
 .timeControl {
     color: white;
     display: block;
-    position: relative;
+    position: absolute;
     width: 69px;
     height: @playbackControlFullHeight;
     font-size: 10px;
@@ -341,6 +381,7 @@ i.button-icon.icon-screen {
     line-height: @playbackControlFullHeight;
     margin-top: -@playbackControlFullHeight;
     cursor:pointer;
+    top: 12px;
 }
 
 .editControlContainer {
@@ -526,6 +567,15 @@ i.button-icon.icon-screen {
 .playerContainer_controls_playback_playbackBar_canvas{
     overflow: hidden;
     position: absolute;
+    top: 0px;
+}
+
+.playerContainer_controls_playback_playbackBar_canvas.layer_0 {
+    z-index: 0;
+}
+
+.playerContainer_controls_playback_playbackBar_canvas.layer_1 {
+    z-index: 100;
 }
 
 #playerContainer_controls_playback_playbackBar {
@@ -562,4 +612,8 @@ video::-webkit-media-controls-panel {
 
 .dimmed-element {
     filter: blur(4px);
+}
+
+.playerContainer_controls_playback_playbackBar_canvas {
+    pointer-events: none;
 }

@@ -15,7 +15,6 @@ jobs:
         - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
       script:
         - npm run markdownlint
-        - npm run test
 
     - stage: build and deploy
       script:

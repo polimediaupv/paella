@@ -1,288 +1,325 @@
 {
-  "player": {
-    "accessControlClass": "paella.AccessControl",
-    "profileFrameStrategy": "paella.ProfileFrameStrategy",
-    "videoQualityStrategy": "paella.LimitedBestFitVideoQualityStrategy",
-    "videoQualityStrategyParams": {
-      "maxAutoQualityRes": 720
-    },
-    "reloadOnFullscreen": true,
-    "videoZoom": {
-      "enabled": true,
-      "max": 800
-    },
-    "deprecated-methods": [
-      {
-        "name": "streaming",
-        "enabled": true
-      },
-      {
-        "name": "html",
-        "enabled": true
-      },
-      {
-        "name": "flash",
-        "enabled": true
-      },
-      {
-        "name": "image",
-        "enabled": true
-      }
-    ],
-    "methods": [
-      {
-        "factory": "ChromaVideoFactory",
-        "enabled": true
-      },
-      {
-        "factory": "WebmVideoFactory",
-        "enabled": true
-      },
-      {
-        "factory": "Html5VideoFactory",
-        "enabled": true
-      },
-      {
-        "factory": "MpegDashVideoFactory",
-        "enabled": true
-      },
-      {
-        "factory": "HLSVideoFactory",
-        "enabled": true,
-        "config": {
-          "*** You can add more hls.js settings here": "",
-          "https://github.com/video-dev/hls.js/blob/master/docs/API.md": "",
-          "maxBufferLength": 30,
-          "maxMaxBufferLength": 600,
-          "maxBufferSize": 60000000,
-          "maxBufferHole": 0.5,
-          "lowBufferWatchdogPeriod": 0.5,
-          "highBufferWatchdogPeriod": 3
+    "player": {
+        "accessControlClass": "paella.AccessControl",
+        "profileFrameStrategy": "paella.ProfileFrameStrategy",
+        "videoQualityStrategy": "paella.LimitedBestFitVideoQualityStrategy",
+        "videoQualityStrategyParams": {
+            "maxAutoQualityRes": 720
         },
-        "iOSMaxStreams": 2,
-        "androidMaxStreams": 2
-      },
-      {
-        "factory": "RTMPVideoFactory",
-        "enabled": true
-      },
-      {
-        "factory": "ImageVideoFactory",
-        "enabled": true
-      },
-      {
-        "factory": "YoutubeVideoFactory",
-        "enabled": true
-      },
-      {
-        "factory": "Video360ThetaFactory",
-        "enabled": true
-      },
-      {
-        "factory": "Video360Factory",
-        "enabled": true
-      }
-    ],
-    "audioMethods": [
-      {
-        "factory": "MultiformatAudioFactory",
-        "enabled": true
-      }
-    ],
-    "defaultAudioTag": "",
-    "slidesMarks": {
-      "enabled": true,
-      "color": "gray"
-    }
-  },
-  "defaultProfile": "presenter_presentation",
-  "data": {
-    "enabled": true,
-    "dataDelegates": {
-      "trimming": "CookieDataDelegate",
-      "metadata": "VideoManifestMetadataDataDelegate",
-      "cameraTrack": "TrackCameraDataDelegate"
-    }
-  },
-  "folders": {
-    "profiles": "config/profiles",
-    "resources": "resources",
-    "skins": "resources/style"
-  },
-  "experimental": {
-    "autoplay": true
-  },
-  "plugins": {
-    "enablePluginsByDefault": false,
-    "list":{
-			"edu.harvard.dce.paella.flexSkipPlugin": {"enabled":true, "direction": "Rewind", "seconds": 10},
-			"edu.harvard.dce.paella.flexSkipForwardPlugin": {"enabled":false, "direction": "Forward", "seconds": 30},
-      "es.upv.paella.frameControlPlugin":  {"enabled": true, "showFullPreview": "auto", "showCaptions": false},      
-			"es.upv.paella.fullScreenButtonPlugin": {"enabled":true, "reloadOnFullscreen":{ "enabled":true, "keepUserSelection":true }},
-      "es.upv.paella.multipleQualitiesPlugin": {"enabled":true, "minVerticalRes": 720, "visibleOn": ["standard", "fullscreen"], "showWidthRes":false, "minWindowSize": 600},      
-			"es.upv.paella.playbackRatePlugin": {"enabled":true, "availableRates": [1, 1.25, 1.5, 1.75], "minWindowSize": 600 },			
-			"es.upv.paella.playButtonOnScreenPlugin": {"enabled":true},										
-      "es.upv.paella.playPauseButtonPlugin": {"enabled":true},
-      "es.upv.paella.videoZoomPlugin": { "enabled":true, "showButtons":false, "visibleOn": ["standard", "fullscreen"] },
-      "es.upv.paella.videoZoomToolbarPlugin": {"enabled":true, "targetStreamIndex":0, "minWindowSize": 600, "visibleOn": ["standard", "fullscreen"]},      
-			"es.upv.paella.viewModePlugin": { "enabled": true },
-      "es.upv.paella.volumeRangePlugin":{"enabled":true, "showMasterVolume": true, "showSlaveVolume": false },
+        "reloadOnFullscreen": true,
+        "videoZoom": {
+            "enabled": true,
+            "max": 800
+        },
+        "deprecated-methods": [{
+                "name": "streaming",
+                "enabled": true
+            },
+            {
+                "name": "html",
+                "enabled": true
+            },
+            {
+                "name": "flash",
+                "enabled": true
+            },
+            {
+                "name": "image",
+                "enabled": true
+            }
+        ],
+        "methods": [{
+                "factory": "ChromaVideoFactory",
+                "enabled": true
+            },
+            {
+                "factory": "WebmVideoFactory",
+                "enabled": true
+            },
+            {
+                "factory": "Html5VideoFactory",
+                "enabled": true
+            },
+            {
+                "factory": "MpegDashVideoFactory",
+                "enabled": true
+            },
+            {
+                "factory": "HLSVideoFactory",
+                "enabled": true,
+                "config": {
+                    "*** You can add more hls.js settings here": "",
+                    "https://github.com/video-dev/hls.js/blob/master/docs/API.md": "",
+                    "maxBufferLength": 30,
+                    "maxMaxBufferLength": 600,
+                    "maxBufferSize": 60000000,
+                    "maxBufferHole": 0.5,
+                    "lowBufferWatchdogPeriod": 0.5,
+                    "highBufferWatchdogPeriod": 3
+                },
+                "iOSMaxStreams": 2,
+                "androidMaxStreams": 2,
+                "initialQualityLevel": 2
+            },
+            {
+                "factory": "RTMPVideoFactory",
+                "enabled": true
+            },
+            {
+                "factory": "ImageVideoFactory",
+                "enabled": true
+            },
+            {
+                "factory": "YoutubeVideoFactory",
+                "enabled": true
+            },
+            {
+                "factory": "Video360ThetaFactory",
+                "enabled": true
+            },
+            {
+                "factory": "Video360Factory",
+                "enabled": true
+            }
+        ],
+        "audioMethods": [{
+            "factory": "MultiformatAudioFactory",
+            "enabled": true
+        }],
+        "defaultAudioTag": ""
+    },
+    "defaultProfile": "presenter_presentation",
+    "data": {
+        "enabled": true,
+        "dataDelegates": {
+            "trimming": "CookieDataDelegate",
+            "metadata": "VideoManifestMetadataDataDelegate",
+            "cameraTrack": "TrackCameraDataDelegate"
+        }
+    },
+    "folders": {
+        "profiles": "config/profiles",
+        "resources": "resources",
+        "skins": "resources/style"
+    },
+    "experimental": {
+        "autoplay": true
+    },
+    "plugins": {
+        "enablePluginsByDefault": false,
+        "list": {
+            "//******* Button plugins": "",
+            "edu.harvard.dce.paella.flexSkipPlugin": { "enabled": true, "direction": "Rewind", "seconds": 10, "minWindowSize": 510 },
+            "edu.harvard.dce.paella.flexSkipForwardPlugin": { "enabled": false, "direction": "Forward", "seconds": 30 },
+            "es.upv.paella.captionsPlugin": { "enabled": true, "searchOnCaptions": true },
+            "es.upv.paella.extendedTabAdapterPlugin": { "enabled": true, "minWindowSize": 400 },
+            "es.upv.paella.footprintsPlugin": { "enabled": false },
+            "es.upv.paella.frameControlPlugin": { "enabled": true, "showFullPreview": "auto", "showCaptions": true, "minWindowSize": 450 },
+            "es.upv.paella.fullScreenButtonPlugin": { "enabled": true, "reloadOnFullscreen": { "enabled": true, "keepUserSelection": true }, "ariaLabel": "Switch full screen mode" },
+            "es.upv.paella.helpPlugin": { "enabled": true, "langs": ["en", "es"], "minWindowSize": 650 },
+            "es.upv.paella.multipleQualitiesPlugin": { "enabled": true, "showWidthRes": false, "minWindowSize": 600, "visibleOn": ["standard", "fullscreen"], "minVisibleQuality": 240, "ariaLabel": "Change video quality" },
+            "es.upv.paella.playbackRatePlugin": { "enabled": true, "availableRates": [1, 1.25, 1.5, 1.75], "minWindowSize": 600 },
+            "es.upv.paella.playPauseButtonPlugin": { "enabled": true },
+            "es.upv.paella.searchPlugin": { "enabled": true, "sortType": "time", "colorSearch": false, "minWindowSize": 550 },
+            "es.upv.paella.sharePlugin": { "enabled": true, "minWindowSize": 600 },
+            "es.upv.paella.themeChooserPlugin": { "enabled": true, "minWindowSize": 600 },
+            "es.upv.paella.viewModePlugin": { "enabled": true, "minWindowSize": 300 },
+            "es.upv.paella.volumeRangePlugin": { "enabled": true, "showMasterVolume": true, "showSlaveVolume": false, "ariaLabel": "Volume" },
+            "es.upv.paella.pipModePlugin": { "enabled": true },
+            "es.upv.paella.ratePlugin": { "enabled": true, "minWindowSize": 500 },
+            "es.upv.paella.videoZoomPlugin": { "enabled": true, "showButtons": false, "visibleOn": ["fullscreen"] },
+            "es.upv.paella.audioSelector": { "enabled": true, "minWindowSize": 400 },
+            "es.upv.paella.videoZoomToolbarPlugin": { "enabled": true, "targetStreamIndex": 0, "minWindowSize": 600, "visibleOn": ["fullscreen"] },
+            "es.upv.paella.videoZoomTrack4kPlugin": { "enabled": false, "targetStreamIndex": 0, "autoModeByDefault": false, "minWindowSize": 500 },
+            "es.upv.paella.airPlayPlugin": { "enabled": true },
 
-      "//**** Video profile plugins": "",
-      "es.upv.paella.singleStreamProfilePlugin": {
-        "enabled": false,
-        "videoSets": [
-          {
-            "icon": "professor_icon.svg",
-            "id": "presenter",
-            "content": [
-              "presenter"
-            ]
-          },
-          {
-            "icon": "slide_icon.svg",
-            "id": "presentation",
-            "content": [
-              "presentation"
-            ]
-          }
-        ]
-      },
-      "es.upv.paella.dualStreamProfilePlugin": {
-        "enabled": false,
-        "videoSets": [
-          {
-            "icon": "slide_professor_icon.svg",
-            "id": "presenter_presentation",
-            "content": [
-              "presenter",
-              "presentation"
-            ]
-          },
-          {
-            "icon": "slide_professor_icon.svg",
-            "id": "presenter2_presentation",
-            "content": [
-              "presenter-2",
-              "presentation"
-            ]
-          },
-          {
-            "icon": "slide_professor_icon.svg",
-            "id": "presenter3_presentation",
-            "content": [
-              "presenter-3",
-              "presentation"
-            ]
-          }
-        ]
-      },
-      "es.upv.paella.tripleStreamProfilePlugin": {
-        "enabled": false,
-        "videoSets": [
-          {
-            "icon": "three_streams_icon.svg",
-            "id": "presenter_presentation_presenter2",
-            "content": [
-              "presenter",
-              "presentation",
-              "presenter-2"
-            ]
-          },
-          {
-            "icon": "three_streams_icon.svg",
-            "id": "presenter_presentation_presenter3",
-            "content": [
-              "presenter",
-              "presentation",
-              "presenter-3"
-            ]
-          }
-        ]
-      },
+            "es.upv.paella.timeMarksPlaybackCanvasPlugin": { "enabled": true, "color": "gray" },
+            "es.upv.paella.BufferedPlaybackCanvasPlugin": { "enabled": true, "color": "rgba(0,0,0,0.4)" },
 
-      
-      "ch.ethz.paella.singleStreamProfilePlugin": {
-        "enabled": true,
-        "videoSets": [
-          {
-            "icon": "professor_icon.svg",
-            "id": "presenter",
-            "content": [
-              "presenter"
-            ]
-          },
-          {
-            "icon": "slide_icon.svg",
-            "id": "presentation",
-            "content": [
-              "presentation"
-            ]
-          }
-        ]
-      },
-      "ch.ethz.paella.dualStreamProfilePlugin": {
-        "enabled": true,
-        "videoSets": [
-          {
-            "icon": "slide_professor_icon.svg",
-            "id": "presenter_presentation",
-            "content": [
-              "presenter",
-              "presentation"
-            ]
-          },
-          {
-            "icon": "slide_professor_icon.svg",
-            "id": "presenter2_presentation",
-            "content": [
-              "presenter-2",
-              "presentation"
-            ]
-          },
-          {
-            "icon": "slide_professor_icon.svg",
-            "id": "presenter3_presentation",
-            "content": [
-              "presenter-3",
-              "presentation"
-            ]
-          }
-        ]
-      },
-      "ch.ethz.paella.tripleStreamProfilePlugin": {
-        "enabled": true,
-        "videoSets": [
-          {
-            "icon": "three_streams_icon.svg",
-            "id": "presenter_presentation_presenter2",
-            "content": [
-              "presenter",
-              "presentation",
-              "presenter-2"
-            ]
-          },
-          {
-            "icon": "three_streams_icon.svg",
-            "id": "presenter_presentation_presenter3",
-            "content": [
-              "presenter",
-              "presentation",
-              "presenter-3"
-            ]
-          }
-        ]
-      },
-      "//*****  Keyboard plugins": "",
-      "es.upv.paella.defaultKeysPlugin": {
-        "enabled": true
-      }
+            "//***** Video Overlay Button Plugins": "",
+            "es.upv.paella.liveStreamingIndicatorPlugin": { "enabled": true },
+            "es.upv.paella.showEditorPlugin": { "enabled": true, "alwaysVisible": true },
+            "es.upv.paella.arrowSlidesNavigatorPlugin": { "enabled": true, "content": ["presentation", "presenter"] },
+            "es.upv.paella.videoDataPlugin": {
+                "enabled": true,
+                "excludeLocations": [
+                    "paellaplayer.upv.es"
+                ],
+                "excludeParentLocations": [
+                    "localhost:8000"
+                ]
+            },
+            "es.upv.paella.legalPlugin": {
+                "enabled": true,
+                "label": "Legal info",
+                "position": "right",
+                "legalUrl": "https://en.wikipedia.org/wiki/General_Data_Protection_Regulation"
+            },
+
+            "//***** TabBar Plugins": "",
+            "es.upv.paella.commentsPlugin": { "enabled": false },
+            "es.upv.paella.test.tabBarExamplePlugin": { "enabled": false },
+
+            "//**** Event Driven Plugins": "",
+            "es.upv.paella.blackBoardPlugin": { "enabled": true },
+            "es.upv.paella.breaksPlayerPlugin": { "enabled": true },
+            "es.upv.paella.overlayCaptionsPlugin": { "enabled": true },
+            "es.upv.paella.playButtonOnScreenPlugin": { "enabled": true, "showOnPause": true },
+            "es.upv.paella.translecture.captionsPlugin": { "enabled": true },
+            "es.upv.paella.trimmingPlayerPlugin": { "enabled": true },
+            "es.upv.paella.windowTitlePlugin": { "enabled": true },
+            "es.upv.paella.track4kPlugin": { "enabled": false },
+            "es.upv.paella.relatedVideosPlugin": { "enabled": true },
+
+            "//**** Video profile plugins": "",
+            "es.upv.paella.singleStreamProfilePlugin": {
+                "enabled": false,
+                "videoSets": [{
+                        "icon": "professor_icon.svg",
+                        "id": "presenter",
+                        "content": [
+                            "presenter"
+                        ]
+                    },
+                    {
+                        "icon": "slide_icon.svg",
+                        "id": "presentation",
+                        "content": [
+                            "presentation"
+                        ]
+                    }
+                ]
+            },
+            "es.upv.paella.dualStreamProfilePlugin": {
+                "enabled": false,
+                "videoSets": [{
+                        "icon": "slide_professor_icon.svg",
+                        "id": "presenter_presentation",
+                        "content": [
+                            "presenter",
+                            "presentation"
+                        ]
+                    },
+                    {
+                        "icon": "slide_professor_icon.svg",
+                        "id": "presenter2_presentation",
+                        "content": [
+                            "presenter-2",
+                            "presentation"
+                        ]
+                    },
+                    {
+                        "icon": "slide_professor_icon.svg",
+                        "id": "presenter3_presentation",
+                        "content": [
+                            "presenter-3",
+                            "presentation"
+                        ]
+                    }
+                ]
+            },
+            "es.upv.paella.tripleStreamProfilePlugin": {
+                "enabled": false,
+                "videoSets": [{
+                        "icon": "three_streams_icon.svg",
+                        "id": "presenter_presentation_presenter2",
+                        "content": [
+                            "presenter",
+                            "presentation",
+                            "presenter-2"
+                        ]
+                    },
+                    {
+                        "icon": "three_streams_icon.svg",
+                        "id": "presenter_presentation_presenter3",
+                        "content": [
+                            "presenter",
+                            "presentation",
+                            "presenter-3"
+                        ]
+                    }
+                ]
+            },
+
+
+            "ch.ethz.paella.singleStreamProfilePlugin": {
+                "enabled": true,
+                "videoSets": [{
+                        "icon": "professor_icon.svg",
+                        "id": "presenter",
+                        "content": [
+                            "presenter"
+                        ]
+                    },
+                    {
+                        "icon": "slide_icon.svg",
+                        "id": "presentation",
+                        "content": [
+                            "presentation"
+                        ]
+                    }
+                ]
+            },
+            "ch.ethz.paella.dualStreamProfilePlugin": {
+                "enabled": true,
+                "videoSets": [{
+                        "icon": "slide_professor_icon.svg",
+                        "id": "presenter_presentation",
+                        "content": [
+                            "presenter",
+                            "presentation"
+                        ]
+                    },
+                    {
+                        "icon": "slide_professor_icon.svg",
+                        "id": "presenter2_presentation",
+                        "content": [
+                            "presenter-2",
+                            "presentation"
+                        ]
+                    },
+                    {
+                        "icon": "slide_professor_icon.svg",
+                        "id": "presenter3_presentation",
+                        "content": [
+                            "presenter-3",
+                            "presentation"
+                        ]
+                    }
+                ]
+            },
+            "ch.ethz.paella.tripleStreamProfilePlugin": {
+                "enabled": true,
+                "videoSets": [{
+                        "icon": "three_streams_icon.svg",
+                        "id": "presenter_presentation_presenter2",
+                        "content": [
+                            "presenter",
+                            "presentation",
+                            "presenter-2"
+                        ]
+                    },
+                    {
+                        "icon": "three_streams_icon.svg",
+                        "id": "presenter_presentation_presenter3",
+                        "content": [
+                            "presenter",
+                            "presentation",
+                            "presenter-3"
+                        ]
+                    }
+                ]
+            },
+            "//*****  Keyboard plugins": "",
+            "es.upv.paella.defaultKeysPlugin": {
+                "enabled": true
+            }
+        }
+    },
+    "standalone": {
+        "repository": "../repository/"
+    },
+    "skin": {
+        "default": "ethz"
     }
-  },
-  "standalone": {
-    "repository": "../repository/"
-  },
-  "skin": {
-    "default": "ethz"
-  }
 }

@@ -436,36 +436,16 @@
                         })
                     };
 
-                    doLoadCallback(videoPlugin.video).then(() => {
-                        resolve(stream);
-                    });
+                    doLoadCallback(videoPlugin.video)
+                        .then(() => {
+                            resolve(stream);
+                        })
+                        .catch((err) => {
+                            reject(err);
+                        });
                 });
             }
         }
     });
-
-    /*
-    
-    paella.getVideoCanvas = function(type, stream) {
-        console.log("TODO: Remove paella.getVideoCanvas() function");
-        return new Promise((resolve,reject) => {
-            if (!window.$paella_bg) {
-                paella.require(`${ paella.baseUrl }javascript/bg2e-es2015.js`)
-                    .then(() => {
-                        window.$paella_bg = bg;
-                        loadCanvasPlugins();
-                        resolve(buildVideoCanvas(stream));
-                    })
-                    .catch((err) => {
-                        console.error(err);
-                        reject(err);
-                    });
-            }
-            else {
-                resolve(buildVideoCanvas(stream));
-            }
-        });
-    }
-    */
     
 })();

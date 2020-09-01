@@ -76,7 +76,7 @@ getIndex() { return 110; }
 
 `getDefaultToolTip()` returns a descriptive tooltip that will appear when the mouse cursor is held over the button for a few seconds.
 
-`getAriaLabel()` returns the accesibility ARIA label. If the button does not provide a valid ARIA label, will be inaccesible for the tabulator navigation. You should be careful not to set ARIA tags on those plugins that may be irrelevant to visually impaired people.
+`getAriaLabel()` returns the accesibility ARIA label. If the button does not provide a valid ARIA label, will be inaccesible for the tabulator navigation. You should be careful not to set ARIA tags on those plugins that may be irrelevant to visually impaired people. You can skip the implementation of this function by setting the `ariaLabel` attribute in the plugin configuration, inside the `config.json` file.
 
 ```javascript
 

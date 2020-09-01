@@ -1,4 +1,4 @@
-version: 6.3.x
+version: 6.4.x
 index: 'introduction.md'
 
 content:
@@ -19,6 +19,7 @@ content:
   - Plugins List: adopters/plugins.md
   - Encoding. Info about compatible video formats: adopters/encoding.md
   - Browser compatibility issues: adopters/browser_compability.md
+  - Integrate multi audio support in Paella Player 6.4.x: adopters/hls_multiaudio.md
 - Developers documentation:
   - Introduction: developers/introduction.md
   - Plugins:
@@ -28,6 +29,7 @@ content:
   - Paella DataDelegates: developers/paella_data.md
   - API changes:
     - Paella 5.3 plugin migration: developers/api_changes/paella_5_3_plugin_migration.md
+    - Paella 6.4 HLS multi audio: adopters/hls_multiaudio.md
 - Code Examples Cookbook:
   - Button plugin example: examples/button_plugin.md
   - PopUp button plugin example: examples/popup_plugin.md
