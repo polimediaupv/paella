@@ -137,7 +137,7 @@
             "es.upv.paella.BufferedPlaybackCanvasPlugin": { "enabled": true, "color": "rgba(0,0,0,0.4)" },
 
             "//***** Video Overlay Button Plugins": "",
-            "es.upv.paella.liveStreamingIndicatorPlugin": { "enabled": true },
+            "es.upv.paella.liveStreamingIndicatorPlugin": { "enabled": false },
             "es.upv.paella.showEditorPlugin": { "enabled": true, "alwaysVisible": true },
             "es.upv.paella.arrowSlidesNavigatorPlugin": { "enabled": true, "content": ["presentation", "presenter"] },
             "es.upv.paella.videoDataPlugin": {
