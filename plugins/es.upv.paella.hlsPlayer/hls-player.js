@@ -12,6 +12,7 @@
 				debug: false,
 				defaultAudioCodec: undefined,
 				initialLiveManifestSize: 1,
+				initialQualityLevel: 1,
 				maxBufferLength: 30,
 				maxMaxBufferLength: 600,
 				maxBufferSize: 60*1000*1000,
