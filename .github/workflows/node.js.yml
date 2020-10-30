@@ -24,8 +24,6 @@ jobs:
       # You may pin to the exact commit or the version.
       # uses: nanasess/setup-chromedriver@835cae695490330a7e390033b2b5bd67e6f8055e
       uses: nanasess/setup-chromedriver@v1.0.1
-      with:
-        chromedriver-version: '86.0.4240.22'
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
