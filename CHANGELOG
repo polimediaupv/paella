@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 6.3.5
+
+  * Bug fixed in  playback rate.
+
 * Paella 6.3.4
 
   * webgl engine updated
