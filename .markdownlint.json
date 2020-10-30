@@ -2,7 +2,7 @@
     "default": true,
     "headers": { "style": "atx" },
     "indentation": { "indent": 4 },
-    "line_length": { "line_length": true },
+    "line_length": false,
     "no-trailing-punctuation": { "punctuation": ".,;:" },
     "ul-style": { "style": "sublist" },
     "ol-prefix": false,
