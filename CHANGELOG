@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 6.4.4
+
+  * Bug fixes from 6.3.x branch.
+  
 * Paella 6.4.3
 
   * DFXP caption parse fix for jQuery 3.5.0 upgrade
@@ -29,6 +33,10 @@ CHANGELOG
     - Be sure to add the `es.upv.paella.timeMarksPlaybackCanvasPlugin` plugin settings so that the slide marks are drawn on the timeline.
     - Note that the "audioTag" multi audio API is now deprecated, because it is not compatible with iOS devices. It will continue to work in the same way as it has so far, but will no longer be maintained due to incompatibility with iOS devices.
     
+* Paella 6.3.5
+
+  * Bug fixed in  playback rate.
+
 * Paella 6.3.4
 
   * webgl engine updated
