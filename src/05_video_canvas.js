@@ -431,7 +431,7 @@
                             sourceElem.src = stream.src;
                             sourceElem.type = stream.type;
                             video.load();
-                            video.playbackRate = video._playbackRate || 1;
+                            video.playbackRate = videoPlugin._playbackRate || 1;
                             cbResolve();
                         })
                     };
