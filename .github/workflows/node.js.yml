@@ -13,21 +13,14 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x, 14.x]
+    
 
     steps:
     - uses: actions/checkout@v2
-    - name: setup-chromedriver
-      # You may pin to the exact commit or the version.
-      # uses: nanasess/setup-chromedriver@835cae695490330a7e390033b2b5bd67e6f8055e
-      uses: nanasess/setup-chromedriver@v1.0.1
-    - name: Use Node.js ${{ matrix.node-version }}
+    - uses: nanasess/setup-chromedriver@v1.0.1
+    - name: Tests
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: '14.x'
     - run: npm ci
-    - run: npm run build --if-present
     - run: npm test
