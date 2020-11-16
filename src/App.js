@@ -178,8 +178,50 @@ function App() {
     ]
   }
 
+  const manifest360 = {
+    "metadata": {
+      "duration": 909.13,
+      "title": "Belmar 15 minutes (multiresolution)",
+      "preview": "https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/belmar-preview.jpg",
+      "related": [
+        {
+          "title":"Video with independent audio",
+          "url":"index.html?id=dual-video-audio",
+          "thumb":"https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/belmar-preview.jpg",
+          "id":"dual-video-audio"
+        },
+        {
+          "title":"HLS video stream",
+          "url":"index.html?id=hls",
+          "thumb":"https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/belmar-preview.jpg",
+          "id":"hls"
+        }
+      ]
+    },
+    "streams": [
+      {
+        "sources": {
+          "mp4": [
+            {
+              "src": "https://repository.paellaplayer.upv.es/belmar-multiresolution/media/720-presenter.mp4",
+              "mimetype": "video/mp4",
+              "res": {
+                "w": "1920",
+                "h": "1080"
+              }
+            }
+          ]
+        },
+        "preview": "https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/presenter_cut.jpg",
+        "content":"presenter",
+        "audioTag":"es",
+        "canvas": ["video360"]
+      }
+    ]
+  };
+
   let streamData = null;
-  manifest.streams.some(s => {
+  manifest360.streams.some(s => {
     if (s.content === "presenter") {
       streamData = s;
     }
