@@ -28,4 +28,9 @@ Add any other context about the problem here.
 
 If applicable, add screenshots to help explain your problem.
 
+# None
+
+Please note that this bug reporting system is intended for software developers who implement Paella Player features or who integrate it into their institutions. If you are an end user of Paella Player, please contact your institution so that they can determine if the problems are due to the video player or if they are due to other configuration or integration issues.
+
+
 Thank you for contributing!
