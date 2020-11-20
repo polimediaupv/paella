@@ -68,27 +68,48 @@ function initBuffers(gl) {
     };
 }
 
-export function drawFrame(gl, programInfo, buffers) {
+export function reshape(gl) {
+    if (gl.canvas.width != gl.canvas.offsetWidth || gl.canvas.height != gl.canvas.offsetHeight) {
+        let size = [gl.canvas.offsetWidth, gl.canvas.offsetHeight];
+        gl.canvas.width = size[0];
+        gl.canvas.height = size[1];
+
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+    
+        const fieldOfView = 45 * Math.PI / 180;
+        const aspect = gl.canvas.width / gl.canvas.height;
+        const zNear = 0.1;
+        const zFar = 100;
+        mat4.perspective(gl.sceneData.matrix.projection,
+            fieldOfView,
+            aspect,
+            zNear,
+            zFar);
+    }
+    
+}
+
+export function drawFrame(gl, deltaTime) {
+    
+    
+    // Reshape: TODO: do this only once, and when the canvas size changes
+    reshape(gl);
+
+    // Update:
+    mat4.identity(gl.sceneData.matrix.modelview);
+    mat4.translate(gl.sceneData.matrix.modelview, gl.sceneData.matrix.modelview, [-0.0, 0.0, -6.0]);
+    gl.sceneData.rotation += 0.1 * deltaTime/100; 
+    mat4.rotate(gl.sceneData.matrix.modelview, gl.sceneData.matrix.modelview, gl.sceneData.rotation, [0, 1, 0]);
+
+    // Draw
+    const programInfo = gl.sceneData.programInfo;
+    const buffers = gl.sceneData.buffers;
+
     gl.clearColor(0, 0, 1, 1);
     gl.clearDepth(1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.enable(gl.DEPTH_TEST);
     gl.depthFunc(gl.LEQUAL);
-
-    const fieldOfView = 45 * Math.PI / 180;
-    const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-    const zNear = 0.1;
-    const zFar = 100;
-    const projectionMatrix = mat4.create();
-    mat4.perspective(projectionMatrix,
-        fieldOfView,
-        aspect,
-        zNear,
-        zFar);
-
-    const modelViewMatrix = mat4.create();
-
-    mat4.translate(modelViewMatrix, modelViewMatrix, [-0.0, 0.0, -6.0]);
 
     {
         const numComponents = 2;    // 2 valores por iteracion
@@ -114,12 +135,12 @@ export function drawFrame(gl, programInfo, buffers) {
     gl.uniformMatrix4fv(
         programInfo.uniformLocations.projectionMatrix,
         false,
-        projectionMatrix);
+        gl.sceneData.matrix.projection);
 
     gl.uniformMatrix4fv(
         programInfo.uniformLocations.modelViewMatrix,
         false,
-        modelViewMatrix);
+        gl.sceneData.matrix.modelview);
     
     {
         const offset = 0;
@@ -127,6 +148,33 @@ export function drawFrame(gl, programInfo, buffers) {
         gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
     }
 }
+
+class SceneData {
+    constructor(programInfo, buffers, matrix = null) {
+
+        this.programInfo = programInfo || {
+            program: -1,
+            attribLocations: {
+                vertexPosition: null
+            },
+            uniformLocations: {
+                projectionMatrix: null,
+                modelViewMatrix: null
+            }
+        };
+    
+        this.buffers = buffers || {
+            position: null
+        };
+    
+        this.matrix = matrix || {
+            projection: mat4.create(),
+            modelview: mat4.create()
+        }
+
+        this.rotation = 0;
+    }
+};
 
 export function initCanvas(gl) {
     const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
@@ -144,5 +192,18 @@ export function initCanvas(gl) {
 
     const buffers = initBuffers(gl);
 
-    drawFrame(gl, programInfo, buffers);
+    gl.sceneData = new SceneData(programInfo, buffers)
+
+    let startTime = 0;
+    function animate(time) {
+        let deltaTime = time - startTime;
+
+        drawFrame(gl, deltaTime);
+        startTime = time;
+
+        window.requestAnimationFrame(animate);
+    }
+
+    animate(0);
 }
+

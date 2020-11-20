@@ -9,7 +9,7 @@ const { default: VideoPlayer } = require("./components/core/VideoPlayer");
 function App() {
 
   let streamData = null;
-  manifest.streams.some(s => {
+  manifest360.streams.some(s => {
     if (s.content === "presenter") {
       streamData = s;
     }
