@@ -1,10 +1,4 @@
-
-import React, {useRef, useState, useCallback} from 'react';
 import {mat4} from 'gl-matrix';
-
-export function isVideo360CanvasCompatible() {
-    return true;
-}
 
 const vsSource = `
 attribute vec4 aVertexPosition;
@@ -74,7 +68,7 @@ function initBuffers(gl) {
     };
 }
 
-function drawFrame(gl, programInfo, buffers) {
+export function drawFrame(gl, programInfo, buffers) {
     gl.clearColor(0, 0, 1, 1);
     gl.clearDepth(1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -134,7 +128,7 @@ function drawFrame(gl, programInfo, buffers) {
     }
 }
 
-function initCanvas(gl) {
+export function initCanvas(gl) {
     const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
 
     const programInfo = {
@@ -151,28 +145,4 @@ function initCanvas(gl) {
     const buffers = initBuffers(gl);
 
     drawFrame(gl, programInfo, buffers);
-}
-
-
-export default function Video360Canvas ({ src }) {
-    const canvasRef = useRef();
-    const setCanvasRef = useCallback(canvas => {
-        if (canvasRef.current) {
-            // Asegurarnos de limpiar cualquier evento o referencias
-        }
-
-        if (canvas) {
-            const gl = canvas.getContext("webgl");
-            console.log(gl);
-
-
-            initCanvas(gl);
-        }
-
-        canvasRef.current = canvas;
-    }, []);
-
-    return (
-        <canvas ref={setCanvasRef}>Video 360 canvas not implemented. Source: {src}</canvas>
-    );
 }

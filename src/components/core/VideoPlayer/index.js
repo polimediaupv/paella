@@ -1,5 +1,6 @@
 
-import VideoCanvas from './VideoCanvas';
+import VideoCanvas from 'components/core/VideoCanvas';
+
 
 export default function VideoPlayer({ streamData }) {
     let source = null;

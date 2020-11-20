@@ -1,3 +1,4 @@
+import styles from "./styles.module.css";
 
 export function isHtml5VideoCompatible() {
     return true;
@@ -5,6 +6,6 @@ export function isHtml5VideoCompatible() {
 
 export default function Html5VideoCanvas ({ src }) {
     return (
-        <video src={src}></video>
+        <video className={styles.videoContainer} src={src}></video>
     );
 }
