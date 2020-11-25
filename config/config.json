@@ -175,7 +175,8 @@
         "server": "http://localhost/piwik/",
         "site_id": 1,
         "heartbeat": 30,
-        "client_id": "Paella Player"
+        "client_id": "Paella Player",
+        "privacy_policy_url": "https://matomo.org/blog/2018/04/how-should-i-write-my-privacy-notice-for-matomo-analytics-under-gdpr/"
       },
       "org.opencast.usertracking.x5gonSaverPlugIn": {
         "enabled": false,
