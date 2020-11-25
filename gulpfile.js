@@ -200,6 +200,9 @@ gulp.task("copy", function() {
 			.pipe(gulp.dest(`${config.outDir}player/javascript`)),
 
 		gulp.src('node_modules/hls.js/dist/hls.min.js')
+			.pipe(gulp.dest(`${config.outDir}/player/javascript`)),
+
+		gulp.src('node_modules/cookieconsent/build/cookieconsent.min.js')
 			.pipe(gulp.dest(`${config.outDir}/player/javascript`))
 	];
 

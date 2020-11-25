@@ -8,18 +8,25 @@ paella.addPlugin(function() {
       var site_id = this.config.site_id,
           server = this.config.server,
           heartbeat = this.config.heartbeat,
-          privacy_url = his.config.privacy_url,
+          privacy_url = this.config.privacy_policy_url,
+          tracking_client = this.config.tracking_client_name,
+          cookieconsent_base_color = this.config.cookieconsent_base_color,
+          cookieconsent_highlight_color = this.config.cookieconsent_highlight_color,
           thisClass = this,
           trackingPermission,
+          translations = [],
           tracked;
+
+          paella.cookieconsent_base_color = this.cookieconsent_base_color;
+          paella.cookieconsent_highlight_color = this.cookieconsent_highlight_color;
 
       function trackMatomo() {
         if (isTrackingPermission() && !tracked && server && site_id){
           if (server.substr(-1) != '/') server += '/';
-          paella.require(server + "matomo.js")
+          paella.require(server + tracking_client_name + ".js")
             .then((matomo) => {
               paella.log.debug("Matomo Analytics Enabled");
-              paella.userTracking.matomotracker = Matomo.getAsyncTracker( server + "matomo.php", site_id );
+              paella.userTracking.matomotracker = Matomo.getAsyncTracker( server + tracking_client_name + ".php", site_id );
               paella.userTracking.matomotracker.client_id = thisClass.config.client_id;
               if (heartbeat && heartbeat > 0) paella.userTracking.matomotracker.enableHeartBeatTimer(heartbeat);
               if (Matomo && Matomo.MediaAnalytics) {
@@ -35,18 +42,20 @@ paella.addPlugin(function() {
           paella.log.debug("No tracking permission or no Matomo Site ID found in config file. Disabling Matomo Analytics PlugIn");
           return false;
         }
+      }
 
       function initCookieNotification() {
           // load cookieconsent lib from remote server
-          require('cookieconsent', function (cookieconsent) {
-              base.log.debug("Matomo: cookie consent lib loaded");
+          paella.require(paella.baseUrl + 'javascript/cookieconsent.min.js')
+            .then(() => {
+              paella.log.debug("Matomo: cookie consent lib loaded");
               window.cookieconsent.initialise({
                   "palette": {
                       "popup": {
-                          "background": "#1d8a8a"
+                          "background": cookieconsent_base_color
                       },
                       "button": {
-                          "background": "#62ffaa"
+                          "background": cookieconsent_highlight_color
                       }
                   },
                   "type": "opt-in",
@@ -57,7 +66,7 @@ paella.addPlugin(function() {
                       "deny": translate('matomo_deny', "Deny"),
                       "link": translate('matomo_more_info', "More information"),
                       "policy": translate('matomo_policy', "Cookie Policy"),
-                      // link to the X5GON platform privacy policy - describing what are we collecting
+                      // link to the Matomo platform privacy policy - describing what are we collecting
                       // through the platform
                       "href": privacy_url
                   },
@@ -87,11 +96,11 @@ paella.addPlugin(function() {
                       setTrackingPermission(type == 'opt-in' && didConsent);
                   }
               })
-          })
+          });
       }
 
       function initTranslate(language, funcSuccess, funcError) {
-          base.log.debug('Matomo: selecting language ' + language.slice(0,2));
+          paella.log.debug('Matomo: selecting language ' + language.slice(0,2));
           var jsonstr = window.location.origin + '/player/localization/paella_' + language.slice(0,2) + '.json';
           $.ajax({
               url: jsonstr,
@@ -129,33 +138,28 @@ paella.addPlugin(function() {
 
       function checkDoNotTrackStatus() {
           if (window.navigator.doNotTrack == 1 || window.navigator.msDoNotTrack == 1) {
-              base.log.debug("Matomo: Browser DoNotTrack: true");
+              paella.log.debug("Matomo: Browser DoNotTrack: true");
               return true;
           }
-          base.log.debug("Matomo: Browser DoNotTrack: false");
+          paella.log.debug("Matomo: Browser DoNotTrack: false");
           return false;
       }
 
       function setTrackingPermission(permissionStatus) {
           trackingPermission = permissionStatus;
-          base.log.debug("Matomo: trackingPermissions: " + permissionStatus);
-          trackX5gon();
+          paella.log.debug("Matomo: trackingPermissions: " + permissionStatus);
+          trackMatomo();
       };
 
       initTranslate(navigator.language, function () {
-          base.log.debug('Matomo: Successfully translated.');
+          paella.log.debug('Matomo: Successfully translated.');
           initCookieNotification();
       }, function () {
-          base.log.debug('Matomo: Error translating.');
+          paella.log.debug('Matomo: Error translating.');
           initCookieNotification();
       });
 
       onSuccess(trackMatomo());
-
-}
-
-
-
 
     } // checkEnabled
 
