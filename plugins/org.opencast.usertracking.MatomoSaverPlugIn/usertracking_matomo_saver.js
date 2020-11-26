@@ -8,29 +8,160 @@ paella.addPlugin(function() {
       var site_id = this.config.site_id,
           server = this.config.server,
           heartbeat = this.config.heartbeat,
-          thisClass = this;
+          privacy_url = this.config.privacy_policy_url,
+          tracking_client = this.config.tracking_client_name,
+          cookieconsent_base_color = this.config.cookieconsent_base_color,
+          cookieconsent_highlight_color = this.config.cookieconsent_highlight_color,
+          thisClass = this,
+          trackingPermission,
+          translations = [],
+          tracked;
 
-      if (server && site_id){
-        if (server.substr(-1) != '/') server += '/';
-        paella.require(server + "piwik.js")
-          .then((matomo) => {
-            paella.log.debug("Matomo Analytics Enabled");
-            paella.userTracking.matomotracker = Piwik.getAsyncTracker( server + "piwik.php", site_id );
-            paella.userTracking.matomotracker.client_id = thisClass.config.client_id;
-            if (heartbeat && heartbeat > 0) paella.userTracking.matomotracker.enableHeartBeatTimer(heartbeat);
-            if (Piwik && Piwik.MediaAnalytics) {
-              paella.events.bind(paella.events.videoReady, () => {
-                Piwik.MediaAnalytics.scanForMedia();
-              });
-            }
-            thisClass.registerVisit();
-          });
-        onSuccess(true);
-      }	else {
-        paella.log.debug("No Matomo Site ID found in config file. Disabling Matomo Analytics PlugIn");
-        onSuccess(false);
+          paella.cookieconsent_base_color = this.cookieconsent_base_color;
+          paella.cookieconsent_highlight_color = this.cookieconsent_highlight_color;
+
+      function trackMatomo() {
+        if (isTrackingPermission() && !tracked && server && site_id){
+          if (server.substr(-1) != '/') server += '/';
+          paella.require(server + tracking_client_name + ".js")
+            .then((matomo) => {
+              paella.log.debug("Matomo Analytics Enabled");
+              paella.userTracking.matomotracker = Matomo.getAsyncTracker( server + tracking_client_name + ".php", site_id );
+              paella.userTracking.matomotracker.client_id = thisClass.config.client_id;
+              if (heartbeat && heartbeat > 0) paella.userTracking.matomotracker.enableHeartBeatTimer(heartbeat);
+              if (Matomo && Matomo.MediaAnalytics) {
+                paella.events.bind(paella.events.videoReady, () => {
+                  Matomo.MediaAnalytics.scanForMedia();
+                });
+              }
+              thisClass.registerVisit();
+              tracked = true;
+            });
+          return true;
+        }	else {
+          paella.log.debug("No tracking permission or no Matomo Site ID found in config file. Disabling Matomo Analytics PlugIn");
+          return false;
+        }
       }
-    }
+
+      function initCookieNotification() {
+          // load cookieconsent lib from remote server
+          paella.require(paella.baseUrl + 'javascript/cookieconsent.min.js')
+            .then(() => {
+              paella.log.debug("Matomo: cookie consent lib loaded");
+              window.cookieconsent.initialise({
+                  "palette": {
+                      "popup": {
+                          "background": cookieconsent_base_color
+                      },
+                      "button": {
+                          "background": cookieconsent_highlight_color
+                      }
+                  },
+                  "type": "opt-in",
+                  "position": "top",
+                  "content": {
+                      "message": translate('matomo_message', "This site would like to use Matomo to collect usage information of the recordings."),
+                      "allow": translate('matomo_accept', "Accept"),
+                      "deny": translate('matomo_deny', "Deny"),
+                      "link": translate('matomo_more_info', "More information"),
+                      "policy": translate('matomo_policy', "Cookie Policy"),
+                      // link to the Matomo platform privacy policy - describing what are we collecting
+                      // through the platform
+                      "href": privacy_url
+                  },
+                  onInitialise: function (status) {
+                      var type = this.options.type;
+                      var didConsent = this.hasConsented();
+                      // enable cookies - send user data to the platform
+                      // only if the user enabled cookies
+                      if (type == 'opt-in' && didConsent) {
+                          setTrackingPermission(true);
+                      } else {
+                          setTrackingPermission(false);
+                      }
+                  },
+                  onStatusChange: function (status, chosenBefore) {
+                      var type = this.options.type;
+                      var didConsent = this.hasConsented();
+                      // enable cookies - send user data to the platform
+                      // only if the user enabled cookies
+                      setTrackingPermission(type == 'opt-in' && didConsent);
+                  },
+                  onRevokeChoice: function () {
+                      var type = this.options.type;
+                      var didConsent = this.hasConsented();
+                      // disable cookies - set what to do when
+                      // the user revokes cookie usage
+                      setTrackingPermission(type == 'opt-in' && didConsent);
+                  }
+              })
+          });
+      }
+
+      function initTranslate(language, funcSuccess, funcError) {
+          paella.log.debug('Matomo: selecting language ' + language.slice(0,2));
+          var jsonstr = window.location.origin + '/player/localization/paella_' + language.slice(0,2) + '.json';
+          $.ajax({
+              url: jsonstr,
+              dataType: 'json',
+              success: function (data) {
+                  if (data) {
+                      data.value_locale = language;
+                      translations = data;
+                      if (funcSuccess) {
+                          funcSuccess(translations);
+                      }
+                  } else if (funcError) {
+                      funcError();
+                  }
+              },
+              error: function () {
+                  if (funcError) {
+                      funcError();
+                  }
+              }
+          });
+      }
+
+      function translate(str, strIfNotFound) {
+          return (translations[str] != undefined) ? translations[str] : strIfNotFound;
+      }
+
+      function isTrackingPermission() {
+          if (checkDoNotTrackStatus() || !trackingPermission) {
+              return false;
+          } else {
+              return true;
+          }
+      }
+
+      function checkDoNotTrackStatus() {
+          if (window.navigator.doNotTrack == 1 || window.navigator.msDoNotTrack == 1) {
+              paella.log.debug("Matomo: Browser DoNotTrack: true");
+              return true;
+          }
+          paella.log.debug("Matomo: Browser DoNotTrack: false");
+          return false;
+      }
+
+      function setTrackingPermission(permissionStatus) {
+          trackingPermission = permissionStatus;
+          paella.log.debug("Matomo: trackingPermissions: " + permissionStatus);
+          trackMatomo();
+      };
+
+      initTranslate(navigator.language, function () {
+          paella.log.debug('Matomo: Successfully translated.');
+          initCookieNotification();
+      }, function () {
+          paella.log.debug('Matomo: Error translating.');
+          initCookieNotification();
+      });
+
+      onSuccess(trackMatomo());
+
+    } // checkEnabled
 
     registerVisit() {
       var title,
@@ -148,9 +279,3 @@ paella.addPlugin(function() {
 
   }
 });
-
-
-
-
-
-
