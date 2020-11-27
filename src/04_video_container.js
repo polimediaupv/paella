@@ -826,7 +826,11 @@ class StreamProvider {
 		
 		console.debug("Start sync to player:");
 		console.debug(this._syncProviderPlayer);
-		let maxDiff = 0.3;
+		let maxDiff = 0.1;
+		let totalTime = 0;
+		let numberOfSyncs = 0;
+		let syncFrequency = 0;
+		let maxSyncFrequency = 0.2;
 		let sync = () => {
 			this._syncProviderPlayer.currentTime()
 				.then((t) => {
@@ -836,12 +840,22 @@ class StreamProvider {
 							Math.abs(player.currentTimeSync-t)>maxDiff)
 						{
 							console.debug(`Sync player current time: ${ player.currentTimeSync } to time ${ t }`);
-							console.debug(player);	
+							console.debug(player);
+							++numberOfSyncs;	
 							player.setCurrentTime(t);
+
+							
+							if (syncFrequency>maxSyncFrequency) {
+								maxDiff *= 1.5;
+								console.log(`Maximum syncrhonization frequency reached. Increasing max difference syncronization time to ${maxDiff}`);
+							}
 						}
 					});
 					
 				});
+
+			totalTime += 1000;
+			syncFrequency = numberOfSyncs / (totalTime / 1000);
 			this._syncTimer = setTimeout(() => sync(), 1000);
 		};
 	
