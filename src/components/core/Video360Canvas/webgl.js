@@ -69,7 +69,7 @@ function initBuffers(gl) {
 }
 
 export function reshape(gl) {
-    if (gl.canvas.width != gl.canvas.offsetWidth || gl.canvas.height != gl.canvas.offsetHeight) {
+    if (gl.canvas.width !== gl.canvas.offsetWidth || gl.canvas.height !== gl.canvas.offsetHeight) {
         let size = [gl.canvas.offsetWidth, gl.canvas.offsetHeight];
         gl.canvas.width = size[0];
         gl.canvas.height = size[1];

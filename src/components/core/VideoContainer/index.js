@@ -49,12 +49,14 @@ export default function VideoContainer({ streamData, layout }) {
 
     return (
         <>
+            <div className="videoContainer">
             {
                 streams && streams.length && streams.map((s,i) => {
                     console.log(s);
                     return <VideoPlayer streamData={s} key={i}></VideoPlayer>
                 })
             }
+            </div>
         </>
     );
 }
