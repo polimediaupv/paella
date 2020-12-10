@@ -160,11 +160,19 @@
 							let cfg = this.config;
 							//cfg.autoStartLoad = false;
 							this._hls = new Hls(cfg);
-							this._hls.loadSource(url);
-							this._hls.attachMedia(video);
+							
 							this.autoQuality = true;
 
+							// For some streams there are problems if playback does not start after loading the
+							// manifest. This flag is used to pause it again once the video is loaded
+							let firstLoad = true;
+
 							this._hls.on(Hls.Events.LEVEL_SWITCHED, (ev,data) => {
+								if (firstLoad) {
+									firstLoad = false;
+									video.pause();
+								}
+
 								this._qualities = this._qualities || [];
 								this._qualityIndex = this.autoQuality ? this._qualities.length - 1 : data.level;
 								paella.events.trigger(paella.events.qualityChanged,{});
@@ -202,12 +210,19 @@
 								if (!cfg.autoStartLoad) {
 									this._hls.startLoad();
 								}
+
 								// Fixes hls.js problems when loading the initial quality level
 								this._hls.currentLevel = this._hls.levels.length>=initialQualityLevel ? initialQualityLevel : -1;
 								setTimeout(() => this._hls.currentLevel = -1, 1000);
-								
+
+								// Fixes hls.js problems loading some videos
+								video.play();
+
 								resolve(video);
 							});
+
+							this._hls.loadSource(url);
+							this._hls.attachMedia(video);
 						}
 						else {
 							reject(new Error("HLS not supported"));

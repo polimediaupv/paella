@@ -1,0 +1,28 @@
+{
+    "metadata": {
+      "title": "Live stream from lager-01"
+    },
+    "streams": [
+      {
+        "sources": {
+          "hls": [
+            {
+              "src": "https://eth-streaming01.cast.switch.ch/redirect/eth-streaming/lager-01?type=m3u8",
+              "mimetype": "application/x-mpegURL",
+              "isLiveStream": true
+            }
+          ],
+          "mpd_disabled": [
+            {
+              "src": "https://eth-streaming01.cast.switch.ch/redirect/eth-streaming/lager-01?type=dash",
+              "mimetype": "application/dash+xml",
+              "isLiveStream": true
+            }
+          ]
+        },
+        "preview": "",
+        "content": "presenter"
+      }
+    ],
+    "frameList": []
+  }
