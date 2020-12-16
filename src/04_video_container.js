@@ -251,7 +251,7 @@ class VideoContainerBase extends paella.DomNode {
 		this._attenuationEnabled = false;
 		
 		$(this.domElement).dblclick((evt) => {
-			if (this.firstClick && this._clickEventsEnabled) {
+			if (this._clickEventsEnabled) {
 				paella.player.isFullScreen() ? paella.player.exitFullScreen() : paella.player.goFullScreen();
 			}
 		});
@@ -259,15 +259,14 @@ class VideoContainerBase extends paella.DomNode {
 		let dblClickTimer = null;
 		$(this.domElement).click((evt) => {
 			let doClick = () => {
-				if (this.firstClick || !this._clickEventsEnabled) return;
+				if (!this._clickEventsEnabled) return;
 				paella.player.videoContainer.paused()
 					.then((paused) => {
 						// If some player needs mouse events support, the click is ignored
-						if (this.firstClick && this.streamProvider.videoPlayers.some((p) => p.canvasData.mouseEventsSupport)) {
+						if (this.streamProvider.videoPlayers.some((p) => p.canvasData.mouseEventsSupport)) {
 							return;
 						}
 	
-						this.firstClick = true;
 						if (paused) {
 							paella.player.play();
 						}
