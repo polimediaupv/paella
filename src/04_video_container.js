@@ -221,6 +221,15 @@ paella.SeekType = {
 	DISABLED: 4
 };
 
+// This function is used to manage the timer to enable and disable the click and double click events
+// interaction with the video container timeout.
+function clearClickEventsTimeout() {
+	if (this._clickEventsTimeout) {
+		clearTimeout(this._clickEventsTimeout);
+		this._clickEventsTimeout = null;
+	}
+}
+
 class VideoContainerBase extends paella.DomNode {
 	
 	constructor(id) {
@@ -235,14 +244,14 @@ class VideoContainerBase extends paella.DomNode {
 		this.currentMasterVideoData = null;
 		this.currentSlaveVideoData = null;
 		this._force = false;
-		this._playOnClickEnabled =  true;
+		this._clickEventsEnabled =  true;
 		this._seekDisabled =  false;
 		this._seekType = paella.SeekType.FULL;
 		this._seekTimeLimit = 0;
 		this._attenuationEnabled = false;
 		
 		$(this.domElement).dblclick((evt) => {
-			if (this.firstClick) {
+			if (this.firstClick && this._clickEventsEnabled) {
 				paella.player.isFullScreen() ? paella.player.exitFullScreen() : paella.player.goFullScreen();
 			}
 		});
@@ -250,7 +259,7 @@ class VideoContainerBase extends paella.DomNode {
 		let dblClickTimer = null;
 		$(this.domElement).click((evt) => {
 			let doClick = () => {
-				if (this.firstClick && !this._playOnClickEnabled) return;
+				if (this.firstClick || !this._clickEventsEnabled) return;
 				paella.player.videoContainer.paused()
 					.then((paused) => {
 						// If some player needs mouse events support, the click is ignored
@@ -375,16 +384,25 @@ class VideoContainerBase extends paella.DomNode {
 		this.timeupdateEventTimer = null;
 	}
 
-	enablePlayOnClick() {
-		this._playOnClickEnabled = true;
+	enablePlayOnClick(timeout = 0) {
+		clearClickEventsTimeout.apply(this);
+		if (timeout) {
+			this._clickEventsTimeout = setTimeout(() => {
+				this._clickEventsEnabled = true;
+			}, timeout);
+		}
+		else {
+			this._clickEventsEnabled = true;
+		}
 	}
 
 	disablePlayOnClick() {
-		this._playOnClickEnabled = false;
+		clearClickEventsTimeout.apply(this);
+		this._clickEventsEnabled = false;
 	}
 
 	isPlayOnClickEnabled() {
-		return this._playOnClickEnabled;
+		return this._clickEventsEnabled;
 	}
 
 	play() {

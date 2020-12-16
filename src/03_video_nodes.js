@@ -490,15 +490,24 @@ class VideoRect extends paella.DomNode {
 
 			$(eventCapture).on('mousemove',(evt) => {
 				if (!this.allowZoom() || !this._zoomAvailable) return;
-				//this.drag = evt.buttons>0;
+				let mouse = mousePos(evt);
+				let offset = {
+					x: mouse.x - this._mouseDown.x,
+					y: mouse.y - this._mouseDown.y
+				};
+
+				// We have not found out why there are sometimes sudden jumps in the
+				// position of the mouse cursos, so we avoid the problem
+				if ((Math.abs(offset.x)>80 || Math.abs(this.y)>80) && this.drag) {
+					this._mouseDown = mouse;
+					return;
+				}
+
+				this.drag = evt.buttons>0;
+
 				if (this.drag) {
 					paella.player.videoContainer.disablePlayOnClick();
-
-					let mouse = mousePos(evt);
-					panImage.apply(this,[{
-						x: mouse.x - this._mouseDown.x,
-						y: mouse.y - this._mouseDown.y
-					}]);
+					panImage.apply(this,[offset]);
 					this._mouseDown = mouse;
 				}
 			});
@@ -506,7 +515,7 @@ class VideoRect extends paella.DomNode {
 			$(eventCapture).on('mouseup',(evt) => {
 				if (!this.allowZoom() || !this._zoomAvailable) return;
 				this.drag = false;
-				setTimeout(() => paella.player.videoContainer.enablePlayOnClick(), 10);
+				paella.player.videoContainer.enablePlayOnClick(1000);
 			});
 
 			$(eventCapture).on('mouseleave',(evt) => {
