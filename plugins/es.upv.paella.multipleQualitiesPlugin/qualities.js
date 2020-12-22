@@ -30,9 +30,10 @@ paella.addPlugin(function() {
 		getMenuContent() {
 			let buttonItems = [];
 
+			const minVisibleQuality = this.config.minVisibleQuality !== undefined ? this.config.minVisibleQuality : 100;
 			this._available.forEach((q,index) => {
 				let resH = q.res && q.res.h || 0;
-				if (resH>=this.config.minVisibleQuality || resH<=0) {
+				if (resH>=minVisibleQuality || resH<=0) {
 					buttonItems.push({
 						id: q.shortLabel(),
 						title: q.shortLabel(),
