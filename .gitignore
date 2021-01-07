@@ -4,6 +4,7 @@ test
 *~
 tmp
 build
+dist
 node_modules
 repository_test/repository/local*
 .idea

@@ -1,0 +1,56 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
+const javascriptRules = {
+    test: /\.js$/i,
+    exclude: /(node_modules)/,
+    use: {
+        loader: 'babel-loader',
+        options: {
+            presets: ['@babel/preset-env']
+        }
+    }
+}
+
+const styleRules = {
+    test: /\.css$/i,
+    use: ['style-loader', 'css-loader'],
+    exclude: /(node_modules)/
+}
+
+const imageRules = {
+    test: /\.(png|jpe?g|svg|gif)$/i,
+    exclude: /(node_modules)/,
+    use: [
+        {
+            loader: 'file-loader'
+        }
+    ]
+}
+
+const plugins = [
+    new HtmlWebpackPlugin({
+        template: "src/index.html"
+    }),
+    new CopyWebpackPlugin({
+        patterns: [
+            { from: 'config', to: 'config' }
+        ],
+    })
+]
+
+module.exports = {
+    entry: './src/index.js',
+    output: {
+        filename: 'paella-player-[contenthash].js'
+    },
+
+    module: {
+        rules: [
+            javascriptRules,
+            styleRules,
+            imageRules
+        ]
+    },
+    plugins: plugins
+}
