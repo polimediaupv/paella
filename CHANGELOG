@@ -1,0 +1,817 @@
+CHANGELOG
+=========
+
+* Paella 7
+
+  * Developed from scratch using the last web standards.
+
+* Paella 6.4.5
+
+  * Improvements in dual stream video layout
+  
+* Paella 6.4.4
+
+  * Bug fixes from 6.3.x branch.
+  
+* Paella 6.4.3
+
+  * DFXP caption parse fix for jQuery 3.5.0 upgrade
+  * jQuery 3.5.1 upgrade
+
+* Paella 6.4.2
+
+  * Fixed a bug in HLS videos that occurs when the connection is slow.
+
+* Paella 6.4.1
+
+  * Bug fixed in iOS audio selector plugin.
+
+* Paella 6.4.0
+
+  * Playback bar canvas plugins: allows you to draw information in the playback bar area.
+  * Buffered video API added to streamProvider.
+  * Slide time marks moved to a playback bar canvas plugin.
+  * Buffered video playback bar canvas plugin added.
+  * New button plugin type: menu button.
+  * New multi audio API and HLS playlist multi audio compatibility. To use the new multi audio API:
+    - The new API is supported in HLS playlists. Configure your HLS server to provide the different audio streams in one (and only one) video stream.
+    - All other video streams must not contain any audio tracks.
+    - Set the property "role": "master" in the "data.json" manifest in the stream that contains the audio tracks.
+  * Breaking changes:
+    - Be sure to add the `es.upv.paella.timeMarksPlaybackCanvasPlugin` plugin settings so that the slide marks are drawn on the timeline.
+    - Note that the "audioTag" multi audio API is now deprecated, because it is not compatible with iOS devices. It will continue to work in the same way as it has so far, but will no longer be maintained due to incompatibility with iOS devices.
+    
+* Paella 6.3.5
+
+  * Bug fixed in  playback rate.
+
+* Paella 6.3.4
+
+  * webgl engine updated
+
+* Paella 6.3.3
+
+  * Bug fixes from the 6.2.x branch.
+
+* Paella 6.3.2
+
+  * Zoom plugin enhancements
+  * Bug fixes
+
+* Paella 6.3.1
+
+  * New video canvas: video360theta
+ 
+* Paella 6.3.0
+
+  * New feature:
+
+    * video canvas.
+    * mute/unmute through paella.player.videoContainer, which retains the previous volume value.
+    * related videos: allows you to add links to two related videos, which appear at the end of the current video.
+    * related videos data delegate: by default, related video data is placed in the video manifest, but it is possible to customize this data with a new DataDelegate.
+
+  * Improvements in video zoom UX: now it is necessary to press the ALT key to make the video zoom work.
+  * Other minor UX improvements.
+
+* 6.2.7
+
+  * Update Build Dependencies
+  * Update jQuery to 5.3.1
+  * DFXP caption parse fix for jQuery 5.3.0 upgrade
+
+* Paella 6.2.6
+
+  * Fixed a bug with hiding videos in the profile manager
+
+* Paella 6.2.5
+
+  * Bug fixed in breaks plugin
+  
+
+* Paella 6.2.4
+
+  * Update dependencies
+  * Don't use the minimified version of lunr (olivernn/lunr.js#420, opencast/opencast#1131)
+  * The stream provider main audio player is now configured in the startVideoSync function. Fix #441
+
+* Paella 6.2.3
+
+  * LazyLoad mode enhancements.
+  * Refactoring: play on screen icon.
+
+* Paella 6.2.2
+
+  * Fix a bug in the search service
+
+* Paella 6.2.1
+
+  * New setting added to configure the default audio tag to use.
+  * The video zoom is now enabled by default.
+  * Improvements in the processing of the video end event
+  * Other bug fixes
+  
+
+* Paella 6.2.0
+
+  * Lazy load: Paella Player will load the minimum resources requrired until the user press play. See the documentation for more information about how to enabler it.
+  * Preview improvements: it is possible to configure a preview image in the "metadata" section of the "data.json" file, independently of the preview of video streams.
+  * Breaking changes:
+    - Monostream profile APIs removed. This may break monostream videos if the streams
+      in `data.json` does not include the `content` attribute.
+      
+* Paella 6.1.6
+
+  * Improved synchronization between video and audio streams
+  * Syncrhonous query functions added to video and audio elements
+
+* Paella 6.1.5
+
+  * Bug fixed and improvements in breaks plugin
+
+* Paella 6.1.4
+
+  * Some bug fixes and improvements in audo tags
+
+* Paella 6.1.3
+
+  * Some obsolete plugins removed
+  * Added an option to configure the maximum numbmer of simultaneous HLS streams.
+  * Bug fixed in trimmed videos.
+
+* Paella 6.1.2
+
+  * Support for n-streams implemented in arrow slide navigation plugin (Fix #406)
+
+* Paella 6.1.1
+
+  * Bug fixed in volume range plugin
+
+* Paella 6.1.0
+
+  * All the core classes migrated to ECMAScript 2015.
+  * Improvements in HLS plugin configuration.
+  * Improvements in accesibility.
+  * Improvements in usability: fold-out button plugin (see volume button plugin).
+  * Support for audio + images streams.
+  * Add support for video Picture-in-Picture in Chrome (#389)
+  * Add basque localization
+  * Add galician localization
+  * Breaking changes:
+    - The index.html file now includes paella_player_es2015.js. If you plan to support
+      Internet Explorer, you will need to modify the index.html file to add the legacy scripts.
+    - The button plugins now must implement the method getAriaLabel() to be included in the
+      tabindex. if you have a plugin that is relevant for screen readers, you must implement
+      this function in your plugin.
+
+* Paella 6.0.8
+
+  * Bug fixed in live streams videos
+
+* Paella 6.0.7
+
+  * Bug fixed when no "standalone" property exists in config.json
+
+* Paella 6.0.6
+
+  * Bug fixed setting video profile
+
+* Paella 6.0.5
+
+  * Improved video stability on slow networks.
+  * Bug fixed on first video layout load.
+
+* Paella 6.0.4
+
+  * Fix issues in stream video profiles
+
+* Paella 6.0.3
+  
+  * Fix issues in errorContainer size
+  * Fixed bug in the zoom plugin visibility, when the control bar is hidden.
+  * Bug fixed in video factory selection method
+  
+* Paella 6.0.2
+  
+  * Fix some XSS security issues
+
+* Paella 6.0.1
+
+  * Better customization of video profile plugins
+  * Bug fixes
+
+* Paella 6.0.0
+
+  * Multiple video stream support
+  * Video profile plugins
+  * Dynamic video profiles
+  * Bug fixed in Elasticsearch plugin
+  * Full support for full screen on iPad, with iOS 12
+  * Breaking changes: Check the following link to update your data.json files
+    to support the new multistream capabilities:
+    https://github.com/polimediaupv/paella/blob/develop/doc/adopter_doc/integrate_datajson.md
+
+    
+
+* Paella 5.3.10
+
+  * Change width of PlaybackBar on resize (fixes #339)
+  * Return play and pause promise (fixes #341)
+  * Fix search when video is trimmed (fixes #351)
+  * Fix seek to incorrect caption and duplicated captions (fixes #353 and #354)
+  * Fix loop when seek throught a break in Safari for iOS (fixes #356)
+  * HLS plugin: handle nonfatal media errors
+
+* Paella 5.3.9
+
+  * Bug fixed in elasticsearch plugin
+  
+* Paella 5.3.8
+
+  * HTML5 video factory now allows mp3 sources
+  * The VideoContainer.play() function now returns a rejected promise if the video can't be played
+
+* Paella 5.3.7
+
+  * Improvements on HLS plugin
+  * Add russian translation
+  * Track4k auto zoom fixes
+  * Improvements in video zoom
+  * Bug fixed in footprints plugin
+
+* Paella 5.3.6
+
+  * Improvements in legal info plugin
+  * Fixed issue in fullscreen plugin, in browsers that don't support autoplay
+
+* Paella 5.3.5
+
+  * Loader icon updated
+  * Bug fixed in arrow slides navigator plugin
+  * New plugin: legal information
+
+* Paella 5.3.4
+
+  * Fixes and improvements in live streaming videos
+
+* Paella 5.3.3
+
+  * UX bug fixed in paella.MessageBox
+
+* Paella 5.3.2
+
+  * Bug fixed in paella.MessageBox
+  * Bug fixed in travis scripts
+  * Added Matomo (org.opencast.usertracking.MatomoSaverPlugIn) plugin (thanks to @rrolf)
+
+* Paella 5.3.1
+
+  * Bug fixed in captions load
+
+* Paella 5.3.0
+
+  * New plugin registration system.
+  * Automatic zoom using track 4k
+  * Refactoring and bug fixes
+  * Use 16/9 aspect ratio for audio sources
+  * New plugin: Usertracking xAPI plugin (@dpeite)
+  * New plugin: Usertracking Piwik plugin
+
+* Paella 5.2.19
+
+  * Bug fixed in blackboard high resolution photo plugin
+  * Bug fixed in HTML 5 video element when the buffer is empty
+
+* Paella 5.2.18
+
+  * Full screen support on iPad iOS 12
+  * Fix some XSS security issues
+  * Update NPM dependencies
+
+* Paella 5.2.17
+
+  * Bug fixed in elasticsearch plugin
+
+* Paella 5.2.16
+
+  * Improvements on HLS plugin
+  * Bug fixed in footprints plugin
+
+* Paella 5.2.15
+
+  * Legal info plugin improvements
+
+* Paella 5.2.14
+
+  * Legal info plugin added
+
+* Paella 5.2.13
+
+  * Fixed a bug when loading captions in an not supported format
+
+* Paella 5.2.12
+
+  * Changed function to build localization files
+
+* Paella 5.2.11
+
+  * Fix bug in embed code
+
+* Paella 5.2.10
+
+  * Fix publish scripts
+
+* Paella 5.2.9
+
+  * Bug fixed in arrow slide navigator plugin
+  * Added configUrl parameter to paella.load options
+
+* Paella 5.2.8
+
+  * Bug fixes and improvements
+
+* Paella 5.2.7
+
+  * Improvements and bug fixes in HLS.
+  
+* Paella 5.2.6
+
+  * HLS streams in Safari for macOS now uses the native hls player.
+  
+* Paella 5.2.5
+
+  * HLS streams limited to one simultaneous stream on iOS, to prevent memory problems on old iOS devices.
+
+* Paella 5.2.4
+
+  * Bug fixed in zoom plugin, in Safari 11 for macOS 10.13
+  * Autoplay settings updated to take account of the upcoming browser restrictions in Safari 11 and Chrome 64
+  * Bug fixed in zoom plugin, when some parameters in settings.json are missing.
+  * Bug fixed in captions plugin, that prevents to change the captions language in firefox.
+
+* Paella 5.2.3
+
+  * Now the video zoom button in toolbar shows the current zoom level.
+
+* Paella 5.2.2
+
+  * Bug fixed in breaks plugin.
+  * Now it's possible to configure the minimum window size to enable the video zoom.
+  * Deprecated plugins removed.
+
+* Paella 5.2.1
+
+  * Now it's possible to specify the video, preview and title using URL parameters.
+  * Visual improvements in breaks plugin.
+  
+* Paella 5.2.0
+
+  * New video plugin: HLS player.
+  * Zoom on videos.
+  * Two new video zoom plugins.
+  * Video title plugin.
+  * Dual video playback in iOS 10.3 and above.
+  * Multiple audio stream selector (compatible with desktop browsers).
+  * WebVTT subtitle support.
+  * New multi language audio selector plugin.
+  * Refactoring, improvements and bug fixes.
+
+* Paella 5.1.14
+
+  * Fix error changing quality in mpeg dash streams.
+
+* Paella 5.1.13
+
+  * Bug fixed in window title plugin
+
+* Paella 5.1.12
+
+  * Fix some issues when changing profile (#249)
+  * Improvements in trimmed videos.
+  * Fix some warning on build (#255)
+  * Fix caption issues in trimmed videos (#260)
+
+* Paella 5.1.11
+
+  * Fix some issues playing live streams.
+
+* Paella 5.1.10
+
+  * Fix compilation error in blackboard profile selection.
+
+* Paella 5.1.9
+
+  * Fix #241: start-end params num protection in setTrimming (thanks to @karendolan).
+  * Fix bug in blackboard plugin.
+
+* Paella 5.1.8
+
+  * Fixed bug in volume control plugin initialization.
+  
+* Paella 5.1.7
+
+  * Added translations to German (thanks to @underscoreabandit)
+
+* Paella 5.1.6
+
+  * Fixed bug setting attributes to video tag (iOS bug only)
+  * Fixed bug in footprints plugin duration returns promise)
+  * Fixed some bugs in javascript "strict mode" (thanks to @ppettit)
+
+* Paella 5.1.5
+
+  * Fixed bug in footprints plugin.
+
+* Paella 5.1.4
+
+  * Some events were not emited.
+
+* Paella 5.1.3
+
+  * WebGL video players are now compatible with mobile devices.
+
+* Paella 5.1.2
+
+  * Bug fix in es.upv.paella.arrowSlidesNavigatorPlugin
+  
+* Paella 5.1.1
+
+  * Fix bugs in plugin: es.upv.paella.frameCaptionsSearchPlugin
+  * Fix bugs in plugin: es.upv.paella.searchPlugin
+
+* Paella 5.1.0
+
+  * Now using ECMAScript 6, with Traceur compiler.
+  * jQuery deferred changed to ECMAScript promises.
+  * Now it's possible to add audio streams as slave stream.
+  * New aspect ratios supported for single video streams.
+  * Video plugin: WebGL real time chroma video.
+  * Video plugin: Spheric 360º video.
+  * Video plugin: Ricoh Theta 360º camera raw video player.
+  * Captions added to video frame list.
+  * Now it's possible to hide pop up plugins on mouse out.
+  * New Apple Air Play plugin.
+  * New plugin to use the picture-in-picture mode in Safari for macOS.
+  * New plugin to rate videos.
+  * Improvements in mobile platforms.
+  * Search plugin updated to look into the frame list captions.
+  * Default skin changed.
+  * Refactoring, improvements and bug fixes.
+  * Changes in frameControl plugin. Show preview images over the player can be disabled and select the slides video(master/slave)
+  * New plugin 'es.upv.paella.arrowSlidesNavigatorPlugin': Allows slide navigation with next/prev arrows over the slide.
+
+* Paella 5.0.18
+
+  * Fix bug in RTMP plugin.
+
+* Paella 5.0.17
+
+  * Fix bug in captions plugin when there is only one caption
+
+* Paella 5.0.16
+
+  * Mute icon not showing on volume mute (Fix #219)
+
+* Paella 5.0.15
+
+  * Several bugs fixed in RTMP playback
+
+* Paella 5.0.14
+
+  * Bug fixed in video rectangle calculation, playing single stream videos
+  
+* Paella 5.0.13
+
+  * Load error messages improved.
+  * Bug fix in captions plugin.
+
+* Paella 5.0.12
+
+  * Bug fix in RTMPVideo.setQuality().
+
+* Paella 5.0.11
+
+  * Bug fix with volume initialization.
+
+* Paella 5.0.10
+
+  * Fixed some issues with the volume range plugin.
+
+* Paella 5.0.9
+
+  * Bug fixed with multiple video load in iOS.
+
+* Paella 5.0.8
+
+  * Fixed typo (Fix #207).
+
+* Paella 5.0.7
+
+  * Fixed several bugs with video factories in iOS platform.
+
+* Paella 5.0.6
+
+  * Fixed bug with dictionary loading.
+
+* Paella 5.0.5
+
+  * New automatic quality mode added to mpeg-dash video sources
+  * HLS support implemented for iOS devices
+
+* Paella 5.0.4 (07-06-2016)
+
+  * Fixing PlayBackRate Plugin 
+
+* Paella 5.0.3 (04-05-2016)
+
+  * Bug fixed in translectures plugin
+
+* Paella 5.0.2 (04-05-2016)
+
+  * Bug fixed in volumeRange plugin
+
+* Paella 5.0.1 (03-05-2016)
+
+  * Bug fixed in visual annotations plugin
+
+* Paella 5.0.0 (25-04-2016)
+
+  * Now the video query functions returns promises, and it isn't necessary to use events.
+  * New architecture implemented to provide a way to add new video type plugins.
+  * The RTMP video type has been moved to a plugin.
+  * New video plugin implemented to playback MPEG-DASH
+  * The editor has been moved to an external project (paella-editor).
+  * Refactoring on the video owner and permissions data APIs.
+  * New video plugin: youtube videos support.
+
+* Paella 4.2.0 (26-02-2016)
+
+  * Add segment lines to the timeline
+  * Fix a bug when reload a video causing black screen blinks
+  * Resource pathes can be changed in config.json file (#168)
+  * Login functions implemented
+  * Microsoft Edge added to supported browser list
+  * Skins are now optional (#170)
+  * New Plugin: paella.plugins.WindowTitlePlugin
+  * Fix bug in captions plugin on Firefox (#177)
+  * Option to pass trim start & stop values as location arguments (#179)
+
+* Paella 4.1.13 (10-02-2016)
+
+	* Fix bug in breakPlugins. Even if the configuration value 'neverShow' is 'true', the behaviour on the editor should remain before.
+	* Fix bug in editor: paella.breakPlugins: After changing its name, selecting a break will reset it (#189)
+
+* Paella 4.1.12 (27-01-2016)
+
+    * Allow open the editor in an iframe using 'openEditorInIframe' parameter to true.
+    * Avoid negative trimming in  trimming plugins.
+    * Added enableResetButton option using 'enableResetButton' parameter.
+    * Added config value 'neverShow' to the breaksPlayer plugin.
+    * Fixed editor not discarding changes on Breaks plugin
+    * Fixed editor not displaying saved changes on trimming.
+
+* Paella 4.1.11 (10-12-2015)
+
+    * Microsoft Edge compatibility
+ 
+* Paella 4.1.10 (21-09-2015)
+
+    * Fixed bug when there isn't a poster frame (#172)
+
+* Paella 4.1.9 (08-09-2015)
+
+    * Fixed bug in Safari when the adblock plugin is installed.
+
+* Paella 4.1.8 (26-08-2015)
+
+    * Fixed Bug on RTMP buffer time.
+
+* Paella 4.1.6 (29-07-2015)
+
+  * Fixed Bug on Trimming Video using Slides preview on playbackbar.
+
+* Paella 4.1.5 (29-07-2015)
+
+  * Fix bug in trimming feature. the setTrim event was not triggered.
+
+* Paella 4.1.4 (09-07-2015)
+
+  * Fix bug when the video URL contains a '?' chararcter (#161).
+
+* Paella 4.1.3 (03-07-2015)
+
+  * Fix bug in captions service.
+
+* Paella 4.1.2 (02-07-2015)
+
+  * Fix bug in config.json file (es.upv.paella.multipleQualitiesPlugin was not enabled)
+  * Fixed bug in captions overlay showing captions on top
+
+* Paella 4.1.1 (30-06-2015)
+
+  * Fix typo in config.json file
+
+* Paella 4.1.0 (30-06-2015)
+
+ * Don't ignore vendor directories to make collaboration easier.
+ * Improvements to tools/layout_calculator.
+ * Changes in default audio configuration.
+ * Video resolution refactoring: class VideoQualityStrategy extracted, to create custom video resolution selection strategies.
+ * New plugin loading system implemented.
+ * Fixed bug in the image Preview (#98).
+ * Captions functionality moved into the paella core.
+ * The parameters of paella:resize event are now generated correctly (#102).
+ * Search service added to the core.
+ * New Plugin: es.upv.paella.searchPlugin
+ * userTracking logger added to the core.
+ * New DefaultVideoLoader added to Paella core
+ * New built in video loader
+ * Fixed bug with the volume when the video is reloaded
+ * New plugin added: es.upv.paella.translectures.CaptionsPlugIn
+ * New videoMode: blackboard + zoom images
+ * HLS support for iOS devices
+
+* Paella 4.0.24 (29-05-2015)
+
+  * Fixed bug: Live stream with URLs containing a @ character doesn't work (#140)
+
+* Paella 4.0.23 (22-05-2015)
+
+  * Fixed bug: Live stream volume control shows "muted" by default but audio is not muted (#143)
+
+* Paella 4.0.22 (20-05-2015)
+
+  * Fixed bug causing video to mute when resolution switching (#142)
+
+* Paella 4.0.21 (18-05-2015)
+
+  * Fixed bug in Multi-Qualities sort (#141)
+
+* Paella 4.0.20 (12-05-2015)
+
+  * RTMP live streaming bug fixed
+
+* Paella 4.0.19 (04-05-2015)
+
+  * MultiQuality selection change with single video fails at volumeRangePlugin storeVolume() (#137)
+
+* Paella 4.0.18 (20-4-2015)
+
+  * Fixed bug in MultiQuality Sort order in Safari (#135)
+
+* Paella 4.0.17 (16-4-2015)
+
+  * Fix bug in frameControl Plugin (#132)
+
+* Paella 4.0.16 (15-4-2015)
+
+  * Fixed a bun in paella extended mode causing videos to be cropped in the video container (#94)
+
+* Paella 4.0.15 (10-4-2015)
+
+  * Fixed bug with the volume when the video is reloaded
+  * Fixed bug with the "playing" when the video is reloaded
+
+* Paella 4.0.14 (10-4-2015)
+
+  * Update VolumeRange when using KeyManager
+
+* Paella 4.0.13 (12-3-2015)
+
+  * Flash video resize smooth
+
+* Paella 4.0.12 (19-2-2015)
+
+  * Flash RTMP flv and mp4 improvements
+  
+* Paella 4.0.11 (10-2-2015)
+
+  * Flash RTMP live streaming bug fixed+
+  
+* Paella 4.0.10 (10-2-2015)
+
+  * Flash RTMP streaming stability improved
+  
+* Paella 4.0.9 (30-1-2015)
+
+  * Volume Control bugs when the video reloads (#96)
+
+* Paella 4.0.8 (29-1-2015)
+
+ * Internet Explorer fullscreen bug fixed
+
+* Paella 4.0.7 (29-1-2015)
+
+ * Slide flickering bug fixed
+
+* Paella 4.0.6 (26-1-2015)
+
+ * experimental autoplay mode in non-mobile devices
+
+* Paella 4.0.5 (22-12-2014)
+
+ * multipleQualitiesPlugin updated. Ability to configure a minimum/maximum resolution to show in the available resolutions list.
+ * OSX/Firefox minimum version required only showed when playing mp4 files.
+ * Plugin ch.ethz.paella.multipleQualitiesPlugin removed. es.upv.paella.multipleQualitiesPlugin does that functionality.
+ 
+* Paella 4.0.4 (17-12-2014)
+
+ * Fixed issues in multi quality plugin (list is not sorted (#83) and show only vertical resolition (#84)
+ * Change the OSX/Firefox error message to show it in Firefox 34 (#89)
+ * Fixed a bug in timeline-preview images (#85)
+ * When switching between resolutions no preview picture is showed (#87)
+ * Fix issues when trying to change from embed to fullscreen in IE11 (#88)
+ * New plugin added: ch.ethz.paella.multipleQualitiesPlugin
+
+* Paella 4.0.3 (09-12-2014)
+
+ * Fix html5 videonode setDefaultVolume in firefox. (#78)
+ 
+* Paella 4.0.2 (04-12-2014)
+
+ * Fix a bug that causes that time were not retained when switching resolutions. (#74)
+ 
+* Paella 4.0.1 (02-12-2014)
+ 
+ * New event added on window resize. And Fixed a bug when resizing in extended mode.
+  
+* Paella 4.0.0 (01-12-2014)
+ 
+ * Better Video Quality management (Change video source to higher quality file seamlessly when switching to full screen. And switch to smaller file seamlessly when going back to embed).
+ * Video download bandwidth improved in multi resolution videos.
+ * Dual audio in dual track videos: Configurable option to mute one of the sources for desktop browsers.
+ * Pause video by clicking in the video area – and restart video by clicking there again.
+ * Don’t display the play icon in the video area after the video has started.
+ * Don’t display the control bar until the user has pressed the large play symbol (or hovered the mouse into the video area).
+ * Adaptive display for 4:3 videos.
+ * Multiple speed support in HTML5 mode.
+ * Better RTMP video playback.
+ * Improved Flash fallback for desktop browsers not able to play HTML5 video.
+ * Better Fullscreen management.
+ * Solved the issue that happened when calling the page, the video plays for half a second (with audio), then goes back to the pause and waits for user interaction; that shouldn’t happen.
+ * Icon redesign and cosmetic changes.
+ * Plugin activation and deactivation depending on the player state (displayed / not displayed only in embed / only in full screen).
+ * Change colour scheme: New skinning options.
+ * Removed the “zoom in” effect when player starts.
+ * Change symbol for full screen when in full screen: Invert arrows.
+ * iOS: Control bar now disappears automatically after x seconds.
+ * Internet Explorer: Control bar now hide automatically after x seconds.
+ * Slides now appear on top of the timeline on hovering.
+ * Now there is a configuration option that don’t allow a video to be larger than its real size.
+ * Preview release of the Blackboard zoom plugin.
+ * New layout calculator to create or modify the video layouts (thank's to Daniel Collins-Puro from Harvard for his contribution).
+ * The fullscreen plugin now opens the player in a new window, in those platforms that doesn't support HTML 5 fullscreen.
+ 
+ 
+* Paella 3.1.0 (22-07-2014)
+ 
+ * RTMP Live Streaming
+ * Multiple Language Captions
+ * Changes on the plugin management
+ * Bug fixes
+ 
+* Paella 3.0.0 (13-03.2014)
+ 
+ * Redesign of the timeline
+ * New style of the slide list
+ * Auto hide buttons/features when they aren't relevant
+ * New still image video provider
+ * Android 4.x and iPad Support
+ * Multi-Quality video support
+ * New plugin: Download
+ * Improved accessibility for disabled users (Tooltips, ARIA roles and alerts)
+ * Enable/Disable plugins in the config file.
+ * Login/logout button for Matterhorn
+ * Integrated Video Editor with Soft Trimming and Soft Breaks
+ * Added the embed code in the share button).
+ * Fixed some bugs in Export Videos plugin
+ * Localization support
+ 
+* Paella 2.0.0 (21-06-2013)
+
+ * Jump by clicking on the slide list
+ * High quality slides while seeking
+ * Can handle RTMP streaming servers
+ * Support of .flv  files
+ * Embeddable
+ * Captions support
+ * Comments (experimental)
+ * Soft Editing features: Trimming and breaks
+ * Support of Chrome, Firefox, Safari and Internet Explorer 9 an 10 browsers
+ * Compatible with Opencast Matterhorn 1.4
+ 
+* Paella 1.0 (Paella Engage Player) (28-05-2012)
+ 
+ * Multi stream video player
+ * Completely based in HTML5 and Javascript
+ * Can play audio from any of the two videos, mute any of them or mix both
+ * Resize position/size of video windows while playing
+ * Play/Pause/30 seconds back controls
+ * Jump anywhere in the video keeping both tracks in sync
+ * Can handle progressive download and pseudostreaming servers
+ * Easily change the relative position of presenter and presentation windows
+ * Native Fullscreen version
+ * “Publish to” buttons for Facebook and Twitter
+ * Easy skinning
+ * Easy install. Just get the code, point to your server and run (if you have mp4/ogg videos available)
+ * Compatible with Opencast Matterhorn

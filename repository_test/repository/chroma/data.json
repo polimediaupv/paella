@@ -1,0 +1,75 @@
+{
+	"metadata": {
+		"duration": 909.13,
+		"title": "Belmar 15 minutes (multiresolution)"
+	},
+	"streams": [
+		{
+			"sources": {
+				"chroma": [
+					{
+						"src": "https://repository.paellaplayer.upv.es/chroma/presenter.m4v",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1920",
+							"h": "1080"
+						},
+						"crop":{
+							"left":0.3,
+							"right":0.3,
+							"top":0.1,
+							"bottom":0.01
+						},
+						"displacement":{ "x":0.6, "y":-0.04 },
+						"chromaColor":[ 1.0, 1.0, 1.0, 1.0 ],
+						"chromaBias":0.01
+					},
+					{
+						"src": "https://repository.paellaplayer.upv.es/chroma/presenter.m4v",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1280",
+							"h": "720"
+						},
+						"crop":{
+							"left":0.3,
+							"right":0.3,
+							"top":0.1,
+							"bottom":0.01
+						},
+						"displacement":{ "x":0.6, "y":-0.04 },
+						"chromaColor":[ 1.0, 1.0, 1.0, 1.0 ],
+						"chromaBias":0.01
+					}
+				]
+			},
+			"preview": "https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/presenter_cut.jpg",
+			"content":"presenter"
+		},
+		{
+			"sources": {
+				"mp4": [
+					{
+						"src": "https://repository.paellaplayer.upv.es/chroma/slides.m4v",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1920",
+							"h": "1080"
+						}
+					},
+					{
+						"src": "https://repository.paellaplayer.upv.es/chroma/slides.m4v",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1280",
+							"h": "720"
+						}
+					}
+				]
+			},
+			"preview": "https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/presentation_cut.jpg",
+			"content":"presentation"
+		}
+	],
+	"frameList": []
+}

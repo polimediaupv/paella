@@ -1,0 +1,23 @@
+{
+	"metadata": {
+		"duration": 887,
+		"title": "HLS live streaming demo"
+	},
+	"streams": [
+		{
+			"sources": {
+				"hls": [
+					{
+						"src": "https://streaming.upv.es/test-media/smil:soloUnaResolucion.smil/playlist.m3u8",
+                        "mimetype": "video/mp4",
+                        "isLiveStream": true
+                    }
+                ]
+			},
+            "preview": "",
+			"content":"presenter"
+		}
+	],
+	"frameList": [
+	]
+}

@@ -1,0 +1,118 @@
+{
+	"metadata": {
+		"duration": 909.13,
+		"title": "Belmar 15 minutes (multiresolution)"
+	},
+	"streams": [
+		{
+			"sources": {
+				"mpd": [
+					{
+						"src": "https://streaming.upv.es/paellaplayerdemo/_definst_/mp4:belmar-demo/a5bf5ad2-1386-4229-a8d1-c0b59436a1b1/presenter_cut.mp4/manifest.mpd",
+						"mimetype": "video/mp4"
+					}				]
+			},
+			"preview": "preview/presenter_cut.jpg",
+			"content": "presenter"
+		},
+		{
+			"sources": {
+				"mpd": [
+					{
+						"src": "https://streaming.upv.es/paellaplayerdemo/_definst_/mp4:belmar-demo/6d5809a7-d3e6-46c3-b107-5503bf540a01/presentation_cut.mp4/manifest.mpd",
+						"mimetype": "video/mp4"
+					}
+				],
+				"image": [
+					{
+						"mimetype": "image/jpeg",
+						"frames": [
+							{
+								"time": 854,
+								"src": "http://paellaplayer.upv.es/demo/repository/dash-dual/slides/3d90109c-9608-44c1-8660-fce3f216d716/presentation_cut.jpg"
+							},
+							{
+								"time": 751,
+								"src": "http://paellaplayer.upv.es/demo/repository/dash-dual/slides/598bd2ba-4fef-4886-884e-0ab82176f13d/presentation_cut.jpg"
+							},
+							{
+								"time": 0,
+								"src": "http://paellaplayer.upv.es/demo/repository/dash-dual/slides/7dc22bee-14f3-442c-8f0d-30d8b68c8604/presentation_cut.jpg"
+							},
+							{
+								"time": 363,
+								"src": "http://paellaplayer.upv.es/demo/repository/dash-dual/slides/d3194d9b-8f65-403b-a639-9de4311a283b/presentation_cut.jpg"
+							}
+						],
+						"count": 4,
+						"duration": 909,
+						"res": {
+							"w": 320,
+							"h": 180
+						}
+					},
+					{
+						"mimetype": "image/jpeg",
+						"frames": [
+							{
+								"time": 854,
+								"src": "http://paellaplayer.upv.es/demo/repository/dash-dual/slides/403de1df-aa66-44c0-b600-7683acf249b8/presentation_cut.jpg"
+							},
+							{
+								"time": 751,
+								"src": "http://paellaplayer.upv.es/demo/repository/dash-dual/slides/73a6564c-b2d6-4896-b0f1-38129dde2c85/presentation_cut.jpg"
+							},
+							{
+								"time": 0,
+								"src": "http://paellaplayer.upv.es/demo/repository/dash-dual/slides/46561b90-85b3-4ad7-a986-cdd9b52ae02b/presentation_cut.jpg"
+							},
+							{
+								"time": 363,
+								"src": "http://paellaplayer.upv.es/demo/repository/dash-dual/slides/4505b6d9-8a0c-4809-ade3-840e743188ed/presentation_cut.jpg"
+							}
+						],
+						"count": 4,
+						"duration": 909,
+						"res": {
+							"w": 1280,
+							"h": 720
+						}
+					}
+				]
+			},
+			"preview": "preview/presentation_cut.jpg",
+			"content": "presentation"
+		}
+	],
+	"frameList": [
+		{
+			"id": "frame_854",
+			"mimetype": "image/jpeg",
+			"time": 854,
+			"url": "http://paellaplayer.upv.es/demo/repository/dash-dual/slides/3d90109c-9608-44c1-8660-fce3f216d716/presentation_cut.jpg",
+			"thumb": "http://paellaplayer.upv.es/demo/repository/dash-dual/slides/403de1df-aa66-44c0-b600-7683acf249b8/presentation_cut.jpg"
+		},
+		{
+			"id": "frame_751",
+			"mimetype": "image/jpeg",
+			"time": 751,
+			"url": "http://paellaplayer.upv.es/demo/repository/dash-dual/slides/598bd2ba-4fef-4886-884e-0ab82176f13d/presentation_cut.jpg",
+			"thumb": "http://paellaplayer.upv.es/demo/repository/dash-dual/slides/73a6564c-b2d6-4896-b0f1-38129dde2c85/presentation_cut.jpg"
+		},
+		{
+			"id": "frame_0",
+			"mimetype": "image/jpeg",
+			"time": 0,
+			"url": "http://paellaplayer.upv.es/demo/repository/dash-dual/slides/7dc22bee-14f3-442c-8f0d-30d8b68c8604/presentation_cut.jpg",
+			"thumb": "http://paellaplayer.upv.es/demo/repository/dash-dual/slides/46561b90-85b3-4ad7-a986-cdd9b52ae02b/presentation_cut.jpg"
+		},
+		{
+			"id": "frame_363",
+			"mimetype": "image/jpeg",
+			"time": 363,
+			"url": "http://paellaplayer.upv.es/demo/repository/dash-dual/slides/d3194d9b-8f65-403b-a639-9de4311a283b/presentation_cut.jpg",
+			"thumb": "http://paellaplayer.upv.es/demo/repository/dash-dual/slides/4505b6d9-8a0c-4809-ade3-840e743188ed/presentation_cut.jpg"
+		}
+	]
+}
+

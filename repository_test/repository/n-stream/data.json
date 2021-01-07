@@ -1,0 +1,73 @@
+{
+	"metadata": {
+		"duration": 1153,
+		"title": "Multiple video"
+	},
+	"streams": [
+		{
+			"sources": {
+				"mp4": [
+					{
+						"src": "https://repository.paellaplayer.upv.es/n-stream/video-1.m4v",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1920",
+							"h": "1080"
+						}
+					}
+				]
+			},
+			"preview": "",
+			"content":"presenter"
+		},
+		{
+			"sources": {
+				"mp4": [
+					{
+						"src": "https://repository.paellaplayer.upv.es/n-stream/video-2.m4v",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1920",
+							"h": "1080"
+						}
+					}
+				]
+			},
+			"preview": "",
+			"content":"presenter-2"
+		},
+		{
+			"sources": {
+				"mp4": [
+					{
+						"src": "https://repository.paellaplayer.upv.es/n-stream/video-3.m4v",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1920",
+							"h": "1080"
+						}
+					}
+				]
+			},
+			"preview": "",
+			"content":"presenter-3"
+		},
+		{
+			"sources": {
+				"mp4": [
+					{
+						"src": "https://repository.paellaplayer.upv.es/n-stream/video-4.m4v",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1920",
+							"h": "1080"
+						}
+					}
+				]
+			},
+			"preview": "",
+			"content":"presentation"
+		}
+	],
+	"frameList": []
+}

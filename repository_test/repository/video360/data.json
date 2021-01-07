@@ -1,0 +1,32 @@
+{
+	"metadata": {
+		"duration": 60,
+		"title": "Video 360 test"
+	},
+	"streams": [
+		{
+			"sources": {
+				"mp4": [
+					{
+						"src": "https://repository.paellaplayer.upv.es/video360/video360.mp4",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "4096",
+							"h": "2046"
+						}
+					}
+				],
+				"hls_disabled": [
+					{
+						"src": "https://streaming.upv.es/paellaplayerdemo/_definst_/smil:belmar-hls/belmar/playlist.m3u8",
+						"mimetype": "video/mp4"
+					}
+				]
+			},
+			"preview": "https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/presenter_cut.jpg",
+			"content":"presenter",
+			"canvas":["video360"]
+		}
+	],
+	"frameList": []
+}

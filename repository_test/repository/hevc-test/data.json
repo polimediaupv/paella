@@ -1,0 +1,43 @@
+{
+	"metadata": {
+		"duration": 21,
+		"title": "The cat and the fish",
+		"preview": "https://repository.paellaplayer.upv.es/hevc-test/preview.jpg"
+	},
+	"streams": [
+		{
+			"sources": {
+				"mp4": [
+					{
+						"src": "https://repository.paellaplayer.upv.es/hevc-test/hevc-test-4k.mp4",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "3840",
+							"h": "2160"
+						}
+					},
+					{
+						"src": "https://repository.paellaplayer.upv.es/hevc-test/hevc-test-1080.mp4",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1920",
+							"h": "1080"
+						}
+					},
+					{
+						"src": "https://repository.paellaplayer.upv.es/hevc-test/hevc-test-720.mp4",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1280",
+							"h": "720"
+						}
+					}
+				]
+			},
+			"preview": "https://repository.paellaplayer.upv.es/hevc-test/preview.jpg",
+			"content":"presenter",
+			"audioTag":"es"
+		}
+	],
+	"frameList": []
+}

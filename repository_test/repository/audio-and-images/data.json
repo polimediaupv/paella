@@ -1,0 +1,86 @@
+{
+	"metadata": {
+		"duration": 909.13,
+		"title": "Belmar 15 minutes (multiresolution)"
+	},
+	"streams": [
+		{
+			"sources": {
+				"audio": [
+					{
+						"src": "https://repository.paellaplayer.upv.es/dual-video-audio/media/presenter-audio.m4a"
+					}
+				]
+			},
+			"preview":"",
+			"type":"audio",
+			"audioTag":"es"
+		},
+		{
+			"sources": {
+				"image": [
+					{
+						"mimetype": "image/jpeg",
+						"frames": [
+							{
+								"time": 854,
+								"src": "https://repository.paellaplayer.upv.es/dual-video-audio/slides/3d90109c-9608-44c1-8660-fce3f216d716/presentation_cut.jpg"
+							},
+							{
+								"time": 751,
+								"src": "https://repository.paellaplayer.upv.es/dual-video-audio/slides/598bd2ba-4fef-4886-884e-0ab82176f13d/presentation_cut.jpg"
+							},
+							{
+								"time": 0,
+								"src": "https://repository.paellaplayer.upv.es/dual-video-audio/slides/7dc22bee-14f3-442c-8f0d-30d8b68c8604/presentation_cut.jpg"
+							},
+							{
+								"time": 363,
+								"src": "https://repository.paellaplayer.upv.es/dual-video-audio/slides/d3194d9b-8f65-403b-a639-9de4311a283b/presentation_cut.jpg"
+							}
+						],
+						"count": 4,
+						"duration": 909,
+						"res": {
+							"w": 1280,
+							"h": 720
+						}
+					}
+				]
+			},
+			"preview": "https://repository.paellaplayer.upv.es/dual-video-audio/preview/presentation_cut.jpg",
+			"type":"video",
+			"content":"presentation"
+		}
+	],
+	"frameList": [
+		{
+			"id": "frame_854",
+			"mimetype": "image/jpeg",
+			"time": 854,
+			"url": "https://repository.paellaplayer.upv.es/dual-video-audio/slides/3d90109c-9608-44c1-8660-fce3f216d716/presentation_cut.jpg",
+			"thumb": "https://repository.paellaplayer.upv.es/dual-video-audio/slides/403de1df-aa66-44c0-b600-7683acf249b8/presentation_cut.jpg"
+		},
+		{
+			"id": "frame_751",
+			"mimetype": "image/jpeg",
+			"time": 751,
+			"url": "https://repository.paellaplayer.upv.es/dual-video-audio/slides/598bd2ba-4fef-4886-884e-0ab82176f13d/presentation_cut.jpg",
+			"thumb": "https://repository.paellaplayer.upv.es/dual-video-audio/slides/73a6564c-b2d6-4896-b0f1-38129dde2c85/presentation_cut.jpg"
+		},
+		{
+			"id": "frame_0",
+			"mimetype": "image/jpeg",
+			"time": 0,
+			"url": "https://repository.paellaplayer.upv.es/dual-video-audio/slides/7dc22bee-14f3-442c-8f0d-30d8b68c8604/presentation_cut.jpg",
+			"thumb": "https://repository.paellaplayer.upv.es/dual-video-audio/slides/46561b90-85b3-4ad7-a986-cdd9b52ae02b/presentation_cut.jpg"
+		},
+		{
+			"id": "frame_363",
+			"mimetype": "image/jpeg",
+			"time": 363,
+			"url": "https://repository.paellaplayer.upv.es/dual-video-audio/slides/d3194d9b-8f65-403b-a639-9de4311a283b/presentation_cut.jpg",
+			"thumb": "https://repository.paellaplayer.upv.es/dual-video-audio/slides/4505b6d9-8a0c-4809-ade3-840e743188ed/presentation_cut.jpg"
+		}
+	]
+}

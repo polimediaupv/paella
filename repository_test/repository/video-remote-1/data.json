@@ -1,0 +1,50 @@
+{
+	"metadata": {
+		"duration": 909.13,
+		"title": "Belmar 15 minutes (multiresolution)"
+	},
+	"streams": [
+		{
+			"sources": {
+				"mp4": [
+					{
+						"src": "https://repository.paellaplayer.upv.es/belmar-multiresolution/media/240-presenter.mp4",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "426",
+							"h": "240"
+						}
+					},
+					{
+						"src": "https://repository.paellaplayer.upv.es/belmar-multiresolution/media/480-presenter.mp4",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "852",
+							"h": "480"
+						}
+					},
+					{
+						"src": "https://repository.paellaplayer.upv.es/belmar-multiresolution/media/720-presenter.mp4",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1280",
+							"h": "720"
+						}
+					},
+					{
+						"src": "https://repository.paellaplayer.upv.es/belmar-multiresolution/media/720-presenter.mp4",
+						"mimetype": "video/mp4",
+						"res": {
+							"w": "1920",
+							"h": "1080"
+						}
+					}
+				]
+			},
+			"preview": "https://repository.paellaplayer.upv.es/belmar-multiresolution/preview/presenter_cut.jpg",
+			"content":"presentation"
+		}
+	],
+	"frameList": [
+	]
+}

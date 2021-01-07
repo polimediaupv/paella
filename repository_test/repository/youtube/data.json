@@ -1,0 +1,38 @@
+{
+	"metadata": {
+		"duration": 0,
+		"title": "Youtube sample"
+	},
+	"streams": [
+		{
+			"sources": {
+				"youtube": [
+					{
+						"id":"YNqsYt6-iB4",
+						"res": {
+							"w": 1280,
+							"h": 720
+						}
+					}
+				]
+			},
+			"preview": "490512.jpg",
+			"content":"presenter"
+		},
+		{
+			"sources": {
+				"youtube": [
+					{
+						"id":"LU4-fKcNVJk",
+						"res": {
+							"w": 1024,
+							"h": 768
+						}
+					}
+				]
+			},
+			"preview": "",
+			"content":"presentation"
+		}
+	]
+}
