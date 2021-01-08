@@ -11,3 +11,4 @@ tests/nightwatch/reports/*
 \.vscode/
 .eslintrc
 chromedriver.log
+dist
