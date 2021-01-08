@@ -34,7 +34,8 @@ const plugins = [
     }),
     new CopyWebpackPlugin({
         patterns: [
-            { from: 'config', to: 'config' }
+            { from: 'config', to: 'config' },
+            { from: 'repository_test/repository', to: 'repository'}
         ],
     })
 ]
