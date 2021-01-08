@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 6.4.6
+
+  * Bug fixed in footprint plugin
+
 * Paella 6.4.5
 
   * Improvements in dual stream video layout

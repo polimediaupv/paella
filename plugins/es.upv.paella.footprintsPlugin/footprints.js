@@ -115,8 +115,8 @@ paella.addPlugin(function() {
 			var thisClass = this;
 			paella.data.read('footprints',{id:paella.initDelegate.getId()},function(data,status) {
 				var footPrintsData = {};
-				paella.player.videoContainer.duration().then(function(duration){
-					var trimStart = Math.floor(paella.player.videoContainer.trimStart());
+				paella.player.videoContainer.duration().then(async (duration) => {
+					var trimStart = Math.floor(await paella.player.videoContainer.trimStart());
 	
 					var lastPosition = -1;
 					var lastViews = 0;
