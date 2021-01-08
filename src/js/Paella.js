@@ -6,16 +6,9 @@ import {
     defaultGetManifestFileUrlFunction,
     defaultLoadVideoManifestFunction
 } from './core/initFunctions';
+import { createElement } from './core/dom';
 
 import twitterIcon from '../../icons/twitter.svg';
-
-function buildTestDocument(containerElement, message) {    
-    containerElement.innerHTML = `
-        <h1>Webpack base config test</h1>
-        <p>${message}</p>
-        <img src=${twitterIcon} alt="arrow-left"></img>
-        `;
-}
 
 export default class Paella {
     constructor(containerElement, initParams = {}) {
@@ -124,8 +117,17 @@ export default class Paella {
         console.debug("Video manifest loaded:");
         console.debug(this.videoManifest);
 
-        // TODO: Lazy load
-        buildTestDocument(this._containerElement, `Manifest file loaded from URL: "${this.manifestFileUrl}"`);
+        // TODO: lazy load, load, etc.
+        const title = "Paella player 7.0 implementation tests";
+        const message = `Manifest file loaded from URL: "${this.manifestFileUrl}"`;
+        this._containerElement.appendChild(createElement({
+            tag: 'div',
+            attributes: { "class":"test" },
+            children: `
+            <h1>${title}</h1>
+            <p>${message}</p>
+            <img src=${twitterIcon} alt="arrow-left"></img>`
+        }));
 
         // TODO: add two ready flags, one for lazy load and another for full load
     }
