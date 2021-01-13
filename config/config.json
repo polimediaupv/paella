@@ -1,4 +1,10 @@
 {
     "repositoryUrl": "repository",
-    "manifestFileName": "data.json"
+    "manifestFileName": "data.json",
+
+    "plugins": {
+        "es.upv.paella.Plugin": {
+            "enabled": true
+        }
+    }
 }

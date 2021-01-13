@@ -1,11 +1,32 @@
 # Initialization
 
 ## 1. Create Paella Player instance with basic initialization
+### 1.1. Load player
 
 ```javascript
 const initParams = {};
 const paella = new Paella('container-id', initParams);
 paella.load()
+    .then(() => console.log("Initialization done"))
+    .catch(e => console.error(e));
+```
+
+### 1.2. Lazy load
+
+To load the minimum amount of data needed to present the video thumbnail, you can load the player in two steps. The `load()` function used in the previous section is implemented like this:
+
+```javascript
+async load() {
+    await this.loadManifest();
+    await this.loadPlayer();
+}
+```
+
+If you only call `loadManifest()`, paella will only load the manifest and the plugins of type `preload`, which will leave the player ready for the user to complete the load when clicked. At that point the 'loadPlayer()` will be called.:
+
+```javascript
+const paella = new Paella('container-id');
+paella.loadManifest()
     .then(() => console.log("Initialization done"))
     .catch(e => console.error(e));
 ```

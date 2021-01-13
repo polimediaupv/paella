@@ -7,6 +7,7 @@ import {
     defaultLoadVideoManifestFunction
 } from './core/initFunctions';
 import { createElement } from './core/dom';
+import { registerPlugins } from './core/Plugin';
 
 import twitterIcon from '../../icons/twitter.svg';
 
@@ -101,9 +102,12 @@ export default class Paella {
         return this._videoManifest;
     }
 
-    async load() {
+    async loadManifest() {
         console.debug("Loading paella player");
         this._config = await this.initParams.loadConfig(this.configUrl);
+
+        registerPlugins(this._config);
+        
         this._videoId = await this.initParams.getVideoId();
 
         this._manifestUrl = await this.initParams.getManifestUrl(this.repositoryUrl,this.videoId);
@@ -117,6 +121,10 @@ export default class Paella {
         console.debug("Video manifest loaded:");
         console.debug(this.videoManifest);
 
+        // TODO load the "preload" type plugins
+    }
+
+    async loadPlayer() {
         // TODO: lazy load, load, etc.
         const title = "Paella player 7.0 implementation tests";
         const message = `Manifest file loaded from URL: "${this.manifestFileUrl}"`;
@@ -130,5 +138,10 @@ export default class Paella {
         }));
 
         // TODO: add two ready flags, one for lazy load and another for full load
+    }
+
+    async load() {
+        await this.loadManifest();
+        await this.loadPlayer();
     }
 }
