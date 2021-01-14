@@ -115,7 +115,7 @@ export default class Paella {
         console.debug("Loading paella player");
         this._config = await this.initParams.loadConfig(this.configUrl);
 
-        registerPlugins(this._config);
+        registerPlugins(this);
 
         this._videoId = await this.initParams.getVideoId();
 

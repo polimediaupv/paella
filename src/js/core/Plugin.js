@@ -1,49 +1,54 @@
+import PlayerResource from './PlayerResource';
 
 
-const s_pluginClasses = [];
-const s_pluginInstances = {};
+export function registerPlugins(player) {
+    const config = player.config;
+    player.__pluginData__ = player.__pluginData__ || {
+        pluginClasses: [],
+        pluginInstances: {}
+    };
 
-export function registerPlugins(config) {
     // If the s_pluginClasses array is not empty, the plugins have already been registered
-    if (s_pluginClasses.length !== 0) return;
+    if (player.__pluginData__.pluginClasses.length !== 0) return;
 
     // Import plugins
     const context = require.context('../plugins', true, /\.js/);
     context.keys().forEach(key => {
         const module = context(key);
         const PluginClass = module.default;
-        const pluginInstance = new PluginClass(config,key.substring(2,key.length - 3));
+        const pluginInstance = new PluginClass(player, config, key.substring(2,key.length - 3));
         const type = pluginInstance.type;
-        s_pluginClasses[key] = PluginClass;
-        s_pluginInstances[type] = s_pluginInstances[type] || [];
-        s_pluginInstances[type].push(pluginInstance);
+        player.__pluginData__.pluginClasses[key] = PluginClass;
+        player.__pluginData__.pluginInstances[type] = player.__pluginData__.pluginInstances[type] || [];
+        player.__pluginData__.pluginInstances[type].push(pluginInstance);
         
     });
 
     console.debug("Plugins have been registered:")
 
     // Sort plugins
-    for (const type in s_pluginInstances) {
-        s_pluginInstances[type].sort((a,b) => a.order - b.order);
-        s_pluginInstances[type].forEach(p => console.debug(`type: ${type}, name: ${p.name}`));
+    for (const type in player.__pluginData__.pluginInstances) {
+        player.__pluginData__.pluginInstances[type].sort((a,b) => a.order - b.order);
+        player.__pluginData__.pluginInstances[type].forEach(p => console.debug(`type: ${type}, name: ${p.name}`));
     }
 }
 
-export function getPluginsOfType(type) {
-    return s_pluginInstances[type];
+export function getPluginsOfType(player,type) {
+    return player.__pluginData__?.pluginInstances[type];
 }
 
-export async function loadPluginsOfType(playerInstance,type) {
-    s_pluginInstances[type]?.forEach(async (plugin) => {
-        const enabled = await plugin.isEnabled(playerInstance);
+export async function loadPluginsOfType(player,type) {
+    player.__pluginData__.pluginInstances[type]?.forEach(async (plugin) => {
+        const enabled = await plugin.isEnabled();
         if (enabled) {
-            await plugin.load(playerInstance);
+            await plugin.load();
         }
     })
 }
 
-export default class Plugin {
-    constructor(config,name) {
+export default class Plugin extends PlayerResource {
+    constructor(player,config,name) {
+        super(player);
         this._config = config.plugins[this.name];
         this._name = name;
     }
@@ -56,11 +61,11 @@ export default class Plugin {
     
     get name() { return this._name; }
 
-    async isEnabled(playerInstance) {
+    async isEnabled() {
         return true;
     }
 
-    async load(playerInstance) {
+    async load() {
 
     }
 }

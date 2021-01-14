@@ -15,6 +15,10 @@ export default class PreviewContainer extends DomClass {
             "style": g_style.replace('[BACKGROUND_IMAGE]', backgroundImage)
         };
         super(player, {attributes, parent: parentElement});
+
+        this.element.addEventListener("click", (evt) => {
+            player.play();
+        });
     }
 
     loadBackgroundImage(src) {

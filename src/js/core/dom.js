@@ -1,4 +1,6 @@
 
+import PlayerResource from './PlayerResource';
+
 export function createElement({tag='div',attributes={},children="",parent=null}) {
     const result = document.createElement(tag);
     for (let key in attributes) {
@@ -11,14 +13,10 @@ export function createElement({tag='div',attributes={},children="",parent=null})
     return result;
 }
 
-export class DomClass {
+export class DomClass extends PlayerResource {
     constructor(player, {tag='div',attributes=[],children="",parent=null}) {
-        this._player = player;
+        super(player);
         this._element = createElement({tag,attributes,children,parent});
-    }
-
-    get player() {
-        return this._player;
     }
 
     get element() {

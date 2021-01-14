@@ -15,6 +15,8 @@ export default class VideoContainer extends DomClass {
 
     async load(streamData) {
         this._ready = true;
+
+        console.log("Load videos");
     }
 
     get ready() {
