@@ -43,8 +43,10 @@ const plugins = [
 module.exports = {
     entry: './src/index.js',
     output: {
-        filename: 'paella-player-[contenthash].js'
+        filename: 'paella-player-[contenthash].js',
+        sourceMapFilename: 'paella-player-[contenthash].js.map'
     },
+    devtool: "source-map",
 
     module: {
         rules: [

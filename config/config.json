@@ -3,7 +3,10 @@
     "manifestFileName": "data.json",
 
     "plugins": {
-        "es.upv.paella.Plugin": {
+        "es.upv.paella.TestPlugin": {
+            "enabled": true
+        },
+        "es.upv.paella.TestPlugin2": {
             "enabled": true
         }
     }

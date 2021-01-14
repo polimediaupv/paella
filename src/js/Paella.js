@@ -8,6 +8,8 @@ import {
 } from './core/initFunctions';
 import { createElement } from './core/dom';
 import { registerPlugins } from './core/Plugin';
+import VideoContainer from './core/VideoContainer';
+import PreviewContainer from './core/PreviewContainer';
 
 import twitterIcon from '../../icons/twitter.svg';
 
@@ -38,7 +40,6 @@ export default class Paella {
         this._videoManifest = null;
 
         // Load status flags
-        this._videoLoaded = false;
         this._playerLoaded = false;
     }
 
@@ -57,7 +58,7 @@ export default class Paella {
 
     // The video streams are loaded
     get videoLoaded() {
-        return this._videoLoaded;
+        return this.videoContainer?.ready || false;
     }
 
     // The player user interface is loaded
@@ -102,12 +103,20 @@ export default class Paella {
         return this._videoManifest;
     }
 
+    get previewContainer() {
+        return this._previewContainer;
+    }
+
+    get videoContainer() {
+        return this._videoContainer;
+    }
+
     async loadManifest() {
         console.debug("Loading paella player");
         this._config = await this.initParams.loadConfig(this.configUrl);
 
         registerPlugins(this._config);
-        
+
         this._videoId = await this.initParams.getVideoId();
 
         this._manifestUrl = await this.initParams.getManifestUrl(this.repositoryUrl,this.videoId);
@@ -118,6 +127,9 @@ export default class Paella {
 
         this._videoManifest = await this.initParams.loadVideoManifest(this.manifestFileUrl);
 
+        const { preview } = this.videoManifest?.metadata;
+        this._previewContainer = new PreviewContainer(this, this._containerElement, preview);
+
         console.debug("Video manifest loaded:");
         console.debug(this.videoManifest);
 
@@ -125,23 +137,34 @@ export default class Paella {
     }
 
     async loadPlayer() {
-        // TODO: lazy load, load, etc.
-        const title = "Paella player 7.0 implementation tests";
-        const message = `Manifest file loaded from URL: "${this.manifestFileUrl}"`;
-        this._containerElement.appendChild(createElement({
-            tag: 'div',
-            attributes: { "class":"test" },
-            children: `
-            <h1>${title}</h1>
-            <p>${message}</p>
-            <img src=${twitterIcon} alt="arrow-left"></img>`
-        }));
-
         // TODO: add two ready flags, one for lazy load and another for full load
+        this._videoContainer = new VideoContainer(this, this._containerElement);
+        
+        await this.videoContainer.load(this.videoManifest?.streams);
+
+        // TODO: this._playerLoaded = true;  the player user interface is loaded
     }
 
     async load() {
         await this.loadManifest();
         await this.loadPlayer();
     }
+
+    // Playback functions
+    async play() {
+        if (!this.videoContainer) {
+            await this.loadPlayer();
+        }
+
+        await this.videoContainer.play();
+    }
+
+    async pause() {
+        await this.videoContainer?.play();
+    }
+
+    async stop() {
+        await this.videoContainer?.stop();
+    }
+
 }
