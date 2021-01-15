@@ -54,8 +54,8 @@ export async function loadPluginsOfType(player,type) {
 export default class Plugin extends PlayerResource {
     constructor(player,config,name) {
         super(player);
-        this._config = config.plugins[this.name];
         this._name = name;
+        this._config = config.plugins[this.name];
     }
 
     get config() { return this._config; }

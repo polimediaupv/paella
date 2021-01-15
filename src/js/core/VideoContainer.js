@@ -1,5 +1,6 @@
 
 import { DomClass } from './dom';
+import { getValidLayouts } from './VideoLayout';
 
 export default class VideoContainer extends DomClass {
 
@@ -15,6 +16,10 @@ export default class VideoContainer extends DomClass {
 
     async load(streamData) {
         this._ready = true;
+
+        const validLayouts = getValidLayouts(this.player, streamData);
+
+        console.log(validLayouts);
 
         console.log("Load videos");
     }

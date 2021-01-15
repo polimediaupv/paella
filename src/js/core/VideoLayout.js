@@ -18,12 +18,39 @@ export default class VideoLayout extends Plugin {
 
     // Return the array of valid content in the configuration of the plugin
     get validContent() {
-        return [];
+        return this.config?.validContent;
+    }
+
+    // Get the valid stream data combination, according to the plugin configuration
+    // The result of this function must be an array of arrays with all the possible
+    // combinations. For example, for a dual stream layout and three elements in
+    // streamData that matches the valid content, the resulting valid streams must be:
+    // [
+    //      [streamA, streamB],
+    //      [streamA, streamC],
+    //      [streamC, streamB]   
+    // ]
+    getValidStreams(streamData) {
+        const validStreams = [];
+        this.validContent.forEach(validContent => {
+            let validStreamCombination = [];
+            if (validContent.every(c => {
+                return streamData.some(sd => {
+                    if (c === sd.content) {
+                        validStreamCombination.push(sd);
+                        return true;
+                    }
+                })
+            })) {
+                validStreams.push(validStreamCombination);
+            }
+        });
+
+        return validStreams;
     }
 
     canApply(streamData) {
-        // Check if the streamData can be applied to this layout
-        return false;
+        return this.getValidStreams(streamData).length > 0;
     }
 
 }

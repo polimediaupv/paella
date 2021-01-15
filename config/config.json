@@ -8,6 +8,22 @@
         },
         "es.upv.paella.TestPlugin2": {
             "enabled": true
+        },
+        "es.upv.paella.singleVideo": {
+            "enabled": true,
+            "validContent": [
+                ["presenter"],
+                ["presentation"],
+                ["presenter-2"]
+            ]
+        },
+        "es.upv.paella.dualVideo": {
+            "enabled": true,
+            "validContent": [
+                ["presenter","presentation"],
+                ["presenter-2","presentation"],
+                ["presenter","presenter-2"]
+            ]
         }
     }
 }
