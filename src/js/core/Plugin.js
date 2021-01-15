@@ -1,5 +1,17 @@
 import PlayerResource from './PlayerResource';
 
+export function importPlugins(player,context) {
+    const config = player.config;
+    context.keys().forEach(key => {
+        const module = context(key);
+        const PluginClass = module.default;
+        const pluginInstance = new PluginClass(player, config, key.substring(2,key.length - 3));
+        const type = pluginInstance.type;
+        player.__pluginData__.pluginClasses[key] = PluginClass;
+        player.__pluginData__.pluginInstances[type] = player.__pluginData__.pluginInstances[type] || [];
+        player.__pluginData__.pluginInstances[type].push(pluginInstance);
+    });
+}
 
 export function registerPlugins(player) {
     const config = player.config;
@@ -12,17 +24,10 @@ export function registerPlugins(player) {
     if (player.__pluginData__.pluginClasses.length !== 0) return;
 
     // Import plugins
-    const context = require.context('../plugins', true, /\.js/);
-    context.keys().forEach(key => {
-        const module = context(key);
-        const PluginClass = module.default;
-        const pluginInstance = new PluginClass(player, config, key.substring(2,key.length - 3));
-        const type = pluginInstance.type;
-        player.__pluginData__.pluginClasses[key] = PluginClass;
-        player.__pluginData__.pluginInstances[type] = player.__pluginData__.pluginInstances[type] || [];
-        player.__pluginData__.pluginInstances[type].push(pluginInstance);
-        
-    });
+    const pluginContext = require.context('../plugins', true, /\.js/);
+    importPlugins(player,pluginContext);
+    const layoutContext = require.context('../layouts', true, /\.js/);
+    importPlugins(player,layoutContext);
 
     console.debug("Plugins have been registered:")
 

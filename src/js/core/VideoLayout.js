@@ -23,7 +23,6 @@ export default class VideoLayout extends Plugin {
 
     canApply(streamData) {
         // Check if the streamData can be applied to this layout
-        // TODO: Check de configuration file to get the valid content
         return false;
     }
 
