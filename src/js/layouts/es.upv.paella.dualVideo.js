@@ -13,4 +13,8 @@ export default class DualVideoLayout extends VideoLayout {
         return super.getValidStreams(streamData)
             .filter(stream => stream.length === 2);
     }
+
+    getLayoutStructure(streamData, contentId) {
+        return null;
+    }
 }

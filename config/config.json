@@ -12,17 +12,17 @@
         "es.upv.paella.singleVideo": {
             "enabled": true,
             "validContent": [
-                ["presenter"],
-                ["presentation"],
-                ["presenter-2"]
+                { "id": "presenter", "content": ["presenter"] },
+                { "id": "presentation", "content": ["presentation"] },
+                { "id": "presenter-2", "content": ["presenter-2"] }
             ]
         },
         "es.upv.paella.dualVideo": {
             "enabled": true,
             "validContent": [
-                ["presenter","presentation"],
-                ["presenter-2","presentation"],
-                ["presenter","presenter-2"]
+                { "id": "presenter-presentation", "content": ["presenter","presentation"] },
+                { "id": "presenter-2-presentation", "content": ["presenter-2","presentation"] },
+                { "id": "presenter-presenter-2", "content": ["presenter","presenter-2"] }
             ]
         }
     }
