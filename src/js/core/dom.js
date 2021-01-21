@@ -17,6 +17,11 @@ export class DomClass extends PlayerResource {
     constructor(player, {tag='div',attributes=[],children="",parent=null}) {
         super(player);
         this._element = createElement({tag,attributes,children,parent});
+
+        // Add a getter as a shortcut to the DOM element tag
+        Object.defineProperty(this, tag, {
+            get: () => this._element
+        });
     }
 
     get element() {
