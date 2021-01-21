@@ -28,6 +28,8 @@ export function registerPlugins(player) {
     importPlugins(player,pluginContext);
     const layoutContext = require.context('../layouts', true, /\.js/);
     importPlugins(player,layoutContext);
+    const videoContext = require.context('../videoFormats', true, /\.js/);
+    importPlugins(player,videoContext);
 
     console.debug("Plugins have been registered:")
 

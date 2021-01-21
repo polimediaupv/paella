@@ -10,7 +10,7 @@ A video format is composed by two elements:
 ```javascript
 import VideoPlugin, { Video } from 'paella/core/VideoPlugin';
 
-export default class MyVideoPlayer extends Video {
+export class MyVideoPlayer extends Video {
 
     constructor(player, parent) {
         super(player, {
