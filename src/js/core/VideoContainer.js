@@ -1,7 +1,7 @@
 
 import { DomClass } from './dom';
 import { getValidLayouts, getValidContentIds, getLayoutStructure } from './VideoLayout';
-import { getVideoPlugins } from './VideoPlugin';
+import { getVideoPlugin } from './VideoPlugin';
 
 function getStreamWithContent(streamData, content) {
     const result = streamData.filter(sd => sd.content === content);
@@ -88,8 +88,14 @@ export default class VideoContainer extends DomClass {
         console.log("Load videos");
 
         // TODO: load videos
-        const videoPlugins = getVideoPlugins(this.player);
-        console.log(videoPlugins);
+        this._streamData.forEach(async stream => {
+            const videoPlugin = getVideoPlugin(this.player, stream);
+            console.log(videoPlugin);
+            if (!videoPlugin) {
+                throw Error(`Incompatible stream type: ${ stream.content }`)
+            }
+            console.log(videoPlugin);
+        })
 
         loadLayout.apply(this);
     }

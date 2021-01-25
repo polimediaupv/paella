@@ -9,7 +9,7 @@ export default class VideoPlugin extends Plugin {
 
     get streamType() { return "mp4"; }
 
-    async isCompatible() {
+    isCompatible(/* streamData */) {
         return false;
     }
 
@@ -22,7 +22,18 @@ export function getVideoPlugins(player) {
     return getPluginsOfType(player, "video");
 }
 
-//export function getPlayer
+export function getVideoPlugin(player, streamData) {
+    const videoPlugins = getVideoPlugins(player);
+    let plugin = null;
+    
+    videoPlugins.some(p => {
+        if (p.isCompatible(streamData)) { // TODO: Implement this condition
+            plugin = p;
+            return true;
+        }
+    });
+    return plugin;
+}
 
 export class Video extends DomClass {
     constructor(tag, player, parent) {

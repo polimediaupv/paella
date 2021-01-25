@@ -1,5 +1,17 @@
 import VideoPlugin, { Video } from '../core/VideoPlugin';
 
+let video = null;
+
+export function supportsVideoType(type) {
+    if (!type) return false;
+    if (!video) {
+        video = document.createElement("video");
+    }
+
+    const canPlay = video.canPlayType(type);
+    return canPlay === "maybe" || canPlay === "probably";
+}
+
 export class Mp4Video extends Video {
     constructor(tag, player, parent) {
         super('video', player, parent);
@@ -37,7 +49,9 @@ export class Mp4Video extends Video {
     // This function is called when the player loads, and it should
     // make everything ready for video playback to begin.
     async loadStreamData(streamData) {
+        console.log(streamData);
         console.log("loadStreamData");
+        
     }
 }
 
@@ -46,8 +60,9 @@ export default class Mp4VideoPlugin extends VideoPlugin {
         return "mp4";
     }
 
-    async isCompatible() {
-        return true;
+    isCompatible(streamData) {
+        const { mp4 } = streamData.sources;
+        return mp4 && supportsVideoType(mp4[0]?.mimetype);
     }
 
     async getVideoInstance(playerContainer) {
