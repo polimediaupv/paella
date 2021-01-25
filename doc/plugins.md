@@ -103,16 +103,7 @@ Within each plugin type, the loading order is defined by the `order` attribute i
 }
 ```
 
-Para definir el orden de carga de los distintos tipos de plugins, se utiliza el array `pluginTypes` dentro de la configuración. Para definir un tipo de plugin no es imprescindible añadirlo a este array, pero si no se añade el orden de carga no está definido:
-
-```json
-{
-    "pluginTypes": [
-        "layout",
-        "video"
-    ]
-}
-```
+As for the loading order of plugin types, it depends on the implementation. For example, plugins of type `button`, which add buttons to the interface, will be loaded when Paella Player loads the playbar, plugins of type `video` will be loaded when Paella Player has to determine the type of video stream it has to process, and so on.
 
 ## Create a plugin type
 
