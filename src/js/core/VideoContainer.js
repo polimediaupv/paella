@@ -1,6 +1,7 @@
 
 import { DomClass } from './dom';
 import { getValidLayouts, getValidContentIds, getLayoutStructure } from './VideoLayout';
+import { getVideoPlugins } from './VideoPlugin';
 
 function getStreamWithContent(streamData, content) {
     const result = streamData.filter(sd => sd.content === content);
@@ -87,6 +88,8 @@ export default class VideoContainer extends DomClass {
         console.log("Load videos");
 
         // TODO: load videos
+        const videoPlugins = getVideoPlugins(this.player);
+        console.log(videoPlugins);
 
         loadLayout.apply(this);
     }

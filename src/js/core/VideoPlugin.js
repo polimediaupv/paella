@@ -1,7 +1,7 @@
 
 
 import { DomClass } from './dom';
-import Plugin from './dom/Plugin';
+import Plugin, { getPluginsOfType } from './Plugin';
 
 
 export default class VideoPlugin extends Plugin {
@@ -17,6 +17,12 @@ export default class VideoPlugin extends Plugin {
         return null;
     }
 }
+
+export function getVideoPlugins(player) {
+    return getPluginsOfType(player, "video");
+}
+
+//export function getPlayer
 
 export class Video extends DomClass {
     constructor(tag, player, parent) {

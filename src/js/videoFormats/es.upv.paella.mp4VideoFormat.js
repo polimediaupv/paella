@@ -6,6 +6,39 @@ export class Mp4Video extends Video {
     }
 
     // TODO: implement
+    async play() {  }
+    
+    async pause() {  }
+
+    async duration() { }
+
+    async currentTime() { }
+
+    async setCurrentTime(t) {  }
+
+    async volume() {  }
+
+    async setVolume(v) { }
+
+    async paused() { }
+
+    async playbackRate() { }
+
+    async setPlaybackRate() { }
+
+    async getQualities() { }
+
+    async setQuality(q) {  }
+
+    get currentQuality() {  }
+
+    async getDimensions() { }
+
+    // This function is called when the player loads, and it should
+    // make everything ready for video playback to begin.
+    async loadStreamData(streamData) {
+        console.log("loadStreamData");
+    }
 }
 
 export default class Mp4VideoPlugin extends VideoPlugin {

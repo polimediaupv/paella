@@ -77,3 +77,23 @@ export default class MyVideoPlugin extends VideoPlugin {
     }
 }
 ```
+
+## Video plugin priorities
+
+To determine the loading order of the video plugins, the `order` attribute of the configuration is used, so that if there are several plugins compatible with a stream, the one with the lowest value will be loaded first.
+
+```json
+{
+    ...
+    "plugins": {
+        "es.upv.paella.mp4VideoFormat": {
+            "enabled": true,
+            "order": 1,
+        },
+        "es.upv.paella.hlsVideoFormat": {
+            "enabled": true,
+            "order": 0,
+        },
+    }
+}
+```

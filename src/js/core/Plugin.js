@@ -1,4 +1,5 @@
 import PlayerResource from './PlayerResource';
+import pluginRequireContext from '../../../plugin_directories';
 
 export function importPlugins(player,context) {
     const config = player.config;
@@ -24,12 +25,7 @@ export function registerPlugins(player) {
     if (player.__pluginData__.pluginClasses.length !== 0) return;
 
     // Import plugins
-    const pluginContext = require.context('../plugins', true, /\.js/);
-    importPlugins(player,pluginContext);
-    const layoutContext = require.context('../layouts', true, /\.js/);
-    importPlugins(player,layoutContext);
-    const videoContext = require.context('../videoFormats', true, /\.js/);
-    importPlugins(player,videoContext);
+    pluginRequireContext.forEach(ctx => importPlugins(player, ctx));
 
     console.debug("Plugins have been registered:")
 
@@ -64,7 +60,7 @@ export default class Plugin extends PlayerResource {
 
     get type() { return "none"; }
 
-    get order() { return 0; }
+    get order() { return this._config?.order || 0; }
     
     get name() { return this._name; }
 
