@@ -8,8 +8,9 @@ function getStreamWithContent(streamData, content) {
     return result.length >= 1 ? result[0] : null;
 }
 
-function loadLayout() {
+function loadLayout(streams) {
     // TODO: load the selected layout
+    console.log(streams);
 
     // Current layout: if not selected, load de default layout
     if (!this._layoutId) {
@@ -74,6 +75,8 @@ export default class VideoContainer extends DomClass {
         this._ready = false;
 
         this._layoutId = null;
+
+        this._players = [];
     }
 
     get layoutId() {
@@ -85,23 +88,40 @@ export default class VideoContainer extends DomClass {
 
         this._streamData = streamData;
 
-        console.log("Load videos");
+        console.debug("Loading streams and layout");
 
-        // TODO: load videos
-        this._streamData.forEach(async stream => {
+        // Find video plugins for each stream
+        const streams = {};
+        this._streamData.forEach(stream => {
             const videoPlugin = getVideoPlugin(this.player, stream);
-            console.log(videoPlugin);
             if (!videoPlugin) {
                 throw Error(`Incompatible stream type: ${ stream.content }`)
             }
-            console.log(videoPlugin);
-        })
+            streams[stream.content] = {
+                stream,
+                videoPlugin
+            };
+        });
 
-        loadLayout.apply(this);
+        // Load players and stream data, and store the players in
+        // this.players attribute
+        for (const content in streams) {
+            const s = streams[content];
+            s.player = await s.videoPlugin.getVideoInstance(this.element);
+            await s.player.load(s.stream);
+            this._players.push(s.player);
+        }
+
+        // Load video layout
+        loadLayout.apply(this, [streams]);
     }
 
     get ready() {
         return this._ready;
+    }
+
+    get players() {
+        return this._players;
     }
 
     async play() {

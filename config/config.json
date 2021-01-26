@@ -24,6 +24,14 @@
                 { "id": "presenter-2-presentation", "content": ["presenter-2","presentation"] },
                 { "id": "presenter-presenter-2", "content": ["presenter","presenter-2"] }
             ]
+        },
+        "es.upv.paella.hlsVideoFormat": {
+            "enabled": true,
+            "order": 0
+        },
+        "es.upv.paella.mp4VideoFormat": {
+            "enabled": true,
+            "order": 1
         }
     }
 }

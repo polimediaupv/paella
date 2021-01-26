@@ -15,6 +15,10 @@ import twitterIcon from '../../icons/twitter.svg';
 
 export default class Paella {
     constructor(containerElement, initParams = {}) {
+        // Debug: create an array of all paella player instances
+        window.__paella_instances__ = window.__paella_instances__ || [];
+        window.__paella_instances__.push(this);
+        
         console.debug("New paella player instance");
 
         if (typeof(containerElement) === "string") {

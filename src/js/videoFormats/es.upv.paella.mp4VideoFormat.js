@@ -18,13 +18,25 @@ export class Mp4Video extends Video {
     }
 
     // TODO: implement
-    async play() {  }
+    async play() { 
+        await this.waitForLoaded();
+        return this.video.play();
+    }
     
-    async pause() {  }
+    async pause() {
+        await this.waitForLoaded();
+        return this.video.pause();
+    }
 
-    async duration() { }
+    async duration() {
+        await this.waitForLoaded();
+        return this.video.duration;
+    }
 
-    async currentTime() { }
+    async currentTime() {
+        await this.waitForLoaded();
+        return this.video.currentTime;
+    }
 
     async setCurrentTime(t) {  }
 
@@ -44,14 +56,46 @@ export class Mp4Video extends Video {
 
     get currentQuality() {  }
 
-    async getDimensions() { }
+    async getDimensions() {
+        await this.waitForLoaded();
+        return { w: this.video.videoWidth, h: this.video.videoHeight };
+    }
 
     // This function is called when the player loads, and it should
     // make everything ready for video playback to begin.
     async loadStreamData(streamData) {
-        console.log(streamData);
-        console.log("loadStreamData");
+        console.debug("es.upv.paella.mp4VideoFormat: loadStreamData");
+
+        this._sources = null;
+        this._currentQuality = 0;
+
+        this._sources = streamData.sources.mp4;
+        console.log(this._sources);
         
+        this._currentQuality = this._sources.length - 1;
+        this._currentSource = this._sources[this._currentQuality];
+
+        this.video.src = this._currentSource.src;
+
+        await this.waitForLoaded();
+
+        console.debug(`es.upv.paella.mp4VideoFormat (${ this.streamData.content }): video loaded and ready.`);
+    }
+
+    async waitForLoaded() {
+        return new Promise((resolve,reject) => {
+            if (this.ready) {
+                resolve();
+            }
+            else {
+                this.video.addEventListener('loadeddata', () => {
+                    if (this.video.readyState >= 2) {
+                        this._ready = true;
+                        resolve();
+                    }
+                })
+            }
+        })
     }
 }
 
