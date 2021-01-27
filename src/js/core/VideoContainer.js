@@ -8,7 +8,7 @@ function getStreamWithContent(streamData, content) {
     return result.length >= 1 ? result[0] : null;
 }
 
-function loadLayout(streams) {
+async function loadLayout(streams) {
     // TODO: load the selected layout
     console.log(streams);
 
@@ -27,19 +27,26 @@ function loadLayout(streams) {
     const selectedContent = validIds[1];
     const layoutStructure = getLayoutStructure(this.player, this._streamData, selectedContent);
 
-    console.log(layoutStructure);
-    // validLayouts.forEach(lo => {
-    //     console.log(lo.getValidContentIds(streamData));
-    // })
+    // Hide all video players
+    for (const key in streams) {
+        const videoData = streams[key];
+        videoData.player.video.style.display = "none";
+    }
     
-    layoutStructure?.videos?.forEach(video => {
-        const stream = getStreamWithContent(this._streamData, video.content);
+    // Conversion factors for video rect
+    const wFactor = 100 / 1280;
+    const hFactor = 100 / 720;
+
+    layoutStructure?.videos?.forEach(async video => {
+        const videoData = streams[video.content];
+        const { stream } = videoData;
+        const { player } = videoData;
         console.log(video);
+        console.log(player);
         console.log(stream);
 
-        // TODO: select source (mp4, hls, image...)
-        const source = stream.sources.hls || stream.sources.mp4 || stream.sources.images;
-        const videoAspectRatio = 16/9;  // TODO: Get video aspect ratio
+        const res = await player.getDimensions();
+        const videoAspectRatio = res.w / res.h;  // TODO: Get video aspect ratio
 
         // TODO: Get aspect ratio
         let difference = Number.MAX_VALUE;
@@ -57,9 +64,13 @@ function loadLayout(streams) {
         console.log(resultRect);
 
 
-        // TODO: Select video rect with aspect ratio
+        // TODO: apply rectangle to player
 
-        // TODO: Create the DOM element
+        player.video.style.display = "block";
+        player.video.style.position = "absolute";
+ 
+
+        // TODO: Create theDOM element
     });
 }
 
@@ -67,7 +78,8 @@ export default class VideoContainer extends DomClass {
 
     constructor(player, parent) {
         const attributes = {
-            "class": "video-container"
+            "class": "video-container",
+            "style": "position: relative;"
         };
         const children = `<div class="background-container">video background</div>`
         super(player, {attributes, children, parent});
