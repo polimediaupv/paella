@@ -28,7 +28,15 @@ export class DomClass extends PlayerResource {
         return this._element;
     }
 
+    get parent() {
+        return this._element.parentElement;
+    }
+
     setAttribute(name,value) {
         this._element.setAttribute(name,value);
+    }
+
+    removeFromParent() {
+        this._element.parentElement.removeChild(this._element);
     }
 }

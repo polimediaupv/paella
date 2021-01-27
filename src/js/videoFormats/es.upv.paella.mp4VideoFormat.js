@@ -13,7 +13,7 @@ export function supportsVideoType(type) {
 }
 
 export class Mp4Video extends Video {
-    constructor(tag, player, parent) {
+    constructor(player, parent) {
         super('video', player, parent);
     }
 
@@ -38,23 +38,47 @@ export class Mp4Video extends Video {
         return this.video.currentTime;
     }
 
-    async setCurrentTime(t) {  }
+    async setCurrentTime(t) {
+        await this.waitForLoaded();
+        return this.video.currentTime = t;
+    }
 
-    async volume() {  }
+    async volume() {
+        await this.waitForLoaded();
+        return this.video.volume;
+    }
 
-    async setVolume(v) { }
+    async setVolume(v) {
+        await this.waitForLoaded();
+        return this.video.volume = v;
+    }
 
-    async paused() { }
+    async paused() {
+        await this.waitForLoaded();
+        return this.video.paused();
+    }
 
-    async playbackRate() { }
+    async playbackRate() {
+        await this.waitForLoaded();
+        return this.video.playbackRate;
+    }
 
-    async setPlaybackRate() { }
+    async setPlaybackRate(pr) {
+        await this.waitForLoaded();
+        return this.video.playbackRate = pr;
+    }
 
-    async getQualities() { }
+    async getQualities() {
+        // TODO: implement this
+    }
 
-    async setQuality(q) {  }
+    async setQuality(/* q */) {
+        // TODO: implement this
+    }
 
-    get currentQuality() {  }
+    get currentQuality() {
+        // TODO: implement this
+    }
 
     async getDimensions() {
         await this.waitForLoaded();

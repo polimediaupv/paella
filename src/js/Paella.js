@@ -146,6 +146,7 @@ export default class Paella {
         
         await this.videoContainer.load(this.videoManifest?.streams);
 
+        this._previewContainer.removeFromParent();
         // TODO: this._playerLoaded = true;  the player user interface is loaded
     }
 
