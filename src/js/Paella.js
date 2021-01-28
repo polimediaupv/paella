@@ -11,6 +11,8 @@ import { registerPlugins } from './core/Plugin';
 import VideoContainer from './core/VideoContainer';
 import PreviewContainer from './core/PreviewContainer';
 
+import "styles/base.css";
+
 import twitterIcon from '../../icons/twitter.svg';
 
 export default class Paella {
@@ -18,13 +20,15 @@ export default class Paella {
         // Debug: create an array of all paella player instances
         window.__paella_instances__ = window.__paella_instances__ || [];
         window.__paella_instances__.push(this);
-        
-        console.debug("New paella player instance");
 
+        console.debug("New paella player instance");
+        
         if (typeof(containerElement) === "string") {
             containerElement = document.getElementById(containerElement);
         }
-
+        
+        containerElement.classList.add("player-container");
+        
         this._containerElement = containerElement;
         this._initParams = initParams;
         
@@ -45,7 +49,14 @@ export default class Paella {
 
         // Load status flags
         this._playerLoaded = false;
+
+        const resize = () => {
+            this.resize();
+        }
+        window.addEventListener("resize", resize);
     }
+
+    get containerSize() { return { w: this._containerElement.offsetWidth, h: this._containerElement.offsetHeight }; }
 
     get initParams() { return this._initParams; }
 
@@ -153,6 +164,10 @@ export default class Paella {
     async load() {
         await this.loadManifest();
         await this.loadPlayer();
+    }
+
+    async resize() {
+        this.videoContainer?.updateLayout();
     }
 
     // Playback functions

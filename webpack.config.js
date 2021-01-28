@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require("path");
 
 const javascriptRules = {
     test: /\.js$/i,
@@ -55,5 +56,11 @@ module.exports = {
             imageRules
         ]
     },
-    plugins: plugins
+    plugins: plugins,
+    resolve: {
+        alias: {
+            paella: path.resolve(__dirname, "src/js"),
+            styles: path.resolve(__dirname, "src/css")
+        }
+    }
 }
