@@ -2,6 +2,7 @@
 import { DomClass } from 'paella/core/dom';
 import { getValidLayouts, getValidContentIds, getLayoutStructure } from 'paella/core/VideoLayout';
 import { getVideoPlugin } from 'paella/core/VideoPlugin';
+import StreamProvider from 'paella/core/StreamProvider';
 
 import 'styles/VideoContainer.css';
 
@@ -16,10 +17,10 @@ function getStreamWithContent(streamData, content) {
     return result.length >= 1 ? result[0] : null;
 }
 
-async function loadLayout(streams) {
-    this._streams = streams;
-
-    await this.updateLayout();
+async function loadLayout() {
+    console.log("Esto son los streams:");
+    console.log(this.streamProvider.streams);
+    await this.updateLayout(this.streamProvider.streams);
 }
 
 export default class VideoContainer extends DomClass {
@@ -45,6 +46,8 @@ export default class VideoContainer extends DomClass {
         this._layoutId = null;
 
         this._players = [];
+        
+        this._streamProvider = new StreamProvider(this.player, this.baseVideoRect);
     }
 
     get layoutId() {
@@ -54,38 +57,19 @@ export default class VideoContainer extends DomClass {
     get baseVideoRect() {
         return this._baseVideoRect;
     }
+    
+    get streamProvider() {
+        return this._streamProvider;
+    }
 
     async load(streamData) {
+        
+        await this.streamProvider.load(streamData);
+        
         this._ready = true;
-
-        this._streamData = streamData;
-
-        console.debug("Loading streams and layout");
-
-        // Find video plugins for each stream
-        const streams = {};
-        this._streamData.forEach(stream => {
-            const videoPlugin = getVideoPlugin(this.player, stream);
-            if (!videoPlugin) {
-                throw Error(`Incompatible stream type: ${ stream.content }`)
-            }
-            streams[stream.content] = {
-                stream,
-                videoPlugin
-            };
-        });
-
-        // Load players and stream data, and store the players in
-        // this.players attribute
-        for (const content in streams) {
-            const s = streams[content];
-            s.player = await s.videoPlugin.getVideoInstance(this.baseVideoRect);
-            await s.player.load(s.stream);
-            this._players.push(s.player);
-        }
-
+        
         // Load video layout
-        loadLayout.apply(this, [streams]);
+        loadLayout.apply(this);
     }
 
     async updateLayout() {
@@ -95,19 +79,19 @@ export default class VideoContainer extends DomClass {
             // TODO: check if the default layout can be applied to the stream data
         }
 
-        const validLayouts = getValidLayouts(this.player, this._streamData);
+        const validLayouts = getValidLayouts(this.player, this.streamProvider.streamData);
 
         //console.log(validLayouts);
-        const validIds = getValidContentIds(this.player, this._streamData);
+        const validIds = getValidContentIds(this.player, this.streamProvider.streamData);
         console.log(validIds);
 
         // TODO: get the selected layout
         const selectedContent = validIds[0];
-        const layoutStructure = getLayoutStructure(this.player, this._streamData, selectedContent);
+        const layoutStructure = getLayoutStructure(this.player, this.streamProvider.streamData, selectedContent);
 
         // Hide all video players
-        for (const key in this._streams) {
-            const videoData = this._streams[key];
+        for (const key in this.streamProvider.streams) {
+            const videoData = this.streamProvider.streams[key];
             videoData.player.video.style.display = "none";
         }
 
@@ -126,7 +110,7 @@ export default class VideoContainer extends DomClass {
         this.baseVideoRect.style.height = containerCurrentSize.h;
 
         layoutStructure?.videos?.forEach(async video => {
-            const videoData = this._streams[video.content];
+            const videoData = this.streamProvider.streams[video.content];
             const { stream } = videoData;
             const { player } = videoData;
             console.log(video);
@@ -147,26 +131,20 @@ export default class VideoContainer extends DomClass {
                 }
             });
 
-            // TODO: apply rectangle to player
-
             player.video.style.display = "block";
             player.video.style.position = "absolute";
             player.video.style.left = `${ resultRect.left * wFactor }%`;
             player.video.style.top = `${ resultRect.top * wFactor }%`;
             player.video.style.width = `${ resultRect.width * wFactor }%`;
             player.video.style.height = `${ resultRect.height * hFactor }%`;
-
-
-            // TODO: Create theDOM element
+            
         });
+        
+        // TODO: apply structure to buttons and other elements
     }
 
     get ready() {
         return this._ready;
-    }
-
-    get players() {
-        return this._players;
     }
 
     async play() {
