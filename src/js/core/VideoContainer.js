@@ -148,15 +148,33 @@ export default class VideoContainer extends DomClass {
     }
 
     async play() {
-
+        this.streamProvider.startStreamSync();
+        return await this.streamProvider.executeAction("play");
     }
 
     async pause() {
-
+        this.streamProvider.stopStreamSync();
+        return await this.streamProvider.executeAction("pause");
+    }
+    
+    async paused() {
+        return (await this.streamProvider.executeAction("paused"))[0];
     }
 
-    async stop() {
-
+    async setCurrentTime(t) {
+        return (await this.streamProvider.executeAction("setCurrentTime", [t]))[0];
+    }
+    
+    async currentTime() {
+        return (await this.streamProvider.executeAction("currentTime"))[0];
+    }
+    
+    async volume() {
+        return (await this.streamProvider.executeAction("volume"))[0];
+    }
+    
+    async setVolume(v) {
+        return (await this.streamProvider.executeAction("setVolume",[v]))[0];
     }
 }
 

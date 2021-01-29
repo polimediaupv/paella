@@ -8,6 +8,8 @@ export default class SteramProvider extends PlayerResource {
 		this._streamData = null;
 		this._streams = null;
 		this._players = [];
+		
+		this._streamSyncTimer = null;
 	}
 	
 	async load(streamData) {
@@ -51,4 +53,33 @@ export default class SteramProvider extends PlayerResource {
 	get streams() {
 		return this._streams;
 	}
+	
+	startStreamSync() {
+		
+	}
+	
+	stopStreamSync() {
+		
+	}
+	
+	executeAction(fnName, params = []) {
+		// Important: this implementation must be done using promises instead of async/await, due to
+		// a bug in babel that causes that the resulting array may not be available when the async function
+		// is completed.
+		return new Promise((resolve) => {
+			let res = [];
+			let p = [];
+			this.players.forEach(player => {
+				p.push(new Promise(innerResolve => {
+					player[fnName](...params).then(r => {
+						res.push(r);
+						innerResolve();
+					})
+				}));
+			})
+			
+			Promise.all(p).then(() => resolve(res));
+		})
+	}
+
 }

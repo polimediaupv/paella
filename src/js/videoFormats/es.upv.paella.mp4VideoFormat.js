@@ -55,12 +55,12 @@ export class Mp4Video extends Video {
 
     async paused() {
         await this.waitForLoaded();
-        return this.video.paused();
+        return this.video.paused;
     }
 
     async playbackRate() {
         await this.waitForLoaded();
-        return this.video.playbackRate;
+        return await this.video.playbackRate;
     }
 
     async setPlaybackRate(pr) {
