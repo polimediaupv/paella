@@ -102,7 +102,7 @@ export default class VideoContainer extends DomClass {
         console.log(validIds);
 
         // TODO: get the selected layout
-        const selectedContent = validIds[1];
+        const selectedContent = validIds[0];
         const layoutStructure = getLayoutStructure(this.player, this._streamData, selectedContent);
 
         // Hide all video players
@@ -135,8 +135,6 @@ export default class VideoContainer extends DomClass {
 
             const res = await player.getDimensions();
             const videoAspectRatio = res.w / res.h;  // TODO: Get video aspect ratio
-
-            // TODO: Get aspect ratio
             let difference = Number.MAX_VALUE;
             let resultRect = null;
             video.rect.forEach((videoRect) => {
@@ -149,13 +147,14 @@ export default class VideoContainer extends DomClass {
                 }
             });
 
-            console.log(resultRect);
-
-
             // TODO: apply rectangle to player
 
-            //player.video.style.display = "block";
+            player.video.style.display = "block";
             player.video.style.position = "absolute";
+            player.video.style.left = `${ resultRect.left * wFactor }%`;
+            player.video.style.top = `${ resultRect.top * wFactor }%`;
+            player.video.style.width = `${ resultRect.width * wFactor }%`;
+            player.video.style.height = `${ resultRect.height * hFactor }%`;
 
 
             // TODO: Create theDOM element
