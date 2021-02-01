@@ -13,6 +13,16 @@ export function createElement({tag='div',attributes={},children="",parent=null})
     return result;
 }
 
+export function createElementWithHtmlText(htmlText,parent = null) {
+    const tmpElem = document.createElement('div');
+    tmpElem.innerHTML = htmlText;
+    const result = tmpElem.children[0];
+    if (parent) {
+        parent.appendChild(result);
+    }
+    return result;
+}
+
 export class DomClass extends PlayerResource {
     constructor(player, {tag='div',attributes=[],children="",parent=null}) {
         super(player);

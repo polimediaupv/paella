@@ -2,6 +2,8 @@
     "repositoryUrl": "repository",
     "manifestFileName": "data.json",
 
+    "defaultLayout": "presenter-presentation",
+    
     "plugins": {
         "es.upv.paella.TestPlugin": {
             "enabled": true

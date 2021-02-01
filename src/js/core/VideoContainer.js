@@ -1,5 +1,5 @@
 
-import { DomClass } from 'paella/core/dom';
+import { DomClass, createElementWithHtmlText } from 'paella/core/dom';
 import { getValidLayouts, getValidContentIds, getLayoutStructure } from 'paella/core/VideoLayout';
 import { getVideoPlugin } from 'paella/core/VideoPlugin';
 import StreamProvider from 'paella/core/StreamProvider';
@@ -17,12 +17,6 @@ function getStreamWithContent(streamData, content) {
     return result.length >= 1 ? result[0] : null;
 }
 
-async function loadLayout() {
-    console.log("Esto son los streams:");
-    console.log(this.streamProvider.streams);
-    await this.updateLayout(this.streamProvider.streams);
-}
-
 export default class VideoContainer extends DomClass {
 
     constructor(player, parent) {
@@ -34,7 +28,6 @@ export default class VideoContainer extends DomClass {
         };
         const children = `
             <div class="${ baseVideoRectClass }">
-                <div class="background-container">video background</div>
             </div>
         `
         super(player, {attributes, children, parent});
@@ -43,7 +36,7 @@ export default class VideoContainer extends DomClass {
 
         this._ready = false;
 
-        this._layoutId = null;
+        this._layoutId = player.config.defaultLayout;
 
         this._players = [];
         
@@ -52,6 +45,20 @@ export default class VideoContainer extends DomClass {
 
     get layoutId() {
         return this._layoutId;
+    }
+    
+    async setLayout(layoutId) {
+        if (this.validContentIds.indexOf(layoutId) === -1) {
+            return false;
+        }
+        else {
+            this._layoutId = layoutId;
+            this.updateLayout();
+        }
+    }
+    
+    get validContentIds() {
+        return this._validContentIds;
     }
 
     get baseVideoRect() {
@@ -66,28 +73,28 @@ export default class VideoContainer extends DomClass {
         
         await this.streamProvider.load(streamData);
         
-        this._ready = true;
+        // Find the content identifiers that are compatible with the stream data
+        this._validContentIds = getValidContentIds(this.player, streamData);
         
         // Load video layout
-        loadLayout.apply(this);
+        await this.updateLayout();
+        
+        this._ready = true;
     }
 
+    // Return true if the layout this.layoutId is compatible with the current stream data.
     async updateLayout() {
-
-        // Current layout: if not selected, load de default layout
-        if (!this._layoutId) {
+        let status = true;
+        
+        
+        // Current layout: if not selected, or the selected layout is not compatible, load de default layout
+        if (!this._layoutId || this._validContentIds.indexOf(this._layoutId) === -1) {
             // TODO: check if the default layout can be applied to the stream data
+            this._layoutId = this._validContentIds[0];
+            status = false;
         }
 
-        const validLayouts = getValidLayouts(this.player, this.streamProvider.streamData);
-
-        //console.log(validLayouts);
-        const validIds = getValidContentIds(this.player, this.streamProvider.streamData);
-        console.log(validIds);
-
-        // TODO: get the selected layout
-        const selectedContent = validIds[0];
-        const layoutStructure = getLayoutStructure(this.player, this.streamProvider.streamData, selectedContent);
+        const layoutStructure = getLayoutStructure(this.player, this.streamProvider.streamData, this._layoutId);
 
         // Hide all video players
         for (const key in this.streamProvider.streams) {
@@ -121,6 +128,7 @@ export default class VideoContainer extends DomClass {
             const videoAspectRatio = res.w / res.h;  // TODO: Get video aspect ratio
             let difference = Number.MAX_VALUE;
             let resultRect = null;
+            
             video.rect.forEach((videoRect) => {
                 const aspectRatioData = /^(\d+.?\d*)\/(\d+.?\d*)$/.exec(videoRect.aspectRatio);
                 const rectAspectRatio = aspectRatioData ? Number(aspectRatioData[1]) / Number(aspectRatioData[2]) : 1;
@@ -137,10 +145,20 @@ export default class VideoContainer extends DomClass {
             player.video.style.top = `${ resultRect.top * wFactor }%`;
             player.video.style.width = `${ resultRect.width * wFactor }%`;
             player.video.style.height = `${ resultRect.height * hFactor }%`;
+            player.video.style.zIndex = video.layer;
             
         });
         
         // TODO: apply structure to buttons and other elements
+        if (layoutStructure.background) {
+            console.log(layoutStructure.background);
+            const bkgContainer = createElementWithHtmlText(`<div class="background-container"></div>`, this.baseVideoRect);
+            // TODO: resolve relative path
+            bkgContainer.style.backgroundImage = `url(${layoutStructure.background.content})`;
+            // TODO: set the container size to the layout background properties
+        }
+        
+        return status;
     }
 
     get ready() {

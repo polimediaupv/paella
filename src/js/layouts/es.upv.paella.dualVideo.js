@@ -138,8 +138,12 @@ const layouts = [
 ];
 
 function nextLayout(validContent) {
-    let selectedLayout = JSON.parse(JSON.stringify(layouts[layout]));
     layout = (layout + 1) % layouts.length;
+    return currentLayout(validContent);
+}
+
+function currentLayout(validContent) {
+    let selectedLayout = JSON.parse(JSON.stringify(layouts[layout]));
     selectedLayout.videos[0].content = validContent[0];
     selectedLayout.videos[1].content = validContent[1];
     return selectedLayout;
@@ -149,7 +153,7 @@ export default class DualVideoLayout extends VideoLayout {
     get identifier() { return "dual-video"; }
 
     async load() {
-        console.log("Dual video layout loaded");
+        console.debug("Dual video layout loaded");
     }
 
     getValidStreams(streamData) {
@@ -161,7 +165,7 @@ export default class DualVideoLayout extends VideoLayout {
 
     getLayoutStructure(streamData, contentId) {
         const {content} = this.validContent.find(content => content.id === contentId);
-        const selectedLayout = nextLayout(content);
+        const selectedLayout = currentLayout(content);
         const result = {
             name:{es:"Dos streams con posición dinámica"},
             hidden:false,
