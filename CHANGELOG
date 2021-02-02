@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+* Paella 6.5.0
+
+  * Improvements in HLS plugin
+  * Improvements in Matomo tracking plugin
+  * Dependencies have been updated
+  
 * Paella 6.4.6
 
   * Bug fixed in footprint plugin

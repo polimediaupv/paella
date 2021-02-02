@@ -35,3 +35,8 @@ In principle it should not be necessary to modify anything to upgrade to version
 ## Multi audio support in Paella 6.4.x
 
 As of version 6.4.0 a new system based on HLS playlists is used to supply various audio streams. You can see the documentation about it in [this link](adopters/hls_multiaudio.md)
+
+
+## Improvements in HLS live streams
+
+Some changes have been made to the HLS plugin that improve the compatibility of live streams. We think we have identified all the problems that may arise from this change, but it is advisable to check the behavior of browsers when the video is set to autoplay mode.
