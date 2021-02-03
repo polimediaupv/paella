@@ -5,15 +5,13 @@ import {
     defaultGetManifestUrlFunction,
     defaultGetManifestFileUrlFunction,
     defaultLoadVideoManifestFunction
-} from './core/initFunctions';
-import { createElement } from './core/dom';
-import { registerPlugins } from './core/Plugin';
-import VideoContainer from './core/VideoContainer';
-import PreviewContainer from './core/PreviewContainer';
+} from 'paella/core/initFunctions';
+import { createElement } from 'paella/core/dom';
+import { registerPlugins } from 'paella/core/Plugin';
+import VideoContainer from 'paella/core/VideoContainer';
+import PreviewContainer from 'paella/core/PreviewContainer';
 
 import "styles/base.css";
-
-import twitterIcon from '../../icons/twitter.svg';
 
 export default class Paella {
     constructor(containerElement, initParams = {}) {

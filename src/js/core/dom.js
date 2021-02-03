@@ -1,8 +1,9 @@
 
 import PlayerResource from './PlayerResource';
 
-export function createElement({tag='div',attributes={},children="",parent=null}) {
+export function createElement({tag='div',attributes={},children="",innerText="",parent=null}) {
     const result = document.createElement(tag);
+    result.innerText = innerText;
     for (let key in attributes) {
         result.setAttribute(key,attributes[key]);
     }

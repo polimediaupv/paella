@@ -60,7 +60,8 @@ module.exports = {
     resolve: {
         alias: {
             paella: path.resolve(__dirname, "src/js"),
-            styles: path.resolve(__dirname, "src/css")
+            styles: path.resolve(__dirname, "src/css"),
+            icons: path.resolve(__dirname, "src/icons")
         }
     }
 }

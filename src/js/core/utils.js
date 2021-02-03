@@ -17,4 +17,20 @@ export function joinPath(parts, sep){
         return part;
     })
     return parts.join(separator);
- }
+}
+
+export function isAbsoluteUrl(src) {
+    // We consider that the URLs starting with / are absolute and local to this server
+    return new RegExp('^([a-z]+://|//)', 'i').test(src) || /^\//.test(src);
+}
+
+// Returns the absolute path of a video manifest resource file.
+// If the path is absolute, it returns it unchanged.
+export function resolveResourcePath(player,src) {
+    if (isAbsoluteUrl(src)) {
+        return src;
+    }
+    else {
+        return joinPath([player.manifestUrl, src]);
+    }
+}

@@ -17,6 +17,7 @@ export default class SingleVideoLayout extends VideoLayout {
     getLayoutStructure(streamData, contentId) {
         const validContent = this.validContent.find(content => content.id===contentId);
         return {
+            player: this.player,
             name:{es:"One stream"},
             hidden:false,
             videos: [

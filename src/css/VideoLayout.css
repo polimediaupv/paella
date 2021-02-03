@@ -1,0 +1,22 @@
+.video-layout-button {
+	border: none;
+	border-radius: 10%;
+	box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.9);
+	outline: none;
+	background-size: 100% 100%;
+	display: block;
+	position: absolute;
+	background-color: lightgray;
+}
+
+.video-layout-button:hover {
+	background-color: #9b9b9b;
+}
+
+.video-layout-button:active {
+	background-color: #202020;
+}
+
+.video-player {
+	box-shadow: 2px 2px 4px 0px rgba(90,90,90,0.8);
+}

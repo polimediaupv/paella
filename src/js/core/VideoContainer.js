@@ -1,10 +1,12 @@
 
-import { DomClass, createElementWithHtmlText } from 'paella/core/dom';
+import { DomClass, createElementWithHtmlText,createElement } from 'paella/core/dom';
 import { getValidLayouts, getValidContentIds, getLayoutStructure } from 'paella/core/VideoLayout';
 import { getVideoPlugin } from 'paella/core/VideoPlugin';
 import StreamProvider from 'paella/core/StreamProvider';
+import { resolveResourcePath } from 'paella/core/utils';
 
 import 'styles/VideoContainer.css';
+import 'styles/VideoLayout.css';
 
 export async function getContainerBaseSize(player) {
     // TODO: In the future, this function can be modified to support different
@@ -142,21 +144,37 @@ export default class VideoContainer extends DomClass {
             player.video.style.display = "block";
             player.video.style.position = "absolute";
             player.video.style.left = `${ resultRect.left * wFactor }%`;
-            player.video.style.top = `${ resultRect.top * wFactor }%`;
+            player.video.style.top = `${ resultRect.top * hFactor }%`;
             player.video.style.width = `${ resultRect.width * wFactor }%`;
             player.video.style.height = `${ resultRect.height * hFactor }%`;
             player.video.style.zIndex = video.layer;
             
         });
         
-        // TODO: apply structure to buttons and other elements
-        if (layoutStructure.background) {
-            console.log(layoutStructure.background);
-            const bkgContainer = createElementWithHtmlText(`<div class="background-container"></div>`, this.baseVideoRect);
-            // TODO: resolve relative path
-            bkgContainer.style.backgroundImage = `url(${layoutStructure.background.content})`;
-            // TODO: set the container size to the layout background properties
-        }
+        const prevButtons = this.baseVideoRect.getElementsByClassName('video-layout-button');
+        Array.from(prevButtons).forEach(btn => this.baseVideoRect.removeChild(btn));
+        layoutStructure?.buttons?.forEach(buttonData => {
+            const button = createElement({
+                tag: 'button',
+                attributes: {
+                    "class": "video-layout-button",
+                    style: `
+                    background-image: url(${ buttonData.icon });
+                    left: ${buttonData.rect.left * wFactor}%;
+                    top: ${buttonData.rect.top * hFactor}%;
+                    width: ${buttonData.rect.width * wFactor}%;
+                    height: ${buttonData.rect.height * hFactor}%;
+                    z-index: ${ buttonData.layer };
+                    `
+                },
+                parent: this.baseVideoRect
+            });
+            button.layout = layoutStructure;
+            button.buttonAction = buttonData.onClick;
+            button.addEventListener("click", (evt) => {
+                evt.target.buttonAction.apply(evt.target.layout);
+            });
+        });
         
         return status;
     }
