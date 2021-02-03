@@ -35,6 +35,14 @@ export default class VideoContainer extends DomClass {
         super(player, {attributes, children, parent});
 
         this._baseVideoRect = this.element.getElementsByClassName(baseVideoRectClass)[0];
+        this._baseVideoRect.addEventListener("click", async () => {
+            if (await this.paused()) {
+                await this.play();
+            }
+            else {
+                await this.pause();
+            }
+        });
 
         this._ready = false;
 

@@ -17,7 +17,6 @@ export class Mp4Video extends Video {
         super('video', player, parent);
     }
 
-    // TODO: implement
     async play() { 
         await this.waitForLoaded();
         return this.video.play();
@@ -93,16 +92,14 @@ export class Mp4Video extends Video {
         this._sources = null;
         this._currentQuality = 0;
 
-        this._sources = streamData.sources.mp4;
-        console.log(this._sources);
-        
+        this._sources = streamData.sources.mp4;        
         this._currentQuality = this._sources.length - 1;
         this._currentSource = this._sources[this._currentQuality];
 
         this.video.src = this._currentSource.src;
 
         await this.waitForLoaded();
-
+        
         console.debug(`es.upv.paella.mp4VideoFormat (${ this.streamData.content }): video loaded and ready.`);
     }
 
