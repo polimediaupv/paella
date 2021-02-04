@@ -181,6 +181,7 @@ export default class VideoContainer extends DomClass {
             button.buttonAction = buttonData.onClick;
             button.addEventListener("click", (evt) => {
                 evt.target.buttonAction.apply(evt.target.layout);
+                evt.stopPropagation();
             });
         });
         
