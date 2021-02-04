@@ -6,6 +6,7 @@ import {
     defaultGetManifestFileUrlFunction,
     defaultLoadVideoManifestFunction
 } from 'paella/core/initFunctions';
+import { resolveResourcePath } from 'paella/core/utils';
 import { createElement } from 'paella/core/dom';
 import { registerPlugins } from 'paella/core/Plugin';
 import VideoContainer from 'paella/core/VideoContainer';
@@ -140,7 +141,7 @@ export default class Paella {
 
         this._videoManifest = await this.initParams.loadVideoManifest(this.manifestFileUrl);
 
-        const { preview } = this.videoManifest?.metadata;
+        const preview = resolveResourcePath(this, this.videoManifest?.metadata?.preview);
         this._previewContainer = new PreviewContainer(this, this._containerElement, preview);
 
         console.debug("Video manifest loaded:");

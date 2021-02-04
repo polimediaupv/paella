@@ -1,4 +1,5 @@
-import VideoPlugin, { Video } from '../core/VideoPlugin';
+import VideoPlugin, { Video } from 'paella/core/VideoPlugin';
+import { resolveResourcePath } from 'paella/core/utils';
 
 let video = null;
 
@@ -96,7 +97,7 @@ export class Mp4Video extends Video {
         this._currentQuality = this._sources.length - 1;
         this._currentSource = this._sources[this._currentQuality];
 
-        this.video.src = this._currentSource.src;
+        this.video.src = resolveResourcePath(this.player, this._currentSource.src);
 
         await this.waitForLoaded();
         
