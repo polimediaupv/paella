@@ -11,6 +11,7 @@ import { createElement } from 'paella/core/dom';
 import { registerPlugins } from 'paella/core/Plugin';
 import VideoContainer from 'paella/core/VideoContainer';
 import PreviewContainer from 'paella/core/PreviewContainer';
+import PlaybackBar from 'paella/core/PlaybackBar';
 
 import "styles/base.css";
 
@@ -56,6 +57,8 @@ export default class Paella {
     }
 
     get containerSize() { return { w: this._containerElement.offsetWidth, h: this._containerElement.offsetHeight }; }
+    
+    get containerElement() { return this._containerElement; }
 
     get initParams() { return this._initParams; }
 
@@ -155,6 +158,9 @@ export default class Paella {
         this._videoContainer = new VideoContainer(this, this._containerElement);
         
         await this.videoContainer.load(this.videoManifest?.streams);
+
+        
+        this._playbackBar = new PlaybackBar(this, this.containerElement);
 
         this._previewContainer.removeFromParent();
         // TODO: this._playerLoaded = true;  the player user interface is loaded

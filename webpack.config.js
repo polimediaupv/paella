@@ -20,11 +20,21 @@ const styleRules = {
 }
 
 const imageRules = {
-    test: /\.(png|jpe?g|svg|gif)$/i,
+    test: /\.(png|jpe?g|gif)$/i,
     exclude: /(node_modules)/,
     use: [
         {
             loader: 'file-loader'
+        }
+    ]
+}
+
+const svgRules = {
+    test: /\.(svg)$/i,
+    exclude: /(node_modules)/,
+    use: [
+        {
+            loader: 'svg-inline-loader'
         }
     ]
 }
@@ -53,7 +63,8 @@ module.exports = {
         rules: [
             javascriptRules,
             styleRules,
-            imageRules
+            imageRules,
+            svgRules
         ]
     },
     plugins: plugins,

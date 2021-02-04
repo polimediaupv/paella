@@ -167,7 +167,6 @@ export default class VideoContainer extends DomClass {
                 attributes: {
                     "class": "video-layout-button",
                     style: `
-                    background-image: url(${ buttonData.icon });
                     left: ${buttonData.rect.left * wFactor}%;
                     top: ${buttonData.rect.top * hFactor}%;
                     width: ${buttonData.rect.width * wFactor}%;
@@ -175,7 +174,8 @@ export default class VideoContainer extends DomClass {
                     z-index: ${ buttonData.layer };
                     `
                 },
-                parent: this.baseVideoRect
+                parent: this.baseVideoRect,
+                children: buttonData.icon
             });
             button.layout = layoutStructure;
             button.buttonAction = buttonData.onClick;
