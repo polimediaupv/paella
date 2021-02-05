@@ -212,8 +212,10 @@ export default class VideoContainer extends DomClass {
     }
 
     async setCurrentTime(t) {
+        const prevTime = (await this.streamProvider.executeAction("currentTime"))[0];
         const result = (await this.streamProvider.executeAction("setCurrentTime", [t]))[0];
-        triggerEvent(this.player, Events.SEEK);
+        const newTime = (await this.streamProvider.executeAction("currentTime"))[0];
+        triggerEvent(this.player, Events.SEEK, { prevTime, newTime });
         return result;
     }
     

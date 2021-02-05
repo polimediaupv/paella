@@ -72,6 +72,10 @@ export class Video extends DomClass {
     async duration() {
         return -1;
     }
+    
+    get currentTimeSync() {
+        return -1;
+    }
 
     async currentTime() {
         return -1;

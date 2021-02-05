@@ -1,5 +1,6 @@
 import PlayerResource from 'paella/core/PlayerResource';
 import { getVideoPlugin } from 'paella/core/VideoPlugin';
+import Events, { triggerEvent } from 'paella/core/Events';
 
 export default class SteramProvider extends PlayerResource {
 	constructor(player, videoContainer) {
@@ -55,11 +56,21 @@ export default class SteramProvider extends PlayerResource {
 	}
 	
 	startStreamSync() {
-		
+		const setupSyncTimer = () => {
+			// TODO: sync
+			const currentTime = this._players[0].currentTimeSync;
+			triggerEvent(this.player, Events.TIMEUPDATE, { currentTime });
+			this._timeupdateTimer = setTimeout(() => {
+				setupSyncTimer();	
+			}, 250);
+		}
+		setupSyncTimer();
 	}
 	
 	stopStreamSync() {
-		
+		if (this._timeupdateTimer) {
+			clearTimeout(this._timeupdateTimer);
+		}
 	}
 	
 	executeAction(fnName, params = []) {

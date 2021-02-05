@@ -52,5 +52,13 @@ export default class PlaybackBar extends DomClass {
 			testPlayButton.style.display = "block";
 			testPauseButton.style.display = "none";
 		});
+		
+		bindEvent(this.player, Events.TIMEUPDATE, ({ currentTime }) => {
+			console.log(`Current time: ${ currentTime }`);
+		});
+		
+		bindEvent(this.player, Events.SEEK, ({ prevTime, newTime }) => {
+			console.log(`Seek: prev=${ prevTime }, new=${newTime}`);
+		});
 	}
 }

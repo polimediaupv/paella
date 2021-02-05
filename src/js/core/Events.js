@@ -4,7 +4,8 @@ export default {
 	PAUSE: "paella:pause",
 	SEEK: "paella:seek",
 	FULLSCREEN: "paella:fullscreen",
-	VOLUME_CHANGED: "paella:volumeChanged"
+	VOLUME_CHANGED: "paella:volumeChanged",
+	TIMEUPDATE: "paella:timeupdate"
 };
 
 export function bindEvent(player, event, callback) {

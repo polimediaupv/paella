@@ -33,9 +33,13 @@ export class Mp4Video extends Video {
         return this.video.duration;
     }
 
+    get currentTimeSync() {
+        return this.ready ? this.video.currentTime : -1;
+    }
+    
     async currentTime() {
         await this.waitForLoaded();
-        return this.video.currentTime;
+        return this.currentTimeSync;
     }
 
     async setCurrentTime(t) {
