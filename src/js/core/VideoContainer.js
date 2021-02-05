@@ -4,6 +4,7 @@ import { getValidLayouts, getValidContentIds, getLayoutStructure } from 'paella/
 import { getVideoPlugin } from 'paella/core/VideoPlugin';
 import StreamProvider from 'paella/core/StreamProvider';
 import { resolveResourcePath } from 'paella/core/utils';
+import Events, { triggerEvent } from 'paella/core/Events';
 
 import 'styles/VideoContainer.css';
 import 'styles/VideoLayout.css';
@@ -194,12 +195,16 @@ export default class VideoContainer extends DomClass {
 
     async play() {
         this.streamProvider.startStreamSync();
-        return await this.streamProvider.executeAction("play");
+        const result = await this.streamProvider.executeAction("play");
+        triggerEvent(this.player, Events.PLAY);
+        return result;
     }
 
     async pause() {
         this.streamProvider.stopStreamSync();
-        return await this.streamProvider.executeAction("pause");
+        const result = await this.streamProvider.executeAction("pause");
+        triggerEvent(this.player, Events.PAUSE);
+        return result;
     }
     
     async paused() {
@@ -207,7 +212,9 @@ export default class VideoContainer extends DomClass {
     }
 
     async setCurrentTime(t) {
-        return (await this.streamProvider.executeAction("setCurrentTime", [t]))[0];
+        const result = (await this.streamProvider.executeAction("setCurrentTime", [t]))[0];
+        triggerEvent(this.player, Events.SEEK);
+        return result;
     }
     
     async currentTime() {
@@ -219,7 +226,9 @@ export default class VideoContainer extends DomClass {
     }
     
     async setVolume(v) {
-        return (await this.streamProvider.executeAction("setVolume",[v]))[0];
+        const result = (await this.streamProvider.executeAction("setVolume",[v]))[0];
+        triggerEvent(this.player, Events.VOLUME_CHANGED, { volume: v });
+        return result;
     }
 }
 

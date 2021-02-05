@@ -3,6 +3,7 @@ import { DomClass } from 'paella/core/dom';
 import playIcon from 'icons/play.svg';
 import pauseIcon from 'icons/pause.svg';
 import fullscreenIcon from 'icons/fullscreen.svg';
+import Events, { bindEvent } from 'paella/core/Events';
 
 import 'styles/PlaybackBar.css';
 
@@ -34,18 +35,22 @@ export default class PlaybackBar extends DomClass {
 		testPlayButton.style.display = "none";
 		testPlayButton.addEventListener("click", async (evt) => {
 			await this.player.videoContainer.play();
-			testPauseButton.style.display = "block";
-			testPlayButton.style.display = "none";
 			evt.stopPropagation();
 		});	
 		
 		testPauseButton.addEventListener("click", async (evt) => {
 			await this.player.videoContainer.pause();
-			testPlayButton.style.display = "block";
-			testPauseButton.style.display = "none";
 			evt.stopPropagation();
 		});	
 	
+		bindEvent(this.player, Events.PLAY, () => {
+			testPlayButton.style.display = "none";
+			testPauseButton.style.display = "block";
+		});
 		
+		bindEvent(this.player, Events.PAUSE, () => {
+			testPlayButton.style.display = "block";
+			testPauseButton.style.display = "none";
+		});
 	}
 }
