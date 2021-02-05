@@ -53,6 +53,10 @@ const plugins = [
 
 module.exports = {
     entry: './src/index.js',
+    devServer: {
+        port: 8000,
+        disableHostCheck: true
+    },
     output: {
         filename: 'paella-player-[contenthash].js',
         sourceMapFilename: 'paella-player-[contenthash].js.map'

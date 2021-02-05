@@ -144,12 +144,20 @@ export default class Paella {
 
         this._videoManifest = await this.initParams.loadVideoManifest(this.manifestFileUrl);
 
-        const preview = resolveResourcePath(this, this.videoManifest?.metadata?.preview);
-        this._previewContainer = new PreviewContainer(this, this._containerElement, preview);
-
         console.debug("Video manifest loaded:");
         console.debug(this.videoManifest);
 
+        // The video preview is required to use the lazy load
+        if (!this.videoManifest?.metadata?.preview) {
+            await this.loadPlayer();
+        }
+        else {
+            
+            const preview = resolveResourcePath(this, this.videoManifest?.metadata?.preview);
+            this._previewContainer = new PreviewContainer(this, this._containerElement, preview);
+        }
+
+        
         // TODO load the "preload" type plugins
     }
 
@@ -162,7 +170,7 @@ export default class Paella {
         
         this._playbackBar = new PlaybackBar(this, this.containerElement);
 
-        this._previewContainer.removeFromParent();
+        this._previewContainer?.removeFromParent();
         // TODO: this._playerLoaded = true;  the player user interface is loaded
     }
 
