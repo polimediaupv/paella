@@ -58,6 +58,8 @@ export default class SteramProvider extends PlayerResource {
 	startStreamSync() {
 		const setupSyncTimer = () => {
 			// TODO: sync
+			// TODO: Event.ENDED
+			
 			const currentTime = this._players[0].currentTimeSync;
 			triggerEvent(this.player, Events.TIMEUPDATE, { currentTime });
 			this._timeupdateTimer = setTimeout(() => {

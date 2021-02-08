@@ -131,10 +131,6 @@ export default class VideoContainer extends DomClass {
             const videoData = this.streamProvider.streams[video.content];
             const { stream } = videoData;
             const { player } = videoData;
-            console.log(video);
-            console.log(player);
-            console.log(stream);
-
             const res = await player.getDimensions();
             const videoAspectRatio = res.w / res.h;  // TODO: Get video aspect ratio
             let difference = Number.MAX_VALUE;
@@ -231,6 +227,10 @@ export default class VideoContainer extends DomClass {
         const result = (await this.streamProvider.executeAction("setVolume",[v]))[0];
         triggerEvent(this.player, Events.VOLUME_CHANGED, { volume: v });
         return result;
+    }
+    
+    async duration() {
+        return (await this.streamProvider.executeAction("duration"))[0];
     }
 }
 

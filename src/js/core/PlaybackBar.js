@@ -1,9 +1,8 @@
-import { DomClass } from 'paella/core/dom';
+import { DomClass, createElementWithHtmlText } from 'paella/core/dom';
 
-import playIcon from 'icons/play.svg';
-import pauseIcon from 'icons/pause.svg';
-import fullscreenIcon from 'icons/fullscreen.svg';
 import Events, { bindEvent } from 'paella/core/Events';
+import ProgressIndicator from 'paella/core/ProgressIndicator';
+import { loadPluginsOfType } from 'paella/core/Plugin';
 
 import 'styles/PlaybackBar.css';
 
@@ -12,53 +11,55 @@ export default class PlaybackBar extends DomClass {
 		const attributes = {
 			"class": "playback-bar"
 		};
+		super(player, { attributes, parent });
 		
-		// TODO: Test code, the button and fullscreen buttons are hardcoded
-		const children = `
-		<div class="progress-indicator"></div>
-		<div class="button-plugins left-side">
-			<button class="button-plugin play-button"><i>${ playIcon }</i></button>
-			<button class="button-plugin pause-button"><i>${ pauseIcon }</i></button>
-		</div>
-		<div class="button-plugins right-side">
-			<button class="button-plugin fullscreen-button"><i>${ fullscreenIcon }</i></button>
-		</div>
-		`;
-		
-		super(player, { attributes, children, parent });
-		
-		// TODO: Test code
-		const testPlayButton = this.element.getElementsByClassName("play-button")[0];
-		const testPauseButton = this.element.getElementsByClassName("pause-button")[0];
-		const testFullscreenButton = this.element.getElementsByClassName("fullscreen-button")[0];
+		this._progressIndicator = new ProgressIndicator(player, this.element);
+		this._buttonPluginsLeft = createElementWithHtmlText(
+			`<div class="button-plugins left-side"></div>`, this.element);
+		this._buttonPluginsRight = createElementWithHtmlText(
+			`<div class="button-plugins right-side"></div>`, this.element);
+	}
 	
-		testPlayButton.style.display = "none";
-		testPlayButton.addEventListener("click", async (evt) => {
-			await this.player.videoContainer.play();
-			evt.stopPropagation();
-		});	
+	async load() {
+		const leftButtons = [];
+		const rightButtons = [];
 		
-		testPauseButton.addEventListener("click", async (evt) => {
-			await this.player.videoContainer.pause();
-			evt.stopPropagation();
-		});	
+		async function addButtonPlugin(plugin, arrayButtons, parent) {
+			const button = createElementWithHtmlText(`
+				<button class="button-plugin ${ plugin.className }"><i style="pointer-events: none">${ plugin.icon }</i></button>
+			`, parent);
+			plugin._button = button;
+			button._pluginData = plugin;
+			button.addEventListener("click", (evt) => {
+				evt.target._pluginData.action();
+			});
+		}
+		
+		console.debug("Loading button plugins");
+		loadPluginsOfType(this.player,"button",(plugin) => {
+			console.debug(` Button plugin: ${ plugin.name }`);
+			if (plugin.side == "left") {
+				addButtonPlugin(plugin, leftButtons, this.buttonPluginsLeft);
+			}
+			else if (plugin.side == "right") {
+				addButtonPlugin(plugin, rightButtons, this.buttonPluginsRight);
+			}
+		});
+	}
 	
-		bindEvent(this.player, Events.PLAY, () => {
-			testPlayButton.style.display = "none";
-			testPauseButton.style.display = "block";
-		});
-		
-		bindEvent(this.player, Events.PAUSE, () => {
-			testPlayButton.style.display = "block";
-			testPauseButton.style.display = "none";
-		});
-		
-		bindEvent(this.player, Events.TIMEUPDATE, ({ currentTime }) => {
-			console.log(`Current time: ${ currentTime }`);
-		});
-		
-		bindEvent(this.player, Events.SEEK, ({ prevTime, newTime }) => {
-			console.log(`Seek: prev=${ prevTime }, new=${newTime}`);
-		});
+	get buttonPluginsRight() {
+		return this._buttonPluginsRight;
+	}
+	
+	get buttonPluginsLeft() {
+		return this._buttonPluginsLeft;
+	}
+	
+	get progressIndicator() {
+		return this._progressIndicator;
+	}
+	
+	onResize() {
+		this.progressIndicator.onResize();
 	}
 }

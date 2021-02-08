@@ -128,6 +128,10 @@ export default class Paella {
         return this._videoContainer;
     }
 
+    get playbackBar() {
+        return this._playbackBar;
+    }
+    
     async loadManifest() {
         console.debug("Loading paella player");
         this._config = await this.initParams.loadConfig(this.configUrl);
@@ -171,6 +175,9 @@ export default class Paella {
         this._playbackBar = new PlaybackBar(this, this.containerElement);
 
         this._previewContainer?.removeFromParent();
+        
+        await this._playbackBar.load();
+        
         // TODO: this._playerLoaded = true;  the player user interface is loaded
     }
 
@@ -181,6 +188,7 @@ export default class Paella {
 
     async resize() {
         this.videoContainer?.updateLayout();
+        this.playbackBar?.onResize();
     }
 
     // Playback functions

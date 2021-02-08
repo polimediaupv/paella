@@ -40,11 +40,14 @@ export function getPluginsOfType(player,type) {
     return player.__pluginData__?.pluginInstances[type];
 }
 
-export async function loadPluginsOfType(player,type) {
+export async function loadPluginsOfType(player,type,onLoad=null) {
     player.__pluginData__.pluginInstances[type]?.forEach(async (plugin) => {
         const enabled = await plugin.isEnabled();
         if (enabled) {
             await plugin.load();
+            if (typeof(onLoad) === "function") {
+                onLoad(plugin);
+            }
         }
     })
 }
@@ -65,7 +68,7 @@ export default class Plugin extends PlayerResource {
     get name() { return this._name; }
 
     async isEnabled() {
-        return true;
+        return this.config?.enabled;
     }
 
     async load() {

@@ -34,6 +34,20 @@
         "es.upv.paella.mp4VideoFormat": {
             "enabled": true,
             "order": 1
+        },
+        
+        "es.upv.paella.playButton": {
+            "enabled": true,
+            "order": 1
+        },
+        "es.upv.paella.pauseButton": {
+            "enabled": true,
+            "order": 1
+        },
+        "es.upv.paella.fullscreenButton": {
+            "enabled": true,
+            "side": "right",
+            "order": 2
         }
     }
 }
