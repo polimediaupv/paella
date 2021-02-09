@@ -5,11 +5,13 @@
     "defaultLayout": "presenter-presentation",
     
     "plugins": {
-        "es.upv.paella.TestPlugin": {
-            "enabled": true
+        "es.upv.paella.testPlugin": {
+            "enabled": true,
+            "side": "left",
+            "order": 3
         },
-        "es.upv.paella.TestPlugin2": {
-            "enabled": true
+        "es.upv.paella.testPlugin2": {
+            "enabled": false
         },
         "es.upv.paella.singleVideo": {
             "enabled": true,

@@ -6,12 +6,13 @@ import {
     defaultGetManifestFileUrlFunction,
     defaultLoadVideoManifestFunction
 } from 'paella/core/initFunctions';
-import { resolveResourcePath } from 'paella/core/utils';
+import { resolveResourcePath, setupAutoHideUiTimer } from 'paella/core/utils';
 import { createElement } from 'paella/core/dom';
 import { registerPlugins } from 'paella/core/Plugin';
 import VideoContainer from 'paella/core/VideoContainer';
 import PreviewContainer from 'paella/core/PreviewContainer';
 import PlaybackBar from 'paella/core/PlaybackBar';
+import Events, { bindEvent } from 'paella/core/Events';
 
 import "styles/base.css";
 
@@ -55,7 +56,15 @@ export default class Paella {
         }
         window.addEventListener("resize", resize);
     }
+    
+    get hideUiTime() {
+        return this._hideUiTime;
+    }
 
+    set hideUiTime(val) {
+        this._hideUiTime = val;
+    }
+    
     get containerSize() { return { w: this._containerElement.offsetWidth, h: this._containerElement.offsetHeight }; }
     
     get containerElement() { return this._containerElement; }
@@ -178,6 +187,10 @@ export default class Paella {
         
         await this._playbackBar.load();
         
+        // UI hide timer
+        this._hideUiTime = 5000;
+        setupAutoHideUiTimer(this);
+        
         // TODO: this._playerLoaded = true;  the player user interface is loaded
     }
 
@@ -189,6 +202,18 @@ export default class Paella {
     async resize() {
         this.videoContainer?.updateLayout();
         this.playbackBar?.onResize();
+    }
+    
+    async hideUserInterface() {
+        if (!(await this.videoContainer?.paused())) {
+            this.videoContainer?.hideUserInterface();
+            this.playbackBar?.hideUserInterface();
+        }
+    }
+    
+    async showUserInterface() {
+        this.videoContainer?.showUserInterface();
+        this.playbackBar?.showUserInterface();
     }
 
     // Playback functions

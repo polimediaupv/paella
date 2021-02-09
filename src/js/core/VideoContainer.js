@@ -97,6 +97,7 @@ export default class VideoContainer extends DomClass {
     async updateLayout() {
         let status = true;
         
+        this._layoutButtons = [];
         
         // Current layout: if not selected, or the selected layout is not compatible, load de default layout
         if (!this._layoutId || this._validContentIds.indexOf(this._layoutId) === -1) {
@@ -180,9 +181,24 @@ export default class VideoContainer extends DomClass {
                 evt.target.buttonAction.apply(evt.target.layout);
                 evt.stopPropagation();
             });
+            this._layoutButtons.push(button);
         });
         
         return status;
+    }
+    
+    hideUserInterface() {
+        console.debug("Hide video container user interface");
+        this._layoutButtons.forEach(button => {
+            button._prevDisplay = button.style.display;
+            button.style.display = "none";
+        });
+    }
+    
+    showUserInterface() {
+        this._layoutButtons.forEach(button => {
+            button.style.display = button._prevDisplay || "block";
+        });
     }
 
     get ready() {

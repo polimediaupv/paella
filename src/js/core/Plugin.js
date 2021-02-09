@@ -44,10 +44,10 @@ export async function loadPluginsOfType(player,type,onLoad=null) {
     player.__pluginData__.pluginInstances[type]?.forEach(async (plugin) => {
         const enabled = await plugin.isEnabled();
         if (enabled) {
-            await plugin.load();
             if (typeof(onLoad) === "function") {
                 onLoad(plugin);
             }
+            await plugin.load();
         }
     })
 }

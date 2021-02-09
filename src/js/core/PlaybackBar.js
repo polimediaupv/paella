@@ -47,6 +47,15 @@ export default class PlaybackBar extends DomClass {
 		});
 	}
 	
+	hideUserInterface() {
+		console.debug("Hide playback bar user interface");
+		this.hide();
+	}
+	
+	showUserInterface() {
+		this.show();
+	}
+	
 	get buttonPluginsRight() {
 		return this._buttonPluginsRight;
 	}
