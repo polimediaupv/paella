@@ -102,6 +102,11 @@ export class Mp4Video extends Video {
         this._currentSource = this._sources[this._currentQuality];
 
         this.video.src = resolveResourcePath(this.player, this._currentSource.src);
+        this.video.addEventListener("ended", () => {
+            if (typeof(this._videoEndedCallback) == "function") {
+                this._videoEndedCallback();
+            }
+        })
 
         await this.waitForLoaded();
         

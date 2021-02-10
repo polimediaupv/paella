@@ -59,8 +59,13 @@ export class Video extends DomClass {
         return this.loadStreamData(streamData);
     }
 
-    // The video instance must implement the following functions and properties
+    
+    // The player must call _videoEndedCallback when the video is ended
+    onVideoEnded(fn) {
+        this._videoEndedCallback = fn;
+    }
 
+    // The video instance must implement the following functions and properties
     async play() {
         return false;
     }

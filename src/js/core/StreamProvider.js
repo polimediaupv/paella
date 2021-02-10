@@ -32,10 +32,19 @@ export default class SteramProvider extends PlayerResource {
 			}
 		})
 		
+		let videoEndedEventTimer = null;
 		for (const content in this._streams) {
 			const s = this._streams[content];
 			s.player = await s.videoPlugin.getVideoInstance(this._videoContainer);
-			await s.player.load(s.stream);
+			await s.player.load(s.stream);			
+			s.player.onVideoEnded(() => {
+				if (videoEndedEventTimer === null) {
+					triggerEvent(this.player, Events.ENDED);
+					videoEndedEventTimer = setTimeout(() => {
+						videoEndedEventTimer = null;
+					}, 2000);
+				}
+			})
 			this._players.push(s.player);
 		}
 	}
