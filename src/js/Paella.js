@@ -14,6 +14,7 @@ import PreviewContainer from 'paella/core/PreviewContainer';
 import PlaybackBar from 'paella/core/PlaybackBar';
 import Events, { bindEvent } from 'paella/core/Events';
 
+
 import "styles/base.css";
 
 export default class Paella {

@@ -51,6 +51,10 @@ export class DomClass extends PlayerResource {
     show() {
         this.element.style.display = this._prevDisplay || "block";
     }
+    
+    get isVisible() {
+        return this.element.style.display !== "none";
+    }
 
     setAttribute(name,value) {
         this._element.setAttribute(name,value);

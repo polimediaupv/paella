@@ -1,5 +1,6 @@
 
 import Events, { bindEvent } from 'paella/core/Events';
+import PopUp from 'paella/core/PopUp';
 
 export function getUrlParameter(name) {
     // Optional: implement this using a fallback to support IE11
@@ -46,8 +47,15 @@ export function setupAutoHideUiTimer(player, hideUiTimePropertyName = "hideUiTim
         }
         await player.showUserInterface();
         player.__hideTimer__ = setTimeout(async () => {
-            await player.hideUserInterface();
             player.__hideTimer__ = null;
+            const visible = PopUp.IsSomePopUpVisible();
+            if (visible) {
+                console.debug("UI not hidden because there are visible pop ups");
+                setupTimer();
+            }
+            else {
+                await player.hideUserInterface();
+            }
         }, player[hideUiTimePropertyName]);
     }
     
@@ -64,6 +72,6 @@ export function setupAutoHideUiTimer(player, hideUiTimePropertyName = "hideUiTim
     });
     
     bindEvent(player, Events.ENDED, async () => {
-        await player.hideUserInterface();
+        await player.showUserInterface();
     });
 }

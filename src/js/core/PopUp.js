@@ -2,7 +2,24 @@ import { DomClass, createElementWithHtmlText } from 'paella/core/dom';
 
 import 'styles/PopUp.css';
 
+const g_popUps = [];
+
 export default class PopUp extends DomClass {
+	static GetPopUps() {
+		return g_popUps;
+	}
+	
+	static IsSomePopUpVisible() {
+		return g_popUps.some(p => p.isVisible);
+	}
+	
+	static GetPopUp(id) {
+		return g_popUps.find(p => p.id === id);
+	}
+	
+	static HideAllPopUps() {
+		g_popUps.forEach(p => p.hide());
+	}
 	
 	constructor(player, parent, anchorElement = null) {
 		const attributes = {
@@ -13,6 +30,9 @@ export default class PopUp extends DomClass {
 		<div class="popup-content"></div>
 		`;
 		super(player,{ attributes, children, parent });
+		
+		this._id = Symbol(this);
+		g_popUps.push(this);
 		
 		this.element.addEventListener("click", () => {
 			this.hide();	
@@ -51,6 +71,10 @@ export default class PopUp extends DomClass {
 				console.log("bottom right");
 			}
 		}
+	}
+	
+	get id() {
+		return this._id;
 	}
 	
 	// This is the popup window
