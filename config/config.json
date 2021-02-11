@@ -7,11 +7,12 @@
     "plugins": {
         "es.upv.paella.testPlugin": {
             "enabled": true,
-            "side": "right",
-            "order": -1
+            "side": "left",
+            "order": 3
         },
         "es.upv.paella.testPlugin2": {
-            "enabled": false
+            "enabled": true,
+            "side": "right"
         },
         "es.upv.paella.singleVideo": {
             "enabled": true,

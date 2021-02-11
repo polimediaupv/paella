@@ -1,0 +1,25 @@
+
+ul.menu-button-content {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul.menu-button-content li.menu-button-item {
+	min-width: 150px;
+}
+
+ul.menu-button-content li.menu-button-item button {
+	background: none;
+	border: none;
+	width: 100%;
+	color: white;
+}
+
+ul.menu-button-content li.menu-button-item button:hover {
+	background-color: #A00;
+}
+
+ul.menu-button-content li.menu-button-item button.selected {
+	background-color: red;
+}
