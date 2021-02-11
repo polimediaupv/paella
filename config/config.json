@@ -7,8 +7,8 @@
     "plugins": {
         "es.upv.paella.testPlugin": {
             "enabled": true,
-            "side": "left",
-            "order": 3
+            "side": "right",
+            "order": -1
         },
         "es.upv.paella.testPlugin2": {
             "enabled": false

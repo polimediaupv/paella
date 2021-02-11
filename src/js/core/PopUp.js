@@ -42,33 +42,39 @@ export default class PopUp extends DomClass {
 		
 		this._anchorElement = anchorElement; 
 		if (anchorElement) {
-			const { top, left, width, height } = anchorElement.getBoundingClientRect();
+			const { top, left, right, bottom, width, height } = anchorElement.getBoundingClientRect();
 			const centerX = left + width / 2;
 			const centerY = top + height / 2;
+			
+			// TODO: use the viewContainer element
 			const viewportWidth = window.innerWidth;
 			const viewportHeight = window.innerHeight;
 			const viewportCenterX = window.innerWidth / 2;
 			const viewportCenterY = window.innerHeight / 2;
+			
+			const containerBounds = player.containerElement.getBoundingClientRect();
 
 			
 			// Decide where to attach the popup depending on the anchor position
 			if (viewportCenterX>centerX && viewportCenterY<=centerY) {
 				// bottom left
-				console.log("bottom left");
 				this.contentElement.style.left = `${ left }px`;
-				this.contentElement.style.bottom = `${ viewportHeight - top }px`;
+				this.contentElement.style.bottom = `${ viewportHeight - (bottom - height) }px`;
 			}
 			else if (viewportCenterX>centerX && viewportCenterY>centerY) {
 				// top left quadrant
-				console.log("top left");
+				this.contentElement.style.left = `${ left }px`;
+				this.contentElement.style.top = `${ top }px`;
 			}
 			else if (viewportCenterX<=centerX && viewportCenterY>centerY) {
 				// top right quadrant
-				console.log("top right");
+				this.contentElement.style.right = `${ viewportWidth - right }px`;
+				this.contentElement.style.top = `${ top }px`;
 			}
 			else if (viewportCenterX<=centerX && viewportCenterY<=centerY) {
 				// bottom right quadrant
-				console.log("bottom right");
+				this.contentElement.style.right = `${ viewportWidth - right }px`;
+				this.contentElement.style.bottom = `${ viewportHeight - (bottom - height) }px`;
 			}
 		}
 	}
