@@ -18,6 +18,17 @@
 	height: 10px;
 }
 
+.progress-indicator-timer {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	color: white;
+	font-size: 10px;
+	line-height: 11px;
+	padding-left: 11px;
+	pointer-events: none;
+}
+
 .playback-bar .button-plugins {
 	height: 40px;
 }
@@ -94,4 +105,12 @@
 
 .playback-bar:hover .progress-indicator-container .progress-indicator-content {
 	background-color: rgba(255,0,0,1);
+}
+
+.frame-thumbnail {
+	background-color: rgba(20, 20, 20, 0.8);
+	min-width: 100px;
+	min-height: 100px;
+	box-shadow: 0px 0px 5px 0px rgba(20,20,20,0.8);
+	z-index: 100;
 }
