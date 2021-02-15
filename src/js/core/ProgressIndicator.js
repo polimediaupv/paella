@@ -1,8 +1,27 @@
 import { DomClass, createElementWithHtmlText } from 'paella/core/dom';
 import Events, { bindEvent } from 'paella/core/Events';
-import { secondsToTime } from 'paella/core/utils';
+import { resolveResourcePath, secondsToTime } from 'paella/core/utils';
+
+export function getCurrentFrame(sortedFrameList,time) {
+	if (!sortedFrameList || sortedFrameList.length === 0) {
+		return null;
+	}
+	
+	let result = sortedFrameList[0];
+	let prevTime = result.time;
+	sortedFrameList.forEach(frame => {
+		if (frame.time>prevTime && frame.time<Math.floor(time)) {
+			result = frame;
+			prevTime = result.time;
+		}
+	})
+	
+	return result;
+}
 
 function updateFrameThumbnail(offsetX,time) {
+	let frame = getCurrentFrame(this.frameList, time);
+	
 	this._frameThumbnail.style.display = "block";
 	const thumbWidth = this._frameThumbnail.getBoundingClientRect().width;
 	const playbackBar = this.playbackBar;
@@ -16,7 +35,17 @@ function updateFrameThumbnail(offsetX,time) {
 	else {
 		this.frameThumbnail.style.left = `${ offsetX - thumbWidth }px`;
 	}
-
+	
+	const frameImage = resolveResourcePath(this.player, frame.url);
+	const thumbImageContainer = this.frameThumbnail.getElementsByClassName("thumbnail-image")[0];
+	const timeContainer = this.frameThumbnail.getElementsByClassName("thumbnail-time")[0];
+	if (frameImage !== this._prevFrameImage) {
+		thumbImageContainer.src = frameImage;
+		thumbImageContainer.alt = frame.id;
+		this._prevFrameImage = frameImage;
+	}
+	
+	timeContainer.innerHTML = secondsToTime(time);
 }
 
 export default class ProgressIndicator extends DomClass {
@@ -34,7 +63,11 @@ export default class ProgressIndicator extends DomClass {
 		`;
 		super(player, { attributes, children, parent });
 		
-		this._frameThumbnail = createElementWithHtmlText('<div class="frame-thumbnail"></div>', player.containerElement);
+		this._frameThumbnail = createElementWithHtmlText(`
+			<div class="frame-thumbnail">
+				<img src="" alt="" class="thumbnail-image" />
+				<p class="thumbnail-time">00:00</p>
+			</div>`, player.containerElement);
 		this._frameThumbnail.style.display = "none";
 		this._frameThumbnail.style.position = "absolute";
 			
@@ -45,6 +78,9 @@ export default class ProgressIndicator extends DomClass {
 		this._progressContainer = this.element.getElementsByClassName("progress-indicator-container")[0];
 		this._progressIndicator = this.element.getElementsByClassName("progress-indicator-content")[0];
 		this._progressTimer = this.element.getElementsByClassName("progress-indicator-timer")[0];
+		
+		this._frameList = player.videoManifest?.frameList;
+		this._frameList?.sort((a,b) => a.time-b.time);
 		
 		this.onResize();
 	
@@ -135,6 +171,10 @@ export default class ProgressIndicator extends DomClass {
 	
 	get frameThumbnail() {
 		return this._frameThumbnail;
+	}
+	
+	get frameList() {
+		return this._frameList;
 	}
 	
 	onResize() {

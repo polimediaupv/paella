@@ -24,6 +24,8 @@ export default class PlaybackBar extends DomClass {
 		const leftButtons = [];
 		const rightButtons = [];
 		
+		this._frameList = this.player.videoManifest;
+		
 		async function addButtonPlugin(plugin, arrayButtons, parent) {
 			const button = createElementWithHtmlText(`
 				<button class="button-plugin ${ plugin.className }"><i style="pointer-events: none">${ plugin.icon }</i></button>
@@ -45,6 +47,7 @@ export default class PlaybackBar extends DomClass {
 				addButtonPlugin(plugin, rightButtons, this.buttonPluginsRight);
 			}
 		});
+		
 	}
 	
 	hideUserInterface() {
