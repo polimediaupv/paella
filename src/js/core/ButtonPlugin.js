@@ -1,4 +1,4 @@
-import Plugin, { getPluginsOfType } from "paella/core/Plugin";
+import Plugin, { getPluginsOfType } from "paella/js/core/Plugin";
 
 export function getButtonPlugins(player) {
 	return getPluginsOfType(player, "button");

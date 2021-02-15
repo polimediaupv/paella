@@ -1,5 +1,5 @@
-import VideoPlugin, { Video } from 'paella/core/VideoPlugin';
-import { resolveResourcePath } from 'paella/core/utils';
+import VideoPlugin, { Video } from 'paella/js/core/VideoPlugin';
+import { resolveResourcePath } from 'paella/js/core/utils';
 
 let video = null;
 

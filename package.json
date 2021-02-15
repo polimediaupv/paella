@@ -20,7 +20,7 @@
   "author": "Fernando Serrano Carpena <ferserc1@gmail.com>",
   "license": "SEE LICENSE IN license.txt",
   "bugs": {
-    "url": "https://github.com/polimediaupv/paella/issues"
+    "url": "https://github.com/polimediaupv/paella/js/issues"
   },
   "homepage": "https://github.com/polimediaupv/paella#readme",
   "devDependencies": {

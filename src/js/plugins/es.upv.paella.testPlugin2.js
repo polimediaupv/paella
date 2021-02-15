@@ -1,7 +1,7 @@
 
-import MenuButtonPlugin from 'paella/core/MenuButtonPlugin';
-import editIcon from 'icons/edit.svg';
-import { createElementWithHtmlText } from 'paella/core/dom';
+import MenuButtonPlugin from 'paella/js/core/MenuButtonPlugin';
+import editIcon from 'paella/icons/edit.svg';
+import { createElementWithHtmlText } from 'paella/js/core/dom';
 
 export default class TestPlugin extends MenuButtonPlugin {
     get icon() { return editIcon; }

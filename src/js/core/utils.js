@@ -1,6 +1,6 @@
 
-import Events, { bindEvent } from 'paella/core/Events';
-import PopUp from 'paella/core/PopUp';
+import Events, { bindEvent } from 'paella/js/core/Events';
+import PopUp from 'paella/js/core/PopUp';
 
 export function getUrlParameter(name) {
     // Optional: implement this using a fallback to support IE11

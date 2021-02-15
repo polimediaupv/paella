@@ -1,8 +1,8 @@
-import VideoLayout from 'paella/core/VideoLayout';
+import VideoLayout from 'paella/js/core/VideoLayout';
 
 
-import iconRotate from 'icons/icon_rotate.svg';
-import iconMinimize from 'icons/minimize.svg';
+import iconRotate from 'paella/icons/icon_rotate.svg';
+import iconMinimize from 'paella/icons/minimize.svg';
 
 let layout = 0;
 const layouts = [

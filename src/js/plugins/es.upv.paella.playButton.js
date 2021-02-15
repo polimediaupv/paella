@@ -1,7 +1,7 @@
-import ButtonPlugin from 'paella/core/ButtonPlugin';
-import Events, { bindEvent } from 'paella/core/Events';
+import ButtonPlugin from 'paella/js/core/ButtonPlugin';
+import Events, { bindEvent } from 'paella/js/core/Events';
 
-import playIcon from 'icons/play.svg';
+import playIcon from 'paella/icons/play.svg';
 
 export default class PlayButtonPlugin extends ButtonPlugin {
 	get icon() { return playIcon; }

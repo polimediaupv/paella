@@ -1,6 +1,6 @@
-import { DomClass, createElementWithHtmlText } from 'paella/core/dom';
+import { DomClass, createElementWithHtmlText } from 'paella/js/core/dom';
 
-import 'styles/PopUp.css';
+import 'paella/styles/PopUp.css';
 
 const g_popUps = [];
 

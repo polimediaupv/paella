@@ -60,7 +60,7 @@ import {
     defaultGetManifestUrlFunction,
     defaultGetManifestFileUrlFunction,
     defaultLoadVideoManifestFunction
-} from 'paella/core/initFunctions';
+} from 'paella/js/core/initFunctions';
 ```
 
 default load config funciton:
@@ -76,7 +76,7 @@ export async function defaultLoadConfigFunction(configUrl) {
 default video id function
 
 ```javascript
-import { getUrlParameter } from 'paella/core/utils';
+import { getUrlParameter } from 'paella/js/core/utils';
 
 
 export async function defaultGetVideoIdFunction() {
@@ -88,7 +88,7 @@ export async function defaultGetVideoIdFunction() {
 default manifest url function
 
 ```javascript
-import { joinPath } from 'paella/core/utils';
+import { joinPath } from 'paella/js/core/utils';
 
 // repoUrl: the value specified in initParams.repositoryUrl
 // videoId: the video identifier returned by initParams.getVideoId()

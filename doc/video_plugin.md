@@ -8,7 +8,7 @@ A video format is composed by two elements:
 ## Video player
 
 ```javascript
-import VideoPlugin, { Video } from 'paella/core/VideoPlugin';
+import VideoPlugin, { Video } from 'paella/js/core/VideoPlugin';
 
 export class MyVideoPlayer extends Video {
 
@@ -59,7 +59,7 @@ export class MyVideoPlayer extends Video {
 ## Video plugin
 
 ```javascript
-import VideoPlugin, { Video } from 'paella/core/VideoPlugin';
+import VideoPlugin, { Video } from 'paella/js/core/VideoPlugin';
 
 ... MyVideoPlayer definition
 

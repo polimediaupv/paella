@@ -1,8 +1,8 @@
 
-import PopUpButtonPlugin from 'paella/core/PopUpButtonPlugin';
-import { createElementWithHtmlText } from 'paella/core/dom';
+import PopUpButtonPlugin from 'paella/js/core/PopUpButtonPlugin';
+import { createElementWithHtmlText } from 'paella/js/core/dom';
 
-import 'styles/MenuButton.css';
+import 'paella/styles/MenuButton.css';
 
 export default class MenuButtonPlugin extends PopUpButtonPlugin {
 	

@@ -1,7 +1,7 @@
-import ButtonPlugin from 'paella/core/ButtonPlugin';
-import Events, { bindEvent } from 'paella/core/Events';
+import ButtonPlugin from 'paella/js/core/ButtonPlugin';
+import Events, { bindEvent } from 'paella/js/core/Events';
 
-import fullscreenIcon from 'icons/fullscreen.svg';
+import fullscreenIcon from 'paella/icons/fullscreen.svg';
 
 export default class PauseButtonPlugin extends ButtonPlugin {
 	get icon() { return fullscreenIcon; }
