@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 6.5.1
+
+  * The subtitle plugin can now work with servers that require credentials.
+
 * Paella 6.5.0
 
   * Improvements in HLS plugin
