@@ -3,9 +3,10 @@
   "version": "7.0.0",
   "description": "Multistream HTML video player",
   "main": "src/index.js",
+  "module": "dist/paella.js",
   "scripts": {
     "build": "webpack --mode production",
-    "dev": "webpack serve --mode development"
+    "dev": "webpack serve --mode development --config webpack.debug.js"
   },
   "repository": {
     "type": "git",

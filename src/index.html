@@ -3,6 +3,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paella Player</title>
+    <script type="module">
+        import * as paella_ from './paella.js';
+        
+        console.log(paella_);
+        
+        let paella = new Paella('player-container');
+        paella.loadManifest()
+            .then(() => console.log("done"))
+            .catch(e => console.error(e));
+    </script>
 </head>
 <body>
     <div id="player-container"></div>

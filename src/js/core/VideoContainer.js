@@ -125,8 +125,8 @@ export default class VideoContainer extends DomClass {
             { w: playerSize.h * baseRatio, h: playerSize.h } :
             { w: playerSize.w, h: playerSize.w / baseRatio };
 
-        this.baseVideoRect.style.width = containerCurrentSize.w;
-        this.baseVideoRect.style.height = containerCurrentSize.h;
+        this.baseVideoRect.style.width = containerCurrentSize.w + "px";
+        this.baseVideoRect.style.height = containerCurrentSize.h + "px";
 
         layoutStructure?.videos?.forEach(async video => {
             const videoData = this.streamProvider.streams[video.content];
