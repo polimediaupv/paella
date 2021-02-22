@@ -120,4 +120,23 @@ export default class MyPluginType extends Plugin {
 }
 ```
 
-Si es necesario, podemos añadir un nuevo directorio 
+
+## Predefinied plugin types
+
+### Playback bar plugins
+
+These are plugins that allow you to add functionality to the playback bar.
+
+**[ButtonPlugin](button_plugin.md):** They implement a simple button that performs an action when the user presses it.
+
+**[PopUpButtonPlugin](popup_button_plugin.md):** They implement a button that displays a pop up with a content specified by the plugin itself.
+
+**[MenuButtonPlugin](menu_button_plugin.md):** Implements a button that displays a menu with options.
+
+### Video format plugins
+
+These are plugins that allow you to extend the video formats supported by Paella Player. [VideoPlugin](video_plugin.md)
+
+### Video layout plugins
+
+These are plugins that specify the arrangement of videos in the display area. By means of video layouts we enable the playback of one or several streams simultaneously. [VideoLayout](video_layout.md)
