@@ -26,6 +26,8 @@ export function registerPlugins(player) {
 
     // Import plugins
     pluginRequireContext.forEach(ctx => importPlugins(player, ctx));
+    // Custom plugins
+    player.initParams.customPluginContext.forEach(ctx => importPlugins(player, ctx));
 
     console.debug("Plugins have been registered:")
 

@@ -41,6 +41,7 @@ export default class Paella {
         this._initParams.getManifestUrl = this._initParams.getManifestUrl || defaultGetManifestUrlFunction;
         this._initParams.getManifestFileUrl = this._initParams.getManifestFileUrl || defaultGetManifestFileUrlFunction;
         this._initParams.loadVideoManifest = this._initParams.loadVideoManifest || defaultLoadVideoManifestFunction;
+        this._initParams.customPluginContext = this._initParams.customPluginContext || [];
 
         this._config = null;
         this._videoId = null;
@@ -57,6 +58,7 @@ export default class Paella {
         }
         window.addEventListener("resize", resize);
     }
+
     
     get hideUiTime() {
         return this._hideUiTime;

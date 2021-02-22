@@ -1,0 +1,61 @@
+{
+    "repositoryUrl": "repository",
+    "manifestFileName": "data.json",
+
+    "defaultLayout": "presenter-presentation",
+    
+    "plugins": {
+        "es.upv.paella.testPlugin": {
+            "enabled": true,
+            "side": "left",
+            "order": 3
+        },
+        "es.upv.paella.testPlugin2": {
+            "enabled": true,
+            "side": "right"
+        },
+        "es.upv.paella.singleVideo": {
+            "enabled": true,
+            "validContent": [
+                { "id": "presenter", "content": ["presenter"] },
+                { "id": "presentation", "content": ["presentation"] },
+                { "id": "presenter-2", "content": ["presenter-2"] }
+            ]
+        },
+        "es.upv.paella.dualVideo": {
+            "enabled": true,
+            "validContent": [
+                { "id": "presenter-presentation", "content": ["presenter","presentation"] },
+                { "id": "presenter-2-presentation", "content": ["presenter-2","presentation"] },
+                { "id": "presenter-presenter-2", "content": ["presenter","presenter-2"] }
+            ]
+        },
+        "es.upv.paella.hlsVideoFormat": {
+            "enabled": true,
+            "order": 0
+        },
+        "es.upv.paella.mp4VideoFormat": {
+            "enabled": true,
+            "order": 1
+        },
+        
+        "es.upv.paella.playButton": {
+            "enabled": true,
+            "order": 1
+        },
+        "es.upv.paella.pauseButton": {
+            "enabled": true,
+            "order": 1
+        },
+        "es.upv.paella.fullscreenButton": {
+            "enabled": true,
+            "side": "right",
+            "order": 2
+        },
+        "es.upv.paella.testButton": {
+            "enabled": true,
+            "side": "left",
+            "order": 3
+        }
+    }
+}

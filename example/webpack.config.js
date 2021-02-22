@@ -33,7 +33,7 @@ module.exports = {
 		}),
 		new CopyWebpackPlugin({
 			patterns: [
-				{ from: '../paella/config', to: 'config' },
+				{ from: './config', to: 'config' },
 				{ from: '../paella/repository_test/repository', to: 'repository' }
 			]
 		})
