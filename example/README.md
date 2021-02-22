@@ -10,9 +10,10 @@ root
 
 ```sh
 cd [paella-player-repository]
+npm run build
 cp -r example ../paella-example
 cd ../paella-example
-npm instal
+npm install
 npm run dev
 ```
 
