@@ -1,8 +1,10 @@
 import { Paella, utils, ButtonPlugin } from 'paella';
+import { getPluginContext } from 'paella-example-plugin';
 
 const initParams = {
     customPluginContext: [
-        require.context("./plugins", true, /\.js/)
+        require.context("./plugins", true, /\.js/),
+        getPluginContext()
     ]
 };
 

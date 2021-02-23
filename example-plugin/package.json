@@ -1,8 +1,9 @@
 {
-	"name": "test-paella",
+	"name": "test-paella-plugin",
 	"version": "1.0.0",
 	"description": "",
 	"main": "webpack.config.js",
+	"module": "src/index.js",
 	"scripts": {
 		"build": "webpack --mode production",
 		"dev": "webpack serve --mode development"
@@ -21,7 +22,6 @@
 		"svg-inline-loader": "^0.8.2"
 	},
 	"dependencies": {
-		"paella": "../paella",
-		"paella-example-plugin": "../paella-example-plugin"
+		"paella": "../paella"
 	}
 }

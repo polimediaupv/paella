@@ -56,6 +56,10 @@
             "enabled": true,
             "side": "left",
             "order": 3
+        },
+        "es.upv.paella.externalPluginTest": {
+            "enabled": true,
+            "side": "right"
         }
     }
 }
