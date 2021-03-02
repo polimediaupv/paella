@@ -221,6 +221,8 @@
 								resolve(video);
 							});
 
+							const rand = Math.floor(Math.random() * 100000000000);
+							url += /\?/.test(url) ? `&cache=${ rand }` : `?cache=${ rand }`;
 							this._hls.loadSource(url);
 							this._hls.attachMedia(video);
 						}
