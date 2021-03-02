@@ -560,12 +560,12 @@ paella.utils.uuid = function() {
         }
 	}
     
-    Log.kLevelError    = 1;
-    Log.kLevelWarning  = 2;
-    Log.kLevelDebug    = 3;
-    Log.kLevelLog      = 4;
-    
-    paella.log = new Log();	
+	paella.log = new Log();
+	paella.log.kLevelError      = 1;
+	paella.log.kLevelWarning    = 2;
+	paella.log.kLevelDebug      = 3;
+	paella.log.kLevelLog        = 4;
+	
 })();
 
 paella.AntiXSS = {
