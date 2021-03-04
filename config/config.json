@@ -180,7 +180,8 @@
         "ask_for_concent": true,
         "privacy_policy_url": "https://matomo.org/blog/2018/04/how-should-i-write-my-privacy-notice-for-matomo-analytics-under-gdpr/",
         "cookieconsent_base_color": "#1d8a8a",
-        "cookieconsent_highlight_color": "#62ffaa"
+        "cookieconsent_highlight_color": "#62ffaa",
+        "html_title": false
       },
       "org.opencast.usertracking.x5gonSaverPlugIn": {
         "enabled": false,
