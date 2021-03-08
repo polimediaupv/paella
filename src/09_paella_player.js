@@ -457,11 +457,13 @@
 	class LazyThumbnailContainer extends paella.DomNode {
 
 		static GetIconElement() {
-			let container = document.createElement('div');
+			let container = document.createElement('button');
 			container.className = "play-button-on-screen";
+			container.setAttribute("aria-label","Play");
 			container.style.width = "100%";
 			container.style.height = "100%";
 			container.style.pointerEvents = "none";
+			container.addEventListener("click", () => paella.player.play());
 		
 			let icon = document.createElement('div');
 			icon['className'] = 'play-icon';
