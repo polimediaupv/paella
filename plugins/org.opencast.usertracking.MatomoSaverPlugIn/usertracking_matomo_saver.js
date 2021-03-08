@@ -168,6 +168,11 @@ paella.addPlugin(function() {
 
     } // checkEnabled
 
+    setVideoTitleAttr(){
+      var video_element = video_element = document.getElementsByTagName("video");
+      video_element.video_0.setAttribute("data-matomo-title", document.title);
+    }
+
     registerVisit() {
       var title,
           event_id,
@@ -176,18 +181,25 @@ paella.addPlugin(function() {
           presenter,
           view_mode;
 
-      if (paella.opencast && paella.opencast._episode) {
+      if ((paella.opencast != undefined) && (paella.opencast._episode != undefined)) {
         title = paella.opencast._episode.dcTitle;
         event_id = paella.opencast._episode.id;
         presenter = paella.opencast._episode.dcCreator;
         paella.userTracking.matomotracker.setCustomVariable(5, "client",
           (paella.userTracking.matomotracker.client_id || "Paella Opencast"));
       } else {
+        title = this.loadTitle();
+        // Add title for Matomo Media Analytics.
+        if (this.config.html_title){
+          this.setVideoTitleAttr();
+        } else{
+          Matomo.MediaAnalytics.setMediaTitleFallback(function (mediaElement) {return title; });
+        }
         paella.userTracking.matomotracker.setCustomVariable(5, "client",
-          (paella.userTracking.matomotracker.client_id || "Paella Standalone"));
+          (paella.userTracking.matomotracker.client_id || "Paella Standalone"));          
       }
 
-      if (paella.opencast && paella.opencast._episode && paella.opencast._episode.mediapackage) {
+      if ((paella.opencast != undefined) && (paella.opencast._episode != undefined) && (paella.opencast._episode.mediapackage != undefined)) {
         series_id = paella.opencast._episode.mediapackage.series;
         series_title = paella.opencast._episode.mediapackage.seriestitle;
       }
@@ -220,7 +232,7 @@ paella.addPlugin(function() {
 
         var value = "";
 
-        try {
+        try {     
           value = JSON.stringify(params);
         } catch(e) {}
 
