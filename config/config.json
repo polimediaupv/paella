@@ -1,9 +1,13 @@
 {
   "player":{
     "accessControlClass":"paella.AccessControl",
-        "profileFrameStrategy": "paella.ProfileFrameStrategy",
-    "videoQualityStrategy": "paella.LimitedBestFitVideoQualityStrategy",
-    "videoQualityStrategyParams":{ "maxAutoQualityRes":720 },
+    "profileFrameStrategy": "paella.ProfileFrameStrategy",
+    "videoQualityStrategy": "paella.BestFitVideoQualityStrategy",
+    "videoQualityStrategyParams":{
+      "maxAutoQualityRes":720,
+      "*** Default quality level override options are low or high, leave blank for strategy to decide": "",
+      "defaultQualityLevel": ""
+    },
     "reloadOnFullscreen": true,
     "videoZoom": {
       "enabled":true,

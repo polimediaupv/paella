@@ -498,16 +498,16 @@ paella.utils.uuid = function() {
             logLevelParam = logLevelParam.toLowerCase();
             switch (logLevelParam) {
                 case "error":
-                    this.setLevel(paella.log.kLevelError);
+                    this.setLevel(Log.kLevelError);
                     break;
                 case "warning":
-                    this.setLevel(paella.log.kLevelWarning);
+                    this.setLevel(Log.kLevelWarning);
                     break;
                 case "debug":
-                    this.setLevel(paella.log.kLevelDebug);
+                    this.setLevel(Log.kLevelDebug);
                     break;
                 case "log":
-                    this.setLevel(paella.log.kLevelLog);
+                    this.setLevel(Log.kLevelLog);
                     break;
             }
         }
@@ -517,18 +517,18 @@ paella.utils.uuid = function() {
             if (typeof(level)=="string") {
                 message = level;
             }
-            else if (level>=paella.log.kLevelError && level<=paella.log.kLevelLog) {
+            else if (level>=Log.kLevelError && level<=Log.kLevelLog) {
                 switch (level) {
-                    case paella.log.kLevelError:
+                    case Log.kLevelError:
                         prefix = "ERROR: ";
                         break;
-                    case paella.log.kLevelWarning:
+                    case Log.kLevelWarning:
                         prefix = "WARNING: ";
                         break;
-                    case paella.log.kLevelDebug:
+                    case Log.kLevelDebug:
                         prefix = "DEBUG: ";
                         break;
-                    case paella.log.kLevelLog:
+                    case Log.kLevelLog:
                         prefix = "LOG: ";
                         break;
                 }
@@ -540,19 +540,19 @@ paella.utils.uuid = function() {
         }
     
         error(message) {
-            this.logMessage(paella.log.kLevelError, message);
+            this.logMessage(Log.kLevelError, message);
         }
     
         warning(message) {
-            this.logMessage(paella.log.kLevelWarning, message);
+            this.logMessage(Log.kLevelWarning, message);
         }
     
         debug(message) {
-            this.logMessage(paella.log.kLevelDebug, message);
+            this.logMessage(Log.kLevelDebug, message);
         }
     
         log(message) {
-            this.logMessage(paella.log.kLevelLog, message);
+            this.logMessage(Log.kLevelLog, message);
         }
     
         setLevel(level) {
