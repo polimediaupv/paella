@@ -172,7 +172,7 @@ class Caption {
 	reloadCaptions(next) {
 		var self = this;
 	
-		let xhrFields = paella.player.config.captions?.downloadOptions?.xhrFields || null;
+		let xhrFields = paella.player.config.captions?.downloadOptions?.xhrFields || {};
 		if (Object.keys(xhrFields).length) {
 			xhrFields = null;
 		}
