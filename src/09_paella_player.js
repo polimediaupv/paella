@@ -463,7 +463,10 @@
 			container.style.width = "100%";
 			container.style.height = "100%";
 			container.style.pointerEvents = "none";
-			container.addEventListener("click", () => paella.player.play());
+			container.addEventListener("click", (evt) => {
+				evt.stopPropagation();
+				paella.player.play();
+			});
 		
 			let icon = document.createElement('div');
 			icon['className'] = 'play-icon';
