@@ -491,6 +491,12 @@ paella.utils.uuid = function() {
 	}
 	
 	class Log {
+		get kLevelError() { return 1; }
+		get kLevelWarning() { return 2; }
+		get kLevelDebug() { return 3; }
+		get kLevelLog() { return 4; }
+	
+		
         constructor() {
 			this._currentLevel = 0;
             var logLevelParam = paella.utils.parameters.get("logLevel");
@@ -498,16 +504,16 @@ paella.utils.uuid = function() {
             logLevelParam = logLevelParam.toLowerCase();
             switch (logLevelParam) {
                 case "error":
-                    this.setLevel(paella.log.kLevelError);
+                    this.setLevel(this.kLevelError);
                     break;
                 case "warning":
-                    this.setLevel(paella.log.kLevelWarning);
+                    this.setLevel(this.kLevelWarning);
                     break;
                 case "debug":
-                    this.setLevel(paella.log.kLevelDebug);
+                    this.setLevel(this.kLevelDebug);
                     break;
                 case "log":
-                    this.setLevel(paella.log.kLevelLog);
+                    this.setLevel(this.kLevelLog);
                     break;
             }
         }
@@ -561,10 +567,7 @@ paella.utils.uuid = function() {
 	}
     
 	paella.log = new Log();
-	paella.log.kLevelError      = 1;
-	paella.log.kLevelWarning    = 2;
-	paella.log.kLevelDebug      = 3;
-	paella.log.kLevelLog        = 4;
+	
 	
 })();
 
