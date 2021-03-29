@@ -65,6 +65,13 @@
   "experimental":{
     "autoplay":true
   },
+  "captions": {
+    "downloadOptions": {
+      "xhrFields": {
+        
+      }
+    }
+  },
   "plugins":{
     "enablePluginsByDefault": false,
 
