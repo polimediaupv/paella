@@ -298,11 +298,14 @@ gulp.task("tools", function() {
 gulp.task("default", gulp.series("build"));
 gulp.task("serve", gulp.parallel("buildDebug","webserver","tools",watchFilesDebug));
 
+// gulp.task('test:local', gulp.series(
+// 	'build',
+// 	'test:nightwatch:local:start-server',
+// 	'test:nightwatch:local:run',
+// 	'test:nightwatch:local:stop-server'));
+	
 gulp.task('test:local', gulp.series(
-	'build',
-	'test:nightwatch:local:start-server',
-	'test:nightwatch:local:run',
-	'test:nightwatch:local:stop-server'));
+	'build'));
 
 // Compatibility
 gulp.task("server.release", gulp.parallel("build","webserver","tools",watchFiles));
