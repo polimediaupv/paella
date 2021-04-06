@@ -16,7 +16,7 @@ Paella Player 7 and beyond
 -----------------
 In version 7, Paella is being rewritten from scratch, so we are using a different repo.
 
-Paella 7 is being developed in (https://github.com/polimediaupv/paella-player)
+Paella 7 is being developed in https://github.com/polimediaupv/paella-player
 
 
 Build and Install
