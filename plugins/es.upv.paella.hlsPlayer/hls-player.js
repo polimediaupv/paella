@@ -216,7 +216,9 @@
 								setTimeout(() => this._hls.currentLevel = -1, 1000);
 
 								// Fixes hls.js problems loading some videos
-								video.play();
+								try {
+									video.play();
+								} catch (e) {}
 
 								resolve(video);
 							});
