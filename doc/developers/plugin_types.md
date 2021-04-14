@@ -32,7 +32,9 @@ the plugin and its funcionalities.
 
   Plugin example: [Buffered playback bar canvas plugin](../examples/buffered_playback_canvas.md)
 
+- Key plugin: Allows you to control keyboard events to execute actions. This is the preferred method if you want to modify the operation of hotkeys. It is possible to activate more than one keyboard plugin simultaneously, but there may be incompatibility problems between them, so we recommend activating only one keyboard plugin.
 
+  Plugin example: [Default keys plugin](../examples/key_plugin.md)
 
 ## Interact with the player
 
