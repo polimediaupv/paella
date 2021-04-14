@@ -4,7 +4,8 @@ CHANGELOG
 * Paella 6.5.4
 
   * Removed RTMP support
-  * Minor bug fixes
+  * Fixed a bug when playing the video by clicking on the video container
+  * Other minor bug fixes
 
 * Paella 6.5.3
 
