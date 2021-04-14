@@ -1142,6 +1142,7 @@ class VideoContainer extends paella.VideoContainerBase {
 				if (trimmingData.enabled) {
 					time = time - trimmingData.start;
 				}
+				if (time < 0) time = 0;
 				resolve(time)
 			});
 		});
