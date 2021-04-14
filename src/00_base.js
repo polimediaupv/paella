@@ -76,8 +76,6 @@ paella.events = {
 	
 	controlBarLoaded:'paella:controlBarLoaded',	
 	
-	flashVideoEvent:'paella:flashVideoEvent',
-	
 	captionAdded: 'paella:caption:add', // Event triggered when new caption is available.
 	captionsEnabled: 'paella:caption:enabled',  // Event triguered when a caption es enabled.
 	captionsDisabled: 'paella:caption:disabled',  // Event triguered when a caption es disabled.
