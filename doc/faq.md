@@ -9,9 +9,9 @@ Paella Player is licensed under the terms of the Educational Community License, 
 
 ## What browsers are supported in Paella?
 
-Most HTML5 browsers should work with Paella. By default Paella tries to load the videos using the html5 video tag. If it fails it will use the .swf component to play that video, so Paella should work in any modern browser (through Flash).
+Most HTML5 browsers should work with Paella.
 
-We test Paella in Chrome, Safari, Internet Explorer and Firefox.
+We test Paella in Chrome, Safari, Firefox, Edge (Chromium) and Opera.
 
 ## How works the XXX plugin?
 
@@ -19,7 +19,9 @@ It should be written on the [Paella Player Plugin Documentation](adopters/plugin
 
 ## I have a RTMP streaming server. Will Paella work?
 
-Paella ships with a .swf component to support RTMP streaming, so it should work. There is a known issue with RTMPS (secure RTMP) and Paella.
+[Flash support officially ended on December 31, 2020](https://www.adobe.com/es/products/flashplayer/end-of-life.html) and is now blocked by default in all browsers. The RTMP format works on the web through Flash Player, and therefore there is no longer support for RTMP in Paella Player. Streaming support is currently implemented using [HLS](https://developer.apple.com/streaming).
+
+
 
 ## I/my users have a metered data connection. What about data consumption?
 
@@ -35,13 +37,13 @@ Yes, but with some limitations. HTML5 multistream video playing is restricted on
 
 This is not a bug, is a feature ;-). Try to embed on a larger space or tune up what icons should disappear.
 
-## I serve my recordings through RTMP and progressive download. Can I choose the preference order?
+## I serve my recordings through HLS and progressive download. Can I choose the preference order?
 
-Yes. By default Paella tries to do it by RTMP, then by HTML5 `<video>` tag and as the last option through flash. You can change the order of these options in the config file, as described in the [Paella Player configuration guide](adopters/configure.md).
+You can change the order of these options in the config file, as described in the [Paella Player configuration guide](adopters/configure.md).
 
 ## Do Paella player support Live Streaming?
 
-Yes, Since Paella 3.1 we support RTMP Live Streaming.
+Yes, we support HLS Live Streaming.
 
 ## Can I integrate Paella Player in my website?
 

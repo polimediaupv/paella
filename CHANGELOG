@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+* Paella 6.5.4
+
+  * Removed RTMP support
+  * Minor bug fixes
+
 * Paella 6.5.3
 
   * New subtitle configuration options have been added.

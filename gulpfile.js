@@ -287,10 +287,7 @@ function watchFilesDebug() {
 gulp.task("tools", function() {
 	let p = [
 		gulp.src('tools/**')
-			.pipe(gulp.dest(`${config.outDir}tools`)),
-
-		gulp.src('src/flash_streaming/*.swf')
-			.pipe(gulp.dest(`${config.outDir}tools/rtmp-test/`))
+			.pipe(gulp.dest(`${config.outDir}tools`))
 	];
 	return Promise.all(p);
 });

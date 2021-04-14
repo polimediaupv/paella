@@ -10,11 +10,6 @@
       "max":800
     },
 
-    "deprecated-methods":[{"name":"streaming","enabled":true},
-           {"name":"html","enabled":true},
-           {"name":"flash","enabled":true},
-                   {"name":"image","enabled":true}],
-
     "methods":[
       { "factory":"ChromaVideoFactory", "enabled":true },
       { "factory":"WebmVideoFactory", "enabled":true },
