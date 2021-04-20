@@ -7,7 +7,7 @@ paella.addPlugin(function() {
 		getIconClass() { return 'icon-help'; }
 		getName() { return "es.upv.paella.helpPlugin"; }
 
-		getDefaultToolTip() { return base.dictionary.translate("Show help") + ' (' + base.dictionary.translate("Paella version:") + ' ' + paella.version + ')'; }
+		getDefaultToolTip() { return paella.utils.dictionary.translate("Show help") + ' (' + paella.utils.dictionary.translate("Paella version:") + ' ' + paella.version + ')'; }
 
 
 		checkEnabled(onSuccess) { 
@@ -16,7 +16,7 @@ paella.addPlugin(function() {
 		}
 
 		action(button) {
-			var mylang = base.dictionary.currentLanguage();
+			var mylang = paella.utils.dictionary.currentLanguage();
 			
 			var availableLangs = (this.config && this.config.langs) || [];
 			var idx = availableLangs.indexOf(mylang);
@@ -24,7 +24,7 @@ paella.addPlugin(function() {
 							
 			//paella.messageBox.showFrame("http://paellaplayer.upv.es/?page=usage");
 			let url = "resources/style/help/help_" + availableLangs[idx] + ".html";
-			if (base.userAgent.browser.IsMobileVersion) {
+			if (paella.utils.userAgent.browser.IsMobileVersion) {
 				window.open(url);
 			}
 			else {

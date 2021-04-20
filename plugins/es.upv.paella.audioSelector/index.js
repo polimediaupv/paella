@@ -5,7 +5,7 @@ paella.addPlugin(function() {
 		getIconClass() { return 'icon-headphone'; }
 		getIndex() { return 2040; }
 		getName() { return "es.upv.paella.audioSelector"; }
-		getDefaultToolTip() { return base.dictionary.translate("Set audio stream"); }
+		getDefaultToolTip() { return paella.utils.dictionary.translate("Set audio stream"); }
 
 		closeOnMouseOut() { return true; }
 			

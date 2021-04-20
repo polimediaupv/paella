@@ -47,7 +47,7 @@ class PluginManager {
 			this.loadPlugins("paella.DeferredLoadPlugin");
 		});
 		
-		var timer = new base.Timer(() => {
+		var timer = new paella.utils.Timer(() => {
 			if (paella.player && paella.player.controls && this.doResize) paella.player.controls.onresize();
 		}, 1000);
 		timer.repeat = true;
@@ -97,7 +97,7 @@ class PluginManager {
 				if (plugin.isLoaded()) return;
 				if (eval("plugin instanceof " + pluginBaseClass)) {
 					if (config.enabled) {
-						base.log.debug("Load plugin (" + pluginBaseClass + "): " + plugin.getName());
+						paella.log.debug("Load plugin (" + pluginBaseClass + "): " + plugin.getName());
 						plugin.config = config;							
 						plugin.load(This);
 					}				
@@ -303,7 +303,9 @@ class PopUpContainer extends paella.DomNode {
 
 	hideContainer(identifier, button, swapFocus = false) {
 		var container = this.containers[identifier];
-		hideContainer.apply(this,[identifier,container,swapFocus]);
+		if (container) {
+			hideContainer.apply(this,[identifier,container,swapFocus]);
+		}
 	}
 
 	showContainer(identifier, button, swapFocus = false) {
@@ -526,19 +528,19 @@ class ButtonPlugin extends paella.UIPlugin {
 	}
 
 	willShowContent() {
-		base.log.debug(this.getName() + " willDisplayContent");
+		paella.log.debug(this.getName() + " willDisplayContent");
 	}
 
 	didShowContent() {
-		base.log.debug(this.getName() + " didDisplayContent");
+		paella.log.debug(this.getName() + " didDisplayContent");
 	}
 
 	willHideContent() {
-		base.log.debug(this.getName() + " willHideContent");
+		paella.log.debug(this.getName() + " willHideContent");
 	}
 
 	didHideContent() {
-		base.log.debug(this.getName() + " didHideContent");
+		paella.log.debug(this.getName() + " didHideContent");
 	}
 
 	getButtonType() {
@@ -630,7 +632,7 @@ class ButtonPlugin extends paella.UIPlugin {
 	static BuildPluginButton(plugin,id) {
 		plugin.subclass = plugin.getSubclass();
 		var elem = document.createElement('div');
-		let ariaLabel = plugin.getAriaLabel() || base.dictionary.translate(plugin.config.ariaLabel) || "";
+		let ariaLabel = plugin.getAriaLabel() || paella.utils.dictionary.translate(plugin.config.ariaLabel) || "";
 		if (ariaLabel!="") {
 			elem = document.createElement('button');
 		}
@@ -666,15 +668,13 @@ class ButtonPlugin extends paella.UIPlugin {
 			self.plugin.action(self);
 		}
 		
-		if (plugin.getButtonType() == paella.ButtonPlugin.type.actionButton) {
-			$(elem).click(function(event) {
-				onAction(this);
-			});
-			$(elem).keypress(function(event) {
-				 onAction(this);
-				 event.preventDefault();
-			});
-		}
+		$(elem).click(function(event) {
+			onAction(this);
+		});
+		$(elem).keypress(function(event) {
+			 onAction(this);
+			 event.preventDefault();
+		});
 
 		$(elem).focus(function(event) {
 			plugin.expand();

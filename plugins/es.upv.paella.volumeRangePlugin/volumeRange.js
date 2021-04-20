@@ -5,7 +5,7 @@ paella.addPlugin(function() {
 		getSubclass() { return 'volumeRangeButton'; }
 		getIconClass() { return 'icon-volume-high'; }
 		getName() { return "es.upv.paella.volumeRangePlugin"; }
-		getDefaultToolTip() { return base.dictionary.translate("Volume"); }
+		getDefaultToolTip() { return paella.utils.dictionary.translate("Volume"); }
 		getIndex() {return 9999;}
 
 		checkEnabled(onSuccess) {
@@ -13,7 +13,7 @@ paella.addPlugin(function() {
 			this._inputMaster = null;
 			this._control_NotMyselfEvent = true;
 			this._storedValue = false;
-			var enabled = !base.userAgent.browser.IsMobileVersion;
+			var enabled = !paella.utils.userAgent.browser.IsMobileVersion;
 			onSuccess(enabled);
 		}
 

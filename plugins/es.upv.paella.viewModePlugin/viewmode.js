@@ -9,7 +9,7 @@ paella.addPlugin(function() {
 		getName() { return "es.upv.paella.viewModePlugin"; }
 		//getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
 		getButtonType() { return paella.ButtonPlugin.type.menuButton; }
-		getDefaultToolTip() { return base.dictionary.translate("Change video layout"); }		
+		getDefaultToolTip() { return paella.utils.dictionary.translate("Change video layout"); }		
 		checkEnabled(onSuccess) {
 			this.buttonItems =null;
 			this.buttons = [];

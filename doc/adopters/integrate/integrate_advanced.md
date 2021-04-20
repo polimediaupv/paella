@@ -24,11 +24,8 @@ There are many options for loading Paella Player. Let's see several examples sta
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Paella Engage Example</title>
 
-  <script type="text/javascript" src="javascript/swfobject.js"></script>
-  <script type="text/javascript" src="javascript/base.js"></script>
   <script type="text/javascript" src="javascript/jquery.min.js"></script>
   <script type="text/javascript" src="javascript/lunr.min.js"></script>
-  <script type="text/javascript" src="javascript/require.js"></script>
   <script type="text/javascript" src="javascript/paella_player_es2015.js"></script>
   
   <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css" type="text/css" media="screen" charset="utf-8">
@@ -130,7 +127,7 @@ In the following example you can see an implementation that emulates the default
 function myLoadPaella(containerId) {
   paella.load(containerId, {
     getId:() => {
-     return base.parameters.get("id");
+     return paella.utils.parameters.get("id");
     },
     videoUrl: () => {
      return `${ paella.player.repoUrl }${ paella.player.videoId }/`;

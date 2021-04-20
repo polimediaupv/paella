@@ -5,7 +5,7 @@ paella.addPlugin(function() {
         getIndex() {return 10;}
         getSubclass() { return "liveIndicator"; }
         getAlignment() { return 'right'; }
-        getDefaultToolTip() { return base.dictionary.translate("This video is a live stream"); }
+        getDefaultToolTip() { return paella.utils.dictionary.translate("This video is a live stream"); }
         getName() { return "es.upv.paella.liveStreamingIndicatorPlugin"; }
 
         checkEnabled(onSuccess) {
@@ -15,7 +15,7 @@ paella.addPlugin(function() {
         setup() {}
 
         action(button) {
-            paella.messageBox.showMessage(base.dictionary.translate("Live streaming mode: This is a live video, so, some capabilities of the player are disabled"));
+            paella.messageBox.showMessage(paella.utils.dictionary.translate("Live streaming mode: This is a live video, so, some capabilities of the player are disabled"));
         }
     }
 });

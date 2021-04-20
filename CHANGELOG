@@ -1,6 +1,45 @@
 CHANGELOG
 =========
 
+* Paella 6.5.4
+
+  * Removed RTMP support
+  * Fixed a bug when playing the video by clicking on the video container
+  * Other minor bug fixes
+
+* Paella 6.5.3
+
+  * New subtitle configuration options have been added.
+  * The log system has been improved.
+  * Fixed a bug in the parsing of subtitles in DFXP format.
+  
+* Paella 6.5.2
+
+  * An accessibility bug has been fixed, which did not allow starting the video with screen readers.
+  * Fixed an issue with matomo media analytics.
+
+* Paella 6.5.1
+
+  * The subtitle plugin can now work with servers that require credentials.
+
+* Paella 6.5.0
+
+  * Improvements in HLS plugin
+  * Improvements in Matomo tracking plugin
+  * Dependencies have been updated
+  
+* Paella 6.4.6
+
+  * Bug fixed in footprint plugin
+
+* Paella 6.4.5
+
+  * Improvements in dual stream video layout
+  
+* Paella 6.4.4
+
+  * Bug fixes from 6.3.x branch.
+  
 * Paella 6.4.3
 
   * DFXP caption parse fix for jQuery 3.5.0 upgrade
@@ -29,6 +68,10 @@ CHANGELOG
     - Be sure to add the `es.upv.paella.timeMarksPlaybackCanvasPlugin` plugin settings so that the slide marks are drawn on the timeline.
     - Note that the "audioTag" multi audio API is now deprecated, because it is not compatible with iOS devices. It will continue to work in the same way as it has so far, but will no longer be maintained due to incompatibility with iOS devices.
     
+* Paella 6.3.5
+
+  * Bug fixed in  playback rate.
+
 * Paella 6.3.4
 
   * webgl engine updated

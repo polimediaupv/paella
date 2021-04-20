@@ -17,8 +17,7 @@ paella.addPlugin(function() {
                 this.showOnEnd = !Array.isArray(data) ||  data.length == 0;
 			});
 			
-			onSuccess(!paella.player.isLiveStream() || base.userAgent.system.Android 
-				|| base.userAgent.system.iOS || !paella.player.videoContainer.supportAutoplay());
+			onSuccess(true);
 		}
 	
 		getIndex() { return 1010; }
@@ -31,11 +30,19 @@ paella.addPlugin(function() {
 		}
 	
 		getEvents() {
-			return [paella.events.endVideo,paella.events.play,paella.events.pause,paella.events.showEditor,paella.events.hideEditor];
+			return [
+				paella.events.ended,
+				paella.events.endVideo,
+				paella.events.play,
+				paella.events.pause,
+				paella.events.showEditor,
+				paella.events.hideEditor
+			];
 		}
 	
 		onEvent(eventType,params) {
 			switch (eventType) {
+				case paella.events.ended:
 				case paella.events.endVideo:
 					this.endVideo();
 					break;
@@ -60,9 +67,16 @@ paella.addPlugin(function() {
 		}
 	
 		endVideo() {
-			this.isPlaying = false;
-			this.showIcon = this.showOnEnd;
-			this.checkStatus();
+			paella.player.videoContainer.ended()
+			.then(ended => {
+				if (ended) {
+					this.isPlaying = false;
+					this.showIcon = this.showOnEnd;
+					this.checkStatus();
+				} else {
+					base.log.debug(`BTN ON SCREEN: The player is no longer in ended state.`);
+				}
+			});
 		}
 	
 		play() {

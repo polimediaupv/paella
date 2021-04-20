@@ -36,24 +36,28 @@ paella.addPlugin(function() {
         wrapperDom.appendChild(zoomButton);
         zoomButton.className = "videoZoomButton btn zoomIn";
         zoomButton.innerHTML = '<i class="glyphicon glyphicon-zoom-in"></i>'
-        $(zoomButton).on('mousedown',() => {
+        $(zoomButton).on('mousedown',(e) => {
+            e.preventDefault();
             paella.player.videoContainer.disablePlayOnClick();
             videoPlayer.zoomIn();
         });
-        $(zoomButton).on('mouseup',() => {
-            setTimeout(() => paella.player.videoContainer.enablePlayOnClick(),10);
+        $(zoomButton).on('mouseup',(e) => {
+            e.preventDefault();
+            paella.player.videoContainer.enablePlayOnClick(1000);
         });
 
         zoomButton = document.createElement('div');
         wrapperDom.appendChild(zoomButton);
         zoomButton.className = "videoZoomButton btn zoomOut";
         zoomButton.innerHTML = '<i class="glyphicon glyphicon-zoom-out"></i>'
-        $(zoomButton).on('mousedown',() => {
+        $(zoomButton).on('mousedown',(e) => {
+            e.preventDefault();
             paella.player.videoContainer.disablePlayOnClick();
             videoPlayer.zoomOut();
         });
-        $(zoomButton).on('mouseup',() => {
-            setTimeout(() => paella.player.videoContainer.enablePlayOnClick(),10);
+        $(zoomButton).on('mouseup',(e) => {
+            e.preventDefault();
+            paella.player.videoContainer.enablePlayOnClick(1000);
         });
 
     }
@@ -177,7 +181,7 @@ paella.addPlugin(function() {
         }
 
         action(button) {
-            //paella.messageBox.showMessage(base.dictionary.translate("Live streaming mode: This is a live video, so, some capabilities of the player are disabled"));
+            //paella.messageBox.showMessage(paella.utils.dictionary.translate("Live streaming mode: This is a live video, so, some capabilities of the player are disabled"));
         }
 
         getName() {
@@ -194,7 +198,7 @@ paella.addPlugin(function() {
         getIconClass() { return 'icon-screen'; }
         getIndex() { return 2030; }
         getName() { return "es.upv.paella.videoZoomToolbarPlugin"; }
-        getDefaultToolTip() { return base.dictionary.translate("Set video zoom"); }
+        getDefaultToolTip() { return paella.utils.dictionary.translate("Set video zoom"); }
         getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
 
         checkEnabled(onSuccess) {

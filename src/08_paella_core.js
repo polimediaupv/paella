@@ -102,24 +102,25 @@
 		
 		checkCompatibility() {
 			let message = "";
-			if (base.parameters.get('ignoreBrowserCheck')) {
+			if (paella.utils.parameters.get('ignoreBrowserCheck')) {
 				return true;
 			}
-			if (base.userAgent.browser.IsMobileVersion) return true;
-			let isCompatible =	base.userAgent.browser.Chrome ||
-								base.userAgent.browser.Safari ||
-								base.userAgent.browser.Firefox ||
-								base.userAgent.browser.Opera ||
-								base.userAgent.browser.Edge ||
-								(base.userAgent.browser.Explorer && base.userAgent.browser.Version.major>=9);
+			if (paella.utils.userAgent.browser.IsMobileVersion) return true;
+			let isCompatible =	paella.utils.userAgent.browser.Chrome ||
+								paella.utils.userAgent.browser.EdgeChromium ||
+								paella.utils.userAgent.browser.Safari ||
+								paella.utils.userAgent.browser.Firefox ||
+								paella.utils.userAgent.browser.Opera ||
+								paella.utils.userAgent.browser.Edge ||
+								(paella.utils.userAgent.browser.Explorer && paella.utils.userAgent.browser.Version.major>=9);
 			if (isCompatible) {
 				return true;
 			}
 			else {
-				var errorMessage = base.dictionary.translate("It seems that your browser is not HTML 5 compatible");
+				var errorMessage = paella.utils.dictionary.translate("It seems that your browser is not HTML 5 compatible");
 				paella.events.trigger(paella.events.error,{error:errorMessage});
 				message = errorMessage + '<div style="display:block;width:470px;height:140px;margin-left:auto;margin-right:auto;font-family:Verdana,sans-sherif;font-size:12px;"><a href="http://www.google.es/chrome" style="color:#004488;float:left;margin-right:20px;"><img src="'+paella.utils.folders.resources()+'images/chrome.png" style="width:80px;height:80px" alt="Google Chrome"></img><p>Google Chrome</p></a><a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home" style="color:#004488;float:left;margin-right:20px;"><img src="'+paella.utils.folders.resources()+'images/explorer.png" style="width:80px;height:80px" alt="Internet Explorer 9"></img><p>Internet Explorer 9</p></a><a href="http://www.apple.com/safari/" style="float:left;margin-right:20px;color:#004488"><img src="'+paella.utils.folders.resources()+'images/safari.png" style="width:80px;height:80px" alt="Safari"></img><p>Safari 5</p></a><a href="http://www.mozilla.org/firefox/" style="float:left;color:#004488"><img src="'+paella.utils.folders.resources()+'images/firefox.png" style="width:80px;height:80px" alt="Firefox"></img><p>Firefox 12</p></a></div>';
-				message += '<div style="margin-top:30px;"><a id="ignoreBrowserCheckLink" href="#" onclick="window.location = window.location + \'&ignoreBrowserCheck=true\'">' + base.dictionary.translate("Continue anyway") + '</a></div>';
+				message += '<div style="margin-top:30px;"><a id="ignoreBrowserCheckLink" href="#" onclick="window.location = window.location + \'&ignoreBrowserCheck=true\'">' + paella.utils.dictionary.translate("Continue anyway") + '</a></div>';
 				paella.messageBox.showError(message,{height:'40%'});
 			}
 			return false;
@@ -133,28 +134,28 @@
 			this.controls = null;
 			this.accessControl = null;
 	
-			if (base.parameters.get('log') != undefined) {
+			if (paella.utils.parameters.get('log') != undefined) {
 				var log = 0;
-				switch(base.parameters.get('log')) {
+				switch(paella.utils.parameters.get('log')) {
 					case "error":
-						log = base.Log.kLevelError;
+						log = paella.log.kLevelError;
 						break;					
 					case "warn":
-						log = base.Log.kLevelWarning;
+						log = paella.log.kLevelWarning;
 						break;					
 					case "debug":
-						log = base.Log.kLevelDebug;
+						log = paella.log.kLevelDebug;
 						break;					
 					case "log":
 					case "true":
-						log = base.Log.kLevelLog;
+						log = paella.log.kLevelLog;
 						break;
 				}
-				base.log.setLevel(log);
+				paella.log.setLevel(log);
 			}		
 				
 			if (!this.checkCompatibility()) {
-				base.log.debug('It seems that your browser is not HTML 5 compatible');
+				paella.log.debug('It seems that your browser is not HTML 5 compatible');
 			}
 			else {
 				paella.player = this;
@@ -169,6 +170,7 @@
 		get videoUrl() { return paella.player.videoLoader.getVideoUrl(); }
 		get dataUrl() { return paella.player.videoLoader.getDataUrl(); }
 		get videoId() { return paella.initDelegate.getId(); }
+		get startMuted() { return /true/.test(paella.utils.parameters.get("muted")); }
 	
 		loadComplete(event,params) {
 	
@@ -210,7 +212,9 @@
 					dictionaryUrl:paella.baseUrl + 'localization/paella',
 					accessControl:null,
 					videoLoader:null,
-			
+					disableUserInterface: function() {
+						return /true/i.test(paella.utils.parameters.get("disable-ui"));
+					}
 					// Other parameters set externally:
 					//	config: json containing the configuration file
 					//	loadConfig: function(defaultConfigUrl). Returns a promise with the config.json data
@@ -218,6 +222,7 @@
 					//	videoUrl: function. Returns the base URL of the video (example: baseUrl + videoID)
 					//	dataUrl: function. Returns the full URL to get the data.json file
 					//	loadVideo: Function. Returns a promise with the data.json file content
+					//  disableUserInterface: Function. Returns true if the user interface should be disabled (only shows the video container)
 				};
 			}
 			return this._initParams;
@@ -236,7 +241,7 @@
 
 			if (!this.initParams.getId) {
 				this.initParams.getId = function() {
-					return base.parameters.get('id') || "noid";
+					return paella.utils.parameters.get('id') || "noid";
 				} 
 			}
 		}
@@ -247,8 +252,8 @@
 	
 		loadDictionary() {
 			return new Promise((resolve) => {
-				base.ajax.get({ url:this.initParams.dictionaryUrl + "_" + base.dictionary.currentLanguage() + '.json' }, function(data,type,returnCode) {
-					base.dictionary.addDictionary(data);
+				paella.utils.ajax.get({ url:this.initParams.dictionaryUrl + "_" + paella.utils.dictionary.currentLanguage() + '.json' }, function(data,type,returnCode) {
+					paella.utils.dictionary.addDictionary(data);
 					resolve(data);
 				},
 				function(data,type,returnCode) {
@@ -259,7 +264,7 @@
 	
 		loadConfig() {
 			let loadAccessControl = (data) => {
-				var AccessControlClass = Class.fromString(data.player.accessControlClass || "paella.AccessControl");
+				var AccessControlClass = paella.utils.objectFromString(data.player.accessControlClass || "paella.AccessControl");
 				this.initParams.accessControl = new AccessControlClass();
 			};
 	
@@ -286,7 +291,7 @@
 					var configUrl = this.initParams.configUrl;
 					var params = {};
 					params.url = configUrl;
-					base.ajax.get(params,(data,type,returnCode) => {
+					paella.utils.ajax.get(params,(data,type,returnCode) => {
 							try {
 								data = JSON.parse(data);
 							}
@@ -295,7 +300,7 @@
 							resolve(data);
 						},
 						function(data,type,returnCode) {
-							paella.messageBox.showError(base.dictionary.translate("Error! Config file not found. Please configure paella!"));
+							paella.messageBox.showError(paella.utils.dictionary.translate("Error! Config file not found. Please configure paella!"));
 							//onSuccess({});
 						});
 				});

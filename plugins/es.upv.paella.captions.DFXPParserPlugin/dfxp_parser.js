@@ -9,7 +9,15 @@ paella.addPlugin(function() {
 		parse(content, lang, next) {
 			var captions = [];
 			var self = this;
-			var xmlDoc = $.parseXML(content);
+
+			//fix malformed xml replacing the malformed characters with blank
+			content = content.replace(/[^\x09\x0A\x0D\x20-\xFF\x85\xA0-\uD7FF\uE000-\uFDCF\uFDE0-\uFFFD]/gm, '')
+			content = content.replace(/&\w+;/gmi,'')
+			content = content.replaceAll('<br>','')
+			
+			var parser = new DOMParser();
+			var xmlDoc = parser.parseFromString(content,"text/xml");	
+			//var xmlDoc = $.parseXML(content);
 			var xml = $(xmlDoc);
 			var g_lang = xml.attr("xml:lang");
 			
@@ -19,7 +27,7 @@ paella.addPlugin(function() {
 				var l_lang = ll.attr("xml:lang");
 				if ((l_lang == undefined) || (l_lang == "")){
 					if ((g_lang == undefined) || (g_lang == "")) {
-						base.log.debug("No xml:lang found! Using '" + lang + "' lang instead.");
+						paella.log.debug("No xml:lang found! Using '" + lang + "' lang instead.");
 						l_lang = lang;
 					}
 					else {

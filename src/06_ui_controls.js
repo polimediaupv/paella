@@ -244,7 +244,7 @@ class PlaybackBar extends paella.DomNode {
 		$(playbackFull.domElement).bind('mousedown',function(event) {
 			paella.utils.mouseManager.down(thisClass,event); event.stopPropagation();
 		});
-		if (!base.userAgent.browser.IsMobileVersion) {
+		if (!paella.utils.userAgent.browser.IsMobileVersion) {
 			$(this.domElement).bind('mousemove',function(event) {
 				thisClass.movePassive(event); paella.utils.mouseManager.move(event);
 			});
@@ -699,6 +699,26 @@ class PlaybackControl extends paella.DomNode {
 	showPopUp(identifier,button,swapFocus=false) {
 		this.popUpPluginContainer.showContainer(identifier,button,swapFocus);
 		this.timeLinePluginContainer.showContainer(identifier,button,swapFocus);
+		this.hideCrossTimelinePopupButtons(identifier,this.popUpPluginContainer,this.timeLinePluginContainer,button,swapFocus);
+	}
+
+	// Hide popUpPluginContainer when a timeLinePluginContainer popup opens, and visa versa
+	hideCrossTimelinePopupButtons(identifier, popupContainer, timelineContainer, button, swapFocus=true) {
+		var containerToHide = null;
+		if (popupContainer.containers[identifier]
+			&& timelineContainer.containers[timelineContainer.currentContainerId]) {
+			containerToHide = timelineContainer;
+		} else if (timelineContainer.containers[identifier]
+			&& popupContainer.containers[popupContainer.currentContainerId]) {
+			containerToHide = popupContainer;
+		}
+		if (containerToHide) {
+			var hideId = containerToHide.currentContainerId;
+			var hidePugin = paella.pluginManager.getPlugin(hideId);
+			if (hidePugin) {
+				containerToHide.hideContainer(hideId,hidePugin.button,swapFocus);
+			}
+		}
 	}
 
 	hidePopUp(identifier,button,swapFocus=true) {
@@ -715,7 +735,7 @@ class PlaybackControl extends paella.DomNode {
 
 	onresize() {
 		var windowSize = $(this.domElement).width();
-		base.log.debug("resize playback bar (width=" + windowSize + ")");
+		paella.log.debug("resize playback bar (width=" + windowSize + ")");
 
 		for (var i=0;i<this.buttonPlugins.length;++i) {
 			var plugin = this.buttonPlugins[i];
@@ -859,7 +879,7 @@ class ControlsContainer extends paella.DomNode {
 
 		paella.events.trigger(paella.events.controlBarWillHide);
 		if (this._doHide) {
-			if (!base.userAgent.browser.IsMobileVersion && !base.userAgent.browser.Explorer) {			
+			if (!paella.utils.userAgent.browser.IsMobileVersion && !paella.utils.userAgent.browser.Explorer) {			
 				$(this.domElement).animate({opacity:0.0},{duration:300, complete: hideIfNotCanceled});
 			}
 			else {
@@ -964,7 +984,7 @@ class ControlsContainer extends paella.DomNode {
 		this.showControls();
 		this.clearAutohideTimer();
 		var thisClass = this;
-		this.autohideTimer = new base.Timer(function(timer) {
+		this.autohideTimer = new paella.utils.Timer(function(timer) {
 			thisClass.autohideTimeout();
 		},this.hideControlsTimeMillis);
 	}

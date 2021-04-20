@@ -195,7 +195,7 @@ paella.addDataDelegate("cameraTrack",() => {
             closeOnMouseOut() { return true; }
             getIndex() { return 2030; }
             getName() { return "es.upv.paella.videoZoomTrack4kPlugin"; }
-            getDefaultToolTip() { return base.dictionary.translate("Set video zoom"); }
+            getDefaultToolTip() { return paella.utils.dictionary.translate("Set video zoom"); }
             getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
 
             checkEnabled(onSuccess) {

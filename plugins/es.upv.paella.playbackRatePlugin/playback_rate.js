@@ -8,7 +8,7 @@ paella.addPlugin(function() {
 		getIndex() { return 140; }
 		getName() { return "es.upv.paella.playbackRatePlugin"; }
 		getButtonType() { return paella.ButtonPlugin.type.menuButton; }
-		getDefaultToolTip() { return base.dictionary.translate("Set playback rate"); }
+		getDefaultToolTip() { return paella.utils.dictionary.translate("Set playback rate"); }
 
 		checkEnabled(onSuccess) {
 			this.buttonItems = null;

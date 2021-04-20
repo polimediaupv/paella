@@ -45,13 +45,13 @@ setup() {
   paella.events.bind(paella.events.play,(event) => {
     this.changeIconClass(this.pauseIconClass);
     this.changeSubclass(this.pauseSubclass);
-    this.setToolTip(paella.dictionary.translate("Pause"));
+    this.setToolTip(paella.utils.dictionary.translate("Pause"));
   });
   
   paella.events.bind(paella.events.pause,(event) => {
     this.changeIconClass(this.playIconClass);
     this.changeSubclass(this.playSubclass);
-    this.setToolTip(paella.dictionary.translate("Play"));
+    this.setToolTip(paella.utils.dictionary.translate("Play"));
   });
 }
 ```
@@ -82,7 +82,7 @@ getIndex() { return 110; }
 
 getSubclass() { return this.playSubclass; }
 getIconClass() { return this.playIconClass; }
-getDefaultToolTip() { return base.dictionary.translate("Play"); }
+getDefaultToolTip() { return paella.utils.dictionary.translate("Play"); }
 
 // Play/pause accesibility provided via spacebar key
 getAriaLabel() { return null; }

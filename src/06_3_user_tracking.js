@@ -56,7 +56,7 @@ paella.userTracking.log = function(event, params) {
 	if (evsentsToLog[event] != undefined) {
 		evsentsToLog[event].cancel();
 	}
-	evsentsToLog[event] = new base.Timer(function(timer) {
+	evsentsToLog[event] = new paella.utils.Timer(function(timer) {
 		userTrackingManager._plugins.forEach(function(p) {
 			p.log(event, params);
 		});

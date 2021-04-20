@@ -7,7 +7,7 @@ paella.addPlugin(function() {
 		getIconClass() { return 'icon-screen'; }
 		getIndex() { return 2030; }
 		getName() { return "es.upv.paella.multipleQualitiesPlugin"; }
-		getDefaultToolTip() { return base.dictionary.translate("Change video quality"); }
+		getDefaultToolTip() { return paella.utils.dictionary.translate("Change video quality"); }
 		
 		closeOnMouseOut() { return true; }
 		
@@ -30,9 +30,10 @@ paella.addPlugin(function() {
 		getMenuContent() {
 			let buttonItems = [];
 
+			const minVisibleQuality = this.config.minVisibleQuality !== undefined ? this.config.minVisibleQuality : 100;
 			this._available.forEach((q,index) => {
 				let resH = q.res && q.res.h || 0;
-				if (resH>=this.config.minVisibleQuality || resH<=0) {
+				if (resH>=minVisibleQuality || resH<=0) {
 					buttonItems.push({
 						id: q.shortLabel(),
 						title: q.shortLabel(),

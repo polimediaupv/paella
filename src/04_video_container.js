@@ -189,7 +189,7 @@ class VideoWrapper extends paella.DomNode {
 	}
 
 	setVisible(visible,animate) {
-		if (typeof(visible=="string")) {
+		if (typeof(visible)=="string") {
 			visible = /true/i.test(visible) ? true : false;
 		}
 		if (visible && animate) {
@@ -221,6 +221,15 @@ paella.SeekType = {
 	DISABLED: 4
 };
 
+// This function is used to manage the timer to enable and disable the click and double click events
+// interaction with the video container timeout.
+function clearClickEventsTimeout() {
+	if (this._clickEventsTimeout) {
+		clearTimeout(this._clickEventsTimeout);
+		this._clickEventsTimeout = null;
+	}
+}
+
 class VideoContainerBase extends paella.DomNode {
 	
 	constructor(id) {
@@ -235,14 +244,14 @@ class VideoContainerBase extends paella.DomNode {
 		this.currentMasterVideoData = null;
 		this.currentSlaveVideoData = null;
 		this._force = false;
-		this._playOnClickEnabled =  true;
+		this._clickEventsEnabled =  true;
 		this._seekDisabled =  false;
 		this._seekType = paella.SeekType.FULL;
 		this._seekTimeLimit = 0;
 		this._attenuationEnabled = false;
 		
 		$(this.domElement).dblclick((evt) => {
-			if (this.firstClick) {
+			if (this._clickEventsEnabled) {
 				paella.player.isFullScreen() ? paella.player.exitFullScreen() : paella.player.goFullScreen();
 			}
 		});
@@ -250,15 +259,14 @@ class VideoContainerBase extends paella.DomNode {
 		let dblClickTimer = null;
 		$(this.domElement).click((evt) => {
 			let doClick = () => {
-				if (this.firstClick && !this._playOnClickEnabled) return;
+				if (!this._clickEventsEnabled) return;
 				paella.player.videoContainer.paused()
 					.then((paused) => {
 						// If some player needs mouse events support, the click is ignored
-						if (this.firstClick && this.streamProvider.videoPlayers.some((p) => p.canvasData.mouseEventsSupport)) {
+						if (this.streamProvider.videoPlayers.some((p) => p.canvasData.mouseEventsSupport)) {
 							return;
 						}
 	
-						this.firstClick = true;
 						if (paused) {
 							paella.player.play();
 						}
@@ -362,7 +370,7 @@ class VideoContainerBase extends paella.DomNode {
 	}
 
 	startTimeupdate() {
-		this.timeupdateEventTimer = new Timer((timer) => {
+		this.timeupdateEventTimer = new paella.utils.Timer((timer) => {
 			this.triggerTimeupdate();
 		}, this.timeupdateInterval);
 		this.timeupdateEventTimer.repeat = true;
@@ -375,16 +383,25 @@ class VideoContainerBase extends paella.DomNode {
 		this.timeupdateEventTimer = null;
 	}
 
-	enablePlayOnClick() {
-		this._playOnClickEnabled = true;
+	enablePlayOnClick(timeout = 0) {
+		clearClickEventsTimeout.apply(this);
+		if (timeout) {
+			this._clickEventsTimeout = setTimeout(() => {
+				this._clickEventsEnabled = true;
+			}, timeout);
+		}
+		else {
+			this._clickEventsEnabled = true;
+		}
 	}
 
 	disablePlayOnClick() {
-		this._playOnClickEnabled = false;
+		clearClickEventsTimeout.apply(this);
+		this._clickEventsEnabled = false;
 	}
 
 	isPlayOnClickEnabled() {
-		return this._playOnClickEnabled;
+		return this._clickEventsEnabled;
 	}
 
 	play() {
@@ -608,30 +625,30 @@ class VideoContainerBase extends paella.DomNode {
 	}
 
 	setCurrentTime(time) {
-		base.log.debug("VideoContainerBase.setCurrentTime(" +  time + ")");
+		paella.log.debug("VideoContainerBase.setCurrentTime(" +  time + ")");
 	}
 
 	currentTime() {
-		base.log.debug("VideoContainerBase.currentTime()");
+		paella.log.debug("VideoContainerBase.currentTime()");
 		return 0;
 	}
 
 	duration() {
-		base.log.debug("VideoContainerBase.duration()");
+		paella.log.debug("VideoContainerBase.duration()");
 		return 0;
 	}
 
 	paused() {
-		base.log.debug("VideoContainerBase.paused()");
+		paella.log.debug("VideoContainerBase.paused()");
 		return true;
 	}
 
 	setupVideo(onSuccess) {
-		base.log.debug("VideoContainerBase.setupVide()");
+		paella.log.debug("VideoContainerBase.setupVide()");
 	}
 
 	isReady() {
-		base.log.debug("VideoContainerBase.isReady()");
+		paella.log.debug("VideoContainerBase.isReady()");
 		return true;
 	}
 
@@ -729,7 +746,7 @@ class StreamProvider {
 		this._audioPlayers = [];
 		this._players = [];
 
-		this._autoplay = base.parameters.get('autoplay')=='true' || this.isLiveStreaming;
+		this._autoplay = paella.utils.parameters.get('autoplay')=='true' || this.isLiveStreaming;
 		this._startTime = 0;
 
 		this._bufferedData = [];
@@ -826,7 +843,11 @@ class StreamProvider {
 		
 		console.debug("Start sync to player:");
 		console.debug(this._syncProviderPlayer);
-		let maxDiff = 0.3;
+		let maxDiff = 0.1;
+		let totalTime = 0;
+		let numberOfSyncs = 0;
+		let syncFrequency = 0;
+		let maxSyncFrequency = 0.2;
 		let sync = () => {
 			this._syncProviderPlayer.currentTime()
 				.then((t) => {
@@ -836,12 +857,22 @@ class StreamProvider {
 							Math.abs(player.currentTimeSync-t)>maxDiff)
 						{
 							console.debug(`Sync player current time: ${ player.currentTimeSync } to time ${ t }`);
-							console.debug(player);	
+							console.debug(player);
+							++numberOfSyncs;	
 							player.setCurrentTime(t);
+
+							
+							if (syncFrequency>maxSyncFrequency) {
+								maxDiff *= 1.5;
+								console.log(`Maximum syncrhonization frequency reached. Increasing max difference syncronization time to ${maxDiff}`);
+							}
 						}
 					});
 					
 				});
+
+			totalTime += 1000;
+			syncFrequency = numberOfSyncs / (totalTime / 1000);
 			this._syncTimer = setTimeout(() => sync(), 1000);
 		};
 	
@@ -1018,11 +1049,15 @@ class VideoContainer extends paella.VideoContainerBase {
 		this.setVideoQualityStrategy(paella.VideoQualityStrategy.Factory());
 
 		this._audioTag = paella.player.config.player.defaultAudioTag ||
-						 paella.dictionary.currentLanguage();
+						 paella.utils.dictionary.currentLanguage();
 		this._audioPlayer = null;
 
 		// Initial volume level
 		this._volume = paella.utils.cookies.get("volume") ? Number(paella.utils.cookies.get("volume")) : 1;
+		if (paella.player.startMuted)
+		{
+			this._volume = 0;
+		}
 		this._muted = false;
 	}
 
@@ -1107,6 +1142,7 @@ class VideoContainer extends paella.VideoContainerBase {
 				if (trimmingData.enabled) {
 					time = time - trimmingData.start;
 				}
+				if (time < 0) time = 0;
 				resolve(time)
 			});
 		});
@@ -1327,8 +1363,8 @@ class VideoContainer extends paella.VideoContainerBase {
 	}
 
 	setStreamData(videoData) {
-		var urlParamTime = base.parameters.get("time");
-		var hashParamTime = base.hashParams.get("time");
+		var urlParamTime = paella.utils.parameters.get("time");
+		var hashParamTime = paella.utils.hashParams.get("time");
 		var timeString = hashParamTime ? hashParamTime:urlParamTime ? urlParamTime:"0s";
 		var startTime = paella.utils.timeParse.timeToSeconds(timeString);
 		if (startTime) {
@@ -1414,8 +1450,8 @@ class VideoContainer extends paella.VideoContainerBase {
 
 					this._ready = true;
 					paella.events.trigger(paella.events.videoReady);
-					let profileToUse = base.parameters.get('profile') ||
-										base.cookies.get('profile') ||
+					let profileToUse = paella.utils.parameters.get('profile') ||
+										paella.utils.cookies.get('profile') ||
 										paella.profiles.getDefaultProfile();
 
 					if (paella.profiles.setProfile(profileToUse, false)) {

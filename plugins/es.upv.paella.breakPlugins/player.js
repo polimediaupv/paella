@@ -74,7 +74,7 @@ paella.addPlugin(() => {
 					height: 40
 				};
 				this.currentText = text;
-				this.messageContainer = paella.player.videoContainer.overlayContainer.addText(paella.dictionary.translate(text), rect);
+				this.messageContainer = paella.player.videoContainer.overlayContainer.addText(paella.utils.dictionary.translate(text), rect);
 				this.messageContainer.className = 'textBreak';
 				this.currentText = text;
 			}

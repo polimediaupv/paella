@@ -74,7 +74,7 @@ class DefaultVideoLoader extends paella.VideoLoader {
 		}
 		else if (url) {
 			var This = this;
-			base.ajax.get({ url:this.getDataUrl() },
+			paella.utils.ajax.get({ url:this.getDataUrl() },
 				function(data,type,err) {
 					if (typeof(data)=="string") {
 						try {
@@ -88,16 +88,16 @@ class DefaultVideoLoader extends paella.VideoLoader {
 				function(data,type,err) {
 					switch (err) {
 					case 401:
-						paella.messageBox.showError(base.dictionary.translate("You are not logged in"));
+						paella.messageBox.showError(paella.utils.dictionary.translate("You are not logged in"));
 						break;
 					case 403:
-						paella.messageBox.showError(base.dictionary.translate("You are not authorized to view this resource"));
+						paella.messageBox.showError(paella.utils.dictionary.translate("You are not authorized to view this resource"));
 						break;
 					case 404:
-						paella.messageBox.showError(base.dictionary.translate("The specified video identifier does not exist"));
+						paella.messageBox.showError(paella.utils.dictionary.translate("The specified video identifier does not exist"));
 						break;
 					default:
-						paella.messageBox.showError(base.dictionary.translate("Could not load the video"));
+						paella.messageBox.showError(paella.utils.dictionary.translate("Could not load the video"));
 					}
 				});
 		}
@@ -252,7 +252,7 @@ function getManifestFromParameters(params) {
 		masterPreview = masterPreview && decodeURIComponent(masterPreview);
 		let slavePreview = paella.utils.parameters.get('previewSlave');
 		slavePreview = slavePreview && decodeURIComponent(slavePreview);
-		let title = paella.utils.parameters.get('preview') || "Untitled Video";
+		let title = paella.utils.parameters.get('title') || "Untitled Video";
 		
 		let data = {
 			metadata: {
@@ -269,9 +269,12 @@ function getManifestFromParameters(params) {
 							}
 						]
 					},
-					preview:masterPreview
+					preview:masterPreview,
+					type: "video",
+					content: "presenter"
 				}
-			]
+			],
+			frameList: []
 		}
 
 		if (slave) {
@@ -285,7 +288,9 @@ function getManifestFromParameters(params) {
 						} 
 					]
 				},
-				preview:slavePreview
+				preview:slavePreview,
+				type: "video",
+				content: "presentation"
 			});
 		}
 
@@ -333,7 +338,8 @@ paella.lazyLoad = function(playerContainer, params, forceLazyLoad = true) {
 	// Check autoplay. If autoplay is enabled, this function must call paella.load()
 	paella.Html5Video.IsAutoplaySupported()
 		.then((supported) => {
-			if (supported || forceLazyLoad) {
+			let disableUI = /true/i.test(paella.utils.parameters.get("disable-ui"));
+			if ((supported || forceLazyLoad) && !disableUI) {
 				// Build custom init data using url parameters
 				let data = getManifestFromParameters(params);
 				if (data) {

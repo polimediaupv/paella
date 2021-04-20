@@ -3,7 +3,6 @@ paella.addPlugin(function() {
 		getName() { return "es.upv.paella.usertracking.elasticsearchSaverPlugin"; }
 		
 		checkEnabled(onSuccess) {
-			this.type = 'userTrackingSaverPlugIn';
 			this._url = this.config.url;
 			this._index = this.config.index || "paellaplayer";
 			this._type = this.config.type || "usertracking";
@@ -11,7 +10,7 @@ paella.addPlugin(function() {
 			var enabled = true;
 			if (this._url == undefined){
 				enabled = false;
-				base.log.debug("No ElasticSearch URL found in config file. Disabling ElasticSearch PlugIn");
+				paella.log.debug("No ElasticSearch URL found in config file. Disabling ElasticSearch PlugIn");
 			}
 			
 			onSuccess(enabled);
@@ -39,7 +38,7 @@ paella.addPlugin(function() {
 						params: p
 					};		
 					
-					paella.ajax.post({url:this._url+ "/"+ this._index + "/" + this._type + "/", params:JSON.stringify(log) });
+					paella.utils.ajax.post({url:this._url+ "/"+ this._index + "/" + this._type + "/", params:JSON.stringify(log) });
 				});
 		}
 	}

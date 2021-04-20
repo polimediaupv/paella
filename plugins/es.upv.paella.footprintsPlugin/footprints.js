@@ -17,7 +17,7 @@ paella.addPlugin(function() {
 		getSubclass() { return "footPrints"; }
 		getIconClass() { return 'icon-stats'; }
 		getIndex() { return 590; }
-		getDefaultToolTip() { return base.dictionary.translate("Show statistics"); }
+		getDefaultToolTip() { return paella.utils.dictionary.translate("Show statistics"); }
 		getName() { return "es.upv.paella.footprintsPlugin"; }
 		getButtonType() { return paella.ButtonPlugin.type.timeLineButton; }
 	
@@ -98,7 +98,7 @@ paella.addPlugin(function() {
 		willShowContent() {
 			var thisClass = this;
 			this.loadFootprints();
-			this.footPrintsTimer = new base.Timer(function(timer) {
+			this.footPrintsTimer = new paella.utils.Timer(function(timer) {
 				thisClass.loadFootprints();
 			},5000);
 			this.footPrintsTimer.repeat = true;
@@ -115,8 +115,8 @@ paella.addPlugin(function() {
 			var thisClass = this;
 			paella.data.read('footprints',{id:paella.initDelegate.getId()},function(data,status) {
 				var footPrintsData = {};
-				paella.player.videoContainer.duration().then(function(duration){
-					var trimStart = Math.floor(paella.player.videoContainer.trimStart());
+				paella.player.videoContainer.duration().then(async (duration) => {
+					var trimStart = Math.floor(await paella.player.videoContainer.trimStart());
 	
 					var lastPosition = -1;
 					var lastViews = 0;

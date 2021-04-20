@@ -225,7 +225,7 @@ class YoutubeVideo extends paella.VideoElementBase {
 		return new Promise((resolve,reject) => {
 			This._playing = true;
 			This.video.playVideo();
-			new base.Timer((timer) => {
+			new paella.utils.Timer((timer) => {
 				var q = this.video.getAvailableQualityLevels();
 				if (q.length) {
 					timer.repeat = false;

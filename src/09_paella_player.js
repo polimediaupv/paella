@@ -34,7 +34,7 @@
 			if ((fs.webkitRequestFullScreen) || (fs.mozRequestFullScreen) || (fs.msRequestFullscreen) || (fs.requestFullScreen)) {
 				return true;
 			}
-			if (base.userAgent.browser.IsMobileVersion && paella.player.videoContainer.isMonostream) {
+			if (paella.utils.userAgent.browser.IsMobileVersion && paella.player.videoContainer.isMonostream) {
 				return true;
 			}		
 			return false;
@@ -88,7 +88,7 @@
 
 		goFullScreen() {
 			if (!this.isFullScreen()) {
-				if (base.userAgent.system.iOS &&
+				if (paella.utils.userAgent.system.iOS &&
 					(paella.utils.userAgent.browser.Version.major<12 ||
 					 !paella.utils.userAgent.system.iPad))
 				{
@@ -133,7 +133,7 @@
 			if (paella.profiles.setProfile(profileName,animate)) {
 				let profileData = paella.player.getProfile(profileName);
 				if (profileData && !paella.player.videoContainer.isMonostream) {
-					base.cookies.set('lastProfile', profileName);
+					paella.utils.cookies.set('lastProfile', profileName);
 				}
 				paella.events.trigger(paella.events.setProfile,{profileName:profileName});
 			}
@@ -198,11 +198,11 @@
 					var videoQualityStrategy = new paella.BestFitVideoQualityStrategy();
 					try {
 						var StrategyClass = this.config.player.videoQualityStrategy;
-						var ClassObject = Class.fromString(StrategyClass);
+						var ClassObject = paella.utils.classFromString(StrategyClass);
 						videoQualityStrategy = new ClassObject();
 					}
 					catch(e) {
-						base.log.warning("Error selecting video quality strategy: strategy not found");
+						paella.log.warning("Error selecting video quality strategy: strategy not found");
 					}
 					this.videoContainer.setVideoQualityStrategy(videoQualityStrategy);
 					
@@ -233,21 +233,21 @@
 					}
 					else if (userData.isAnonymous) {
 						var redirectUrl = paella.initDelegate.initParams.accessControl.getAuthenticationUrl("player/?id=" + paella.player.videoIdentifier);
-						var message = '<div>' + base.dictionary.translate("You are not authorized to view this resource") + '</div>';
+						var message = '<div>' + paella.utils.dictionary.translate("You are not authorized to view this resource") + '</div>';
 						if (redirectUrl) {
-							message += '<div class="login-link"><a href="' + redirectUrl + '">' + base.dictionary.translate("Login") + '</a></div>';
+							message += '<div class="login-link"><a href="' + redirectUrl + '">' + paella.utils.dictionary.translate("Login") + '</a></div>';
 						}
 						thisClass.unloadAll(message);
 					}
 					else {
-						let errorMessage = base.dictionary.translate("You are not authorized to view this resource");
+						let errorMessage = paella.utils.dictionary.translate("You are not authorized to view this resource");
 						thisClass.unloadAll(errorMessage);
 						paella.events.trigger(paella.events.error,{error:errorMessage});
 					}
 				})
 	
 				.catch((error) => {
-					let errorMessage = base.dictionary.translate(error);
+					let errorMessage = paella.utils.dictionary.translate(error);
 					thisClass.unloadAll(errorMessage);
 					paella.events.trigger(paella.events.error,{error:errorMessage});
 				});
@@ -309,7 +309,7 @@
 						.catch((error) => {
 							console.error(error);
 							let msg = error.message || "Could not load the video";
-							paella.messageBox.showError(base.dictionary.translate(msg));
+							paella.messageBox.showError(paella.utils.dictionary.translate(msg));
 						});
 				});
 			}
@@ -392,24 +392,39 @@
 		}
 	
 		play() {
-			if (this.lazyLoadContainer) {
+			if (!this.videoContainer) {
+				// play() is called from lazyLoadContainer
+				this.lazyLoadContainer.destroyElements();
+				this.lazyLoadContainer = null;
+				this._onPlayClosure && this._onPlayClosure();
+			}
+			else if (this.lazyLoadContainer) {
+				// play() has been called by a user interaction
 				document.body.removeChild(this.lazyLoadContainer.domElement);
 				this.lazyLoadContainer = null;
 			}
-			return new Promise((resolve,reject) => {
-				this.videoContainer.play()
-					.then(() => {
-						if (!this.controls) {
-							this.showPlaybackBar();
-							paella.events.trigger(paella.events.controlBarLoaded);
-							this.controls.onresize();
-						}
-						resolve();
-					})
-					.catch((err) => {
-						reject(err);
-					});
-			});
+
+			if (this.videoContainer) {
+				return new Promise((resolve,reject) => {
+					this.videoContainer.play()
+						.then(() => {
+							if (paella.initDelegate.initParams.disableUserInterface()) {
+								resolve();
+							}
+							else if (!this.controls) {
+								if (!this.controls) {
+									this.showPlaybackBar();
+									paella.events.trigger(paella.events.controlBarLoaded);
+									this.controls.onresize();
+								}
+								resolve();
+							}
+						})
+						.catch((err) => {
+							reject(err);
+						});
+				});
+			}
 		}
 	
 		pause() {
@@ -442,11 +457,16 @@
 	class LazyThumbnailContainer extends paella.DomNode {
 
 		static GetIconElement() {
-			let container = document.createElement('div');
+			let container = document.createElement('button');
 			container.className = "play-button-on-screen";
+			container.setAttribute("aria-label","Play");
 			container.style.width = "100%";
 			container.style.height = "100%";
 			container.style.pointerEvents = "none";
+			container.addEventListener("click", (evt) => {
+				evt.stopPropagation();
+				paella.player.play();
+			});
 		
 			let icon = document.createElement('div');
 			icon['className'] = 'play-icon';

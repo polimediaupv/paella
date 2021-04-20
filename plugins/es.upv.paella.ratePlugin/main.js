@@ -8,7 +8,7 @@ paella.addPlugin(function() {
 		getIndex() { return 540; }
 		getName() { return "es.upv.paella.ratePlugin"; }
 		getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
-		getDefaultToolTip() { return base.dictionary.translate("Rate this video"); }		
+		getDefaultToolTip() { return paella.utils.dictionary.translate("Rate this video"); }		
 		checkEnabled(onSuccess) {
 			this.buttonItems = null;
 			this.buttons =  [];
@@ -43,20 +43,20 @@ paella.addPlugin(function() {
 		closeOnMouseOut() { return true; }
 
 		updateHeader() {
-			let score = base.dictionary.translate("Not rated");
+			let score = paella.utils.dictionary.translate("Not rated");
 			if (this.count>0) {
 				score = '<i class="glyphicon glyphicon-star"></i>';
-				score += ` ${ this.score } ${ this.count } ${ base.dictionary.translate('votes') }`;
+				score += ` ${ this.score } ${ this.count } ${ paella.utils.dictionary.translate('votes') }`;
 			}
 
 			this.scoreContainer.header.innerHTML = `
 			<div>
-				<h4>${ base.dictionary.translate('Video score') }:</h4>
+				<h4>${ paella.utils.dictionary.translate('Video score') }:</h4>
 				<h5>
 					${ score }
 				</h5>
 				</h4>
-				<h4>${ base.dictionary.translate('Vote:') }</h4>
+				<h4>${ paella.utils.dictionary.translate('Vote:') }</h4>
 			</div>
 			`;
 		}
@@ -73,7 +73,7 @@ paella.addPlugin(function() {
 				}
 			}
 			else {
-				this.scoreContainer.rateButtons.innerHTML = `<h5>${ base.dictionary.translate('Login to vote')}</h5>`;
+				this.scoreContainer.rateButtons.innerHTML = `<h5>${ paella.utils.dictionary.translate('Login to vote')}</h5>`;
 			}
 			this.updateVote();
 		}

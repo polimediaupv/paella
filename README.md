@@ -1,4 +1,4 @@
-Paella Player
+Paella Player (up to release 6.x)
 =============
 
 The Paella (pronounced 'paeja') Player is an HTML 5 multistream player, developed by the [Universitat Politècnica de València](https://www.upv.es/).
@@ -10,6 +10,13 @@ using its powerful and easy to use plugin architecture.
 You can find out more about Paella on the [Paella Player Web Page](https://paellaplayer.upv.es).
 
 ![Paella Player Logo](./config/profiles/resources/paella_logo_old.png)
+
+
+Paella Player 7 and beyond
+-----------------
+In version 7, Paella is being rewritten from scratch, so we are using a different repo.
+
+Paella 7 is being developed in https://github.com/polimediaupv/paella-player
 
 
 Build and Install

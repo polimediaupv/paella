@@ -12,6 +12,7 @@
 				debug: false,
 				defaultAudioCodec: undefined,
 				initialLiveManifestSize: 1,
+				initialQualityLevel: 1,
 				maxBufferLength: 30,
 				maxMaxBufferLength: 600,
 				maxBufferSize: 60*1000*1000,
@@ -88,10 +89,11 @@
 		_loadDeps() {
 			return new Promise((resolve,reject) => {
 				if (!window.$paella_hls) {
-					require([paella.baseUrl +'javascript/hls.min.js'],function(hls) {
-						window.$paella_hls = hls;
-						resolve(window.$paella_hls);
-					});
+					paella.require(paella.baseUrl +'javascript/hls.min.js')
+						.then((hls) => {
+							window.$paella_hls = hls;
+							resolve(window.$paella_hls);
+						});
 				}
 				else {
 					resolve(window.$paella_hls);
@@ -158,11 +160,19 @@
 							let cfg = this.config;
 							//cfg.autoStartLoad = false;
 							this._hls = new Hls(cfg);
-							this._hls.loadSource(url);
-							this._hls.attachMedia(video);
+							
 							this.autoQuality = true;
 
+							// For some streams there are problems if playback does not start after loading the
+							// manifest. This flag is used to pause it again once the video is loaded
+							let firstLoad = true;
+
 							this._hls.on(Hls.Events.LEVEL_SWITCHED, (ev,data) => {
+								if (firstLoad) {
+									firstLoad = false;
+									video.pause();
+								}
+
 								this._qualities = this._qualities || [];
 								this._qualityIndex = this.autoQuality ? this._qualities.length - 1 : data.level;
 								paella.events.trigger(paella.events.qualityChanged,{});
@@ -200,12 +210,23 @@
 								if (!cfg.autoStartLoad) {
 									this._hls.startLoad();
 								}
+
 								// Fixes hls.js problems when loading the initial quality level
 								this._hls.currentLevel = this._hls.levels.length>=initialQualityLevel ? initialQualityLevel : -1;
 								setTimeout(() => this._hls.currentLevel = -1, 1000);
-								
+
+								// Fixes hls.js problems loading some videos
+								try {
+									video.play();
+								} catch (e) {}
+
 								resolve(video);
 							});
+
+							const rand = Math.floor(Math.random() * 100000000000);
+							url += /\?/.test(url) ? `&cache=${ rand }` : `?cache=${ rand }`;
+							this._hls.loadSource(url);
+							this._hls.attachMedia(video);
 						}
 						else {
 							reject(new Error("HLS not supported"));
@@ -215,7 +236,7 @@
 		}
 
 		webGlDidLoad() {
-			if (base.userAgent.system.iOS) {
+			if (paella.utils.userAgent.system.iOS) {
 				return super.webGlDidLoad();
 			}
 			// Register a new video loader in the webgl engine, to enable the
@@ -231,7 +252,7 @@
 		}
 
 		loadVideoStream(canvasInstance,stream) {
-			if (base.userAgent.system.iOS) {
+			if (paella.utils.userAgent.system.iOS) {
 				return super.loadVideoStream(canvasInstance,stream);
 			}
 
@@ -242,7 +263,7 @@
 
 		supportsMultiaudio() {
 			return this._deferredAction(() => {
-				if (base.userAgent.system.iOS) {
+				if (paella.utils.userAgent.system.iOS) {
 					return this.video.audioTracks.length>1;
 				}
 				else {
@@ -253,7 +274,7 @@
 	
 		getAudioTracks() {
 			return this._deferredAction(() => {
-				if (base.userAgent.system.iOS) {
+				if (paella.utils.userAgent.system.iOS) {
 					let result = [];
 					Array.from(this.video.audioTracks).forEach((t) => {
 						result.push({
@@ -273,7 +294,7 @@
 
 		setCurrentAudioTrack(trackId) {
 			return this._deferredAction(() => {
-				if (base.userAgent.system.iOS) {
+				if (paella.utils.userAgent.system.iOS) {
 					let found = false;
 					Array.from(this.video.audioTracks).forEach((track) => {
 						if (track.id==trackId) {
@@ -301,7 +322,7 @@
 
 		getCurrentAudioTrack() {
 			return this._deferredAction(() => {
-				if (base.userAgent.system.iOS) {
+				if (paella.utils.userAgent.system.iOS) {
 					let result = null;
 					Array.from(this.video.audioTracks).some((t) => {
 						if (t.enabled) {
@@ -325,8 +346,8 @@
 		}
 	
 		getQualities() {
-			if (base.userAgent.system.iOS)// ||
-		//		base.userAgent.browser.Safari)
+			if (paella.utils.userAgent.system.iOS)// ||
+		//		paella.utils.userAgent.browser.Safari)
 			{
 				return new Promise((resolve,reject) => {
 					resolve([
@@ -370,7 +391,7 @@
 		}
 
 		disable(isMainAudioPlayer) {
-			if (base.userAgent.system.iOS) {
+			if (paella.utils.userAgent.system.iOS) {
 				return;
 			}
 			
@@ -398,8 +419,8 @@
 		}
 		
 		setQuality(index) {
-			if (base.userAgent.system.iOS)// ||
-				//base.userAgent.browser.Safari)
+			if (paella.utils.userAgent.system.iOS)// ||
+				//paella.utils.userAgent.browser.Safari)
 			{
 				return Promise.resolve();
 			}
@@ -432,8 +453,8 @@
 		}
 		
 		getCurrentQuality() {
-			if (base.userAgent.system.iOS)// ||
-				//base.userAgent.browser.Safari)
+			if (paella.utils.userAgent.system.iOS)// ||
+				//paella.utils.userAgent.browser.Safari)
 			{
 				return Promise.resolve(0);
 			}
@@ -469,9 +490,9 @@
 			}
 			try {
 				let cfg = this.config;
-				if ((base.userAgent.system.iOS &&
+				if ((paella.utils.userAgent.system.iOS &&
 					paella.videoFactories.HLSVideoFactory.s_instances>=cfg.iOSMaxStreams) ||
-					(base.userAgent.system.Android &&
+					(paella.utils.userAgent.system.Android &&
 					paella.videoFactories.HLSVideoFactory.s_instances>=cfg.androidMaxStreams))
 			//	In some old mobile devices, playing a high number of HLS streams may cause that the browser tab crash
 				{

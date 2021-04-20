@@ -166,9 +166,6 @@ gulp.task("copy", function() {
 		gulp.src('repository_test/**')
 			.pipe(gulp.dest(`${config.outDir}`)),
 
-		gulp.src('javascript/*')
-			.pipe(gulp.dest(`${config.outDir}player/javascript/`)),
-
 		gulp.src('node_modules/jquery/dist/jquery.min.js')
 			.pipe(gulp.dest(`${config.outDir}player/javascript/`)),
 		gulp.src('node_modules/jquery/dist/jquery.min.js')
@@ -203,6 +200,9 @@ gulp.task("copy", function() {
 			.pipe(gulp.dest(`${config.outDir}player/javascript`)),
 
 		gulp.src('node_modules/hls.js/dist/hls.min.js')
+			.pipe(gulp.dest(`${config.outDir}/player/javascript`)),
+
+		gulp.src('node_modules/cookieconsent/build/cookieconsent.min.js')
 			.pipe(gulp.dest(`${config.outDir}/player/javascript`))
 	];
 
@@ -287,10 +287,7 @@ function watchFilesDebug() {
 gulp.task("tools", function() {
 	let p = [
 		gulp.src('tools/**')
-			.pipe(gulp.dest(`${config.outDir}tools`)),
-
-		gulp.src('src/flash_streaming/*.swf')
-			.pipe(gulp.dest(`${config.outDir}tools/rtmp-test/`))
+			.pipe(gulp.dest(`${config.outDir}tools`))
 	];
 	return Promise.all(p);
 });
@@ -298,11 +295,14 @@ gulp.task("tools", function() {
 gulp.task("default", gulp.series("build"));
 gulp.task("serve", gulp.parallel("buildDebug","webserver","tools",watchFilesDebug));
 
+// gulp.task('test:local', gulp.series(
+// 	'build',
+// 	'test:nightwatch:local:start-server',
+// 	'test:nightwatch:local:run',
+// 	'test:nightwatch:local:stop-server'));
+	
 gulp.task('test:local', gulp.series(
-	'build',
-	'test:nightwatch:local:start-server',
-	'test:nightwatch:local:run',
-	'test:nightwatch:local:stop-server'));
+	'build'));
 
 // Compatibility
 gulp.task("server.release", gulp.parallel("build","webserver","tools",watchFiles));

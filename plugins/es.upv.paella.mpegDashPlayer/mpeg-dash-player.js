@@ -12,10 +12,11 @@ class MpegDashVideo extends paella.Html5Video {
 	_loadDeps() {
 		return new Promise((resolve,reject) => {
 			if (!window.$paella_mpd) {
-				require([paella.baseUrl +'resources/deps/dash.all.js'],function() {
-					window.$paella_mpd = true;
-					resolve(window.$paella_mpd);
-				});
+				paella.require(paella.baseUrl +'resources/deps/dash.all.js')
+					.then(() => {
+						window.$paella_mpd = true;
+						resolve(window.$paella_mpd);
+					});
 			}
 			else {
 				resolve(window.$paella_mpd);
@@ -215,7 +216,7 @@ paella.MpegDashVideo = MpegDashVideo;
 class MpegDashVideoFactory extends paella.VideoFactory {
 	isStreamCompatible(streamData) {
 		try {
-			if (base.userAgent.system.iOS) {
+			if (paella.utils.userAgent.system.iOS) {
 				return false;
 			}
 			for (var key in streamData.sources) {

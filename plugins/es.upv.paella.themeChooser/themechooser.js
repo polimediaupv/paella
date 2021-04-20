@@ -5,7 +5,7 @@ paella.addPlugin(function() {
 		getIconClass() { return 'icon-paintbrush'; }
 		getIndex() { return 2030; }
 		getName() { return "es.upv.paella.themeChooserPlugin"; }	
-		getDefaultToolTip() { return base.dictionary.translate("Change theme"); }	
+		getDefaultToolTip() { return paella.utils.dictionary.translate("Change theme"); }	
 		getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
 		
 		checkEnabled(onSuccess) { 

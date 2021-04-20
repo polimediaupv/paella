@@ -50,7 +50,7 @@ paella.addPlugin(function() {
 		getIndex() { return 510; }
 		getName() { return "es.upv.paella.frameControlPlugin"; }
 		getButtonType() { return paella.ButtonPlugin.type.timeLineButton; }
-		getDefaultToolTip() { return base.dictionary.translate("Navigate by slides"); }
+		getDefaultToolTip() { return paella.utils.dictionary.translate("Navigate by slides"); }
 
 		checkEnabled(onSuccess) {
 			this._img = null;
@@ -95,7 +95,7 @@ paella.addPlugin(function() {
 							}
 
 							if(this.hiResFrame) thisClass.removeHiResFrame();
-							if (!base.userAgent.browser.IsMobileVersion) {
+							if (!paella.utils.userAgent.browser.IsMobileVersion) {
 								thisClass.buttons[selectedItem].frameControl.onMouseOver(null,thisClass.buttons[selectedItem].frameData);
 							}
 							
@@ -120,7 +120,7 @@ paella.addPlugin(function() {
 							}
 
 							if(this.hiResFrame)thisClass.removeHiResFrame();
-							if (!base.userAgent.browser.IsMobileVersion) {
+							if (!paella.utils.userAgent.browser.IsMobileVersion) {
 								thisClass.buttons[selectedItem].frameControl.onMouseOver(null,thisClass.buttons[selectedItem].frameData);
 							}
 							
@@ -320,7 +320,7 @@ paella.addPlugin(function() {
 				var image = frameData.thumb ? frameData.thumb:frameData.url;
 				var labelTime = paella.utils.timeParse.secondsToTime(frameData.time);
 				frame.innerHTML = '<img src="' + image + '" alt="" class="frameControlImage" title="'+labelTime+'" aria-label="'+labelTime+'"></img>';
-				if (!base.userAgent.browser.IsMobileVersion) {
+				if (!paella.utils.userAgent.browser.IsMobileVersion) {
 					$(frame).mouseover(function(event) {
 						this.frameControl.onMouseOver(event,this.frameData);
 					});

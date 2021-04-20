@@ -27,10 +27,10 @@ class CaptionParserManager {
 			ext = [ext]; 
 		}
 		if (ext.length == 0) {
-			base.log.debug("No extension provided by the plugin " + plugin.getName());
+			paella.log.debug("No extension provided by the plugin " + plugin.getName());
 		}
 		else {
-			base.log.debug("New captionParser added: " + plugin.getName());		
+			paella.log.debug("New captionParser added: " + plugin.getName());		
 			ext.forEach(function(f){
 				self._formats[f] = plugin;
 			});
@@ -45,7 +45,7 @@ class CaptionParserManager {
 
 let captionParserManager = new CaptionParserManager();
 
-class SearchCallback extends base.AsyncLoaderCallback {
+class SearchCallback extends paella.utils.AsyncLoaderCallback {
 	constructor(caption, text) {
 		super();
 		this.name = "captionSearchCallback";
@@ -124,7 +124,7 @@ paella.captions = {
 	
 	search: function(text, next) {
 		var self = this;
-		var asyncLoader = new base.AsyncLoader();
+		var asyncLoader = new paella.utils.AsyncLoader();
 		
 		this.getAvailableLangs().forEach(function(l) {			
 			asyncLoader.addCallback(new SearchCallback(self.getCaptions(l.id), text));
@@ -172,24 +172,32 @@ class Caption {
 	reloadCaptions(next) {
 		var self = this;
 	
-	
+		let xhrFields = paella.player.config.captions?.downloadOptions?.xhrFields || {};
+		if (Object.keys(xhrFields).length) {
+			xhrFields = null;
+		}
 		jQuery.ajax({
 			url: self._url,
 			cache:false,
 			type: 'get',
-			dataType: "text"
+			dataType: "text",
+			xhrFields: null
 		})
 		.then(function(dataRaw){
-			var parser = captionParserManager._formats[self._format];			
+			var parser = captionParserManager._formats[self._format];
 			if (parser == undefined) {
-				base.log.debug("Error adding captions: Format not supported!");
+				paella.log.debug("Error adding captions: Format not supported!");
+				if (!paella.player.videoContainer) {
+					paella.log.debug("Video container is not ready, delaying parse until next reload");
+					return;
+				}
 				paella.player.videoContainer.duration(true)
 				.then((duration)=>{
 					self._captions = [{
 						id: 0,
 		            	begin: 0,
 		            	end: duration,
-		            	content: base.dictionary.translate("Error! Captions format not supported.")
+		            	content: paella.utils.dictionary.translate("Error! Captions format not supported.")
 					}];
 					if (next) { next(true); }
 				});
@@ -215,7 +223,7 @@ class Caption {
 			}
 		})
 		.fail(function(error){
-			base.log.debug("Error loading captions: " + self._url);
+			paella.log.debug("Error loading captions: " + self._url);
 				if (next) { next(true); }
 		});
 	}
