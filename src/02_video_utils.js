@@ -94,7 +94,7 @@
 				//var selected = source[0];
 				var selected = null;
 				var win_h = $(window).height();
-				var maxRes = params.maxAutoQualityRes || 720;
+				var maxRes = params.maxAutoQualityRes || 720;
 				var diff = Number.MAX_VALUE;
 	
 				source.forEach(function(item,i) { 
