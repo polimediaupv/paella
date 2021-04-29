@@ -66,6 +66,12 @@
 	paella.VideoLoader = VideoLoader;
 	
 	class AccessControl {
+		constructor() {
+			this.authData =  {
+				permissions: {}
+			}
+		}
+
 		canRead() {
 			return paella_DeferredResolved(true);
 		}

@@ -9,7 +9,17 @@ paella.addPlugin(function() {
 		getButtonType() { return paella.ButtonPlugin.type.popUpButton; }
 		getDefaultToolTip() { return base.dictionary.translate('Share this video'); }
 		
-		checkEnabled(onSuccess) { onSuccess(true); }
+		checkEnabled(onSuccess) {
+			const authData = paella.player.accessControl.authData || {};
+			const permissions = authData.permissions || {};
+			if (permissions && permissions.canShare !== undefined) {
+				onSuccess(permissions.canShare);
+			}
+			else {
+				onSuccess(true);
+			}
+		}
+
 		closeOnMouseOut() { return false; }
 
 		setup() {
