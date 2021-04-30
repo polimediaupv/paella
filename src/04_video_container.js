@@ -990,7 +990,7 @@ class StreamProvider {
 		})
 	}
 
-	get qualityStrategy() { return this._qualityStrategy || null; }
+	get qualityStrategy() { return this._qualityStrategy || null; }
 
 	get autoplay() {
 		return this.supportAutoplay && this._autoplay;
@@ -1350,7 +1350,7 @@ class VideoContainer extends paella.VideoContainerBase {
 	}
 
 	masterVideo() {
-		return this.streamProvider.mainVideoPlayer || this.audioPlayer;
+		return this.streamProvider.mainVideoPlayer || this.audioPlayer;
 	}
 
 	getVideoRect(videoIndex) {

@@ -73,7 +73,7 @@ paella.Profiles = {
 };
 
 class RelativeVideoSize {
-	get w() { return this._w || 1280; }
+	get w() { return this._w || 1280; }
 	set w(v) { this._w = v; }
 	get h() { return this._h || 720; }
 	set h(v) { this._h = v; }
@@ -893,7 +893,7 @@ class Html5Video extends paella.VideoElementBase {
 			return this.domElement;
 		}
 		else {
-			this._video = this._video || document.createElement('video');
+			this._video = this._video || document.createElement('video');
 			return this._video;
 		}
 	}
