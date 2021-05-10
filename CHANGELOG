@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* Paella 6.5.5
+
+  * Improvements in HLS plugin. Please, ensure that the `isLiveStream` attribute is set correctly configured in the video manifest.
+
 * Paella 6.5.4
 
   * Removed RTMP support

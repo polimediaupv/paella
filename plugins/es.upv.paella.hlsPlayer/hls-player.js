@@ -160,19 +160,11 @@
 							let cfg = this.config;
 							//cfg.autoStartLoad = false;
 							this._hls = new Hls(cfg);
-							
+							const hlsStream = this.stream?.sources?.hls?.length>0 && this.stream.sources.hls[0];
+							const isLiveStreaming = hlsStream.isLiveStream;
 							this.autoQuality = true;
 
-							// For some streams there are problems if playback does not start after loading the
-							// manifest. This flag is used to pause it again once the video is loaded
-							let firstLoad = true;
-
 							this._hls.on(Hls.Events.LEVEL_SWITCHED, (ev,data) => {
-								if (firstLoad) {
-									firstLoad = false;
-									video.pause();
-								}
-
 								this._qualities = this._qualities || [];
 								this._qualityIndex = this.autoQuality ? this._qualities.length - 1 : data.level;
 								paella.events.trigger(paella.events.qualityChanged,{});
@@ -215,10 +207,12 @@
 								this._hls.currentLevel = this._hls.levels.length>=initialQualityLevel ? initialQualityLevel : -1;
 								setTimeout(() => this._hls.currentLevel = -1, 1000);
 
-								// Fixes hls.js problems loading some videos
-								try {
-									video.play();
-								} catch (e) {}
+								// Fixes hls.js problems loading some live videos
+								if (isLiveStreaming) {
+									try {
+										//video.play();
+									} catch (e) {}
+								}
 
 								resolve(video);
 							});
