@@ -71,16 +71,6 @@ paella.addPlugin(() => {
 					this.jumpForward();
 					return true;
 				}
-				// added key "SHIFT + ." -> ":"
-				else if (event.shiftKey==true && event.keyCode == 190) {
-					this.increasePlaybackRate();
-					return true;
-				}
-				// added key "SHIFT + ," -> ";"
-				else if (event.shiftKey==true && event.keyCode == 188) {
-					this.decreasePlaybackRate();
-					return true;
-				}
             }
             return false;
         }
