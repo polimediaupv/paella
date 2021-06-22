@@ -12,7 +12,7 @@ paella.addPlugin(function() {
 			var enabled = paella.player.checkFullScreenCapability();
 			onSuccess(enabled);
 		}
-		getDefaultToolTip() { return paella.utils.dictionary.translate("Go Fullscreen"); }
+		getDefaultToolTip() { return paella.utils.dictionary.translate("Fullscreen (f)"); }
 		
 		setup() {
 			this._reload = this.config.reloadOnFullscreen ? this.config.reloadOnFullscreen.enabled:false;
