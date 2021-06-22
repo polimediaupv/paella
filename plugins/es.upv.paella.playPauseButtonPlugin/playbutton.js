@@ -14,7 +14,7 @@ paella.addPlugin(function() {
 		getSubclass() { return this.playSubclass; }
 		getIconClass() { return this.playIconClass; }
 		getName() { return "es.upv.paella.playPauseButtonPlugin"; }
-		getDefaultToolTip() { return paella.utils.dictionary.translate("Play"); }
+		getDefaultToolTip() { return paella.utils.dictionary.translate("Play (k)"); }
 		getIndex() { return 110; }
 	
 		checkEnabled(onSuccess) {
