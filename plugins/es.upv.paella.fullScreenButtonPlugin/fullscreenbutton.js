@@ -12,7 +12,7 @@ paella.addPlugin(function() {
 			var enabled = paella.player.checkFullScreenCapability();
 			onSuccess(enabled);
 		}
-		getDefaultToolTip() { return paella.utils.dictionary.translate("Go Fullscreen"); }
+		getDefaultToolTip() { return paella.utils.dictionary.translate("Fullscreen (f)"); }
 		
 		setup() {
 			this._reload = this.config.reloadOnFullscreen ? this.config.reloadOnFullscreen.enabled:false;
@@ -69,13 +69,13 @@ paella.addPlugin(function() {
 		}
 	
 		onEnterFullscreen() {
-			this.setToolTip(paella.utils.dictionary.translate("Exit Fullscreen"));
+			this.setToolTip(paella.utils.dictionary.translate("Exit fullscreen (f)"));
 			this.button.className = this.getButtonItemClass(true);
 			this.changeIconClass('icon-windowed');
 		}
 		
 		onExitFullscreen() {
-			this.setToolTip(paella.utils.dictionary.translate("Go Fullscreen"));
+			this.setToolTip(paella.utils.dictionary.translate("Fullscreen (f)"));
 			this.button.className = this.getButtonItemClass(false);
 			this.changeIconClass('icon-fullscreen');
 			setTimeout(() => {
