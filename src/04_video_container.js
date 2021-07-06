@@ -1063,17 +1063,25 @@ class VideoContainer extends paella.VideoContainerBase {
 
 	// Playback and status functions
 	play() {
+		let thisClass = this;
 		return new Promise((resolve,reject) => {
 			this.ended()
 				.then((ended) => {
 					if (ended) {
+						// Wait for seek to complete before requesting play, or risk media freeze-up (i.e. FireFox)
+						$(document).bind(paella.events.seekToTime, function (event, params) {
+							$(document).unbind(paella.events.seekToTime);
+							// Now it's safe to call this method again. Ended state evaluates to false because of the seek.
+							return thisClass.play();
+						});
 						this._streamProvider.startTime = 0;
 						this.seekToTime(0);
 					}
 					else {
 						this.streamProvider.startTime = this._startTime;
+						// Call separately from the ended state handling, or risk media freeze-up.
+						return this.streamProvider.callPlayerFunction('play');
 					}
-					return this.streamProvider.callPlayerFunction('play')
 				})
 				.then(() => {
 					super.play();
