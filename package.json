@@ -24,7 +24,7 @@
     "gulp-rename": "^2.0.0",
     "gulp-replace": "^1.0.0",
     "gulp-sourcemaps": "^3.0.0",
-    "gulp-uglify-es": "^2.0.0",
+    "gulp-uglify-es": "^3.0.0",
     "markdownlint-cli": "^0.27.1",
     "natives": "^1.1.6",
     "nightwatch": "^1.5.1"
