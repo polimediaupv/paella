@@ -81,7 +81,7 @@
       "es.upv.paella.footprintsPlugin": {"enabled":false},
       "es.upv.paella.frameControlPlugin":  {"enabled": true, "showFullPreview": "auto", "showCaptions":true, "minWindowSize": 450 },
       "es.upv.paella.fullScreenButtonPlugin": {"enabled":true, "reloadOnFullscreen":{ "enabled":true, "keepUserSelection":true }, "ariaLabel": "Switch full screen mode"},
-      "es.upv.paella.helpPlugin": {"enabled":true, "langs":["en","es"], "minWindowSize": 650 },
+      "es.upv.paella.helpPlugin": {"enabled":true, "langs":["en","es","zh"], "minWindowSize": 650 },
       "es.upv.paella.multipleQualitiesPlugin": {"enabled":true, "showWidthRes":true, "minWindowSize": 550, "minVisibleQuality": 240, "ariaLabel": "Change video quality" },
       "es.upv.paella.playbackRatePlugin": {"enabled":true, "availableRates": [0.75, 1, 1.25, 1.5], "minWindowSize": 500 },
       "es.upv.paella.playPauseButtonPlugin": {"enabled":true},
