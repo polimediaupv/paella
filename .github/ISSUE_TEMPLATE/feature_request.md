@@ -5,18 +5,8 @@ labels: 'new feature'
 
 ---
 
-# Is your feature request related to a problem? Please describe.
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+# End of Paella Player 6.x development
 
-# Describe the solution you'd like
-A clear and concise description of what you want to happen.
+As of the official release of Paella Player 7 in December 2021, we will no longer continue development of new features for Paella Player 6.x. Please refer to the [official repository readme file](https://github.com/polimediaupv/paella/blob/develop/README.md) for more information.
 
-# Describe alternatives you've considered
-A clear and concise description of any alternative solutions or features you've considered.
-
-# Additional context
-Add any other context or screenshots about the feature request here.
-
-
-
-Thank you for contributing!
+Note that all issues about new feature request in Paella 6 will be closed.
