@@ -23,8 +23,7 @@
 			"sources": {
 				"hls": [
 					{
-						"src": "https://streaming.upv.es/paellaplayerdemo/_definst_/smil:belmar-hls2/belmar/playlist.m3u8",
-						"_src":"https://error.com/video/stream.m3u8",
+						"src": "https://streaming.upv.es/paellaplayerdemo/_definst_/smil:belmar-hls/belmar/playlist.m3u8",
 						"mimetype": "video/mp4"
 					}
 				]
@@ -36,7 +35,7 @@
 			"sources": {
 				"hls": [
 					{
-						"src": "https://streaming.upv.es/paellaplayerdemo/_definst_/smil:belmar-hls2/belmar-presentation/playlist.m3u8",
+						"src": "https://streaming.upv.es/paellaplayerdemo/_definst_/smil:belmar-hls/belmar-presentation/playlist.m3u8",
 						"mimetype": "video/mp4"
 					}
 				]
