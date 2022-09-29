@@ -11,7 +11,7 @@
     "@babel/core": "^7.12.3",
     "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
-    "chromedriver": "^105.0.0",
+    "chromedriver": "^106.0.0",
     "electron-window-state-manager": "^0.3.2",
     "glob-all": "^3.2.1",
     "gulp": "^4.0.2",
