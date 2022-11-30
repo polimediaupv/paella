@@ -203,8 +203,10 @@
 							url += /\?/.test(url) ? `&cache=${ rand }` : `?cache=${ rand }`;
 							this._hls.loadSource(url);
 							this._hls.attachMedia(video);
+							video.play();
 
 							video.addEventListener("canplay", () => {
+								video.pause();
 								resolve(video);
 							})
 						}
