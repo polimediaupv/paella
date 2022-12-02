@@ -221,7 +221,7 @@
 
             paella.events.bind(paella.events.profileListChanged, () => {
                 if (paella.player && paella.player.videoContainer && 
-                    (!this.currentProfile || this.currentProfileName!=this.currentProfile.id))
+                    (!this.currentProfile || this.currentProfileName!=this.currentProfile.id))
                 {
                     this.setProfile(this.currentProfileName,false);
                 }

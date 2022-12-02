@@ -1,0 +1,7 @@
+{
+	"Breaks": "断点",
+	"Break": "断点",
+	"Create a new break in the current position": "在当前位置创建断点",
+	"Delete selected break": "删除选中的断点",
+	"Use this tool to create, delete and edit breaks. To create a break, select the time instant clicking the timeline's background and press 'create' button. Use this tab to edit the break text.": "您可以使用本工具来创建、删除、编辑断点。如需创建断点，可以在时间轴背景中选择时间点，然后点击“创建”按钮。使用此标签来编辑断点文字。"
+}

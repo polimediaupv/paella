@@ -13,17 +13,15 @@
 				defaultAudioCodec: undefined,
 				initialLiveManifestSize: 1,
 				initialQualityLevel: 1,
-				maxBufferLength: 30,
-				maxMaxBufferLength: 600,
-				maxBufferSize: 60*1000*1000,
+				maxBufferLength: 6,
+				maxMaxBufferLength: 6,
+				maxBufferSize: 600*1000*1000,
 				maxBufferHole: 0.5,
 				lowBufferWatchdogPeriod: 0.5,
 				highBufferWatchdogPeriod: 3,
 				nudgeOffset: 0.1,
 				nudgeMaxRetry : 3,
 				maxFragLookUpTolerance: 0.2,
-				liveSyncDurationCount: 3,
-				liveMaxLatencyDurationCount: 10,
 				enableWorker: true,
 				enableSoftwareAES: true,
 				manifestLoadingTimeOut: 10000,
@@ -41,15 +39,6 @@
 				fragLoadingMaxRetryTimeout: 64000,
 				startFragPrefetch: false,
 				appendErrorMaxRetry: 3,
-				
-				// loader: customLoader,
-				// fLoader: customFragmentLoader,
-				// pLoader: customPlaylistLoader,
-				// xhrSetup: XMLHttpRequestSetupCallback,
-				// fetchSetup: FetchSetupCallback,
-				// abrController: customAbrController,
-				// timelineController: TimelineController,
-
 				enableWebVTT: true,
 				enableCEA708Captions: true,
 				stretchShortVideoTrack: false,
@@ -152,7 +141,6 @@
 		}
 
 		setupHls(video,url) {
-			let initialQualityLevel = this.config.initialQualityLevel !== undefined ? this.config.initialQualityLevel : 1;
 			return new Promise((resolve,reject) => {
 				this._loadDeps()
 					.then((Hls) => {
@@ -160,19 +148,11 @@
 							let cfg = this.config;
 							//cfg.autoStartLoad = false;
 							this._hls = new Hls(cfg);
-							
+							const hlsStream = this.stream?.sources?.hls?.length>0 && this.stream.sources.hls[0];
+							const isLiveStreaming = hlsStream.isLiveStream;
 							this.autoQuality = true;
 
-							// For some streams there are problems if playback does not start after loading the
-							// manifest. This flag is used to pause it again once the video is loaded
-							let firstLoad = true;
-
 							this._hls.on(Hls.Events.LEVEL_SWITCHED, (ev,data) => {
-								if (firstLoad) {
-									firstLoad = false;
-									video.pause();
-								}
-
 								this._qualities = this._qualities || [];
 								this._qualityIndex = this.autoQuality ? this._qualities.length - 1 : data.level;
 								paella.events.trigger(paella.events.qualityChanged,{});
@@ -211,22 +191,24 @@
 									this._hls.startLoad();
 								}
 
-								// Fixes hls.js problems when loading the initial quality level
-								this._hls.currentLevel = this._hls.levels.length>=initialQualityLevel ? initialQualityLevel : -1;
-								setTimeout(() => this._hls.currentLevel = -1, 1000);
-
-								// Fixes hls.js problems loading some videos
-								try {
-									video.play();
-								} catch (e) {}
-
-								resolve(video);
+								// Fixes hls.js problems loading some live videos
+								if (isLiveStreaming) {
+									try {
+										//video.play();
+									} catch (e) {}
+								}
 							});
 
 							const rand = Math.floor(Math.random() * 100000000000);
 							url += /\?/.test(url) ? `&cache=${ rand }` : `?cache=${ rand }`;
 							this._hls.loadSource(url);
 							this._hls.attachMedia(video);
+							video.play();
+
+							video.addEventListener("canplay", () => {
+								video.pause();
+								resolve(video);
+							})
 						}
 						else {
 							reject(new Error("HLS not supported"));

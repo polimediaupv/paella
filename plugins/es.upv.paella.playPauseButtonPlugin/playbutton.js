@@ -29,19 +29,19 @@ paella.addPlugin(function() {
 			paella.events.bind(paella.events.play,(event) => {
 				this.changeIconClass(this.pauseIconClass);
 				this.changeSubclass(this.pauseSubclass);
-				this.setToolTip(paella.utils.dictionary.translate("Pause"));
+				this.setToolTip(paella.utils.dictionary.translate("Pause (k)"));
 			});
 
 			paella.events.bind(paella.events.pause,(event) => {
 				this.changeIconClass(this.playIconClass);
 				this.changeSubclass(this.playSubclass);
-				this.setToolTip(paella.utils.dictionary.translate("Play"));
+				this.setToolTip(paella.utils.dictionary.translate("Play (k)"));
 			});
 
 			paella.events.bind(paella.events.ended,(event) => {
 				this.changeIconClass(this.replayIconClass);
 				this.changeSubclass(this.playSubclass);
-				this.setToolTip(paella.utils.dictionary.translate("Play"));
+				this.setToolTip(paella.utils.dictionary.translate("Play (k)"));
 			});
 		}
 	

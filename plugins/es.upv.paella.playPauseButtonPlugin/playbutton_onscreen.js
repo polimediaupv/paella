@@ -74,7 +74,7 @@ paella.addPlugin(function() {
 					this.showIcon = this.showOnEnd;
 					this.checkStatus();
 				} else {
-					base.log.debug(`BTN ON SCREEN: The player is no longer in ended state.`);
+					paella.log.debug(`BTN ON SCREEN: The player is no longer in ended state.`);
 				}
 			});
 		}

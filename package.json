@@ -1,6 +1,6 @@
 {
   "name": "paellaplayer",
-  "version": "6.5.4",
+  "version": "6.5.6",
   "description": "Paella Player",
   "license": "ECL-2.0",
   "repository": {
@@ -11,23 +11,23 @@
     "@babel/core": "^7.12.3",
     "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
-    "chromedriver": "^87.0.2",
+    "chromedriver": "^107.0.3",
     "electron-window-state-manager": "^0.3.2",
     "glob-all": "^3.2.1",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-concat": "^2.6.0",
     "gulp-connect": "^5.7.0",
-    "gulp-less": "^4.0.0",
+    "gulp-less": "^5.0.0",
     "gulp-merge-json": "^2.1.1",
     "gulp-nightwatch": "^1.2.0",
     "gulp-rename": "^2.0.0",
     "gulp-replace": "^1.0.0",
-    "gulp-sourcemaps": "^2.6.5",
+    "gulp-sourcemaps": "^3.0.0",
     "gulp-uglify-es": "^2.0.0",
-    "markdownlint-cli": "^0.27.1",
+    "markdownlint-cli": "^0.32.0",
     "natives": "^1.1.6",
-    "nightwatch": "^1.5.1"
+    "nightwatch": "^2.0.4"
   },
   "scripts": {
     "test": "gulp test:local",

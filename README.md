@@ -1,25 +1,21 @@
-Paella Player (up to release 6.x)
+About Paella Player 6.x
 =============
 
-The Paella (pronounced 'paeja') Player is an HTML 5 multistream player, developed by the [Universitat Politècnica de València](https://www.upv.es/).
-It is specially designed for lecture recordings, like [Opencast](https://opencast.org) lectures or Polimedia pills.
-
-Paella Player is capable of playing multiple audio and video streams synchronously and can be integrated into almost any video platform
-using its powerful and easy to use plugin architecture.
-
-You can find out more about Paella on the [Paella Player Web Page](https://paellaplayer.upv.es).
-
-![Paella Player Logo](./config/profiles/resources/paella_logo_old.png)
+Paella Player 7 has been rewritten from scratch using more current tools, to support technologies such as React or Svelte. For this reason, the development of Paella Player 6.x has been discontinued. No further updates of new features will be made. For the time being, updates of third-party dependency libraries and resolution of particularly serious bugs will continue, but it is recommended to migrate to version 7 as soon as possible.
 
 
-Paella Player 7 and beyond
------------------
-In version 7, Paella is being rewritten from scratch, so we are using a different repo.
+- [More information about Paella Player 7](https://github.com/polimediaupv/paella-core/blob/main/doc/paella_player_7_presentation.md)
+- [Main Paella Player 7 github repository](https://github.com/polimediaupv/paella-player)
 
-Paella 7 is being developed in https://github.com/polimediaupv/paella-player
+Paella Player 7 repositories
+----------------------------
+
+Paella Player version 7 has been developed following a different approach. The new player is divided into a base library (paella-core) and several plugin libraries developed by the Polytechnic University of Valencia (UPV) and other institutions. The main repository of Paella Player 7 is assembled from the libraries developed by the UPV. You can compile it to use it in your website, or to start from a code base to develop your own player.
+
+You can consult the official documentation in the [paella-core github repository](https://github.com/polimediaupv/paella-core/blob/main/doc/index.md)
 
 
-Build and Install
+Build and Install Paella Player 6
 -----------------
 
 To build Paella, run:
@@ -31,5 +27,3 @@ To build Paella, run:
 ```
 
 You can get more information about Paella and its development in the [documentation](https://paellaplayer.upv.es/docs/).
-
-[![Build Status](https://travis-ci.org/polimediaupv/paella.svg?branch=master)](https://travis-ci.org/polimediaupv/paella)

@@ -1,5 +1,19 @@
+
 CHANGELOG
 =========
+
+* Paella 6.5.6
+
+  * The HLS plugin has been modified with features taken from `paella-core`, to improve playback of `m3u8` streams on bandwidth-limited connections.
+  * Other bug fixes.
+  * Breaking changes:
+    - The modifications in HLS plugin breaks some features on HLS plugin, such as the initial quality level.
+
+* Paella 6.5.5
+
+  * Improvements in HLS plugin. Please, ensure that the `isLiveStream` attribute is set correctly configured in the video manifest.
+  * Security bugs fixed.
+  * Other minor improvements.
 
 * Paella 6.5.4
 
