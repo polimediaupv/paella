@@ -155,7 +155,7 @@ paella.addPlugin(function() {
 			if(thisClass._searchOnCaptions){
 				thisClass.buildBodyContent(paella.captions.getActiveCaptions()._captions,"list");	
 			}
-			thisClass.setButtonHideShow();
+			//thisClass.setButtonHideShow();
 		}
 		
 		onChangeSelection(obj) {
@@ -175,7 +175,7 @@ paella.addPlugin(function() {
 					}
 				}
 				thisClass._activeCaptions = obj;
-				thisClass.setButtonHideShow();
+				//thisClass.setButtonHideShow();
 			}
 		}
 	
@@ -272,18 +272,18 @@ paella.addPlugin(function() {
 			});
 	
 			//BUTTON EDITOR
-			thisClass._editor = document.createElement("button");
-			thisClass._editor.className = "editorButton";
-			thisClass._editor.innerText = "";
-			thisClass._bar.appendChild(thisClass._editor);
+			//thisClass._editor = document.createElement("button");
+			//thisClass._editor.className = "editorButton";
+			//thisClass._editor.innerText = "";
+			//thisClass._bar.appendChild(thisClass._editor);
 	
 			//BUTTON jQuery
-			$(thisClass._editor).prop("disabled",true);
-			$(thisClass._editor).click(function(){
-				var c = paella.captions.getActiveCaptions();        	
-				paella.userTracking.log("paella:caption:edit", {id: c._captionsProvider + ':' + c._id, lang: c._lang});
-				c.goToEdit();
-			});
+			//$(thisClass._editor).prop("disabled",true);
+			//$(thisClass._editor).click(function(){
+			//	var c = paella.captions.getActiveCaptions();        	
+			//	paella.userTracking.log("paella:caption:edit", {id: c._captionsProvider + ':' + c._id, lang: c._lang});
+			//	c.goToEdit();
+			//});
 	
 			domElement.appendChild(thisClass._parent);
 		}
@@ -321,36 +321,36 @@ paella.addPlugin(function() {
 			}
 		}
 	
-		setButtonHideShow() {
-			var thisClass = this;
-			var editor = $('.editorButton');
-			var c = paella.captions.getActiveCaptions();
-			var res = null;
-			   if(c!=null){
-				   $(thisClass._select).width('39%');
-				
-				c.canEdit(function(err, r){res=r;});
-				if(res){
-					$(editor).prop("disabled",false);
-					$(editor).show();
-				}
-				else{
-					$(editor).prop("disabled",true);
-					$(editor).hide();
-					$(thisClass._select).width('47%');
-				}
-			}
-			else {
-				$(editor).prop("disabled",true);
-				$(editor).hide();
-				$(thisClass._select).width('47%');
-			}
-
-			if(!thisClass._searchOnCaptions){
-				if(res){$(thisClass._select).width('92%');}
-				else{$(thisClass._select).width('100%');}
-			 }
-		}
+		//setButtonHideShow() {
+		//	var thisClass = this;
+		//	var editor = $('.editorButton');
+		//	var c = paella.captions.getActiveCaptions();
+		//	var res = null;
+		//	   if(c!=null){
+		//		   $(thisClass._select).width('39%');
+		//		
+		//		c.canEdit(function(err, r){res=r;});
+		//		if(res){
+		//			$(editor).prop("disabled",false);
+		//			$(editor).show();
+		//		}
+		//		else{
+		//			$(editor).prop("disabled",true);
+		//			$(editor).hide();
+		//			$(thisClass._select).width('47%');
+		//		}
+		//	}
+		//	else {
+		//		$(editor).prop("disabled",true);
+		//		$(editor).hide();
+		//		$(thisClass._select).width('47%');
+		//	}
+//
+		//	if(!thisClass._searchOnCaptions){
+		//		if(res){$(thisClass._select).width('92%');}
+		//		else{$(thisClass._select).width('100%');}
+		//	 }
+		//}
 
 		buildBodyContent(obj,type) {
 			paella.player.videoContainer.trimming()
