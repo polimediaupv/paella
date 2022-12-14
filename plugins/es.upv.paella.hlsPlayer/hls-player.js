@@ -206,7 +206,6 @@
 							video.play();
 
 							video.addEventListener("canplay", () => {
-								video.pause();
 								resolve(video);
 							})
 						}

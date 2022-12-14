@@ -2,6 +2,10 @@
 CHANGELOG
 =========
 
+* Paella 6.5.8
+
+  * Bug fixed in HLS player.
+
 * Paella 6.5.7
 
   * Bug fixed in HLS player to support some m3u8 streams in Safari 16 for macOS Ventura and iPadOS 16.
